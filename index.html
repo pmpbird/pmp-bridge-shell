@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="PMP Bridge">
-<title>PMP Bridge Permanent Loader</title>
+<title>PMP Bridge</title>
 <style>
 :root{--a:#2567b2;--g:#17633c;--o:#6b540d;--t:#266b7d}
 body{margin:0;background:#0f1620;color:#eef4fb;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif}
@@ -32,6 +32,7 @@ textarea{min-height:170px;font-family:ui-monospace,SFMono-Regular,Menlo,monospac
 </head>
 <body>
 <button id="loader">Loader</button>
+
 <div id="panel">
   <h2>Permanent Loader</h2>
   <div class="note" id="loadStatus">Loader ready. Future upgrades paste here; no GitHub upload needed.</div>
@@ -40,9 +41,9 @@ textarea{min-height:170px;font-family:ui-monospace,SFMono-Regular,Menlo,monospac
     <button class="mini" onclick="applyUpgrade()">Apply Update</button>
     <button class="mini" onclick="panel.classList.remove('on')">Close</button>
     <button class="mini" onclick="copyBackup()">Copy Backup</button>
-    <button class="mini" onclick="resetStoredApp()">Reset Stored App</button>
+    <button class="mini" onclick="resetStoredUpgrade()">Reset Upgrade</button>
   </div>
-  <div class="warn">Reset Stored App keeps Bug Memory and project state.</div>
+  <div class="warn">Reset Upgrade keeps Bug Memory and project state.</div>
 </div>
 
 <div class="w">
@@ -123,33 +124,112 @@ textarea{min-height:170px;font-family:ui-monospace,SFMono-Regular,Menlo,monospac
 </nav>
 
 <script>
-const K={s:'pmp_bridge_state_v2',b:'pmp_bridge_bug_memory_v1',h:'pmp_bridge_hist_v1',c:'pmp_bridge_color_v1',app:'pmp_bridge_future_app_v1'},$=id=>document.getElementById(id),panel=$('panel');
+const K={s:'pmp_bridge_state_v2',b:'pmp_bridge_bug_memory_v1',h:'pmp_bridge_hist_v1',c:'pmp_bridge_color_v1',u:'pmp_bridge_upgrade_v1'};
+const $=id=>document.getElementById(id);
+const panel=$('panel');
+
 function now(){return new Date().toISOString()}
 function r(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}}
 function w(k,v){localStorage.setItem(k,JSON.stringify(v))}
-function sh(x,a){x=x.replace('#','');let n=parseInt(x,16),R=(n>>16)+a,G=(n>>8&255)+a,B=(n&255)+a;R=Math.max(0,Math.min(255,R));G=Math.max(0,Math.min(255,G));B=Math.max(0,Math.min(255,B));return '#'+(B|G<<8|R<<16).toString(16).padStart(6,'0')}
-function ac(x){document.documentElement.style.setProperty('--a',x);document.documentElement.style.setProperty('--g',sh(x,-35));document.documentElement.style.setProperty('--o',sh(x,-75));document.documentElement.style.setProperty('--t',sh(x,-15));if($('colorWheel'))$('colorWheel').value=x}
+
+function sh(x,a){
+  x=x.replace('#','');
+  let n=parseInt(x,16),R=(n>>16)+a,G=(n>>8&255)+a,B=(n&255)+a;
+  R=Math.max(0,Math.min(255,R));G=Math.max(0,Math.min(255,G));B=Math.max(0,Math.min(255,B));
+  return '#'+(B|G<<8|R<<16).toString(16).padStart(6,'0');
+}
+function ac(x){
+  document.documentElement.style.setProperty('--a',x);
+  document.documentElement.style.setProperty('--g',sh(x,-35));
+  document.documentElement.style.setProperty('--o',sh(x,-75));
+  document.documentElement.style.setProperty('--t',sh(x,-15));
+  if($('colorWheel'))$('colorWheel').value=x;
+}
 function setColor(x){w(K.c,x);ac(x)}
 function resetColor(){localStorage.removeItem(K.c);ac('#2567b2')}
-function st(){return r(K.s,{project_id:'pmp',witness:'Local Bridge active',blocker:'none',pressure:'Build + Proof',next_move:'Continue improvement',delta:'Local app ready',replay_state:'Stable',boundary:'PMP Core protected',open_gaps:0,last_saved:null,current_result:''})}
+
+function st(){
+  return r(K.s,{project_id:'pmp',witness:'Local Bridge active',blocker:'none',pressure:'Build + Proof',next_move:'Continue improvement',delta:'Local app ready',replay_state:'Stable',boundary:'PMP Core protected',open_gaps:0,last_saved:null,current_result:''});
+}
 function ss(s){w(K.s,s);render()}
 function bugs(){return r(K.b,{type:'PMP_BRIDGE_BUG_MEMORY_V1',lock_status:'BRIDGE_LOCKED_HEALING_MEMORY',records:[]})}
+
 function persist(){let s=st();s.project_id=$('projectId').value||'pmp';ss(s)}
-function render(){let s=st();$('projectId').value=s.project_id;$('overview').innerHTML=['witness','blocker','pressure','next_move','delta','replay_state','boundary'].map(k=>'<div class=k>'+k.replace('_',' ')+'</div><div class=v>'+(s[k]||'')+'</div>').join('');$('result').textContent=s.current_result||`${s.project_id}\nCARRIED_STATE_READY\nopen gaps: ${s.open_gaps}\ncopy/export ready: ${s.open_gaps===0?'yes':'needs review'}\nhidden full-project lossless: not certified`;$('homeStatus').textContent=`Current project: ${s.project_id}\nOpen gaps: ${s.open_gaps}\nLast saved: ${s.last_saved||'not saved yet'}`;let b=bugs();$('bugSummary').textContent=`Bug Memory: ${b.records.length} records · lock: ${b.lock_status}`;document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.tab===document.querySelector('.screen.on').id))}
-function go(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('on'));$(id).classList.add('on');render();scrollTo(0,0)}
-function improve(){let s=st();Object.assign(s,{witness:'Bridge checked visible carried state',blocker:'none',pressure:'Build + Proof',next_move:'Continue improvement',delta:'Improved visible carried-state fields',replay_state:'Stable',boundary:'PMP Core protected; private memory stays local',open_gaps:0});s.current_result=`${s.project_id}\nCARRIED_STATE_READY\nopen gaps: 0\ncopy/export ready: yes\nhidden full-project lossless: not certified`;ss(s)}
-function prepareExport(){let s=st();s.last_saved=now();s.current_result=JSON.stringify({type:'PMP_SOURCE_PROJECT_CARRIED_STATE_V1',built_at:now(),project_state_id:s.project_id,current_state:s,proof_status:'visible bridge state only',not_certified:'hidden full-project lossless not certified'},null,2);ss(s)}
+function render(){
+  let s=st();
+  $('projectId').value=s.project_id;
+  $('overview').innerHTML=['witness','blocker','pressure','next_move','delta','replay_state','boundary'].map(k=>'<div class=k>'+k.replace('_',' ')+'</div><div class=v>'+(s[k]||'')+'</div>').join('');
+  $('result').textContent=s.current_result||`${s.project_id}\nCARRIED_STATE_READY\nopen gaps: ${s.open_gaps}\ncopy/export ready: ${s.open_gaps===0?'yes':'needs review'}\nhidden full-project lossless: not certified`;
+  $('homeStatus').textContent=`Current project: ${s.project_id}\nOpen gaps: ${s.open_gaps}\nLast saved: ${s.last_saved||'not saved yet'}`;
+  let b=bugs();
+  $('bugSummary').textContent=`Bug Memory: ${b.records.length} records · lock: ${b.lock_status}`;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.tab===document.querySelector('.screen.on').id));
+}
+function go(id){
+  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('on'));
+  $(id).classList.add('on');
+  render();
+  scrollTo(0,0);
+}
+
+function improve(){
+  let s=st();
+  Object.assign(s,{witness:'Bridge checked visible carried state',blocker:'none',pressure:'Build + Proof',next_move:'Continue improvement',delta:'Improved visible carried-state fields',replay_state:'Stable',boundary:'PMP Core protected; private memory stays local',open_gaps:0});
+  s.current_result=`${s.project_id}\nCARRIED_STATE_READY\nopen gaps: 0\ncopy/export ready: yes\nhidden full-project lossless: not certified`;
+  ss(s);
+}
+function prepareExport(){
+  let s=st();
+  s.last_saved=now();
+  s.current_result=JSON.stringify({type:'PMP_SOURCE_PROJECT_CARRIED_STATE_V1',built_at:now(),project_state_id:s.project_id,current_state:s,proof_status:'visible bridge state only',not_certified:'hidden full-project lossless not certified'},null,2);
+  ss(s);
+}
 async function copyCurrent(){await navigator.clipboard.writeText($('result').textContent);alert('Copied')}
-function buildShare(){let p={type:'PMP_EXTERNAL_SHARE_PACKET_V1',built_at:now(),receiver:$('receiver').value,payload:$('payload').value,info_base:$('infobase').value,privacy:{bug_memory_included:false,private_save_state_included:false},receiver_instruction:'Review first. Do not overwrite core until accepted.'};$('shareOut').value=JSON.stringify(p,null,2);return p}
+
+function buildShare(){
+  let p={type:'PMP_EXTERNAL_SHARE_PACKET_V1',built_at:now(),receiver:$('receiver').value,payload:$('payload').value,info_base:$('infobase').value,privacy:{bug_memory_included:false,private_save_state_included:false},receiver_instruction:'Review first. Do not overwrite core until accepted.'};
+  $('shareOut').value=JSON.stringify(p,null,2);
+  return p;
+}
 async function copyShare(){if(!$('shareOut').value)buildShare();await navigator.clipboard.writeText($('shareOut').value);alert('Share packet copied')}
-function addBug(){let b=bugs();b.records.unshift({bug_id:'bug_'+Date.now(),at:now(),bug_category:'Manual/test',fix_status:'fixed'});w(K.b,b);render();$('historyOut').value=JSON.stringify(b,null,2)}
+
+function addBug(){
+  let b=bugs();
+  b.records.unshift({bug_id:'bug_'+Date.now(),at:now(),bug_category:'Manual/test',fix_status:'fixed'});
+  w(K.b,b);
+  render();
+  $('historyOut').value=JSON.stringify(b,null,2);
+}
 async function copyBugs(){$('historyOut').value=JSON.stringify(bugs(),null,2);await navigator.clipboard.writeText($('historyOut').value)}
-async function copyPrivate(){let p={type:'PMP_PRIVATE_BRIDGE_BUNDLE_V1',built_at:now(),state:st(),bug_memory:bugs(),warning:'Do not send to other people.'};$('settingsOut').value=JSON.stringify(p,null,2);await navigator.clipboard.writeText($('settingsOut').value)}
+async function copyPrivate(){
+  let p={type:'PMP_PRIVATE_BRIDGE_BUNDLE_V1',built_at:now(),state:st(),bug_memory:bugs(),warning:'Do not send to other people.'};
+  $('settingsOut').value=JSON.stringify(p,null,2);
+  await navigator.clipboard.writeText($('settingsOut').value);
+}
 function fresh(){let s=st();s.last_saved=now();s.delta='Fresh session marker';ss(s)}
-function applyUpgrade(){let p;try{p=JSON.parse($('upgradeBox').value)}catch(e){$('loadStatus').textContent='Upgrade must be JSON';return}if(!p||p.type!=='PMP_BRIDGE_APP_UPGRADE_PACKET_V1'||!p.app_html){$('loadStatus').textContent='Need upgrade packet with app_html';return}w(K.app,p);$('loadStatus').textContent='Upgrade packet saved. This base loader will keep working.'}
-async function copyBackup(){let p={type:'PMP_LOADER_BACKUP_V1',built_at:now(),state:st(),bug_memory:bugs(),stored_upgrade:r(K.app,null)};await navigator.clipboard.writeText(JSON.stringify(p,null,2));$('loadStatus').textContent='Backup copied'}
-function resetStoredApp(){localStorage.removeItem(K.app);$('loadStatus').textContent='Stored upgrade reset. Bug Memory/project state kept.'}
-$('loader').onclick=()=>panel.classList.toggle('on');ac(r(K.c,'#2567b2'));render();
+
+function applyUpgrade(){
+  let p;
+  try{p=JSON.parse($('upgradeBox').value)}catch(e){$('loadStatus').textContent='Upgrade must be JSON';return}
+  if(!p||p.type!=='PMP_BRIDGE_APP_UPGRADE_PACKET_V1'){$('loadStatus').textContent='Wrong packet type';return}
+  w(K.u,p);
+  if(p.color)setColor(p.color);
+  if(p.message)$('loadStatus').textContent=p.message;
+  else $('loadStatus').textContent='Upgrade packet saved.';
+}
+async function copyBackup(){
+  let p={type:'PMP_LOADER_BACKUP_V1',built_at:now(),state:st(),bug_memory:bugs(),stored_upgrade:r(K.u,null)};
+  await navigator.clipboard.writeText(JSON.stringify(p,null,2));
+  $('loadStatus').textContent='Backup copied';
+}
+function resetStoredUpgrade(){
+  localStorage.removeItem(K.u);
+  $('loadStatus').textContent='Stored upgrade reset. Bug Memory/project state kept.';
+}
+
+$('loader').onclick=()=>panel.classList.toggle('on');
+ac(r(K.c,'#2567b2'));
+render();
 </script>
 </body>
 </html>
