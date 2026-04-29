@@ -7,193 +7,38 @@
 <meta name="apple-mobile-web-app-title" content="PMP Bridge">
 <title>PMP Bridge</title>
 <style>
-:root{
-  --accent:#2567b2;
-  --accent2:#17633c;
-  --accent3:#6b540d;
-  --accent4:#266b7d;
-  --bg:#0f1620;
-  --card:#121b26;
-  --line:#25354a;
-  --text:#eef4fb;
-  --muted:#9fb0c3;
-}
+:root{--accent:#2567b2;--accent2:#17633c;--accent3:#6b540d;--accent4:#266b7d;--bg:#0f1620;--card:#121b26;--line:#25354a;--text:#eef4fb;--muted:#9fb0c3;--buttonText:#ffffff}
 *{box-sizing:border-box}
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 .wrap{max-width:820px;margin:auto;padding:18px 14px 92px}
-.card{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:24px;
-  padding:18px;
-  margin:0 0 14px;
-}
-.screen{display:none}
-.screen.on{display:block}
-h1{margin:0 0 8px;font-size:30px}
-h2{margin:0 0 10px;font-size:22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:18px;margin:0 0 14px}
+.screen{display:none}.screen.on{display:block}
+h1{margin:0 0 8px;font-size:30px}h2{margin:0 0 10px;font-size:22px}
 .sub{color:var(--muted);line-height:1.35}
-.big{
-  display:flex;
-  align-items:center;
-  gap:14px;
-  width:100%;
-  border:0;
-  border-radius:18px;
-  padding:18px;
-  margin:12px 0;
-  color:white;
-  background:var(--accent);
-  text-align:left;
-  font:inherit;
-  font-weight:900;
-  font-size:19px;
-}
+.big{display:flex;align-items:center;gap:14px;width:100%;border:0;border-radius:18px;padding:18px;margin:12px 0;color:var(--buttonText);background:var(--accent);text-align:left;font:inherit;font-weight:900;font-size:19px}
 .big small{display:block;font-size:14px;font-weight:500;opacity:.9}
-.icon{font-size:30px;width:38px;text-align:center}
-.chev{margin-left:auto;font-size:32px}
-.green{background:var(--accent2)}
-.gold{background:var(--accent3)}
-.teal{background:var(--accent4)}
-input,textarea{
-  width:100%;
-  border:1px solid var(--line);
-  border-radius:16px;
-  background:#0c141e;
-  color:var(--text);
-  padding:13px;
-  font:inherit;
-  margin-top:10px;
-}
-textarea{
-  min-height:160px;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:13px;
-}
-.mini{
-  border:1px solid var(--line);
-  background:#172234;
-  color:var(--text);
-  border-radius:14px;
-  padding:12px;
-  font:inherit;
-  font-weight:800;
-}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.row{display:grid;grid-template-columns:115px 1fr;gap:8px}
-.note{
-  background:#123024;
-  border:1px solid #245c45;
-  color:#bff3d2;
-  border-radius:16px;
-  padding:12px;
-  white-space:pre-wrap;
-}
-.warn{
-  background:#2b2010;
-  border:1px solid #745522;
-  color:#ffe0a3;
-  border-radius:16px;
-  padding:12px;
-  white-space:pre-wrap;
-}
-.k{color:var(--muted)}
-.v{font-weight:700}
-.code{
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  white-space:pre-wrap;
-  overflow-wrap:anywhere;
-  font-size:13px;
-}
-.tabs{
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-  background:rgba(15,22,32,.96);
-  border-top:1px solid var(--line);
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  padding:7px 6px max(7px,env(safe-area-inset-bottom));
-  z-index:10;
-}
-.tab{
-  background:transparent;
-  border:0;
-  color:var(--muted);
-  font:inherit;
-  font-size:12px;
-}
-.tab b{display:block;font-size:21px}
-.tab.on{color:var(--accent);font-weight:900}
-#loader{
-  position:fixed;
-  right:12px;
-  top:max(12px,env(safe-area-inset-top));
-  z-index:20;
-  border:1px solid #334155;
-  background:#111827;
-  color:white;
-  border-radius:999px;
-  padding:10px 13px;
-  font-weight:900;
-}
-#panel{
-  position:fixed;
-  left:12px;
-  right:12px;
-  top:max(60px,calc(env(safe-area-inset-top) + 58px));
-  z-index:19;
-  background:var(--card);
-  border:1px solid #334155;
-  border-radius:20px;
-  padding:14px;
-  display:none;
-  max-height:78vh;
-  overflow:auto;
-}
+.icon{font-size:30px;width:38px;text-align:center}.chev{margin-left:auto;font-size:32px}
+.green{background:var(--accent2)}.gold{background:var(--accent3)}.teal{background:var(--accent4)}
+input,textarea{width:100%;border:1px solid #25354a;border-radius:16px;background:#0c141e;color:#eef4fb;padding:13px;font:inherit;margin-top:10px}
+textarea{min-height:160px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
+.mini{border:1px solid #25354a;background:#172234;color:#eef4fb;border-radius:14px;padding:12px;font:inherit;font-weight:800}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.row{display:grid;grid-template-columns:115px 1fr;gap:8px}
+.note{background:#123024;border:1px solid #245c45;color:#bff3d2;border-radius:16px;padding:12px;white-space:pre-wrap}
+.warn{background:#2b2010;border:1px solid #745522;color:#ffe0a3;border-radius:16px;padding:12px;white-space:pre-wrap}
+.k{color:var(--muted)}.v{font-weight:700}
+.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}
+.tabs{position:fixed;left:0;right:0;bottom:0;background:rgba(15,22,32,.96);border-top:1px solid #25354a;display:grid;grid-template-columns:repeat(5,1fr);padding:7px 6px max(7px,env(safe-area-inset-bottom));z-index:10}
+.tab{background:transparent;border:0;color:#9fb0c3;font:inherit;font-size:12px}.tab b{display:block;font-size:21px}.tab.on{color:var(--accent);font-weight:900}
+#loader{position:fixed;right:12px;top:max(12px,env(safe-area-inset-top));z-index:20;border:1px solid #334155;background:#111827;color:white;border-radius:999px;padding:10px 13px;font-weight:900}
+#panel{position:fixed;left:12px;right:12px;top:max(60px,calc(env(safe-area-inset-top) + 58px));z-index:19;background:#121b26;border:1px solid #334155;border-radius:20px;padding:14px;display:none;max-height:78vh;overflow:auto;color:#eef4fb}
 #panel.on{display:block}
 .color-card{margin-top:14px}
-.color-select{
-  position:relative;
-  display:grid;
-  grid-template-columns:56px 1fr;
-  gap:14px;
-  align-items:center;
-  min-height:78px;
-  width:100%;
-  border:1px solid var(--line);
-  border-radius:22px;
-  background:#101a28;
-  padding:14px;
-  margin:10px 0;
-}
+.color-select{position:relative;display:grid;grid-template-columns:56px 1fr;gap:14px;align-items:center;min-height:78px;width:100%;border:1px solid #25354a;border-radius:22px;background:#101a28;color:#eef4fb;padding:14px;margin:10px 0}
 .color-select strong{font-size:18px}
-.color-select small{display:block;color:var(--muted);font-size:14px;margin-top:4px}
-.color-circle{
-  width:52px;
-  height:52px;
-  border-radius:50%;
-  border:4px solid rgba(255,255,255,.9);
-  background:var(--accent);
-  box-shadow:0 0 0 5px rgba(255,255,255,.08),0 8px 22px rgba(0,0,0,.35);
-}
+.color-select small{display:block;color:#9fb0c3;font-size:14px;margin-top:4px}
+.color-circle{width:52px;height:52px;border-radius:50%;border:4px solid rgba(255,255,255,.9);background:var(--accent);box-shadow:0 0 0 5px rgba(255,255,255,.08),0 8px 22px rgba(0,0,0,.35)}
 .bg-circle{background:var(--bg)}
-.color-select input[type=color]{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  opacity:.001;
-  margin:0;
-  padding:0;
-  border:0;
-}
+.color-select input[type=color]{position:absolute;inset:0;width:100%;height:100%;opacity:.001;margin:0;padding:0;border:0}
 .vault-json{min-height:280px}
 </style>
 </head>
@@ -236,7 +81,7 @@ textarea{
 
     <div class="card color-card">
       <h2>Color</h2>
-      <p class="sub">Tap the circles or the full row. One changes the buttons. One changes the dark area around the buttons.</p>
+      <p class="sub">Tap the circles or the full row. Text now switches automatically so it stays readable.</p>
 
       <label class="color-select">
         <span class="color-circle" id="buttonColorDot"></span>
@@ -246,7 +91,7 @@ textarea{
 
       <label class="color-select">
         <span class="color-circle bg-circle" id="backgroundColorDot"></span>
-        <span><strong>Background Color</strong><small>Changes the black/dark app area and cards</small></span>
+        <span><strong>Background Color</strong><small>Changes the app background and cards</small></span>
         <input id="backgroundColorPicker" type="color" value="#0f1620" oninput="setBackgroundColor(this.value)" onchange="setBackgroundColor(this.value)">
       </label>
 
@@ -268,7 +113,6 @@ textarea{
   <div class="card">
     <h1>WORKBENCH</h1>
     <p class="sub">Inside the Bridge App. Not PMP Core.</p>
-
     <input id="projectId" value="pmp" oninput="persistProject()">
 
     <button class="big" onclick="improve()">
@@ -304,7 +148,6 @@ textarea{
   <div class="card">
     <h1>Share Anything</h1>
     <p class="sub">Bug Memory is excluded by default.</p>
-
     <input id="receiver" placeholder="Receiver / project_state_id">
     <textarea id="payload" placeholder="Information to send"></textarea>
     <textarea id="infobase" placeholder="Info Base: what this is, how to use it, what not to overwrite"></textarea>
@@ -363,28 +206,31 @@ textarea{
 </nav>
 
 <script>
-const K={
-  state:'pmp_bridge_state_v6',
-  oldState:'pmp_bridge_state_v5',
-  bugs:'pmp_bridge_bug_memory_v1',
-  buttonColor:'pmp_bridge_button_color_v1',
-  oldColor:'pmp_bridge_color_v1',
-  backgroundColor:'pmp_bridge_background_color_v1',
-  upgrade:'pmp_bridge_upgrade_v1'
-};
-
+const K={state:'pmp_bridge_state_v6',oldState:'pmp_bridge_state_v5',bugs:'pmp_bridge_bug_memory_v1',buttonColor:'pmp_bridge_button_color_v1',oldColor:'pmp_bridge_color_v1',backgroundColor:'pmp_bridge_background_color_v1',upgrade:'pmp_bridge_upgrade_v1'};
 const $=id=>document.getElementById(id);
 
 function now(){return new Date().toISOString()}
 function read(key,fallback){try{const value=localStorage.getItem(key);return value?JSON.parse(value):fallback}catch(e){return fallback}}
 function write(key,value){localStorage.setItem(key,JSON.stringify(value))}
 
+function luminance(hex){
+  hex=String(hex||'#000000').replace('#','');
+  let n=parseInt(hex,16);
+  if(Number.isNaN(n))n=0;
+  let r=n>>16,g=n>>8&255,b=n&255;
+  return 0.2126*r+0.7152*g+0.0722*b;
+}
+function contrastText(hex){return luminance(hex)>150?'#101827':'#eef4fb'}
+function contrastMuted(hex){return luminance(hex)>150?'#475569':'#9fb0c3'}
+
 function shade(hex,amt){
   hex=String(hex||'#000000').replace('#','');
   let n=parseInt(hex,16);
   if(Number.isNaN(n))n=0;
   let r=(n>>16)+amt,g=(n>>8&255)+amt,b=(n&255)+amt;
-  r=Math.max(0,Math.min(255,r));g=Math.max(0,Math.min(255,g));b=Math.max(0,Math.min(255,b));
+  r=Math.max(0,Math.min(255,r));
+  g=Math.max(0,Math.min(255,g));
+  b=Math.max(0,Math.min(255,b));
   return '#'+(b|g<<8|r<<16).toString(16).padStart(6,'0');
 }
 
@@ -395,18 +241,25 @@ function applyButtonColor(hex){
   setVar('--accent2',shade(hex,-35));
   setVar('--accent3',shade(hex,-75));
   setVar('--accent4',shade(hex,-15));
+  setVar('--buttonText',contrastText(hex));
   if($('buttonColorPicker'))$('buttonColorPicker').value=hex;
   if($('buttonColorDot'))$('buttonColorDot').style.background=hex;
 }
+
 function applyBackgroundColor(hex){
+  const light=luminance(hex)>150;
   setVar('--bg',hex);
-  setVar('--card',shade(hex,18));
-  setVar('--line',shade(hex,48));
+  setVar('--card',light?shade(hex,-12):shade(hex,18));
+  setVar('--line',light?shade(hex,-45):shade(hex,48));
+  setVar('--text',contrastText(hex));
+  setVar('--muted',contrastMuted(hex));
   if($('backgroundColorPicker'))$('backgroundColorPicker').value=hex;
   if($('backgroundColorDot'))$('backgroundColorDot').style.background=hex;
 }
+
 function setButtonColor(hex){write(K.buttonColor,hex);write(K.oldColor,hex);applyButtonColor(hex)}
 function setBackgroundColor(hex){write(K.backgroundColor,hex);applyBackgroundColor(hex)}
+
 function resetColors(){
   localStorage.removeItem(K.buttonColor);
   localStorage.removeItem(K.oldColor);
@@ -414,6 +267,7 @@ function resetColors(){
   applyButtonColor('#2567b2');
   applyBackgroundColor('#0f1620');
 }
+
 function copyTheme(){
   const theme={
     type:'PMP_BRIDGE_THEME_V2',
@@ -425,19 +279,7 @@ function copyTheme(){
 }
 
 function defaultState(){
-  return{
-    project_id:'pmp',
-    witness:'Local Bridge active',
-    blocker:'none',
-    pressure:'Build + Proof',
-    next_move:'Continue improvement',
-    delta:'Local app ready',
-    replay_state:'Stable',
-    boundary:'PMP Core protected',
-    open_gaps:0,
-    last_saved:null,
-    current_result:''
-  };
+  return{project_id:'pmp',witness:'Local Bridge active',blocker:'none',pressure:'Build + Proof',next_move:'Continue improvement',delta:'Local app ready',replay_state:'Stable',boundary:'PMP Core protected',open_gaps:0,last_saved:null,current_result:''};
 }
 function state(){
   const current=read(K.state,null);
@@ -447,17 +289,7 @@ function state(){
 function saveState(s){write(K.state,s);render()}
 
 function defaultBugVault(){
-  return{
-    type:'PMP_BRIDGE_BUG_MEMORY_V1',
-    version:2,
-    created_at:now(),
-    updated_at:now(),
-    lock_status:'BRIDGE_LOCKED_HEALING_MEMORY',
-    records:[],
-    known_fix_recipes:[],
-    regression_runs:[],
-    preservation_rule:'Do not delete bug memory automatically. Keep bug records, repeat counts, fixes, proof before/after, prevention rules, and regression tests. Bug Memory stays private/local unless copied.'
-  };
+  return{type:'PMP_BRIDGE_BUG_MEMORY_V1',version:2,created_at:now(),updated_at:now(),lock_status:'BRIDGE_LOCKED_HEALING_MEMORY',records:[],known_fix_recipes:[],regression_runs:[],preservation_rule:'Do not delete bug memory automatically. Keep bug records, repeat counts, fixes, proof before/after, prevention rules, and regression tests. Bug Memory stays private/local unless copied.'};
 }
 function normalizeBugVault(v){
   let b=v&&typeof v==='object'?v:defaultBugVault();
@@ -485,26 +317,20 @@ function persistProject(){
 function render(){
   const s=state();
   $('projectId').value=s.project_id;
-
-  $('overview').innerHTML=['witness','blocker','pressure','next_move','delta','replay_state','boundary']
-    .map(k=>'<div class="k">'+k.replace('_',' ')+'</div><div class="v">'+(s[k]||'')+'</div>').join('');
-
+  $('overview').innerHTML=['witness','blocker','pressure','next_move','delta','replay_state','boundary'].map(k=>'<div class="k">'+k.replace('_',' ')+'</div><div class="v">'+(s[k]||'')+'</div>').join('');
   $('result').textContent=s.current_result||`${s.project_id}
 CARRIED_STATE_READY
 open gaps: ${s.open_gaps}
 copy/export ready: ${s.open_gaps===0?'yes':'needs review'}
 hidden full-project lossless: not certified`;
-
   $('homeStatus').textContent=`Current project: ${s.project_id}
 Open gaps: ${s.open_gaps}
 Last saved: ${s.last_saved||'not saved yet'}`;
-
   const b=bugs();
   $('bugSummary').textContent=`Bug Memory: ${b.records.length} records · ${b.known_fix_recipes.length} fix recipes · ${b.regression_runs.length} regression runs
 Lock: ${b.lock_status}
 Updated: ${b.updated_at}`;
   $('historyOut').value=JSON.stringify(b,null,2);
-
   const active=document.querySelector('.screen.on');
   document.querySelectorAll('.tab').forEach(tab=>tab.classList.toggle('on',active&&tab.dataset.tab===active.id));
 }
@@ -518,16 +344,7 @@ function go(id){
 
 function improve(){
   const s=state();
-  Object.assign(s,{
-    witness:'Bridge checked visible carried state',
-    blocker:'none',
-    pressure:'Build + Proof',
-    next_move:'Continue improvement',
-    delta:'Improved visible carried-state fields',
-    replay_state:'Stable',
-    boundary:'PMP Core protected; private memory stays local',
-    open_gaps:0
-  });
+  Object.assign(s,{witness:'Bridge checked visible carried state',blocker:'none',pressure:'Build + Proof',next_move:'Continue improvement',delta:'Improved visible carried-state fields',replay_state:'Stable',boundary:'PMP Core protected; private memory stays local',open_gaps:0});
   s.current_result=`${s.project_id}
 CARRIED_STATE_READY
 open gaps: 0
@@ -576,15 +393,7 @@ async function copyShare(){
 
 function addBug(){
   const b=bugs();
-  b.records.unshift({
-    bug_id:'bug_'+Date.now(),
-    at:now(),
-    bug_category:'Manual/test',
-    where_it_happened:'PMP Bridge App',
-    fix_status:'fixed',
-    repeat_count:1,
-    fix_recipe:'Keep record; preserve learning; do not export externally by default.'
-  });
+  b.records.unshift({bug_id:'bug_'+Date.now(),at:now(),bug_category:'Manual/test',where_it_happened:'PMP Bridge App',fix_status:'fixed',repeat_count:1,fix_recipe:'Keep record; preserve learning; do not export externally by default.'});
   saveBugs(b);
 }
 
@@ -595,6 +404,7 @@ async function copyBugs(){
   alert('Full Bug Memory Vault copied');
 }
 function refreshBugView(){render()}
+
 function importBugs(){
   const raw=$('bugImport').value.trim();
   if(!raw){alert('Paste bug memory first');return}
