@@ -7,27 +7,34 @@
 <meta name="apple-mobile-web-app-title" content="PMP Bridge">
 <title>PMP Bridge</title>
 <style>
-:root{--a:#2567b2;--g:#17633c;--o:#6b540d;--t:#266b7d}
-body{margin:0;background:#0f1620;color:#eef4fb;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif}
-.w{max-width:820px;margin:auto;padding:18px 14px 92px}
-.c{background:#121b26;border:1px solid #25354a;border-radius:24px;padding:18px;margin:0 0 14px}
+:root{--accent:#2567b2;--accent2:#17633c;--accent3:#6b540d;--accent4:#266b7d;--bg:#0f1620;--card:#121b26;--line:#25354a;--text:#eef4fb;--muted:#9fb0c3}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{max-width:820px;margin:auto;padding:18px 14px 92px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:18px;margin:0 0 14px}
 .screen{display:none}.screen.on{display:block}
-h1{margin:0 0 8px;font-size:30px}.sub{color:#9fb0c3;line-height:1.35}
-.act{display:flex;align-items:center;gap:14px;width:100%;border:0;border-radius:18px;padding:18px;margin:12px 0;color:white;text-align:left;font:inherit;font-weight:900;font-size:19px}
-.act small{display:block;font-size:14px;font-weight:500;opacity:.9}.i{font-size:30px;width:38px;text-align:center}.ch{margin-left:auto;font-size:32px}
-.b{background:var(--a)}.gr{background:var(--g)}.gd{background:var(--o)}.te{background:var(--t)}
-input,textarea{width:100%;box-sizing:border-box;border:1px solid #25354a;border-radius:16px;background:#0c141e;color:#eef4fb;padding:13px;font:inherit;margin-top:10px}
-textarea{min-height:170px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
-.mini{border:1px solid #25354a;background:#172234;color:#eef4fb;border-radius:14px;padding:12px;font:inherit;font-weight:800}
+h1{margin:0 0 8px;font-size:30px}h2{margin:0 0 10px;font-size:22px}
+.sub{color:var(--muted);line-height:1.35}
+.big{display:flex;align-items:center;gap:14px;width:100%;border:0;border-radius:18px;padding:18px;margin:12px 0;color:white;background:var(--accent);text-align:left;font:inherit;font-weight:900;font-size:19px}
+.big small{display:block;font-size:14px;font-weight:500;opacity:.9}
+.icon{font-size:30px;width:38px;text-align:center}.chev{margin-left:auto;font-size:32px}
+.green{background:var(--accent2)}.gold{background:var(--accent3)}.teal{background:var(--accent4)}
+input,textarea{width:100%;border:1px solid var(--line);border-radius:16px;background:#0c141e;color:var(--text);padding:13px;font:inherit;margin-top:10px}
+textarea{min-height:160px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
+.mini{border:1px solid var(--line);background:#172234;color:var(--text);border-radius:14px;padding:12px;font:inherit;font-weight:800}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.row{display:grid;grid-template-columns:115px 1fr;gap:8px}
 .note{background:#123024;border:1px solid #245c45;color:#bff3d2;border-radius:16px;padding:12px;white-space:pre-wrap}
 .warn{background:#2b2010;border:1px solid #745522;color:#ffe0a3;border-radius:16px;padding:12px;white-space:pre-wrap}
-.k{color:#9fb0c3}.v{font-weight:700}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}
-.tabs{position:fixed;left:0;right:0;bottom:0;background:rgba(15,22,32,.96);border-top:1px solid #25354a;display:grid;grid-template-columns:repeat(5,1fr);padding:7px 6px max(7px,env(safe-area-inset-bottom));z-index:10}
-.tab{background:transparent;border:0;color:#9fb0c3;font:inherit;font-size:12px}.tab b{display:block;font-size:21px}.tab.on{color:var(--a);font-weight:800}
+.k{color:var(--muted)}.v{font-weight:700}
+.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}
+.tabs{position:fixed;left:0;right:0;bottom:0;background:rgba(15,22,32,.96);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding:7px 6px max(7px,env(safe-area-inset-bottom));z-index:10}
+.tab{background:transparent;border:0;color:var(--muted);font:inherit;font-size:12px}.tab b{display:block;font-size:21px}.tab.on{color:var(--accent);font-weight:900}
 #loader{position:fixed;right:12px;top:max(12px,env(safe-area-inset-top));z-index:20;border:1px solid #334155;background:#111827;color:white;border-radius:999px;padding:10px 13px;font-weight:900}
-#panel{position:fixed;left:12px;right:12px;top:max(60px,calc(env(safe-area-inset-top) + 58px));z-index:19;background:#121b26;border:1px solid #334155;border-radius:20px;padding:14px;display:none;max-height:78vh;overflow:auto}
+#panel{position:fixed;left:12px;right:12px;top:max(60px,calc(env(safe-area-inset-top) + 58px));z-index:19;background:var(--card);border:1px solid #334155;border-radius:20px;padding:14px;display:none;max-height:78vh;overflow:auto}
 #panel.on{display:block}
+.color-preview{height:90px;border-radius:24px;background:linear-gradient(135deg,var(--accent),var(--accent2),var(--accent4));border:1px solid var(--line);margin:10px 0}
+.swatches{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.swatch{height:46px;border-radius:14px;border:1px solid rgba(255,255,255,.35)}
 </style>
 </head>
 <body>
@@ -35,80 +42,98 @@ textarea{min-height:170px;font-family:ui-monospace,SFMono-Regular,Menlo,monospac
 
 <div id="panel">
   <h2>Permanent Loader</h2>
-  <div class="note" id="loadStatus">Loader ready. Future upgrades paste here; no GitHub upload needed.</div>
+  <div class="note" id="loaderStatus">Loader ready. Future upgrade packets can be pasted here.</div>
   <textarea id="upgradeBox" placeholder="Paste upgrade packet JSON here"></textarea>
   <div class="grid">
     <button class="mini" onclick="applyUpgrade()">Apply Update</button>
-    <button class="mini" onclick="panel.classList.remove('on')">Close</button>
+    <button class="mini" onclick="closeLoader()">Close</button>
     <button class="mini" onclick="copyBackup()">Copy Backup</button>
-    <button class="mini" onclick="resetStoredUpgrade()">Reset Upgrade</button>
+    <button class="mini" onclick="resetUpgrade()">Reset Upgrade</button>
   </div>
-  <div class="warn">Reset Upgrade keeps Bug Memory and project state.</div>
+  <div class="warn">Bug Memory and project state stay local on this phone.</div>
 </div>
 
-<div class="w">
-<section id="home" class="screen">
-  <div class="c">
+<div class="wrap">
+<section id="home" class="screen on">
+  <div class="card">
     <h1>PMP Bridge</h1>
-    <p class="sub">Private project state and Bug Memory stay on this phone.</p>
-    <button class="act b" onclick="go('workbench')"><span class="i">▦</span><span>Open Workbench<small>Main cockpit</small></span><span class="ch">›</span></button>
-    <button class="act gr" onclick="go('share')"><span class="i">↗</span><span>Share Anything<small>Receiver-safe packet builder</small></span><span class="ch">›</span></button>
+    <p class="sub">Home first. Private project state and Bug Memory stay on this phone.</p>
+    <button class="big" onclick="go('workbench')"><span class="icon">▦</span><span>Open Workbench<small>Main cockpit</small></span><span class="chev">›</span></button>
+    <button class="big green" onclick="go('share')"><span class="icon">↗</span><span>Share Anything<small>Receiver-safe packet builder</small></span><span class="chev">›</span></button>
+    <button class="big teal" onclick="go('settings')"><span class="icon">◎</span><span>Plain Brain Colors<small>Color wheel and presets</small></span><span class="chev">›</span></button>
     <div id="homeStatus" class="note"></div>
   </div>
 </section>
 
-<section id="workbench" class="screen on">
-  <div class="c">
+<section id="workbench" class="screen">
+  <div class="card">
     <h1>WORKBENCH</h1>
     <p class="sub">Inside the Bridge App. Not PMP Core.</p>
-    <input id="projectId" value="pmp" oninput="persist()">
-    <button class="act b" onclick="improve()"><span class="i">↟</span><span>IMPROVE LOSSLESS QUALITY<small>Close/name gaps, tighten replay, update next move.</small></span><span class="ch">›</span></button>
-    <button class="act gr" onclick="go('share')"><span class="i">↗</span><span>SHARE ANYTHING<small>Package information with Info Base.</small></span><span class="ch">›</span></button>
-    <button class="act gd" onclick="prepareExport()"><span class="i">◇</span><span>PREPARE PROJECT EXPORT<small>Make carried-state bundle.</small></span><span class="ch">›</span></button>
-    <button class="act te" onclick="copyCurrent()"><span class="i">⧉</span><span>COPY CURRENT<small>Copy current output.</small></span><span class="ch">›</span></button>
+    <input id="projectId" value="pmp" oninput="persistProject()">
+    <button class="big" onclick="improve()"><span class="icon">↟</span><span>IMPROVE LOSSLESS QUALITY<small>Close/name gaps and update next move.</small></span><span class="chev">›</span></button>
+    <button class="big green" onclick="go('share')"><span class="icon">↗</span><span>SHARE ANYTHING<small>Package information with Info Base.</small></span><span class="chev">›</span></button>
+    <button class="big gold" onclick="prepareExport()"><span class="icon">◇</span><span>PREPARE PROJECT EXPORT<small>Make carried-state bundle.</small></span><span class="chev">›</span></button>
+    <button class="big teal" onclick="copyCurrent()"><span class="icon">⧉</span><span>COPY CURRENT<small>Copy current output.</small></span><span class="chev">›</span></button>
   </div>
-  <div class="c"><h2>PROJECT STATE OVERVIEW</h2><div id="overview" class="row"></div></div>
-  <div class="c"><h2>Current Result</h2><div id="result" class="code"></div></div>
+  <div class="card"><h2>PROJECT STATE OVERVIEW</h2><div id="overview" class="row"></div></div>
+  <div class="card"><h2>Current Result</h2><div id="result" class="code"></div></div>
 </section>
 
 <section id="share" class="screen">
-  <div class="c">
+  <div class="card">
     <h1>Share Anything</h1>
     <p class="sub">Bug Memory is excluded by default.</p>
     <input id="receiver" placeholder="Receiver / project_state_id">
     <textarea id="payload" placeholder="Information to send"></textarea>
     <textarea id="infobase" placeholder="Info Base: what this is, how to use it, what not to overwrite"></textarea>
-    <div class="grid"><button class="mini" onclick="buildShare()">Build Share Packet</button><button class="mini" onclick="copyShare()">Copy Share Packet</button></div>
+    <div class="grid">
+      <button class="mini" onclick="buildShare()">Build Share Packet</button>
+      <button class="mini" onclick="copyShare()">Copy Share Packet</button>
+    </div>
     <div class="warn">External Share excludes Bug Memory and private Save State by default.</div>
     <textarea id="shareOut" readonly></textarea>
   </div>
 </section>
 
 <section id="history" class="screen">
-  <div class="c">
+  <div class="card">
     <h1>History</h1>
     <div id="bugSummary" class="note"></div>
-    <div class="grid"><button class="mini" onclick="addBug()">Add Test Bug</button><button class="mini" onclick="copyBugs()">Copy Bug Memory</button></div>
+    <div class="grid">
+      <button class="mini" onclick="addBug()">Add Test Bug</button>
+      <button class="mini" onclick="copyBugs()">Copy Bug Memory</button>
+    </div>
     <textarea id="historyOut" readonly></textarea>
   </div>
 </section>
 
 <section id="settings" class="screen">
-  <div class="c">
+  <div class="card">
     <h1>Settings</h1>
-    <div class="c">
-      <h2>App Color</h2>
+    <div class="card">
+      <h2>Plain Brain Colors</h2>
+      <p class="sub">Color wheel first. Presets below. Saves automatically.</p>
+      <div class="color-preview"></div>
       <input id="colorWheel" type="color" value="#2567b2" onchange="setColor(this.value)">
-      <div class="grid">
-        <button class="mini" onclick="setColor('#2567b2')">Blue</button>
-        <button class="mini" onclick="setColor('#17633c')">Green</button>
-        <button class="mini" onclick="setColor('#6e42b8')">Purple</button>
-        <button class="mini" onclick="setColor('#b45309')">Gold</button>
-        <button class="mini" onclick="setColor('#266b7d')">Teal</button>
+      <div class="swatches">
+        <button class="swatch" style="background:#2567b2" onclick="setColor('#2567b2')"></button>
+        <button class="swatch" style="background:#17633c" onclick="setColor('#17633c')"></button>
+        <button class="swatch" style="background:#6e42b8" onclick="setColor('#6e42b8')"></button>
+        <button class="swatch" style="background:#b45309" onclick="setColor('#b45309')"></button>
+        <button class="swatch" style="background:#266b7d" onclick="setColor('#266b7d')"></button>
+        <button class="swatch" style="background:#be185d" onclick="setColor('#be185d')"></button>
+        <button class="swatch" style="background:#475569" onclick="setColor('#475569')"></button>
+        <button class="swatch" style="background:#0f766e" onclick="setColor('#0f766e')"></button>
+      </div>
+      <div class="grid" style="margin-top:10px">
         <button class="mini" onclick="resetColor()">Reset</button>
+        <button class="mini" onclick="copyTheme()">Copy Theme</button>
       </div>
     </div>
-    <div class="grid"><button class="mini" onclick="copyPrivate()">Copy Private Bundle</button><button class="mini" onclick="fresh()">Fresh Session</button></div>
+    <div class="grid">
+      <button class="mini" onclick="copyPrivate()">Copy Private Bundle</button>
+      <button class="mini" onclick="fresh()">Fresh Session</button>
+    </div>
     <div class="warn">Private bundle may include Bug Memory. Do not send it to other people.</div>
     <textarea id="settingsOut" readonly></textarea>
   </div>
@@ -116,119 +141,154 @@ textarea{min-height:170px;font-family:ui-monospace,SFMono-Regular,Menlo,monospac
 </div>
 
 <nav class="tabs">
-  <button class="tab" data-tab="home" onclick="go('home')"><b>⌂</b>Home</button>
-  <button class="tab on" data-tab="workbench" onclick="go('workbench')"><b>▦</b>Workbench</button>
+  <button class="tab on" data-tab="home" onclick="go('home')"><b>⌂</b>Home</button>
+  <button class="tab" data-tab="workbench" onclick="go('workbench')"><b>▦</b>Workbench</button>
   <button class="tab" data-tab="share" onclick="go('share')"><b>✉</b>Share</button>
   <button class="tab" data-tab="history" onclick="go('history')"><b>↺</b>History</button>
   <button class="tab" data-tab="settings" onclick="go('settings')"><b>⚙</b>Settings</button>
 </nav>
 
 <script>
-const K={s:'pmp_bridge_state_v2',b:'pmp_bridge_bug_memory_v1',h:'pmp_bridge_hist_v1',c:'pmp_bridge_color_v1',u:'pmp_bridge_upgrade_v1'};
+const K={state:'pmp_bridge_state_v4',bugs:'pmp_bridge_bug_memory_v1',color:'pmp_bridge_color_v1',upgrade:'pmp_bridge_upgrade_v1'};
 const $=id=>document.getElementById(id);
-const panel=$('panel');
 
 function now(){return new Date().toISOString()}
-function r(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}}
-function w(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function read(key,fallback){try{const value=localStorage.getItem(key);return value?JSON.parse(value):fallback}catch(e){return fallback}}
+function write(key,value){localStorage.setItem(key,JSON.stringify(value))}
 
-function sh(x,a){
-  x=x.replace('#','');
-  let n=parseInt(x,16),R=(n>>16)+a,G=(n>>8&255)+a,B=(n&255)+a;
-  R=Math.max(0,Math.min(255,R));G=Math.max(0,Math.min(255,G));B=Math.max(0,Math.min(255,B));
-  return '#'+(B|G<<8|R<<16).toString(16).padStart(6,'0');
+function shade(hex,amt){
+  hex=hex.replace('#','');
+  let n=parseInt(hex,16);
+  let r=(n>>16)+amt;
+  let g=(n>>8&255)+amt;
+  let b=(n&255)+amt;
+  r=Math.max(0,Math.min(255,r));
+  g=Math.max(0,Math.min(255,g));
+  b=Math.max(0,Math.min(255,b));
+  return '#'+(b|g<<8|r<<16).toString(16).padStart(6,'0');
 }
-function ac(x){
-  document.documentElement.style.setProperty('--a',x);
-  document.documentElement.style.setProperty('--g',sh(x,-35));
-  document.documentElement.style.setProperty('--o',sh(x,-75));
-  document.documentElement.style.setProperty('--t',sh(x,-15));
-  if($('colorWheel'))$('colorWheel').value=x;
+function applyColor(hex){
+  document.documentElement.style.setProperty('--accent',hex);
+  document.documentElement.style.setProperty('--accent2',shade(hex,-35));
+  document.documentElement.style.setProperty('--accent3',shade(hex,-75));
+  document.documentElement.style.setProperty('--accent4',shade(hex,-15));
+  const wheel=$('colorWheel');
+  if(wheel)wheel.value=hex;
 }
-function setColor(x){w(K.c,x);ac(x)}
-function resetColor(){localStorage.removeItem(K.c);ac('#2567b2')}
+function setColor(hex){write(K.color,hex);applyColor(hex)}
+function resetColor(){localStorage.removeItem(K.color);applyColor('#2567b2')}
+function copyTheme(){
+  const theme={type:'PMP_BRIDGE_THEME_V1',color:read(K.color,'#2567b2')};
+  $('settingsOut').value=JSON.stringify(theme,null,2);
+  navigator.clipboard.writeText($('settingsOut').value);
+}
 
-function st(){
-  return r(K.s,{project_id:'pmp',witness:'Local Bridge active',blocker:'none',pressure:'Build + Proof',next_move:'Continue improvement',delta:'Local app ready',replay_state:'Stable',boundary:'PMP Core protected',open_gaps:0,last_saved:null,current_result:''});
+function defaultState(){
+  return{project_id:'pmp',witness:'Local Bridge active',blocker:'none',pressure:'Build + Proof',next_move:'Continue improvement',delta:'Local app ready',replay_state:'Stable',boundary:'PMP Core protected',open_gaps:0,last_saved:null,current_result:''};
 }
-function ss(s){w(K.s,s);render()}
-function bugs(){return r(K.b,{type:'PMP_BRIDGE_BUG_MEMORY_V1',lock_status:'BRIDGE_LOCKED_HEALING_MEMORY',records:[]})}
+function state(){return read(K.state,defaultState())}
+function saveState(s){write(K.state,s);render()}
+function bugs(){return read(K.bugs,{type:'PMP_BRIDGE_BUG_MEMORY_V1',lock_status:'BRIDGE_LOCKED_HEALING_MEMORY',records:[]})}
 
-function persist(){let s=st();s.project_id=$('projectId').value||'pmp';ss(s)}
+function persistProject(){
+  const s=state();
+  s.project_id=$('projectId').value||'pmp';
+  saveState(s);
+}
+
 function render(){
-  let s=st();
+  const s=state();
   $('projectId').value=s.project_id;
-  $('overview').innerHTML=['witness','blocker','pressure','next_move','delta','replay_state','boundary'].map(k=>'<div class=k>'+k.replace('_',' ')+'</div><div class=v>'+(s[k]||'')+'</div>').join('');
+  $('overview').innerHTML=['witness','blocker','pressure','next_move','delta','replay_state','boundary'].map(k=>'<div class="k">'+k.replace('_',' ')+'</div><div class="v">'+(s[k]||'')+'</div>').join('');
   $('result').textContent=s.current_result||`${s.project_id}\nCARRIED_STATE_READY\nopen gaps: ${s.open_gaps}\ncopy/export ready: ${s.open_gaps===0?'yes':'needs review'}\nhidden full-project lossless: not certified`;
   $('homeStatus').textContent=`Current project: ${s.project_id}\nOpen gaps: ${s.open_gaps}\nLast saved: ${s.last_saved||'not saved yet'}`;
-  let b=bugs();
+  const b=bugs();
   $('bugSummary').textContent=`Bug Memory: ${b.records.length} records · lock: ${b.lock_status}`;
-  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.tab===document.querySelector('.screen.on').id));
+  const active=document.querySelector('.screen.on');
+  document.querySelectorAll('.tab').forEach(tab=>tab.classList.toggle('on',active&&tab.dataset.tab===active.id));
 }
+
 function go(id){
-  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
   $(id).classList.add('on');
   render();
   scrollTo(0,0);
 }
 
 function improve(){
-  let s=st();
+  const s=state();
   Object.assign(s,{witness:'Bridge checked visible carried state',blocker:'none',pressure:'Build + Proof',next_move:'Continue improvement',delta:'Improved visible carried-state fields',replay_state:'Stable',boundary:'PMP Core protected; private memory stays local',open_gaps:0});
   s.current_result=`${s.project_id}\nCARRIED_STATE_READY\nopen gaps: 0\ncopy/export ready: yes\nhidden full-project lossless: not certified`;
-  ss(s);
+  saveState(s);
 }
 function prepareExport(){
-  let s=st();
+  const s=state();
   s.last_saved=now();
   s.current_result=JSON.stringify({type:'PMP_SOURCE_PROJECT_CARRIED_STATE_V1',built_at:now(),project_state_id:s.project_id,current_state:s,proof_status:'visible bridge state only',not_certified:'hidden full-project lossless not certified'},null,2);
-  ss(s);
+  saveState(s);
 }
-async function copyCurrent(){await navigator.clipboard.writeText($('result').textContent);alert('Copied')}
+async function copyCurrent(){
+  await navigator.clipboard.writeText($('result').textContent);
+  alert('Copied');
+}
 
 function buildShare(){
-  let p={type:'PMP_EXTERNAL_SHARE_PACKET_V1',built_at:now(),receiver:$('receiver').value,payload:$('payload').value,info_base:$('infobase').value,privacy:{bug_memory_included:false,private_save_state_included:false},receiver_instruction:'Review first. Do not overwrite core until accepted.'};
-  $('shareOut').value=JSON.stringify(p,null,2);
-  return p;
+  const packet={type:'PMP_EXTERNAL_SHARE_PACKET_V1',built_at:now(),receiver:$('receiver').value,payload:$('payload').value,info_base:$('infobase').value,privacy:{bug_memory_included:false,private_save_state_included:false},receiver_instruction:'Review first. Do not overwrite core until accepted.'};
+  $('shareOut').value=JSON.stringify(packet,null,2);
+  return packet;
 }
-async function copyShare(){if(!$('shareOut').value)buildShare();await navigator.clipboard.writeText($('shareOut').value);alert('Share packet copied')}
+async function copyShare(){
+  if(!$('shareOut').value)buildShare();
+  await navigator.clipboard.writeText($('shareOut').value);
+  alert('Share packet copied');
+}
 
 function addBug(){
-  let b=bugs();
+  const b=bugs();
   b.records.unshift({bug_id:'bug_'+Date.now(),at:now(),bug_category:'Manual/test',fix_status:'fixed'});
-  w(K.b,b);
+  write(K.bugs,b);
   render();
   $('historyOut').value=JSON.stringify(b,null,2);
 }
-async function copyBugs(){$('historyOut').value=JSON.stringify(bugs(),null,2);await navigator.clipboard.writeText($('historyOut').value)}
+async function copyBugs(){
+  $('historyOut').value=JSON.stringify(bugs(),null,2);
+  await navigator.clipboard.writeText($('historyOut').value);
+}
 async function copyPrivate(){
-  let p={type:'PMP_PRIVATE_BRIDGE_BUNDLE_V1',built_at:now(),state:st(),bug_memory:bugs(),warning:'Do not send to other people.'};
-  $('settingsOut').value=JSON.stringify(p,null,2);
+  const bundle={type:'PMP_PRIVATE_BRIDGE_BUNDLE_V1',built_at:now(),state:state(),bug_memory:bugs(),warning:'Do not send to other people.'};
+  $('settingsOut').value=JSON.stringify(bundle,null,2);
   await navigator.clipboard.writeText($('settingsOut').value);
 }
-function fresh(){let s=st();s.last_saved=now();s.delta='Fresh session marker';ss(s)}
+function fresh(){
+  const s=state();
+  s.last_saved=now();
+  s.delta='Fresh session marker';
+  saveState(s);
+}
 
 function applyUpgrade(){
-  let p;
-  try{p=JSON.parse($('upgradeBox').value)}catch(e){$('loadStatus').textContent='Upgrade must be JSON';return}
-  if(!p||p.type!=='PMP_BRIDGE_APP_UPGRADE_PACKET_V1'){$('loadStatus').textContent='Wrong packet type';return}
-  w(K.u,p);
-  if(p.color)setColor(p.color);
-  if(p.message)$('loadStatus').textContent=p.message;
-  else $('loadStatus').textContent='Upgrade packet saved.';
+  let packet;
+  try{packet=JSON.parse($('upgradeBox').value)}catch(e){$('loaderStatus').textContent='Upgrade must be JSON.';return}
+  if(!packet||packet.type!=='PMP_BRIDGE_APP_UPGRADE_PACKET_V1'){$('loaderStatus').textContent='Wrong packet type.';return}
+  write(K.upgrade,packet);
+  if(packet.color)setColor(packet.color);
+  $('loaderStatus').textContent=packet.message||'Upgrade packet saved.';
 }
 async function copyBackup(){
-  let p={type:'PMP_LOADER_BACKUP_V1',built_at:now(),state:st(),bug_memory:bugs(),stored_upgrade:r(K.u,null)};
-  await navigator.clipboard.writeText(JSON.stringify(p,null,2));
-  $('loadStatus').textContent='Backup copied';
+  const backup={type:'PMP_LOADER_BACKUP_V1',built_at:now(),state:state(),bug_memory:bugs(),stored_upgrade:read(K.upgrade,null)};
+  await navigator.clipboard.writeText(JSON.stringify(backup,null,2));
+  $('loaderStatus').textContent='Backup copied';
 }
-function resetStoredUpgrade(){
-  localStorage.removeItem(K.u);
-  $('loadStatus').textContent='Stored upgrade reset. Bug Memory/project state kept.';
+function resetUpgrade(){
+  localStorage.removeItem(K.upgrade);
+  $('loaderStatus').textContent='Stored upgrade reset. Bug Memory/project state kept.';
+}
+function closeLoader(){
+  $('panel').classList.remove('on');
 }
 
-$('loader').onclick=()=>panel.classList.toggle('on');
-ac(r(K.c,'#2567b2'));
+$('loader').onclick=()=>{$('panel').classList.toggle('on')};
+applyColor(read(K.color,'#2567b2'));
 render();
 </script>
 </body>
