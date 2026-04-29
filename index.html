@@ -1,16 +1,72 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><title>PMP Bridge Shell</title><style>
-body{margin:0;background:#0f1620;color:#eef4fb;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif}.wrap{max-width:820px;margin:auto;padding:18px 14px 92px}.card{background:#121b26;border:1px solid #25354a;border-radius:24px;padding:18px;margin:0 0 14px}.screen{display:none}.screen.on{display:block}h1{margin:0 0 8px;font-size:30px}.sub{color:#9fb0c3;font-size:17px;line-height:1.35}.row{display:grid;grid-template-columns:120px 1fr;gap:8px 12px}.k{color:#9fb0c3}.v{font-weight:700}input,textarea{width:100%;box-sizing:border-box;border:1px solid #25354a;border-radius:16px;background:#0c141e;color:#eef4fb;padding:13px;font:inherit;margin-top:10px}textarea{min-height:170px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}.act{display:flex;align-items:center;gap:14px;width:100%;border:0;border-radius:18px;padding:18px;margin:12px 0;color:white;text-align:left;font:inherit;font-weight:900;font-size:19px}.act small{display:block;font-size:14px;font-weight:500;opacity:.92}.ico{font-size:30px;width:38px;text-align:center}.chev{margin-left:auto;font-size:32px}.blue{background:#2567b2}.green{background:#17633c}.gold{background:#6b540d}.teal{background:#266b7d}.mini{border:1px solid #25354a;background:#172234;color:#eef4fb;border-radius:14px;padding:12px;font:inherit;font-weight:800}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.note{background:#123024;border:1px solid #245c45;color:#bff3d2;border-radius:16px;padding:12px;white-space:pre-wrap}.warn{background:#2b2010;border:1px solid #745522;color:#ffe0a3;border-radius:16px;padding:12px;white-space:pre-wrap}.tabbar{position:fixed;left:0;right:0;bottom:0;background:rgba(15,22,32,.96);border-top:1px solid #25354a;display:grid;grid-template-columns:repeat(5,1fr);padding:7px 6px max(7px,env(safe-area-inset-bottom));z-index:10}.tab{background:transparent;border:0;color:#9fb0c3;font:inherit;font-size:12px;padding:6px 2px}.tab b{display:block;font-size:21px}.tab.on{color:#5da4ff;font-weight:800}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;white-space:pre-wrap;overflow-wrap:anywhere}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PMP Bridge">
+<meta name="theme-color" content="#0f1620">
+<title>PMP Bridge Permanent Loader</title>
+<style>
+html,body{margin:0;height:100%;background:#0f1620;color:#eef4fb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+#appFrame{position:fixed;inset:0;width:100%;height:100%;border:0;background:#0f1620}
+#loaderBtn{position:fixed;right:12px;top:max(12px,env(safe-area-inset-top));z-index:9999;border:1px solid #334155;background:#111827;color:white;border-radius:999px;padding:10px 13px;font-weight:900;box-shadow:0 8px 22px rgba(0,0,0,.35)}
+#panel{position:fixed;left:12px;right:12px;top:max(60px,calc(env(safe-area-inset-top) + 58px));z-index:9998;background:#121b26;border:1px solid #334155;border-radius:20px;padding:14px;box-shadow:0 16px 40px rgba(0,0,0,.45);display:none;max-height:78vh;overflow:auto}
+#panel.on{display:block}
+h2{margin:0 0 8px;font-size:22px}.muted{color:#9fb0c3;font-size:14px;line-height:1.35}
+textarea{width:100%;box-sizing:border-box;min-height:170px;border:1px solid #334155;border-radius:14px;background:#0b1220;color:#eef4fb;padding:12px;font:13px ui-monospace,SFMono-Regular,Menlo,monospace;margin-top:10px}
+button{font:inherit}.row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.btn{border:1px solid #334155;background:#172234;color:#eef4fb;border-radius:13px;padding:11px;font-weight:800}
+.primary{background:#2567b2}.danger{background:#7f1d1d}.good{background:#17633c}.note{background:#123024;border:1px solid #245c45;color:#bff3d2;border-radius:14px;padding:10px;margin-top:10px;white-space:pre-wrap;font-size:13px}.warn{background:#2b2010;border:1px solid #745522;color:#ffe0a3;border-radius:14px;padding:10px;margin-top:10px;white-space:pre-wrap;font-size:13px}
+.small{font-size:12px;color:#9fb0c3;white-space:pre-wrap;overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<iframe id="appFrame" title="PMP Bridge App"></iframe>
+<button id="loaderBtn">Loader</button>
+<div id="panel">
+  <h2>Permanent Loader</h2>
+  <div class="muted">Upload this file once. Future upgrades are pasted here and saved on this phone. Private Bug Memory and project state stay local.</div>
+  <div class="note" id="status">Loading…</div>
+  <textarea id="upgradeBox" placeholder='Paste upgrade packet here. Example:
+{
+  "type":"PMP_BRIDGE_APP_UPGRADE_PACKET_V1",
+  "version":"2026-04-29-example",
+  "app_html":"<!doctype html>..."
+}'></textarea>
+  <div class="row">
+    <button class="btn primary" id="applyBtn">Apply Update</button>
+    <button class="btn" id="closeBtn">Close</button>
+    <button class="btn good" id="exportBtn">Copy Private Backup</button>
+    <button class="btn danger" id="resetBtn">Reset App Code</button>
+  </div>
+  <div class="warn">Reset App Code only resets the app shell stored by the loader. It does not delete Bug Memory or project state.</div>
+  <div class="small" id="details"></div>
+</div>
+
+<script id="defaultApp" type="text/plain"><!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>PMP Bridge App</title>
+<style>
+:root{--accent:#2567b2;--accent2:#17633c;--accent3:#6b540d;--accent4:#266b7d}
+body{margin:0;background:#0f1620;color:#eef4fb;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif}.wrap{max-width:820px;margin:auto;padding:18px 14px 92px}.card{background:#121b26;border:1px solid #25354a;border-radius:24px;padding:18px;margin:0 0 14px}.screen{display:none}.screen.on{display:block}h1{margin:0 0 8px;font-size:30px}.sub{color:#9fb0c3;font-size:17px;line-height:1.35}.row{display:grid;grid-template-columns:120px 1fr;gap:8px 12px}.k{color:#9fb0c3}.v{font-weight:700}input,textarea{width:100%;box-sizing:border-box;border:1px solid #25354a;border-radius:16px;background:#0c141e;color:#eef4fb;padding:13px;font:inherit;margin-top:10px}textarea{min-height:170px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}.act{display:flex;align-items:center;gap:14px;width:100%;border:0;border-radius:18px;padding:18px;margin:12px 0;color:white;text-align:left;font:inherit;font-weight:900;font-size:19px}.act small{display:block;font-size:14px;font-weight:500;opacity:.92}.ico{font-size:30px;width:38px;text-align:center}.chev{margin-left:auto;font-size:32px}.blue{background:var(--accent)}.green{background:var(--accent2)}.gold{background:var(--accent3)}.teal{background:var(--accent4)}.mini{border:1px solid #25354a;background:#172234;color:#eef4fb;border-radius:14px;padding:12px;font:inherit;font-weight:800}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.note{background:#123024;border:1px solid #245c45;color:#bff3d2;border-radius:16px;padding:12px;white-space:pre-wrap}.warn{background:#2b2010;border:1px solid #745522;color:#ffe0a3;border-radius:16px;padding:12px;white-space:pre-wrap}.tabbar{position:fixed;left:0;right:0;bottom:0;background:rgba(15,22,32,.96);border-top:1px solid #25354a;display:grid;grid-template-columns:repeat(5,1fr);padding:7px 6px max(7px,env(safe-area-inset-bottom));z-index:10}.tab{background:transparent;border:0;color:#9fb0c3;font:inherit;font-size:12px;padding:6px 2px}.tab b{display:block;font-size:21px}.tab.on{color:var(--accent);font-weight:800}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;white-space:pre-wrap;overflow-wrap:anywhere}
 </style></head><body><div class="wrap">
-<section id="home" class="screen"><div class="card"><h1>PMP Bridge</h1><p class="sub">Public shell code. Private project state and Bug Memory stay on this phone.</p><button class="act blue" onclick="go('workbench')"><span class="ico">▦</span><span>Open Workbench<small>Main cockpit</small></span><span class="chev">›</span></button><button class="act green" onclick="go('share')"><span class="ico">↗</span><span>Share Anything<small>Receiver-safe packet builder</small></span><span class="chev">›</span></button><div class="note" id="homeStatus"></div></div></section>
+<section id="home" class="screen"><div class="card"><h1>PMP Bridge</h1><p class="sub">Permanent-loader app. Private project state and Bug Memory stay on this phone.</p><button class="act blue" onclick="go('workbench')"><span class="ico">▦</span><span>Open Workbench<small>Main cockpit</small></span><span class="chev">›</span></button><button class="act green" onclick="go('share')"><span class="ico">↗</span><span>Share Anything<small>Receiver-safe packet builder</small></span><span class="chev">›</span></button><div class="note" id="homeStatus"></div></div></section>
 <section id="workbench" class="screen on"><div class="card"><h1>WORKBENCH</h1><p class="sub">Inside the Bridge App. Not PMP Core. Prepares exports, improves explicit bridged project state, and keeps projects separate.</p><label class="k">Current Project</label><input id="projectId" value="pmp" oninput="persist()"><button class="act blue" onclick="improve()"><span class="ico">↟</span><span>IMPROVE LOSSLESS QUALITY<small>Find missing state, close or name gaps, tighten replay, update next move.</small></span><span class="chev">›</span></button><button class="act green" onclick="go('share')"><span class="ico">↗</span><span>SHARE ANYTHING<small>Package information with Info Base.</small></span><span class="chev">›</span></button><button class="act gold" onclick="prepareExport()"><span class="ico">◇</span><span>PREPARE PROJECT EXPORT<small>Make carried-state bundle.</small></span><span class="chev">›</span></button><button class="act teal" onclick="copyCurrent()"><span class="ico">⧉</span><span>COPY CURRENT<small>Copy current output.</small></span><span class="chev">›</span></button></div><div class="card"><h2>PROJECT STATE OVERVIEW</h2><div class="row" id="overview"></div></div><div class="card"><h2>Current Result</h2><div class="code" id="result"></div></div></section>
 <section id="share" class="screen"><div class="card"><h1>Share Anything</h1><p class="sub">Send information with an Info Base so the receiver knows what it is receiving. Bug Memory is excluded by default.</p><input id="receiver" placeholder="Receiver / project_state_id"><textarea id="payload" placeholder="Information to send"></textarea><textarea id="infobase" placeholder="Info Base: what this is, how to use it, what not to overwrite"></textarea><div class="grid"><button class="mini" onclick="buildShare()">Build Share Packet</button><button class="mini" onclick="copyShare()">Copy Share Packet</button></div><div class="warn">External Share excludes Bug Memory and private Save State by default.</div><textarea id="shareOut" readonly></textarea></div></section>
 <section id="history" class="screen"><div class="card"><h1>History</h1><p class="sub">Local save history and private Bug Memory summary.</p><div class="note" id="bugSummary"></div><div class="grid"><button class="mini" onclick="addBug()">Add Test Bug Record</button><button class="mini" onclick="copyBugs()">Copy Bug Memory</button></div><textarea id="historyOut" readonly></textarea></div></section>
-<section id="settings" class="screen"><div class="card"><h1>Settings</h1><p class="sub">Advanced/private controls.</p><div class="grid"><button class="mini" onclick="copyPrivate()">Copy Private Bundle</button><button class="mini" onclick="fresh()">Fresh Session</button></div><div class="warn">Private bundle may include Bug Memory. Do not send it to other people.</div><textarea id="settingsOut" readonly></textarea></div></section>
+<section id="settings" class="screen"><div class="card"><h1>Settings</h1><p class="sub">Advanced/private controls.</p><div class="card" style="margin-top:12px"><h2 style="margin-top:0">App Color</h2><p class="sub">Pick the main app color. It saves on this phone.</p><input id="colorWheel" type="color" value="#2567b2" onchange="setColor(this.value)"><div class="grid" style="margin-top:10px"><button class="mini" onclick="setColor('#2567b2')">Blue</button><button class="mini" onclick="setColor('#17633c')">Green</button><button class="mini" onclick="setColor('#6e42b8')">Purple</button><button class="mini" onclick="setColor('#b45309')">Gold</button><button class="mini" onclick="setColor('#266b7d')">Teal</button><button class="mini" onclick="resetColor()">Reset</button></div></div><div class="grid"><button class="mini" onclick="copyPrivate()">Copy Private Bundle</button><button class="mini" onclick="fresh()">Fresh Session</button></div><div class="warn">Private bundle may include Bug Memory. Do not send it to other people.</div><textarea id="settingsOut" readonly></textarea></div></section>
 </div><nav class="tabbar"><button class="tab" data-tab="home" onclick="go('home')"><b>⌂</b>Home</button><button class="tab on" data-tab="workbench" onclick="go('workbench')"><b>▦</b>Workbench</button><button class="tab" data-tab="share" onclick="go('share')"><b>✉</b>Share</button><button class="tab" data-tab="history" onclick="go('history')"><b>↺</b>History</button><button class="tab" data-tab="settings" onclick="go('settings')"><b>⚙</b>Settings</button></nav>
 <script>
-const K={s:'pmp_bridge_shell_state_v1',b:'pmp_bridge_bug_memory_v1',h:'pmp_bridge_shell_history_v1'},$=id=>document.getElementById(id);
+const K={s:'pmp_bridge_shell_state_v1',b:'pmp_bridge_bug_memory_v1',h:'pmp_bridge_shell_history_v1',c:'pmp_bridge_app_color_v1'},$=id=>document.getElementById(id);
 function now(){return new Date().toISOString()}function read(k,d){try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}}function write(k,v){localStorage.setItem(k,JSON.stringify(v))}
-function state(){return read(K.s,{project_id:'pmp',witness:'Local Bridge shell active',blocker:'none',pressure:'Build + Proof',next_move:'Continue improvement',delta:'Local shell ready',replay_state:'Stable',boundary:'PMP Core protected',open_gaps:0,last_saved:null,current_result:''})}
+function shade(hex,amt){hex=hex.replace('#','');let n=parseInt(hex,16),r=(n>>16)+amt,g=(n>>8&255)+amt,b=(n&255)+amt;r=Math.max(0,Math.min(255,r));g=Math.max(0,Math.min(255,g));b=Math.max(0,Math.min(255,b));return '#'+(b|g<<8|r<<16).toString(16).padStart(6,'0')}
+function applyColor(hex){document.documentElement.style.setProperty('--accent',hex);document.documentElement.style.setProperty('--accent2',shade(hex,-35));document.documentElement.style.setProperty('--accent3',shade(hex,-75));document.documentElement.style.setProperty('--accent4',shade(hex,-15));let cw=$('colorWheel');if(cw)cw.value=hex}
+function setColor(hex){localStorage.setItem(K.c,JSON.stringify(hex));applyColor(hex)}function resetColor(){localStorage.removeItem(K.c);applyColor('#2567b2')}
+function state(){return read(K.s,{project_id:'pmp',witness:'Local Bridge app active',blocker:'none',pressure:'Build + Proof',next_move:'Continue improvement',delta:'Local app ready',replay_state:'Stable',boundary:'PMP Core protected',open_gaps:0,last_saved:null,current_result:''})}
 function setState(s){write(K.s,s);render()}function bugs(){return read(K.b,{type:'PMP_BRIDGE_BUG_MEMORY_V1',lock_status:'BRIDGE_LOCKED_HEALING_MEMORY',records:[],preservation_rule:'Keep bug memory private/local.'})}function setBugs(b){b.updated_at=now();write(K.b,b);render()}
 function persist(){let s=state();s.project_id=$('projectId').value.trim()||'pmp';setState(s)}
 function render(){let s=state();$('projectId').value=s.project_id; $('overview').innerHTML=['witness','blocker','pressure','next_move','delta','replay_state','boundary'].map(k=>'<div class=k>'+k.replace('_',' ')+'</div><div class=v>'+(s[k]||'')+'</div>').join(''); $('result').textContent=s.current_result||`${s.project_id}\nCARRIED_STATE_READY\nopen gaps: ${s.open_gaps}\ncopy/export ready: ${s.open_gaps===0?'yes':'needs review'}\nhidden full-project lossless: not certified`; $('homeStatus').textContent=`Current project: ${s.project_id}\nOpen gaps: ${s.open_gaps}\nLast saved: ${s.last_saved||'not saved yet'}`; let b=bugs(); $('bugSummary').textContent=`Bug Memory: ${b.records.length} records · lock: ${b.lock_status}`; document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.tab===document.querySelector('.screen.on').id))}
@@ -24,5 +80,46 @@ async function copyShare(){if(!$('shareOut').value)buildShare();await navigator.
 function addBug(){let b=bugs();b.records.unshift({bug_id:'bug_'+Date.now(),at:now(),bug_category:'Manual/test bug memory record',fix_status:'fixed',fix_recipe:'Keep private/local; exclude from external share by default.'});setBugs(b);$('historyOut').value=JSON.stringify(b,null,2)}
 async function copyBugs(){$('historyOut').value=JSON.stringify(bugs(),null,2);await navigator.clipboard.writeText($('historyOut').value);alert('Private Bug Memory copied.')}
 async function copyPrivate(){let bundle={type:'PMP_PRIVATE_BRIDGE_BUNDLE_V1',built_at:now(),privacy_class:'PRIVATE_TO_USER_AND_OWN_PROJECTS',state:state(),bug_memory:bugs(),warning:'Do not send this private bundle to other people.'};$('settingsOut').value=JSON.stringify(bundle,null,2);await navigator.clipboard.writeText($('settingsOut').value);alert('Private bundle copied.')}
-function fresh(){let s=state();s.last_saved=now();s.delta='Fresh local session marker created';setState(s);$('settingsOut').value='Fresh session marker: '+now()}render();
-</script></body></html>
+function fresh(){let s=state();s.last_saved=now();s.delta='Fresh local session marker created';setState(s);$('settingsOut').value='Fresh session marker: '+now()}
+applyColor(read(K.c,'#2567b2'));render();
+</script></body></html></script>
+
+<script>
+const K={APP:'pmp_permanent_loader_app_html_v1',VER:'pmp_permanent_loader_app_version_v1',HIST:'pmp_permanent_loader_history_v1'};
+const frame=document.getElementById('appFrame'),panel=document.getElementById('panel'),statusEl=document.getElementById('status'),details=document.getElementById('details'),box=document.getElementById('upgradeBox');
+const builtIn=document.getElementById('defaultApp').textContent;
+function read(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}}
+function write(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function now(){return new Date().toISOString()}
+function loadApp(){const html=read(K.APP,builtIn);const ver=read(K.VER,'built-in-loader-app-v1');frame.srcdoc=html;statusEl.textContent='Loaded app version: '+ver;details.textContent='Permanent loader is active. Future app upgrades can be pasted here without uploading a new file.'}
+function applyPacket(){
+  let p;
+  try{p=JSON.parse(box.value.trim())}catch(e){statusEl.textContent='Could not read upgrade packet. It must be JSON.';return}
+  if(!p || p.type!=='PMP_BRIDGE_APP_UPGRADE_PACKET_V1' || !p.app_html){statusEl.textContent='Wrong packet. Need type PMP_BRIDGE_APP_UPGRADE_PACKET_V1 and app_html.';return}
+  const hist=read(K.HIST,[]);
+  hist.unshift({at:now(),version:p.version||'unknown',notes:p.notes||''});
+  write(K.HIST,hist.slice(0,50));
+  write(K.APP,p.app_html);
+  write(K.VER,p.version||('upgrade-'+Date.now()));
+  box.value='';
+  loadApp();
+  statusEl.textContent='Update applied: '+read(K.VER,'unknown');
+}
+async function copyBackup(){
+  const backup={type:'PMP_PERMANENT_LOADER_PRIVATE_BACKUP_V1',built_at:now(),loader_app_version:read(K.VER,'built-in-loader-app-v1'),stored_app_html:read(K.APP,builtIn),update_history:read(K.HIST,[]),note:'This backs up loader app code only. Private app data is inside browser localStorage.'};
+  await navigator.clipboard.writeText(JSON.stringify(backup,null,2));
+  statusEl.textContent='Private loader backup copied.';
+}
+function resetCode(){
+  if(!confirm('Reset app code to built-in? This keeps project state and Bug Memory.'))return;
+  localStorage.removeItem(K.APP);localStorage.removeItem(K.VER);loadApp();statusEl.textContent='App code reset to built-in.';
+}
+document.getElementById('loaderBtn').onclick=()=>panel.classList.toggle('on');
+document.getElementById('closeBtn').onclick=()=>panel.classList.remove('on');
+document.getElementById('applyBtn').onclick=applyPacket;
+document.getElementById('exportBtn').onclick=copyBackup;
+document.getElementById('resetBtn').onclick=resetCode;
+loadApp();
+</script>
+</body>
+</html>
