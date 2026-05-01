@@ -1,0 +1,2 @@
+ChatGPT write test for pmp-bridge-shell.
+If this file exists, connector write access works.
