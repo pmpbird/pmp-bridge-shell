@@ -11,37 +11,119 @@
 </head>
 <body>
 <div class="wrap">
-  <div class="card"><h1>PMP Safe Writer</h1><p class="sub">Protected writer for pmp.html. It blocks small fragments and saves a last-good copy before commit.</p><div class="warn">Guard rule: commits are blocked unless the box contains a full HTML app starting with &lt;!doctype html&gt; and ending with &lt;/html&gt;.</div></div>
-  <div class="card"><h2>Connection</h2><input id="token" type="password" placeholder="Paste GitHub token"><input id="repo" value="pmpbird/pmp-bridge-shell"><input id="branch" value="main"><input id="path" value="pmp.html"><input id="sha" readonly placeholder="file SHA"><div class="grid"><button class="mini" onclick="testToken()">Test</button><button class="mini" onclick="fetchApp()">Fetch App</button></div></div>
-  <div class="card"><h2>Safety</h2><div class="grid"><button class="mini" onclick="saveCurrentAsGood()">Save Current As Good</button><button class="mini" onclick="restoreLocalGood()">Restore Local Good</button><button class="mini" onclick="copyEmergencyBackup()">Copy Emergency Backup</button><button class="mini" onclick="runGuard()">Run Guard</button></div><div id="guard" class="note">Guard not run yet.</div></div>
-  <div class="card"><h2>Protected Patches</h2><p class="sub">Use these only after Fetch App. They modify the full fetched app in the box, then the guard checks it before commit.</p><button onclick="patchSafetyLink()">Add Safety Hub Link to Control Room</button><button onclick="patchExactRhythmGate()">Add Exact Rhythm Gate to Control Room</button></div>
-  <div class="card"><h2>Commit</h2><input id="msg" value="Safe writer update"><textarea id="box" placeholder="Fetch full app first. Then edit the full file here."></textarea><button onclick="commitSafe()">Commit Full App Only</button><div id="status" class="note">Ready.</div></div>
+  <div class="card">
+    <h1>PMP Safe Writer</h1>
+    <p class="sub">Protected writer for pmp.html. Same safety layer, simpler button logic.</p>
+    <div class="warn">Commit is blocked unless the box contains a full HTML app.</div>
+  </div>
+
+  <div class="card">
+    <h2>Connection</h2>
+    <input id="token" type="password" placeholder="Paste GitHub token">
+    <input id="repo" value="pmpbird/pmp-bridge-shell">
+    <input id="branch" value="main">
+    <input id="path" value="pmp.html">
+    <input id="sha" readonly placeholder="file SHA">
+    <div class="grid">
+      <button class="mini" id="testBtn">Test</button>
+      <button class="mini" id="fetchBtn">Fetch App</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Safety</h2>
+    <div class="grid">
+      <button class="mini" id="saveGoodBtn">Save Current As Good</button>
+      <button class="mini" id="restoreGoodBtn">Restore Local Good</button>
+      <button class="mini" id="copyBackupBtn">Copy Emergency Backup</button>
+      <button class="mini" id="guardBtn">Run Guard</button>
+    </div>
+    <div id="guard" class="note">Guard not run yet.</div>
+  </div>
+
+  <div class="card">
+    <h2>Protected Patches</h2>
+    <p class="sub">Use these only after Fetch App.</p>
+    <button id="patchSafetyBtn">Add Safety Hub Link to Control Room</button>
+    <button id="patchRhythmBtn">Add Exact Rhythm Gate to Control Room</button>
+  </div>
+
+  <div class="card">
+    <h2>Commit</h2>
+    <input id="msg" value="Safe writer update">
+    <textarea id="box" placeholder="Fetch full app first. Then edit the full file here."></textarea>
+    <button id="commitBtn">Commit Full App Only</button>
+    <div id="status" class="note">Loading Safe Writer...</div>
+  </div>
 </div>
 <script>
-const GOOD='pmp_safe_writer_last_good_v1';
-const $=id=>document.getElementById(id);
-function status(m){$('status').textContent=m}
-function guardMsg(m){$('guard').textContent=m}
-function now(){return new Date().toISOString()}
-function key(){let t=$('token').value.trim();if(!t)throw Error('Paste token first.');return t}
-function parts(){let [owner,repo]=$('repo').value.trim().split('/');return{owner,repo,branch:$('branch').value.trim(),path:$('path').value.trim()}}
-function url(){let p=parts();return `https://api.github.com/repos/${encodeURIComponent(p.owner)}/${encodeURIComponent(p.repo)}/contents/${p.path.split('/').map(encodeURIComponent).join('/')}`}
-function headers(){return{Authorization:'Bearer '+key(),Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}}
-function dec64(s){return new TextDecoder().decode(Uint8Array.from(atob((s||'').replace(/\n/g,'')),c=>c.charCodeAt(0)))}
-function enc64(s){return btoa([...new TextEncoder().encode(s)].map(x=>String.fromCharCode(x)).join(''))}
-async function getFile(ref){let r=await fetch(url()+'?ref='+encodeURIComponent(ref),{headers:headers(),cache:'no-store'}),j=await r.json().catch(()=>({}));if(!r.ok)throw Error(j.message||'Fetch failed');return j}
-function fullHtmlGuard(txt){txt=String(txt||'').trim();let lower=txt.toLowerCase();return lower.startsWith('<!doctype html')&&lower.includes('<html')&&lower.includes('<head')&&lower.includes('<body')&&lower.endsWith('</html>')&&txt.length>5000}
-function runGuard(){let ok=fullHtmlGuard($('box').value);guardMsg(ok?'PASS: full app HTML detected.':'BLOCKED: this does not look like a full app file. Do not commit.');return ok}
-async function testToken(){try{status('Testing...');let p=parts(),j=await getFile(p.branch);$('sha').value=j.sha||'';status('Token works. File found.')}catch(e){status('Test failed: '+e.message)}}
-async function fetchApp(){try{status('Fetching current app...');let p=parts(),j=await getFile(p.branch),txt=dec64(j.content);$('sha').value=j.sha||'';$('box').value=txt;localStorage.setItem(GOOD,JSON.stringify({saved_at:now(),sha:j.sha,content:txt}));runGuard();status('Fetched app and saved current as local last-good.')}catch(e){status('Fetch failed: '+e.message)}}
-function saveCurrentAsGood(){let txt=$('box').value;if(!fullHtmlGuard(txt))return status('Save blocked: box does not contain a full app.');localStorage.setItem(GOOD,JSON.stringify({saved_at:now(),sha:$('sha').value,content:txt}));status('Current box saved as local last-good.')}
-function restoreLocalGood(){let g;try{g=JSON.parse(localStorage.getItem(GOOD)||'null')}catch(e){}if(!g||!g.content)return status('No local last-good saved.');$('box').value=g.content;runGuard();status('Local last-good restored into box. Review, then commit if needed.')}
-async function copyEmergencyBackup(){await navigator.clipboard.writeText(localStorage.getItem(GOOD)||'');status('Emergency backup copied.')}
-function patchSafetyLink(){let txt=$('box').value;if(!fullHtmlGuard(txt))return status('Patch blocked: fetch the full app first.');if(txt.includes('safety.html')&&txt.includes('Open Safety Hub')){status('Safety Hub link is already present.');runGuard();return}let marker='<button class="mini" onclick="go(\'system\')">Open Private System</button>';let add=marker+'<button class="mini" onclick="location.href=\'safety.html\'">Open Safety Hub</button>';if(!txt.includes(marker))return status('Patch blocked: Control Room marker not found.');txt=txt.replace(marker,add);$('box').value=txt;$('msg').value='Add Safety Hub link to Control Room';runGuard();status('Safety Hub link added to Control Room in the fetched app. Review, then commit.')}
-function patchExactRhythmGate(){let txt=$('box').value;if(!fullHtmlGuard(txt))return status('Patch blocked: fetch the full app first.');if(txt.includes('PMP_GATE_INTERVALS'))return status('Exact rhythm gate already appears installed.');let removed=0;if(txt.includes('<h1>Control Room</h1>'))txt=txt.replace('<h1>Control Room</h1>','<h1 id="controlTitle">Control Room</h1>');else if(!txt.includes('id="controlTitle"'))return status('Patch blocked: Control Room title marker not found.');txt=txt.replace(/<button class="mini" onclick="go\('system'\)">Open Private System<\/button>/g,()=>{removed++;return ''});txt=txt.replace(/<button class="mini" onclick="go\('system'\)">Private System<\/button>/g,()=>{removed++;return ''});
-let gateCode=`\nconst PMP_GATE_INTERVALS=['L','L','S','S','S','L','S','L','S','S','S'];\nlet pmpGateTimes=[];\nfunction pmpGateTap(e){\n  e.preventDefault();\n  e.stopPropagation();\n  let t=Date.now();\n  if(pmpGateTimes.length&&t-pmpGateTimes[pmpGateTimes.length-1]>1600)pmpGateTimes=[];\n  pmpGateTimes.push(t);\n  if(navigator.vibrate)navigator.vibrate(12);\n  if(pmpGateTimes.length>12)pmpGateTimes.shift();\n  if(pmpGateTimes.length===12){\n    let gaps=[];\n    for(let i=1;i<pmpGateTimes.length;i++)gaps.push(pmpGateTimes[i]-pmpGateTimes[i-1]);\n    let min=Math.min(...gaps),max=Math.max(...gaps),cut=(min+max)/2;\n    let got=gaps.map(g=>g>cut?'L':'S');\n    let ok=max/min>1.35&&got.every((x,i)=>x===PMP_GATE_INTERVALS[i]);\n    if(ok){\n      pmpGateTimes=[];\n      if(navigator.vibrate)navigator.vibrate([40,35,40,35,120]);\n      if(typeof lockPrivate==='function')lockPrivate();\n      if(typeof go==='function')go('system');\n    }else{\n      if(navigator.vibrate)navigator.vibrate([20,80,20]);\n    }\n  }\n}\nfunction pmpInstallRhythmGate(){let el=document.getElementById('controlTitle');if(el&&!el.dataset.pmpRhythmGate){el.dataset.pmpRhythmGate='on';el.addEventListener('click',pmpGateTap,true)}}\npmpInstallRhythmGate();\nsetTimeout(pmpInstallRhythmGate,0);\n`;
-let closeTag='<'+'/script>';let pos=txt.lastIndexOf(closeTag);if(pos<0)return status('Patch blocked: final script close not found.');txt=txt.slice(0,pos)+gateCode+txt.slice(pos);$('box').value=txt;$('msg').value='Add exact Control Room rhythm gate';runGuard();status('Exact rhythm gate added. Pattern: Q Q E E E E ER E E ER E E E E. Removed '+removed+' visible private button(s). Review, then commit.')}
-async function commitSafe(){try{let txt=$('box').value;if(!runGuard())throw Error('Commit blocked by full-app guard.');let sha=$('sha').value.trim();let p=parts();if(!sha){let j=await getFile(p.branch);sha=j.sha;$('sha').value=sha}localStorage.setItem(GOOD,JSON.stringify({saved_at:now(),sha,content:txt}));status('Committing full app...');let r=await fetch(url(),{method:'PUT',headers:{...headers(),'Content-Type':'application/json'},body:JSON.stringify({message:$('msg').value||'Safe writer update',content:enc64(txt),sha,branch:p.branch})}),j=await r.json().catch(()=>({}));if(!r.ok)throw Error(j.message||'Commit failed');$('sha').value=j.content?.sha||'';status('Committed safely. Reload PMP app.')}catch(e){status('Commit failed: '+e.message)}}
+(function(){
+  var GOOD='pmp_safe_writer_last_good_v1';
+  function el(id){return document.getElementById(id)}
+  function status(m){el('status').textContent=m}
+  function guardMsg(m){el('guard').textContent=m}
+  function now(){return new Date().toISOString()}
+  function getToken(){var t=el('token').value.trim(); if(!t) throw new Error('Paste token first.'); return t}
+  function parts(){var bits=el('repo').value.trim().split('/'); return {owner:bits[0],repo:bits[1],branch:el('branch').value.trim(),path:el('path').value.trim()}}
+  function fileUrl(){var p=parts(); return 'https://api.github.com/repos/'+encodeURIComponent(p.owner)+'/'+encodeURIComponent(p.repo)+'/contents/'+p.path.split('/').map(encodeURIComponent).join('/')}
+  function headers(){return {Authorization:'Bearer '+getToken(),Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}}
+  function dec64(s){return new TextDecoder().decode(Uint8Array.from(atob(String(s||'').replace(/\n/g,'')),function(c){return c.charCodeAt(0)}))}
+  function enc64(s){return btoa(Array.from(new TextEncoder().encode(s)).map(function(x){return String.fromCharCode(x)}).join(''))}
+  async function getFile(ref){var r=await fetch(fileUrl()+'?ref='+encodeURIComponent(ref),{headers:headers(),cache:'no-store'}); var j=await r.json().catch(function(){return {}}); if(!r.ok) throw new Error(j.message||'Fetch failed'); return j}
+  function fullHtmlGuard(txt){txt=String(txt||'').trim(); var lower=txt.toLowerCase(); return lower.indexOf('<!doctype html')===0 && lower.indexOf('<html')>-1 && lower.indexOf('<head')>-1 && lower.indexOf('<body')>-1 && lower.lastIndexOf('</html>')===lower.length-7 && txt.length>5000}
+  function runGuard(){var ok=fullHtmlGuard(el('box').value); guardMsg(ok?'PASS: full app HTML detected.':'BLOCKED: this does not look like a full app file. Do not commit.'); return ok}
+
+  async function testToken(){try{status('Testing...'); var p=parts(); var j=await getFile(p.branch); el('sha').value=j.sha||''; status('Token works. File found.')}catch(e){status('Test failed: '+e.message)}}
+  async function fetchApp(){try{status('Fetching current app...'); var p=parts(); var j=await getFile(p.branch); var txt=dec64(j.content); el('sha').value=j.sha||''; el('box').value=txt; localStorage.setItem(GOOD,JSON.stringify({saved_at:now(),sha:j.sha,content:txt})); runGuard(); status('Fetched app and saved current as local last-good.')}catch(e){status('Fetch failed: '+e.message)}}
+  function saveCurrentAsGood(){var txt=el('box').value; if(!fullHtmlGuard(txt)) return status('Save blocked: box does not contain a full app.'); localStorage.setItem(GOOD,JSON.stringify({saved_at:now(),sha:el('sha').value,content:txt})); status('Current box saved as local last-good.')}
+  function restoreLocalGood(){var g=null; try{g=JSON.parse(localStorage.getItem(GOOD)||'null')}catch(e){} if(!g||!g.content) return status('No local last-good saved.'); el('box').value=g.content; runGuard(); status('Local last-good restored into box. Review, then commit if needed.')}
+  async function copyEmergencyBackup(){await navigator.clipboard.writeText(localStorage.getItem(GOOD)||''); status('Emergency backup copied.')}
+
+  function patchSafetyLink(){var txt=el('box').value; if(!fullHtmlGuard(txt)) return status('Patch blocked: fetch the full app first.'); if(txt.indexOf('safety.html')>-1 && txt.indexOf('Open Safety Hub')>-1){status('Safety Hub link is already present.'); runGuard(); return} var marker='<button class="mini" onclick="go(\'system\')">Open Private System</button>'; if(txt.indexOf(marker)<0) return status('Patch blocked: Control Room marker not found.'); var add=marker+'<button class="mini" onclick="location.href=\'safety.html\'">Open Safety Hub</button>'; txt=txt.replace(marker,add); el('box').value=txt; el('msg').value='Add Safety Hub link to Control Room'; runGuard(); status('Safety Hub link added. Review, then commit.')}
+
+  function rhythmGateCode(){
+    return [
+      '',
+      'const PMP_GATE_INTERVALS=[\'L\',\'L\',\'S\',\'S\',\'S\',\'L\',\'S\',\'L\',\'S\',\'S\',\'S\'];',
+      'let pmpGateTimes=[];',
+      'function pmpGateTap(e){',
+      '  e.preventDefault(); e.stopPropagation();',
+      '  let t=Date.now();',
+      '  if(pmpGateTimes.length&&t-pmpGateTimes[pmpGateTimes.length-1]>1600)pmpGateTimes=[];',
+      '  pmpGateTimes.push(t);',
+      '  if(navigator.vibrate)navigator.vibrate(12);',
+      '  if(pmpGateTimes.length>12)pmpGateTimes.shift();',
+      '  if(pmpGateTimes.length===12){',
+      '    let gaps=[];',
+      '    for(let i=1;i<pmpGateTimes.length;i++)gaps.push(pmpGateTimes[i]-pmpGateTimes[i-1]);',
+      '    let min=Math.min(...gaps), max=Math.max(...gaps), cut=(min+max)/2;',
+      '    let got=gaps.map(g=>g>cut?\'L\':\'S\');',
+      '    let ok=max/min>1.35&&got.every((x,i)=>x===PMP_GATE_INTERVALS[i]);',
+      '    if(ok){pmpGateTimes=[]; if(navigator.vibrate)navigator.vibrate([40,35,40,35,120]); if(typeof lockPrivate===\'function\')lockPrivate(); if(typeof go===\'function\')go(\'system\');}',
+      '    else if(navigator.vibrate)navigator.vibrate([20,80,20]);',
+      '  }',
+      '}',
+      'function pmpInstallRhythmGate(){let el=document.getElementById(\'controlTitle\'); if(el&&!el.dataset.pmpRhythmGate){el.dataset.pmpRhythmGate=\'on\'; el.addEventListener(\'click\',pmpGateTap,true);}}',
+      'pmpInstallRhythmGate(); setTimeout(pmpInstallRhythmGate,0);',
+      ''
+    ].join('\n');
+  }
+
+  function patchExactRhythmGate(){var txt=el('box').value; if(!fullHtmlGuard(txt)) return status('Patch blocked: fetch the full app first.'); if(txt.indexOf('PMP_GATE_INTERVALS')>-1) return status('Exact rhythm gate already appears installed.'); var removed=0; if(txt.indexOf('<h1>Control Room</h1>')>-1) txt=txt.replace('<h1>Control Room</h1>','<h1 id="controlTitle">Control Room</h1>'); else if(txt.indexOf('id="controlTitle"')<0) return status('Patch blocked: Control Room title marker not found.'); txt=txt.replace(/<button class="mini" onclick="go\('system'\)">Open Private System<\/button>/g,function(){removed++;return ''}); txt=txt.replace(/<button class="mini" onclick="go\('system'\)">Private System<\/button>/g,function(){removed++;return ''}); var closeTag='<'+'/script>'; var pos=txt.lastIndexOf(closeTag); if(pos<0) return status('Patch blocked: final script close not found.'); txt=txt.slice(0,pos)+rhythmGateCode()+txt.slice(pos); el('box').value=txt; el('msg').value='Add exact Control Room rhythm gate'; runGuard(); status('Exact rhythm gate added. Pattern: Q Q E E E E ER E E ER E E E E. Removed '+removed+' visible private button(s). Review, then commit.')}
+
+  async function commitSafe(){try{var txt=el('box').value; if(!runGuard()) throw new Error('Commit blocked by full-app guard.'); var sha=el('sha').value.trim(); var p=parts(); if(!sha){var j=await getFile(p.branch); sha=j.sha; el('sha').value=sha} localStorage.setItem(GOOD,JSON.stringify({saved_at:now(),sha:sha,content:txt})); status('Committing full app...'); var r=await fetch(fileUrl(),{method:'PUT',headers:Object.assign({},headers(),{'Content-Type':'application/json'}),body:JSON.stringify({message:el('msg').value||'Safe writer update',content:enc64(txt),sha:sha,branch:p.branch})}); var out=await r.json().catch(function(){return {}}); if(!r.ok) throw new Error(out.message||'Commit failed'); el('sha').value=(out.content&&out.content.sha)||''; status('Committed safely. Reload PMP app.')}catch(e){status('Commit failed: '+e.message)}}
+
+  el('testBtn').addEventListener('click',testToken);
+  el('fetchBtn').addEventListener('click',fetchApp);
+  el('saveGoodBtn').addEventListener('click',saveCurrentAsGood);
+  el('restoreGoodBtn').addEventListener('click',restoreLocalGood);
+  el('copyBackupBtn').addEventListener('click',copyEmergencyBackup);
+  el('guardBtn').addEventListener('click',runGuard);
+  el('patchSafetyBtn').addEventListener('click',patchSafetyLink);
+  el('patchRhythmBtn').addEventListener('click',patchExactRhythmGate);
+  el('commitBtn').addEventListener('click',commitSafe);
+  status('Safe Writer loaded. Buttons are active.');
+})();
 </script>
 </body>
 </html>
