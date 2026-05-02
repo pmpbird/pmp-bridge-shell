@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>PMP Emergency Restore</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#52b5df;color:#101827;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.wrap{max-width:760px;margin:auto;padding:18px}.card{background:#46a9d3;border:2px solid #fff;border-radius:28px;padding:18px;margin:0 0 16px;box-shadow:0 12px 28px #0002}h1{margin:0 0 10px;font-size:32px}.sub{font-weight:800;color:#234a5d;line-height:1.35}.warn{background:#2b2010;border:2px solid #745522;color:#ffe0a3;border-radius:22px;padding:16px;white-space:pre-wrap}.note{background:#123024;border:2px solid #fff;color:#c9f7d7;border-radius:22px;padding:16px;white-space:pre-wrap}input,textarea{width:100%;border:1px solid #25354a;border-radius:16px;background:#0c141e;color:#eef4fb;padding:13px;font:inherit;margin-top:10px}button{width:100%;border:0;border-radius:20px;padding:18px;margin:12px 0;background:#a1fcfd;color:#101827;text-align:left;font:inherit;font-weight:900;font-size:19px}.mini{background:#172234;color:#eef4fb;border:1px solid #25354a;border-radius:14px;padding:14px;text-align:center;font-size:16px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}textarea{min-height:180px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <h1>PMP Emergency Restore</h1>
+    <p class="sub">Use this only if the main app breaks. It restores <b>main/pmp.html</b> from the saved <b>pmp-last-good</b> branch.</p>
+    <div class="warn">Rule: this page is separate from pmp.html, so it can still help even when the app file is broken.</div>
+  </div>
+  <div class="card">
+    <h2>Restore Access</h2>
+    <input id="token" type="password" placeholder="Paste GitHub token">
+    <div class="grid">
+      <button class="mini" onclick="testToken()">Test Token</button>
+      <button class="mini" onclick="loadPreview()">Preview Last Good</button>
+    </div>
+    <button onclick="restoreLastGood()">Restore Last Good App</button>
+    <div id="status" class="note">Ready.</div>
+  </div>
+  <div class="card">
+    <h2>Preview / Emergency Copy</h2>
+    <div class="grid">
+      <button class="mini" onclick="copyPreview()">Copy Preview</button>
+      <button class="mini" onclick="clearBox()">Clear</button>
+    </div>
+    <textarea id="box" readonly placeholder="Last-good app preview appears here"></textarea>
+  </div>
+</div>
+<script>
+const OWNER='pmpbird',REPO='pmp-bridge-shell',PATH='pmp.html',GOOD='pmp-last-good',TARGET='main';
+const $=id=>document.getElementById(id);
+function status(m){$('status').textContent=m}
+function key(){let t=$('token').value.trim();if(!t)throw Error('Paste GitHub token first.');return t}
+function headers(){return{Authorization:'Bearer '+key(),Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}}
+function api(ref){return `https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}?ref=${encodeURIComponent(ref)}`}
+function putApi(){return `https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`}
+function decode64(s){return new TextDecoder().decode(Uint8Array.from(atob((s||'').replace(/\n/g,'')),c=>c.charCodeAt(0)))}
+function encode64(s){return btoa([...new TextEncoder().encode(s)].map(x=>String.fromCharCode(x)).join(''))}
+async function getFile(ref){let r=await fetch(api(ref),{headers:headers(),cache:'no-store'}),j=await r.json().catch(()=>({}));if(!r.ok)throw Error(j.message||'Fetch failed');return j}
+function fullHtmlGuard(txt){return String(txt||'').trim().toLowerCase().startsWith('<!doctype html') && txt.includes('</html>') && txt.length>5000}
+async function testToken(){try{status('Testing token...');let j=await getFile(TARGET);status(j.sha?'Token works. Current app file found.':'Token worked, but no file SHA returned.')}catch(e){status('Test failed: '+e.message)}}
+async function loadPreview(){try{status('Loading last good app...');let good=await getFile(GOOD),txt=decode64(good.content);$('box').value=txt;status(fullHtmlGuard(txt)?'Last good preview loaded. Full app guard passed.':'WARNING: preview does not look like full app HTML. Do not restore.')}catch(e){status('Preview failed: '+e.message)}}
+async function copyPreview(){await navigator.clipboard.writeText($('box').value);status('Preview copied.')} 
+function clearBox(){$('box').value='';status('Cleared.')} 
+async function restoreLastGood(){try{status('Loading last good and current file...');let good=await getFile(GOOD),cur=await getFile(TARGET),txt=decode64(good.content);if(!fullHtmlGuard(txt))throw Error('Blocked: last-good file does not look like a full app.');status('Restoring main from pmp-last-good...');let r=await fetch(putApi(),{method:'PUT',headers:{...headers(),'Content-Type':'application/json'},body:JSON.stringify({message:'Emergency restore last good PMP app',content:encode64(txt),sha:cur.sha,branch:TARGET})}),j=await r.json().catch(()=>({}));if(!r.ok)throw Error(j.message||'Restore failed');$('box').value=txt;status('Restore complete. Reopen or refresh the PMP Home Screen app.');}catch(e){status('Restore failed: '+e.message)}}
+</script>
+</body>
+</html>
