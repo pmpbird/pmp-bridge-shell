@@ -1,0 +1,16 @@
+PMP Emergency Restore Link
+
+Use this only if the main PMP Home Screen app breaks:
+
+https://pmpbird.github.io/pmp-bridge-shell/restore.html
+
+What it does:
+- Opens a separate restore page outside pmp.html
+- Previews the last-good app
+- Restores main/pmp.html from the pmp-last-good branch
+
+Permanent restore branch:
+pmp-last-good
+
+Rule:
+Never replace pmp.html with a small code fragment. Only commit a full HTML app file that starts with <!doctype html>.
