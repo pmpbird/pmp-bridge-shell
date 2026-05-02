@@ -42,6 +42,12 @@
   </div>
 
   <div class="card">
+    <h2>Protected Patches</h2>
+    <p class="sub">Use these only after Fetch App. They modify the full fetched app in the box, then the guard checks it before commit.</p>
+    <button onclick="patchSafetyLink()">Add Safety Hub Link to Control Room</button>
+  </div>
+
+  <div class="card">
     <h2>Commit</h2>
     <input id="msg" value="Safe writer update">
     <textarea id="box" placeholder="Fetch full app first. Then edit the full file here."></textarea>
@@ -69,6 +75,7 @@ async function fetchApp(){try{status('Fetching current app...');let p=parts(),j=
 function saveCurrentAsGood(){let txt=$('box').value;if(!fullHtmlGuard(txt))return status('Save blocked: box does not contain a full app.');localStorage.setItem(GOOD,JSON.stringify({saved_at:now(),sha:$('sha').value,content:txt}));status('Current box saved as local last-good.')} 
 function restoreLocalGood(){let g;try{g=JSON.parse(localStorage.getItem(GOOD)||'null')}catch(e){}if(!g||!g.content)return status('No local last-good saved.');$('box').value=g.content;runGuard();status('Local last-good restored into box. Review, then commit if needed.')} 
 async function copyEmergencyBackup(){let g=localStorage.getItem(GOOD)||'';await navigator.clipboard.writeText(g);status('Emergency backup copied.')} 
+function patchSafetyLink(){let txt=$('box').value;if(!fullHtmlGuard(txt))return status('Patch blocked: fetch the full app first.');if(txt.includes('safety.html')&&txt.includes('Open Safety Hub')){status('Safety Hub link is already present.');runGuard();return}let marker='<button class="mini" onclick="go(\'system\')">Open Private System</button>';let add=marker+'<button class="mini" onclick="location.href=\'safety.html\'">Open Safety Hub</button>';if(!txt.includes(marker))return status('Patch blocked: Control Room marker not found.');txt=txt.replace(marker,add);$('box').value=txt;$('msg').value='Add Safety Hub link to Control Room';runGuard();status('Safety Hub link added to Control Room in the fetched app. Review, then commit.')} 
 async function commitSafe(){try{let txt=$('box').value;if(!runGuard())throw Error('Commit blocked by full-app guard.');let sha=$('sha').value.trim();let p=parts();if(!sha){let j=await getFile(p.branch);sha=j.sha;$('sha').value=sha}localStorage.setItem(GOOD,JSON.stringify({saved_at:now(),sha,content:txt}));status('Committing full app...');let r=await fetch(url(),{method:'PUT',headers:{...headers(),'Content-Type':'application/json'},body:JSON.stringify({message:$('msg').value||'Safe writer update',content:enc64(txt),sha,branch:p.branch})}),j=await r.json().catch(()=>({}));if(!r.ok)throw Error(j.message||'Commit failed');$('sha').value=j.content?.sha||'';status('Committed safely. Reload PMP app.')}catch(e){status('Commit failed: '+e.message)}}
 </script>
 </body>
