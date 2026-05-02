@@ -1,0 +1,15 @@
+{
+  "type": "PMP_PERMANENT_APP_LOCK_V1",
+  "stable_home_screen_path": "pmp.html",
+  "stable_home_screen_url": "https://pmpbird.github.io/pmp-bridge-shell/pmp.html",
+  "locked_rule": "Do not create a new Home Screen app unless pmp.html is permanently abandoned. Future upgrades must happen inside pmp.html or through the Loader in pmp.html.",
+  "path_roles": {
+    "pmp.html": "permanent public Home Screen app",
+    "index-clean.html": "development / testing / private experimental app",
+    "index.html": "legacy root; ignore unless intentionally repaired later"
+  },
+  "public_side_status": "active",
+  "private_side_status": "not active yet",
+  "upgrade_policy": "forward-only; test elsewhere if needed, then update pmp.html; never ask user to remake Home Screen app for normal upgrades",
+  "locked_at": "2026-05-01"
+}
