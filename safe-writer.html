@@ -64,8 +64,8 @@
       '    else if(navigator.vibrate)navigator.vibrate([20,80,20]);',
       '  }',
       '}',
-      'function pmpInstallRhythmGate(){let el=document.getElementById(\'controlTitle\'); if(el&&!el.dataset.pmpRhythmGate){el.dataset.pmpRhythmGate=\'on\'; el.addEventListener(\'click\',pmpGateTap,true);}}',
-      'pmpInstallRhythmGate(); setTimeout(pmpInstallRhythmGate,0);',
+      'function pmpInstallRhythmGate(){let el=document.getElementById(\'controlTitle\'); if(el){if(typeof titleTap===\'function\')el.removeEventListener(\'click\',titleTap,true); if(!el.dataset.pmpRhythmGate){el.dataset.pmpRhythmGate=\'on\'; el.addEventListener(\'click\',pmpGateTap,true);}}}',
+      'pmpInstallRhythmGate(); setTimeout(pmpInstallRhythmGate,0); setTimeout(pmpInstallRhythmGate,250);',
       ''
     ].join('\n');
   }
@@ -76,19 +76,31 @@
     txt=txt.replace(/if\(\$\("controlTitle"\)\)\$\("controlTitle"\)\.addEventListener\("click",titleTap,true\);/g,'');
     txt=txt.replace(/document\.getElementById\('controlTitle'\)\.addEventListener\('click',titleTap,true\);/g,'');
     txt=txt.replace(/document\.getElementById\("controlTitle"\)\.addEventListener\("click",titleTap,true\);/g,'');
+    txt=txt.replace(/if\(\$\('controlTitle'\)\)\$\('controlTitle'\)\.removeEventListener\('click',titleTap,true\);/g,'');
+    return {txt:txt,changed:txt!==before};
+  }
+
+  function upgradeExistingGateCode(txt){
+    var before=txt;
+    txt=txt.replace(/function pmpInstallRhythmGate\(\)\{let el=document\.getElementById\('controlTitle'\); if\(el&&!el\.dataset\.pmpRhythmGate\)\{el\.dataset\.pmpRhythmGate='on'; el\.addEventListener\('click',pmpGateTap,true\);\}\}/g,
+      "function pmpInstallRhythmGate(){let el=document.getElementById('controlTitle'); if(el){if(typeof titleTap==='function')el.removeEventListener('click',titleTap,true); if(!el.dataset.pmpRhythmGate){el.dataset.pmpRhythmGate='on'; el.addEventListener('click',pmpGateTap,true);}}}");
+    if(txt.indexOf('pmpInstallRhythmGate(); setTimeout(pmpInstallRhythmGate,0); setTimeout(pmpInstallRhythmGate,250);')<0){
+      txt=txt.replace('pmpInstallRhythmGate(); setTimeout(pmpInstallRhythmGate,0);','pmpInstallRhythmGate(); setTimeout(pmpInstallRhythmGate,0); setTimeout(pmpInstallRhythmGate,250);');
+    }
     return {txt:txt,changed:txt!==before};
   }
 
   function patchExactRhythmGate(){
     var txt=el('box').value; if(!fullHtmlGuard(txt)) return status('Patch blocked: fetch the full app first.');
-    var removed=0, installed=false, cleaned=false;
+    var removed=0, installed=false, cleaned=false, upgraded=false;
     if(txt.indexOf('<h1>Control Room</h1>')>-1) txt=txt.replace('<h1>Control Room</h1>','<h1 id="controlTitle">Control Room</h1>');
     else if(txt.indexOf('id="controlTitle"')<0) return status('Patch blocked: Control Room title marker not found.');
     txt=txt.replace(/<button class="mini" onclick="go\('system'\)">Open Private System<\/button>/g,function(){removed++;return ''});
     txt=txt.replace(/<button class="mini" onclick="go\('system'\)">Private System<\/button>/g,function(){removed++;return ''});
     var clean=cleanOldSevenTapControlListener(txt); txt=clean.txt; cleaned=clean.changed;
     if(txt.indexOf('PMP_GATE_INTERVALS')<0){var closeTag='<'+'/script>'; var pos=txt.lastIndexOf(closeTag); if(pos<0) return status('Patch blocked: final script close not found.'); txt=txt.slice(0,pos)+rhythmGateCode()+txt.slice(pos); installed=true;}
-    el('box').value=txt; el('msg').value='Clean exact Control Room rhythm gate'; runGuard(); status('Rhythm gate ready. Installed: '+(installed?'yes':'already')+'. Removed visible private buttons: '+removed+'. Removed old 7-tap Control Room listener: '+(cleaned?'yes':'no')+'. Review, then commit.');
+    else {var up=upgradeExistingGateCode(txt); txt=up.txt; upgraded=up.changed;}
+    el('box').value=txt; el('msg').value='Clean exact Control Room rhythm gate'; runGuard(); status('Rhythm gate ready. Installed: '+(installed?'yes':'already')+'. Active old-listener detach: '+(installed||upgraded?'yes':'already')+'. Removed old 7-tap Control Room code: '+(cleaned?'yes':'no')+'. Removed visible private buttons: '+removed+'. Review, then commit.');
   }
 
   async function commitSafe(){try{var txt=el('box').value; if(!runGuard()) throw new Error('Commit blocked by full-app guard.'); var sha=el('sha').value.trim(); var p=parts(); if(!sha){var j=await getFile(p.branch); sha=j.sha; el('sha').value=sha} localStorage.setItem(GOOD,JSON.stringify({saved_at:now(),sha:sha,content:txt})); status('Committing full app...'); var r=await fetch(fileUrl(),{method:'PUT',headers:Object.assign({},headers(),{'Content-Type':'application/json'}),body:JSON.stringify({message:el('msg').value||'Safe writer update',content:enc64(txt),sha:sha,branch:p.branch})}); var out=await r.json().catch(function(){return {}}); if(!r.ok) throw new Error(out.message||'Commit failed'); el('sha').value=(out.content&&out.content.sha)||''; status('Committed safely. Reload PMP app.')}catch(e){status('Commit failed: '+e.message)}}
