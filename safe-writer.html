@@ -13,10 +13,9 @@
 <div class="wrap">
   <div class="card">
     <h1>PMP Safe Writer</h1>
-    <p class="sub">Protected writer for pmp.html. It blocks small script fragments and saves a last-good copy before commit.</p>
+    <p class="sub">Protected writer for pmp.html. It blocks small fragments and saves a last-good copy before commit.</p>
     <div class="warn">Guard rule: commits are blocked unless the box contains a full HTML app starting with &lt;!doctype html&gt; and ending with &lt;/html&gt;.</div>
   </div>
-
   <div class="card">
     <h2>Connection</h2>
     <input id="token" type="password" placeholder="Paste GitHub token">
@@ -24,30 +23,19 @@
     <input id="branch" value="main">
     <input id="path" value="pmp.html">
     <input id="sha" readonly placeholder="file SHA">
-    <div class="grid">
-      <button class="mini" onclick="testToken()">Test</button>
-      <button class="mini" onclick="fetchApp()">Fetch App</button>
-    </div>
+    <div class="grid"><button class="mini" onclick="testToken()">Test</button><button class="mini" onclick="fetchApp()">Fetch App</button></div>
   </div>
-
   <div class="card">
     <h2>Safety</h2>
-    <div class="grid">
-      <button class="mini" onclick="saveCurrentAsGood()">Save Current As Good</button>
-      <button class="mini" onclick="restoreLocalGood()">Restore Local Good</button>
-      <button class="mini" onclick="copyEmergencyBackup()">Copy Emergency Backup</button>
-      <button class="mini" onclick="runGuard()">Run Guard</button>
-    </div>
+    <div class="grid"><button class="mini" onclick="saveCurrentAsGood()">Save Current As Good</button><button class="mini" onclick="restoreLocalGood()">Restore Local Good</button><button class="mini" onclick="copyEmergencyBackup()">Copy Emergency Backup</button><button class="mini" onclick="runGuard()">Run Guard</button></div>
     <div id="guard" class="note">Guard not run yet.</div>
   </div>
-
   <div class="card">
     <h2>Protected Patches</h2>
     <p class="sub">Use these only after Fetch App. They modify the full fetched app in the box, then the guard checks it before commit.</p>
     <button onclick="patchSafetyLink()">Add Safety Hub Link to Control Room</button>
     <button onclick="patchExactRhythmGate()">Add Exact Rhythm Gate to Control Room</button>
   </div>
-
   <div class="card">
     <h2>Commit</h2>
     <input id="msg" value="Safe writer update">
@@ -70,21 +58,24 @@ function dec64(s){return new TextDecoder().decode(Uint8Array.from(atob((s||'').r
 function enc64(s){return btoa([...new TextEncoder().encode(s)].map(x=>String.fromCharCode(x)).join(''))}
 async function getFile(ref){let r=await fetch(url()+'?ref='+encodeURIComponent(ref),{headers:headers(),cache:'no-store'}),j=await r.json().catch(()=>({}));if(!r.ok)throw Error(j.message||'Fetch failed');return j}
 function fullHtmlGuard(txt){txt=String(txt||'').trim();let lower=txt.toLowerCase();return lower.startsWith('<!doctype html')&&lower.includes('<html')&&lower.includes('<head')&&lower.includes('<body')&&lower.endsWith('</html>')&&txt.length>5000}
-function runGuard(){let txt=$('box').value;let ok=fullHtmlGuard(txt);guardMsg(ok?'PASS: full app HTML detected.':'BLOCKED: this does not look like a full app file. Do not commit.');return ok}
+function runGuard(){let ok=fullHtmlGuard($('box').value);guardMsg(ok?'PASS: full app HTML detected.':'BLOCKED: this does not look like a full app file. Do not commit.');return ok}
 async function testToken(){try{status('Testing...');let p=parts(),j=await getFile(p.branch);$('sha').value=j.sha||'';status('Token works. File found.')}catch(e){status('Test failed: '+e.message)}}
 async function fetchApp(){try{status('Fetching current app...');let p=parts(),j=await getFile(p.branch),txt=dec64(j.content);$('sha').value=j.sha||'';$('box').value=txt;localStorage.setItem(GOOD,JSON.stringify({saved_at:now(),sha:j.sha,content:txt}));runGuard();status('Fetched app and saved current as local last-good.')}catch(e){status('Fetch failed: '+e.message)}}
 function saveCurrentAsGood(){let txt=$('box').value;if(!fullHtmlGuard(txt))return status('Save blocked: box does not contain a full app.');localStorage.setItem(GOOD,JSON.stringify({saved_at:now(),sha:$('sha').value,content:txt}));status('Current box saved as local last-good.')}
 function restoreLocalGood(){let g;try{g=JSON.parse(localStorage.getItem(GOOD)||'null')}catch(e){}if(!g||!g.content)return status('No local last-good saved.');$('box').value=g.content;runGuard();status('Local last-good restored into box. Review, then commit if needed.')}
-async function copyEmergencyBackup(){let g=localStorage.getItem(GOOD)||'';await navigator.clipboard.writeText(g);status('Emergency backup copied.')}
+async function copyEmergencyBackup(){await navigator.clipboard.writeText(localStorage.getItem(GOOD)||'');status('Emergency backup copied.')}
 function patchSafetyLink(){let txt=$('box').value;if(!fullHtmlGuard(txt))return status('Patch blocked: fetch the full app first.');if(txt.includes('safety.html')&&txt.includes('Open Safety Hub')){status('Safety Hub link is already present.');runGuard();return}let marker='<button class="mini" onclick="go(\'system\')">Open Private System</button>';let add=marker+'<button class="mini" onclick="location.href=\'safety.html\'">Open Safety Hub</button>';if(!txt.includes(marker))return status('Patch blocked: Control Room marker not found.');txt=txt.replace(marker,add);$('box').value=txt;$('msg').value='Add Safety Hub link to Control Room';runGuard();status('Safety Hub link added to Control Room in the fetched app. Review, then commit.')}
-function patchExactRhythmGate(){let txt=$('box').value;if(!fullHtmlGuard(txt))return status('Patch blocked: fetch the full app first.');let changed=false,removed=0;if(txt.includes('<h1>Control Room</h1>')){txt=txt.replace('<h1>Control Room</h1>','<h1 id="controlTitle">Control Room</h1>');changed=true}txt=txt.replace(/<button class="mini" onclick="go\('system'\)">Open Private System<\/button>/g,()=>{removed++;changed=true;return ''});txt=txt.replace(/<button class="mini" onclick="go\('system'\)">Private System<\/button>/g,()=>{removed++;changed=true;return ''});
-let oldTap="function titleTap(e){e.preventDefault();e.stopPropagation();let t=Date.now();if(t-lastTap>2200)taps=0;lastTap=t;taps++;if(taps>=7){taps=0;lockPrivate();go('system')}}";
-let newGate="function titleTap(e){e.preventDefault();e.stopPropagation();let t=Date.now();if(t-lastTap>2200)taps=0;lastTap=t;taps++;if(navigator.vibrate)navigator.vibrate(12);if(taps>=7){taps=0;if(navigator.vibrate)navigator.vibrate([35,35,90]);lockPrivate();go('system')}}\nconst PMP_GATE_INTERVALS=['L','L','S','S','S','L','S','L','S','S','S'];let pmpGateTimes=[];function pmpGateTap(e){e.preventDefault();e.stopPropagation();let t=Date.now();if(pmpGateTimes.length&&t-pmpGateTimes[pmpGateTimes.length-1]>1600)pmpGateTimes=[];pmpGateTimes.push(t);if(navigator.vibrate)navigator.vibrate(12);if(pmpGateTimes.length>12)pmpGateTimes.shift();if(pmpGateTimes.length===12){let gaps=[];for(let i=1;i<pmpGateTimes.length;i++)gaps.push(pmpGateTimes[i]-pmpGateTimes[i-1]);let min=Math.min(...gaps),max=Math.max(...gaps);let cut=(min+max)/2;let got=gaps.map(g=>g>cut?'L':'S');let ok=max/min>1.35&&got.every((x,i)=>x===PMP_GATE_INTERVALS[i]);if(ok){pmpGateTimes=[];if(navigator.vibrate)navigator.vibrate([40,35,40,35,120]);lockPrivate();go('system')}else if(navigator.vibrate)navigator.vibrate([20,80,20])}}";
-if(txt.includes('const PMP_GATE_INTERVALS=')){return status('Exact rhythm gate already appears installed.')}if(txt.includes(oldTap)){txt=txt.replace(oldTap,newGate);changed=true}else{return status('Patch blocked: hidden-door function marker not found.')}
-let oldListener="$('appTitle').addEventListener('click',titleTap,true);";
-let newListener="$('appTitle').addEventListener('click',titleTap,true);if($('controlTitle'))$('controlTitle').addEventListener('click',pmpGateTap,true);";
-if(txt.includes(oldListener)){txt=txt.replace(oldListener,newListener);changed=true}else{return status('Patch blocked: title listener marker not found.')}
-if(!changed)return status('No changes made.');$('box').value=txt;$('msg').value='Add exact Control Room rhythm gate';runGuard();status('Exact rhythm gate added. Pattern: Q Q E E E E ER E E ER E E E E. Removed '+removed+' visible private button(s). Review, then commit.')}
+function patchExactRhythmGate(){let txt=$('box').value;if(!fullHtmlGuard(txt))return status('Patch blocked: fetch the full app first.');let changed=false,removed=0;if(txt.includes('const PMP_GATE_INTERVALS='))return status('Exact rhythm gate already appears installed.');if(txt.includes('<h1>Control Room</h1>')){txt=txt.replace('<h1>Control Room</h1>','<h1 id="controlTitle">Control Room</h1>');changed=true}else if(txt.includes('<h1 id="controlTitle">Control Room</h1>')){}else{return status('Patch blocked: Control Room title marker not found.')}
+txt=txt.replace(/<button class="mini" onclick="go\('system'\)">Open Private System<\/button>/g,()=>{removed++;changed=true;return ''});
+txt=txt.replace(/<button class="mini" onclick="go\('system'\)">Private System<\/button>/g,()=>{removed++;changed=true;return ''});
+let gateCode="const PMP_GATE_INTERVALS=['L','L','S','S','S','L','S','L','S','S','S'];let pmpGateTimes=[];function pmpGateTap(e){e.preventDefault();e.stopPropagation();let t=Date.now();if(pmpGateTimes.length&&t-pmpGateTimes[pmpGateTimes.length-1]>1600)pmpGateTimes=[];pmpGateTimes.push(t);if(navigator.vibrate)navigator.vibrate(12);if(pmpGateTimes.length>12)pmpGateTimes.shift();if(pmpGateTimes.length===12){let gaps=[];for(let i=1;i<pmpGateTimes.length;i++)gaps.push(pmpGateTimes[i]-pmpGateTimes[i-1]);let min=Math.min(...gaps),max=Math.max(...gaps);let cut=(min+max)/2;let got=gaps.map(g=>g>cut?'L':'S');let ok=max/min>1.35&&got.every((x,i)=>x===PMP_GATE_INTERVALS[i]);if(ok){pmpGateTimes=[];if(navigator.vibrate)navigator.vibrate([40,35,40,35,120]);lockPrivate();go('system')}else if(navigator.vibrate)navigator.vibrate([20,80,20])}}";
+let inserted=false;
+let fnMatch=txt.match(/function titleTap\(e\)\{[\s\S]*?go\('system'\)\}\}/);
+if(fnMatch){let fn=fnMatch[0];if(!fn.includes('navigator.vibrate')){let fn2=fn.replace("taps++;","taps++;if(navigator.vibrate)navigator.vibrate(12);").replace("taps=0;lockPrivate();go('system')","taps=0;if(navigator.vibrate)navigator.vibrate([35,35,90]);lockPrivate();go('system')");txt=txt.replace(fn,fn2+'\n'+gateCode)}else{txt=txt.replace(fn,fn+'\n'+gateCode)}inserted=true;changed=true}
+if(!inserted){let anchor="document.addEventListener('visibilitychange'";if(txt.includes(anchor)){txt=txt.replace(anchor,gateCode+anchor);inserted=true;changed=true}else return status('Patch blocked: safe insertion point not found.')}
+let listener="if($('controlTitle'))$('controlTitle').addEventListener('click',pmpGateTap,true);";
+if(!txt.includes(listener)){let old="$('appTitle').addEventListener('click',titleTap,true);";if(txt.includes(old)){txt=txt.replace(old,old+listener);changed=true}else return status('Patch blocked: title listener marker not found.')}
+$('box').value=txt;$('msg').value='Add exact Control Room rhythm gate';runGuard();status('Exact rhythm gate added. Pattern: Q Q E E E E ER E E ER E E E E. Removed '+removed+' visible private button(s). Review, then commit.')}
 async function commitSafe(){try{let txt=$('box').value;if(!runGuard())throw Error('Commit blocked by full-app guard.');let sha=$('sha').value.trim();let p=parts();if(!sha){let j=await getFile(p.branch);sha=j.sha;$('sha').value=sha}localStorage.setItem(GOOD,JSON.stringify({saved_at:now(),sha,content:txt}));status('Committing full app...');let r=await fetch(url(),{method:'PUT',headers:{...headers(),'Content-Type':'application/json'},body:JSON.stringify({message:$('msg').value||'Safe writer update',content:enc64(txt),sha,branch:p.branch})}),j=await r.json().catch(()=>({}));if(!r.ok)throw Error(j.message||'Commit failed');$('sha').value=j.content?.sha||'';status('Committed safely. Reload PMP app.')}catch(e){status('Commit failed: '+e.message)}}
 </script>
 </body>
