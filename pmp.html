@@ -25,4 +25,20 @@ var PMP_APP_BUILD_VERSION='2026-05-02-refresh-latest-v1';
 function refreshLatestApp(){let base=location.origin+location.pathname;location.href=base+'?v='+Date.now();}
 function showAppVersion(){let x=$('appVersionText');if(x)x.textContent=PMP_APP_BUILD_VERSION;}
 showAppVersion(); setTimeout(showAppVersion,0);
+
+var PMP_CONTEXTUAL_NAV_V1=true;
+(function(){
+  function q(id){return document.getElementById(id)}
+  function bridgeZone(id){return ['bridge','workbench','share','loader'].indexOf(id)>-1}
+  function navBtn(id,icon,label,active){return `<button class="tab ${active?'on':''}" data-tab="${id}" onclick="go('${id}')"><b>${icon}</b>${label}</button>`}
+  function renderNav(id){var n=document.querySelector('.tabs'); if(!n)return; var b=bridgeZone(id); var items=b?[['bridge','↔','Bridge'],['workbench','▣','Workbench'],['share','⇪','Share'],['loader','⇣','Loader'],['world','◎','World']]:[['world','◎','World'],['bridge','↔','Bridge'],['library','▤','Library'],['workshop','⚒','Workshop'],['control','⚙','Control']]; n.innerHTML=items.map(x=>navBtn(x[0],x[1],x[2],x[0]===id)).join('');}
+  var st=document.createElement('style'); st.textContent='#bridge>.card>.grid{display:none!important}'; document.head.appendChild(st);
+  function html(){return `<div id="pmpCorpusWorkbench" class="card"><h2>Corpus</h2><p class="sub">Holding body for prompts, ideas, outside-project material, and things not official in the app yet.</p><h2>Corpus Inbox</h2><textarea id="corpusInbox" placeholder="Prompts, ideas, outside-project material, fragments, notes"></textarea><div class="grid"><button class="mini" onclick="pmpSaveCorpusBox('corpusInbox','pmp_corpus_inbox_v1','Corpus Inbox saved.')">Save Inbox</button><button class="mini" onclick="pmpLoadCorpusBox('corpusInbox','pmp_corpus_inbox_v1')">Load Inbox</button></div><h2 style="margin-top:18px">Corpus Analyzer</h2><textarea id="corpusAnalyzerOut" readonly placeholder="Corpus State:\nCorpus Gap:\nCorpus Change:\nCorpus Risk:\nCorpus Next Move:"></textarea><button class="mini" onclick="pmpRunCorpusAnalyzer()">Run Corpus Analyzer</button><h2 style="margin-top:18px">Corpus Promote</h2><textarea id="corpusPromote" placeholder="Material selected to promote later into official project/app structure"></textarea><div class="grid"><button class="mini" onclick="pmpSaveCorpusBox('corpusPromote','pmp_corpus_promote_v1','Corpus Promote saved.')">Save Promote</button><button class="mini" onclick="pmpLoadCorpusBox('corpusPromote','pmp_corpus_promote_v1')">Load Promote</button></div></div>`}
+  function installCorpus(){var w=q('workbench'); if(!w||q('pmpCorpusWorkbench'))return; var first=w.querySelector('.card'); if(first)first.insertAdjacentHTML('afterend',html()); pmpLoadCorpusBox('corpusInbox','pmp_corpus_inbox_v1',true); pmpLoadCorpusBox('corpusPromote','pmp_corpus_promote_v1',true);}
+  window.pmpSaveCorpusBox=function(id,key,msg){var x=q(id); if(!x)return; localStorage.setItem(key,x.value); if(typeof status==='function')status(msg||'Corpus saved.')}
+  window.pmpLoadCorpusBox=function(id,key,silent){var x=q(id); if(!x)return; x.value=localStorage.getItem(key)||''; if(!silent&&typeof status==='function')status('Corpus loaded.')}
+  window.pmpRunCorpusAnalyzer=function(){installCorpus(); var inbox=(q('corpusInbox')&&q('corpusInbox').value.trim())||''; var promote=(q('corpusPromote')&&q('corpusPromote').value.trim())||''; var gap=inbox?'Held material exists; decide what stays held and what promotes.':'No blocking gap.'; var risk=(inbox||promote)?'Do not promote held material into official structure until it is clean.':'No immediate Corpus risk.'; var out='Corpus State:\nStable holding body.\n\nCorpus Gap:\n'+gap+'\n\nCorpus Change:\nCorpus Workbench is active.\n\nCorpus Risk:\n'+risk+'\n\nCorpus Next Move:\nAdd prompts, ideas, or outside-project material to Corpus Inbox.'; if(q('corpusAnalyzerOut'))q('corpusAnalyzerOut').value=out;}
+  var oldGo=window.go; window.go=function(id){oldGo(id); renderNav(id); installCorpus();};
+  installCorpus(); renderNav((document.querySelector('.screen.on')||{}).id||'world');
+})();
 </script></body></html>
