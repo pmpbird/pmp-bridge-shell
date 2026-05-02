@@ -6,64 +6,90 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>PMP Safe Writer</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#52b5df;color:#101827;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.wrap{max-width:820px;margin:auto;padding:18px}.card{background:#46a9d3;border:2px solid #fff;border-radius:28px;padding:18px;margin:0 0 16px;box-shadow:0 12px 28px #0002}h1{margin:0 0 10px;font-size:32px}.sub{font-weight:800;color:#234a5d;line-height:1.35}.warn{background:#2b2010;border:2px solid #745522;color:#ffe0a3;border-radius:22px;padding:16px;white-space:pre-wrap}.note{background:#123024;border:2px solid #fff;color:#c9f7d7;border-radius:22px;padding:16px;white-space:pre-wrap}input,textarea{width:100%;border:1px solid #25354a;border-radius:16px;background:#0c141e;color:#eef4fb;padding:13px;font:inherit;margin-top:10px}button{width:100%;border:0;border-radius:20px;padding:16px;margin:10px 0;background:#a1fcfd;color:#101827;text-align:center;font:inherit;font-weight:900;font-size:17px}.mini{background:#172234;color:#eef4fb;border:1px solid #25354a;border-radius:14px;padding:14px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}textarea{min-height:280px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
+*{box-sizing:border-box}body{margin:0;background:#52b5df;color:#101827;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.wrap{max-width:860px;margin:auto;padding:18px}.card{background:#46a9d3;border:2px solid #fff;border-radius:28px;padding:18px;margin:0 0 16px;box-shadow:0 12px 28px #0002}h1{margin:0 0 10px;font-size:32px}h2{margin:0 0 12px}.sub{font-weight:800;color:#234a5d;line-height:1.35}.warn{background:#2b2010;border:2px solid #745522;color:#ffe0a3;border-radius:22px;padding:16px;white-space:pre-wrap}.note{background:#123024;border:2px solid #fff;color:#c9f7d7;border-radius:22px;padding:16px;white-space:pre-wrap}input,textarea{width:100%;border:1px solid #25354a;border-radius:16px;background:#0c141e;color:#eef4fb;padding:13px;font:inherit;margin-top:10px}button{width:100%;border:0;border-radius:20px;padding:16px;margin:10px 0;background:#a1fcfd;color:#101827;text-align:center;font:inherit;font-weight:900;font-size:17px}.mini{background:#172234;color:#eef4fb;border:1px solid #25354a;border-radius:14px;padding:14px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}textarea{min-height:180px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}.smallbox{min-height:88px}.codebox{min-height:360px}.danger{background:#3a1111;color:#ffd1d1;border:1px solid #ffb4b4}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="card"><h1>PMP Safe Writer</h1><p class="sub">Protected writer for pmp.html.</p><div class="warn">Commit is blocked unless the box contains a full HTML app.</div></div>
-  <div class="card"><h2>Connection</h2><input id="token" type="password" placeholder="Paste GitHub token"><input id="repo" value="pmpbird/pmp-bridge-shell"><input id="branch" value="main"><input id="path" value="pmp.html"><input id="sha" readonly placeholder="file SHA"><div class="grid"><button class="mini" id="testBtn">Test</button><button class="mini" id="fetchBtn">Fetch App</button></div></div>
-  <div class="card"><h2>Safety</h2><div class="grid"><button class="mini" id="saveGoodBtn">Save Current As Good</button><button class="mini" id="restoreGoodBtn">Restore Local Good</button><button class="mini" id="guardBtn">Run Guard</button></div><div id="guard" class="note">Guard not run yet.</div></div>
-  <div class="card"><h2>Protected Patch</h2><p class="sub">Use after Fetch App. Adds contextual Bridge bottom menu and places Corpus in Workbench.</p><button id="patchBridgeCorpusBtn">Add Bridge Menu + Corpus Workbench</button></div>
-  <div class="card"><h2>Commit</h2><input id="msg" value="Bridge menu and Corpus Workbench"><textarea id="box" placeholder="Fetch full app first."></textarea><button id="commitBtn">Commit Full App Only</button><div id="status" class="note">Loading Safe Writer...</div></div>
+  <div class="card">
+    <h1>PMP Safe Writer</h1>
+    <p class="sub">Code Finder + Replace Draft. It can find, preview, and apply changes to the fetched app box. Commit is still separate.</p>
+    <div class="warn">Guard rule: only commit a full HTML app. Find/Replace never commits by itself.</div>
+  </div>
+
+  <div class="card">
+    <h2>Connection</h2>
+    <input id="key" type="password" placeholder="Paste GitHub key">
+    <input id="repo" value="pmpbird/pmp-bridge-shell">
+    <input id="branch" value="main">
+    <input id="path" value="pmp.html">
+    <input id="sha" readonly placeholder="file SHA">
+    <div class="grid"><button class="mini" id="testBtn">Test</button><button class="mini" id="fetchBtn">Fetch App</button></div>
+  </div>
+
+  <div class="card">
+    <h2>Code Finder</h2>
+    <p class="sub">Exact text search only. Start with the exact marker you want to find.</p>
+    <textarea id="findBox" class="smallbox" placeholder="Code to find"></textarea>
+    <textarea id="replaceBox" class="smallbox" placeholder="Replacement code. Leave blank to delete the found code."></textarea>
+    <div class="grid"><button class="mini" id="findBtn">Find</button><button class="mini" id="previewBtn">Preview Replace</button></div>
+    <button class="mini danger" id="applyBtn">Apply Replace to Box</button>
+    <div id="findOut" class="note">No search yet.</div>
+  </div>
+
+  <div class="card">
+    <h2>Safety</h2>
+    <div class="grid"><button class="mini" id="guardBtn">Run Guard</button><button class="mini" id="saveGoodBtn">Save Current As Good</button><button class="mini" id="restoreGoodBtn">Restore Local Good</button><button class="mini" id="copyGoodBtn">Copy Local Good</button></div>
+    <div id="guard" class="note">Guard not run yet.</div>
+  </div>
+
+  <div class="card">
+    <h2>Commit</h2>
+    <input id="msg" value="Safe writer update">
+    <textarea id="box" class="codebox" placeholder="Fetch full app first."></textarea>
+    <button id="commitBtn">Commit Full App Only</button>
+    <div id="status" class="note">Loading Safe Writer...</div>
+  </div>
 </div>
 <script>
 (function(){
-  var GOOD='pmp_safe_writer_last_good_v1';
+  var GOOD='pmp_safe_writer_last_good_v2';
   function el(id){return document.getElementById(id)}
   function status(m){el('status').textContent=m}
   function guardMsg(m){el('guard').textContent=m}
+  function out(m){el('findOut').textContent=m}
   function now(){return new Date().toISOString()}
-  function getToken(){var t=el('token').value.trim(); if(!t) throw new Error('Paste token first.'); return t}
+  function getKey(){var t=el('key').value.trim(); if(!t) throw new Error('Paste GitHub key first.'); return t}
   function parts(){var bits=el('repo').value.trim().split('/'); return {owner:bits[0],repo:bits[1],branch:el('branch').value.trim(),path:el('path').value.trim()}}
   function fileUrl(){var p=parts(); return 'https://api.github.com/repos/'+encodeURIComponent(p.owner)+'/'+encodeURIComponent(p.repo)+'/contents/'+p.path.split('/').map(encodeURIComponent).join('/')}
-  function headers(){return {Authorization:'Bearer '+getToken(),Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}}
+  function headers(){return {Authorization:'Bearer '+getKey(),Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}}
   function dec64(s){return new TextDecoder().decode(Uint8Array.from(atob(String(s||'').replace(/\n/g,'')),function(c){return c.charCodeAt(0)}))}
   function enc64(s){return btoa(Array.from(new TextEncoder().encode(s)).map(function(x){return String.fromCharCode(x)}).join(''))}
   async function getFile(ref){var r=await fetch(fileUrl()+'?ref='+encodeURIComponent(ref),{headers:headers(),cache:'no-store'}); var j=await r.json().catch(function(){return {}}); if(!r.ok) throw new Error(j.message||'Fetch failed'); return j}
   function fullHtmlGuard(txt){txt=String(txt||'').trim(); var lower=txt.toLowerCase(); return lower.indexOf('<!doctype html')===0 && lower.indexOf('<html')>-1 && lower.indexOf('<head')>-1 && lower.indexOf('<body')>-1 && lower.lastIndexOf('</html>')===lower.length-7 && txt.length>5000}
   function runGuard(){var ok=fullHtmlGuard(el('box').value); guardMsg(ok?'PASS: full app HTML detected.':'BLOCKED: this does not look like a full app file. Do not commit.'); return ok}
-  async function testToken(){try{status('Testing...'); var p=parts(); var j=await getFile(p.branch); el('sha').value=j.sha||''; status('Token works. File found.')}catch(e){status('Test failed: '+e.message)}}
+  function countMatches(text,needle){if(!needle)return 0; return text.split(needle).length-1}
+  function context(text,needle){var i=text.indexOf(needle); if(i<0)return ''; var a=Math.max(0,i-260),b=Math.min(text.length,i+needle.length+260); return text.slice(a,b)}
+  function findCode(){var txt=el('box').value,needle=el('findBox').value; if(!txt)return out('Fetch app first.'); if(!needle)return out('Put exact code in Find box first.'); var n=countMatches(txt,needle); var c=context(txt,needle); out('Matches found: '+n+(n?'\n\nNearby code:\n'+c:'\n\nNo exact match.'))}
+  function previewReplace(){var txt=el('box').value,needle=el('findBox').value,repl=el('replaceBox').value; if(!txt)return out('Fetch app first.'); if(!needle)return out('Put exact code in Find box first.'); var n=countMatches(txt,needle); if(!n)return out('No exact matches. Nothing to preview.'); var before=context(txt,needle); var after=context(txt.replaceAll(needle,repl),repl || ''); out('Replacement preview\nMatches to replace: '+n+'\nReplacement length: '+repl.length+'\n\nBefore:\n'+before+'\n\nAfter nearby:\n'+(after||'[replacement is blank; selected code will be removed]'))}
+  function applyReplace(){var txt=el('box').value,needle=el('findBox').value,repl=el('replaceBox').value; if(!txt)return out('Fetch app first.'); if(!needle)return out('Put exact code in Find box first.'); var n=countMatches(txt,needle); if(!n)return out('No exact matches. Box was not changed.'); el('box').value=txt.replaceAll(needle,repl); el('msg').value='Code Finder exact replace'; runGuard(); out('Applied exact replacement to box. Matches replaced: '+n+'\nNow run Guard, then commit only if PASS.')}
+  async function testKey(){try{status('Testing...'); var p=parts(); var j=await getFile(p.branch); el('sha').value=j.sha||''; status('Key works. File found.')}catch(e){status('Test failed: '+e.message)}}
   async function fetchApp(){try{status('Fetching current app...'); var p=parts(); var j=await getFile(p.branch); var txt=dec64(j.content); el('sha').value=j.sha||''; el('box').value=txt; localStorage.setItem(GOOD,JSON.stringify({saved_at:now(),sha:j.sha,content:txt})); runGuard(); status('Fetched app and saved current as local last-good.')}catch(e){status('Fetch failed: '+e.message)}}
-  function saveCurrentAsGood(){var txt=el('box').value; if(!fullHtmlGuard(txt)) return status('Save blocked: box does not contain a full app.'); localStorage.setItem(GOOD,JSON.stringify({saved_at:now(),sha:el('sha').value,content:txt})); status('Current box saved as local last-good.')}
-  function restoreLocalGood(){var g=null; try{g=JSON.parse(localStorage.getItem(GOOD)||'null')}catch(e){} if(!g||!g.content) return status('No local last-good saved.'); el('box').value=g.content; runGuard(); status('Local last-good restored into box. Review, then commit if needed.')}
-  function bridgeCorpusCode(){return [
-'\nvar PMP_CONTEXTUAL_NAV_V1=true;',
-'(function(){',
-'  function q(id){return document.getElementById(id)}',
-'  function bridgeZone(id){return [\'bridge\',\'workbench\',\'share\',\'loader\'].indexOf(id)>-1}',
-'  function navBtn(id,icon,label,active){return `<button class="tab ${active?\'on\':\'\'}" data-tab="${id}" onclick="go(\'${id}\')"><b>${icon}</b>${label}</button>`}',
-'  function renderNav(id){var n=document.querySelector(\'.tabs\'); if(!n)return; var b=bridgeZone(id); var items=b?[[\'bridge\',\'↔\',\'Bridge\'],[\'workbench\',\'▣\',\'Workbench\'],[\'share\',\'⇪\',\'Share\'],[\'loader\',\'⇣\',\'Loader\'],[\'world\',\'◎\',\'World\']]:[[\'world\',\'◎\',\'World\'],[\'bridge\',\'↔\',\'Bridge\'],[\'library\',\'▤\',\'Library\'],[\'workshop\',\'⚒\',\'Workshop\'],[\'control\',\'⚙\',\'Control\']]; n.innerHTML=items.map(x=>navBtn(x[0],x[1],x[2],x[0]===id)).join(\'\');}',
-'  var st=document.createElement(\'style\'); st.textContent=\'#bridge>.card>.grid{display:none!important}\'; document.head.appendChild(st);',
-'  function html(){return `<div id="pmpCorpusWorkbench" class="card"><h2>Corpus</h2><p class="sub">Holding body for prompts, ideas, outside-project material, and things not official in the app yet.</p><h2>Corpus Inbox</h2><textarea id="corpusInbox" placeholder="Prompts, ideas, outside-project material, fragments, notes"></textarea><div class="grid"><button class="mini" onclick="pmpSaveCorpusBox(\'corpusInbox\',\'pmp_corpus_inbox_v1\',\'Corpus Inbox saved.\')">Save Inbox</button><button class="mini" onclick="pmpLoadCorpusBox(\'corpusInbox\',\'pmp_corpus_inbox_v1\')">Load Inbox</button></div><h2 style="margin-top:18px">Corpus Analyzer</h2><textarea id="corpusAnalyzerOut" readonly placeholder="Corpus State:\\nCorpus Gap:\\nCorpus Change:\\nCorpus Risk:\\nCorpus Next Move:"></textarea><button class="mini" onclick="pmpRunCorpusAnalyzer()">Run Corpus Analyzer</button><h2 style="margin-top:18px">Corpus Promote</h2><textarea id="corpusPromote" placeholder="Material selected to promote later into official project/app structure"></textarea><div class="grid"><button class="mini" onclick="pmpSaveCorpusBox(\'corpusPromote\',\'pmp_corpus_promote_v1\',\'Corpus Promote saved.\')">Save Promote</button><button class="mini" onclick="pmpLoadCorpusBox(\'corpusPromote\',\'pmp_corpus_promote_v1\')">Load Promote</button></div></div>`}',
-'  function installCorpus(){var w=q(\'workbench\'); if(!w||q(\'pmpCorpusWorkbench\'))return; var first=w.querySelector(\'.card\'); if(first)first.insertAdjacentHTML(\'afterend\',html()); pmpLoadCorpusBox(\'corpusInbox\',\'pmp_corpus_inbox_v1\',true); pmpLoadCorpusBox(\'corpusPromote\',\'pmp_corpus_promote_v1\',true);}',
-'  window.pmpSaveCorpusBox=function(id,key,msg){var x=q(id); if(!x)return; localStorage.setItem(key,x.value); if(typeof status===\'function\')status(msg||\'Corpus saved.\')}',
-'  window.pmpLoadCorpusBox=function(id,key,silent){var x=q(id); if(!x)return; x.value=localStorage.getItem(key)||\'\'; if(!silent&&typeof status===\'function\')status(\'Corpus loaded.\')}',
-'  window.pmpRunCorpusAnalyzer=function(){installCorpus(); var inbox=(q(\'corpusInbox\')&&q(\'corpusInbox\').value.trim())||\'\'; var promote=(q(\'corpusPromote\')&&q(\'corpusPromote\').value.trim())||\'\'; var gap=inbox?\'Held material exists; decide what stays held and what promotes.\':\'No blocking gap.\'; var risk=(inbox||promote)?\'Do not promote held material into official structure until it is clean.\':\'No immediate Corpus risk.\'; var out=\'Corpus State:\\nStable holding body.\\n\\nCorpus Gap:\\n\'+gap+\'\\n\\nCorpus Change:\\nCorpus Workbench is active.\\n\\nCorpus Risk:\\n\'+risk+\'\\n\\nCorpus Next Move:\\nAdd prompts, ideas, or outside-project material to Corpus Inbox.\'; if(q(\'corpusAnalyzerOut\'))q(\'corpusAnalyzerOut\').value=out;}',
-'  var oldGo=window.go; window.go=function(id){oldGo(id); renderNav(id); installCorpus();};',
-'  installCorpus(); renderNav((document.querySelector(\'.screen.on\')||{}).id||\'world\');',
-'})();\n'
-].join('\n')}
-  function patchBridgeCorpus(){var txt=el('box').value; if(!fullHtmlGuard(txt)) return status('Patch blocked: fetch the full app first.'); if(txt.indexOf('PMP_CONTEXTUAL_NAV_V1')>-1) return status('Bridge menu + Corpus already appears installed.'); var closeTag='<'+'/script>'; var pos=txt.lastIndexOf(closeTag); if(pos<0) return status('Patch blocked: final script close not found.'); txt=txt.slice(0,pos)+bridgeCorpusCode()+txt.slice(pos); el('box').value=txt; el('msg').value='Add Bridge contextual menu and Corpus Workbench'; runGuard(); status('Patch added: Bridge bottom menu changes by context, Bridge page frees space, Corpus is placed in Workbench. Review, then commit.')}
-  async function commitSafe(){try{var txt=el('box').value; if(!runGuard()) throw new Error('Commit blocked by full-app guard.'); var sha=el('sha').value.trim(); var p=parts(); if(!sha){var j=await getFile(p.branch); sha=j.sha; el('sha').value=sha} localStorage.setItem(GOOD,JSON.stringify({saved_at:now(),sha:sha,content:txt})); status('Committing full app...'); var r=await fetch(fileUrl(),{method:'PUT',headers:Object.assign({},headers(),{'Content-Type':'application/json'}),body:JSON.stringify({message:el('msg').value||'Safe writer update',content:enc64(txt),sha:sha,branch:p.branch})}); var out=await r.json().catch(function(){return {}}); if(!r.ok) throw new Error(out.message||'Commit failed'); el('sha').value=(out.content&&out.content.sha)||''; status('Committed safely. Reload PMP app.')}catch(e){status('Commit failed: '+e.message)}}
-  el('testBtn').addEventListener('click',testToken);
+  function saveGood(){var txt=el('box').value; if(!fullHtmlGuard(txt))return status('Save blocked: box is not a full app.'); localStorage.setItem(GOOD,JSON.stringify({saved_at:now(),sha:el('sha').value,content:txt})); status('Current box saved as local last-good.')}
+  function restoreGood(){var g=null; try{g=JSON.parse(localStorage.getItem(GOOD)||'null')}catch(e){} if(!g||!g.content)return status('No local last-good saved.'); el('box').value=g.content; runGuard(); status('Local last-good restored into box.')}
+  async function copyGood(){await navigator.clipboard.writeText(localStorage.getItem(GOOD)||''); status('Local last-good copied.')}
+  async function commitSafe(){try{var txt=el('box').value; if(!runGuard())throw new Error('Commit blocked by full-app guard.'); var sha=el('sha').value.trim(); var p=parts(); if(!sha){var j=await getFile(p.branch); sha=j.sha; el('sha').value=sha} localStorage.setItem(GOOD,JSON.stringify({saved_at:now(),sha:sha,content:txt})); status('Committing full app...'); var r=await fetch(fileUrl(),{method:'PUT',headers:Object.assign({},headers(),{'Content-Type':'application/json'}),body:JSON.stringify({message:el('msg').value||'Safe writer update',content:enc64(txt),sha:sha,branch:p.branch})}); var got=await r.json().catch(function(){return {}}); if(!r.ok)throw new Error(got.message||'Commit failed'); el('sha').value=(got.content&&got.content.sha)||''; status('Committed safely. Reload PMP app.')}catch(e){status('Commit failed: '+e.message)}}
+  el('testBtn').addEventListener('click',testKey);
   el('fetchBtn').addEventListener('click',fetchApp);
-  el('saveGoodBtn').addEventListener('click',saveCurrentAsGood);
-  el('restoreGoodBtn').addEventListener('click',restoreLocalGood);
+  el('findBtn').addEventListener('click',findCode);
+  el('previewBtn').addEventListener('click',previewReplace);
+  el('applyBtn').addEventListener('click',applyReplace);
   el('guardBtn').addEventListener('click',runGuard);
-  el('patchBridgeCorpusBtn').addEventListener('click',patchBridgeCorpus);
+  el('saveGoodBtn').addEventListener('click',saveGood);
+  el('restoreGoodBtn').addEventListener('click',restoreGood);
+  el('copyGoodBtn').addEventListener('click',copyGood);
   el('commitBtn').addEventListener('click',commitSafe);
-  status('Safe Writer loaded. Buttons are active.');
+  status('Safe Writer loaded. Code Finder is active.');
 })();
 </script>
 </body>
