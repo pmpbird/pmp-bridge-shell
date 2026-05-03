@@ -575,4 +575,295 @@ var PMP_PACKET_LOSSLESS_MOLD_V1=true;
     say('Lossless-quality Project Packet built.');
   };
 })();
+</script><script>
+var PMP_OTHER_PROJECT_REGISTRY_V1=true;
+(function(){
+  function q(id){return document.getElementById(id)}
+  function say(m){if(typeof status==='function')status(m)}
+  function now(){return new Date().toISOString()}
+  function readJson(k,f){try{return JSON.parse(localStorage.getItem(k)||'')||f}catch(e){return f}}
+  function writeJson(k,v){localStorage.setItem(k,JSON.stringify(v))}
+  function registry(){return readJson('pmp_other_project_registry_v1',{})}
+  function saveRegistry(r){writeJson('pmp_other_project_registry_v1',r)}
+  function selectedId(){return (q('otherProjectId')&&q('otherProjectId').value.trim())||''}
+
+  function ensureConnectionsScreen(){
+    var wrap=document.querySelector('.wrap');
+    if(!wrap)return;
+
+    var old=q('connections');
+    if(!old){
+      old=document.createElement('section');
+      old.id='connections';
+      old.className='screen';
+      wrap.appendChild(old);
+    }
+
+    old.innerHTML=
+      '<div class="card">'+
+      '<h1>Connections</h1>'+
+      '<p class="sub">Outside projects only. Project State ID = who. Project Packet = what. Lookup searches saved outside-project packets.</p>'+
+      '</div>'+
+
+      '<div class="card">'+
+      '<h2>Other Project Registry</h2>'+
+      '<label class="sub">Other Project State ID</label>'+
+      '<input id="otherProjectId" placeholder="example: lossless-spine">'+
+      '<label class="sub" style="display:block;margin-top:12px">Other Project Name / Label</label>'+
+      '<input id="otherProjectName" placeholder="example: Lossless Spine Project">'+
+      '<label class="sub" style="display:block;margin-top:12px">Saved Outside Projects</label>'+
+      '<select id="otherProjectSelect" onchange="pmpLoadOtherProject(this.value)"></select>'+
+      '<div class="grid">'+
+      '<button class="mini" onclick="pmpSaveOtherProject()">Save Project</button>'+
+      '<button class="mini" onclick="pmpForgetOtherProject()">Forget Selected</button>'+
+      '</div>'+
+      '<div id="otherProjectStatus" class="note" style="margin-top:10px">Ready. Save or load an outside project.</div>'+
+      '</div>'+
+
+      '<div class="card">'+
+      '<h2>Other Project Packet</h2>'+
+      '<p class="sub">Paste a Project Body Transfer Packet from the selected outside project. Nothing here becomes official PMP until it goes through Corpus and Lossless Quality.</p>'+
+      '<textarea id="otherProjectPacketBox" placeholder="Paste another project’s body transfer packet here"></textarea>'+
+      '<div class="grid">'+
+      '<button class="mini" onclick="pmpSaveOtherProjectPacket()">Save Packet to Project</button>'+
+      '<button class="mini" onclick="pmpLoadLatestOtherProjectPacket()">Load Latest Packet</button>'+
+      '<button class="mini" onclick="pmpCopyOtherProjectPacket()">Copy Packet</button>'+
+      '<button class="mini" onclick="pmpClearOtherProjectPacketBox()">Clear Packet Box</button>'+
+      '</div>'+
+      '<div id="otherPacketStatus" class="note" style="margin-top:10px">No packet loaded.</div>'+
+      '</div>'+
+
+      '<div class="card">'+
+      '<h2>Other Project Lookup</h2>'+
+      '<p class="sub">Search anything inside saved outside-project packets. Send useful findings to Corpus Inbox before Lossless Quality.</p>'+
+      '<input id="otherProjectSearch" placeholder="Search anything">'+
+      '<div class="grid">'+
+      '<button class="mini" onclick="pmpSearchSelectedOtherProject()">Search Selected Project</button>'+
+      '<button class="mini" onclick="pmpSearchAllOtherProjects()">Search All Projects</button>'+
+      '<button class="mini" onclick="pmpClearOtherLookup()">Clear Lookup</button>'+
+      '<button class="mini" onclick="pmpSendOtherLookupToCorpus()">Send Result to Corpus Inbox</button>'+
+      '</div>'+
+      '<textarea id="otherProjectResults" readonly placeholder="Search results appear here"></textarea>'+
+      '</div>';
+
+    pmpRefreshOtherProjectList();
+  }
+
+  window.pmpRefreshOtherProjectList=function(){
+    var r=registry();
+    var ids=Object.keys(r).sort();
+    var sel=q('otherProjectSelect');
+    if(sel)sel.innerHTML=ids.map(function(id){
+      return '<option value="'+id+'">'+id+' — '+(r[id].name||'unnamed')+'</option>';
+    }).join('');
+    if(q('otherProjectStatus')){
+      q('otherProjectStatus').textContent=ids.length
+        ? 'Saved outside projects: '+ids.length
+        : 'No outside projects saved yet.';
+    }
+  };
+
+  window.pmpSaveOtherProject=function(){
+    var id=selectedId();
+    if(!id)return say('Add an Other Project State ID first.');
+    var r=registry();
+    if(!r[id])r[id]={project_id:id,name:'',packets:[],created_at:now()};
+    r[id].name=(q('otherProjectName')&&q('otherProjectName').value.trim())||r[id].name||id;
+    r[id].updated_at=now();
+    saveRegistry(r);
+    pmpRefreshOtherProjectList();
+    if(q('otherProjectSelect'))q('otherProjectSelect').value=id;
+    if(q('otherProjectStatus'))q('otherProjectStatus').textContent='Saved outside project: '+id;
+    say('Outside project saved.');
+  };
+
+  window.pmpLoadOtherProject=function(id){
+    var r=registry();
+    if(!id||!r[id])return;
+    if(q('otherProjectId'))q('otherProjectId').value=id;
+    if(q('otherProjectName'))q('otherProjectName').value=r[id].name||'';
+    if(q('otherProjectStatus'))q('otherProjectStatus').textContent='Loaded '+id+'. Packets: '+((r[id].packets||[]).length);
+    pmpLoadLatestOtherProjectPacket();
+  };
+
+  window.pmpForgetOtherProject=function(){
+    var id=selectedId();
+    if(!id)return say('No selected project to forget.');
+    var r=registry();
+    delete r[id];
+    saveRegistry(r);
+    if(q('otherProjectId'))q('otherProjectId').value='';
+    if(q('otherProjectName'))q('otherProjectName').value='';
+    if(q('otherProjectPacketBox'))q('otherProjectPacketBox').value='';
+    pmpRefreshOtherProjectList();
+    say('Outside project forgotten.');
+  };
+
+  window.pmpSaveOtherProjectPacket=function(){
+    var raw=(q('otherProjectPacketBox')&&q('otherProjectPacketBox').value.trim())||'';
+    if(!raw)return say('Paste an outside project packet first.');
+
+    var id=selectedId();
+    var name=(q('otherProjectName')&&q('otherProjectName').value.trim())||'';
+    var parsed=null;
+
+    try{
+      parsed=JSON.parse(raw);
+      id=id||parsed.project_id||parsed.project_state_id||'outside_project';
+      name=name||parsed.project_name||parsed.name||id;
+    }catch(e){
+      id=id||'outside_project';
+      name=name||id;
+    }
+
+    var r=registry();
+    if(!r[id])r[id]={project_id:id,name:name,packets:[],created_at:now()};
+    r[id].name=name||r[id].name||id;
+    r[id].updated_at=now();
+    r[id].packets=r[id].packets||[];
+    r[id].packets.unshift({
+      packet_id:'packet_'+Date.now(),
+      saved_at:now(),
+      raw:raw
+    });
+    r[id].packets=r[id].packets.slice(0,30);
+
+    saveRegistry(r);
+
+    if(q('otherProjectId'))q('otherProjectId').value=id;
+    if(q('otherProjectName'))q('otherProjectName').value=r[id].name;
+    pmpRefreshOtherProjectList();
+    if(q('otherProjectSelect'))q('otherProjectSelect').value=id;
+    if(q('otherPacketStatus'))q('otherPacketStatus').textContent='Saved packet to '+id+'. Packet count: '+r[id].packets.length;
+    say('Other project packet saved.');
+  };
+
+  window.pmpLoadLatestOtherProjectPacket=function(){
+    var id=selectedId();
+    var r=registry();
+    if(!id||!r[id]||!r[id].packets||!r[id].packets.length){
+      if(q('otherPacketStatus'))q('otherPacketStatus').textContent='No packet saved for selected project.';
+      return;
+    }
+    var p=r[id].packets[0];
+    if(q('otherProjectPacketBox'))q('otherProjectPacketBox').value=p.raw;
+    if(q('otherPacketStatus'))q('otherPacketStatus').textContent='Loaded latest packet from '+id+' saved '+p.saved_at+'.';
+  };
+
+  window.pmpCopyOtherProjectPacket=async function(){
+    var raw=(q('otherProjectPacketBox')&&q('otherProjectPacketBox').value)||'';
+    if(!raw)return say('No packet to copy.');
+    await navigator.clipboard.writeText(raw);
+    say('Other project packet copied.');
+  };
+
+  window.pmpClearOtherProjectPacketBox=function(){
+    if(q('otherProjectPacketBox'))q('otherProjectPacketBox').value='';
+    if(q('otherPacketStatus'))q('otherPacketStatus').textContent='Packet box cleared.';
+    say('Packet box cleared.');
+  };
+
+  function snip(text,query){
+    var low=String(text||'').toLowerCase();
+    var ql=String(query||'').toLowerCase();
+    var i=low.indexOf(ql);
+    if(i<0)return null;
+    var a=Math.max(0,i-260), b=Math.min(text.length,i+query.length+620);
+    return text.slice(a,b);
+  }
+
+  function searchPackets(mode){
+    var query=(q('otherProjectSearch')&&q('otherProjectSearch').value.trim())||'';
+    if(!query){
+      if(q('otherProjectResults'))q('otherProjectResults').value='Type anything to search for.';
+      return;
+    }
+
+    var r=registry();
+    var ids=mode==='selected'&&selectedId()? [selectedId()] : Object.keys(r);
+    var hits=[];
+
+    ids.forEach(function(id){
+      var project=r[id];
+      if(!project||!project.packets)return;
+      project.packets.forEach(function(p){
+        var s=snip(p.raw,query);
+        if(s){
+          hits.push('PROJECT: '+id+'\nNAME: '+(project.name||'')+'\nPACKET SAVED: '+p.saved_at+'\nMATCH:\n'+s);
+        }
+      });
+    });
+
+    var out=hits.length?hits.join('\n\n---\n\n'):'No matches found in saved outside-project packets.';
+    if(q('otherProjectResults'))q('otherProjectResults').value=out;
+    localStorage.setItem('pmp_other_project_lookup_last_v1',out);
+    say(hits.length?'Other Project Lookup found '+hits.length+' match(es).':'No outside-project matches found.');
+  }
+
+  window.pmpSearchSelectedOtherProject=function(){searchPackets('selected')};
+  window.pmpSearchAllOtherProjects=function(){searchPackets('all')};
+
+  window.pmpClearOtherLookup=function(){
+    if(q('otherProjectSearch'))q('otherProjectSearch').value='';
+    if(q('otherProjectResults'))q('otherProjectResults').value='';
+    say('Other Project Lookup cleared.');
+  };
+
+  window.pmpSendOtherLookupToCorpus=function(){
+    var r=(q('otherProjectResults')&&q('otherProjectResults').value.trim())||'';
+    if(!r||r.indexOf('No matches found')===0)return say('No lookup result to send.');
+    var current=localStorage.getItem('pmp_corpus_inbox_v1')||'';
+    var add='OTHER PROJECT LOOKUP RESULT\nAdded: '+now()+'\n\n'+r;
+    var next=current.trim()?current.trim()+'\n\n---\n\n'+add:add;
+    localStorage.setItem('pmp_corpus_inbox_v1',next);
+    if(q('corpusInbox'))q('corpusInbox').value=next;
+    say('Other project lookup result sent to Corpus Inbox.');
+  };
+
+  function hideOldConnectionStuff(){
+    var w=q('workbench');
+    if(!w)return;
+    Array.from(w.querySelectorAll('.card')).forEach(function(c){
+      var t=c.textContent||'';
+      if(t.indexOf('Project Connections')>-1||
+         t.indexOf('Connected Projects')>-1||
+         t.indexOf('Import / Connect Project State')>-1||
+         t.indexOf('Project State Overview')>-1||
+         t.indexOf('Connected Project Lookup')>-1){
+        c.style.display='none';
+      }
+    });
+  }
+
+  function bridgeZone(id){return ['bridge','workbench','share','connections'].indexOf(id)>-1}
+  function navBtn(id,icon,label,active){return '<button class="tab '+(active?'on':'')+'" data-tab="'+id+'" onclick="go(\''+id+'\')"><b>'+icon+'</b>'+label+'</button>'}
+  function renderNav(id){
+    var n=document.querySelector('.tabs');
+    if(!n)return;
+    var items=bridgeZone(id)
+      ? [['bridge','↔','Bridge'],['workbench','▣','Workbench'],['share','⇪','Share'],['connections','⛓','Connections'],['world','◎','World']]
+      : [['world','◎','World'],['bridge','↔','Bridge'],['library','▤','Library'],['workshop','⚒','Workshop'],['control','⚙','Control']];
+    n.innerHTML=items.map(function(x){return navBtn(x[0],x[1],x[2],x[0]===id)}).join('');
+  }
+
+  function install(){
+    ensureConnectionsScreen();
+    hideOldConnectionStuff();
+    renderNav((document.querySelector('.screen.on')||{}).id||'world');
+  }
+
+  if(typeof window.go==='function'&&!window.PMP_OTHER_PROJECT_REGISTRY_GO_WRAPPED){
+    window.PMP_OTHER_PROJECT_REGISTRY_GO_WRAPPED=true;
+    var oldGo=window.go;
+    window.go=function(id){
+      ensureConnectionsScreen();
+      oldGo(id);
+      install();
+    };
+  }
+
+  install();
+  setTimeout(install,0);
+  setTimeout(install,250);
+})();
 </script></body></html>
