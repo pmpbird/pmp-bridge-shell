@@ -29,7 +29,112 @@
   let out='Corpus State:\n'+corpus.state+'\n\nCorpus Gap:\n'+corpus.gap+'\n\nCorpus Change:\n'+corpus.change+'\n\nCorpus Risk:\n'+corpus.risk+'\n\nCorpus Next Move:\n'+corpus.next_move;
   if($('corpusAnalyzerOut'))$('corpusAnalyzerOut').value=out;
 
-  status('Lossless Quality checked Corpus. '+(s.gaps?'Corpus review needed.':'No blocking Corpus gap.'));
+  let splitCorpusItems=function(raw){
+  return String(raw||'')
+    .split(/\n\s*\n|^---+$/m)
+    .map(x=>x.trim())
+    .filter(Boolean);
+};
+
+let corpusItems=splitCorpusItems(inbox);
+let readyFields=['meaning:','source:','use:','boundary:','risk:','next move:'];
+
+let readyItems=corpusItems.filter(x=>{
+  let y=x.toLowerCase();
+  return readyFields.every(f=>y.includes(f));
+});
+
+let needsReview=corpusItems.length-readyItems.length;
+
+let liftText=corpusItems.length
+  ? corpusItems.map((item,i)=>{
+      let y=item.toLowerCase();
+      let ready=readyFields.every(f=>y.includes(f));
+      return 'CORPUS QUALITY LIFT ITEM '+(i+1)+
+        '\n\nItem:\n'+item+
+        '\n\nMeaning:\n[define what this actually means]'+
+        '\n\nSource:\n[where it came from / why it exists]'+
+        '\n\nUse:\n[what this is for in PMP]'+
+        '\n\nBoundary:\n[what this must not change, overwrite, or confuse]'+
+        '\n\nRisk:\n[what could corrupt, clutter, duplicate, or confuse PMP]'+
+        '\n\nLossless Status:\n'+(ready?'lossless-ready draft':'needs review')+
+        '\n\nNext Move:\n[hold / clarify / promote / reject]\n';
+    }).join('\n---\n')
+  : 'No Corpus Inbox items to lift.';
+
+let host=document.getElementById('pmpCorpusWorkbench');
+
+if(host&&!document.getElementById('corpusQualityLift')){
+  let d=document.createElement('div');
+  d.id='corpusQualityLift';
+  d.innerHTML=
+    '<h2 style="margin-top:18px">Corpus Quality Lift</h2>'+
+    '<p class="sub">Lift Corpus Inbox gap items toward lossless-ready structure before promotion.</p>'+
+    '<textarea id="corpusLiftOut" readonly placeholder="Run Improve Lossless Quality to build quality-lift drafts."></textarea>'+
+    '<div class="grid">'+
+    '<button class="mini" id="saveLiftBtn">Save Lift</button>'+
+    '<button class="mini" id="copyLiftBtn">Copy Lift to Promote</button>'+
+    '</div>';
+
+  let marker=document.getElementById('corpusAnalyzerOut');
+  if(marker&&marker.parentNode){
+    marker.parentNode.insertBefore(d,marker.previousElementSibling||marker);
+  }else{
+    host.appendChild(d);
+  }
+}
+
+let liftBox=document.getElementById('corpusLiftOut');
+if(liftBox)liftBox.value=liftText;
+
+let saveLiftBtn=document.getElementById('saveLiftBtn');
+if(saveLiftBtn)saveLiftBtn.onclick=function(){
+  localStorage.setItem('pmp_corpus_lift_v1',document.getElementById('corpusLiftOut').value);
+  status('Corpus Quality Lift saved.');
+};
+
+let copyLiftBtn=document.getElementById('copyLiftBtn');
+if(copyLiftBtn)copyLiftBtn.onclick=function(){
+  let v=document.getElementById('corpusLiftOut').value;
+  if(document.getElementById('corpusPromote'))document.getElementById('corpusPromote').value=v;
+  localStorage.setItem('pmp_corpus_promote_v1',v);
+  status('Lift copied to Corpus Promote.');
+};
+
+localStorage.setItem('pmp_corpus_lift_v1',liftText);
+
+s.open_corpus_items=corpusItems.length;
+s.lossless_ready_items=readyItems.length;
+s.needs_review=needsReview;
+s.gaps=needsReview;
+s.ready='Corpus Quality Lift checked';
+s.next=needsReview
+  ? 'run Corpus Quality Lift on '+needsReview+' item(s) before promotion'
+  : 'Corpus Inbox is empty or lossless-ready';
+
+currentOutput=JSON.stringify({
+  type:'PMP_LOSSLESS_STATUS_V3',
+  built_at:now(),
+  state:s,
+  corpus:corpus,
+  corpus_quality_lift:{
+    open_items:corpusItems.length,
+    needs_review:needsReview,
+    lossless_ready_items:readyItems.length
+  }
+},null,2);
+
+if($('corpusAnalyzerOut')){
+  $('corpusAnalyzerOut').value +=
+    '\n\nOpen Corpus Items:\n'+corpusItems.length+
+    '\n\nNeeds Review:\n'+needsReview+
+    '\n\nLossless-Ready Items:\n'+readyItems.length+
+    '\n\nPromotion Rule:\nNothing moves from Corpus Inbox into PMP until it passes the quality lift.';
+}
+
+saveState(s);
+
+status('Lossless Quality checked Corpus. '+(needsReview?'Corpus quality lift needed.':'No blocking Corpus quality gap.'));
 }function prepareExport(){currentOutput=JSON.stringify({type:'PMP_PROJECT_EXPORT_V1',built_at:now(),permanent_app:LOCK,state:state(),projects:projects()},null,2);status(location.pathname.endsWith('pmp.html')?'Export prepared. Permanent path OK.':'WARNING: not opened from pmp.html.')}async function copyCurrent(){await navigator.clipboard.writeText(currentOutput||JSON.stringify({state:state(),projects:projects()},null,2));status('Current output copied.')}function buildShare(){let p={type:'PMP_SHARE_PACKET_V1',built_at:now(),receiver:$('receiver').value,payload:$('payload').value,info_base:$('infobase').value};$('shareOut').classList.remove('hidden');$('shareOut').value=JSON.stringify(p,null,2);status('Share packet built.')}async function copyShare(){if(!$('shareOut').value)buildShare();await navigator.clipboard.writeText($('shareOut').value);status('Share packet copied.')}function applyUpdate(){let raw=$('upgradeBox').value.trim();if(!raw)return $('loaderStatus').textContent='Paste update packet first.';let packet;try{packet=JSON.parse(raw)}catch(e){return $('loaderStatus').textContent='Update packet must be JSON.'}if(packet.path&&packet.path!=='pmp.html')return $('loaderStatus').textContent='Blocked: updates must stay inside pmp.html.';write(K.hist,[{at:now(),packet},...read(K.hist,[])]);$('loaderStatus').textContent='Update packet saved.';$('upgradeBox').value=''}function showHistory(){let h=read(K.hist,[]);$('historyBox').classList.remove('hidden');$('historyBox').textContent=h.length?h.map((x,i)=>`${i+1}. ${x.at}`).join('\n'):'No history yet.'}async function copyAppBackup(){await navigator.clipboard.writeText(JSON.stringify({type:'PMP_APP_BACKUP_V1',state:state(),projects:projects(),history:read(K.hist,[])},null,2));$('loaderStatus').textContent='App backup copied.'}function runSelfTest(){$('loaderStatus').textContent='Self test passed.\nPath: '+location.pathname+'\nCloaks active: 10/10\nApp switching grace: 3 minutes\nMain World: active'}function clearHistory(){write(K.hist,[]);$('loaderStatus').textContent='History cleared.'}function saveBox(id,key,msg){write(key,$(id).value);status(msg)}async function copyBox(id,msg){await navigator.clipboard.writeText($(id).value);status(msg)}function makeBlueprint(){let lib=read('pmp_library_notes_v1','');let bp='BLUEPRINT\n\nSource from Library:\n'+(lib||'[empty]')+'\n\nDefinition:\n\nName:\n\nBuild steps:\n';$('blueprintBox').value=bp;write('pmp_blueprints_v1',bp);status('Blueprint made from Library.')}async function hash(t){let b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('')}function lockPrivate(msg='locked'){openPrivate=false;PASS='';GH='';if(timer)clearTimeout(timer);['bugPanel','writerPanel','backupPanel'].forEach(id=>$(id).classList.add('hidden'));$('privateMenu').classList.add('hidden');$('lockBox').classList.remove('hidden');$('lockStatus').textContent=msg}function touchPrivate(){if(!openPrivate)return;if(timer)clearTimeout(timer);timer=setTimeout(()=>{lockPrivate('auto-locked');go('world');status('Private auto-locked.')},10*60*1000)}async function unlockPrivate(){let f=read(K.fails,{n:0,until:0});if(Date.now()<f.until)return $('lockStatus').textContent='cooldown: '+Math.ceil((f.until-Date.now())/1000)+'s';let p=$('privatePass').value;if(!p)return $('lockStatus').textContent='Enter password.';let saved=read(K.pass,null),h=await hash(p);if(!saved){write(K.pass,h);saved=h}if(h===saved){write(K.fails,{n:0,until:0});PASS=p;openPrivate=true;$('lockBox').classList.add('hidden');$('privateMenu').classList.remove('hidden');$('privatePass').value='';$('cloakStatus').textContent='Cloaks active: 10/10\n'+LAYERS.map((x,i)=>(i+1)+'. '+x).join('\n');showPrivatePanel('bug');touchPrivate()}else{f.n=(f.n||0)+1;if(f.n>=5){f={n:0,until:Date.now()+300000}}write(K.fails,f);$('lockStatus').textContent=f.until?'too many wrong attempts. cooldown active.':'Wrong password.'}}function titleTap(e){e.preventDefault();e.stopPropagation();let t=Date.now();if(t-lastTap>2200)taps=0;lastTap=t;taps++;if(navigator.vibrate)navigator.vibrate(15);if(taps>=7){taps=0;if(navigator.vibrate)navigator.vibrate([35,35,90]);lockPrivate();go('system')}}function showPrivatePanel(which){touchPrivate();['bugPanel','writerPanel','backupPanel'].forEach(id=>$(id).classList.add('hidden'));if(which==='bug'){$('bugPanel').classList.remove('hidden');refreshBugView()}if(which==='writer')$('writerPanel').classList.remove('hidden');if(which==='backups'){$('backupPanel').classList.remove('hidden');refreshBackupOut()}$('privateStatus').textContent=which+' panel open.'}function defBugs(){return{type:'PMP_BUG_MEMORY_V1',updated_at:now(),records:[]}}function bugMemory(){let b=read(K.bugs,defBugs());if(!Array.isArray(b.records))b.records=[];return b}function saveBugs(b){b.updated_at=now();write(K.bugs,b);refreshBugView()}function refreshBugView(){touchPrivate();let b=bugMemory();$('bugSummary').textContent=`Bugs: ${b.records.length}\nUpdated: ${b.updated_at}`;$('bugOut').value=JSON.stringify(b,null,2)}function addBug(){touchPrivate();let b=bugMemory();b.records.unshift({id:'bug_'+Date.now(),at:now(),title:$('bugTitle').value||'Untitled bug',details:$('bugDetails').value||'',status:'saved'});$('bugTitle').value='';$('bugDetails').value='';saveBugs(b)}async function copyBugMemory(){touchPrivate();await navigator.clipboard.writeText(JSON.stringify(bugMemory(),null,2));$('privateStatus').textContent='Bug Memory copied.'}function importBugMemory(){touchPrivate();let raw=$('bugImport').value.trim();if(!raw)return $('privateStatus').textContent='Paste Bug Memory JSON first.';let inc;try{inc=JSON.parse(raw)}catch(e){return $('privateStatus').textContent='Bug Memory import must be JSON.'}let b=bugMemory(),rec=inc.records||[];if(Array.isArray(rec))b.records=[...rec,...b.records];$('bugImport').value='';saveBugs(b);$('privateStatus').textContent='Bug Memory imported.'}function b64buf(buf){return btoa(String.fromCharCode(...new Uint8Array(buf)))}function bufb64(s){return Uint8Array.from(atob(s),c=>c.charCodeAt(0))}async function deriveKey(pass,salt){let base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pass),'PBKDF2',false,['deriveKey']);return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:250000,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])}async function encBox(text){if(!PASS)throw Error('Unlock private first.');let salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12)),key=await deriveKey(PASS,salt),ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,new TextEncoder().encode(text));return{type:'PMP_SAVED_WRITER_KEY_V1',saved_at:now(),salt:b64buf(salt),iv:b64buf(iv),data:b64buf(ct)}}async function decBox(box){if(!PASS)throw Error('Unlock private first.');let key=await deriveKey(PASS,bufb64(box.salt)),pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:bufb64(box.iv)},key,bufb64(box.data));return new TextDecoder().decode(pt)}function useToken(){touchPrivate();GH=$('ghToken').value.trim();$('ghToken').value='';$('ghStatus').textContent=GH?'Session key loaded.':'Paste key first.'}function clearToken(){GH='';$('ghStatus').textContent='Session key cleared.'}async function saveEncryptedToken(){touchPrivate();try{let x=GH||$('ghToken').value.trim();if(!x)return $('ghStatus').textContent='Paste or use a key first.';write(K.saved,await encBox(x));$('ghToken').value='';GH=x;$('ghStatus').textContent='Encrypted key saved locally.'}catch(e){$('ghStatus').textContent='Save failed: '+e.message}}async function loadEncryptedToken(){touchPrivate();try{let box=read(K.saved,null);if(!box)return $('ghStatus').textContent='No saved encrypted key.';GH=await decBox(box);$('ghStatus').textContent='Saved key loaded into session.'}catch(e){$('ghStatus').textContent='Load failed: wrong password or damaged key.'}}function forgetEncryptedToken(){localStorage.removeItem(K.saved);GH='';$('ghStatus').textContent='Saved encrypted key forgotten.'}function ghTarget(){let [owner,repo]=$('ghRepo').value.trim().split('/');return{owner,repo,branch:$('ghBranch').value.trim(),path:$('ghPath').value.trim()}}function ghUrl(){let t=ghTarget();return`https://api.github.com/repos/${encodeURIComponent(t.owner)}/${encodeURIComponent(t.repo)}/contents/${t.path.split('/').map(encodeURIComponent).join('/')}`}function ghHeaders(){if(!GH)throw Error('Use session key first.');return{Authorization:'Bearer '+GH,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}}function encText(s){return btoa([...new TextEncoder().encode(s)].map(x=>String.fromCharCode(x)).join(''))}function decText(s){return new TextDecoder().decode(Uint8Array.from(atob((s||'').replace(/\n/g,'')),c=>c.charCodeAt(0)))}async function ghGet(){let t=ghTarget(),r=await fetch(ghUrl()+'?ref='+encodeURIComponent(t.branch),{headers:ghHeaders(),cache:'no-store'}),j=await r.json().catch(()=>({}));if(!r.ok)throw Error(j.message||'Fetch failed');return j}async function testGh(){touchPrivate();try{let j=await ghGet();$('ghSha').value=j.sha||'';$('ghStatus').textContent='Key works. File found.'}catch(e){$('ghStatus').textContent='Test failed: '+e.message}}async function fetchGh(){touchPrivate();try{let j=await ghGet();$('ghSha').value=j.sha||'';$('ghText').value=decText(j.content);$('ghStatus').textContent='Fetched current file.'}catch(e){$('ghStatus').textContent='Fetch failed: '+e.message}}async function commitGh(){touchPrivate();try{let txt=$('ghText').value;if(!txt)return $('ghStatus').textContent='Nothing to commit.';let sha=$('ghSha').value.trim();if(!sha){let j=await ghGet();sha=j.sha;$('ghSha').value=sha}let t=ghTarget(),r=await fetch(ghUrl(),{method:'PUT',headers:{...ghHeaders(),'Content-Type':'application/json'},body:JSON.stringify({message:$('ghMsg').value||'Private writer update',content:encText(txt),sha,branch:t.branch})}),j=await r.json().catch(()=>({}));if(!r.ok)throw Error(j.message||'Commit failed');$('ghSha').value=j.content?.sha||'';$('ghStatus').textContent='Committed. Reload app to see changes.'}catch(e){$('ghStatus').textContent='Commit failed: '+e.message}}function clearGhBox(){touchPrivate();$('ghText').value='';$('ghSha').value='';$('ghStatus').textContent='File box cleared.'}function fullBackup(){return{type:'PMP_PRIVATE_BACKUP_V1',built_at:now(),permanent_app:LOCK,state:state(),projects:projects(),history:read(K.hist,[]),bug_memory:bugMemory(),library:read('pmp_library_notes_v1',''),blueprints:read('pmp_blueprints_v1',''),workshop:read('pmp_workshop_v1',''),city_hall:read('pmp_city_hall_v1','')}}function refreshBackupOut(){touchPrivate();$('backupOut').value=JSON.stringify(fullBackup(),null,2)}async function copyPrivateBackup(){touchPrivate();await navigator.clipboard.writeText(JSON.stringify(fullBackup(),null,2));refreshBackupOut();$('privateStatus').textContent='Private backup copied.'}function importPrivateBackup(){touchPrivate();let raw=$('backupImport').value.trim();if(!raw)return $('privateStatus').textContent='Paste backup JSON first.';let b;try{b=JSON.parse(raw)}catch(e){return $('privateStatus').textContent='Backup import must be JSON.'}if(b.state)write(K.state,b.state);if(b.projects)write(K.projects,b.projects);if(b.history)write(K.hist,b.history);if(b.bug_memory)write(K.bugs,b.bug_memory);if(b.library)write('pmp_library_notes_v1',b.library);if(b.blueprints)write('pmp_blueprints_v1',b.blueprints);if(b.workshop)write('pmp_workshop_v1',b.workshop);if(b.city_hall)write('pmp_city_hall_v1',b.city_hall);$('backupImport').value='';render();refreshBackupOut();$('privateStatus').textContent='Backup imported.'}document.addEventListener('visibilitychange',()=>{if(document.hidden&&openPrivate){hideAt=Date.now();status('Private app-switch grace active: 3 minutes.')}else if(!document.hidden&&openPrivate){if(hideAt&&Date.now()-hideAt>180000){lockPrivate('app-switch grace expired');go('world');status('Private locked after app-switch grace expired.')}else{hideAt=0;touchPrivate();status('Returned within private grace window.')}}});window.addEventListener('pagehide',()=>{hideAt=Date.now()});setButtonColor(read(K.btn,'#a1fcfd'));setBgColor(read(K.bg,'#52b5df'));setLineColor(read(K.line,'#ffffff'));setTextContrast(read(K.muted,85));saveProjectConnection(false);$('libraryNotes').value=read('pmp_library_notes_v1','');$('blueprintBox').value=read('pmp_blueprints_v1','');$('workshopBox').value=read('pmp_workshop_v1','');$('cityBox').value=read('pmp_city_hall_v1','');render();status('Permanent path locked: pmp.html');
 const PMP_GATE_INTERVALS=['L','L','S','S','S','L','S','L','S','S','S'];
 let pmpGateTimes=[];
