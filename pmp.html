@@ -289,4 +289,206 @@ var PMP_CORPUS_CLEAR_INBOX_V1=true;
   setTimeout(installClearInbox,0);
   setTimeout(installClearInbox,250);
 })();
+</script><script>
+var PMP_PROJECT_PACKET_CONNECTIONS_V1=true;
+(function(){
+  function q(id){return document.getElementById(id)}
+  function say(m){if(typeof status==='function')status(m)}
+  function readJson(k,f){try{return JSON.parse(localStorage.getItem(k)||'')||f}catch(e){return f}}
+  function writeJson(k,v){localStorage.setItem(k,JSON.stringify(v))}
+  function now(){return new Date().toISOString()}
+  function activeProject(){return (q('packetProjectId')&&q('packetProjectId').value.trim())||(q('projectId')&&q('projectId').value.trim())||'pmp'}
+
+  function packets(){return readJson('pmp_project_packets_v1',[])}
+  function savePackets(x){writeJson('pmp_project_packets_v1',x.slice(0,80))}
+
+  function ensureConnectionsScreen(){
+    if(q('connections'))return;
+    var wrap=document.querySelector('.wrap');
+    var s=document.createElement('section');
+    s.id='connections';
+    s.className='screen';
+    s.innerHTML=
+      '<div class="card">'+
+      '<h1>Connections</h1>'+
+      '<p class="sub">Project Packet = who + what. Live Source comes later.</p>'+
+      '</div>'+
+      '<div class="card" id="projectPacketCard">'+
+      '<h2>Project Packet</h2>'+
+      '<p class="sub">Paste, save, build, or copy a project body transfer packet. This includes Project State ID plus the project body material.</p>'+
+      '<input id="packetProjectId" placeholder="Project State ID" value="pmp">'+
+      '<textarea id="projectPacketBox" placeholder="Paste Project Body Transfer Packet or raw project body here"></textarea>'+
+      '<div class="grid">'+
+      '<button class="mini" onclick="pmpSaveProjectPacket()">Save Packet</button>'+
+      '<button class="mini" onclick="pmpBuildCurrentProjectPacket()">Build Current PMP Packet</button>'+
+      '<button class="mini" onclick="pmpCopyProjectPacket()">Copy Packet</button>'+
+      '<button class="mini" onclick="pmpClearProjectPacket()">Clear Packet Box</button>'+
+      '</div>'+
+      '<div id="projectPacketStatus" class="note" style="margin-top:10px">Ready.</div>'+
+      '</div>'+
+      '<div class="card" id="projectLookupCard">'+
+      '<h2>Project Lookup</h2>'+
+      '<p class="sub">Search anything inside saved project packets. Results can go to Corpus Inbox before Lossless Quality.</p>'+
+      '<input id="projectPacketSearch" placeholder="Search anything">'+
+      '<div class="grid">'+
+      '<button class="mini" onclick="pmpSearchProjectPackets()">Search Packets</button>'+
+      '<button class="mini" onclick="pmpClearProjectLookup()">Clear Lookup</button>'+
+      '</div>'+
+      '<textarea id="projectPacketResults" readonly placeholder="Search results appear here"></textarea>'+
+      '<button class="mini" onclick="pmpSendPacketResultToCorpus()">Send Result to Corpus Inbox</button>'+
+      '</div>';
+    wrap.appendChild(s);
+  }
+
+  window.pmpSaveProjectPacket=function(){
+    var raw=(q('projectPacketBox')&&q('projectPacketBox').value.trim())||'';
+    if(!raw)return say('Paste a project packet first.');
+    var id=activeProject();
+    var parsed=null;
+    try{parsed=JSON.parse(raw); if(parsed.project_id)id=parsed.project_id}catch(e){}
+    var list=packets();
+    list.unshift({
+      id:'packet_'+Date.now(),
+      project_id:id,
+      saved_at:now(),
+      type:(parsed&&parsed.type)||'PROJECT_BODY_TRANSFER_PACKET',
+      raw:raw
+    });
+    savePackets(list);
+    if(q('projectPacketStatus'))q('projectPacketStatus').textContent='Saved packet for '+id+'. Packets saved: '+list.length;
+    say('Project packet saved.');
+  };
+
+  window.pmpBuildCurrentProjectPacket=function(){
+    var packet={
+      type:'PMP_PROJECT_BODY_TRANSFER_PACKET_V1',
+      project_id:activeProject(),
+      project_name:activeProject(),
+      built_at:now(),
+      state:readJson('pmp_state_v5',{}),
+      projects:readJson('pmp_projects_v5',{}),
+      corpus:{
+        inbox:localStorage.getItem('pmp_corpus_inbox_v1')||'',
+        quality_lift:localStorage.getItem('pmp_corpus_lift_v1')||'',
+        promote:localStorage.getItem('pmp_corpus_promote_v1')||''
+      },
+      body:{
+        library:readJson('pmp_library_notes_v1',''),
+        publishing_house:readJson('pmp_blueprints_v1',''),
+        workshop:readJson('pmp_workshop_v1',''),
+        city_hall:readJson('pmp_city_hall_v1','')
+      },
+      boundaries:[
+        'Project Packet is searchable material, not automatic official PMP structure.',
+        'Found material must go through Corpus Inbox and Lossless Quality before promotion.',
+        'Live Source and Access Method are separate future layers.'
+      ],
+      next_move:'Search packet material, send useful results to Corpus Inbox, then run Improve Lossless Quality.'
+    };
+    if(q('projectPacketBox'))q('projectPacketBox').value=JSON.stringify(packet,null,2);
+    if(q('projectPacketStatus'))q('projectPacketStatus').textContent='Current PMP packet built.';
+    say('Current PMP packet built.');
+  };
+
+  window.pmpCopyProjectPacket=async function(){
+    var raw=(q('projectPacketBox')&&q('projectPacketBox').value)||'';
+    if(!raw)return say('No packet to copy.');
+    await navigator.clipboard.writeText(raw);
+    say('Project packet copied.');
+  };
+
+  window.pmpClearProjectPacket=function(){
+    if(q('projectPacketBox'))q('projectPacketBox').value='';
+    if(q('projectPacketStatus'))q('projectPacketStatus').textContent='Packet box cleared.';
+    say('Packet box cleared.');
+  };
+
+  function snip(text,query){
+    var low=String(text||'').toLowerCase();
+    var ql=String(query||'').toLowerCase();
+    var i=low.indexOf(ql);
+    if(i<0)return null;
+    var a=Math.max(0,i-260), b=Math.min(text.length,i+query.length+520);
+    return text.slice(a,b);
+  }
+
+  window.pmpSearchProjectPackets=function(){
+    var query=(q('projectPacketSearch')&&q('projectPacketSearch').value.trim())||'';
+    var out=q('projectPacketResults');
+    if(!query){if(out)out.value='Type anything to search for.';return}
+    var hits=[];
+    packets().forEach(function(p){
+      var s=snip(p.raw,query);
+      if(s)hits.push('PROJECT: '+p.project_id+'\nSAVED: '+p.saved_at+'\nMATCH:\n'+s);
+    });
+    var text=hits.length?hits.join('\n\n---\n\n'):'No matches found in saved project packets.';
+    if(out)out.value=text;
+    localStorage.setItem('pmp_project_packet_lookup_last_v1',text);
+    say(hits.length?'Project Lookup found '+hits.length+' match(es).':'No packet matches found.');
+  };
+
+  window.pmpClearProjectLookup=function(){
+    if(q('projectPacketSearch'))q('projectPacketSearch').value='';
+    if(q('projectPacketResults'))q('projectPacketResults').value='';
+    say('Project Lookup cleared.');
+  };
+
+  window.pmpSendPacketResultToCorpus=function(){
+    var r=(q('projectPacketResults')&&q('projectPacketResults').value.trim())||'';
+    if(!r||r.indexOf('No matches found')===0)return say('No lookup result to send.');
+    var current=localStorage.getItem('pmp_corpus_inbox_v1')||'';
+    var add='PROJECT PACKET LOOKUP RESULT\nAdded: '+now()+'\n\n'+r;
+    var next=current.trim()?current.trim()+'\n\n---\n\n'+add:add;
+    localStorage.setItem('pmp_corpus_inbox_v1',next);
+    if(q('corpusInbox'))q('corpusInbox').value=next;
+    say('Project Lookup result sent to Corpus Inbox.');
+  };
+
+  function hideOldConnectionCards(){
+    var w=q('workbench');
+    if(!w)return;
+    Array.from(w.querySelectorAll('.card')).forEach(function(c){
+      var t=c.textContent||'';
+      if(t.indexOf('Project Connections')>-1||
+         t.indexOf('Connected Projects')>-1||
+         t.indexOf('Import / Connect Project State')>-1||
+         t.indexOf('Project State Overview')>-1){
+        c.style.display='none';
+      }
+    });
+  }
+
+  function bridgeZone(id){return ['bridge','workbench','share','connections'].indexOf(id)>-1}
+  function navBtn(id,icon,label,active){return '<button class="tab '+(active?'on':'')+'" data-tab="'+id+'" onclick="go(\''+id+'\')"><b>'+icon+'</b>'+label+'</button>'}
+  function renderNav(id){
+    var n=document.querySelector('.tabs');
+    if(!n)return;
+    var items=bridgeZone(id)
+      ? [['bridge','↔','Bridge'],['workbench','▣','Workbench'],['share','⇪','Share'],['connections','⛓','Connections'],['world','◎','World']]
+      : [['world','◎','World'],['bridge','↔','Bridge'],['library','▤','Library'],['workshop','⚒','Workshop'],['control','⚙','Control']];
+    n.innerHTML=items.map(function(x){return navBtn(x[0],x[1],x[2],x[0]===id)}).join('');
+  }
+
+  function install(){
+    ensureConnectionsScreen();
+    hideOldConnectionCards();
+    var pid=q('packetProjectId');
+    if(pid&&q('projectId'))pid.value=q('projectId').value||'pmp';
+    renderNav((document.querySelector('.screen.on')||{}).id||'world');
+  }
+
+  if(typeof window.go==='function'&&!window.PMP_PROJECT_PACKET_GO_WRAPPED){
+    window.PMP_PROJECT_PACKET_GO_WRAPPED=true;
+    var oldGo=window.go;
+    window.go=function(id){
+      ensureConnectionsScreen();
+      oldGo(id);
+      install();
+    };
+  }
+
+  install();
+  setTimeout(install,0);
+  setTimeout(install,250);
+})();
 </script></body></html>
