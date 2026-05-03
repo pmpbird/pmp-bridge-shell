@@ -230,4 +230,63 @@ var PMP_CONTEXTUAL_NAV_V1=true;
   var oldGo=window.go; window.go=function(id){oldGo(id); renderNav(id); installCorpus();};
   installCorpus(); renderNav((document.querySelector('.screen.on')||{}).id||'world');
 })();
+</script><script>
+var PMP_CORPUS_CLEAR_INBOX_V1=true;
+(function(){
+  function q(id){return document.getElementById(id)}
+
+  window.pmpClearCorpusInbox=function(){
+    var inbox=q('corpusInbox');
+    if(inbox) inbox.value='';
+
+    localStorage.setItem('pmp_corpus_inbox_v1','');
+    localStorage.setItem('pmp_corpus_lift_v1','No Corpus Inbox items to lift.');
+
+    var lift=q('corpusLiftOut');
+    if(lift) lift.value='No Corpus Inbox items to lift.';
+
+    var analyzer=q('corpusAnalyzerOut');
+    if(analyzer){
+      analyzer.value=
+        'Corpus State:\nstable empty holding body'+
+        '\n\nCorpus Gap:\nno blocking corpus gap'+
+        '\n\nCorpus Change:\nCorpus Inbox cleared.'+
+        '\n\nCorpus Risk:\nno immediate Corpus risk'+
+        '\n\nCorpus Next Move:\nadd prompts, ideas, or outside-project material to Corpus Inbox when needed';
+    }
+
+    if(typeof status==='function') status('Corpus Inbox cleared.');
+  };
+
+  function installClearInbox(){
+    var inbox=q('corpusInbox');
+    if(!inbox || q('clearCorpusInboxBtn')) return;
+
+    var btn=document.createElement('button');
+    btn.id='clearCorpusInboxBtn';
+    btn.className='mini';
+    btn.textContent='Clear Inbox';
+    btn.onclick=window.pmpClearCorpusInbox;
+
+    var grid=inbox.nextElementSibling;
+    if(grid && grid.classList && grid.classList.contains('grid')){
+      grid.appendChild(btn);
+    }else{
+      inbox.insertAdjacentElement('afterend',btn);
+    }
+  }
+
+  var oldGo=window.go;
+  if(oldGo && !window.PMP_CORPUS_CLEAR_PATCHED){
+    window.PMP_CORPUS_CLEAR_PATCHED=true;
+    window.go=function(id){
+      oldGo(id);
+      setTimeout(installClearInbox,0);
+    };
+  }
+
+  installClearInbox();
+  setTimeout(installClearInbox,0);
+  setTimeout(installClearInbox,250);
+})();
 </script></body></html>
