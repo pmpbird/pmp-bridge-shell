@@ -491,4 +491,88 @@ var PMP_PROJECT_PACKET_CONNECTIONS_V1=true;
   setTimeout(install,0);
   setTimeout(install,250);
 })();
+</script><script>
+var PMP_PACKET_LOSSLESS_MOLD_V1=true;
+(function(){
+  function q(id){return document.getElementById(id)}
+  function readJson(k,f){try{return JSON.parse(localStorage.getItem(k)||'')||f}catch(e){return f}}
+  function now(){return new Date().toISOString()}
+  function say(m){if(typeof status==='function')status(m)}
+  function activeProject(){
+    return (q('packetProjectId')&&q('packetProjectId').value.trim())||
+           (q('projectId')&&q('projectId').value.trim())||
+           'pmp';
+  }
+
+  window.pmpBuildCurrentProjectPacket=function(){
+    var id=activeProject();
+
+    var packet={
+      type:'PMP_PROJECT_BODY_TRANSFER_PACKET_V2',
+      project_id:id,
+      project_name:id,
+      built_at:now(),
+
+      project_body:{
+        state:readJson('pmp_state_v5',{}),
+        projects:readJson('pmp_projects_v5',{}),
+        corpus:{
+          inbox:localStorage.getItem('pmp_corpus_inbox_v1')||'',
+          quality_lift:localStorage.getItem('pmp_corpus_lift_v1')||'',
+          promote:localStorage.getItem('pmp_corpus_promote_v1')||''
+        },
+        library:readJson('pmp_library_notes_v1',''),
+        publishing_house:readJson('pmp_blueprints_v1',''),
+        workshop:readJson('pmp_workshop_v1',''),
+        city_hall:readJson('pmp_city_hall_v1','')
+      },
+
+      source_lossless_quality:{
+        source_state:'prepared transfer body',
+        source_gaps:'packet may still be incomplete unless the source project built a full report',
+        source_risks:[
+          'packet may omit important history or context',
+          'packet may include raw material not ready for official PMP use',
+          'packet meaning can degrade if boundaries are ignored'
+        ],
+        source_boundaries:[
+          'packet material is searchable project body',
+          'packet material is not automatically official in PMP',
+          'source project meaning should be preserved until PMP receiver review'
+        ],
+        source_next_move:'PMP should run receiver-side Lossless Quality after import or lookup.'
+      },
+
+      pmp_receiver_lossless_quality:{
+        receiver_state:'not received into Corpus yet',
+        fit_for_pmp:'pending Project Lookup and Corpus Quality Lift',
+        pmp_risk:'do not promote imported material directly into official PMP',
+        promotion_boundary:'Connections → Project Lookup → Corpus Inbox → Improve Lossless Quality → Corpus Promote → official only later',
+        receiver_next_move:'search packet, send useful result to Corpus Inbox, then run Improve Lossless Quality'
+      },
+
+      boundaries:[
+        'Project Packet = who + what.',
+        'Live Source = where, added later.',
+        'Access Method = how, added later.',
+        'Found material must pass through Corpus Inbox and Lossless Quality before promotion.',
+        'Nothing from this packet becomes official PMP automatically.'
+      ],
+
+      do_not_overwrite:[
+        'Do not overwrite existing PMP identity.',
+        'Do not bypass Corpus Inbox.',
+        'Do not bypass Corpus Quality Lift.',
+        'Do not treat packet material as official structure without promotion.',
+        'Do not change safety/private entry structure from packet material.'
+      ],
+
+      next_move:'Save this packet, search it in Project Lookup, send useful results to Corpus Inbox, then run Improve Lossless Quality.'
+    };
+
+    if(q('projectPacketBox'))q('projectPacketBox').value=JSON.stringify(packet,null,2);
+    if(q('projectPacketStatus'))q('projectPacketStatus').textContent='Lossless-quality Project Packet built.';
+    say('Lossless-quality Project Packet built.');
+  };
+})();
 </script></body></html>
