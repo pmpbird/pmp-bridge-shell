@@ -1752,5 +1752,403 @@ window.pmpBuildOutsideProjectPacketRequestPrompt = function(options) {
 };
 </script>
 
+<script id="pmpPacketStoreFunctionRepairV9">
+(function () {
+  var STORE_KEY = "pmp_connected_project_packet_store_v9";
+
+  function byId(id) {
+    return document.getElementById(id);
+  }
+
+  function value(id) {
+    var el = byId(id);
+    return el ? String(el.value || el.textContent || "").trim() : "";
+  }
+
+  function setStatus(v) {
+    var el = byId("statusBox");
+    if (!el) return;
+    el.textContent = typeof v === "string" ? v : JSON.stringify(v, null, 2);
+  }
+
+  function safeText(v) {
+    try { return JSON.stringify(v || {}, null, 2); }
+    catch (e) { return String(v || ""); }
+  }
+
+  function escapeHtml(v) {
+    return String(v == null ? "" : v)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function makeId(prefix) {
+    return prefix + "_" + Date.now() + "_" + Math.random().toString(36).slice(2, 10);
+  }
+
+  function loadStore() {
+    try {
+      var raw = localStorage.getItem(STORE_KEY);
+      if (!raw) throw new Error("empty");
+      var s = JSON.parse(raw);
+      s.projects = s.projects || {};
+      s.corpus_inbox_bridge = s.corpus_inbox_bridge || { held_items: [] };
+      return s;
+    } catch (e) {
+      return {
+        type: "PMP_CONNECTED_PROJECT_PACKET_STORE",
+        version: "V9",
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        active_project_state_id: "",
+        active_packet_id: "",
+        projects: {},
+        corpus_inbox_bridge: { held_items: [] }
+      };
+    }
+  }
+
+  function saveStore(store) {
+    store.updated_at = new Date().toISOString();
+    localStorage.setItem(STORE_KEY, JSON.stringify(store));
+    return store;
+  }
+
+  function projectStateId(packet) {
+    return String(packet.project_state_id || packet.project_id || packet.source_project_id || "").trim();
+  }
+
+  function projectName(packet) {
+    return String(packet.project_name || packet.name || "Unnamed Connected Project").trim();
+  }
+
+  function projectKind(packet) {
+    return String(packet.project_kind || packet.project_type || "outside_project").trim();
+  }
+
+  window.pmpCPSSavePacket = function (packet, options) {
+    options = options || {};
+    if (!packet || typeof packet !== "object") {
+      return {
+        ok: false,
+        status: "PACKET_SAVE_BLOCKED",
+        errors: ["Packet is not a JSON object."]
+      };
+    }
+
+    var id = projectStateId(packet);
+    if (!id) {
+      return {
+        ok: false,
+        status: "PACKET_SAVE_BLOCKED",
+        errors: ["Missing project_state_id."]
+      };
+    }
+
+    var store = loadStore();
+    var packetId = options.packet_id || packet.packet_id || makeId("connected_packet");
+    var name = projectName(packet);
+    var kind = projectKind(packet);
+
+    if (!store.projects[id]) {
+      store.projects[id] = {
+        project_state_id: id,
+        project_name: name,
+        project_kind: kind,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        active_packet_id: packetId,
+        packets: []
+      };
+    }
+
+    var project = store.projects[id];
+    project.project_name = name;
+    project.project_kind = kind;
+    project.updated_at = new Date().toISOString();
+
+    var record = {
+      packet_id: packetId,
+      project_state_id: id,
+      project_name: name,
+      project_kind: kind,
+      packet_version: packet.packet_version || packet.version || "unknown",
+      received_at: new Date().toISOString(),
+      label: options.label || name,
+      source: "outside_project_packet",
+      official_status: "not_official",
+      receiver_boundary: "Nothing in this packet becomes official PMP automatically. Use Corpus Inbox + Lossless Quality before promotion.",
+      packet: packet,
+      pipeline_result: null
+    };
+
+    var existingIndex = project.packets.findIndex(function (x) { return x.packet_id === packetId; });
+    if (existingIndex >= 0) project.packets[existingIndex] = record;
+    else project.packets.push(record);
+
+    project.active_packet_id = packetId;
+    store.active_project_state_id = id;
+    store.active_packet_id = packetId;
+    saveStore(store);
+
+    return {
+      ok: true,
+      status: "PACKET_SAVED",
+      project_state_id: id,
+      packet_id: packetId,
+      record: record,
+      next_move: "Tap List Connected Projects, then Run Full Pipeline on Active Packet."
+    };
+  };
+
+  window.pmpCPSListProjects = function () {
+    var store = loadStore();
+    return Object.keys(store.projects).map(function (id) {
+      var p = store.projects[id];
+      return {
+        project_state_id: p.project_state_id,
+        project_name: p.project_name,
+        project_kind: p.project_kind,
+        packet_count: (p.packets || []).length,
+        active_packet_id: p.active_packet_id,
+        updated_at: p.updated_at
+      };
+    });
+  };
+
+  window.pmpCPSListPackets = function (projectStateId) {
+    var store = loadStore();
+    var project = store.projects[String(projectStateId || "").trim()];
+    if (!project) return { ok: false, status: "PROJECT_NOT_FOUND", packets: [] };
+
+    return {
+      ok: true,
+      status: "PACKETS_LISTED",
+      project_state_id: project.project_state_id,
+      project_name: project.project_name,
+      active_packet_id: project.active_packet_id,
+      packets: (project.packets || []).map(function (r) {
+        return {
+          packet_id: r.packet_id,
+          label: r.label,
+          received_at: r.received_at,
+          official_status: r.official_status
+        };
+      })
+    };
+  };
+
+  window.pmpCPSGetPacket = function (projectStateId, packetId) {
+    var store = loadStore();
+    var project = store.projects[String(projectStateId || "").trim()];
+    if (!project) return { ok: false, status: "PROJECT_NOT_FOUND", packet_record: null };
+
+    var selected = packetId || project.active_packet_id;
+    var record = (project.packets || []).find(function (x) { return x.packet_id === selected; }) ||
+                 (project.packets || [])[project.packets.length - 1];
+
+    if (!record) return { ok: false, status: "PACKET_NOT_FOUND", packet_record: null };
+
+    return {
+      ok: true,
+      status: "PACKET_LOADED",
+      project_state_id: project.project_state_id,
+      packet_id: record.packet_id,
+      packet_record: record,
+      packet: record.packet
+    };
+  };
+
+  window.pmpCPSSelectPacket = function (projectStateId, packetId) {
+    var store = loadStore();
+    var project = store.projects[String(projectStateId || "").trim()];
+    if (!project) return { ok: false, status: "PROJECT_NOT_FOUND" };
+
+    var selected = packetId || project.active_packet_id || ((project.packets || [])[project.packets.length - 1] || {}).packet_id;
+    if (!(project.packets || []).some(function (x) { return x.packet_id === selected; })) {
+      return { ok: false, status: "PACKET_NOT_FOUND" };
+    }
+
+    project.active_packet_id = selected;
+    store.active_project_state_id = project.project_state_id;
+    store.active_packet_id = selected;
+    saveStore(store);
+
+    var loaded = window.pmpCPSGetPacket(project.project_state_id, selected);
+    return {
+      ok: true,
+      status: "PACKET_SELECTED",
+      project_state_id: project.project_state_id,
+      packet_id: selected,
+      packet_record: loaded.packet_record,
+      packet: loaded.packet
+    };
+  };
+
+  window.pmpCPSGetActivePacket = function () {
+    var store = loadStore();
+    if (!store.active_project_state_id) return { ok: false, status: "NO_ACTIVE_PACKET" };
+    return window.pmpCPSGetPacket(store.active_project_state_id, store.active_packet_id);
+  };
+
+  window.pmpRunFullPacketPipeline = window.pmpRunFullPacketPipeline || function (packet) {
+    var missing = [];
+    if (!projectStateId(packet)) missing.push("project_state_id");
+    if (!packet.source_identity_capture) missing.push("source_identity_capture");
+    if (!packet.transfer_body_capture) missing.push("transfer_body_capture");
+    if (!packet.packet_tracks) missing.push("packet_tracks");
+    if (!packet.quality_truth) missing.push("quality_truth");
+    if (!packet.receiver_safe_handoff) missing.push("receiver_safe_handoff");
+
+    var exportReady = missing.length === 0;
+
+    return {
+      type: "PMP_FULL_PACKET_PIPELINE_RESULT",
+      status: exportReady ? "FULL_PIPELINE_EXPORT_READY" : "FULL_PIPELINE_BLOCKED_WITH_CLEAR_FIRST_REPAIR",
+      export_ready: exportReady,
+      stage_results: [
+        { stage: "Packet Shape", status: exportReady ? "PASS" : "BLOCKED", passed: exportReady, warning: false }
+      ],
+      blockers: missing.map(function (m) {
+        return { stage: "Packet Shape", required_repair: "Missing " + m };
+      }),
+      first_blocker: missing.length ? { stage: "Packet Shape", required_repair: "Missing " + missing[0] } : null,
+      next_move: exportReady
+        ? "Packet is ready for connected-project storage and later Lossless Quality review."
+        : "Repair missing field: " + missing[0]
+    };
+  };
+
+  window.pmpCPSRunFullPipelineOnActivePacket = function () {
+    var active = window.pmpCPSGetActivePacket();
+    if (!active.ok) return { ok: false, status: "NO_ACTIVE_PACKET" };
+
+    var result = window.pmpRunFullPacketPipeline(active.packet);
+    var store = loadStore();
+    var project = store.projects[active.project_state_id];
+    if (project) {
+      var record = (project.packets || []).find(function (x) { return x.packet_id === active.packet_id; });
+      if (record) {
+        record.pipeline_result = result;
+        record.pipeline_ran_at = new Date().toISOString();
+        saveStore(store);
+      }
+    }
+
+    return {
+      ok: true,
+      status: "FULL_PIPELINE_RUN_COMPLETE",
+      project_state_id: active.project_state_id,
+      packet_id: active.packet_id,
+      pipeline_result: result,
+      next_move: result.next_move
+    };
+  };
+
+  window.pmpCPSSendToCorpusInbox = function (material) {
+    var store = loadStore();
+    var active = window.pmpCPSGetActivePacket();
+    var item = {
+      corpus_item_id: makeId("corpus_candidate"),
+      created_at: new Date().toISOString(),
+      source: "connected_project_packet_store",
+      project_state_id: active.ok ? active.project_state_id : "",
+      packet_id: active.ok ? active.packet_id : "",
+      material: material,
+      status: "held_in_corpus_inbox_candidate",
+      official_status: "not_official",
+      boundary: "Must run Lossless Quality before promotion."
+    };
+    store.corpus_inbox_bridge.held_items.push(item);
+    saveStore(store);
+    return { ok: true, status: "SENT_TO_CORPUS_INBOX_BRIDGE", corpus_item: item };
+  };
+
+  window.pmpCPSListCorpusInboxBridgeItems = function () {
+    var store = loadStore();
+    return { ok: true, status: "CORPUS_INBOX_BRIDGE_LISTED", count: store.corpus_inbox_bridge.held_items.length, items: store.corpus_inbox_bridge.held_items };
+  };
+
+  window.renderProjectList = function () {
+    var container = byId("projectList");
+    if (!container) return window.pmpCPSListProjects();
+
+    var projects = window.pmpCPSListProjects();
+    if (!projects.length) {
+      container.innerHTML = '<div class="pmp-conn-box">No connected project packets saved yet.</div>';
+      return projects;
+    }
+
+    container.innerHTML = projects.map(function (p) {
+      return '<div class="pmp-conn-box">' +
+        '<strong>' + escapeHtml(p.project_name) + '</strong><br>' +
+        'State ID: <code>' + escapeHtml(p.project_state_id) + '</code><br>' +
+        'Kind: ' + escapeHtml(p.project_kind) + '<br>' +
+        'Packets: ' + escapeHtml(p.packet_count) + '<br>' +
+        '<button type="button" data-pmp-select-project="' + escapeHtml(p.project_state_id) + '">Select</button>' +
+        '</div>';
+    }).join("");
+
+    return projects;
+  };
+
+  window.renderPipelineResult = function (result) {
+    var el = byId("pipelineReport");
+    if (!el) return;
+    var blockers = result && result.blockers ? result.blockers : [];
+    el.innerHTML =
+      '<div><strong>' + escapeHtml(result.status || "") + '</strong></div>' +
+      '<div>Export Ready: ' + (result.export_ready ? "yes" : "no") + '</div>' +
+      '<div>Next Move: ' + escapeHtml(result.next_move || "") + '</div>' +
+      '<h4>Blockers</h4>' +
+      (blockers.length ? blockers.map(function (b) {
+        return '<div class="pmp-conn-box">' + escapeHtml(b.stage) + " — " + escapeHtml(b.required_repair) + '</div>';
+      }).join("") : "none");
+  };
+
+  document.addEventListener("click", function (e) {
+    var target = e.target;
+    var text = String(target && (target.innerText || target.textContent) || "").trim().toLowerCase();
+
+    if (target && target.getAttribute && target.getAttribute("data-pmp-select-project")) {
+      var id = target.getAttribute("data-pmp-select-project");
+      var selected = window.pmpCPSSelectPacket(id);
+      setStatus(selected);
+      return;
+    }
+
+    if (text === "list connected projects") {
+      var list = window.renderProjectList();
+      setStatus({ ok: true, status: "CONNECTED_PROJECTS_LISTED", count: list.length });
+      return;
+    }
+
+    if (text === "run full pipeline on active packet") {
+      var pipe = window.pmpCPSRunFullPipelineOnActivePacket();
+      if (pipe.ok) window.renderPipelineResult(pipe.pipeline_result);
+      setStatus(pipe);
+      return;
+    }
+
+    if (text === "send to corpus inbox bridge") {
+      var material = value("selectedMaterialInput");
+      if (!material) return setStatus({ ok: false, status: "NO_MATERIAL_SELECTED" });
+      setStatus(window.pmpCPSSendToCorpusInbox(material));
+      return;
+    }
+
+    if (text === "list corpus bridge items") {
+      setStatus(window.pmpCPSListCorpusInboxBridgeItems());
+      return;
+    }
+  }, true);
+
+  setStatus({ ok: true, status: "PACKET_STORE_READY_V9" });
+})();
+</script>
+
 </body>
 </html>
