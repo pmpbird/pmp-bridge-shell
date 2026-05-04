@@ -2150,5 +2150,78 @@ window.pmpBuildOutsideProjectPacketRequestPrompt = function(options) {
 })();
 </script>
 
+<script id="pmpHideOldOtherProjectPacketPanelV10">
+(function () {
+  function text(el) {
+    return String(el && (el.innerText || el.textContent) || "");
+  }
+
+  function hide(el) {
+    if (!el) return false;
+    el.style.display = "none";
+    el.setAttribute("data-pmp-hidden-old-other-project-packet", "true");
+    return true;
+  }
+
+  function findOldPacketContainerFromHeading(heading) {
+    var node = heading;
+    for (var i = 0; i < 8 && node; i++) {
+      var t = text(node);
+      var hasHeading = /Other Project Packet/i.test(t);
+      var hasPacketBox =
+        /Paste another project/i.test(t) ||
+        /body transfer packet/i.test(t) ||
+        /Save Packet to Project/i.test(t) ||
+        /Load Latest Packet/i.test(t) ||
+        /No packet loaded/i.test(t);
+
+      var hasLookup = /Other Project Lookup/i.test(t);
+
+      if (hasHeading && hasPacketBox && !hasLookup) return node;
+      node = node.parentElement;
+    }
+
+    return heading.closest("section, article, .panel, .card, .screen, div");
+  }
+
+  function run() {
+    var headings = Array.prototype.slice.call(document.querySelectorAll("h1,h2,h3,h4"));
+    headings.forEach(function (h) {
+      var label = text(h).trim();
+      if (label === "Other Project Packet") {
+        hide(findOldPacketContainerFromHeading(h));
+      }
+    });
+
+    /* Backup route: find the old packet textarea by placeholder and hide its local panel. */
+    var textareas = Array.prototype.slice.call(document.querySelectorAll("textarea"));
+    textareas.forEach(function (ta) {
+      var ph = String(ta.getAttribute("placeholder") || "");
+      if (/Paste another project.*body transfer packet/i.test(ph)) {
+        var node = ta;
+        for (var i = 0; i < 8 && node; i++) {
+          var t = text(node);
+          if (/Other Project Packet/i.test(t) && !/Other Project Lookup/i.test(t)) {
+            hide(node);
+            return;
+          }
+          node = node.parentElement;
+        }
+      }
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", run);
+  } else {
+    run();
+  }
+
+  setTimeout(run, 250);
+  setTimeout(run, 1000);
+  document.addEventListener("click", function () { setTimeout(run, 80); }, true);
+})();
+</script>
+
 </body>
 </html>
