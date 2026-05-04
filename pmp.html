@@ -2223,5 +2223,215 @@ window.pmpBuildOutsideProjectPacketRequestPrompt = function(options) {
 })();
 </script>
 
+<script id="pmpPacketListByProjectStateIdV11">
+(function () {
+  function byId(id) {
+    return document.getElementById(id);
+  }
+
+  function escapeHtml(v) {
+    return String(v == null ? "" : v)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function setStatus(v) {
+    var el = byId("statusBox");
+    if (!el) return;
+    el.textContent = typeof v === "string" ? v : JSON.stringify(v, null, 2);
+  }
+
+  function getActivePacketIds() {
+    if (typeof window.pmpCPSGetActivePacket !== "function") {
+      return { project_state_id: "", packet_id: "" };
+    }
+
+    var active = window.pmpCPSGetActivePacket();
+    if (!active || !active.ok) return { project_state_id: "", packet_id: "" };
+
+    return {
+      project_state_id: active.project_state_id || "",
+      packet_id: active.packet_id || ""
+    };
+  }
+
+  function packetCard(projectId, packet, active) {
+    return [
+      '<div class="pmp-conn-box" style="' + (active ? 'outline:3px solid #9ff;' : '') + '">',
+      '  <strong>' + escapeHtml(packet.label || packet.packet_id || "Packet") + '</strong>',
+      active ? ' <span style="font-weight:900;">ACTIVE</span>' : '',
+      '  <br>',
+      '  <span>Packet ID:</span><br>',
+      '  <code>' + escapeHtml(packet.packet_id || "") + '</code>',
+      '  <br>',
+      '  <span>Received:</span> ' + escapeHtml(packet.received_at || ""),
+      '  <br>',
+      '  <span>Status:</span> ' + escapeHtml(packet.official_status || "not_official"),
+      '  <br>',
+      '  <button type="button" data-pmp-select-packet-project="' + escapeHtml(projectId) + '" data-pmp-select-packet-id="' + escapeHtml(packet.packet_id || "") + '">Make Active</button>',
+      '</div>'
+    ].join("");
+  }
+
+  window.renderProjectList = function () {
+    var projectList = byId("projectList");
+    var packetList = byId("packetList");
+
+    if (!projectList) {
+      return [];
+    }
+
+    if (typeof window.pmpCPSListProjects !== "function") {
+      projectList.innerHTML = '<div class="pmp-conn-box">Packet store function is missing.</div>';
+      return [];
+    }
+
+    var projects = window.pmpCPSListProjects();
+    var active = getActivePacketIds();
+
+    if (!projects.length) {
+      projectList.innerHTML = '<div class="pmp-conn-box">No connected project packets saved yet.</div>';
+      if (packetList) packetList.innerHTML = "";
+      return [];
+    }
+
+    projectList.innerHTML = projects.map(function (project) {
+      var projectId = project.project_state_id || "";
+      var packetsResult = typeof window.pmpCPSListPackets === "function"
+        ? window.pmpCPSListPackets(projectId)
+        : { ok: false, packets: [] };
+
+      var packets = packetsResult.ok ? (packetsResult.packets || []) : [];
+
+      return [
+        '<div class="pmp-conn-box">',
+        '  <h3 style="margin-top:0;">' + escapeHtml(project.project_name || "Unnamed Project") + '</h3>',
+        '  <div><strong>project_state_id</strong></div>',
+        '  <code>' + escapeHtml(projectId) + '</code>',
+        '  <div style="margin-top:8px;">Kind: ' + escapeHtml(project.project_kind || "") + '</div>',
+        '  <div>Packets saved: ' + escapeHtml(project.packet_count || packets.length || 0) + '</div>',
+        '  <button type="button" data-pmp-show-project-packets="' + escapeHtml(projectId) + '">Show Packets</button>',
+        '  <button type="button" data-pmp-select-latest-packet="' + escapeHtml(projectId) + '">Make Latest Active</button>',
+        '  <div style="margin-top:12px;">',
+        packets.length
+          ? packets.map(function (packet) {
+              var isActive =
+                active.project_state_id === projectId &&
+                active.packet_id === packet.packet_id;
+              return packetCard(projectId, packet, isActive);
+            }).join("")
+          : '<div class="pmp-conn-box">No packets found under this project_state_id.</div>',
+        '  </div>',
+        '</div>'
+      ].join("");
+    }).join("");
+
+    if (packetList) {
+      packetList.innerHTML = '<div class="pmp-conn-box">Showing all saved packets grouped by project_state_id above.</div>';
+    }
+
+    return projects;
+  };
+
+  window.renderPacketListForProjectStateId = function (projectId) {
+    var packetList = byId("packetList");
+    if (!packetList) return;
+
+    if (typeof window.pmpCPSListPackets !== "function") {
+      packetList.innerHTML = '<div class="pmp-conn-box">pmpCPSListPackets is missing.</div>';
+      return;
+    }
+
+    var result = window.pmpCPSListPackets(projectId);
+    var active = getActivePacketIds();
+
+    if (!result.ok) {
+      packetList.innerHTML = '<div class="pmp-conn-box">' + escapeHtml(result.status || "PROJECT_NOT_FOUND") + '</div>';
+      return;
+    }
+
+    packetList.innerHTML = [
+      '<div class="pmp-conn-box">',
+      '<h3 style="margin-top:0;">Packets under project_state_id</h3>',
+      '<code>' + escapeHtml(projectId) + '</code>',
+      result.packets && result.packets.length
+        ? result.packets.map(function (packet) {
+            var isActive =
+              active.project_state_id === projectId &&
+              active.packet_id === packet.packet_id;
+            return packetCard(projectId, packet, isActive);
+          }).join("")
+        : '<div class="pmp-conn-box">No packets found.</div>',
+      '</div>'
+    ].join("");
+  };
+
+  function selectPacket(projectId, packetId) {
+    if (typeof window.pmpCPSSelectPacket !== "function") {
+      setStatus({ ok: false, status: "SELECT_PACKET_FUNCTION_MISSING" });
+      return;
+    }
+
+    var result = window.pmpCPSSelectPacket(projectId, packetId);
+    setStatus(result);
+
+    if (result && result.ok) {
+      window.renderProjectList();
+      window.renderPacketListForProjectStateId(projectId);
+    }
+  }
+
+  document.addEventListener("click", function (e) {
+    var target = e.target;
+    if (!target || !target.getAttribute) return;
+
+    var showProject = target.getAttribute("data-pmp-show-project-packets");
+    if (showProject) {
+      e.preventDefault();
+      window.renderPacketListForProjectStateId(showProject);
+      setStatus({
+        ok: true,
+        status: "PACKETS_LISTED_FOR_PROJECT_STATE_ID",
+        project_state_id: showProject
+      });
+      return;
+    }
+
+    var selectLatest = target.getAttribute("data-pmp-select-latest-packet");
+    if (selectLatest) {
+      e.preventDefault();
+
+      if (typeof window.pmpCPSListPackets !== "function") {
+        setStatus({ ok: false, status: "LIST_PACKETS_FUNCTION_MISSING" });
+        return;
+      }
+
+      var list = window.pmpCPSListPackets(selectLatest);
+      if (!list.ok || !list.packets || !list.packets.length) {
+        setStatus({ ok: false, status: "NO_PACKET_TO_SELECT", project_state_id: selectLatest });
+        return;
+      }
+
+      var latest = list.packets[list.packets.length - 1];
+      selectPacket(selectLatest, latest.packet_id);
+      return;
+    }
+
+    var projectId = target.getAttribute("data-pmp-select-packet-project");
+    var packetId = target.getAttribute("data-pmp-select-packet-id");
+
+    if (projectId && packetId) {
+      e.preventDefault();
+      selectPacket(projectId, packetId);
+    }
+  }, true);
+
+  setStatus({ ok: true, status: "PACKET_LIST_BY_PROJECT_STATE_ID_READY_V11" });
+})();
+</script>
+
 </body>
 </html>
