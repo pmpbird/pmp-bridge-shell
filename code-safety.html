@@ -29,10 +29,10 @@
   <div class="wrap">
     <div class="card">
       <h1>Code Safety</h1>
-      <p class="sub">Private safety page. Save Safe Point now stores a real local snapshot of pmp.html in this browser. It does not edit pmp.html.</p>
-      <button class="big" onclick="saveSafePoint()"><span>Save Safe Point<small>Fetch pmp.html, hash it, and save a local private snapshot.</small></span><span class="chev">›</span></button>
+      <p class="sub">Private safety page. Save Safe Point stores a real local snapshot of pmp.html in this browser. It does not edit pmp.html.</p>
+      <button class="big" onclick="saveSafePoint()"><span>Save Safe Point<small>Fetch pmp.html, run DOM guard, hash it, and save a local private snapshot.</small></span><span class="chev">›</span></button>
       <button class="big green" onclick="repairAppShell()"><span>Repair App<small>Still locked until restore/commit rules are connected.</small></span><span class="chev">›</span></button>
-      <div id="mainStatus" class="note">CODE_SAFETY_SAVEPOINT_V1_READY\nMain app untouched.</div>
+      <div id="mainStatus" class="note">CODE_SAFETY_SAVEPOINT_V1_1_READY\nGuard now shows blockers/warnings and uses DOM parsing to avoid false warnings from text inside scripts. Main app untouched.</div>
     </div>
 
     <div class="card">
@@ -56,7 +56,7 @@
 
     <div id="find" class="card hidden">
       <h2>Find Version</h2>
-      <p class="sub">Search saved safe points by ID, label, hash, commit hint, status, or note.</p>
+      <p class="sub">Search saved safe points by ID, label, hash, commit hint, status, warning, blocker, or note.</p>
       <input id="findQuery" placeholder="Search safe points">
       <button class="mini" onclick="renderSafePointSearch()">Search</button>
       <div id="findResults" class="note" style="margin-top:10px">No search yet.</div>
@@ -97,7 +97,7 @@
 
     <div class="card">
       <h2>Precaution Record</h2>
-      <div class="warn" id="precautionBox">pmp.html was not edited by this update. A branch named safe-point-before-real-savepoint-v1 was created before this change. This page stores snapshots only in localStorage on this browser until encryption/commit repair is added.</div>
+      <div class="warn" id="precautionBox">pmp.html was not edited by this update. Existing WARNING safe points remain saved but should be replaced by a new clean Last Good after this page reloads.</div>
     </div>
   </div>
 
@@ -110,7 +110,6 @@
     function byId(id){return document.getElementById(id)}
     function now(){return new Date().toISOString()}
     function setStatus(v){byId('mainStatus').textContent=typeof v==='string'?v:JSON.stringify(v,null,2)}
-    function escapeText(v){return String(v==null?'':v)}
 
     function bank(){
       try{
@@ -118,7 +117,7 @@
         const b=raw?JSON.parse(raw):null;
         if(b&&Array.isArray(b.safe_points)){
           b.type='PMP_CODE_SAFETY_BANK';
-          b.version='1.0';
+          b.version='1.1';
           b.quarantine=Array.isArray(b.quarantine)?b.quarantine:[];
           b.bank_state=b.bank_state||{};
           b.audit_log=Array.isArray(b.audit_log)?b.audit_log:[];
@@ -127,7 +126,7 @@
       }catch(e){}
       return {
         type:'PMP_CODE_SAFETY_BANK',
-        version:'1.0',
+        version:'1.1',
         privacy:{visibility:'private_local_browser_storage',public_repo_contains_bank:false},
         bank_state:{current_safe_point_id:'',last_good_safe_point_id:'',pinned_emergency_safe_point_id:'',bank_health:'UNKNOWN',last_integrity_check_at:''},
         safe_points:[],
@@ -158,25 +157,39 @@
       return text;
     }
 
-    function basicGuard(code){
+    function markerBetween(code,start,end){
+      const a=code.indexOf(start);
+      const b=code.indexOf(end,a+start.length);
+      return a>=0 && b>a;
+    }
+
+    function domGuard(code){
       const blockers=[];
-      const count=(pattern)=>((code.match(pattern)||[]).length);
-      if(!code.includes('<title>PMP</title>')) blockers.push('missing PMP title');
-      if(count(/<script\b/gi)!==count(/<\/script>/gi)) blockers.push('script tag count mismatch');
-      if(count(/<style\b/gi)!==count(/<\/style>/gi)) blockers.push('style tag count mismatch');
-      if(!code.includes('id="world"')) blockers.push('world screen missing');
-      if(!code.includes('id="bridge"')) blockers.push('bridge screen missing');
-      if(!code.includes('id="control"')) blockers.push('control screen missing');
-      if(code.includes('VISIBLE PROJECT LIST REPAIR PATCH')) blockers.push('known broken visible-list patch text present');
-      if(code.includes('pmpVisibleProjectListRepairV12')) blockers.push('known risky V12 repair script present');
-      return {ok:blockers.length===0,status:blockers.length?'GUARD_WARNING':'GUARD_PASS',blockers:blockers};
+      const warnings=[];
+      let doc=null;
+      try{doc=new DOMParser().parseFromString(code,'text/html')}catch(e){blockers.push('DOM parse failed: '+e.message)}
+      if(doc){
+        const title=(doc.querySelector('title')||{}).textContent||'';
+        if(title.trim()!=='PMP') blockers.push('missing PMP title');
+        ['world','bridge','control'].forEach(id=>{if(!doc.getElementById(id))blockers.push(id+' screen missing')});
+        const scripts=doc.querySelectorAll('script').length;
+        const styles=doc.querySelectorAll('style').length;
+        if(scripts<1)blockers.push('no script elements parsed');
+        if(styles<1)blockers.push('no style elements parsed');
+      }
+      if(!markerBetween(code,'<body','</body>'))blockers.push('body boundary not detected');
+      if(!markerBetween(code,'<html','</html>'))blockers.push('html boundary not detected');
+      if(code.includes('VISIBLE PROJECT LIST REPAIR PATCH'))blockers.push('known broken visible-list patch text present');
+      if(code.includes('pmpVisibleProjectListRepairV12'))blockers.push('known risky V12 repair script present');
+      if(code.includes("' + '") && code.includes('PACKET_LIST_BY_PROJECT_STATE_ID_READY_V11'))warnings.push('old patch-string residue detected; app may still be okay, but review before future patching');
+      return {ok:blockers.length===0,status:blockers.length?'GUARD_BLOCKED':'GUARD_PASS',blockers:blockers,warnings:warnings};
     }
 
     async function saveSafePoint(){
       setStatus({ok:true,status:'SAVE_SAFE_POINT_STARTED',target_file:TARGET_FILE});
       try{
         const code=await fetchCurrentAppCode();
-        const guard=basicGuard(code);
+        const guard=domGuard(code);
         const hash=await sha256(code);
         const b=bank();
         const id='sp_'+Date.now()+'_'+hash.slice(0,8);
@@ -192,22 +205,23 @@
           clean_status:guard.ok?'CLEAN':'WARNING',
           guard_status:guard.status,
           blockers:guard.blockers,
+          warnings:guard.warnings,
           is_current:true,
           is_last_good:guard.ok,
           is_pinned:false,
           is_quarantined:false,
           storage_mode:'localStorage_plain_snapshot_v1',
           code_snapshot:code,
-          note:'Saved by Code Safety v1. pmp.html was fetched and stored locally in this browser. Not committed to public repo.'
+          note:'Saved by Code Safety v1.1. pmp.html was fetched and stored locally in this browser. Not committed to public repo.'
         };
         b.safe_points.forEach(sp=>{sp.is_current=false});
         b.safe_points.push(record);
         b.bank_state.current_safe_point_id=id;
         if(guard.ok)b.bank_state.last_good_safe_point_id=id;
         b.bank_state.bank_health=guard.ok?'PASS':'WARNING';
-        b.audit_log.push({at:now(),event:'SAFE_POINT_SAVED',safe_point_id:id,guard_status:guard.status});
+        b.audit_log.push({at:now(),event:'SAFE_POINT_SAVED',safe_point_id:id,guard_status:guard.status,blockers:guard.blockers,warnings:guard.warnings});
         saveBank(b);
-        setStatus({ok:true,status:'SAFE_POINT_SAVED',safe_point_id:id,clean_status:record.clean_status,marked_last_good:record.is_last_good,code_hash:hash.slice(0,16)+'...',main_app_touched:false});
+        setStatus({ok:true,status:'SAFE_POINT_SAVED',safe_point_id:id,clean_status:record.clean_status,marked_last_good:record.is_last_good,guard_status:guard.status,blockers:guard.blockers,warnings:guard.warnings,code_hash:hash.slice(0,16)+'...',main_app_touched:false});
       }catch(e){
         setStatus({ok:false,status:'SAFE_POINT_SAVE_FAILED',error:e.message,main_app_touched:false});
       }
@@ -230,11 +244,14 @@
         'created_at: '+sp.created_at,
         'label: '+(sp.version_label||''),
         'status: '+(sp.clean_status||sp.status||''),
+        'guard_status: '+(sp.guard_status||''),
         'last_good: '+!!sp.is_last_good,
         'current: '+!!sp.is_current,
         'hash: '+(sp.code_hash||'').slice(0,24),
         'size: '+(sp.code_size||0),
         'commit_hint: '+(sp.commit_hint||''),
+        'blockers: '+((sp.blockers||[]).join('; ')||'none'),
+        'warnings: '+((sp.warnings||[]).join('; ')||'none'),
         'note: '+(sp.note||'')
       ].join('\n');
     }
@@ -269,18 +286,7 @@
     function buildRestorePacket(id){
       const sp=findSafePoint(id);
       if(!sp) return null;
-      return {
-        type:'PMP_CODE_RESTORE_PACKET_V1',
-        built_at:now(),
-        role:'manual_restore_packet_from_local_safe_point',
-        target_file:TARGET_FILE,
-        safe_point_id:sp.safe_point_id,
-        code_hash:sp.code_hash,
-        code_size:sp.code_size,
-        commit_hint:sp.commit_hint,
-        restore_warning:'This packet is for manual/advanced restore. Code Safety v1 does not auto-commit to GitHub yet.',
-        code_snapshot:sp.code_snapshot||''
-      };
+      return {type:'PMP_CODE_RESTORE_PACKET_V1',built_at:now(),role:'manual_restore_packet_from_local_safe_point',target_file:TARGET_FILE,safe_point_id:sp.safe_point_id,code_hash:sp.code_hash,code_size:sp.code_size,commit_hint:sp.commit_hint,restore_warning:'This packet is for manual/advanced restore. Code Safety v1.1 does not auto-commit to GitHub yet.',code_snapshot:sp.code_snapshot||''};
     }
 
     function previewRestorePacket(){
@@ -301,16 +307,7 @@
       const a=findSafePoint(byId('compareFrom').value.trim());
       const c=findSafePoint(byId('compareTo').value.trim());
       if(!a||!c){byId('compareOut').textContent='Both safe_point_id values must exist.';return}
-      const result={
-        from:a.safe_point_id,
-        to:c.safe_point_id,
-        same_hash:a.code_hash===c.code_hash,
-        size_delta:(c.code_size||0)-(a.code_size||0),
-        from_status:a.clean_status,
-        to_status:c.clean_status,
-        risk:a.code_hash===c.code_hash?'LOW: code hash matches':'REVIEW: code changed; inspect before trusting',
-        recommendation:a.code_hash===c.code_hash?'Versions appear identical by hash.':'Use Guard + Smoke Test before marking newer version Last Good.'
-      };
+      const result={from:a.safe_point_id,to:c.safe_point_id,same_hash:a.code_hash===c.code_hash,size_delta:(c.code_size||0)-(a.code_size||0),from_status:a.clean_status,to_status:c.clean_status,risk:a.code_hash===c.code_hash?'LOW: code hash matches':'REVIEW: code changed; inspect before trusting',recommendation:a.code_hash===c.code_hash?'Versions appear identical by hash.':'Use Guard + Smoke Test before marking newer version Last Good.'};
       byId('compareOut').textContent=JSON.stringify(result,null,2);
     }
 
