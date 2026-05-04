@@ -32,7 +32,7 @@
       <p class="sub">Private safety page. Save Safe Point stores a real local snapshot of pmp.html in this browser. It does not edit pmp.html.</p>
       <button class="big" onclick="saveSafePoint()"><span>Save Safe Point<small>Fetch pmp.html, run DOM guard, hash it, and save a local private snapshot.</small></span><span class="chev">›</span></button>
       <button class="big green" onclick="repairAppShell()"><span>Repair App<small>Still locked until restore/commit rules are connected.</small></span><span class="chev">›</span></button>
-      <div id="mainStatus" class="note">CODE_SAFETY_SAVEPOINT_V1_1_READY\nGuard now shows blockers/warnings and uses DOM parsing to avoid false warnings from text inside scripts. Main app untouched.</div>
+      <div id="mainStatus" class="note">CODE_SAFETY_SAVEPOINT_V1_2_READY\nPinned Emergency and Auto-Catch are added. Main app untouched.</div>
     </div>
 
     <div class="card">
@@ -42,6 +42,18 @@
         <button class="mini" onclick="refreshBankView()">Refresh Bank</button>
         <button class="mini" onclick="copyBankSummary()">Copy Bank Summary</button>
       </div>
+    </div>
+
+    <div class="card">
+      <h2>Automatic Safe Points</h2>
+      <p class="sub">Auto-Catch can save a new safe point when this Code Safety page opens and sees that pmp.html changed. Full after-every-update protection still requires future Safe Writer / Safe Update Transaction integration.</p>
+      <div class="grid">
+        <button class="mini" onclick="enableAutoCatch()">Enable Auto-Catch</button>
+        <button class="mini" onclick="disableAutoCatch()">Disable Auto-Catch</button>
+        <button class="mini" onclick="runAutoCatchNow()">Run Auto-Catch Now</button>
+        <button class="mini" onclick="showAutoCatchStatus()">Auto-Catch Status</button>
+      </div>
+      <div id="autoCatchBox" class="note" style="margin-top:10px">Auto-Catch status loading...</div>
     </div>
 
     <div class="card">
@@ -56,7 +68,7 @@
 
     <div id="find" class="card hidden">
       <h2>Find Version</h2>
-      <p class="sub">Search saved safe points by ID, label, hash, commit hint, status, warning, blocker, or note.</p>
+      <p class="sub">Search saved safe points by ID, label, hash, commit hint, status, warning, blocker, pinned state, or note.</p>
       <input id="findQuery" placeholder="Search safe points">
       <button class="mini" onclick="renderSafePointSearch()">Search</button>
       <div id="findResults" class="note" style="margin-top:10px">No search yet.</div>
@@ -87,9 +99,11 @@
       <p class="sub">Private safe-point bank care.</p>
       <div class="grid">
         <button class="mini" onclick="verifyBank()">Verify Bank</button>
+        <button class="mini" onclick="pinLastGoodEmergency()">Pin Last Good as Emergency</button>
         <button class="mini" onclick="exportBank()">Export Bank</button>
         <button class="mini" onclick="importBank()">Import Bank</button>
         <button class="mini" onclick="viewQuarantine()">View Quarantine</button>
+        <button class="mini" onclick="clearWarningCurrent()">Make Last Good Current</button>
       </div>
       <textarea id="bankTransferBox" placeholder="Export appears here. Paste import JSON here."></textarea>
       <div id="manageOut" class="note" style="margin-top:10px">Bank tools ready.</div>
@@ -97,7 +111,7 @@
 
     <div class="card">
       <h2>Precaution Record</h2>
-      <div class="warn" id="precautionBox">pmp.html was not edited by this update. Existing WARNING safe points remain saved but should be replaced by a new clean Last Good after this page reloads.</div>
+      <div class="warn" id="precautionBox">pmp.html was not edited by this update. A branch named safe-point-before-pinned-emergency-v2 was created before this change. The bank can now pin a clean Last Good as Emergency. Auto-Catch is available, but true after-every-update saving is only partial until update tools call it automatically.</div>
     </div>
   </div>
 
@@ -117,18 +131,20 @@
         const b=raw?JSON.parse(raw):null;
         if(b&&Array.isArray(b.safe_points)){
           b.type='PMP_CODE_SAFETY_BANK';
-          b.version='1.1';
+          b.version='1.2';
           b.quarantine=Array.isArray(b.quarantine)?b.quarantine:[];
           b.bank_state=b.bank_state||{};
+          b.settings=b.settings||{};
           b.audit_log=Array.isArray(b.audit_log)?b.audit_log:[];
           return b;
         }
       }catch(e){}
       return {
         type:'PMP_CODE_SAFETY_BANK',
-        version:'1.1',
+        version:'1.2',
         privacy:{visibility:'private_local_browser_storage',public_repo_contains_bank:false},
-        bank_state:{current_safe_point_id:'',last_good_safe_point_id:'',pinned_emergency_safe_point_id:'',bank_health:'UNKNOWN',last_integrity_check_at:''},
+        bank_state:{current_safe_point_id:'',last_good_safe_point_id:'',pinned_emergency_safe_point_id:'',bank_health:'UNKNOWN',last_integrity_check_at:'',last_seen_code_hash:''},
+        settings:{auto_catch_on_open:false,auto_catch_clean_only:true},
         safe_points:[],
         quarantine:[],
         audit_log:[],
@@ -140,6 +156,7 @@
       b.updated_at=now();
       localStorage.setItem(BANK_KEY,JSON.stringify(b));
       refreshBankView();
+      showAutoCatchStatus();
     }
 
     async function sha256(text){
@@ -185,6 +202,39 @@
       return {ok:blockers.length===0,status:blockers.length?'GUARD_BLOCKED':'GUARD_PASS',blockers:blockers,warnings:warnings};
     }
 
+    function addSafePointRecord(b, code, hash, guard, reason, label){
+      const id='sp_'+Date.now()+'_'+hash.slice(0,8);
+      const record={
+        safe_point_id:id,
+        created_at:now(),
+        version_label:label||'safe point before future app update',
+        save_reason:reason||'manual_safe_point',
+        target_file:TARGET_FILE,
+        commit_hint:CURRENT_APP_COMMIT_HINT,
+        code_hash:hash,
+        code_size:code.length,
+        clean_status:guard.ok?'CLEAN':'WARNING',
+        guard_status:guard.status,
+        blockers:guard.blockers,
+        warnings:guard.warnings,
+        is_current:true,
+        is_last_good:guard.ok,
+        is_pinned:false,
+        is_quarantined:false,
+        storage_mode:'localStorage_plain_snapshot_v1',
+        code_snapshot:code,
+        note:'Saved by Code Safety v1.2. pmp.html was fetched and stored locally in this browser. Not committed to public repo.'
+      };
+      b.safe_points.forEach(sp=>{sp.is_current=false});
+      b.safe_points.push(record);
+      b.bank_state.current_safe_point_id=id;
+      b.bank_state.last_seen_code_hash=hash;
+      if(guard.ok)b.bank_state.last_good_safe_point_id=id;
+      b.bank_state.bank_health=guard.ok?'PASS':'WARNING';
+      b.audit_log.push({at:now(),event:'SAFE_POINT_SAVED',reason:reason||'manual_safe_point',safe_point_id:id,guard_status:guard.status,blockers:guard.blockers,warnings:guard.warnings});
+      return record;
+    }
+
     async function saveSafePoint(){
       setStatus({ok:true,status:'SAVE_SAFE_POINT_STARTED',target_file:TARGET_FILE});
       try{
@@ -192,44 +242,79 @@
         const guard=domGuard(code);
         const hash=await sha256(code);
         const b=bank();
-        const id='sp_'+Date.now()+'_'+hash.slice(0,8);
-        const record={
-          safe_point_id:id,
-          created_at:now(),
-          version_label:'manual safe point before future app update',
-          save_reason:'manual_safe_point',
-          target_file:TARGET_FILE,
-          commit_hint:CURRENT_APP_COMMIT_HINT,
-          code_hash:hash,
-          code_size:code.length,
-          clean_status:guard.ok?'CLEAN':'WARNING',
-          guard_status:guard.status,
-          blockers:guard.blockers,
-          warnings:guard.warnings,
-          is_current:true,
-          is_last_good:guard.ok,
-          is_pinned:false,
-          is_quarantined:false,
-          storage_mode:'localStorage_plain_snapshot_v1',
-          code_snapshot:code,
-          note:'Saved by Code Safety v1.1. pmp.html was fetched and stored locally in this browser. Not committed to public repo.'
-        };
-        b.safe_points.forEach(sp=>{sp.is_current=false});
-        b.safe_points.push(record);
-        b.bank_state.current_safe_point_id=id;
-        if(guard.ok)b.bank_state.last_good_safe_point_id=id;
-        b.bank_state.bank_health=guard.ok?'PASS':'WARNING';
-        b.audit_log.push({at:now(),event:'SAFE_POINT_SAVED',safe_point_id:id,guard_status:guard.status,blockers:guard.blockers,warnings:guard.warnings});
+        const record=addSafePointRecord(b,code,hash,guard,'manual_safe_point','manual safe point before future app update');
         saveBank(b);
-        setStatus({ok:true,status:'SAFE_POINT_SAVED',safe_point_id:id,clean_status:record.clean_status,marked_last_good:record.is_last_good,guard_status:guard.status,blockers:guard.blockers,warnings:guard.warnings,code_hash:hash.slice(0,16)+'...',main_app_touched:false});
+        setStatus({ok:true,status:'SAFE_POINT_SAVED',safe_point_id:record.safe_point_id,clean_status:record.clean_status,marked_last_good:record.is_last_good,guard_status:guard.status,blockers:guard.blockers,warnings:guard.warnings,code_hash:hash.slice(0,16)+'...',main_app_touched:false});
       }catch(e){
         setStatus({ok:false,status:'SAFE_POINT_SAVE_FAILED',error:e.message,main_app_touched:false});
       }
     }
 
+    async function runAutoCatchNow(silent){
+      try{
+        const code=await fetchCurrentAppCode();
+        const guard=domGuard(code);
+        const hash=await sha256(code);
+        const b=bank();
+        const lastHash=b.bank_state.last_seen_code_hash || (b.safe_points[b.safe_points.length-1]||{}).code_hash || '';
+        if(hash===lastHash){
+          b.bank_state.last_seen_code_hash=hash;
+          saveBank(b);
+          const msg={ok:true,status:'AUTO_CATCH_NO_CHANGE',code_hash:hash.slice(0,16)+'...',auto_catch_on_open:!!b.settings.auto_catch_on_open};
+          if(!silent)setStatus(msg);
+          return msg;
+        }
+        if(!guard.ok && b.settings.auto_catch_clean_only!==false){
+          b.bank_state.last_seen_code_hash=hash;
+          b.audit_log.push({at:now(),event:'AUTO_CATCH_BLOCKED',blockers:guard.blockers,warnings:guard.warnings});
+          saveBank(b);
+          const msg={ok:false,status:'AUTO_CATCH_BLOCKED_NOT_CLEAN',blockers:guard.blockers,warnings:guard.warnings};
+          if(!silent)setStatus(msg);
+          return msg;
+        }
+        const record=addSafePointRecord(b,code,hash,guard,'auto_catch_after_detected_change','auto-catch safe point after detected pmp.html change');
+        saveBank(b);
+        const msg={ok:true,status:'AUTO_CATCH_SAFE_POINT_SAVED',safe_point_id:record.safe_point_id,clean_status:record.clean_status,marked_last_good:record.is_last_good,main_app_touched:false};
+        if(!silent)setStatus(msg);
+        return msg;
+      }catch(e){
+        const msg={ok:false,status:'AUTO_CATCH_FAILED',error:e.message};
+        if(!silent)setStatus(msg);
+        return msg;
+      }
+    }
+
+    function enableAutoCatch(){
+      const b=bank();
+      b.settings.auto_catch_on_open=true;
+      b.settings.auto_catch_clean_only=true;
+      b.audit_log.push({at:now(),event:'AUTO_CATCH_ENABLED'});
+      saveBank(b);
+      setStatus({ok:true,status:'AUTO_CATCH_ENABLED',meaning:'When Code Safety opens, it can save a new clean safe point if pmp.html changed.',limit:'This is not full automatic after every update until update tools call Code Safety.'});
+    }
+
+    function disableAutoCatch(){
+      const b=bank();
+      b.settings.auto_catch_on_open=false;
+      b.audit_log.push({at:now(),event:'AUTO_CATCH_DISABLED'});
+      saveBank(b);
+      setStatus({ok:true,status:'AUTO_CATCH_DISABLED'});
+    }
+
+    function showAutoCatchStatus(){
+      const b=bank();
+      byId('autoCatchBox').textContent=[
+        'Auto-Catch on open: '+!!b.settings.auto_catch_on_open,
+        'Clean only: '+(b.settings.auto_catch_clean_only!==false),
+        'Last seen hash: '+(b.bank_state.last_seen_code_hash||'').slice(0,24),
+        'Ability now: saves after update only when Code Safety opens or Run Auto-Catch Now is tapped.',
+        'Full ability later: Safe Writer / Safe Update Transaction must call Auto-Catch before and after commits.'
+      ].join('\n');
+    }
+
     function repairAppShell(){
       const b=bank();
-      setStatus({ok:false,status:'REPAIR_APP_NOT_CONNECTED_YET',last_good_safe_point_id:b.bank_state.last_good_safe_point_id||'',next:'Use Restore Version to preview/copy a restore packet. GitHub write-back is not connected yet.',main_app_touched:false});
+      setStatus({ok:false,status:'REPAIR_APP_NOT_CONNECTED_YET',last_good_safe_point_id:b.bank_state.last_good_safe_point_id||'',pinned_emergency_safe_point_id:b.bank_state.pinned_emergency_safe_point_id||'',next:'Use Restore Version to preview/copy a restore packet. GitHub write-back is not connected yet.',main_app_touched:false});
     }
 
     function openPanel(id){
@@ -243,10 +328,12 @@
         'safe_point_id: '+sp.safe_point_id,
         'created_at: '+sp.created_at,
         'label: '+(sp.version_label||''),
+        'reason: '+(sp.save_reason||''),
         'status: '+(sp.clean_status||sp.status||''),
         'guard_status: '+(sp.guard_status||''),
         'last_good: '+!!sp.is_last_good,
         'current: '+!!sp.is_current,
+        'pinned: '+!!sp.is_pinned,
         'hash: '+(sp.code_hash||'').slice(0,24),
         'size: '+(sp.code_size||0),
         'commit_hint: '+(sp.commit_hint||''),
@@ -286,7 +373,7 @@
     function buildRestorePacket(id){
       const sp=findSafePoint(id);
       if(!sp) return null;
-      return {type:'PMP_CODE_RESTORE_PACKET_V1',built_at:now(),role:'manual_restore_packet_from_local_safe_point',target_file:TARGET_FILE,safe_point_id:sp.safe_point_id,code_hash:sp.code_hash,code_size:sp.code_size,commit_hint:sp.commit_hint,restore_warning:'This packet is for manual/advanced restore. Code Safety v1.1 does not auto-commit to GitHub yet.',code_snapshot:sp.code_snapshot||''};
+      return {type:'PMP_CODE_RESTORE_PACKET_V1',built_at:now(),role:'manual_restore_packet_from_local_safe_point',target_file:TARGET_FILE,safe_point_id:sp.safe_point_id,code_hash:sp.code_hash,code_size:sp.code_size,commit_hint:sp.commit_hint,restore_warning:'This packet is for manual/advanced restore. Code Safety v1.2 does not auto-commit to GitHub yet.',code_snapshot:sp.code_snapshot||''};
     }
 
     function previewRestorePacket(){
@@ -322,10 +409,39 @@
         if(!sp.code_hash)issues.push('safe point missing code_hash: '+sp.safe_point_id);
         if(!sp.code_snapshot)issues.push('safe point missing code_snapshot: '+sp.safe_point_id);
       });
+      if(b.bank_state.pinned_emergency_safe_point_id && !b.safe_points.some(sp=>sp.safe_point_id===b.bank_state.pinned_emergency_safe_point_id))issues.push('pinned emergency safe point is missing');
       b.bank_state.bank_health=issues.length?'WARNING':'PASS';
       b.bank_state.last_integrity_check_at=now();
       saveBank(b);
       byId('manageOut').textContent=JSON.stringify({ok:!issues.length,status:issues.length?'BANK_WARNING':'BANK_PASS',issues:issues},null,2);
+    }
+
+    function pinLastGoodEmergency(){
+      const b=bank();
+      const id=b.bank_state.last_good_safe_point_id;
+      const sp=b.safe_points.find(x=>x.safe_point_id===id);
+      if(!sp){byId('manageOut').textContent='No Last Good safe point found to pin.';return}
+      if(sp.clean_status!=='CLEAN'||sp.guard_status!=='GUARD_PASS'){
+        byId('manageOut').textContent='Cannot pin emergency. Last Good is not clean.';
+        return;
+      }
+      b.safe_points.forEach(x=>{if(x.safe_point_id===id)x.is_pinned=true});
+      b.bank_state.pinned_emergency_safe_point_id=id;
+      b.audit_log.push({at:now(),event:'PINNED_EMERGENCY_SET',safe_point_id:id});
+      saveBank(b);
+      byId('manageOut').textContent=JSON.stringify({ok:true,status:'PINNED_EMERGENCY_SET',pinned_emergency_safe_point_id:id},null,2);
+    }
+
+    function clearWarningCurrent(){
+      const b=bank();
+      const id=b.bank_state.last_good_safe_point_id;
+      if(!id){byId('manageOut').textContent='No Last Good exists yet.';return}
+      b.safe_points.forEach(sp=>{sp.is_current=sp.safe_point_id===id});
+      b.bank_state.current_safe_point_id=id;
+      b.bank_state.bank_health='PASS';
+      b.audit_log.push({at:now(),event:'MAKE_LAST_GOOD_CURRENT',safe_point_id:id});
+      saveBank(b);
+      byId('manageOut').textContent='Last Good is now current. Older warning points remain saved but not current.';
     }
 
     function exportBank(){
@@ -358,6 +474,8 @@
     }
 
     refreshBankView();
+    showAutoCatchStatus();
+    setTimeout(function(){const b=bank(); if(b.settings.auto_catch_on_open)runAutoCatchNow(true);},500);
   </script>
 </body>
 </html>
