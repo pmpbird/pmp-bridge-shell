@@ -7,475 +7,114 @@
   <meta name="apple-mobile-web-app-title" content="PMP Code Safety">
   <title>PMP Code Safety</title>
   <style>
-    :root{--a:#a1fcfd;--a2:#7ed9da;--bg:#52b5df;--card:#46a9d3;--line:#fff;--text:#101827;--muted:#234a5d;--dark:#0c141e;--panel:#172234;--ok:#c9f7d7;--warn:#ffe0a3}
-    *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-    .wrap{max-width:820px;margin:auto;padding:18px 14px 96px}
-    .card{background:var(--card);border:2px solid var(--line);border-radius:28px;padding:18px;margin:0 0 16px;box-shadow:0 12px 28px #0002,inset 0 0 0 1px #fff2}
-    h1{margin:0 0 10px;font-size:34px} h2{margin:0 0 12px;font-size:24px} h3{margin:12px 0 8px;font-size:20px}
-    .sub{color:var(--muted);font-weight:800;line-height:1.35}
-    .big{display:flex;align-items:center;gap:14px;width:100%;border:0;border-radius:20px;padding:18px;margin:12px 0;color:#101827;background:var(--a);text-align:left;font:inherit;font-weight:900;font-size:19px;box-shadow:0 8px 18px #0002}
-    .big small{display:block;font-size:14px;font-weight:600;opacity:.9}.chev{margin-left:auto;font-size:32px}.green{background:var(--a2)}
-    .mini{border:1px solid #25354a;background:var(--panel);color:#eef4fb;border-radius:14px;padding:14px;font:inherit;font-weight:900;width:100%;margin-top:10px}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-    .note{background:#123024;border:2px solid var(--line);color:var(--ok);border-radius:22px;padding:16px;white-space:pre-wrap;overflow-wrap:anywhere}
-    .warn{background:#2b2010;border:2px solid #745522;color:var(--warn);border-radius:22px;padding:16px;white-space:pre-wrap;overflow-wrap:anywhere}
-    input,textarea,select{width:100%;border:1px solid #25354a;border-radius:16px;background:var(--dark);color:#eef4fb;padding:13px;font:inherit;margin-top:10px}
-    textarea{min-height:135px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}.hidden{display:none!important}
-    code{background:#0c141e;color:#eef4fb;border-radius:8px;padding:2px 6px;overflow-wrap:anywhere}
+    :root{--a:#a1fcfd;--a2:#7ed9da;--bg:#52b5df;--card:#46a9d3;--line:#fff;--text:#101827;--muted:#234a5d;--dark:#0c141e;--panel:#172234;--ok:#c9f7d7;--warn:#ffe0a3;--bad:#ffd1d1}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.wrap{max-width:820px;margin:auto;padding:18px 14px 96px}.card{background:var(--card);border:2px solid var(--line);border-radius:28px;padding:18px;margin:0 0 16px;box-shadow:0 12px 28px #0002,inset 0 0 0 1px #fff2}h1{margin:0 0 10px;font-size:34px}h2{margin:0 0 12px;font-size:24px}h3{margin:12px 0 8px;font-size:20px}.sub{color:var(--muted);font-weight:800;line-height:1.35}.big{display:flex;align-items:center;gap:14px;width:100%;border:0;border-radius:20px;padding:18px;margin:12px 0;color:#101827;background:var(--a);text-align:left;font:inherit;font-weight:900;font-size:19px;box-shadow:0 8px 18px #0002}.big small{display:block;font-size:14px;font-weight:600;opacity:.9}.chev{margin-left:auto;font-size:32px}.green{background:var(--a2)}.mini{border:1px solid #25354a;background:var(--panel);color:#eef4fb;border-radius:14px;padding:14px;font:inherit;font-weight:900;width:100%;margin-top:10px}.danger{background:#401010;color:#ffe7e7}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.note{background:#123024;border:2px solid var(--line);color:var(--ok);border-radius:22px;padding:16px;white-space:pre-wrap;overflow-wrap:anywhere}.warn{background:#2b2010;border:2px solid #745522;color:var(--warn);border-radius:22px;padding:16px;white-space:pre-wrap;overflow-wrap:anywhere}.bad{background:#351414;border:2px solid #7d3333;color:var(--bad);border-radius:22px;padding:16px;white-space:pre-wrap;overflow-wrap:anywhere}input,textarea,select{width:100%;border:1px solid #25354a;border-radius:16px;background:var(--dark);color:#eef4fb;padding:13px;font:inherit;margin-top:10px}textarea{min-height:135px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}.vault{min-height:300px}.hidden{display:none!important}
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <h1>Code Safety</h1>
-      <p class="sub">Private safety page. Save Safe Point stores a real local snapshot of pmp.html in this browser. It does not edit pmp.html.</p>
-      <button class="big" onclick="saveSafePoint()"><span>Save Safe Point<small>Fetch pmp.html, run DOM guard, hash it, and save a local private snapshot.</small></span><span class="chev">›</span></button>
-      <button class="big green" onclick="repairAppShell()"><span>Repair App<small>Still locked until restore/commit rules are connected.</small></span><span class="chev">›</span></button>
-      <div id="mainStatus" class="note">CODE_SAFETY_SAVEPOINT_V1_2_READY\nPinned Emergency and Auto-Catch are added. Main app untouched.</div>
-    </div>
-
-    <div class="card">
-      <h2>Bank Snapshot</h2>
-      <div id="bankSnapshot" class="note">Loading bank...</div>
-      <div class="grid">
-        <button class="mini" onclick="refreshBankView()">Refresh Bank</button>
-        <button class="mini" onclick="copyBankSummary()">Copy Bank Summary</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Automatic Safe Points</h2>
-      <p class="sub">Auto-Catch can save a new safe point when this Code Safety page opens and sees that pmp.html changed. Full after-every-update protection still requires future Safe Writer / Safe Update Transaction integration.</p>
-      <div class="grid">
-        <button class="mini" onclick="enableAutoCatch()">Enable Auto-Catch</button>
-        <button class="mini" onclick="disableAutoCatch()">Disable Auto-Catch</button>
-        <button class="mini" onclick="runAutoCatchNow()">Run Auto-Catch Now</button>
-        <button class="mini" onclick="showAutoCatchStatus()">Auto-Catch Status</button>
-      </div>
-      <div id="autoCatchBox" class="note" style="margin-top:10px">Auto-Catch status loading...</div>
-    </div>
-
-    <div class="card">
-      <h2>Advanced Repair</h2>
-      <div class="grid">
-        <button class="mini" onclick="openPanel('find')">Find Version</button>
-        <button class="mini" onclick="openPanel('restore')">Restore Version</button>
-        <button class="mini" onclick="openPanel('compare')">Compare Versions</button>
-        <button class="mini" onclick="openPanel('manage')">Manage Bank</button>
-      </div>
-    </div>
-
-    <div id="find" class="card hidden">
-      <h2>Find Version</h2>
-      <p class="sub">Search saved safe points by ID, label, hash, commit hint, status, warning, blocker, pinned state, or note.</p>
-      <input id="findQuery" placeholder="Search safe points">
-      <button class="mini" onclick="renderSafePointSearch()">Search</button>
-      <div id="findResults" class="note" style="margin-top:10px">No search yet.</div>
-    </div>
-
-    <div id="restore" class="card hidden">
-      <h2>Restore Version</h2>
-      <p class="sub">Restore is not allowed to write to GitHub yet. For now this can inspect/copy a safe-point restore packet.</p>
-      <input id="restoreId" placeholder="Paste safe_point_id">
-      <div class="grid">
-        <button class="mini" onclick="previewRestorePacket()">Preview Restore Packet</button>
-        <button class="mini" onclick="copyRestorePacket()">Copy Restore Packet</button>
-      </div>
-      <div id="restoreOut" class="note" style="margin-top:10px">Restore writer not connected yet.</div>
-    </div>
-
-    <div id="compare" class="card hidden">
-      <h2>Compare Versions</h2>
-      <p class="sub">Compare two saved versions before trusting a change.</p>
-      <input id="compareFrom" placeholder="From safe_point_id">
-      <input id="compareTo" placeholder="To safe_point_id">
-      <button class="mini" onclick="compareSafePoints()">Compare</button>
-      <div id="compareOut" class="note" style="margin-top:10px">No comparison yet.</div>
-    </div>
-
-    <div id="manage" class="card hidden">
-      <h2>Manage Bank</h2>
-      <p class="sub">Private safe-point bank care.</p>
-      <div class="grid">
-        <button class="mini" onclick="verifyBank()">Verify Bank</button>
-        <button class="mini" onclick="pinLastGoodEmergency()">Pin Last Good as Emergency</button>
-        <button class="mini" onclick="exportBank()">Export Bank</button>
-        <button class="mini" onclick="importBank()">Import Bank</button>
-        <button class="mini" onclick="viewQuarantine()">View Quarantine</button>
-        <button class="mini" onclick="clearWarningCurrent()">Make Last Good Current</button>
-      </div>
-      <textarea id="bankTransferBox" placeholder="Export appears here. Paste import JSON here."></textarea>
-      <div id="manageOut" class="note" style="margin-top:10px">Bank tools ready.</div>
-    </div>
-
-    <div class="card">
-      <h2>Precaution Record</h2>
-      <div class="warn" id="precautionBox">pmp.html was not edited by this update. A branch named safe-point-before-pinned-emergency-v2 was created before this change. The bank can now pin a clean Last Good as Emergency. Auto-Catch is available, but true after-every-update saving is only partial until update tools call it automatically.</div>
-    </div>
+<div class="wrap">
+  <div class="card">
+    <h1>Code Safety</h1>
+    <p class="sub">Private safety page. Safe Update Transaction is now the protected way to update pmp.html: before safe point → guard → commit → after safe point.</p>
+    <button class="big" onclick="saveSafePoint()"><span>Save Safe Point<small>Fetch pmp.html, run DOM guard, hash it, and save a local private snapshot.</small></span><span class="chev">›</span></button>
+    <button class="big green" onclick="repairAppShell()"><span>Repair App<small>Still locked until restore write-back is connected.</small></span><span class="chev">›</span></button>
+    <div id="mainStatus" class="note">CODE_SAFETY_SAFE_UPDATE_TRANSACTION_V1_READY\nUse Safe Update Transaction for protected app updates.</div>
   </div>
 
-  <script>
-    const BANK_KEY='pmp_code_safety_bank_v1';
-    const LEGACY_KEY='pmp_code_safety_bank_v1_shell';
-    const TARGET_FILE='pmp.html';
-    const CURRENT_APP_COMMIT_HINT='59503e7f3b1ae3d2f2ea538753d852631ca58dfa';
+  <div class="card">
+    <h2>Bank Snapshot</h2>
+    <div id="bankSnapshot" class="note">Loading bank...</div>
+    <div class="grid"><button class="mini" onclick="refreshBankView()">Refresh Bank</button><button class="mini" onclick="copyBankSummary()">Copy Bank Summary</button></div>
+  </div>
 
-    function byId(id){return document.getElementById(id)}
-    function now(){return new Date().toISOString()}
-    function setStatus(v){byId('mainStatus').textContent=typeof v==='string'?v:JSON.stringify(v,null,2)}
+  <div class="card">
+    <h2>Safe Update Transaction</h2>
+    <p class="sub">Use this for every real app update. It saves the current code before the update, blocks unsafe staged code, commits only clean staged code, then saves the after-update code as Last Good.</p>
+    <input id="ghToken" type="password" placeholder="GitHub token for this transaction only">
+    <div class="grid"><input id="ghRepo" value="pmpbird/pmp-bridge-shell"><input id="ghBranch" value="main"></div>
+    <input id="ghPath" value="pmp.html">
+    <input id="ghMsg" value="Safe update transaction">
+    <textarea id="stagedCode" class="vault" placeholder="Paste the COMPLETE new pmp.html here. Do not paste partial patches here."></textarea>
+    <div class="grid">
+      <button class="mini" onclick="fetchCurrentIntoStaging()">Fetch Current Into Staging</button>
+      <button class="mini" onclick="guardStagedCode()">Guard Staged Code</button>
+      <button class="mini" onclick="previewTransaction()">Preview Transaction</button>
+      <button class="mini danger" onclick="runSafeUpdateTransaction()">Run Safe Update Transaction</button>
+    </div>
+    <div id="transactionStatus" class="note" style="margin-top:10px">Ready. No update running.</div>
+  </div>
 
-    function bank(){
-      try{
-        const raw=localStorage.getItem(BANK_KEY)||localStorage.getItem(LEGACY_KEY)||'';
-        const b=raw?JSON.parse(raw):null;
-        if(b&&Array.isArray(b.safe_points)){
-          b.type='PMP_CODE_SAFETY_BANK';
-          b.version='1.2';
-          b.quarantine=Array.isArray(b.quarantine)?b.quarantine:[];
-          b.bank_state=b.bank_state||{};
-          b.settings=b.settings||{};
-          b.audit_log=Array.isArray(b.audit_log)?b.audit_log:[];
-          return b;
-        }
-      }catch(e){}
-      return {
-        type:'PMP_CODE_SAFETY_BANK',
-        version:'1.2',
-        privacy:{visibility:'private_local_browser_storage',public_repo_contains_bank:false},
-        bank_state:{current_safe_point_id:'',last_good_safe_point_id:'',pinned_emergency_safe_point_id:'',bank_health:'UNKNOWN',last_integrity_check_at:'',last_seen_code_hash:''},
-        settings:{auto_catch_on_open:false,auto_catch_clean_only:true},
-        safe_points:[],
-        quarantine:[],
-        audit_log:[],
-        created_at:now()
-      };
-    }
+  <div class="card">
+    <h2>Automatic Safe Points</h2>
+    <p class="sub">Auto-Catch saves a new clean safe point when Code Safety opens and pmp.html changed. Safe Update Transaction is stronger because it saves before and after the update.</p>
+    <div class="grid"><button class="mini" onclick="enableAutoCatch()">Enable Auto-Catch</button><button class="mini" onclick="disableAutoCatch()">Disable Auto-Catch</button><button class="mini" onclick="runAutoCatchNow()">Run Auto-Catch Now</button><button class="mini" onclick="showAutoCatchStatus()">Auto-Catch Status</button></div>
+    <div id="autoCatchBox" class="note" style="margin-top:10px">Auto-Catch status loading...</div>
+  </div>
 
-    function saveBank(b){
-      b.updated_at=now();
-      localStorage.setItem(BANK_KEY,JSON.stringify(b));
-      refreshBankView();
-      showAutoCatchStatus();
-    }
+  <div class="card">
+    <h2>Advanced Repair</h2>
+    <div class="grid"><button class="mini" onclick="openPanel('find')">Find Version</button><button class="mini" onclick="openPanel('restore')">Restore Version</button><button class="mini" onclick="openPanel('compare')">Compare Versions</button><button class="mini" onclick="openPanel('manage')">Manage Bank</button></div>
+  </div>
 
-    async function sha256(text){
-      const bytes=new TextEncoder().encode(text);
-      const hash=await crypto.subtle.digest('SHA-256',bytes);
-      return Array.from(new Uint8Array(hash)).map(x=>x.toString(16).padStart(2,'0')).join('');
-    }
+  <div id="find" class="card hidden"><h2>Find Version</h2><p class="sub">Search saved safe points by ID, label, hash, commit hint, status, warning, blocker, pinned state, or note.</p><input id="findQuery" placeholder="Search safe points"><button class="mini" onclick="renderSafePointSearch()">Search</button><div id="findResults" class="note" style="margin-top:10px">No search yet.</div></div>
 
-    async function fetchCurrentAppCode(){
-      const url=TARGET_FILE+'?code_safety_fetch='+Date.now();
-      const res=await fetch(url,{cache:'no-store'});
-      if(!res.ok) throw new Error('Fetch failed: '+res.status+' '+res.statusText);
-      const text=await res.text();
-      if(!/^\s*<!doctype html/i.test(text) && !/<html/i.test(text)) throw new Error('Fetched file does not look like HTML.');
-      return text;
-    }
+  <div id="restore" class="card hidden"><h2>Restore Version</h2><p class="sub">Restore write-back is not connected yet. For now this can inspect/copy a safe-point restore packet.</p><input id="restoreId" placeholder="Paste safe_point_id"><div class="grid"><button class="mini" onclick="previewRestorePacket()">Preview Restore Packet</button><button class="mini" onclick="copyRestorePacket()">Copy Restore Packet</button></div><div id="restoreOut" class="note" style="margin-top:10px">Restore writer not connected yet.</div></div>
 
-    function markerBetween(code,start,end){
-      const a=code.indexOf(start);
-      const b=code.indexOf(end,a+start.length);
-      return a>=0 && b>a;
-    }
+  <div id="compare" class="card hidden"><h2>Compare Versions</h2><p class="sub">Compare two saved versions before trusting a change.</p><input id="compareFrom" placeholder="From safe_point_id"><input id="compareTo" placeholder="To safe_point_id"><button class="mini" onclick="compareSafePoints()">Compare</button><div id="compareOut" class="note" style="margin-top:10px">No comparison yet.</div></div>
 
-    function domGuard(code){
-      const blockers=[];
-      const warnings=[];
-      let doc=null;
-      try{doc=new DOMParser().parseFromString(code,'text/html')}catch(e){blockers.push('DOM parse failed: '+e.message)}
-      if(doc){
-        const title=(doc.querySelector('title')||{}).textContent||'';
-        if(title.trim()!=='PMP') blockers.push('missing PMP title');
-        ['world','bridge','control'].forEach(id=>{if(!doc.getElementById(id))blockers.push(id+' screen missing')});
-        const scripts=doc.querySelectorAll('script').length;
-        const styles=doc.querySelectorAll('style').length;
-        if(scripts<1)blockers.push('no script elements parsed');
-        if(styles<1)blockers.push('no style elements parsed');
-      }
-      if(!markerBetween(code,'<body','</body>'))blockers.push('body boundary not detected');
-      if(!markerBetween(code,'<html','</html>'))blockers.push('html boundary not detected');
-      if(code.includes('VISIBLE PROJECT LIST REPAIR PATCH'))blockers.push('known broken visible-list patch text present');
-      if(code.includes('pmpVisibleProjectListRepairV12'))blockers.push('known risky V12 repair script present');
-      if(code.includes("' + '") && code.includes('PACKET_LIST_BY_PROJECT_STATE_ID_READY_V11'))warnings.push('old patch-string residue detected; app may still be okay, but review before future patching');
-      return {ok:blockers.length===0,status:blockers.length?'GUARD_BLOCKED':'GUARD_PASS',blockers:blockers,warnings:warnings};
-    }
+  <div id="manage" class="card hidden"><h2>Manage Bank</h2><p class="sub">Private safe-point bank care.</p><div class="grid"><button class="mini" onclick="verifyBank()">Verify Bank</button><button class="mini" onclick="pinLastGoodEmergency()">Pin Last Good as Emergency</button><button class="mini" onclick="exportBank()">Export Bank</button><button class="mini" onclick="importBank()">Import Bank</button><button class="mini" onclick="viewQuarantine()">View Quarantine</button><button class="mini" onclick="clearWarningCurrent()">Make Last Good Current</button></div><textarea id="bankTransferBox" placeholder="Export appears here. Paste import JSON here."></textarea><div id="manageOut" class="note" style="margin-top:10px">Bank tools ready.</div></div>
 
-    function addSafePointRecord(b, code, hash, guard, reason, label){
-      const id='sp_'+Date.now()+'_'+hash.slice(0,8);
-      const record={
-        safe_point_id:id,
-        created_at:now(),
-        version_label:label||'safe point before future app update',
-        save_reason:reason||'manual_safe_point',
-        target_file:TARGET_FILE,
-        commit_hint:CURRENT_APP_COMMIT_HINT,
-        code_hash:hash,
-        code_size:code.length,
-        clean_status:guard.ok?'CLEAN':'WARNING',
-        guard_status:guard.status,
-        blockers:guard.blockers,
-        warnings:guard.warnings,
-        is_current:true,
-        is_last_good:guard.ok,
-        is_pinned:false,
-        is_quarantined:false,
-        storage_mode:'localStorage_plain_snapshot_v1',
-        code_snapshot:code,
-        note:'Saved by Code Safety v1.2. pmp.html was fetched and stored locally in this browser. Not committed to public repo.'
-      };
-      b.safe_points.forEach(sp=>{sp.is_current=false});
-      b.safe_points.push(record);
-      b.bank_state.current_safe_point_id=id;
-      b.bank_state.last_seen_code_hash=hash;
-      if(guard.ok)b.bank_state.last_good_safe_point_id=id;
-      b.bank_state.bank_health=guard.ok?'PASS':'WARNING';
-      b.audit_log.push({at:now(),event:'SAFE_POINT_SAVED',reason:reason||'manual_safe_point',safe_point_id:id,guard_status:guard.status,blockers:guard.blockers,warnings:guard.warnings});
-      return record;
-    }
+  <div class="card"><h2>Precaution Record</h2><div class="warn">pmp.html was not edited by installing this page. A branch named safe-point-before-safe-update-transaction-v3 was created first. From now on, real app updates should go through Safe Update Transaction so the bank gets before and after safe points.</div></div>
+</div>
 
-    async function saveSafePoint(){
-      setStatus({ok:true,status:'SAVE_SAFE_POINT_STARTED',target_file:TARGET_FILE});
-      try{
-        const code=await fetchCurrentAppCode();
-        const guard=domGuard(code);
-        const hash=await sha256(code);
-        const b=bank();
-        const record=addSafePointRecord(b,code,hash,guard,'manual_safe_point','manual safe point before future app update');
-        saveBank(b);
-        setStatus({ok:true,status:'SAFE_POINT_SAVED',safe_point_id:record.safe_point_id,clean_status:record.clean_status,marked_last_good:record.is_last_good,guard_status:guard.status,blockers:guard.blockers,warnings:guard.warnings,code_hash:hash.slice(0,16)+'...',main_app_touched:false});
-      }catch(e){
-        setStatus({ok:false,status:'SAFE_POINT_SAVE_FAILED',error:e.message,main_app_touched:false});
-      }
-    }
-
-    async function runAutoCatchNow(silent){
-      try{
-        const code=await fetchCurrentAppCode();
-        const guard=domGuard(code);
-        const hash=await sha256(code);
-        const b=bank();
-        const lastHash=b.bank_state.last_seen_code_hash || (b.safe_points[b.safe_points.length-1]||{}).code_hash || '';
-        if(hash===lastHash){
-          b.bank_state.last_seen_code_hash=hash;
-          saveBank(b);
-          const msg={ok:true,status:'AUTO_CATCH_NO_CHANGE',code_hash:hash.slice(0,16)+'...',auto_catch_on_open:!!b.settings.auto_catch_on_open};
-          if(!silent)setStatus(msg);
-          return msg;
-        }
-        if(!guard.ok && b.settings.auto_catch_clean_only!==false){
-          b.bank_state.last_seen_code_hash=hash;
-          b.audit_log.push({at:now(),event:'AUTO_CATCH_BLOCKED',blockers:guard.blockers,warnings:guard.warnings});
-          saveBank(b);
-          const msg={ok:false,status:'AUTO_CATCH_BLOCKED_NOT_CLEAN',blockers:guard.blockers,warnings:guard.warnings};
-          if(!silent)setStatus(msg);
-          return msg;
-        }
-        const record=addSafePointRecord(b,code,hash,guard,'auto_catch_after_detected_change','auto-catch safe point after detected pmp.html change');
-        saveBank(b);
-        const msg={ok:true,status:'AUTO_CATCH_SAFE_POINT_SAVED',safe_point_id:record.safe_point_id,clean_status:record.clean_status,marked_last_good:record.is_last_good,main_app_touched:false};
-        if(!silent)setStatus(msg);
-        return msg;
-      }catch(e){
-        const msg={ok:false,status:'AUTO_CATCH_FAILED',error:e.message};
-        if(!silent)setStatus(msg);
-        return msg;
-      }
-    }
-
-    function enableAutoCatch(){
-      const b=bank();
-      b.settings.auto_catch_on_open=true;
-      b.settings.auto_catch_clean_only=true;
-      b.audit_log.push({at:now(),event:'AUTO_CATCH_ENABLED'});
-      saveBank(b);
-      setStatus({ok:true,status:'AUTO_CATCH_ENABLED',meaning:'When Code Safety opens, it can save a new clean safe point if pmp.html changed.',limit:'This is not full automatic after every update until update tools call Code Safety.'});
-    }
-
-    function disableAutoCatch(){
-      const b=bank();
-      b.settings.auto_catch_on_open=false;
-      b.audit_log.push({at:now(),event:'AUTO_CATCH_DISABLED'});
-      saveBank(b);
-      setStatus({ok:true,status:'AUTO_CATCH_DISABLED'});
-    }
-
-    function showAutoCatchStatus(){
-      const b=bank();
-      byId('autoCatchBox').textContent=[
-        'Auto-Catch on open: '+!!b.settings.auto_catch_on_open,
-        'Clean only: '+(b.settings.auto_catch_clean_only!==false),
-        'Last seen hash: '+(b.bank_state.last_seen_code_hash||'').slice(0,24),
-        'Ability now: saves after update only when Code Safety opens or Run Auto-Catch Now is tapped.',
-        'Full ability later: Safe Writer / Safe Update Transaction must call Auto-Catch before and after commits.'
-      ].join('\n');
-    }
-
-    function repairAppShell(){
-      const b=bank();
-      setStatus({ok:false,status:'REPAIR_APP_NOT_CONNECTED_YET',last_good_safe_point_id:b.bank_state.last_good_safe_point_id||'',pinned_emergency_safe_point_id:b.bank_state.pinned_emergency_safe_point_id||'',next:'Use Restore Version to preview/copy a restore packet. GitHub write-back is not connected yet.',main_app_touched:false});
-    }
-
-    function openPanel(id){
-      ['find','restore','compare','manage'].forEach(x=>byId(x).classList.toggle('hidden',x!==id));
-      setStatus({ok:true,status:id.toUpperCase()+'_PANEL_OPEN',main_app_touched:false});
-      if(id==='find') renderSafePointSearch();
-    }
-
-    function safePointLine(sp){
-      return [
-        'safe_point_id: '+sp.safe_point_id,
-        'created_at: '+sp.created_at,
-        'label: '+(sp.version_label||''),
-        'reason: '+(sp.save_reason||''),
-        'status: '+(sp.clean_status||sp.status||''),
-        'guard_status: '+(sp.guard_status||''),
-        'last_good: '+!!sp.is_last_good,
-        'current: '+!!sp.is_current,
-        'pinned: '+!!sp.is_pinned,
-        'hash: '+(sp.code_hash||'').slice(0,24),
-        'size: '+(sp.code_size||0),
-        'commit_hint: '+(sp.commit_hint||''),
-        'blockers: '+((sp.blockers||[]).join('; ')||'none'),
-        'warnings: '+((sp.warnings||[]).join('; ')||'none'),
-        'note: '+(sp.note||'')
-      ].join('\n');
-    }
-
-    function refreshBankView(){
-      const b=bank();
-      const last=b.safe_points[b.safe_points.length-1];
-      byId('bankSnapshot').textContent=[
-        'Bank: '+b.type+' v'+b.version,
-        'Safe points: '+b.safe_points.length,
-        'Current: '+(b.bank_state.current_safe_point_id||''),
-        'Last Good: '+(b.bank_state.last_good_safe_point_id||''),
-        'Pinned Emergency: '+(b.bank_state.pinned_emergency_safe_point_id||''),
-        'Quarantine: '+b.quarantine.length,
-        'Bank Health: '+(b.bank_state.bank_health||'UNKNOWN'),
-        last?'\nLatest Safe Point:\n'+safePointLine(last):'\nNo safe points yet.'
-      ].join('\n');
-    }
-
-    function renderSafePointSearch(){
-      const q=(byId('findQuery').value||'').toLowerCase();
-      const b=bank();
-      const hits=b.safe_points.filter(sp=>!q||JSON.stringify(sp).toLowerCase().includes(q));
-      byId('findResults').textContent=hits.length?hits.map(safePointLine).join('\n\n---\n\n'):'No safe points found.';
-    }
-
-    function findSafePoint(id){
-      const b=bank();
-      return b.safe_points.find(sp=>sp.safe_point_id===id)||null;
-    }
-
-    function buildRestorePacket(id){
-      const sp=findSafePoint(id);
-      if(!sp) return null;
-      return {type:'PMP_CODE_RESTORE_PACKET_V1',built_at:now(),role:'manual_restore_packet_from_local_safe_point',target_file:TARGET_FILE,safe_point_id:sp.safe_point_id,code_hash:sp.code_hash,code_size:sp.code_size,commit_hint:sp.commit_hint,restore_warning:'This packet is for manual/advanced restore. Code Safety v1.2 does not auto-commit to GitHub yet.',code_snapshot:sp.code_snapshot||''};
-    }
-
-    function previewRestorePacket(){
-      const id=byId('restoreId').value.trim();
-      const p=buildRestorePacket(id);
-      byId('restoreOut').textContent=p?JSON.stringify({...p,code_snapshot:'[hidden in preview: '+(p.code_snapshot||'').length+' chars]'},null,2):'Safe point not found.';
-    }
-
-    async function copyRestorePacket(){
-      const id=byId('restoreId').value.trim();
-      const p=buildRestorePacket(id);
-      if(!p){byId('restoreOut').textContent='Safe point not found.';return}
-      const text=JSON.stringify(p,null,2);
-      try{await navigator.clipboard.writeText(text);byId('restoreOut').textContent='Restore packet copied.'}catch(e){byId('restoreOut').textContent=text}
-    }
-
-    function compareSafePoints(){
-      const a=findSafePoint(byId('compareFrom').value.trim());
-      const c=findSafePoint(byId('compareTo').value.trim());
-      if(!a||!c){byId('compareOut').textContent='Both safe_point_id values must exist.';return}
-      const result={from:a.safe_point_id,to:c.safe_point_id,same_hash:a.code_hash===c.code_hash,size_delta:(c.code_size||0)-(a.code_size||0),from_status:a.clean_status,to_status:c.clean_status,risk:a.code_hash===c.code_hash?'LOW: code hash matches':'REVIEW: code changed; inspect before trusting',recommendation:a.code_hash===c.code_hash?'Versions appear identical by hash.':'Use Guard + Smoke Test before marking newer version Last Good.'};
-      byId('compareOut').textContent=JSON.stringify(result,null,2);
-    }
-
-    function verifyBank(){
-      const b=bank();
-      const issues=[];
-      const ids=new Set();
-      b.safe_points.forEach(sp=>{
-        if(!sp.safe_point_id)issues.push('safe point missing id');
-        if(ids.has(sp.safe_point_id))issues.push('duplicate safe_point_id: '+sp.safe_point_id);
-        ids.add(sp.safe_point_id);
-        if(!sp.code_hash)issues.push('safe point missing code_hash: '+sp.safe_point_id);
-        if(!sp.code_snapshot)issues.push('safe point missing code_snapshot: '+sp.safe_point_id);
-      });
-      if(b.bank_state.pinned_emergency_safe_point_id && !b.safe_points.some(sp=>sp.safe_point_id===b.bank_state.pinned_emergency_safe_point_id))issues.push('pinned emergency safe point is missing');
-      b.bank_state.bank_health=issues.length?'WARNING':'PASS';
-      b.bank_state.last_integrity_check_at=now();
-      saveBank(b);
-      byId('manageOut').textContent=JSON.stringify({ok:!issues.length,status:issues.length?'BANK_WARNING':'BANK_PASS',issues:issues},null,2);
-    }
-
-    function pinLastGoodEmergency(){
-      const b=bank();
-      const id=b.bank_state.last_good_safe_point_id;
-      const sp=b.safe_points.find(x=>x.safe_point_id===id);
-      if(!sp){byId('manageOut').textContent='No Last Good safe point found to pin.';return}
-      if(sp.clean_status!=='CLEAN'||sp.guard_status!=='GUARD_PASS'){
-        byId('manageOut').textContent='Cannot pin emergency. Last Good is not clean.';
-        return;
-      }
-      b.safe_points.forEach(x=>{if(x.safe_point_id===id)x.is_pinned=true});
-      b.bank_state.pinned_emergency_safe_point_id=id;
-      b.audit_log.push({at:now(),event:'PINNED_EMERGENCY_SET',safe_point_id:id});
-      saveBank(b);
-      byId('manageOut').textContent=JSON.stringify({ok:true,status:'PINNED_EMERGENCY_SET',pinned_emergency_safe_point_id:id},null,2);
-    }
-
-    function clearWarningCurrent(){
-      const b=bank();
-      const id=b.bank_state.last_good_safe_point_id;
-      if(!id){byId('manageOut').textContent='No Last Good exists yet.';return}
-      b.safe_points.forEach(sp=>{sp.is_current=sp.safe_point_id===id});
-      b.bank_state.current_safe_point_id=id;
-      b.bank_state.bank_health='PASS';
-      b.audit_log.push({at:now(),event:'MAKE_LAST_GOOD_CURRENT',safe_point_id:id});
-      saveBank(b);
-      byId('manageOut').textContent='Last Good is now current. Older warning points remain saved but not current.';
-    }
-
-    function exportBank(){
-      const b=bank();
-      byId('bankTransferBox').value=JSON.stringify(b,null,2);
-      byId('manageOut').textContent='Bank exported to the box. This export includes local code snapshots.';
-    }
-
-    function importBank(){
-      try{
-        const incoming=JSON.parse(byId('bankTransferBox').value);
-        if(!incoming||!Array.isArray(incoming.safe_points))throw new Error('Import missing safe_points array.');
-        const b=bank();
-        const existing=new Set(b.safe_points.map(sp=>sp.safe_point_id));
-        incoming.safe_points.forEach(sp=>{if(sp.safe_point_id&&!existing.has(sp.safe_point_id)){b.safe_points.push(sp);existing.add(sp.safe_point_id)}});
-        b.audit_log.push({at:now(),event:'BANK_IMPORTED',imported_count:incoming.safe_points.length});
-        saveBank(b);
-        byId('manageOut').textContent='Bank imported/merged.';
-      }catch(e){byId('manageOut').textContent='Import failed: '+e.message}
-    }
-
-    function viewQuarantine(){
-      const b=bank();
-      byId('manageOut').textContent=b.quarantine.length?JSON.stringify(b.quarantine,null,2):'Quarantine is empty.';
-    }
-
-    async function copyBankSummary(){
-      const text=byId('bankSnapshot').textContent;
-      try{await navigator.clipboard.writeText(text);setStatus({ok:true,status:'BANK_SUMMARY_COPIED'})}catch(e){setStatus({ok:false,status:'COPY_FAILED',error:e.message})}
-    }
-
-    refreshBankView();
-    showAutoCatchStatus();
-    setTimeout(function(){const b=bank(); if(b.settings.auto_catch_on_open)runAutoCatchNow(true);},500);
-  </script>
+<script>
+const BANK_KEY='pmp_code_safety_bank_v1';
+const LEGACY_KEY='pmp_code_safety_bank_v1_shell';
+const DEFAULT_TARGET_FILE='pmp.html';
+const CURRENT_APP_COMMIT_HINT='59503e7f3b1ae3d2f2ea538753d852631ca58dfa';
+function byId(id){return document.getElementById(id)}
+function now(){return new Date().toISOString()}
+function setStatus(v){byId('mainStatus').textContent=typeof v==='string'?v:JSON.stringify(v,null,2)}
+function setTxn(v, bad){const el=byId('transactionStatus');el.className=bad?'bad':'note';el.textContent=typeof v==='string'?v:JSON.stringify(v,null,2)}
+function bank(){try{const raw=localStorage.getItem(BANK_KEY)||localStorage.getItem(LEGACY_KEY)||'';const b=raw?JSON.parse(raw):null;if(b&&Array.isArray(b.safe_points)){b.type='PMP_CODE_SAFETY_BANK';b.version='1.3';b.quarantine=Array.isArray(b.quarantine)?b.quarantine:[];b.bank_state=b.bank_state||{};b.settings=b.settings||{};b.audit_log=Array.isArray(b.audit_log)?b.audit_log:[];return b}}catch(e){}return{type:'PMP_CODE_SAFETY_BANK',version:'1.3',privacy:{visibility:'private_local_browser_storage',public_repo_contains_bank:false},bank_state:{current_safe_point_id:'',last_good_safe_point_id:'',pinned_emergency_safe_point_id:'',bank_health:'UNKNOWN',last_integrity_check_at:'',last_seen_code_hash:''},settings:{auto_catch_on_open:false,auto_catch_clean_only:true},safe_points:[],quarantine:[],audit_log:[],created_at:now()}}
+function saveBank(b){b.updated_at=now();localStorage.setItem(BANK_KEY,JSON.stringify(b));refreshBankView();showAutoCatchStatus()}
+async function sha256(text){const bytes=new TextEncoder().encode(text);const hash=await crypto.subtle.digest('SHA-256',bytes);return Array.from(new Uint8Array(hash)).map(x=>x.toString(16).padStart(2,'0')).join('')}
+function b64encode(str){return btoa(unescape(encodeURIComponent(str)))}
+function b64decode(str){return decodeURIComponent(escape(atob(String(str||'').replace(/\s/g,''))))}
+async function fetchCurrentAppCode(){const url=DEFAULT_TARGET_FILE+'?code_safety_fetch='+Date.now();const res=await fetch(url,{cache:'no-store'});if(!res.ok)throw new Error('Fetch failed: '+res.status+' '+res.statusText);const text=await res.text();if(!/^\s*<!doctype html/i.test(text)&&!/<html/i.test(text))throw new Error('Fetched file does not look like HTML.');return text}
+function markerBetween(code,start,end){const a=code.indexOf(start);const b=code.indexOf(end,a+start.length);return a>=0&&b>a}
+function domGuard(code){const blockers=[];const warnings=[];let doc=null;try{doc=new DOMParser().parseFromString(code,'text/html')}catch(e){blockers.push('DOM parse failed: '+e.message)}if(doc){const title=(doc.querySelector('title')||{}).textContent||'';if(title.trim()!=='PMP')blockers.push('missing PMP title');['world','bridge','control'].forEach(id=>{if(!doc.getElementById(id))blockers.push(id+' screen missing')});const scripts=doc.querySelectorAll('script').length;const styles=doc.querySelectorAll('style').length;if(scripts<1)blockers.push('no script elements parsed');if(styles<1)blockers.push('no style elements parsed')}if(!markerBetween(code,'<body','</body>'))blockers.push('body boundary not detected');if(!markerBetween(code,'<html','</html>'))blockers.push('html boundary not detected');if(code.includes('VISIBLE PROJECT LIST REPAIR PATCH'))blockers.push('known broken visible-list patch text present');if(code.includes('pmpVisibleProjectListRepairV12'))blockers.push('known risky V12 repair script present');return{ok:blockers.length===0,status:blockers.length?'GUARD_BLOCKED':'GUARD_PASS',blockers,warnings}}
+function addSafePointRecord(b,code,hash,guard,reason,label,commitHint){const id='sp_'+Date.now()+'_'+hash.slice(0,8);const record={safe_point_id:id,created_at:now(),version_label:label||'safe point',save_reason:reason||'manual_safe_point',target_file:byId('ghPath')?byId('ghPath').value.trim()||DEFAULT_TARGET_FILE:DEFAULT_TARGET_FILE,commit_hint:commitHint||CURRENT_APP_COMMIT_HINT,code_hash:hash,code_size:code.length,clean_status:guard.ok?'CLEAN':'WARNING',guard_status:guard.status,blockers:guard.blockers,warnings:guard.warnings,is_current:true,is_last_good:guard.ok,is_pinned:false,is_quarantined:false,storage_mode:'localStorage_plain_snapshot_v1',code_snapshot:code,note:'Saved by Code Safety v1.3. Not committed to public bank.'};b.safe_points.forEach(sp=>{sp.is_current=false});b.safe_points.push(record);b.bank_state.current_safe_point_id=id;b.bank_state.last_seen_code_hash=hash;if(guard.ok)b.bank_state.last_good_safe_point_id=id;b.bank_state.bank_health=guard.ok?'PASS':'WARNING';b.audit_log.push({at:now(),event:'SAFE_POINT_SAVED',reason:record.save_reason,safe_point_id:id,guard_status:guard.status,commit_hint:record.commit_hint});return record}
+async function saveSafePoint(){setStatus({ok:true,status:'SAVE_SAFE_POINT_STARTED'});try{const code=await fetchCurrentAppCode();const guard=domGuard(code);const hash=await sha256(code);const b=bank();const record=addSafePointRecord(b,code,hash,guard,'manual_safe_point','manual safe point before future app update');saveBank(b);setStatus({ok:true,status:'SAFE_POINT_SAVED',safe_point_id:record.safe_point_id,clean_status:record.clean_status,marked_last_good:record.is_last_good,guard_status:guard.status,blockers:guard.blockers,warnings:guard.warnings,main_app_touched:false})}catch(e){setStatus({ok:false,status:'SAFE_POINT_SAVE_FAILED',error:e.message,main_app_touched:false})}}
+function ghHeaders(token){return{Accept:'application/vnd.github+json',Authorization:'Bearer '+token,'X-GitHub-Api-Version':'2022-11-28'}}
+async function ghFetchFile(token,repo,branch,path){const url='https://api.github.com/repos/'+repo+'/contents/'+encodeURIComponent(path).replace(/%2F/g,'/')+'?ref='+encodeURIComponent(branch);const res=await fetch(url,{headers:ghHeaders(token)});const data=await res.json().catch(()=>({}));if(!res.ok)throw new Error('GitHub fetch failed: '+res.status+' '+(data.message||res.statusText));return{content:b64decode(data.content||''),sha:data.sha||'',download_url:data.download_url||''}}
+async function ghPutFile(token,repo,branch,path,sha,message,content){const url='https://api.github.com/repos/'+repo+'/contents/'+encodeURIComponent(path).replace(/%2F/g,'/');const body={message:message,content:b64encode(content),sha:sha,branch:branch};const res=await fetch(url,{method:'PUT',headers:{...ghHeaders(token),'Content-Type':'application/json'},body:JSON.stringify(body)});const data=await res.json().catch(()=>({}));if(!res.ok)throw new Error('GitHub commit failed: '+res.status+' '+(data.message||res.statusText));return data}
+async function fetchCurrentIntoStaging(){try{const token=byId('ghToken').value.trim();if(!token)throw new Error('Paste GitHub token first.');const f=await ghFetchFile(token,byId('ghRepo').value.trim(),byId('ghBranch').value.trim(),byId('ghPath').value.trim());byId('stagedCode').value=f.content;setTxn({ok:true,status:'CURRENT_FETCHED_INTO_STAGING',sha:f.sha,size:f.content.length})}catch(e){setTxn({ok:false,status:'FETCH_CURRENT_FAILED',error:e.message},true)}}
+async function guardStagedCode(){const code=byId('stagedCode').value;if(!code.trim())return setTxn({ok:false,status:'NO_STAGED_CODE'},true);const guard=domGuard(code);const hash=await sha256(code);setTxn({ok:guard.ok,status:guard.status,clean_status:guard.ok?'CLEAN':'WARNING',blockers:guard.blockers,warnings:guard.warnings,hash:hash.slice(0,16)+'...',size:code.length},!guard.ok)}
+async function previewTransaction(){const code=byId('stagedCode').value;const guard=domGuard(code);const b=bank();setTxn({transaction:'SAFE_UPDATE_TRANSACTION',path:byId('ghPath').value.trim(),branch:byId('ghBranch').value.trim(),steps:['fetch current from GitHub','save BEFORE safe point','guard staged complete pmp.html','commit staged code to GitHub','save AFTER safe point','mark after safe point Last Good if clean'],staged_clean:guard.ok,blockers:guard.blockers,current_last_good:b.bank_state.last_good_safe_point_id||'',pinned_emergency:b.bank_state.pinned_emergency_safe_point_id||''},!guard.ok)}
+async function runSafeUpdateTransaction(){try{const token=byId('ghToken').value.trim();if(!token)throw new Error('Paste GitHub token first.');const repo=byId('ghRepo').value.trim();const branch=byId('ghBranch').value.trim();const path=byId('ghPath').value.trim();const message=byId('ghMsg').value.trim()||'Safe update transaction';const staged=byId('stagedCode').value;if(!staged.trim())throw new Error('Paste the complete new pmp.html into staged code first.');const stagedGuard=domGuard(staged);if(!stagedGuard.ok)throw new Error('STAGED_CODE_BLOCKED: '+stagedGuard.blockers.join('; '));setTxn({ok:true,status:'TRANSACTION_STARTED',step:'fetch current'});const current=await ghFetchFile(token,repo,branch,path);const currentGuard=domGuard(current.content);const currentHash=await sha256(current.content);const b=bank();const before=addSafePointRecord(b,current.content,currentHash,currentGuard,'transaction_before_update','BEFORE safe update transaction',current.sha);saveBank(b);setTxn({ok:true,status:'BEFORE_SAFE_POINT_SAVED',before_safe_point_id:before.safe_point_id,step:'commit staged'});const result=await ghPutFile(token,repo,branch,path,current.sha,message,staged);const commitSha=(result.commit&&result.commit.sha)||'';const stagedHash=await sha256(staged);const after=addSafePointRecord(b,staged,stagedHash,stagedGuard,'transaction_after_update','AFTER safe update transaction',commitSha);if(b.bank_state.pinned_emergency_safe_point_id){const p=b.safe_points.find(x=>x.safe_point_id===b.bank_state.pinned_emergency_safe_point_id);if(p)p.is_pinned=true}b.audit_log.push({at:now(),event:'SAFE_UPDATE_TRANSACTION_COMMITTED',before_safe_point_id:before.safe_point_id,after_safe_point_id:after.safe_point_id,commit_sha:commitSha,path:path});saveBank(b);setTxn({ok:true,status:'SAFE_UPDATE_TRANSACTION_COMPLETE',before_safe_point_id:before.safe_point_id,after_safe_point_id:after.safe_point_id,commit_sha:commitSha,after_marked_last_good:after.is_last_good,next:'Open pmp.html fresh after GitHub Pages updates.'})}catch(e){const b=bank();b.quarantine=b.quarantine||[];b.quarantine.push({at:now(),event:'SAFE_UPDATE_TRANSACTION_FAILED',error:e.message,staged_size:(byId('stagedCode').value||'').length});saveBank(b);setTxn({ok:false,status:'SAFE_UPDATE_TRANSACTION_FAILED',error:e.message},true)}}
+async function runAutoCatchNow(silent){try{const code=await fetchCurrentAppCode();const guard=domGuard(code);const hash=await sha256(code);const b=bank();const lastHash=b.bank_state.last_seen_code_hash||(b.safe_points[b.safe_points.length-1]||{}).code_hash||'';if(hash===lastHash){b.bank_state.last_seen_code_hash=hash;saveBank(b);const msg={ok:true,status:'AUTO_CATCH_NO_CHANGE',auto_catch_on_open:!!b.settings.auto_catch_on_open};if(!silent)setStatus(msg);return msg}if(!guard.ok&&b.settings.auto_catch_clean_only!==false){b.bank_state.last_seen_code_hash=hash;b.audit_log.push({at:now(),event:'AUTO_CATCH_BLOCKED',blockers:guard.blockers});saveBank(b);const msg={ok:false,status:'AUTO_CATCH_BLOCKED_NOT_CLEAN',blockers:guard.blockers};if(!silent)setStatus(msg);return msg}const record=addSafePointRecord(b,code,hash,guard,'auto_catch_after_detected_change','auto-catch safe point after detected pmp.html change');saveBank(b);const msg={ok:true,status:'AUTO_CATCH_SAFE_POINT_SAVED',safe_point_id:record.safe_point_id,clean_status:record.clean_status,marked_last_good:record.is_last_good};if(!silent)setStatus(msg);return msg}catch(e){const msg={ok:false,status:'AUTO_CATCH_FAILED',error:e.message};if(!silent)setStatus(msg);return msg}}
+function enableAutoCatch(){const b=bank();b.settings.auto_catch_on_open=true;b.settings.auto_catch_clean_only=true;b.audit_log.push({at:now(),event:'AUTO_CATCH_ENABLED'});saveBank(b);setStatus({ok:true,status:'AUTO_CATCH_ENABLED'})}
+function disableAutoCatch(){const b=bank();b.settings.auto_catch_on_open=false;b.audit_log.push({at:now(),event:'AUTO_CATCH_DISABLED'});saveBank(b);setStatus({ok:true,status:'AUTO_CATCH_DISABLED'})}
+function showAutoCatchStatus(){const b=bank();const el=byId('autoCatchBox');if(!el)return;el.textContent=['Auto-Catch on open: '+!!b.settings.auto_catch_on_open,'Clean only: '+(b.settings.auto_catch_clean_only!==false),'Last seen hash: '+(b.bank_state.last_seen_code_hash||'').slice(0,24),'Strongest path: use Safe Update Transaction for real updates.'].join('\n')}
+function repairAppShell(){const b=bank();setStatus({ok:false,status:'REPAIR_APP_NOT_CONNECTED_YET',last_good_safe_point_id:b.bank_state.last_good_safe_point_id||'',pinned_emergency_safe_point_id:b.bank_state.pinned_emergency_safe_point_id||'',next:'Restore write-back comes after Safe Update Transaction proves stable.'})}
+function openPanel(id){['find','restore','compare','manage'].forEach(x=>byId(x).classList.toggle('hidden',x!==id));setStatus({ok:true,status:id.toUpperCase()+'_PANEL_OPEN'});if(id==='find')renderSafePointSearch()}
+function safePointLine(sp){return['safe_point_id: '+sp.safe_point_id,'created_at: '+sp.created_at,'label: '+(sp.version_label||''),'reason: '+(sp.save_reason||''),'status: '+(sp.clean_status||sp.status||''),'guard_status: '+(sp.guard_status||''),'last_good: '+!!sp.is_last_good,'current: '+!!sp.is_current,'pinned: '+!!sp.is_pinned,'hash: '+(sp.code_hash||'').slice(0,24),'size: '+(sp.code_size||0),'commit_hint: '+(sp.commit_hint||''),'blockers: '+((sp.blockers||[]).join('; ')||'none'),'warnings: '+((sp.warnings||[]).join('; ')||'none'),'note: '+(sp.note||'')].join('\n')}
+function refreshBankView(){const b=bank();const last=b.safe_points[b.safe_points.length-1];byId('bankSnapshot').textContent=['Bank: '+b.type+' v'+b.version,'Safe points: '+b.safe_points.length,'Current: '+(b.bank_state.current_safe_point_id||''),'Last Good: '+(b.bank_state.last_good_safe_point_id||''),'Pinned Emergency: '+(b.bank_state.pinned_emergency_safe_point_id||''),'Quarantine: '+b.quarantine.length,'Bank Health: '+(b.bank_state.bank_health||'UNKNOWN'),last?'\nLatest Safe Point:\n'+safePointLine(last):'\nNo safe points yet.'].join('\n')}
+function renderSafePointSearch(){const q=(byId('findQuery').value||'').toLowerCase();const b=bank();const hits=b.safe_points.filter(sp=>!q||JSON.stringify(sp).toLowerCase().includes(q));byId('findResults').textContent=hits.length?hits.map(safePointLine).join('\n\n---\n\n'):'No safe points found.'}
+function findSafePoint(id){const b=bank();return b.safe_points.find(sp=>sp.safe_point_id===id)||null}
+function buildRestorePacket(id){const sp=findSafePoint(id);if(!sp)return null;return{type:'PMP_CODE_RESTORE_PACKET_V1',built_at:now(),role:'manual_restore_packet_from_local_safe_point',target_file:sp.target_file||DEFAULT_TARGET_FILE,safe_point_id:sp.safe_point_id,code_hash:sp.code_hash,code_size:sp.code_size,commit_hint:sp.commit_hint,restore_warning:'Manual restore packet only. Restore write-back not connected yet.',code_snapshot:sp.code_snapshot||''}}
+function previewRestorePacket(){const p=buildRestorePacket(byId('restoreId').value.trim());byId('restoreOut').textContent=p?JSON.stringify({...p,code_snapshot:'[hidden in preview: '+(p.code_snapshot||'').length+' chars]'},null,2):'Safe point not found.'}
+async function copyRestorePacket(){const p=buildRestorePacket(byId('restoreId').value.trim());if(!p){byId('restoreOut').textContent='Safe point not found.';return}const text=JSON.stringify(p,null,2);try{await navigator.clipboard.writeText(text);byId('restoreOut').textContent='Restore packet copied.'}catch(e){byId('restoreOut').textContent=text}}
+function compareSafePoints(){const a=findSafePoint(byId('compareFrom').value.trim());const c=findSafePoint(byId('compareTo').value.trim());if(!a||!c){byId('compareOut').textContent='Both safe_point_id values must exist.';return}byId('compareOut').textContent=JSON.stringify({from:a.safe_point_id,to:c.safe_point_id,same_hash:a.code_hash===c.code_hash,size_delta:(c.code_size||0)-(a.code_size||0),from_status:a.clean_status,to_status:c.clean_status,risk:a.code_hash===c.code_hash?'LOW: code hash matches':'REVIEW: code changed; inspect before trusting'},null,2)}
+function verifyBank(){const b=bank();const issues=[];const ids=new Set();b.safe_points.forEach(sp=>{if(!sp.safe_point_id)issues.push('safe point missing id');if(ids.has(sp.safe_point_id))issues.push('duplicate safe_point_id: '+sp.safe_point_id);ids.add(sp.safe_point_id);if(!sp.code_hash)issues.push('safe point missing code_hash: '+sp.safe_point_id);if(!sp.code_snapshot)issues.push('safe point missing code_snapshot: '+sp.safe_point_id)});if(b.bank_state.pinned_emergency_safe_point_id&&!b.safe_points.some(sp=>sp.safe_point_id===b.bank_state.pinned_emergency_safe_point_id))issues.push('pinned emergency safe point is missing');b.bank_state.bank_health=issues.length?'WARNING':'PASS';b.bank_state.last_integrity_check_at=now();saveBank(b);byId('manageOut').textContent=JSON.stringify({ok:!issues.length,status:issues.length?'BANK_WARNING':'BANK_PASS',issues},null,2)}
+function pinLastGoodEmergency(){const b=bank();const id=b.bank_state.last_good_safe_point_id;const sp=b.safe_points.find(x=>x.safe_point_id===id);if(!sp){byId('manageOut').textContent='No Last Good safe point found to pin.';return}if(sp.clean_status!=='CLEAN'||sp.guard_status!=='GUARD_PASS'){byId('manageOut').textContent='Cannot pin emergency. Last Good is not clean.';return}b.safe_points.forEach(x=>{if(x.safe_point_id===id)x.is_pinned=true});b.bank_state.pinned_emergency_safe_point_id=id;b.audit_log.push({at:now(),event:'PINNED_EMERGENCY_SET',safe_point_id:id});saveBank(b);byId('manageOut').textContent=JSON.stringify({ok:true,status:'PINNED_EMERGENCY_SET',pinned_emergency_safe_point_id:id},null,2)}
+function clearWarningCurrent(){const b=bank();const id=b.bank_state.last_good_safe_point_id;if(!id){byId('manageOut').textContent='No Last Good exists yet.';return}b.safe_points.forEach(sp=>{sp.is_current=sp.safe_point_id===id});b.bank_state.current_safe_point_id=id;b.bank_state.bank_health='PASS';b.audit_log.push({at:now(),event:'MAKE_LAST_GOOD_CURRENT',safe_point_id:id});saveBank(b);byId('manageOut').textContent='Last Good is now current.'}
+function exportBank(){const b=bank();byId('bankTransferBox').value=JSON.stringify(b,null,2);byId('manageOut').textContent='Bank exported to the box. This export includes local code snapshots, but not your GitHub token.'}
+function importBank(){try{const incoming=JSON.parse(byId('bankTransferBox').value);if(!incoming||!Array.isArray(incoming.safe_points))throw new Error('Import missing safe_points array.');const b=bank();const existing=new Set(b.safe_points.map(sp=>sp.safe_point_id));incoming.safe_points.forEach(sp=>{if(sp.safe_point_id&&!existing.has(sp.safe_point_id)){b.safe_points.push(sp);existing.add(sp.safe_point_id)}});b.audit_log.push({at:now(),event:'BANK_IMPORTED',imported_count:incoming.safe_points.length});saveBank(b);byId('manageOut').textContent='Bank imported/merged.'}catch(e){byId('manageOut').textContent='Import failed: '+e.message}}
+function viewQuarantine(){const b=bank();byId('manageOut').textContent=b.quarantine.length?JSON.stringify(b.quarantine,null,2):'Quarantine is empty.'}
+async function copyBankSummary(){const text=byId('bankSnapshot').textContent;try{await navigator.clipboard.writeText(text);setStatus({ok:true,status:'BANK_SUMMARY_COPIED'})}catch(e){setStatus({ok:false,status:'COPY_FAILED',error:e.message})}}
+refreshBankView();showAutoCatchStatus();setTimeout(function(){const b=bank();if(b.settings.auto_catch_on_open)runAutoCatchNow(true)},500);
+</script>
 </body>
 </html>
