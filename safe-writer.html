@@ -6,15 +6,15 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>PMP Safe Writer</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#52b5df;color:#101827;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.wrap{max-width:860px;margin:auto;padding:18px}.card{background:#46a9d3;border:2px solid #fff;border-radius:28px;padding:18px;margin:0 0 16px;box-shadow:0 12px 28px #0002}h1{margin:0 0 10px;font-size:32px}h2{margin:0 0 12px}.sub{font-weight:800;color:#234a5d;line-height:1.35}.warn{background:#2b2010;border:2px solid #745522;color:#ffe0a3;border-radius:22px;padding:16px;white-space:pre-wrap}.note{background:#123024;border:2px solid #fff;color:#c9f7d7;border-radius:22px;padding:16px;white-space:pre-wrap}input,textarea{width:100%;border:1px solid #25354a;border-radius:16px;background:#0c141e;color:#eef4fb;padding:13px;font:inherit;margin-top:10px}button{width:100%;border:0;border-radius:20px;padding:16px;margin:10px 0;background:#a1fcfd;color:#101827;text-align:center;font:inherit;font-weight:900;font-size:17px}.mini{background:#172234;color:#eef4fb;border:1px solid #25354a;border-radius:14px;padding:14px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}textarea{min-height:180px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}.smallbox{min-height:88px}.codebox{min-height:360px}.danger{background:#3a1111;color:#ffd1d1;border:1px solid #ffb4b4}
+*{box-sizing:border-box}body{margin:0;background:#52b5df;color:#101827;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.wrap{max-width:860px;margin:auto;padding:18px}.card{background:#46a9d3;border:2px solid #fff;border-radius:28px;padding:18px;margin:0 0 16px;box-shadow:0 12px 28px #0002}h1{margin:0 0 10px;font-size:32px}h2{margin:0 0 12px}.sub{font-weight:800;color:#234a5d;line-height:1.35}.warn{background:#2b2010;border:2px solid #745522;color:#ffe0a3;border-radius:22px;padding:16px;white-space:pre-wrap;overflow-wrap:anywhere}.note{background:#123024;border:2px solid #fff;color:#c9f7d7;border-radius:22px;padding:16px;white-space:pre-wrap;overflow-wrap:anywhere}.bad{background:#351414;border:2px solid #7d3333;color:#ffd1d1;border-radius:22px;padding:16px;white-space:pre-wrap;overflow-wrap:anywhere}input,textarea{width:100%;border:1px solid #25354a;border-radius:16px;background:#0c141e;color:#eef4fb;padding:13px;font:inherit;margin-top:10px}button{width:100%;border:0;border-radius:20px;padding:16px;margin:10px 0;background:#a1fcfd;color:#101827;text-align:center;font:inherit;font-weight:900;font-size:17px}.mini{background:#172234;color:#eef4fb;border:1px solid #25354a;border-radius:14px;padding:14px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}textarea{min-height:180px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}.smallbox{min-height:88px}.codebox{min-height:360px}.danger{background:#3a1111;color:#ffd1d1;border:1px solid #ffb4b4}.green{background:#7ed9da;color:#101827}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="card">
     <h1>PMP Safe Writer</h1>
-    <p class="sub">Code Finder + Replace Draft. It can find, preview, and apply changes to the fetched app box. Commit is still separate.</p>
-    <div class="warn">Guard rule: only commit a full HTML app. Find/Replace never commits by itself.</div>
+    <p class="sub">Safe Writer now uses Safe Update Transaction. Code Finder can still find and replace, but real commits go through before safe point → guard → commit → after safe point.</p>
+    <div class="warn">Guard rule: only commit a full HTML app. The transaction blocks unsafe staged code and stores failures in quarantine.</div>
   </div>
 
   <div class="card">
@@ -25,6 +25,12 @@
     <input id="path" value="pmp.html">
     <input id="sha" readonly placeholder="file SHA">
     <div class="grid"><button class="mini" id="testBtn">Test</button><button class="mini" id="fetchBtn">Fetch App</button></div>
+  </div>
+
+  <div class="card">
+    <h2>Safe Point Bank</h2>
+    <div id="bankSnapshot" class="note">Loading bank...</div>
+    <div class="grid"><button class="mini" id="savePointBtn">Save Safe Point Now</button><button class="mini" id="pinBtn">Pin Last Good as Emergency</button></div>
   </div>
 
   <div class="card">
@@ -39,24 +45,26 @@
 
   <div class="card">
     <h2>Safety</h2>
-    <div class="grid"><button class="mini" id="guardBtn">Run Guard</button><button class="mini" id="saveGoodBtn">Save Current As Good</button><button class="mini" id="restoreGoodBtn">Restore Local Good</button><button class="mini" id="copyGoodBtn">Copy Local Good</button></div>
+    <div class="grid"><button class="mini" id="guardBtn">Run Guard</button><button class="mini" id="previewTxnBtn">Preview Transaction</button><button class="mini" id="restoreGoodBtn">Restore Local Good</button><button class="mini" id="copyGoodBtn">Copy Local Good</button></div>
     <div id="guard" class="note">Guard not run yet.</div>
   </div>
 
   <div class="card">
-    <h2>Commit</h2>
-    <input id="msg" value="Safe writer update">
-    <textarea id="box" class="codebox" placeholder="Fetch full app first."></textarea>
-    <button id="commitBtn">Commit Full App Only</button>
+    <h2>Safe Update Transaction Commit</h2>
+    <input id="msg" value="Safe writer transaction update">
+    <textarea id="box" class="codebox" placeholder="Fetch full app first, or paste COMPLETE pmp.html here."></textarea>
+    <button id="commitBtn" class="danger">Run Safe Update Transaction</button>
     <div id="status" class="note">Loading Safe Writer...</div>
   </div>
 </div>
 <script>
 (function(){
-  var GOOD='pmp_safe_writer_last_good_v2';
+  var GOOD='pmp_safe_writer_last_good_v3';
+  var BANK_KEY='pmp_code_safety_bank_v1';
+  var LEGACY_KEY='pmp_code_safety_bank_v1_shell';
   function el(id){return document.getElementById(id)}
-  function status(m){el('status').textContent=m}
-  function guardMsg(m){el('guard').textContent=m}
+  function status(m,bad){el('status').className=bad?'bad':'note';el('status').textContent=typeof m==='string'?m:JSON.stringify(m,null,2)}
+  function guardMsg(m,bad){el('guard').className=bad?'bad':'note';el('guard').textContent=typeof m==='string'?m:JSON.stringify(m,null,2)}
   function out(m){el('findOut').textContent=m}
   function now(){return new Date().toISOString()}
   function getKey(){var t=el('key').value.trim(); if(!t) throw new Error('Paste GitHub key first.'); return t}
@@ -65,31 +73,49 @@
   function headers(){return {Authorization:'Bearer '+getKey(),Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}}
   function dec64(s){return new TextDecoder().decode(Uint8Array.from(atob(String(s||'').replace(/\n/g,'')),function(c){return c.charCodeAt(0)}))}
   function enc64(s){return btoa(Array.from(new TextEncoder().encode(s)).map(function(x){return String.fromCharCode(x)}).join(''))}
+  async function hashText(text){var bytes=new TextEncoder().encode(text);var hash=await crypto.subtle.digest('SHA-256',bytes);return Array.from(new Uint8Array(hash)).map(function(x){return x.toString(16).padStart(2,'0')}).join('')}
   async function getFile(ref){var r=await fetch(fileUrl()+'?ref='+encodeURIComponent(ref),{headers:headers(),cache:'no-store'}); var j=await r.json().catch(function(){return {}}); if(!r.ok) throw new Error(j.message||'Fetch failed'); return j}
-  function fullHtmlGuard(txt){txt=String(txt||'').trim(); var lower=txt.toLowerCase(); return lower.indexOf('<!doctype html')===0 && lower.indexOf('<html')>-1 && lower.indexOf('<head')>-1 && lower.indexOf('<body')>-1 && lower.lastIndexOf('</html>')===lower.length-7 && txt.length>5000}
-  function runGuard(){var ok=fullHtmlGuard(el('box').value); guardMsg(ok?'PASS: full app HTML detected.':'BLOCKED: this does not look like a full app file. Do not commit.'); return ok}
+  async function putFile(sha,message,content){var p=parts(); var r=await fetch(fileUrl(),{method:'PUT',headers:Object.assign({},headers(),{'Content-Type':'application/json'}),body:JSON.stringify({message:message,content:enc64(content),sha:sha,branch:p.branch})}); var got=await r.json().catch(function(){return {}}); if(!r.ok)throw new Error(got.message||'Commit failed'); return got}
+
+  function bank(){try{var raw=localStorage.getItem(BANK_KEY)||localStorage.getItem(LEGACY_KEY)||'';var b=raw?JSON.parse(raw):null;if(b&&Array.isArray(b.safe_points)){b.type='PMP_CODE_SAFETY_BANK';b.version='1.4';b.quarantine=Array.isArray(b.quarantine)?b.quarantine:[];b.bank_state=b.bank_state||{};b.settings=b.settings||{};b.audit_log=Array.isArray(b.audit_log)?b.audit_log:[];return b}}catch(e){}return{type:'PMP_CODE_SAFETY_BANK',version:'1.4',privacy:{visibility:'private_local_browser_storage',public_repo_contains_bank:false},bank_state:{current_safe_point_id:'',last_good_safe_point_id:'',pinned_emergency_safe_point_id:'',bank_health:'UNKNOWN',last_integrity_check_at:'',last_seen_code_hash:''},settings:{auto_catch_on_open:true,auto_catch_clean_only:true},safe_points:[],quarantine:[],audit_log:[],created_at:now()}}
+  function saveBank(b){b.updated_at=now();localStorage.setItem(BANK_KEY,JSON.stringify(b));renderBank()}
+  function markerBetween(code,start,end){var a=code.indexOf(start);var b=code.indexOf(end,a+start.length);return a>=0&&b>a}
+  function domGuard(code){var blockers=[],warnings=[];code=String(code||'');var lower=code.trim().toLowerCase();if(!lower.indexOf('<!doctype html')===0&&lower.indexOf('<html')<0)blockers.push('not full HTML');var doc=null;try{doc=new DOMParser().parseFromString(code,'text/html')}catch(e){blockers.push('DOM parse failed: '+e.message)}if(doc){var title=(doc.querySelector('title')||{}).textContent||'';if(title.trim()!=='PMP')blockers.push('missing PMP title');['world','bridge','control'].forEach(function(id){if(!doc.getElementById(id))blockers.push(id+' screen missing')});if(doc.querySelectorAll('script').length<1)blockers.push('no script elements parsed');if(doc.querySelectorAll('style').length<1)blockers.push('no style elements parsed')}if(!markerBetween(code,'<body','</body>'))blockers.push('body boundary not detected');if(!markerBetween(code,'<html','</html>'))blockers.push('html boundary not detected');if(code.indexOf('VISIBLE PROJECT LIST REPAIR PATCH')>-1)blockers.push('known broken visible-list patch text present');if(code.indexOf('pmpVisibleProjectListRepairV12')>-1)blockers.push('known risky V12 repair script present');if(code.length<5000)blockers.push('file too small to be full pmp.html');return{ok:blockers.length===0,status:blockers.length?'GUARD_BLOCKED':'GUARD_PASS',blockers:blockers,warnings:warnings}}
+  function fullHtmlGuard(txt){return domGuard(txt).ok}
+  function addSafePointRecord(b,code,hash,guard,reason,label,commitHint){var id='sp_'+Date.now()+'_'+hash.slice(0,8);var record={safe_point_id:id,created_at:now(),version_label:label||'safe point',save_reason:reason||'manual_safe_point',target_file:parts().path,commit_hint:commitHint||'',code_hash:hash,code_size:code.length,clean_status:guard.ok?'CLEAN':'WARNING',guard_status:guard.status,blockers:guard.blockers,warnings:guard.warnings,is_current:true,is_last_good:guard.ok,is_pinned:false,is_quarantined:false,storage_mode:'localStorage_plain_snapshot_v1',code_snapshot:code,note:'Saved by Safe Writer transaction. Local browser private bank only.'};b.safe_points.forEach(function(sp){sp.is_current=false});b.safe_points.push(record);b.bank_state.current_safe_point_id=id;b.bank_state.last_seen_code_hash=hash;if(guard.ok)b.bank_state.last_good_safe_point_id=id;b.bank_state.bank_health=guard.ok?'PASS':'WARNING';b.audit_log.push({at:now(),event:'SAFE_POINT_SAVED',reason:record.save_reason,safe_point_id:id,guard_status:guard.status,commit_hint:record.commit_hint});return record}
+  async function saveSafePointFromBox(reason,label,commitHint){var txt=el('box').value;var guard=domGuard(txt);var hash=await hashText(txt);var b=bank();var rec=addSafePointRecord(b,txt,hash,guard,reason,label,commitHint);saveBank(b);return rec}
+  function safePointLine(sp){return ['safe_point_id: '+sp.safe_point_id,'label: '+(sp.version_label||''),'reason: '+(sp.save_reason||''),'status: '+(sp.clean_status||''),'guard_status: '+(sp.guard_status||''),'last_good: '+!!sp.is_last_good,'current: '+!!sp.is_current,'pinned: '+!!sp.is_pinned,'hash: '+(sp.code_hash||'').slice(0,24),'commit_hint: '+(sp.commit_hint||''),'blockers: '+((sp.blockers||[]).join('; ')||'none')].join('\n')}
+  function renderBank(){var b=bank();var last=b.safe_points[b.safe_points.length-1];el('bankSnapshot').textContent=['Bank: '+b.type+' v'+b.version,'Safe points: '+b.safe_points.length,'Current: '+(b.bank_state.current_safe_point_id||''),'Last Good: '+(b.bank_state.last_good_safe_point_id||''),'Pinned Emergency: '+(b.bank_state.pinned_emergency_safe_point_id||''),'Quarantine: '+b.quarantine.length,'Bank Health: '+(b.bank_state.bank_health||'UNKNOWN'),last?'\nLatest Safe Point:\n'+safePointLine(last):'\nNo safe points yet.'].join('\n')}
+  async function savePointNow(){try{if(!el('box').value.trim())throw new Error('Fetch or paste full app first.');var rec=await saveSafePointFromBox('manual_safe_writer_safe_point','manual Safe Writer safe point',el('sha').value);status({ok:true,status:'SAFE_POINT_SAVED',safe_point_id:rec.safe_point_id,clean_status:rec.clean_status,marked_last_good:rec.is_last_good})}catch(e){status({ok:false,status:'SAFE_POINT_FAILED',error:e.message},true)}}
+  function pinEmergency(){var b=bank();var id=b.bank_state.last_good_safe_point_id;var sp=b.safe_points.find(function(x){return x.safe_point_id===id});if(!sp)return status('No Last Good to pin.',true);if(sp.clean_status!=='CLEAN'||sp.guard_status!=='GUARD_PASS')return status('Cannot pin: Last Good is not clean.',true);b.safe_points.forEach(function(x){if(x.safe_point_id===id)x.is_pinned=true});b.bank_state.pinned_emergency_safe_point_id=id;b.audit_log.push({at:now(),event:'PINNED_EMERGENCY_SET',safe_point_id:id});saveBank(b);status({ok:true,status:'PINNED_EMERGENCY_SET',safe_point_id:id})}
+
+  function runGuard(){var guard=domGuard(el('box').value);guardMsg({ok:guard.ok,status:guard.status,blockers:guard.blockers,warnings:guard.warnings},!guard.ok);return guard.ok}
   function countMatches(text,needle){if(!needle)return 0; return text.split(needle).length-1}
   function context(text,needle){var i=text.indexOf(needle); if(i<0)return ''; var a=Math.max(0,i-260),b=Math.min(text.length,i+needle.length+260); return text.slice(a,b)}
   function findCode(){var txt=el('box').value,needle=el('findBox').value; if(!txt)return out('Fetch app first.'); if(!needle)return out('Put exact code in Find box first.'); var n=countMatches(txt,needle); var c=context(txt,needle); out('Matches found: '+n+(n?'\n\nNearby code:\n'+c:'\n\nNo exact match.'))}
   function previewReplace(){var txt=el('box').value,needle=el('findBox').value,repl=el('replaceBox').value; if(!txt)return out('Fetch app first.'); if(!needle)return out('Put exact code in Find box first.'); var n=countMatches(txt,needle); if(!n)return out('No exact matches. Nothing to preview.'); var before=context(txt,needle); var after=context(txt.replaceAll(needle,repl),repl || ''); out('Replacement preview\nMatches to replace: '+n+'\nReplacement length: '+repl.length+'\n\nBefore:\n'+before+'\n\nAfter nearby:\n'+(after||'[replacement is blank; selected code will be removed]'))}
-  function applyReplace(){var txt=el('box').value,needle=el('findBox').value,repl=el('replaceBox').value; if(!txt)return out('Fetch app first.'); if(!needle)return out('Put exact code in Find box first.'); var n=countMatches(txt,needle); if(!n)return out('No exact matches. Box was not changed.'); el('box').value=txt.replaceAll(needle,repl); el('msg').value='Code Finder exact replace'; runGuard(); out('Applied exact replacement to box. Matches replaced: '+n+'\nNow run Guard, then commit only if PASS.')}
-  async function testKey(){try{status('Testing...'); var p=parts(); var j=await getFile(p.branch); el('sha').value=j.sha||''; status('Key works. File found.')}catch(e){status('Test failed: '+e.message)}}
-  async function fetchApp(){try{status('Fetching current app...'); var p=parts(); var j=await getFile(p.branch); var txt=dec64(j.content); el('sha').value=j.sha||''; el('box').value=txt; localStorage.setItem(GOOD,JSON.stringify({saved_at:now(),sha:j.sha,content:txt})); runGuard(); status('Fetched app and saved current as local last-good.')}catch(e){status('Fetch failed: '+e.message)}}
-  function saveGood(){var txt=el('box').value; if(!fullHtmlGuard(txt))return status('Save blocked: box is not a full app.'); localStorage.setItem(GOOD,JSON.stringify({saved_at:now(),sha:el('sha').value,content:txt})); status('Current box saved as local last-good.')}
-  function restoreGood(){var g=null; try{g=JSON.parse(localStorage.getItem(GOOD)||'null')}catch(e){} if(!g||!g.content)return status('No local last-good saved.'); el('box').value=g.content; runGuard(); status('Local last-good restored into box.')}
+  function applyReplace(){var txt=el('box').value,needle=el('findBox').value,repl=el('replaceBox').value; if(!txt)return out('Fetch app first.'); if(!needle)return out('Put exact code in Find box first.'); var n=countMatches(txt,needle); if(!n)return out('No exact matches. Box was not changed.'); el('box').value=txt.replaceAll(needle,repl); runGuard(); out('Applied exact replacement to box. Matches replaced: '+n+'\nNow run Guard, then Preview Transaction.')}
+  async function testKey(){try{status('Testing...'); var p=parts(); var j=await getFile(p.branch); el('sha').value=j.sha||''; status('Key works. File found.')}catch(e){status('Test failed: '+e.message,true)}}
+  async function fetchApp(){try{status('Fetching current app...'); var p=parts(); var j=await getFile(p.branch); var txt=dec64(j.content); el('sha').value=j.sha||''; el('box').value=txt; localStorage.setItem(GOOD,JSON.stringify({saved_at:now(),sha:j.sha,content:txt})); runGuard(); var rec=await saveSafePointFromBox('safe_writer_fetch_current','Safe Writer fetched current app',j.sha); status({ok:true,status:'FETCHED_AND_SAFE_POINT_SAVED',safe_point_id:rec.safe_point_id,sha:j.sha})}catch(e){status('Fetch failed: '+e.message,true)}}
+  function restoreGood(){var g=null; try{g=JSON.parse(localStorage.getItem(GOOD)||'null')}catch(e){} if(!g||!g.content)return status('No local last-good saved.',true); el('box').value=g.content; runGuard(); status('Local last-good restored into box.')}
   async function copyGood(){await navigator.clipboard.writeText(localStorage.getItem(GOOD)||''); status('Local last-good copied.')}
-  async function commitSafe(){try{var txt=el('box').value; if(!runGuard())throw new Error('Commit blocked by full-app guard.'); var sha=el('sha').value.trim(); var p=parts(); if(!sha){var j=await getFile(p.branch); sha=j.sha; el('sha').value=sha} localStorage.setItem(GOOD,JSON.stringify({saved_at:now(),sha:sha,content:txt})); status('Committing full app...'); var r=await fetch(fileUrl(),{method:'PUT',headers:Object.assign({},headers(),{'Content-Type':'application/json'}),body:JSON.stringify({message:el('msg').value||'Safe writer update',content:enc64(txt),sha:sha,branch:p.branch})}); var got=await r.json().catch(function(){return {}}); if(!r.ok)throw new Error(got.message||'Commit failed'); el('sha').value=(got.content&&got.content.sha)||''; status('Committed safely. Reload PMP app.')}catch(e){status('Commit failed: '+e.message)}}
+  async function previewTxn(){try{var txt=el('box').value;if(!txt.trim())throw new Error('Fetch or paste full app first.');var guard=domGuard(txt);var b=bank();status({transaction:'SAFE_WRITER_SAFE_UPDATE_TRANSACTION',steps:['fetch current from GitHub','save BEFORE safe point from current GitHub file','guard staged box','block if unsafe','commit staged box only if clean','save AFTER safe point from staged box','mark after safe point Last Good','quarantine failed transaction info'],staged_clean:guard.ok,blockers:guard.blockers,last_good:b.bank_state.last_good_safe_point_id||'',pinned_emergency:b.bank_state.pinned_emergency_safe_point_id||''},!guard.ok)}catch(e){status({ok:false,status:'PREVIEW_FAILED',error:e.message},true)}}
+  async function commitSafeTransaction(){try{var txt=el('box').value;if(!txt.trim())throw new Error('Fetch or paste complete pmp.html first.');var stagedGuard=domGuard(txt);if(!stagedGuard.ok)throw new Error('STAGED_CODE_BLOCKED: '+stagedGuard.blockers.join('; '));var p=parts();status({ok:true,status:'TRANSACTION_STARTED',step:'fetch current'});var current=await getFile(p.branch);var currentText=dec64(current.content);var currentGuard=domGuard(currentText);var currentHash=await hashText(currentText);var b=bank();var before=addSafePointRecord(b,currentText,currentHash,currentGuard,'transaction_before_update','BEFORE Safe Writer transaction',current.sha);saveBank(b);status({ok:true,status:'BEFORE_SAFE_POINT_SAVED',before_safe_point_id:before.safe_point_id,step:'commit staged'});var got=await putFile(current.sha,el('msg').value||'Safe writer transaction update',txt);var commitSha=(got.commit&&got.commit.sha)||'';el('sha').value=(got.content&&got.content.sha)||'';var stagedHash=await hashText(txt);var after=addSafePointRecord(b,txt,stagedHash,stagedGuard,'transaction_after_update','AFTER Safe Writer transaction',commitSha);if(b.bank_state.pinned_emergency_safe_point_id){var pin=b.safe_points.find(function(x){return x.safe_point_id===b.bank_state.pinned_emergency_safe_point_id});if(pin)pin.is_pinned=true}b.audit_log.push({at:now(),event:'SAFE_WRITER_TRANSACTION_COMMITTED',before_safe_point_id:before.safe_point_id,after_safe_point_id:after.safe_point_id,commit_sha:commitSha,path:p.path});saveBank(b);localStorage.setItem(GOOD,JSON.stringify({saved_at:now(),sha:el('sha').value,content:txt}));status({ok:true,status:'SAFE_UPDATE_TRANSACTION_COMPLETE',before_safe_point_id:before.safe_point_id,after_safe_point_id:after.safe_point_id,commit_sha:commitSha,after_marked_last_good:after.is_last_good,next:'Open pmp.html fresh after GitHub Pages updates.'})}catch(e){var b=bank();b.quarantine=b.quarantine||[];b.quarantine.push({at:now(),event:'SAFE_WRITER_TRANSACTION_FAILED',error:e.message,staged_size:(el('box').value||'').length});saveBank(b);status({ok:false,status:'SAFE_UPDATE_TRANSACTION_FAILED',error:e.message},true)}}
+
   el('testBtn').addEventListener('click',testKey);
   el('fetchBtn').addEventListener('click',fetchApp);
   el('findBtn').addEventListener('click',findCode);
   el('previewBtn').addEventListener('click',previewReplace);
   el('applyBtn').addEventListener('click',applyReplace);
   el('guardBtn').addEventListener('click',runGuard);
-  el('saveGoodBtn').addEventListener('click',saveGood);
+  el('previewTxnBtn').addEventListener('click',previewTxn);
+  el('savePointBtn').addEventListener('click',savePointNow);
+  el('pinBtn').addEventListener('click',pinEmergency);
   el('restoreGoodBtn').addEventListener('click',restoreGood);
   el('copyGoodBtn').addEventListener('click',copyGood);
-  el('commitBtn').addEventListener('click',commitSafe);
-  status('Safe Writer loaded. Code Finder is active.');
+  el('commitBtn').addEventListener('click',commitSafeTransaction);
+  renderBank();
+  status('Safe Writer loaded. Safe Update Transaction is active.');
 })();
 </script>
 </body>
