@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>PMP Resident Intelligence</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#52b5df;color:#101827;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.wrap{max-width:900px;margin:auto;padding:18px 14px 96px}.card{background:#46a9d3;border:2px solid #fff;border-radius:28px;padding:18px;margin:0 0 16px;box-shadow:0 12px 28px #0002,inset 0 0 0 1px #fff2}h1{margin:0 0 10px;font-size:34px}h2{margin:0 0 12px;font-size:24px}.sub{color:#234a5d;font-weight:800;line-height:1.35}.note{background:#123024;border:2px solid #fff;color:#c9f7d7;border-radius:22px;padding:16px;white-space:pre-wrap;overflow-wrap:anywhere}.warn{background:#2b2010;border:2px solid #745522;color:#ffe0a3;border-radius:22px;padding:16px;white-space:pre-wrap;overflow-wrap:anywhere}.bad{background:#351414;border:2px solid #7d3333;color:#ffd1d1;border-radius:22px;padding:16px;white-space:pre-wrap;overflow-wrap:anywhere}button{width:100%;border:0;border-radius:18px;padding:15px;margin:10px 0;background:#a1fcfd;color:#101827;text-align:center;font:inherit;font-weight:900;font-size:17px}.mini{background:#172234;color:#eef4fb;border:1px solid #25354a;border-radius:14px;padding:14px}.danger{background:#3a1111;color:#ffd1d1;border:1px solid #ffb4b4}.green{background:#7ed9da;color:#101827}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}input,textarea,select{width:100%;border:1px solid #25354a;border-radius:16px;background:#0c141e;color:#eef4fb;padding:13px;font:inherit;margin-top:10px}textarea{min-height:130px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}.vault{min-height:310px}iframe{width:100%;height:380px;border:2px solid #fff;border-radius:18px;background:white}.small{font-size:13px}.pill{display:inline-block;background:#101827;color:#c9f7d7;border-radius:999px;padding:5px 10px;margin:4px 4px 0 0;font-weight:900}.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <h1>Resident Intelligence</h1>
+    <p class="sub">v1 is safe: Guide + Inspector + Context Thread + Health + Bug Memory. It can inspect and remember. It cannot commit or restore.</p>
+    <div class="warn">Autonomy is locked below commit power. Code changes still belong to Safe Writer. Safe points and recovery still belong to Code Safety.</div>
+  </div>
+
+  <div class="card">
+    <h2>Ask Resident Intelligence</h2>
+    <select id="autonomy">
+      <option value="guide">Guide Mode — explain only</option>
+      <option value="inspect" selected>Inspector Mode — scan and report</option>
+      <option value="diagnose">Diagnose Mode — build proof packet</option>
+      <option value="prepare">Prepare Mode — build repair request only</option>
+    </select>
+    <textarea id="askBox" placeholder="What do you want PMP to help with?"></textarea>
+    <div class="grid"><button class="mini" onclick="askResident()">Ask</button><button class="mini" onclick="copyReport()">Copy Report</button></div>
+    <div id="askOut" class="note">Ready.</div>
+  </div>
+
+  <div class="card">
+    <h2>Active Work Thread</h2>
+    <div class="grid"><input id="threadGoal" placeholder="Active goal"><input id="threadPhase" placeholder="Phase"></div>
+    <div class="grid"><input id="threadTool" placeholder="Current tool"><input id="threadSafety" placeholder="Safety state"></div>
+    <textarea id="threadNext" placeholder="Next safe step"></textarea>
+    <div class="grid"><button class="mini" onclick="saveThread()">Save Thread</button><button class="mini" onclick="loadThread()">Load Thread</button></div>
+    <div id="threadOut" class="note">Thread ready.</div>
+  </div>
+
+  <div class="card">
+    <h2>Whole-App Health Snapshot</h2>
+    <div class="grid"><button class="mini" onclick="loadMirror()">Load PMP Mirror</button><button class="mini" onclick="scanHealth()">Scan Health</button></div>
+    <div id="healthOut" class="note">Health not scanned yet.</div>
+  </div>
+
+  <div class="card">
+    <h2>Bridge Truth Scanner</h2>
+    <p class="sub">Contract: Bridge may show only real Bridge tools. No invisible panels, old connection tools, raw code boxes, hidden repair layers, or touch-triggered ghosts.</p>
+    <div class="grid"><button class="mini" onclick="scanBridgeTruth()">Scan Bridge Truth</button><button class="mini" onclick="scanStorage()">Scan Storage</button><button class="mini" onclick="saveLatestBug()">Save Latest Bug</button><button class="mini" onclick="buildRepairRequest()">Build Repair Request</button></div>
+    <div id="bridgeOut" class="note">Bridge not scanned yet.</div>
+  </div>
+
+  <div class="card">
+    <h2>Live PMP Mirror</h2>
+    <p class="sub">Resident Intelligence loads PMP in a same-origin mirror so it can inspect the live DOM without changing the real app.</p>
+    <iframe id="mirror" src="about:blank"></iframe>
+  </div>
+
+  <div class="card">
+    <h2>Resident Report</h2>
+    <textarea id="reportBox" class="vault" readonly></textarea>
+    <div class="grid"><button class="mini" onclick="copyReport()">Copy Report</button><button class="mini" onclick="location.href='safety.html'">Safety Hub</button></div>
+  </div>
+</div>
+<script>
+const RI={
+  thread:'pmp_resident_thread_v1',
+  report:'pmp_resident_report_v1',
+  bugs:'pmp_bug_memory_v1',
+  bank:'pmp_code_safety_bank_v1',
+  skill:'pmp_resident_skill_ledger_v1',
+  latestBug:null,
+  latestScan:null
+};
+function $(id){return document.getElementById(id)}
+function now(){return new Date().toISOString()}
+function read(k,f){try{let v=localStorage.getItem(k);return v?JSON.parse(v):f}catch(e){return f}}
+function write(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function set(id,v,bad){let e=$(id);e.className=bad?'bad':'note';e.textContent=typeof v==='string'?v:JSON.stringify(v,null,2)}
+function mirrorWin(){return $('mirror').contentWindow}
+function mirrorDoc(){return $('mirror').contentDocument}
+function loadMirror(){return new Promise(res=>{let f=$('mirror');f.onload=()=>{set('healthOut','PMP mirror loaded.');res(true)};f.src='pmp.html?resident_mirror='+Date.now()})}
+function visibleText(el){return String(el.innerText||el.textContent||'').replace(/\s+/g,' ').trim()}
+function styleBad(el,win){let s=win.getComputedStyle(el);let r=el.getBoundingClientRect();return s.display==='none'||s.visibility==='hidden'||Number(s.opacity)<.05||r.width===0||r.height===0||r.left<-50||r.top<-50}
+function storageKeys(pattern){let arr=[];for(let i=0;i<localStorage.length;i++){let k=localStorage.key(i);if(!pattern||pattern.test(k))arr.push({key:k,size:String(localStorage.getItem(k)||'').length})}return arr.sort((a,b)=>a.key.localeCompare(b.key))}
+function bugMemory(){let b=read(RI.bugs,{type:'PMP_BUG_MEMORY',version:'resident_v1',bugs:[]});if(Array.isArray(b))b={type:'PMP_BUG_MEMORY',version:'resident_v1',bugs:b};if(!Array.isArray(b.bugs))b.bugs=[];return b}
+function saveBugEntry(entry){let b=bugMemory();let key=[entry.screen,entry.bug_family,entry.symptom].join('|').toLowerCase();let old=b.bugs.find(x=>[x.screen,x.bug_family,x.symptom].join('|').toLowerCase()===key);if(old){old.updated_at=now();old.times_seen=(old.times_seen||1)+1;old.status=entry.status||old.status;old.severity=entry.severity||old.severity;old.confidence=entry.confidence||old.confidence;old.latest_evidence=entry.live_evidence||entry.storage_evidence||entry.event_evidence||'';old.history=old.history||[];old.history.push({at:now(),event:'resident_seen_again',evidence:old.latest_evidence})}else{entry.bug_id='bug_'+Date.now();entry.created_at=now();entry.updated_at=now();entry.times_seen=1;b.bugs.push(entry)}write(RI.bugs,b);return old||entry}
+function severity(found){if(found.touchChanged)return {level:3,label:'Functional',priority:'high'};if(found.rawAreas||found.forbiddenHidden||found.extraCards)return {level:2,label:'Structural',priority:'high'};return {level:0,label:'Note',priority:'low'}}
+function threadObj(){return{active_goal:$('threadGoal').value||'',phase:$('threadPhase').value||'',current_tool:$('threadTool').value||'',safety_state:$('threadSafety').value||'',next_safe_step:$('threadNext').value||'',updated_at:now()}}
+function saveThread(){let t=threadObj();write(RI.thread,t);set('threadOut',{status:'THREAD_SAVED',thread:t})}
+function loadThread(){let t=read(RI.thread,{active_goal:'',phase:'',current_tool:'',safety_state:'',next_safe_step:''});$('threadGoal').value=t.active_goal||'';$('threadPhase').value=t.phase||'';$('threadTool').value=t.current_tool||'';$('threadSafety').value=t.safety_state||'';$('threadNext').value=t.next_safe_step||'';set('threadOut',{status:'THREAD_LOADED',thread:t})}
+function updateReport(obj){let text=typeof obj==='string'?obj:JSON.stringify(obj,null,2);$('reportBox').value=text;localStorage.setItem(RI.report,text)}
+function classifyGoal(txt){let s=String(txt||'').toLowerCase();if(/bug|broken|weird|wrong|invisible|ghost|fix|repair/.test(s))return{goal:'Repair / diagnose bug',stack:['Awareness','Contract','Root-Cause','Severity','Bug Memory','Teacher'],tool_path:'Scan current screen or Bridge Truth → save bug memory → build repair request if proven',safety:'No commit power in v1'};if(/build|add|create|make|feature/.test(s))return{goal:'Build feature',stack:['Intent Router','Architecture','Builder','Safety','Auditor'],tool_path:'Place feature → design smallest clean version → Safe Writer later',safety:'Stage only after design'};if(/where|belong|organize|clean|clutter/.test(s))return{goal:'Organize / place discipline',stack:['Meaning','Architecture','Auditor','Relief'],tool_path:'Identify correct room/tool role → simplify',safety:'No code change needed yet'};if(/explain|confused|what|how/.test(s))return{goal:'Understand / teach',stack:['Meaning','Teacher','Relief'],tool_path:'Explain current app state and next tap',safety:'Safe'};return{goal:'General app help',stack:['Intent Router','Living App Model','Teacher'],tool_path:'Ask → route to best tool → one safe next step',safety:'Safe'}}
+function askResident(){let c=classifyGoal($('askBox').value);let auto=$('autonomy').value;let out={type:'RESIDENT_INTELLIGENCE_RESPONSE_V1',built_at:now(),autonomy_level:auto,detected_goal:c.goal,capability_stack:c.stack,best_tool_path:c.tool_path,safety:c.safety,allowed:auto==='guide'?['explain']:auto==='inspect'?['explain','inspect']:auto==='diagnose'?['explain','inspect','diagnose','save bug memory']:['explain','inspect','diagnose','build repair request'],blocked:['commit code','restore version','delete storage without approval'],next_safe_step:c.goal.includes('bug')?'Tap Scan Bridge Truth or Scan Current Screen.':'Use the suggested tool path above.'};set('askOut',out);updateReport(out)}
+async function scanHealth(){if(!$('mirror').src||$('mirror').src==='about:blank')await loadMirror();let b=read(RI.bank,{bank_state:{},safe_points:[],quarantine:[]});let h={type:'PMP_WHOLE_APP_HEALTH_V1',built_at:now(),app_access:'PASS',safety_health:b.bank_state&&b.bank_state.last_good_safe_point_id?'PASS':'WATCH',last_good:(b.bank_state||{}).last_good_safe_point_id||'',pinned_emergency:(b.bank_state||{}).pinned_emergency_safe_point_id||'',safe_points:(b.safe_points||[]).length||0,quarantine:(b.quarantine||[]).length||0,tool_role_health:'PASS: Safe Writer is update machine; Code Safety is bank/recovery.',resident_health:'PASS: v1 loaded; no commit power.',bridge_health:RI.latestScan&&RI.latestScan.contract_status==='PASS'?'PASS':'WATCH: run Bridge Truth scan.',next:'Run Scan Bridge Truth, then save bug memory if a contract failure appears.'};set('healthOut',h);updateReport(h)}
+function scanStorage(){let keys=storageKeys(/bridge|packet|connection|corpus|project|bug|safe|resident|pmp/i);let out={type:'PMP_STORAGE_SCAN_V1',built_at:now(),matched_keys:keys.length,keys:keys,next:'Bridge-related or old packet/connection keys should be reviewed if ghost UI appears.'};set('bridgeOut',out);updateReport(out);return out}
+async function scanBridgeTruth(){if(!$('mirror').src||$('mirror').src==='about:blank')await loadMirror();let win=mirrorWin(),doc=mirrorDoc();try{if(win.go)win.go('bridge')}catch(e){}await new Promise(r=>setTimeout(r,150));let bridge=doc.getElementById('bridge');if(!bridge){let out={contract_status:'FAIL',reason:'Bridge screen not found in mirror'};set('bridgeOut',out,true);updateReport(out);return out}
+let beforeHTML=bridge.innerHTML;let directCards=Array.from(bridge.children).filter(x=>x.classList&&x.classList.contains('card'));
+let all=Array.from(bridge.querySelectorAll('*'));
+let hidden=all.filter(el=>styleBad(el,win)).map(el=>({tag:el.tagName.toLowerCase(),id:el.id||'',class:el.className||'',text:visibleText(el).slice(0,120)}));
+let suspect=all.filter(el=>/(ghost|hidden|packet|connection|corpus|repair|raw|code)/i.test((el.id||'')+' '+(el.className||'')+' '+visibleText(el))).map(el=>({tag:el.tagName.toLowerCase(),id:el.id||'',class:el.className||'',text:visibleText(el).slice(0,120)}));
+let rawAreas=Array.from(bridge.querySelectorAll('textarea,input,pre,code')).map(el=>({tag:el.tagName.toLowerCase(),id:el.id||'',text:visibleText(el).slice(0,80)}));
+try{bridge.dispatchEvent(new win.Event('touchstart',{bubbles:true}));bridge.dispatchEvent(new win.Event('click',{bubbles:true}))}catch(e){}await new Promise(r=>setTimeout(r,100));let afterHTML=bridge.innerHTML;let touchChanged=beforeHTML!==afterHTML;
+let found={extraCards:Math.max(0,directCards.length-1),forbiddenHidden:hidden.length,rawAreas:rawAreas.length,touchChanged:touchChanged};let sev=severity(found);let storage=storageKeys(/bridge|packet|connection|corpus/i);
+let fail=found.extraCards||found.forbiddenHidden||found.rawAreas||found.touchChanged||suspect.length;
+let report={type:'BRIDGE_CONTRACT_REPORT_V1',built_at:now(),screen:'bridge',contract:'Bridge may show only real Bridge tools. No invisible panels, old connection tools, raw code boxes, hidden repair layers, or touch-triggered ghosts.',contract_status:fail?'FAIL':'PASS',severity:sev,visible_text:visibleText(bridge).slice(0,500),direct_cards:directCards.length,extra_cards:found.extraCards,forbidden_hidden_elements:hidden,raw_code_or_form_areas:rawAreas,suspect_elements:suspect.slice(0,20),touch_trigger_changed_dom:touchChanged,bridge_related_storage_keys:storage,root_cause_layer:touchChanged?'event/touch trigger or remount':'unknown until source/storage proof',clean_repair_path:fail?'Do not hide symptom only. Find maker-code/storage source, then stage repair through Safe Writer.':'No Bridge contract failure detected in mirror.',bug_memory_action:fail?'auto-save recommended / available':'none',next_safe_step:fail?'Save Latest Bug, then Build Repair Request.':'Return to PMP or scan storage if user still sees ghost.'};
+RI.latestScan=report;if(fail){RI.latestBug={bug_family:'Bridge ghost layer',status:touchChanged?'observed':'suspected',severity:sev.label,priority:sev.priority,confidence:touchChanged?'medium-high':'medium',screen:'bridge',symptom:'Bridge contract failed: hidden/suspect/extra/touch-triggered content found.',contract_failed:'Bridge Truth Contract',live_evidence:JSON.stringify({extra_cards:found.extraCards,hidden:hidden.slice(0,5),suspect:suspect.slice(0,5),rawAreas:rawAreas,touchChanged:touchChanged}),storage_evidence:JSON.stringify(storage),event_evidence:touchChanged?'Bridge DOM changed after touch/click test in mirror.':'No touch change detected.',source_evidence:'Not inspected in v1.',likely_cause:report.root_cause_layer,repair_path:report.clean_repair_path,do_not_repeat_rule:'No hidden public-screen repair tools. Remove ghost-maker code, not only the visible symptom.'};saveBugEntry(RI.latestBug);report.bug_memory_action='auto-saved to Bug Memory';}
+set('bridgeOut',report,fail);updateReport(report);return report}
+function saveLatestBug(){if(!RI.latestBug){set('bridgeOut','No latest bug ready. Run Scan Bridge Truth first.',true);return}let saved=saveBugEntry(RI.latestBug);set('bridgeOut',{status:'BUG_MEMORY_SAVED',bug:saved});updateReport(saved)}
+function buildRepairRequest(){let scan=RI.latestScan;if(!scan){set('bridgeOut','Run Scan Bridge Truth first.',true);return}let req={type:'SAFE_WRITER_REPAIR_REQUEST_V1',built_at:now(),target:'pmp.html',problem:scan.contract_status==='FAIL'?'Bridge contract failure':'No repair needed from latest scan',autonomy:'prepare only; no commit power',proof_status:scan.contract_status==='FAIL'?'partial proof from live mirror scan; source maker-code still needed':'pass',repair_rule:'Find and remove maker-code/storage remount source. Do not only hide symptoms.',safe_writer_steps:['Fetch App','Find source maker-code or storage remount code','Apply smallest replacement','Run Guard','Preview Transaction','Commit only with user approval'],verification:['Open PMP fresh','Open Bridge','Tap blank areas','Confirm no hidden/suspect elements','Re-run Bridge Truth Scanner'],bug_memory:'update bug entry after verification'};set('bridgeOut',req);updateReport(req)}
+async function copyReport(){let v=$('reportBox').value||$('askOut').textContent||'';try{await navigator.clipboard.writeText(v);set('askOut','Report copied.')}catch(e){set('askOut','Copy failed: '+e.message,true)}}
+loadThread();
+updateReport({type:'RESIDENT_INTELLIGENCE_V1_READY',safe:true,commit_power:false,next:'Load PMP Mirror, then Scan Health or Scan Bridge Truth.'});
+</script>
+</body>
+</html>
