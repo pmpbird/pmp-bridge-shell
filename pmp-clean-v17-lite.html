@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>PMP Clean v17 Lite</title>
+<style>
+:root{--bg:#050505;--panel:#0d0d0d;--line:#1d1d1d;--text:#f5f5f5;--muted:#a0a0a0;--green:#57ff91;--yellow:#ffd65a;--red:#ff6b6b;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,Inter,system-ui,sans-serif;touch-action:manipulation;-webkit-text-size-adjust:100%;overscroll-behavior:none;}
+body{padding:14px 14px 82px;}
+h1,h2,h3,p{margin-top:0}.muted{color:var(--muted)}
+.screen{display:none}.screen.on{display:block}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px;margin:0 0 12px;box-shadow:0 0 0 1px rgba(255,255,255,.02) inset;}
+.big{width:100%;display:block;background:#111;border:1px solid #2b2b2b;color:var(--text);border-radius:16px;padding:15px;text-align:left;margin:10px 0;font-size:16px;font-weight:750;}
+.big small{display:block;color:var(--muted);font-weight:500;margin-top:5px}.mini{background:#101010;border:1px solid #2c2c2c;color:var(--text);border-radius:14px;padding:10px 12px;font-weight:720;font-size:13px;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.out{white-space:pre-wrap;background:#061a0b;border:1px solid #1d7a39;color:#dfffe8;border-radius:14px;padding:10px;min-height:52px;font-family:ui-monospace,Menlo,monospace;font-size:12px;overflow:auto;max-height:180px}.out.yellow{background:#201a05;border-color:#816400;color:#fff3bd}.out.red{background:#230909;border-color:#842323;color:#ffd4d4}
+.tabs{position:fixed;left:0;right:0;bottom:0;background:#060606;border-top:1px solid #202020;display:grid;grid-template-columns:repeat(5,1fr);gap:0;padding:8px 6px env(safe-area-inset-bottom);z-index:5}.tab{background:transparent;border:0;color:#8b8b8b;font-weight:700;font-size:12px;padding:10px 0}.tab.on{color:var(--green)}
+#controlTitle{touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:pointer;transform:none!important;transition:none!important;}
+#controlTitle:active{transform:none!important;}
+.secretPanel{display:none}.secretPanel.on{display:block;border-color:#6b4cff;background:#100d18}
+</style>
+</head>
+<body>
+<section id="world" class="screen on"><div class="card"><h2>World</h2><p class="muted">Clean shell v17 rhythm test.</p></div></section>
+<section id="bridge" class="screen"><div class="card"><h2>Bridge</h2><button class="big" onclick="setOut({type:'LOSSLESS_STATUS',state:'PASS',next:'Ready for promotion review.'})">Improve Lossless Quality<small>Check packet/corpus/promotion readiness</small></button><button class="big" onclick="setOut({type:'PROJECT_EXPORT',status:'clean shell export ready',path:'pmp-clean-v17-lite.html'})">Prepare Project Export<small>Build carried-state bundle</small></button><button class="big" onclick="copyOut()">Copy Current<small>Copy current output</small></button><div class="grid"><button class="mini" onclick="setOut({type:'SHARE_PANEL',status:'compact share ready'})">Share</button><button class="mini" onclick="setOut({type:'CONNECTIONS_PANEL',status:'compact connections ready'})">Connections</button><button class="mini" onclick="toggleResident()">Resident</button><button class="mini" onclick="setOut({type:'LOADER_PANEL',status:'loader compact ready'})">Loader</button></div><div id="bridgeOut" class="out">Bridge ready.</div><div id="residentDock" class="card" style="display:none"><h3>Resident Dock</h3><textarea id="residentQuestion" style="width:100%;min-height:70px;background:#050505;color:white;border:1px solid #333;border-radius:12px;padding:10px" placeholder="Ask Resident..."></textarea><button class="mini" onclick="askResident()">Ask Resident</button><div id="residentOut" class="out yellow">Resident reads current output and menu context.</div></div></div></section>
+<section id="library" class="screen"><div class="card"><h2>Library</h2><p class="muted">References and saved material.</p></div></section>
+<section id="workshop" class="screen"><div class="card"><h2>Workshop</h2><p class="muted">Build area.</p></div></section>
+<section id="control" class="screen"><div class="card"><h2 id="controlTitle">Control Room</h2><p class="muted">Tap the title in the private rhythm. No count. No zoom. No movement.</p><button class="big" onclick="location.href='safe-writer-v13.html'">Open Safe Writer<small>Resident lives inside the Safe Writer tool.</small></button><button class="big" onclick="location.href='code-safety-v13.html'">Open Code Safety<small>Resident lives inside the Code Safety tool.</small></button><button class="mini" onclick="location.href='resident.html'">Deep Resident Intelligence</button><div id="controlOut" class="out">Control ready. Rhythm listens by timing shape, not tap count.</div><div id="secretPanel" class="card secretPanel"><h3>Private Window</h3><p class="muted">Opened by rhythm: Q Q E E E E ER E E ER E E E E.</p><div class="grid"><button class="mini" onclick="controlMsg('Private status ready.')">Private Status</button><button class="mini" onclick="controlMsg('Bug Memory ready.')">Bug Memory</button></div></div></div></section>
+<nav class="tabs"><button class="tab on" data-tab="world" onclick="go('world')">World</button><button class="tab" data-tab="bridge" onclick="go('bridge')">Bridge</button><button class="tab" data-tab="library" onclick="go('library')">Library</button><button class="tab" data-tab="workshop" onclick="go('workshop')">Workshop</button><button class="tab" data-tab="control" onclick="go('control')">Control</button></nav>
+<script>
+let currentOutput={type:'READY',status:'clean shell v17 ready'};
+function $(id){return document.getElementById(id)}
+function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));$(id).classList.add('on');document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.tab===id));}
+function setOut(o){currentOutput=o;$('bridgeOut').className='out';$('bridgeOut').textContent=JSON.stringify(o,null,2)}
+function copyOut(){navigator.clipboard&&navigator.clipboard.writeText(JSON.stringify(currentOutput,null,2));setOut({type:'COPIED',copied:true,source:currentOutput.type||'unknown'})}
+function toggleResident(){let d=$('residentDock');d.style.display=d.style.display==='none'?'block':'none';}
+function askResident(){let q=$('residentQuestion').value||'What do you see?';let ans={type:'RESIDENT_DOCK_RESPONSE_V17',question:q,current_output:currentOutput,answer:'I can read the current Bridge output and menu context. Next depends on the current output state.'};$('residentOut').textContent=JSON.stringify(ans,null,2)}
+function controlMsg(msg){$('controlOut').className='out yellow';$('controlOut').textContent=msg}
+
+// Strict rhythm recognizer. It uses timing gaps only.
+// Rhythm taps: Q Q E E E E ER E E ER E E E E
+// Tap onset gaps in eighth-note units: 2,2,1,1,1,2,1,2,1,1,1
+const rhythmTarget=['L','L','S','S','S','L','S','L','S','S','S'];
+let rhythmTimes=[];
+let rhythmLocked=false;
+let lastAcceptedPointer=0;
+let resetTimer=null;
+function titleTap(e){
+  e.preventDefault();
+  e.stopPropagation();
+  const now=performance.now();
+  if(now-lastAcceptedPointer<170)return;
+  lastAcceptedPointer=now;
+  if(rhythmLocked)return;
+  rhythmTimes.push(now);
+  if(resetTimer)clearTimeout(resetTimer);
+  resetTimer=setTimeout(()=>{ if(rhythmTimes.length>0 && rhythmTimes.length<12){rhythmTimes=[]; controlMsg('Rhythm reset. Start again from the first Q.')} },2200);
+  if(rhythmTimes.length===12){
+    const ok=checkRhythm(rhythmTimes);
+    if(ok){openSecret();}
+    else{rhythmLocked=true; controlMsg('Rhythm did not match. Pause, then try the whole rhythm again.'); setTimeout(()=>{rhythmLocked=false; rhythmTimes=[];},1600);}
+  }
+  if(rhythmTimes.length>12){ rhythmTimes=[]; controlMsg('Too many taps. Pause, then start again.'); }
+}
+function checkRhythm(times){
+  const gaps=[];
+  for(let i=1;i<times.length;i++)gaps.push(times[i]-times[i-1]);
+  const sorted=[...gaps].sort((a,b)=>a-b);
+  const shortUnit=median(sorted.slice(0,7));
+  const longUnit=median(sorted.slice(7));
+  if(!isFinite(shortUnit)||!isFinite(longUnit))return false;
+  if(shortUnit<90||shortUnit>650)return false;
+  if(longUnit/shortUnit<1.55||longUnit/shortUnit>2.85)return false;
+  const classified=gaps.map(g=>{
+    const ds=Math.abs(g-shortUnit);
+    const dl=Math.abs(g-longUnit);
+    return dl<ds?'L':'S';
+  });
+  if(classified.join('')!==rhythmTarget.join(''))return false;
+  for(let i=0;i<gaps.length;i++){
+    const target=rhythmTarget[i]==='S'?shortUnit:longUnit;
+    const err=Math.abs(gaps[i]-target)/target;
+    if(err>0.45)return false;
+  }
+  return true;
+}
+function median(arr){if(!arr.length)return NaN;const a=[...arr].sort((x,y)=>x-y);const m=Math.floor(a.length/2);return a.length%2?a[m]:(a[m-1]+a[m])/2}
+function openSecret(){rhythmTimes=[];$('secretPanel').classList.add('on');$('controlOut').className='out';$('controlOut').textContent='Private rhythm accepted.'; if(navigator.vibrate)navigator.vibrate([25,30,25]);}
+const title=$('controlTitle');
+title.addEventListener('pointerdown',titleTap,{passive:false});
+title.addEventListener('dblclick',e=>{e.preventDefault();e.stopPropagation();},{passive:false});
+</script>
+</body>
+</html>
