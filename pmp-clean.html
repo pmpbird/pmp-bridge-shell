@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-title" content="PMP">
 <title>PMP Clean</title>
 <style>
-:root{--a:#a1fcfd;--a2:#7ed9da;--a4:#92edee;--bg:#52b5df;--card:#46a9d3;--line:#fff;--text:#101827;--muted:#234a5d;--bt:#101827}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.wrap{max-width:820px;margin:auto;padding:18px 14px 96px}.screen{display:none}.screen.on{display:block}.card{background:var(--card);border:2px solid var(--line);border-radius:28px;padding:18px;margin:0 0 16px;box-shadow:0 12px 28px #0002,inset 0 0 0 1px #fff2}h1{margin:0 0 10px;font-size:34px}h2{margin:0 0 12px;font-size:24px}.sub{color:var(--muted);font-weight:800;line-height:1.35}.big{display:flex;align-items:center;gap:14px;width:100%;border:0;border-radius:20px;padding:18px;margin:12px 0;color:var(--bt);background:var(--a);text-align:left;font:inherit;font-weight:900;font-size:19px;box-shadow:0 8px 18px #0002}.big small{display:block;font-size:14px;font-weight:600;opacity:.9}.icon{font-size:28px;width:38px;text-align:center}.chev{margin-left:auto;font-size:32px}.green{background:var(--a2)}.teal{background:var(--a4)}input,textarea{width:100%;border:1px solid #25354a;border-radius:16px;background:#0c141e;color:#eef4fb;padding:13px;font:inherit;margin-top:10px}textarea{min-height:135px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}.mini{border:1px solid #25354a;background:#172234;color:#eef4fb;border-radius:14px;padding:14px;font:inherit;font-weight:900;width:100%;margin-top:10px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.note{background:#123024;border:2px solid var(--line);color:#c9f7d7;border-radius:22px;padding:16px;white-space:pre-wrap;overflow-wrap:anywhere}.warn{background:#2b2010;border:2px solid #745522;color:#ffe0a3;border-radius:22px;padding:16px;white-space:pre-wrap;overflow-wrap:anywhere}.tabs{position:fixed;left:0;right:0;bottom:0;background:#0f1620f5;border-top:1px solid #25354a;display:grid;grid-template-columns:repeat(5,1fr);padding:7px 6px max(7px,env(safe-area-inset-bottom));z-index:10}.tab{background:transparent;border:0;color:#9fb0c3;font:inherit;font-size:11px}.tab b{display:block;font-size:20px}.tab.on{color:var(--a);font-weight:900}
+:root{--a:#a1fcfd;--a2:#7ed9da;--a4:#92edee;--bg:#52b5df;--card:#46a9d3;--line:#fff;--text:#101827;--muted:#234a5d;--bt:#101827}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.wrap{max-width:820px;margin:auto;padding:18px 14px 96px}.screen{display:none}.screen.on{display:block}.card{background:var(--card);border:2px solid var(--line);border-radius:28px;padding:18px;margin:0 0 16px;box-shadow:0 12px 28px #0002,inset 0 0 0 1px #fff2}h1{margin:0 0 8px;font-size:34px}h2{margin:0 0 10px;font-size:22px}.sub{color:var(--muted);font-weight:800;line-height:1.32}.big{display:flex;align-items:center;gap:14px;width:100%;border:0;border-radius:20px;padding:16px;margin:10px 0;color:var(--bt);background:var(--a);text-align:left;font:inherit;font-weight:900;font-size:18px;box-shadow:0 8px 18px #0002}.big small{display:block;font-size:13px;font-weight:600;opacity:.9}.icon{font-size:26px;width:36px;text-align:center}.chev{margin-left:auto;font-size:30px}.green{background:var(--a2)}.teal{background:var(--a4)}input,textarea{width:100%;border:1px solid #25354a;border-radius:16px;background:#0c141e;color:#eef4fb;padding:12px;font:inherit;margin-top:8px}textarea{min-height:100px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}.mini{border:1px solid #25354a;background:#172234;color:#eef4fb;border-radius:14px;padding:12px;font:inherit;font-weight:900;width:100%;margin-top:8px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.toolstrip{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.toolstrip button{border:1px solid #25354a;background:#172234;color:#eef4fb;border-radius:14px;padding:12px;font:inherit;font-weight:900}.panel{background:#102033;border:2px solid var(--line);color:#eef4fb;border-radius:20px;padding:13px;margin-top:10px}.note{background:#123024;border:2px solid var(--line);color:#c9f7d7;border-radius:22px;padding:14px;white-space:pre-wrap;overflow-wrap:anywhere}.warn{background:#2b2010;border:2px solid #745522;color:#ffe0a3;border-radius:22px;padding:14px;white-space:pre-wrap;overflow-wrap:anywhere}.hidden{display:none!important}.tabs{position:fixed;left:0;right:0;bottom:0;background:#0f1620f5;border-top:1px solid #25354a;display:grid;grid-template-columns:repeat(5,1fr);padding:7px 6px max(7px,env(safe-area-inset-bottom));z-index:10}.tab{background:transparent;border:0;color:#9fb0c3;font:inherit;font-size:11px}.tab b{display:block;font-size:20px}.tab.on{color:var(--a);font-weight:900}.rhythm{user-select:none;-webkit-user-select:none}
 </style>
 </head>
 <body>
@@ -15,63 +15,49 @@
   <section id="world" class="screen on">
     <div class="card">
       <h1>PMP World</h1>
-      <p class="sub">Clean shell v2. This page is isolated from the older Bridge shell.</p>
-      <button class="big" onclick="go('bridge')"><span class="icon">🌉</span><span>Bridge<small>project export / copy current</small></span><span class="chev">›</span></button>
+      <p class="sub">Clean shell v4. Bridge keeps Share and Connections compact inside Bridge.</p>
+      <button class="big" onclick="go('bridge')"><span class="icon">🌉</span><span>Bridge<small>connections / share / export / copy current</small></span><span class="chev">›</span></button>
       <button class="big green" onclick="go('library')"><span class="icon">📚</span><span>Library<small>research / memory / references</small></span><span class="chev">›</span></button>
       <button class="big teal" onclick="go('workshop')"><span class="icon">🛠</span><span>Workshop<small>build / test / make / experiment</small></span><span class="chev">›</span></button>
       <button class="big" onclick="go('cityhall')"><span class="icon">🏛</span><span>City Hall<small>official rules / permissions / decisions</small></span><span class="chev">›</span></button>
-      <button class="big green" onclick="go('control')"><span class="icon">⚙</span><span>Control Room<small>app controls / safety links / status</small></span><span class="chev">›</span></button>
-      <div class="note">Clean App Path: pmp-clean.html\nExpected tabs: World / Bridge / Library / Workshop / Control</div>
+      <button class="big green" onclick="go('control')"><span class="icon">⚙</span><span>Control Room<small>app controls / safety links / private rhythm window</small></span><span class="chev">›</span></button>
+      <div class="note">Expected bottom tabs:\nWorld / Bridge / Library / Workshop / Control</div>
     </div>
   </section>
 
   <section id="bridge" class="screen">
     <div class="card">
       <h1>Bridge</h1>
-      <p class="sub">Clean Bridge has only the official Bridge actions.</p>
+      <p class="sub">Bridge connects things that cannot normally communicate. Share and Connections stay compact.</p>
       <button class="big" onclick="improveLossless()"><span class="icon">↟</span><span>Improve Lossless Quality<small>Update status and next move</small></span><span class="chev">›</span></button>
       <button class="big green" onclick="prepareExport()"><span class="icon">◇</span><span>Prepare Project Export<small>Build carried-state bundle</small></span><span class="chev">›</span></button>
       <button class="big teal" onclick="copyCurrent()"><span class="icon">⧉</span><span>Copy Current<small>Copy current output</small></span><span class="chev">›</span></button>
-      <div id="bridgeStatus" class="note">Bridge clean.</div>
+      <div class="toolstrip"><button onclick="openBridgePanel('share')">Share</button><button onclick="openBridgePanel('connections')">Connections</button></div>
+      <div id="bridgePanel" class="note">Bridge compact strip ready. Share and Connections open here without becoming bottom tabs.</div>
     </div>
   </section>
 
-  <section id="library" class="screen">
-    <div class="card">
-      <h1>Library</h1>
-      <p class="sub">Stores notes and references in the clean shell namespace only.</p>
-      <textarea id="libraryNotes" placeholder="Library notes / research / references"></textarea>
-      <div class="grid"><button class="mini" onclick="saveBox('libraryNotes','pmp_clean_library_v2','Library saved.')">Save Library</button><button class="mini" onclick="copyBox('libraryNotes','Library copied.')">Copy Library</button></div>
-    </div>
-  </section>
+  <section id="library" class="screen"><div class="card"><h1>Library</h1><p class="sub">Stores notes and references in the clean shell namespace.</p><textarea id="libraryNotes" placeholder="Library notes / research / references"></textarea><div class="grid"><button class="mini" onclick="saveBox('libraryNotes','pmp_clean_library_v4','Library saved.')">Save Library</button><button class="mini" onclick="copyBox('libraryNotes','Library copied.')">Copy Library</button></div></div></section>
 
-  <section id="workshop" class="screen">
-    <div class="card">
-      <h1>Workshop</h1>
-      <p class="sub">Builds actual things from blueprints.</p>
-      <textarea id="workshopBox" placeholder="Build plan / tool / prompt / app part"></textarea>
-      <div class="grid"><button class="mini" onclick="saveBox('workshopBox','pmp_clean_workshop_v2','Workshop saved.')">Save Work</button><button class="mini" onclick="copyBox('workshopBox','Workshop copied.')">Copy Work</button></div>
-    </div>
-  </section>
+  <section id="workshop" class="screen"><div class="card"><h1>Workshop</h1><p class="sub">Builds actual things from blueprints.</p><textarea id="workshopBox" placeholder="Build plan / tool / prompt / app part"></textarea><div class="grid"><button class="mini" onclick="saveBox('workshopBox','pmp_clean_workshop_v4','Workshop saved.')">Save Work</button><button class="mini" onclick="copyBox('workshopBox','Workshop copied.')">Copy Work</button></div></div></section>
 
-  <section id="cityhall" class="screen">
-    <div class="card">
-      <h1>City Hall</h1>
-      <p class="sub">Official rules, permissions, identity, and final decisions.</p>
-      <textarea id="cityBox" placeholder="Official decisions / rules / permissions"></textarea>
-      <div class="grid"><button class="mini" onclick="saveBox('cityBox','pmp_clean_city_v2','City Hall saved.')">Save Official</button><button class="mini" onclick="copyBox('cityBox','City Hall copied.')">Copy Official</button></div>
-    </div>
-  </section>
+  <section id="cityhall" class="screen"><div class="card"><h1>City Hall</h1><p class="sub">Official rules, permissions, identity, and final decisions.</p><textarea id="cityBox" placeholder="Official decisions / rules / permissions"></textarea><div class="grid"><button class="mini" onclick="saveBox('cityBox','pmp_clean_city_v4','City Hall saved.')">Save Official</button><button class="mini" onclick="copyBox('cityBox','City Hall copied.')">Copy Official</button></div></div></section>
 
   <section id="control" class="screen">
     <div class="card">
-      <h1>Control Room</h1>
-      <p class="sub">Clean shell controls and safety links.</p>
-      <button class="mini" onclick="location.href='resident.html?from=pmp-clean-v2'">Open Resident Intelligence</button>
-      <button class="mini" onclick="location.href='safety.html?from=pmp-clean-v2'">Open Safety Hub</button>
-      <button class="mini" onclick="location.href='code-safety.html?from=pmp-clean-v2'">Open Code Safety</button>
-      <button class="mini" onclick="location.href='safe-writer.html?from=pmp-clean-v2'">Open Safe Writer</button>
-      <div id="controlStatus" class="note">Clean shell v2 loaded.</div>
+      <h1 id="controlTitle" class="rhythm">Control Room</h1>
+      <p class="sub">Tap the title with your private rhythm to open the private window.</p>
+      <button class="mini" onclick="location.href='resident.html?from=pmp-clean-v4'">Open Resident Intelligence</button>
+      <button class="mini" onclick="location.href='safety.html?from=pmp-clean-v4'">Open Safety Hub</button>
+      <button class="mini" onclick="location.href='code-safety.html?from=pmp-clean-v4'">Open Code Safety</button>
+      <button class="mini" onclick="location.href='safe-writer.html?from=pmp-clean-v4'">Open Safe Writer</button>
+      <div id="controlStatus" class="note">Clean shell v4 loaded.</div>
+    </div>
+    <div id="privateWindow" class="card hidden">
+      <h2>Private Window</h2>
+      <div class="warn">Opened by rhythm: Q Q E E E E ER E E ER E E E E.</div>
+      <div class="grid"><button class="mini" onclick="showPrivate('bugs')">Bug Memory</button><button class="mini" onclick="showPrivate('status')">Private Status</button><button class="mini" onclick="showPrivate('backup')">Private Backup</button><button class="mini" onclick="lockPrivate()">Lock</button></div>
+      <div id="privatePanel" class="note">Private window open.</div>
     </div>
   </section>
 </div>
@@ -85,17 +71,34 @@
 </nav>
 
 <script>
-const CLEAN_VERSION='PMP_CLEAN_SHELL_V2';
-let currentOutput='';
+const CLEAN_VERSION='PMP_CLEAN_SHELL_V4';
+const CONN_KEY='pmp_clean_connections_v4';
+const BUG_KEY='pmp_bug_memory_v1';
+const RHYTHM=[2,2,1,1,1,2,1,2,1,1,1];
+let currentOutput='',tapTimes=[];
 function $(id){return document.getElementById(id)}
 function now(){return new Date().toISOString()}
+function read(k,f){try{let v=localStorage.getItem(k);return v?JSON.parse(v):f}catch(e){return f}}
+function write(k,v){localStorage.setItem(k,JSON.stringify(v))}
 function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));$(id).classList.add('on');document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.tab===id));scrollTo(0,0)}
-function setStatus(id,msg){if($(id))$(id).textContent=msg}
-function improveLossless(){currentOutput=JSON.stringify({type:'PMP_CLEAN_LOSSLESS_STATUS',built_at:now(),state:'PASS',next:'Clean shell v2 is loaded.'},null,2);setStatus('bridgeStatus',currentOutput)}
-function prepareExport(){currentOutput=JSON.stringify({type:'PMP_CLEAN_PROJECT_EXPORT',built_at:now(),path:'pmp-clean.html',tabs:['World','Bridge','Library','Workshop','Control'],status:'clean shell export ready'},null,2);setStatus('bridgeStatus',currentOutput)}
-async function copyCurrent(){let text=currentOutput||JSON.stringify({type:'PMP_CLEAN_CURRENT',built_at:now(),version:CLEAN_VERSION,status:'clean'},null,2);try{await navigator.clipboard.writeText(text);setStatus('bridgeStatus','Copied current clean output.')}catch(e){setStatus('bridgeStatus','Copy failed: '+e.message)}}
+function setStatus(id,msg){if($(id))$(id).textContent=typeof msg==='string'?msg:JSON.stringify(msg,null,2)}
+function improveLossless(){currentOutput=JSON.stringify({type:'PMP_CLEAN_LOSSLESS_STATUS',built_at:now(),state:'PASS',bridge_rule:'Bridge connects things that cannot normally communicate.',next:'Clean shell v4 is loaded with compact Share and Connections.'},null,2);setStatus('bridgePanel',currentOutput)}
+function prepareExport(){currentOutput=JSON.stringify({type:'PMP_CLEAN_PROJECT_EXPORT',built_at:now(),path:'pmp-clean.html',tabs:['World','Bridge','Library','Workshop','Control'],compact_bridge_tools:['Share','Connections'],status:'clean shell export ready'},null,2);setStatus('bridgePanel',currentOutput)}
+async function copyCurrent(){let text=currentOutput||JSON.stringify({type:'PMP_CLEAN_CURRENT',built_at:now(),version:CLEAN_VERSION,status:'clean'},null,2);try{await navigator.clipboard.writeText(text);setStatus('bridgePanel','Copied current clean output.')}catch(e){setStatus('bridgePanel','Copy failed: '+e.message)}}
+function openBridgePanel(which){if(which==='share'){$('bridgePanel').className='panel';$('bridgePanel').innerHTML='<h2>Share</h2><p>Build a clean share packet. Sharing does not make anything official PMP.</p><input id="shareReceiver" placeholder="Receiver / destination"><textarea id="sharePayload" placeholder="Payload to share"></textarea><textarea id="shareBoundary" placeholder="Boundary: what this must not overwrite or confuse"></textarea><div class="grid"><button class="mini" onclick="buildShare()">Build</button><button class="mini" onclick="copyShare()">Copy</button></div><textarea id="shareOut" readonly placeholder="Share packet appears here"></textarea>'}
+else{$('bridgePanel').className='panel';$('bridgePanel').innerHTML='<h2>Connections</h2><p>Hold outside/source connections without making them official PMP automatically.</p><input id="connName" placeholder="Connection name"><input id="connKind" placeholder="Connection kind"><textarea id="connSource" placeholder="Source / outside material / link / note"></textarea><textarea id="connBoundary" placeholder="Boundary: what this can and cannot touch"></textarea><div class="grid"><button class="mini" onclick="saveConnection()">Save</button><button class="mini" onclick="copyConnections()">Copy</button></div><div id="connStatus" class="note">Compact Connections ready.</div>'}}
+function buildShare(){let pkt={type:'PMP_SHARE_PACKET_V4',built_at:now(),receiver:($('shareReceiver').value||'').trim(),payload:($('sharePayload').value||'').trim(),boundary:($('shareBoundary').value||'Does not overwrite PMP unless promoted through City Hall / official path.').trim(),source_path:'Bridge / Compact Share'};$('shareOut').value=JSON.stringify(pkt,null,2);currentOutput=$('shareOut').value}
+async function copyShare(){if(!$('shareOut').value)buildShare();try{await navigator.clipboard.writeText($('shareOut').value);setStatus('bridgePanel','Share packet copied.')}catch(e){setStatus('bridgePanel','Copy failed: '+e.message)}}
+function saveConnection(){let arr=read(CONN_KEY,[]);let item={id:'conn_'+Date.now(),created_at:now(),name:($('connName').value||'untitled connection').trim(),kind:($('connKind').value||'outside/source').trim(),source:($('connSource').value||'').trim(),boundary:($('connBoundary').value||'Connection is held outside official PMP until promoted.').trim(),official:false};arr.push(item);write(CONN_KEY,arr);setStatus('connStatus',{status:'CONNECTION_SAVED',meaning:'Saved as outside/source connection. Not official PMP automatically.',connection:item,total:arr.length});currentOutput=JSON.stringify({type:'PMP_CONNECTIONS_V4',connections:arr},null,2)}
+async function copyConnections(){let arr=read(CONN_KEY,[]);let out=JSON.stringify({type:'PMP_CONNECTIONS_V4',built_at:now(),rule:'Connections bridge outside/source material without automatic promotion.',connections:arr},null,2);try{await navigator.clipboard.writeText(out);setStatus('connStatus','Connections copied.')}catch(e){setStatus('connStatus','Copy failed: '+e.message)}}
 function saveBox(id,key,msg){localStorage.setItem(key,$(id).value||'');setStatus('controlStatus',msg)}
 async function copyBox(id,msg){try{await navigator.clipboard.writeText($(id).value||'');setStatus('controlStatus',msg)}catch(e){setStatus('controlStatus','Copy failed: '+e.message)}}
+function tapTitle(){let t=performance.now();tapTimes.push(t);tapTimes=tapTimes.filter(x=>t-x<6000).slice(-12);if(navigator.vibrate)try{navigator.vibrate(8)}catch(e){};if(tapTimes.length===12&&rhythmMatch(tapTimes)){openPrivate();tapTimes=[]}}
+function rhythmMatch(times){let gaps=[];for(let i=1;i<times.length;i++)gaps.push(times[i]-times[i-1]);let ratios=gaps.map((g,i)=>g/RHYTHM[i]);ratios.sort((a,b)=>a-b);let scale=ratios[Math.floor(ratios.length/2)]||1;let err=0;for(let i=0;i<gaps.length;i++){err+=Math.abs((gaps[i]/scale)-RHYTHM[i])/RHYTHM[i]}err/=gaps.length;return err<0.38}
+function openPrivate(){$('privateWindow').classList.remove('hidden');setStatus('privatePanel','Private window open. Rhythm accepted.');setStatus('controlStatus','Private rhythm accepted.')}
+function lockPrivate(){$('privateWindow').classList.add('hidden');setStatus('controlStatus','Private window locked.')}
+function showPrivate(which){if(which==='bugs'){setStatus('privatePanel',{type:'PRIVATE_BUG_MEMORY_VIEW',bugs:read(BUG_KEY,{bugs:[]})})}else if(which==='backup'){let out={type:'PMP_CLEAN_PRIVATE_BACKUP_V4',built_at:now(),connections:read(CONN_KEY,[]),bug_memory:read(BUG_KEY,{bugs:[]})};setStatus('privatePanel',out)}else{setStatus('privatePanel',{type:'PRIVATE_STATUS',version:CLEAN_VERSION,rhythm:'Q Q E E E E ER E E ER E E E E',private_window:'open'})}}
+window.addEventListener('DOMContentLoaded',()=>{$('controlTitle').addEventListener('pointerdown',tapTitle)});
 </script>
 </body>
 </html>
