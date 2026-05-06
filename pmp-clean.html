@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PMP">
+<title>PMP Clean</title>
+<style>
+:root{--a:#a1fcfd;--a2:#7ed9da;--a4:#92edee;--bg:#52b5df;--card:#46a9d3;--line:#fff;--text:#101827;--muted:#234a5d;--bt:#101827}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.wrap{max-width:820px;margin:auto;padding:18px 14px 96px}.screen{display:none}.screen.on{display:block}.card{background:var(--card);border:2px solid var(--line);border-radius:28px;padding:18px;margin:0 0 16px;box-shadow:0 12px 28px #0002,inset 0 0 0 1px #fff2}h1{margin:0 0 10px;font-size:34px}h2{margin:0 0 12px;font-size:24px}.sub{color:var(--muted);font-weight:800;line-height:1.35}.big{display:flex;align-items:center;gap:14px;width:100%;border:0;border-radius:20px;padding:18px;margin:12px 0;color:var(--bt);background:var(--a);text-align:left;font:inherit;font-weight:900;font-size:19px;box-shadow:0 8px 18px #0002}.big small{display:block;font-size:14px;font-weight:600;opacity:.9}.icon{font-size:28px;width:38px;text-align:center}.chev{margin-left:auto;font-size:32px}.green{background:var(--a2)}.teal{background:var(--a4)}input,textarea,select{width:100%;border:1px solid #25354a;border-radius:16px;background:#0c141e;color:#eef4fb;padding:13px;font:inherit;margin-top:10px}textarea{min-height:135px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}.mini{border:1px solid #25354a;background:#172234;color:#eef4fb;border-radius:14px;padding:14px;font:inherit;font-weight:900;width:100%;margin-top:10px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.note{background:#123024;border:2px solid var(--line);color:#c9f7d7;border-radius:22px;padding:16px;white-space:pre-wrap;overflow-wrap:anywhere}.warn{background:#2b2010;border:2px solid #745522;color:#ffe0a3;border-radius:22px;padding:16px;white-space:pre-wrap;overflow-wrap:anywhere}.tabs{position:fixed;left:0;right:0;bottom:0;background:#0f1620f5;border-top:1px solid #25354a;display:grid;grid-template-columns:repeat(5,1fr);padding:7px 6px max(7px,env(safe-area-inset-bottom));z-index:10}.tab{background:transparent;border:0;color:#9fb0c3;font:inherit;font-size:11px}.tab b{display:block;font-size:20px}.tab.on{color:var(--a);font-weight:900}.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section id="world" class="screen on">
+    <div class="card">
+      <h1>PMP World</h1>
+      <p class="sub">Clean shell v1. No old Bridge packet panels. No Workbench / Share / Connections bottom tabs.</p>
+      <button class="big" onclick="go('bridge')"><span class="icon">🌉</span><span>Bridge<small>transfer / project export / copy current</small></span><span class="chev">›</span></button>
+      <button class="big green" onclick="go('library')"><span class="icon">📚</span><span>Library<small>research / memory / references</small></span><span class="chev">›</span></button>
+      <button class="big teal" onclick="go('workshop')"><span class="icon">🛠</span><span>Workshop<small>build / test / make / experiment</small></span><span class="chev">›</span></button>
+      <button class="big" onclick="go('cityhall')"><span class="icon">🏛</span><span>City Hall<small>official rules / permissions / decisions</small></span><span class="chev">›</span></button>
+      <button class="big green" onclick="go('control')"><span class="icon">⚙</span><span>Control Room<small>app controls / safety links / status</small></span><span class="chev">›</span></button>
+      <div class="note">Clean App Path: pmp-clean.html\nExpected tabs: World / Bridge / Library / Workshop / Control</div>
+    </div>
+  </section>
+
+  <section id="bridge" class="screen">
+    <div class="card">
+      <h1>Bridge</h1>
+      <p class="sub">Clean Bridge has only the official Bridge actions.</p>
+      <button class="big" onclick="improveLossless()"><span class="icon">↟</span><span>Improve Lossless Quality<small>Update status and next move</small></span><span class="chev">›</span></button>
+      <button class="big green" onclick="prepareExport()"><span class="icon">◇</span><span>Prepare Project Export<small>Build carried-state bundle</small></span><span class="chev">›</span></button>
+      <button class="big teal" onclick="copyCurrent()"><span class="icon">⧉</span><span>Copy Current<small>Copy current output</small></span><span class="chev">›</span></button>
+      <div id="bridgeStatus" class="note">Bridge clean. No Connected Project Packets panel is allowed here.</div>
+    </div>
+  </section>
+
+  <section id="library" class="screen">
+    <div class="card">
+      <h1>Library</h1>
+      <p class="sub">Stores notes and references in the clean shell namespace only.</p>
+      <textarea id="libraryNotes" placeholder="Library notes / research / references"></textarea>
+      <div class="grid"><button class="mini" onclick="saveBox('libraryNotes','pmp_clean_library_v1','Library saved.')">Save Library</button><button class="mini" onclick="copyBox('libraryNotes','Library copied.')">Copy Library</button></div>
+    </div>
+  </section>
+
+  <section id="workshop" class="screen">
+    <div class="card">
+      <h1>Workshop</h1>
+      <p class="sub">Builds actual things from blueprints.</p>
+      <textarea id="workshopBox" placeholder="Build plan / tool / prompt / app part"></textarea>
+      <div class="grid"><button class="mini" onclick="saveBox('workshopBox','pmp_clean_workshop_v1','Workshop saved.')">Save Work</button><button class="mini" onclick="copyBox('workshopBox','Workshop copied.')">Copy Work</button></div>
+    </div>
+  </section>
+
+  <section id="cityhall" class="screen">
+    <div class="card">
+      <h1>City Hall</h1>
+      <p class="sub">Official rules, permissions, identity, and final decisions.</p>
+      <textarea id="cityBox" placeholder="Official decisions / rules / permissions"></textarea>
+      <div class="grid"><button class="mini" onclick="saveBox('cityBox','pmp_clean_city_v1','City Hall saved.')">Save Official</button><button class="mini" onclick="copyBox('cityBox','City Hall copied.')">Copy Official</button></div>
+    </div>
+  </section>
+
+  <section id="control" class="screen">
+    <div class="card">
+      <h1>Control Room</h1>
+      <p class="sub">Clean shell controls and safety links.</p>
+      <button class="mini" onclick="location.href='resident.html?from=pmp-clean'">Open Resident Intelligence</button>
+      <button class="mini" onclick="location.href='safety.html?from=pmp-clean'">Open Safety Hub</button>
+      <button class="mini" onclick="location.href='code-safety.html?from=pmp-clean'">Open Code Safety</button>
+      <button class="mini" onclick="location.href='safe-writer.html?from=pmp-clean'">Open Safe Writer</button>
+      <div id="controlStatus" class="note">Clean shell v1 loaded.</div>
+    </div>
+  </section>
+</div>
+
+<nav class="tabs">
+  <button class="tab on" data-tab="world" onclick="go('world')"><b>◎</b>World</button>
+  <button class="tab" data-tab="bridge" onclick="go('bridge')"><b>↔</b>Bridge</button>
+  <button class="tab" data-tab="library" onclick="go('library')"><b>▤</b>Library</button>
+  <button class="tab" data-tab="workshop" onclick="go('workshop')"><b>⚒</b>Workshop</button>
+  <button class="tab" data-tab="control" onclick="go('control')"><b>⚙</b>Control</button>
+</nav>
+
+<script>
+const CLEAN_VERSION='PMP_CLEAN_SHELL_V1';
+let currentOutput='';
+function $(id){return document.getElementById(id)}
+function now(){return new Date().toISOString()}
+function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));$(id).classList.add('on');document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.tab===id));scrub();scrollTo(0,0)}
+function scrub(){document.querySelectorAll('body *').forEach(el=>{let t=(el.innerText||'').replace(/\s+/g,' ').trim();if(/Connected Project Packets|Build outside-project packet prompt|Project name hint|Project kind hint|Connections/.test(t)&&!el.closest('script')){if(!el.closest('#control')){if(el.classList&&el.classList.contains('card'))el.remove();}}});}
+function setStatus(id,msg){if($(id))$(id).textContent=msg}
+function improveLossless(){currentOutput=JSON.stringify({type:'PMP_CLEAN_LOSSLESS_STATUS',built_at:now(),state:'PASS',next:'Clean shell is loaded. Continue building from clean state.'},null,2);setStatus('bridgeStatus',currentOutput)}
+function prepareExport(){currentOutput=JSON.stringify({type:'PMP_CLEAN_PROJECT_EXPORT',built_at:now(),path:'pmp-clean.html',tabs:['World','Bridge','Library','Workshop','Control'],status:'clean shell export ready'},null,2);setStatus('bridgeStatus',currentOutput)}
+async function copyCurrent(){let text=currentOutput||JSON.stringify({type:'PMP_CLEAN_CURRENT',built_at:now(),version:CLEAN_VERSION,status:'clean'},null,2);try{await navigator.clipboard.writeText(text);setStatus('bridgeStatus','Copied current clean output.')}catch(e){setStatus('bridgeStatus','Copy failed: '+e.message)}}
+function saveBox(id,key,msg){localStorage.setItem(key,$(id).value||'');setStatus('controlStatus',msg)}
+async function copyBox(id,msg){try{await navigator.clipboard.writeText($(id).value||'');setStatus('controlStatus',msg)}catch(e){setStatus('controlStatus','Copy failed: '+e.message)}}
+window.addEventListener('pageshow',scrub);setInterval(scrub,1000);scrub();
+</script>
+</body>
+</html>
