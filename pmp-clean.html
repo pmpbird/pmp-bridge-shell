@@ -15,7 +15,7 @@
   <section id="world" class="screen on">
     <div class="card">
       <h1>PMP World</h1>
-      <p class="sub">Clean shell v5. Connections keeps full packet power in a compact one-panel drawer.</p>
+      <p class="sub">Clean shell v6. Resident now reads the selected packet directly.</p>
       <button class="big" onclick="go('bridge')"><span class="icon">🌉</span><span>Bridge<small>connections / share / resident / export</small></span><span class="chev">›</span></button>
       <button class="big green" onclick="go('library')"><span class="icon">📚</span><span>Library<small>research / memory / references</small></span><span class="chev">›</span></button>
       <button class="big teal" onclick="go('workshop')"><span class="icon">🛠</span><span>Workshop<small>build / test / make / experiment</small></span><span class="chev">›</span></button>
@@ -37,21 +37,21 @@
     </div>
   </section>
 
-  <section id="library" class="screen"><div class="card"><h1>Library</h1><p class="sub">Stores notes and references in the clean shell namespace.</p><textarea id="libraryNotes" placeholder="Library notes / research / references"></textarea><div class="grid"><button class="mini" onclick="saveBox('libraryNotes','pmp_clean_library_v5','Library saved.')">Save Library</button><button class="mini" onclick="copyBox('libraryNotes','Library copied.')">Copy Library</button></div></div></section>
+  <section id="library" class="screen"><div class="card"><h1>Library</h1><p class="sub">Stores notes and references in the clean shell namespace.</p><textarea id="libraryNotes" placeholder="Library notes / research / references"></textarea><div class="grid"><button class="mini" onclick="saveBox('libraryNotes','pmp_clean_library_v6','Library saved.')">Save Library</button><button class="mini" onclick="copyBox('libraryNotes','Library copied.')">Copy Library</button></div></div></section>
 
-  <section id="workshop" class="screen"><div class="card"><h1>Workshop</h1><p class="sub">Builds actual things from blueprints.</p><textarea id="workshopBox" placeholder="Build plan / tool / prompt / app part"></textarea><div class="grid"><button class="mini" onclick="saveBox('workshopBox','pmp_clean_workshop_v5','Workshop saved.')">Save Work</button><button class="mini" onclick="copyBox('workshopBox','Workshop copied.')">Copy Work</button></div></div></section>
+  <section id="workshop" class="screen"><div class="card"><h1>Workshop</h1><p class="sub">Builds actual things from blueprints.</p><textarea id="workshopBox" placeholder="Build plan / tool / prompt / app part"></textarea><div class="grid"><button class="mini" onclick="saveBox('workshopBox','pmp_clean_workshop_v6','Workshop saved.')">Save Work</button><button class="mini" onclick="copyBox('workshopBox','Workshop copied.')">Copy Work</button></div></div></section>
 
-  <section id="cityhall" class="screen"><div class="card"><h1>City Hall</h1><p class="sub">Official rules, permissions, identity, and final decisions.</p><textarea id="cityBox" placeholder="Official decisions / rules / permissions"></textarea><div class="grid"><button class="mini" onclick="saveBox('cityBox','pmp_clean_city_v5','City Hall saved.')">Save Official</button><button class="mini" onclick="copyBox('cityBox','City Hall copied.')">Copy Official</button></div></div></section>
+  <section id="cityhall" class="screen"><div class="card"><h1>City Hall</h1><p class="sub">Official rules, permissions, identity, and final decisions.</p><textarea id="cityBox" placeholder="Official decisions / rules / permissions"></textarea><div class="grid"><button class="mini" onclick="saveBox('cityBox','pmp_clean_city_v6','City Hall saved.')">Save Official</button><button class="mini" onclick="copyBox('cityBox','City Hall copied.')">Copy Official</button></div></div></section>
 
   <section id="control" class="screen">
     <div class="card">
       <h1 id="controlTitle" class="rhythm">Control Room</h1>
       <p class="sub">Tap the title with your private rhythm to open the private window.</p>
-      <button class="mini" onclick="location.href='resident.html?from=pmp-clean-v5'">Open Resident Intelligence</button>
-      <button class="mini" onclick="location.href='safety.html?from=pmp-clean-v5'">Open Safety Hub</button>
-      <button class="mini" onclick="location.href='code-safety.html?from=pmp-clean-v5'">Open Code Safety</button>
-      <button class="mini" onclick="location.href='safe-writer.html?from=pmp-clean-v5'">Open Safe Writer</button>
-      <div id="controlStatus" class="note">Clean shell v5 loaded.</div>
+      <button class="mini" onclick="location.href='resident.html?from=pmp-clean-v6'">Open Resident Intelligence</button>
+      <button class="mini" onclick="location.href='safety.html?from=pmp-clean-v6'">Open Safety Hub</button>
+      <button class="mini" onclick="location.href='code-safety.html?from=pmp-clean-v6'">Open Code Safety</button>
+      <button class="mini" onclick="location.href='safe-writer.html?from=pmp-clean-v6'">Open Safe Writer</button>
+      <div id="controlStatus" class="note">Clean shell v6 loaded.</div>
     </div>
     <div id="privateWindow" class="card hidden">
       <h2>Private Window</h2>
@@ -71,7 +71,7 @@
 </nav>
 
 <script>
-const CLEAN_VERSION='PMP_CLEAN_SHELL_V5';
+const CLEAN_VERSION='PMP_CLEAN_SHELL_V6';
 const PACKET_KEY='pmp_clean_connection_packets_v5';
 const CONN_KEY='pmp_clean_connections_v5';
 const CORPUS_KEY='pmp_corpus_inbox_v1';
@@ -82,7 +82,6 @@ function $(id){return document.getElementById(id)}
 function now(){return new Date().toISOString()}
 function read(k,f){try{let v=localStorage.getItem(k);return v?JSON.parse(v):f}catch(e){return f}}
 function write(k,v){localStorage.setItem(k,JSON.stringify(v))}
-function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function safeId(s){return String(s||'outside_project').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,'').slice(0,60)||'outside_project'}
 function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));$(id).classList.add('on');document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.tab===id));scrollTo(0,0)}
 function setStatus(id,msg){if($(id))$(id).textContent=typeof msg==='string'?msg:JSON.stringify(msg,null,2)}
@@ -92,8 +91,8 @@ async function copyCurrent(){let text=currentOutput||JSON.stringify({type:'PMP_C
 function openBridgePanel(which){if(which==='share')openSharePanel();else if(which==='resident')openResidentPanel();else openConnectionsPanel()}
 function openSharePanel(){let p=$('bridgePanel');p.className='panel';p.innerHTML='<h2>Share</h2><div class="statusbar">Compact outbound packet builder</div><input id="shareReceiver" placeholder="Receiver / destination"><textarea id="sharePayload" placeholder="Payload to share"></textarea><textarea id="shareBoundary" placeholder="Boundary: what this must not overwrite or confuse"></textarea><div class="grid"><button class="mini" onclick="buildShare()">Build</button><button class="mini" onclick="copyShare()">Copy</button></div><textarea id="shareOut" readonly placeholder="Share packet appears here"></textarea>'}
 function openConnectionsPanel(){let p=$('bridgePanel');p.className='panel';p.innerHTML='<h2>Connections</h2><div class="statusbar" id="connStatusLine">Full packet power / compact controls</div><select id="connMode" onchange="connModeChanged()"><option value="request">Request Packet</option><option value="paste">Paste Packet</option><option value="saved">Saved Packets</option><option value="search">Search</option><option value="corpus">Send to Corpus</option><option value="pipeline">Run Pipeline</option><option value="resident">Ask Resident</option><option value="copy">Copy / Export</option></select><textarea id="connBox" placeholder="Mode box"></textarea><div class="grid"><button class="mini" id="connSmart" onclick="connSmartAction()">Smart Action</button><button class="mini" onclick="copyConnOutput()">Copy Output</button></div><div id="connOut" class="note">Choose a mode. Request Packet is ready.</div>';connModeChanged()}
-function openResidentPanel(){let p=$('bridgePanel');p.className='panel';p.innerHTML='<h2>Resident Chat</h2><div class="statusbar">Resident reads compact Connections context. Full AI still needs ChatGPT/API later.</div><textarea id="residentAsk" placeholder="Talk to Resident here. Example: What packet should I ask for? What connection is selected?"></textarea><div class="grid"><button class="mini" onclick="askResidentLocal()">Ask Resident</button><button class="mini" onclick="copyResidentPrompt()">Copy to ChatGPT</button></div><div id="residentOut" class="note">Resident ready. It can read saved connection packets, selected packet ID, and bridge state.</div>'}
-function buildShare(){let pkt={type:'PMP_SHARE_PACKET_V5',built_at:now(),receiver:($('shareReceiver').value||'').trim(),payload:($('sharePayload').value||'').trim(),boundary:($('shareBoundary').value||'Does not overwrite PMP unless promoted through City Hall / official path.').trim(),source_path:'Bridge / Compact Share'};$('shareOut').value=JSON.stringify(pkt,null,2);currentOutput=$('shareOut').value}
+function openResidentPanel(){let p=$('bridgePanel');p.className='panel';p.innerHTML='<h2>Resident Chat</h2><div class="statusbar">Resident reads selected packet context directly. Full AI still needs ChatGPT/API later.</div><textarea id="residentAsk" placeholder="Talk to Resident here. Example: What is selected and what should I do next?"></textarea><div class="grid"><button class="mini" onclick="askResidentLocal()">Ask Resident</button><button class="mini" onclick="copyResidentPrompt()">Copy to ChatGPT</button></div><div id="residentOut" class="note">Resident ready. It can read saved connection packets, selected packet ID, quality, official status, and next move.</div>'}
+function buildShare(){let pkt={type:'PMP_SHARE_PACKET_V6',built_at:now(),receiver:($('shareReceiver').value||'').trim(),payload:($('sharePayload').value||'').trim(),boundary:($('shareBoundary').value||'Does not overwrite PMP unless promoted through City Hall / official path.').trim(),source_path:'Bridge / Compact Share'};$('shareOut').value=JSON.stringify(pkt,null,2);currentOutput=$('shareOut').value}
 async function copyShare(){if(!$('shareOut').value)buildShare();await copyText($('shareOut').value,'bridgePanel','Share packet copied.')}
 function outsideProjectPrompt(){return `I need you to create a PMP outside-project transfer packet for the ChatGPT project we are currently inside.
 
@@ -177,18 +176,8 @@ Use this exact JSON shape:
     "receiver_role": "PMP app stores/searches/quality-lifts this packet; it does not become this project",
     "store_under": "Connections / saved outside project packets / project_state_id",
     "auto_fill_receiver_fields": ["project_state_id", "project_name", "project_kind", "search_surface", "quality_truth.quality_level"],
-    "safe_receiver_path": [
-      "Store packet under project_state_id",
-      "Search through Project Lookup",
-      "Send selected useful material to Corpus Inbox",
-      "Run Improve Lossless Quality",
-      "Promote only later after review"
-    ],
-    "do_not_overwrite": [
-      "Do not overwrite PMP app identity",
-      "Do not overwrite existing official PMP material",
-      "Do not replace source meaning with receiver interpretation"
-    ],
+    "safe_receiver_path": ["Store packet under project_state_id", "Search through Project Lookup", "Send selected useful material to Corpus Inbox", "Run Improve Lossless Quality", "Promote only later after review"],
+    "do_not_overwrite": ["Do not overwrite PMP app identity", "Do not overwrite existing official PMP material", "Do not replace source meaning with receiver interpretation"],
     "do_not_promote_directly": true,
     "official_boundary": "Nothing in this packet becomes official PMP automatically."
   },
@@ -209,12 +198,14 @@ function savePacketFromBox(){let raw=$('connBox').value.trim();if(!raw)return se
 function listOrLoadPackets(){let arr=read(PACKET_KEY,[]);let typed=($('connBox').value||'').trim();if(typed){let found=arr.find(x=>x.id===typed||x.name===typed);if(found){selectedPacketId=found.id;currentOutput=JSON.stringify(found,null,2);return setStatus('connOut',{status:'PACKET_SELECTED',selected_packet_id:selectedPacketId,packet:found})}}let list=arr.map(x=>`${x.id} — ${x.name} — ${x.quality}`).join('\n')||'No saved packets yet.';setStatus('connOut','Saved packets:\n'+list+'\n\nType an ID in the box and tap List / Load to select it.')}
 function searchPackets(){let q=($('connBox').value||'').toLowerCase().trim();let arr=read(PACKET_KEY,[]);let hits=arr.filter(x=>JSON.stringify(x).toLowerCase().includes(q));currentOutput=JSON.stringify({type:'PMP_CONNECTION_SEARCH',query:q,hits:hits},null,2);setStatus('connOut',{status:'SEARCH_RESULTS',query:q,count:hits.length,hits:hits.map(x=>({id:x.id,name:x.name,quality:x.quality,tags:x.tags}))})}
 function selectedPacket(){let arr=read(PACKET_KEY,[]);return arr.find(x=>x.id===selectedPacketId)||arr[0]||null}
+function packetSummary(pkt){if(!pkt)return null;let p=pkt.packet||{};let identity=p.source_identity_capture||{};let handoff=p.receiver_safe_handoff||{};let tracks=p.packet_tracks||{};let pipeline={A0_kernel:!!tracks.A0_kernel,A1_orientation:!!tracks.A1_orientation,A2_shape:!!tracks.A2_shape,A3_body:!!tracks.A3_body,A4_protection:handoff.do_not_promote_directly===true,A5_quality_truth:!!p.quality_truth,A6_receiver_action:!!tracks.A6_receiver_action};let allPass=Object.values(pipeline).every(Boolean);return {id:pkt.id,name:pkt.name,kind:pkt.kind,quality:pkt.quality,official:pkt.official===true,primary_lookup_key:p.search_surface?.primary_lookup_key||pkt.id,core_purpose:identity.core_purpose||'',active_goal:identity.active_goal||'',pipeline_pass:allPass,pipeline:pipeline,official_boundary:handoff.official_boundary||'Nothing in this packet becomes official PMP automatically.',safe_path:handoff.safe_receiver_path||[],next_quality_move:p.quality_truth?.next_quality_move||'Send selected useful material to Corpus Inbox, then run Improve Lossless Quality before promotion.'}}
+function residentDirectAnswer(question,pkt){let s=packetSummary(pkt);if(!s)return {answer:'No selected packet found yet. Save or select a packet first.',next:'Use Paste Packet or Saved Packets.'};let next=s.next_quality_move||'Send selected useful material to Corpus Inbox, then run Improve Lossless Quality before promotion.';let answer='Selected packet: '+s.name+' ('+s.id+'). Quality: '+s.quality+'. Official: '+(s.official?'true':'false')+'. Pipeline: '+(s.pipeline_pass?'PASS':'NEEDS REVIEW')+'. This packet is outside/source material and does not become official PMP automatically. Next: '+next;return {answer:answer,next:next,summary:s}}
 function sendToCorpus(){let pkt=selectedPacket();let text=($('connBox').value||'').trim();if(!text&&pkt)text=JSON.stringify({project_state_id:pkt.id,name:pkt.name,quality:pkt.quality,selected_material:pkt.packet?.transfer_body_capture||pkt.packet},null,2);if(!text)return setStatus('connOut','Nothing to send. Select a packet or paste selected material.');let existing=localStorage.getItem(CORPUS_KEY)||'';let entry='\n\n---\nSOURCE: Connections / '+(pkt?pkt.id:'manual')+'\nADDED: '+now()+'\n'+text;localStorage.setItem(CORPUS_KEY,existing+entry);currentOutput=entry;setStatus('connOut',{status:'SENT_TO_CORPUS_INBOX',source:pkt?pkt.id:'manual',meaning:'Candidate material only. Run Improve Lossless Quality before promotion.'})}
-function runPacketPipeline(){let pkt=selectedPacket();if(!pkt)return setStatus('connOut','No packet selected. Save or select a packet first.');let report={type:'PMP_PACKET_PIPELINE_REPORT_V5',built_at:now(),selected_packet_id:pkt.id,A0_kernel:!!pkt.packet?.packet_tracks?.A0_kernel,A1_orientation:!!pkt.packet?.packet_tracks?.A1_orientation,A2_shape:!!pkt.packet?.packet_tracks?.A2_shape,A3_body:!!pkt.packet?.packet_tracks?.A3_body,A4_protection:pkt.packet?.receiver_safe_handoff?.do_not_promote_directly===true,A5_quality_truth:!!pkt.packet?.quality_truth,A6_receiver_action:!!pkt.packet?.packet_tracks?.A6_receiver_action,quality:pkt.quality,official:false,next:'Send selected useful material to Corpus Inbox, then run Improve Lossless Quality.'};currentOutput=JSON.stringify(report,null,2);setStatus('connOut',report)}
-function buildConnectionExport(){let out={type:'PMP_CONNECTIONS_EXPORT_V5',built_at:now(),selected_packet_id:selectedPacketId||'',packets:read(PACKET_KEY,[]),connections:read(CONN_KEY,[]),boundary:'Connections are outside/source material and not official PMP automatically.'};currentOutput=JSON.stringify(out,null,2);$('connBox').value=currentOutput;setStatus('connOut',{status:'EXPORT_BUILT',packet_count:out.packets.length})}
-function askResidentFromConnections(){let question=($('connBox').value||'').trim();let pkt=selectedPacket();let answer={type:'PMP_RESIDENT_LOCAL_RESPONSE_V5',built_at:now(),question:question,selected_packet_id:pkt?pkt.id:'none',packet_count:read(PACKET_KEY,[]).length,what_resident_can_read:['saved connection packets','selected packet id','Corpus Inbox presence','Bridge compact state'],resident_answer:question?'I can help route this. If you are asking about an outside project, use Request Packet first, then Paste Packet, then Run Pipeline, then Send selected material to Corpus.':'Ask me what you want to do with the selected connection packet.',limit:'This local Resident is not full ChatGPT yet. Use Copy Output to bring this context into ChatGPT for a full answer.',next:'For full AI, copy this Resident context and paste it into ChatGPT.'};currentOutput=JSON.stringify(answer,null,2);setStatus('connOut',answer)}
-function openResidentContext(){return {version:CLEAN_VERSION,selected_packet_id:selectedPacketId||'',packet_count:read(PACKET_KEY,[]).length,packets:read(PACKET_KEY,[]).map(x=>({id:x.id,name:x.name,kind:x.kind,quality:x.quality,tags:x.tags})),corpus_has_content:!!(localStorage.getItem(CORPUS_KEY)||'').trim()}}
-function askResidentLocal(){let q=($('residentAsk').value||'').trim();let ctx=openResidentContext();let out={type:'PMP_RESIDENT_CHAT_LOCAL_V5',built_at:now(),user_message:q,context:ctx,response:q?'I can see the Connections index and selected packet. Best next move depends on your goal: request packet, save packet, run pipeline, or send selected material to Corpus.':'Tell me what you want to do with Bridge, Share, Connections, or a packet.',full_ai_note:'For a real ChatGPT-style answer, copy this context to ChatGPT or later connect Resident to an API/backend.'};currentOutput=JSON.stringify(out,null,2);setStatus('residentOut',out)}
+function runPacketPipeline(){let pkt=selectedPacket();if(!pkt)return setStatus('connOut','No packet selected. Save or select a packet first.');let s=packetSummary(pkt);let report={type:'PMP_PACKET_PIPELINE_REPORT_V6',built_at:now(),selected_packet_id:pkt.id,...s.pipeline,quality:pkt.quality,official:false,next:'Send selected useful material to Corpus Inbox, then run Improve Lossless Quality.'};currentOutput=JSON.stringify(report,null,2);setStatus('connOut',report)}
+function buildConnectionExport(){let out={type:'PMP_CONNECTIONS_EXPORT_V6',built_at:now(),selected_packet_id:selectedPacketId||'',packets:read(PACKET_KEY,[]),connections:read(CONN_KEY,[]),boundary:'Connections are outside/source material and not official PMP automatically.'};currentOutput=JSON.stringify(out,null,2);$('connBox').value=currentOutput;setStatus('connOut',{status:'EXPORT_BUILT',packet_count:out.packets.length})}
+function askResidentFromConnections(){let question=($('connBox').value||'').trim();let pkt=selectedPacket();let direct=residentDirectAnswer(question,pkt);let answer={type:'PMP_RESIDENT_LOCAL_RESPONSE_V6',built_at:now(),question:question,selected_packet_id:pkt?pkt.id:'none',packet_count:read(PACKET_KEY,[]).length,selected_packet:direct.summary||null,resident_answer:direct.answer,limit:'This local Resident can read packet context and route next steps, but it is not full ChatGPT yet.',next:direct.next};currentOutput=JSON.stringify(answer,null,2);setStatus('connOut',answer)}
+function openResidentContext(){let pkt=selectedPacket();return {version:CLEAN_VERSION,selected_packet_id:pkt?pkt.id:'',selected_packet:packetSummary(pkt),packet_count:read(PACKET_KEY,[]).length,packets:read(PACKET_KEY,[]).map(x=>({id:x.id,name:x.name,kind:x.kind,quality:x.quality,tags:x.tags})),corpus_has_content:!!(localStorage.getItem(CORPUS_KEY)||'').trim()}}
+function askResidentLocal(){let q=($('residentAsk').value||'').trim();let ctx=openResidentContext();let direct=residentDirectAnswer(q,selectedPacket());let out={type:'PMP_RESIDENT_CHAT_LOCAL_V6',built_at:now(),user_message:q,context:ctx,response:direct.answer,next:direct.next,full_ai_note:'For a real ChatGPT-style answer, copy this context to ChatGPT or later connect Resident to an API/backend.'};currentOutput=JSON.stringify(out,null,2);setStatus('residentOut',out)}
 async function copyResidentPrompt(){let q=($('residentAsk').value||'').trim();let prompt=JSON.stringify({type:'PMP_RESIDENT_CHAT_HANDOFF',built_at:now(),message:q,context:openResidentContext()},null,2);await copyText(prompt,'residentOut','Resident handoff copied for ChatGPT.')}
 function saveBox(id,key,msg){localStorage.setItem(key,$(id).value||'');setStatus('controlStatus',msg)}
 async function copyBox(id,msg){await copyText($(id).value||'','controlStatus',msg)}
@@ -224,7 +215,7 @@ function tapTitle(){let t=performance.now();tapTimes.push(t);tapTimes=tapTimes.f
 function rhythmMatch(times){let gaps=[];for(let i=1;i<times.length;i++)gaps.push(times[i]-times[i-1]);let ratios=gaps.map((g,i)=>g/RHYTHM[i]);ratios.sort((a,b)=>a-b);let scale=ratios[Math.floor(ratios.length/2)]||1;let err=0;for(let i=0;i<gaps.length;i++){err+=Math.abs((gaps[i]/scale)-RHYTHM[i])/RHYTHM[i]}err/=gaps.length;return err<0.38}
 function openPrivate(){$('privateWindow').classList.remove('hidden');setStatus('privatePanel','Private window open. Rhythm accepted.');setStatus('controlStatus','Private rhythm accepted.')}
 function lockPrivate(){$('privateWindow').classList.add('hidden');setStatus('controlStatus','Private window locked.')}
-function showPrivate(which){if(which==='bugs'){setStatus('privatePanel',{type:'PRIVATE_BUG_MEMORY_VIEW',bugs:read(BUG_KEY,{bugs:[]})})}else if(which==='backup'){let out={type:'PMP_CLEAN_PRIVATE_BACKUP_V5',built_at:now(),packets:read(PACKET_KEY,[]),connections:read(CONN_KEY,[]),bug_memory:read(BUG_KEY,{bugs:[]})};setStatus('privatePanel',out)}else{setStatus('privatePanel',{type:'PRIVATE_STATUS',version:CLEAN_VERSION,rhythm:'Q Q E E E E ER E E ER E E E E',private_window:'open'})}}
+function showPrivate(which){if(which==='bugs'){setStatus('privatePanel',{type:'PRIVATE_BUG_MEMORY_VIEW',bugs:read(BUG_KEY,{bugs:[]})})}else if(which==='backup'){let out={type:'PMP_CLEAN_PRIVATE_BACKUP_V6',built_at:now(),packets:read(PACKET_KEY,[]),connections:read(CONN_KEY,[]),bug_memory:read(BUG_KEY,{bugs:[]})};setStatus('privatePanel',out)}else{setStatus('privatePanel',{type:'PRIVATE_STATUS',version:CLEAN_VERSION,rhythm:'Q Q E E E E ER E E ER E E E E',private_window:'open'})}}
 window.addEventListener('DOMContentLoaded',()=>{$('controlTitle').addEventListener('pointerdown',tapTitle)});
 </script>
 </body>
