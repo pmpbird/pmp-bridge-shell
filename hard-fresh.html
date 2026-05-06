@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>PMP Hard Fresh</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#52b5df;color:#101827;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.wrap{max-width:850px;margin:auto;padding:18px 14px 80px}.card{background:#46a9d3;border:2px solid #fff;border-radius:28px;padding:18px;margin:0 0 16px;box-shadow:0 12px 28px #0002,inset 0 0 0 1px #fff2}h1{font-size:34px;margin:0 0 10px}h2{font-size:24px;margin:0 0 12px}.sub{color:#234a5d;font-weight:800;line-height:1.35}.note{background:#123024;border:2px solid #fff;color:#c9f7d7;border-radius:22px;padding:16px;white-space:pre-wrap;overflow-wrap:anywhere}.warn{background:#2b2010;border:2px solid #745522;color:#ffe0a3;border-radius:22px;padding:16px;white-space:pre-wrap;overflow-wrap:anywhere}.bad{background:#351414;border:2px solid #7d3333;color:#ffd1d1;border-radius:22px;padding:16px;white-space:pre-wrap;overflow-wrap:anywhere}button{width:100%;border:0;border-radius:18px;padding:16px;margin:10px 0;background:#a1fcfd;color:#101827;text-align:center;font:inherit;font-weight:900;font-size:17px}.mini{background:#172234;color:#eef4fb;border:1px solid #25354a;border-radius:14px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}code{font-weight:900}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <h1>PMP Hard Fresh</h1>
+    <p class="sub">This clears old Bridge/packet/connection/corpus UI residue from this browser only. It does not edit GitHub and does not erase Code Safety safe points.</p>
+    <div class="warn">Use this when Safari shows the new World screen but Bridge still mounts old Connected Project Packets.</div>
+  </div>
+
+  <div class="card">
+    <h2>Stale Residue Scanner</h2>
+    <div class="grid"><button class="mini" onclick="scan()">Scan Residue</button><button class="mini" onclick="copyReport()">Copy Report</button></div>
+    <div id="scanOut" class="note">Ready.</div>
+  </div>
+
+  <div class="card">
+    <h2>Safe Clean</h2>
+    <p class="sub">Clears only known stale UI residue keys. Keeps safe points, bug memory, Resident Intelligence, current project state, and app colors.</p>
+    <button onclick="safeClean()">Clear Stale Bridge Residue</button>
+    <button onclick="openPmp()">Open Fresh PMP</button>
+    <div id="cleanOut" class="note">No clean run yet.</div>
+  </div>
+
+  <div class="card">
+    <h2>Expected Good App</h2>
+    <div class="note">Good bottom tabs should be:\nWorld / Bridge / Library / Workshop / Control\n\nBad stale Bridge tabs look like:\nBridge / Workbench / Share / Connections / World</div>
+  </div>
+</div>
+<script>
+const KEEP=/code_safety|safe_point|resident|bug_memory|pmp_state_v5|pmp_projects_v5|pmp_btn_v5|pmp_bg_v5|pmp_line_v5|pmp_text_v5|pmp_private|encrypted_writer|pass_v1|fails_v1/i;
+const STALE=/pmp_bridge_|pmp_corpus_|outside|packet|connection|fallback|ghost|old_tool|mount|connected_project|pmpCP|pmp_conn|corpus/i;
+let latest='';
+function $(id){return document.getElementById(id)}
+function now(){return new Date().toISOString()}
+function keys(){let a=[];for(let i=0;i<localStorage.length;i++){let k=localStorage.key(i);let v=localStorage.getItem(k)||'';a.push({key:k,size:v.length,stale:STALE.test(k)&&!KEEP.test(k),kept:KEEP.test(k)})}return a.sort((x,y)=>x.key.localeCompare(y.key))}
+function set(id,obj,cls='note'){let el=$(id);el.className=cls;el.textContent=typeof obj==='string'?obj:JSON.stringify(obj,null,2);latest=el.textContent}
+function scan(){let all=keys();let stale=all.filter(x=>x.stale);set('scanOut',{type:'PMP_HARD_FRESH_SCAN',built_at:now(),stale_count:stale.length,stale_keys:stale,kept_protected_keys:all.filter(x=>x.kept),all_key_count:all.length,next:stale.length?'Tap Clear Stale Bridge Residue.':'No stale residue keys detected. Open Fresh PMP.'},stale.length?'warn':'note')}
+function safeClean(){let all=keys();let removed=[];all.forEach(x=>{if(x.stale){localStorage.removeItem(x.key);removed.push(x.key)}});sessionStorage.clear();set('cleanOut',{type:'PMP_HARD_FRESH_CLEAN',built_at:now(),removed_count:removed.length,removed_keys:removed,kept:'Code Safety safe points, Resident Intelligence, Bug Memory, current state, projects, and colors were protected.',next:'Tap Open Fresh PMP. If the stale Bridge still appears, delete and re-add the Home Screen icon.'},removed.length?'warn':'note');scan()}
+function openPmp(){location.href='pmp.html?fresh=hard-fresh-clean-'+Date.now()}
+async function copyReport(){try{await navigator.clipboard.writeText(latest||$('scanOut').textContent||'');set('scanOut','Hard Fresh report copied.','warn')}catch(e){set('scanOut','Copy failed: '+e.message,'bad')}}
+scan();
+</script>
+</body>
+</html>
