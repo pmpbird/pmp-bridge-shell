@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-title" content="PMP">
 <title>PMP Clean</title>
 <style>
-:root{--a:#a1fcfd;--a2:#7ed9da;--a4:#92edee;--bg:#52b5df;--card:#46a9d3;--line:#fff;--text:#101827;--muted:#234a5d;--bt:#101827}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.wrap{max-width:820px;margin:auto;padding:18px 14px 96px}.screen{display:none}.screen.on{display:block}.card{background:var(--card);border:2px solid var(--line);border-radius:28px;padding:18px;margin:0 0 16px;box-shadow:0 12px 28px #0002,inset 0 0 0 1px #fff2}h1{margin:0 0 8px;font-size:34px}h2{margin:0 0 10px;font-size:22px}.sub{color:var(--muted);font-weight:800;line-height:1.32}.big{display:flex;align-items:center;gap:14px;width:100%;border:0;border-radius:20px;padding:16px;margin:10px 0;color:var(--bt);background:var(--a);text-align:left;font:inherit;font-weight:900;font-size:18px;box-shadow:0 8px 18px #0002}.big small{display:block;font-size:13px;font-weight:600;opacity:.9}.icon{font-size:26px;width:36px;text-align:center}.chev{margin-left:auto;font-size:30px}.green{background:var(--a2)}.teal{background:var(--a4)}input,textarea{width:100%;border:1px solid #25354a;border-radius:16px;background:#0c141e;color:#eef4fb;padding:12px;font:inherit;margin-top:8px}textarea{min-height:100px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}.mini{border:1px solid #25354a;background:#172234;color:#eef4fb;border-radius:14px;padding:12px;font:inherit;font-weight:900;width:100%;margin-top:8px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.toolstrip{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.toolstrip button{border:1px solid #25354a;background:#172234;color:#eef4fb;border-radius:14px;padding:12px;font:inherit;font-weight:900}.panel{background:#102033;border:2px solid var(--line);color:#eef4fb;border-radius:20px;padding:13px;margin-top:10px}.note{background:#123024;border:2px solid var(--line);color:#c9f7d7;border-radius:22px;padding:14px;white-space:pre-wrap;overflow-wrap:anywhere}.warn{background:#2b2010;border:2px solid #745522;color:#ffe0a3;border-radius:22px;padding:14px;white-space:pre-wrap;overflow-wrap:anywhere}.hidden{display:none!important}.tabs{position:fixed;left:0;right:0;bottom:0;background:#0f1620f5;border-top:1px solid #25354a;display:grid;grid-template-columns:repeat(5,1fr);padding:7px 6px max(7px,env(safe-area-inset-bottom));z-index:10}.tab{background:transparent;border:0;color:#9fb0c3;font:inherit;font-size:11px}.tab b{display:block;font-size:20px}.tab.on{color:var(--a);font-weight:900}.rhythm{user-select:none;-webkit-user-select:none}
+:root{--a:#a1fcfd;--a2:#7ed9da;--a4:#92edee;--bg:#52b5df;--card:#46a9d3;--line:#fff;--text:#101827;--muted:#234a5d;--bt:#101827}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.wrap{max-width:820px;margin:auto;padding:18px 14px 96px}.screen{display:none}.screen.on{display:block}.card{background:var(--card);border:2px solid var(--line);border-radius:28px;padding:18px;margin:0 0 16px;box-shadow:0 12px 28px #0002,inset 0 0 0 1px #fff2}h1{margin:0 0 8px;font-size:34px}h2{margin:0 0 9px;font-size:22px}.sub{color:var(--muted);font-weight:800;line-height:1.32}.big{display:flex;align-items:center;gap:14px;width:100%;border:0;border-radius:20px;padding:15px;margin:9px 0;color:var(--bt);background:var(--a);text-align:left;font:inherit;font-weight:900;font-size:18px;box-shadow:0 8px 18px #0002}.big small{display:block;font-size:13px;font-weight:600;opacity:.9}.icon{font-size:26px;width:36px;text-align:center}.chev{margin-left:auto;font-size:30px}.green{background:var(--a2)}.teal{background:var(--a4)}input,textarea,select{width:100%;border:1px solid #25354a;border-radius:14px;background:#0c141e;color:#eef4fb;padding:11px;font:inherit;margin-top:7px}textarea{min-height:92px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}.mini{border:1px solid #25354a;background:#172234;color:#eef4fb;border-radius:14px;padding:11px;font:inherit;font-weight:900;width:100%;margin-top:7px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.toolstrip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:10px 0}.toolstrip button{border:1px solid #25354a;background:#172234;color:#eef4fb;border-radius:14px;padding:11px 8px;font:inherit;font-weight:900}.panel{background:#102033;border:2px solid var(--line);color:#eef4fb;border-radius:20px;padding:12px;margin-top:10px}.note{background:#123024;border:2px solid var(--line);color:#c9f7d7;border-radius:22px;padding:13px;white-space:pre-wrap;overflow-wrap:anywhere}.warn{background:#2b2010;border:2px solid #745522;color:#ffe0a3;border-radius:22px;padding:13px;white-space:pre-wrap;overflow-wrap:anywhere}.hidden{display:none!important}.tiny{font-size:12px;opacity:.88}.statusbar{font-size:12px;font-weight:900;background:#0c141e;color:#c9f7d7;border:1px solid #25354a;border-radius:999px;padding:8px 10px;margin:8px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tabs{position:fixed;left:0;right:0;bottom:0;background:#0f1620f5;border-top:1px solid #25354a;display:grid;grid-template-columns:repeat(5,1fr);padding:7px 6px max(7px,env(safe-area-inset-bottom));z-index:10}.tab{background:transparent;border:0;color:#9fb0c3;font:inherit;font-size:11px}.tab b{display:block;font-size:20px}.tab.on{color:var(--a);font-weight:900}.rhythm{user-select:none;-webkit-user-select:none}
 </style>
 </head>
 <body>
@@ -15,12 +15,12 @@
   <section id="world" class="screen on">
     <div class="card">
       <h1>PMP World</h1>
-      <p class="sub">Clean shell v4. Bridge keeps Share and Connections compact inside Bridge.</p>
-      <button class="big" onclick="go('bridge')"><span class="icon">🌉</span><span>Bridge<small>connections / share / export / copy current</small></span><span class="chev">›</span></button>
+      <p class="sub">Clean shell v5. Connections keeps full packet power in a compact one-panel drawer.</p>
+      <button class="big" onclick="go('bridge')"><span class="icon">🌉</span><span>Bridge<small>connections / share / resident / export</small></span><span class="chev">›</span></button>
       <button class="big green" onclick="go('library')"><span class="icon">📚</span><span>Library<small>research / memory / references</small></span><span class="chev">›</span></button>
       <button class="big teal" onclick="go('workshop')"><span class="icon">🛠</span><span>Workshop<small>build / test / make / experiment</small></span><span class="chev">›</span></button>
       <button class="big" onclick="go('cityhall')"><span class="icon">🏛</span><span>City Hall<small>official rules / permissions / decisions</small></span><span class="chev">›</span></button>
-      <button class="big green" onclick="go('control')"><span class="icon">⚙</span><span>Control Room<small>app controls / safety links / private rhythm window</small></span><span class="chev">›</span></button>
+      <button class="big green" onclick="go('control')"><span class="icon">⚙</span><span>Control Room<small>safety links / private rhythm window</small></span><span class="chev">›</span></button>
       <div class="note">Expected bottom tabs:\nWorld / Bridge / Library / Workshop / Control</div>
     </div>
   </section>
@@ -28,30 +28,30 @@
   <section id="bridge" class="screen">
     <div class="card">
       <h1>Bridge</h1>
-      <p class="sub">Bridge connects things that cannot normally communicate. Share and Connections stay compact.</p>
+      <p class="sub">Bridge connects things that cannot normally communicate. Tools stay compact.</p>
       <button class="big" onclick="improveLossless()"><span class="icon">↟</span><span>Improve Lossless Quality<small>Update status and next move</small></span><span class="chev">›</span></button>
       <button class="big green" onclick="prepareExport()"><span class="icon">◇</span><span>Prepare Project Export<small>Build carried-state bundle</small></span><span class="chev">›</span></button>
       <button class="big teal" onclick="copyCurrent()"><span class="icon">⧉</span><span>Copy Current<small>Copy current output</small></span><span class="chev">›</span></button>
-      <div class="toolstrip"><button onclick="openBridgePanel('share')">Share</button><button onclick="openBridgePanel('connections')">Connections</button></div>
-      <div id="bridgePanel" class="note">Bridge compact strip ready. Share and Connections open here without becoming bottom tabs.</div>
+      <div class="toolstrip"><button onclick="openBridgePanel('share')">Share</button><button onclick="openBridgePanel('connections')">Connections</button><button onclick="openBridgePanel('resident')">Resident</button></div>
+      <div id="bridgePanel" class="note">Bridge compact strip ready. Share, Connections, and Resident open here without becoming bottom tabs.</div>
     </div>
   </section>
 
-  <section id="library" class="screen"><div class="card"><h1>Library</h1><p class="sub">Stores notes and references in the clean shell namespace.</p><textarea id="libraryNotes" placeholder="Library notes / research / references"></textarea><div class="grid"><button class="mini" onclick="saveBox('libraryNotes','pmp_clean_library_v4','Library saved.')">Save Library</button><button class="mini" onclick="copyBox('libraryNotes','Library copied.')">Copy Library</button></div></div></section>
+  <section id="library" class="screen"><div class="card"><h1>Library</h1><p class="sub">Stores notes and references in the clean shell namespace.</p><textarea id="libraryNotes" placeholder="Library notes / research / references"></textarea><div class="grid"><button class="mini" onclick="saveBox('libraryNotes','pmp_clean_library_v5','Library saved.')">Save Library</button><button class="mini" onclick="copyBox('libraryNotes','Library copied.')">Copy Library</button></div></div></section>
 
-  <section id="workshop" class="screen"><div class="card"><h1>Workshop</h1><p class="sub">Builds actual things from blueprints.</p><textarea id="workshopBox" placeholder="Build plan / tool / prompt / app part"></textarea><div class="grid"><button class="mini" onclick="saveBox('workshopBox','pmp_clean_workshop_v4','Workshop saved.')">Save Work</button><button class="mini" onclick="copyBox('workshopBox','Workshop copied.')">Copy Work</button></div></div></section>
+  <section id="workshop" class="screen"><div class="card"><h1>Workshop</h1><p class="sub">Builds actual things from blueprints.</p><textarea id="workshopBox" placeholder="Build plan / tool / prompt / app part"></textarea><div class="grid"><button class="mini" onclick="saveBox('workshopBox','pmp_clean_workshop_v5','Workshop saved.')">Save Work</button><button class="mini" onclick="copyBox('workshopBox','Workshop copied.')">Copy Work</button></div></div></section>
 
-  <section id="cityhall" class="screen"><div class="card"><h1>City Hall</h1><p class="sub">Official rules, permissions, identity, and final decisions.</p><textarea id="cityBox" placeholder="Official decisions / rules / permissions"></textarea><div class="grid"><button class="mini" onclick="saveBox('cityBox','pmp_clean_city_v4','City Hall saved.')">Save Official</button><button class="mini" onclick="copyBox('cityBox','City Hall copied.')">Copy Official</button></div></div></section>
+  <section id="cityhall" class="screen"><div class="card"><h1>City Hall</h1><p class="sub">Official rules, permissions, identity, and final decisions.</p><textarea id="cityBox" placeholder="Official decisions / rules / permissions"></textarea><div class="grid"><button class="mini" onclick="saveBox('cityBox','pmp_clean_city_v5','City Hall saved.')">Save Official</button><button class="mini" onclick="copyBox('cityBox','City Hall copied.')">Copy Official</button></div></div></section>
 
   <section id="control" class="screen">
     <div class="card">
       <h1 id="controlTitle" class="rhythm">Control Room</h1>
       <p class="sub">Tap the title with your private rhythm to open the private window.</p>
-      <button class="mini" onclick="location.href='resident.html?from=pmp-clean-v4'">Open Resident Intelligence</button>
-      <button class="mini" onclick="location.href='safety.html?from=pmp-clean-v4'">Open Safety Hub</button>
-      <button class="mini" onclick="location.href='code-safety.html?from=pmp-clean-v4'">Open Code Safety</button>
-      <button class="mini" onclick="location.href='safe-writer.html?from=pmp-clean-v4'">Open Safe Writer</button>
-      <div id="controlStatus" class="note">Clean shell v4 loaded.</div>
+      <button class="mini" onclick="location.href='resident.html?from=pmp-clean-v5'">Open Resident Intelligence</button>
+      <button class="mini" onclick="location.href='safety.html?from=pmp-clean-v5'">Open Safety Hub</button>
+      <button class="mini" onclick="location.href='code-safety.html?from=pmp-clean-v5'">Open Code Safety</button>
+      <button class="mini" onclick="location.href='safe-writer.html?from=pmp-clean-v5'">Open Safe Writer</button>
+      <div id="controlStatus" class="note">Clean shell v5 loaded.</div>
     </div>
     <div id="privateWindow" class="card hidden">
       <h2>Private Window</h2>
@@ -71,33 +71,160 @@
 </nav>
 
 <script>
-const CLEAN_VERSION='PMP_CLEAN_SHELL_V4';
-const CONN_KEY='pmp_clean_connections_v4';
+const CLEAN_VERSION='PMP_CLEAN_SHELL_V5';
+const PACKET_KEY='pmp_clean_connection_packets_v5';
+const CONN_KEY='pmp_clean_connections_v5';
+const CORPUS_KEY='pmp_corpus_inbox_v1';
 const BUG_KEY='pmp_bug_memory_v1';
 const RHYTHM=[2,2,1,1,1,2,1,2,1,1,1];
-let currentOutput='',tapTimes=[];
+let currentOutput='',tapTimes=[],selectedPacketId='';
 function $(id){return document.getElementById(id)}
 function now(){return new Date().toISOString()}
 function read(k,f){try{let v=localStorage.getItem(k);return v?JSON.parse(v):f}catch(e){return f}}
 function write(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function safeId(s){return String(s||'outside_project').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,'').slice(0,60)||'outside_project'}
 function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));$(id).classList.add('on');document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.tab===id));scrollTo(0,0)}
 function setStatus(id,msg){if($(id))$(id).textContent=typeof msg==='string'?msg:JSON.stringify(msg,null,2)}
-function improveLossless(){currentOutput=JSON.stringify({type:'PMP_CLEAN_LOSSLESS_STATUS',built_at:now(),state:'PASS',bridge_rule:'Bridge connects things that cannot normally communicate.',next:'Clean shell v4 is loaded with compact Share and Connections.'},null,2);setStatus('bridgePanel',currentOutput)}
-function prepareExport(){currentOutput=JSON.stringify({type:'PMP_CLEAN_PROJECT_EXPORT',built_at:now(),path:'pmp-clean.html',tabs:['World','Bridge','Library','Workshop','Control'],compact_bridge_tools:['Share','Connections'],status:'clean shell export ready'},null,2);setStatus('bridgePanel',currentOutput)}
-async function copyCurrent(){let text=currentOutput||JSON.stringify({type:'PMP_CLEAN_CURRENT',built_at:now(),version:CLEAN_VERSION,status:'clean'},null,2);try{await navigator.clipboard.writeText(text);setStatus('bridgePanel','Copied current clean output.')}catch(e){setStatus('bridgePanel','Copy failed: '+e.message)}}
-function openBridgePanel(which){if(which==='share'){$('bridgePanel').className='panel';$('bridgePanel').innerHTML='<h2>Share</h2><p>Build a clean share packet. Sharing does not make anything official PMP.</p><input id="shareReceiver" placeholder="Receiver / destination"><textarea id="sharePayload" placeholder="Payload to share"></textarea><textarea id="shareBoundary" placeholder="Boundary: what this must not overwrite or confuse"></textarea><div class="grid"><button class="mini" onclick="buildShare()">Build</button><button class="mini" onclick="copyShare()">Copy</button></div><textarea id="shareOut" readonly placeholder="Share packet appears here"></textarea>'}
-else{$('bridgePanel').className='panel';$('bridgePanel').innerHTML='<h2>Connections</h2><p>Hold outside/source connections without making them official PMP automatically.</p><input id="connName" placeholder="Connection name"><input id="connKind" placeholder="Connection kind"><textarea id="connSource" placeholder="Source / outside material / link / note"></textarea><textarea id="connBoundary" placeholder="Boundary: what this can and cannot touch"></textarea><div class="grid"><button class="mini" onclick="saveConnection()">Save</button><button class="mini" onclick="copyConnections()">Copy</button></div><div id="connStatus" class="note">Compact Connections ready.</div>'}}
-function buildShare(){let pkt={type:'PMP_SHARE_PACKET_V4',built_at:now(),receiver:($('shareReceiver').value||'').trim(),payload:($('sharePayload').value||'').trim(),boundary:($('shareBoundary').value||'Does not overwrite PMP unless promoted through City Hall / official path.').trim(),source_path:'Bridge / Compact Share'};$('shareOut').value=JSON.stringify(pkt,null,2);currentOutput=$('shareOut').value}
-async function copyShare(){if(!$('shareOut').value)buildShare();try{await navigator.clipboard.writeText($('shareOut').value);setStatus('bridgePanel','Share packet copied.')}catch(e){setStatus('bridgePanel','Copy failed: '+e.message)}}
-function saveConnection(){let arr=read(CONN_KEY,[]);let item={id:'conn_'+Date.now(),created_at:now(),name:($('connName').value||'untitled connection').trim(),kind:($('connKind').value||'outside/source').trim(),source:($('connSource').value||'').trim(),boundary:($('connBoundary').value||'Connection is held outside official PMP until promoted.').trim(),official:false};arr.push(item);write(CONN_KEY,arr);setStatus('connStatus',{status:'CONNECTION_SAVED',meaning:'Saved as outside/source connection. Not official PMP automatically.',connection:item,total:arr.length});currentOutput=JSON.stringify({type:'PMP_CONNECTIONS_V4',connections:arr},null,2)}
-async function copyConnections(){let arr=read(CONN_KEY,[]);let out=JSON.stringify({type:'PMP_CONNECTIONS_V4',built_at:now(),rule:'Connections bridge outside/source material without automatic promotion.',connections:arr},null,2);try{await navigator.clipboard.writeText(out);setStatus('connStatus','Connections copied.')}catch(e){setStatus('connStatus','Copy failed: '+e.message)}}
+function improveLossless(){currentOutput=JSON.stringify({type:'PMP_CLEAN_LOSSLESS_STATUS',built_at:now(),state:'PASS',bridge_rule:'Bridge connects things that cannot normally communicate.',connection_packets:read(PACKET_KEY,[]).length,next:'Run packet pipeline before promotion.'},null,2);setStatus('bridgePanel',currentOutput)}
+function prepareExport(){currentOutput=JSON.stringify({type:'PMP_CLEAN_PROJECT_EXPORT',built_at:now(),path:'pmp-clean.html',tabs:['World','Bridge','Library','Workshop','Control'],compact_bridge_tools:['Share','Connections','Resident'],status:'clean shell export ready'},null,2);setStatus('bridgePanel',currentOutput)}
+async function copyCurrent(){let text=currentOutput||JSON.stringify({type:'PMP_CLEAN_CURRENT',built_at:now(),version:CLEAN_VERSION,status:'clean'},null,2);await copyText(text,'bridgePanel','Copied current clean output.')}
+function openBridgePanel(which){if(which==='share')openSharePanel();else if(which==='resident')openResidentPanel();else openConnectionsPanel()}
+function openSharePanel(){let p=$('bridgePanel');p.className='panel';p.innerHTML='<h2>Share</h2><div class="statusbar">Compact outbound packet builder</div><input id="shareReceiver" placeholder="Receiver / destination"><textarea id="sharePayload" placeholder="Payload to share"></textarea><textarea id="shareBoundary" placeholder="Boundary: what this must not overwrite or confuse"></textarea><div class="grid"><button class="mini" onclick="buildShare()">Build</button><button class="mini" onclick="copyShare()">Copy</button></div><textarea id="shareOut" readonly placeholder="Share packet appears here"></textarea>'}
+function openConnectionsPanel(){let p=$('bridgePanel');p.className='panel';p.innerHTML='<h2>Connections</h2><div class="statusbar" id="connStatusLine">Full packet power / compact controls</div><select id="connMode" onchange="connModeChanged()"><option value="request">Request Packet</option><option value="paste">Paste Packet</option><option value="saved">Saved Packets</option><option value="search">Search</option><option value="corpus">Send to Corpus</option><option value="pipeline">Run Pipeline</option><option value="resident">Ask Resident</option><option value="copy">Copy / Export</option></select><textarea id="connBox" placeholder="Mode box"></textarea><div class="grid"><button class="mini" id="connSmart" onclick="connSmartAction()">Smart Action</button><button class="mini" onclick="copyConnOutput()">Copy Output</button></div><div id="connOut" class="note">Choose a mode. Request Packet is ready.</div>';connModeChanged()}
+function openResidentPanel(){let p=$('bridgePanel');p.className='panel';p.innerHTML='<h2>Resident Chat</h2><div class="statusbar">Resident reads compact Connections context. Full AI still needs ChatGPT/API later.</div><textarea id="residentAsk" placeholder="Talk to Resident here. Example: What packet should I ask for? What connection is selected?"></textarea><div class="grid"><button class="mini" onclick="askResidentLocal()">Ask Resident</button><button class="mini" onclick="copyResidentPrompt()">Copy to ChatGPT</button></div><div id="residentOut" class="note">Resident ready. It can read saved connection packets, selected packet ID, and bridge state.</div>'}
+function buildShare(){let pkt={type:'PMP_SHARE_PACKET_V5',built_at:now(),receiver:($('shareReceiver').value||'').trim(),payload:($('sharePayload').value||'').trim(),boundary:($('shareBoundary').value||'Does not overwrite PMP unless promoted through City Hall / official path.').trim(),source_path:'Bridge / Compact Share'};$('shareOut').value=JSON.stringify(pkt,null,2);currentOutput=$('shareOut').value}
+async function copyShare(){if(!$('shareOut').value)buildShare();await copyText($('shareOut').value,'bridgePanel','Share packet copied.')}
+function outsideProjectPrompt(){return `I need you to create a PMP outside-project transfer packet for the ChatGPT project we are currently inside.
+
+Important boundary:
+You are the SOURCE project.
+The PMP app is only the RECEIVER.
+Do not describe the PMP app as the project.
+Do not make your material official PMP.
+Do not overwrite receiver identity.
+
+Return JSON only. No explanation outside the JSON.
+
+Project state ID rule:
+Create or reuse a stable project_state_id for this source project.
+- Short, lowercase, durable.
+- Letters, numbers, and underscores only.
+- It describes this source project, not PMP.
+- Reuse the same ID for future packets from this same project.
+- If no known ID exists, create one from the core identity.
+Examples: ai_guitar_pickup_blend, kid_drawing_character_system, lossless_spine_transfer_os.
+
+Use this exact JSON shape:
+{
+  "type": "PMP_OUTSIDE_PROJECT_PACKET",
+  "packet_version": "2.1",
+  "project_state_id": "stable_source_project_id_here",
+  "project_name": "",
+  "project_kind": "",
+  "packet_built_at": "",
+  "source_identity_capture": {
+    "what_this_project_is": "",
+    "what_this_project_is_not": "",
+    "kernel": "",
+    "core_purpose": "",
+    "main_subject": "",
+    "active_goal": "",
+    "locked_identity_rules": [],
+    "do_not_confuse_with": []
+  },
+  "transfer_body_capture": {
+    "core_definitions": [],
+    "locked_decisions": [],
+    "active_structure": [],
+    "important_boundaries": [],
+    "current_state": "",
+    "open_questions": [],
+    "important_history": [],
+    "outputs_or_artifacts": [],
+    "exact_or_locked_material": [],
+    "reconstructed_or_uncertain_material": []
+  },
+  "packet_tracks": {
+    "A0_kernel": { "meaning": "", "evidence": "", "confidence": "" },
+    "A1_orientation": { "meaning": "", "evidence": "", "confidence": "" },
+    "A2_shape": { "meaning": "", "evidence": "", "confidence": "" },
+    "A3_body": { "meaning": "", "evidence": "", "confidence": "" },
+    "A4_protection": { "meaning": "not automatically official", "evidence": "", "confidence": "" },
+    "A5_quality_truth": { "meaning": "", "evidence": "", "confidence": "" },
+    "A6_receiver_action": { "meaning": "Store in Connections, send selected material to Corpus Inbox, run Lossless Quality before promotion.", "evidence": "", "confidence": "" }
+  },
+  "quality_truth": {
+    "quality_level": "FULL | STRONG | MEDIUM | WEAK | UNKNOWN",
+    "quality_claim": "",
+    "what_is_well_preserved": [],
+    "known_gaps": [],
+    "known_risks": [],
+    "confidence_notes": "",
+    "not_lossless_if": [],
+    "next_quality_move": ""
+  },
+  "search_surface": {
+    "primary_lookup_key": "",
+    "keywords": [],
+    "aliases": [],
+    "tags": [],
+    "section_anchors": [],
+    "restore_pointer": "Use project_state_id to return to this full packet body before promotion."
+  },
+  "receiver_safe_handoff": {
+    "packet_role": "outside/source project packet",
+    "receiver_role": "PMP app stores/searches/quality-lifts this packet; it does not become this project",
+    "store_under": "Connections / saved outside project packets / project_state_id",
+    "auto_fill_receiver_fields": ["project_state_id", "project_name", "project_kind", "search_surface", "quality_truth.quality_level"],
+    "safe_receiver_path": [
+      "Store packet under project_state_id",
+      "Search through Project Lookup",
+      "Send selected useful material to Corpus Inbox",
+      "Run Improve Lossless Quality",
+      "Promote only later after review"
+    ],
+    "do_not_overwrite": [
+      "Do not overwrite PMP app identity",
+      "Do not overwrite existing official PMP material",
+      "Do not replace source meaning with receiver interpretation"
+    ],
+    "do_not_promote_directly": true,
+    "official_boundary": "Nothing in this packet becomes official PMP automatically."
+  },
+  "next_move": ""
+}
+
+Quality rules:
+- If you cannot recover enough project body, set quality_level to WEAK or UNKNOWN.
+- If structure is clear but not complete, set quality_level to MEDIUM.
+- If the packet is strong but not proven lossless, say STRONG, not FULL.
+- Do not use FULL unless identity, body, structure, protection, quality truth, and receiver handoff are all deeply preserved.
+
+Requested packet depth: full`;}
+function connModeChanged(){let mode=$('connMode').value,box=$('connBox'),btn=$('connSmart');let labels={request:'Copy Request Prompt',paste:'Save Packet',saved:'List / Load',search:'Search Packets',corpus:'Send to Corpus',pipeline:'Run Pipeline',resident:'Ask Resident',copy:'Build Export'};btn.textContent=labels[mode]||'Smart Action';if(mode==='request')box.value=outsideProjectPrompt();else if(mode==='saved')box.value=selectedPacketId||'';else if(mode==='copy')box.value='';else if(mode==='resident')box.placeholder='Ask Resident about saved packets, selected connection, or next step.';else box.value='';setStatus('connOut',{mode:mode,selected_packet_id:selectedPacketId||'none',packet_count:read(PACKET_KEY,[]).length})}
+function connSmartAction(){let mode=$('connMode').value;if(mode==='request')copyText($('connBox').value,'connOut','Outside-project packet request prompt copied.');else if(mode==='paste')savePacketFromBox();else if(mode==='saved')listOrLoadPackets();else if(mode==='search')searchPackets();else if(mode==='corpus')sendToCorpus();else if(mode==='pipeline')runPacketPipeline();else if(mode==='resident')askResidentFromConnections();else buildConnectionExport()}
+function normalizePacket(pkt){let id=safeId(pkt.project_state_id||pkt.project_name||pkt.source_identity_capture?.main_subject||'outside_project');pkt.project_state_id=id;pkt.project_name=pkt.project_name||id;pkt.project_kind=pkt.project_kind||'outside_project';return pkt}
+function savePacketFromBox(){let raw=$('connBox').value.trim();if(!raw)return setStatus('connOut','Paste a returned JSON packet first.');let pkt;try{pkt=normalizePacket(JSON.parse(raw))}catch(e){return setStatus('connOut','Packet must be valid JSON: '+e.message)}let arr=read(PACKET_KEY,[]);let rec={id:pkt.project_state_id,name:pkt.project_name,kind:pkt.project_kind,quality:pkt.quality_truth?.quality_level||'UNKNOWN',tags:[...(pkt.search_surface?.tags||[]),...(pkt.search_surface?.keywords||[])],updated_at:now(),packet:pkt,official:false};let i=arr.findIndex(x=>x.id===rec.id);if(i>=0)arr[i]=rec;else arr.push(rec);write(PACKET_KEY,arr);selectedPacketId=rec.id;currentOutput=JSON.stringify(rec,null,2);setStatus('connOut',{status:'PACKET_SAVED',auto_filled:{project_state_id:rec.id,project_name:rec.name,project_kind:rec.kind,quality:rec.quality},meaning:'Stored in Connections. Not official PMP automatically.',next:'Run Pipeline or Send selected material to Corpus.'})}
+function listOrLoadPackets(){let arr=read(PACKET_KEY,[]);let typed=($('connBox').value||'').trim();if(typed){let found=arr.find(x=>x.id===typed||x.name===typed);if(found){selectedPacketId=found.id;currentOutput=JSON.stringify(found,null,2);return setStatus('connOut',{status:'PACKET_SELECTED',selected_packet_id:selectedPacketId,packet:found})}}let list=arr.map(x=>`${x.id} — ${x.name} — ${x.quality}`).join('\n')||'No saved packets yet.';setStatus('connOut','Saved packets:\n'+list+'\n\nType an ID in the box and tap List / Load to select it.')}
+function searchPackets(){let q=($('connBox').value||'').toLowerCase().trim();let arr=read(PACKET_KEY,[]);let hits=arr.filter(x=>JSON.stringify(x).toLowerCase().includes(q));currentOutput=JSON.stringify({type:'PMP_CONNECTION_SEARCH',query:q,hits:hits},null,2);setStatus('connOut',{status:'SEARCH_RESULTS',query:q,count:hits.length,hits:hits.map(x=>({id:x.id,name:x.name,quality:x.quality,tags:x.tags}))})}
+function selectedPacket(){let arr=read(PACKET_KEY,[]);return arr.find(x=>x.id===selectedPacketId)||arr[0]||null}
+function sendToCorpus(){let pkt=selectedPacket();let text=($('connBox').value||'').trim();if(!text&&pkt)text=JSON.stringify({project_state_id:pkt.id,name:pkt.name,quality:pkt.quality,selected_material:pkt.packet?.transfer_body_capture||pkt.packet},null,2);if(!text)return setStatus('connOut','Nothing to send. Select a packet or paste selected material.');let existing=localStorage.getItem(CORPUS_KEY)||'';let entry='\n\n---\nSOURCE: Connections / '+(pkt?pkt.id:'manual')+'\nADDED: '+now()+'\n'+text;localStorage.setItem(CORPUS_KEY,existing+entry);currentOutput=entry;setStatus('connOut',{status:'SENT_TO_CORPUS_INBOX',source:pkt?pkt.id:'manual',meaning:'Candidate material only. Run Improve Lossless Quality before promotion.'})}
+function runPacketPipeline(){let pkt=selectedPacket();if(!pkt)return setStatus('connOut','No packet selected. Save or select a packet first.');let report={type:'PMP_PACKET_PIPELINE_REPORT_V5',built_at:now(),selected_packet_id:pkt.id,A0_kernel:!!pkt.packet?.packet_tracks?.A0_kernel,A1_orientation:!!pkt.packet?.packet_tracks?.A1_orientation,A2_shape:!!pkt.packet?.packet_tracks?.A2_shape,A3_body:!!pkt.packet?.packet_tracks?.A3_body,A4_protection:pkt.packet?.receiver_safe_handoff?.do_not_promote_directly===true,A5_quality_truth:!!pkt.packet?.quality_truth,A6_receiver_action:!!pkt.packet?.packet_tracks?.A6_receiver_action,quality:pkt.quality,official:false,next:'Send selected useful material to Corpus Inbox, then run Improve Lossless Quality.'};currentOutput=JSON.stringify(report,null,2);setStatus('connOut',report)}
+function buildConnectionExport(){let out={type:'PMP_CONNECTIONS_EXPORT_V5',built_at:now(),selected_packet_id:selectedPacketId||'',packets:read(PACKET_KEY,[]),connections:read(CONN_KEY,[]),boundary:'Connections are outside/source material and not official PMP automatically.'};currentOutput=JSON.stringify(out,null,2);$('connBox').value=currentOutput;setStatus('connOut',{status:'EXPORT_BUILT',packet_count:out.packets.length})}
+function askResidentFromConnections(){let question=($('connBox').value||'').trim();let pkt=selectedPacket();let answer={type:'PMP_RESIDENT_LOCAL_RESPONSE_V5',built_at:now(),question:question,selected_packet_id:pkt?pkt.id:'none',packet_count:read(PACKET_KEY,[]).length,what_resident_can_read:['saved connection packets','selected packet id','Corpus Inbox presence','Bridge compact state'],resident_answer:question?'I can help route this. If you are asking about an outside project, use Request Packet first, then Paste Packet, then Run Pipeline, then Send selected material to Corpus.':'Ask me what you want to do with the selected connection packet.',limit:'This local Resident is not full ChatGPT yet. Use Copy Output to bring this context into ChatGPT for a full answer.',next:'For full AI, copy this Resident context and paste it into ChatGPT.'};currentOutput=JSON.stringify(answer,null,2);setStatus('connOut',answer)}
+function openResidentContext(){return {version:CLEAN_VERSION,selected_packet_id:selectedPacketId||'',packet_count:read(PACKET_KEY,[]).length,packets:read(PACKET_KEY,[]).map(x=>({id:x.id,name:x.name,kind:x.kind,quality:x.quality,tags:x.tags})),corpus_has_content:!!(localStorage.getItem(CORPUS_KEY)||'').trim()}}
+function askResidentLocal(){let q=($('residentAsk').value||'').trim();let ctx=openResidentContext();let out={type:'PMP_RESIDENT_CHAT_LOCAL_V5',built_at:now(),user_message:q,context:ctx,response:q?'I can see the Connections index and selected packet. Best next move depends on your goal: request packet, save packet, run pipeline, or send selected material to Corpus.':'Tell me what you want to do with Bridge, Share, Connections, or a packet.',full_ai_note:'For a real ChatGPT-style answer, copy this context to ChatGPT or later connect Resident to an API/backend.'};currentOutput=JSON.stringify(out,null,2);setStatus('residentOut',out)}
+async function copyResidentPrompt(){let q=($('residentAsk').value||'').trim();let prompt=JSON.stringify({type:'PMP_RESIDENT_CHAT_HANDOFF',built_at:now(),message:q,context:openResidentContext()},null,2);await copyText(prompt,'residentOut','Resident handoff copied for ChatGPT.')}
 function saveBox(id,key,msg){localStorage.setItem(key,$(id).value||'');setStatus('controlStatus',msg)}
-async function copyBox(id,msg){try{await navigator.clipboard.writeText($(id).value||'');setStatus('controlStatus',msg)}catch(e){setStatus('controlStatus','Copy failed: '+e.message)}}
+async function copyBox(id,msg){await copyText($(id).value||'','controlStatus',msg)}
+async function copyText(text,statusId,msg){try{await navigator.clipboard.writeText(text||'');setStatus(statusId,msg)}catch(e){setStatus(statusId,'Copy failed: '+e.message)}}
+async function copyConnOutput(){await copyText(currentOutput||$('connBox')?.value||$('connOut')?.textContent||'','connOut','Output copied.')}
 function tapTitle(){let t=performance.now();tapTimes.push(t);tapTimes=tapTimes.filter(x=>t-x<6000).slice(-12);if(navigator.vibrate)try{navigator.vibrate(8)}catch(e){};if(tapTimes.length===12&&rhythmMatch(tapTimes)){openPrivate();tapTimes=[]}}
 function rhythmMatch(times){let gaps=[];for(let i=1;i<times.length;i++)gaps.push(times[i]-times[i-1]);let ratios=gaps.map((g,i)=>g/RHYTHM[i]);ratios.sort((a,b)=>a-b);let scale=ratios[Math.floor(ratios.length/2)]||1;let err=0;for(let i=0;i<gaps.length;i++){err+=Math.abs((gaps[i]/scale)-RHYTHM[i])/RHYTHM[i]}err/=gaps.length;return err<0.38}
 function openPrivate(){$('privateWindow').classList.remove('hidden');setStatus('privatePanel','Private window open. Rhythm accepted.');setStatus('controlStatus','Private rhythm accepted.')}
 function lockPrivate(){$('privateWindow').classList.add('hidden');setStatus('controlStatus','Private window locked.')}
-function showPrivate(which){if(which==='bugs'){setStatus('privatePanel',{type:'PRIVATE_BUG_MEMORY_VIEW',bugs:read(BUG_KEY,{bugs:[]})})}else if(which==='backup'){let out={type:'PMP_CLEAN_PRIVATE_BACKUP_V4',built_at:now(),connections:read(CONN_KEY,[]),bug_memory:read(BUG_KEY,{bugs:[]})};setStatus('privatePanel',out)}else{setStatus('privatePanel',{type:'PRIVATE_STATUS',version:CLEAN_VERSION,rhythm:'Q Q E E E E ER E E ER E E E E',private_window:'open'})}}
+function showPrivate(which){if(which==='bugs'){setStatus('privatePanel',{type:'PRIVATE_BUG_MEMORY_VIEW',bugs:read(BUG_KEY,{bugs:[]})})}else if(which==='backup'){let out={type:'PMP_CLEAN_PRIVATE_BACKUP_V5',built_at:now(),packets:read(PACKET_KEY,[]),connections:read(CONN_KEY,[]),bug_memory:read(BUG_KEY,{bugs:[]})};setStatus('privatePanel',out)}else{setStatus('privatePanel',{type:'PRIVATE_STATUS',version:CLEAN_VERSION,rhythm:'Q Q E E E E ER E E ER E E E E',private_window:'open'})}}
 window.addEventListener('DOMContentLoaded',()=>{$('controlTitle').addEventListener('pointerdown',tapTitle)});
 </script>
 </body>
