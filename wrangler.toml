@@ -1,0 +1,11 @@
+name = "pmp-backend"
+main = "pmp-worker.js"
+compatibility_date = "2026-05-07"
+
+# Optional free KV binding.
+# Create it later in Cloudflare, then replace the id values.
+# Without KV, the worker still responds, but cannot persist backend state.
+# [[kv_namespaces]]
+# binding = "PMP_STORE"
+# id = "replace_with_cloudflare_kv_namespace_id"
+# preview_id = "replace_with_cloudflare_preview_kv_namespace_id"
