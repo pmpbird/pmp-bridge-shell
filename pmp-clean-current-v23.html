@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PMP Clean">
+<title>PMP Clean Current v23</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#52b5df;-webkit-text-size-adjust:100%;touch-action:manipulation}
+#app{position:fixed;inset:0;width:100%;height:100%;border:0;background:#52b5df}
+#fallback{position:fixed;left:12px;right:12px;bottom:12px;z-index:3;background:#123024;color:#c9f7d7;border:2px solid #fff;border-radius:18px;padding:10px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:12px;display:none}
+</style>
+</head>
+<body>
+<iframe id="app" src="pmp-clean-v21.html?fresh=v23-one-click-update#control"></iframe>
+<div id="fallback">Current app wrapper active. Automatic App Update is patched to open the newest clean app directly.</div>
+<script>
+const LATEST='pmp-clean-v21.html';
+function oneTapUpdate(){
+  try{
+    localStorage.setItem('pmp_current_clean_app_target',LATEST);
+    localStorage.setItem('pmp_last_auto_update',JSON.stringify({type:'PMP_ONE_TAP_APP_UPDATE_V23',target:LATEST,at:new Date().toISOString(),meaning:'Opened newest clean app directly. No Safe Writer detour.'}));
+  }catch(e){}
+  location.href=LATEST+'?fresh=one-click-update-'+Date.now()+'#control';
+}
+function patchApp(){
+  const f=document.getElementById('app');
+  let w,d;
+  try{w=f.contentWindow;d=f.contentDocument||w.document;}catch(e){document.getElementById('fallback').style.display='block';return;}
+  if(!w||!d)return;
+  try{
+    w.automaticAppUpdate=oneTapUpdate;
+    const buttons=[...d.querySelectorAll('button')];
+    for(const b of buttons){
+      if((b.textContent||'').includes('Automatic App Update')){
+        b.onclick=function(ev){ev.preventDefault();ev.stopPropagation();oneTapUpdate();return false;};
+        const small=b.querySelector('small');
+        if(small)small.textContent='one tap: open newest app directly';
+      }
+    }
+  }catch(e){document.getElementById('fallback').style.display='block';}
+}
+document.getElementById('app').addEventListener('load',()=>{setTimeout(patchApp,150);setTimeout(patchApp,700);});
+setInterval(patchApp,2000);
+</script>
+</body>
+</html>
