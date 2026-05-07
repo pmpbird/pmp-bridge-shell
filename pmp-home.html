@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PMP">
+<title>PMP Home</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#52b5df;-webkit-text-size-adjust:100%;touch-action:manipulation}
+#app{position:fixed;inset:0;width:100%;height:100%;border:0;background:#52b5df}
+#status{position:fixed;left:10px;right:10px;bottom:10px;z-index:3;background:#123024;color:#c9f7d7;border:2px solid #fff;border-radius:16px;padding:8px 10px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:12px;display:none;white-space:pre-wrap}
+</style>
+</head>
+<body>
+<iframe id="app" src="pmp-clean-v21.html?fresh=home-start#control"></iframe>
+<div id="status">PMP Home launcher active.</div>
+<script>
+const POINTER='pmp-latest.json';
+const FALLBACK='pmp-clean-v21.html';
+const FRAME=document.getElementById('app');
+let latest=FALLBACK;
+function showStatus(msg){const s=document.getElementById('status');s.textContent=msg;s.style.display='block';clearTimeout(showStatus.t);showStatus.t=setTimeout(()=>{s.style.display='none'},2500)}
+async function getLatest(){
+  try{
+    const r=await fetch(POINTER+'?fresh='+Date.now(),{cache:'no-store'});
+    const j=await r.json();
+    if(j&&j.latest)latest=j.latest;
+  }catch(e){latest=localStorage.getItem('pmp_current_clean_app_target')||FALLBACK;}
+  try{localStorage.setItem('pmp_current_clean_app_target',latest)}catch(e){}
+  return latest;
+}
+async function loadLatest(reason){
+  const target=await getLatest();
+  showStatus('Opening newest PMP app.\nTarget: '+target);
+  FRAME.src=target+'?fresh='+encodeURIComponent(reason||'home')+'-'+Date.now()+'#control';
+  setTimeout(patchApp,250);setTimeout(patchApp,900);setTimeout(patchApp,1600);
+}
+async function oneTapUpdate(){
+  const target=await getLatest();
+  try{localStorage.setItem('pmp_last_auto_update',JSON.stringify({type:'PMP_FOREVER_HOME_UPDATE',target,at:new Date().toISOString(),meaning:'Home launcher refreshed newest app inside same Home Screen app.'}))}catch(e){}
+  showStatus('Automatic App Update complete.\nNewest app refreshed here.\nNo new Home Screen icon needed.');
+  FRAME.src=target+'?fresh=auto-update-'+Date.now()+'#control';
+  setTimeout(patchApp,250);setTimeout(patchApp,900);setTimeout(patchApp,1600);
+}
+function patchApp(){
+  let w,d;try{w=FRAME.contentWindow;d=FRAME.contentDocument||w.document}catch(e){return}if(!w||!d)return;
+  try{w.automaticAppUpdate=oneTapUpdate}catch(e){}
+  try{
+    const buttons=[...d.querySelectorAll('button')];
+    for(const b of buttons){
+      if((b.textContent||'').includes('Automatic App Update')){
+        b.onclick=function(ev){if(ev){ev.preventDefault();ev.stopPropagation();if(ev.stopImmediatePropagation)ev.stopImmediatePropagation()}oneTapUpdate();return false};
+        const small=b.querySelector('small');if(small)small.textContent='one tap: refresh newest app here';
+      }
+    }
+    if(!d.__pmpHomeUpdateCaptureInstalled){
+      d.__pmpHomeUpdateCaptureInstalled=true;
+      d.addEventListener('click',function(ev){
+        const b=ev.target&&ev.target.closest?ev.target.closest('button'):null;
+        if(b&&(b.textContent||'').includes('Automatic App Update')){ev.preventDefault();ev.stopPropagation();if(ev.stopImmediatePropagation)ev.stopImmediatePropagation();oneTapUpdate();return false}
+      },true);
+    }
+  }catch(e){}
+}
+function guardFrame(){let href='';try{href=FRAME.contentWindow.location.href}catch(e){return}if(/safe-writer/i.test(href)){showStatus('Blocked old Safe Writer detour.\nReturning to current app.');FRAME.src=latest+'?fresh=blocked-detour-'+Date.now()+'#control'}}
+FRAME.addEventListener('load',()=>{setTimeout(patchApp,120);setTimeout(patchApp,700);setTimeout(guardFrame,200)});
+setInterval(()=>{patchApp();guardFrame()},1200);
+loadLatest('home-open');
+</script>
+</body>
+</html>
