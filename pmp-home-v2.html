@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PMP">
+<title>PMP Home v2</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#52b5df;-webkit-text-size-adjust:100%;touch-action:manipulation}
+#app{position:fixed;inset:0;width:100%;height:100%;border:0;background:#52b5df}
+#bar{position:fixed;left:10px;right:10px;bottom:10px;z-index:4;display:none;background:#123024;color:#c9f7d7;border:2px solid #fff;border-radius:16px;padding:8px 10px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:12px;white-space:pre-wrap;box-shadow:0 8px 18px #0003}
+#panel{position:fixed;left:10px;right:10px;top:10px;z-index:5;display:none;background:#172234;color:#eef4fb;border:2px solid #a1fcfd;border-radius:18px;padding:10px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:12px;box-shadow:0 8px 18px #0004}
+button{border:1px solid #25354a;background:#a1fcfd;color:#101827;border-radius:14px;padding:10px 12px;font:inherit;font-weight:900;margin-top:8px;width:100%}
+pre{white-space:pre-wrap;overflow:auto;max-height:42vh;background:#0c141e;color:#c9f7d7;border-radius:12px;padding:10px;text-align:left}
+</style>
+</head>
+<body>
+<iframe id="app" src="about:blank"></iframe>
+<div id="bar">PMP Home v2 starting...</div>
+<div id="panel"><b>PMP Home v2</b><pre id="truth">No report yet.</pre><button onclick="copyTruth()">Copy App Truth Report</button><button onclick="reloadLatest()">Reload Latest</button><button onclick="useLastGood()">Use Last Good</button><button onclick="hidePanel()">Close</button></div>
+<script>
+const POINTER='pmp-latest.json';
+const FALLBACK='pmp-clean-v21.html';
+const FRAME=document.getElementById('app');
+let pointer=null;
+let latest=FALLBACK;
+let lastGood=FALLBACK;
+let activeTarget='';
+let activeReason='startup';
+let lastLoadAt=0;
+let lastAutoUpdateAt=0;
+let blockedDetourCount=0;
+let loadFailures=0;
+let health={state:'STARTING',reason:'launcher booting'};
+let events=[];
+function now(){return new Date().toISOString()}
+function log(event,detail){events.push({at:now(),event,detail});if(events.length>40)events.shift()}
+function bar(msg){const b=document.getElementById('bar');b.textContent=msg;b.style.display='block';clearTimeout(bar.t);bar.t=setTimeout(()=>{b.style.display='none'},2600)}
+function truth(){return{type:'PMP_APP_TRUTH_REPORT_HOME_V2',built_at:now(),launcher:'pmp-home-v2.html',pointer_url:POINTER,pointer,active_target:activeTarget,latest,last_good:lastGood,health,load_failures:loadFailures,blocked_detour_count:blockedDetourCount,last_auto_update_at:lastAutoUpdateAt?new Date(lastAutoUpdateAt).toISOString():null,frame_href:getFrameHref(),stored_current_target:localStorage.getItem('pmp_current_clean_app_target')||null,stored_last_good:localStorage.getItem('pmp_last_good_clean_app')||null,events}}
+function updateTruth(){document.getElementById('truth').textContent=JSON.stringify(truth(),null,2)}
+function showPanel(){updateTruth();document.getElementById('panel').style.display='block'}
+function hidePanel(){document.getElementById('panel').style.display='none'}
+async function copyTruth(){const t=JSON.stringify(truth(),null,2);try{await navigator.clipboard.writeText(t);bar('App Truth Report copied.')}catch(e){document.getElementById('truth').textContent=t;bar('Copy blocked. Report shown.')}}
+async function readPointer(){try{const r=await fetch(POINTER+'?fresh='+Date.now(),{cache:'no-store'});const j=await r.json();pointer=j;latest=j.latest||FALLBACK;lastGood=j.last_good||localStorage.getItem('pmp_last_good_clean_app')||FALLBACK;health={state:'POINTER_OK',reason:'latest pointer loaded'};log('pointer_loaded',{latest,lastGood});}catch(e){pointer={type:'POINTER_READ_FAILED',error:e.message};latest=localStorage.getItem('pmp_current_clean_app_target')||FALLBACK;lastGood=localStorage.getItem('pmp_last_good_clean_app')||FALLBACK;health={state:'POINTER_FAILED',reason:e.message};log('pointer_failed',e.message)}}
+function saveTarget(target){try{localStorage.setItem('pmp_current_clean_app_target',target)}catch(e){}}
+function saveLastGood(target){try{localStorage.setItem('pmp_last_good_clean_app',target)}catch(e){}}
+function loadTarget(target,reason){activeTarget=target;activeReason=reason||'load';lastLoadAt=Date.now();saveTarget(target);bar('Opening PMP app.\nTarget: '+target);log('load_target',{target,reason});FRAME.src=target+'?fresh='+encodeURIComponent(reason||'load')+'-'+Date.now()+'#control';setTimeout(checkHealth,1600);setTimeout(checkHealth,3200);setTimeout(patchApp,300);setTimeout(patchApp,1000)}
+async function start(){await readPointer();loadTarget(latest,'home-v2-open')}
+async function reloadLatest(){await readPointer();loadTarget(latest,'manual-reload-latest')}
+function useLastGood(){loadTarget(lastGood||FALLBACK,'manual-last-good')}
+async function oneTapUpdate(){lastAutoUpdateAt=Date.now();await readPointer();try{localStorage.setItem('pmp_last_auto_update',JSON.stringify({type:'PMP_HOME_V2_ONE_TAP_UPDATE',target:latest,at:now(),meaning:'Launcher refreshed newest app inside same Home Screen app.'}))}catch(e){}bar('Automatic App Update complete.\nNewest app refreshed here.\nNo new Home Screen icon needed.');loadTarget(latest,'one-tap-auto-update')}
+function getFrameHref(){try{return FRAME.contentWindow.location.href}catch(e){return 'unreadable: '+e.message}}
+function checkHealth(){let href=getFrameHref();if(!href||href.includes('about:blank'))return;let bad=/404|not found/i.test(readFrameText())||/safe-writer/i.test(href);if(bad){loadFailures++;health={state:'BAD_LOAD',reason:'bad href or 404/not found text',href};log('bad_load',{href});loadTarget(lastGood||FALLBACK,'fallback-after-bad-load');return}try{const d=FRAME.contentDocument||FRAME.contentWindow.document;const hasTabs=!!d.querySelector('.tabs');const hasControl=(d.body&&/Control Room/i.test(d.body.innerText||''));if(hasTabs&&hasControl){health={state:'PASS',reason:'tabs and Control Room detected',href};saveLastGood(activeTarget);lastGood=activeTarget;log('health_pass',{target:activeTarget});}else{health={state:'WATCH',reason:'loaded but key markers incomplete',href,hasTabs,hasControl};log('health_watch',health)}}catch(e){health={state:'WATCH',reason:'health read blocked: '+e.message,href};log('health_blocked',health)}updateTruth()}
+function readFrameText(){try{const d=FRAME.contentDocument||FRAME.contentWindow.document;return (d.body&&d.body.innerText||'').slice(0,2000)}catch(e){return ''}}
+function patchApp(){let w,d;try{w=FRAME.contentWindow;d=FRAME.contentDocument||w.document}catch(e){return}if(!w||!d)return;try{w.automaticAppUpdate=oneTapUpdate}catch(e){}try{const buttons=[...d.querySelectorAll('button')];for(const b of buttons){if((b.textContent||'').includes('Automatic App Update')){b.onclick=function(ev){if(ev){ev.preventDefault();ev.stopPropagation();if(ev.stopImmediatePropagation)ev.stopImmediatePropagation()}oneTapUpdate();return false};const small=b.querySelector('small');if(small)small.textContent='one tap: refresh newest app forever';}}if(!d.__pmpHomeV2CaptureInstalled){d.__pmpHomeV2CaptureInstalled=true;d.addEventListener('click',function(ev){const b=ev.target&&ev.target.closest?ev.target.closest('button'):null;if(b&&(b.textContent||'').includes('Automatic App Update')){ev.preventDefault();ev.stopPropagation();if(ev.stopImmediatePropagation)ev.stopImmediatePropagation();oneTapUpdate();return false}},true)}}catch(e){} }
+function guard(){let href=getFrameHref();if(/safe-writer/i.test(href)){blockedDetourCount++;health={state:'DETOUR_BLOCKED',reason:'Safe Writer detour blocked',href};log('detour_blocked',{href});bar('Blocked Safe Writer detour.\nReturning to current app.');loadTarget(latest||lastGood||FALLBACK,'blocked-safe-writer-detour')}updateTruth()}
+FRAME.addEventListener('load',()=>{setTimeout(patchApp,100);setTimeout(checkHealth,900);setTimeout(guard,200)});
+setInterval(()=>{patchApp();guard()},1200);
+window.addEventListener('error',e=>{loadFailures++;health={state:'WINDOW_ERROR',reason:e.message};log('window_error',e.message);updateTruth()});
+window.addEventListener('message',e=>{log('message',e.data);updateTruth()});
+start();
+// Triple tap top-left area opens launcher truth panel without touching app UI.
+let taps=[];document.addEventListener('pointerdown',e=>{if(e.clientX<80&&e.clientY<80){let n=Date.now();taps=taps.filter(t=>n-t<900);taps.push(n);if(taps.length>=3){taps=[];showPanel()}}},true);
+</script>
+</body>
+</html>
