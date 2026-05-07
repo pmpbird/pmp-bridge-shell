@@ -1,1 +1,13 @@
-{"type":"PMP_LATEST_APP_POINTER","latest":"pmp-clean-v21.html","updated_at":"2026-05-07T00:00:00Z","meaning":"Permanent launchers read this file and open the newest clean app without needing a new Home Screen icon."}
+{
+  "type": "PMP_LATEST_APP_POINTER_V2",
+  "latest": "pmp-clean-v21.html",
+  "last_good": "pmp-clean-v21.html",
+  "minimum_good_version": "v21",
+  "updated_at": "2026-05-07T00:00:00Z",
+  "health_required": true,
+  "fallback_enabled": true,
+  "blocked_detours": [
+    "safe-writer"
+  ],
+  "meaning": "Permanent launchers read this file, health-check the newest app, and open it inside the same Home Screen app. If the newest app fails, open last_good instead."
+}
