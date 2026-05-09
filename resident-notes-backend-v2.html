@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#55b6d8" />
+<title>Resident Notes Backend Bridge v2</title>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<style>
+:root{--bg:#55b6d8;--card:#122033;--ink:#f5fbff;--muted:#c9e7ee;--accent:#9cf6f2;--line:#ffffff;--good:#0f3f2c;--warn:#3b2a0c;--bad:#4a1212}*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;min-height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:#061525}body{padding:calc(env(safe-area-inset-top) + 18px) 16px calc(env(safe-area-inset-bottom) + 32px)}.wrap{max-width:920px;margin:0 auto}.pill{display:inline-flex;gap:8px;align-items:center;padding:9px 14px;border:3px solid var(--line);border-radius:999px;background:var(--accent);font-weight:900;box-shadow:0 10px 26px rgba(0,0,0,.18)}h1{font-size:42px;line-height:1.02;margin:18px 0 8px}h2{font-size:28px;margin:0 0 14px}.sub{font-size:20px;font-weight:800;opacity:.78;margin-bottom:18px}.card{background:rgba(18,32,51,.96);color:var(--ink);border:4px solid var(--line);border-radius:28px;padding:22px;margin:18px 0;box-shadow:0 16px 40px rgba(0,0,0,.25)}.card p{font-size:18px;line-height:1.42}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:680px){.grid{grid-template-columns:1fr}h1{font-size:34px}}button,.btn,label.fileBtn{border:0;border-radius:18px;background:var(--accent);color:#071523;font-weight:900;font-size:18px;padding:16px 18px;min-height:58px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.14);text-align:center}button:disabled{opacity:.45}input,textarea,select{width:100%;background:#0b1522;color:var(--ink);border:2px solid rgba(255,255,255,.16);border-radius:18px;padding:14px;font-size:16px}textarea{min-height:160px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.status{white-space:pre-wrap;background:var(--good);border:3px solid var(--line);border-radius:20px;padding:16px;color:#d7ffe8;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;overflow:auto;max-height:420px}.warn{background:var(--warn);color:#ffe8b3}.bad{background:var(--bad);color:#ffd3d3}.chips{display:flex;flex-wrap:wrap;gap:8px}.chip{background:#0b1522;border:2px solid rgba(255,255,255,.14);color:#d7ffe8;border-radius:999px;padding:9px 12px;font-weight:800}.small{font-size:14px;color:var(--muted)}.step{border-left:5px solid var(--accent);padding-left:14px;margin:14px 0}.topbar{position:sticky;top:0;z-index:5;padding:8px 0;background:linear-gradient(var(--bg),rgba(85,182,216,.72))}.hidden{display:none}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.ok{color:#bcffd1;font-weight:900}.no{color:#ffb4b4;font-weight:900}</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar"><span class="pill">📝 Resident Notes Backend Bridge v2</span></div>
+  <h1>Private Bug Memory → Apple Notes</h1>
+  <div class="sub">No GitHub data storage. No paid backend. App → Clipboard → Shortcut → Notes.</div>
+
+  <section class="card">
+    <h2>What this tool does</h2>
+    <p><b>Apple Notes becomes your private memory place.</b> This tool reads the bug ZIP locally, builds private memory chunks, copies each chunk to the clipboard, then opens your Shortcut so the chunk can be appended to a note on your iPhone.</p>
+    <div class="status warn">Privacy rule: this tool does not upload Bug Memory to GitHub. It does not show private server details. It only prepares data for your own Notes/Shortcuts bridge.</div>
+  </section>
+
+  <section class="card">
+    <h2>1. Shortcut setup</h2>
+    <div class="step"><b>Create a note:</b> PMP Private Bug Memory</div>
+    <div class="step"><b>Create a Shortcut named exactly:</b> <span class="mono">PMP Save Private Memory</span></div>
+    <div class="step"><b>Shortcut actions:</b><br>1. Get Clipboard <span class="small">or receive Shortcut Input</span><br>2. Append Clipboard to Note: <span class="mono">PMP Private Bug Memory</span><br>3. Show Notification: <span class="mono">PMP private memory saved</span></div>
+    <p class="small">If Shortcuts cannot append to a locked note, use an unlocked private note first. You can lock/export later. The web app cannot secretly read Notes.</p>
+    <div class="grid">
+      <button onclick="copyShortcutRecipe()">Copy Shortcut Recipe</button>
+      <button onclick="openShortcutEditor()">Open Shortcuts</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>2. Choose bug memory ZIP</h2>
+    <input id="zipInput" type="file" accept=".zip,application/zip" />
+    <div class="grid" style="margin-top:12px">
+      <button onclick="scanZip()">Scan ZIP</button>
+      <button onclick="clearAll()">Reset Tool</button>
+    </div>
+    <div id="bandBox" class="chips" style="margin-top:16px"></div>
+  </section>
+
+  <section class="card">
+    <h2>3. Lossless quality report</h2>
+    <div id="report" class="status">No ZIP scanned yet.</div>
+  </section>
+
+  <section class="card hidden" id="chunkCard">
+    <h2>4. Save chunks to Notes</h2>
+    <p><b>Notes Required Mode:</b> Nothing is imported unless you copy/run each chunk through your Shortcut. This keeps Bug Memory off GitHub.</p>
+    <div class="row"><span class="chip" id="chunkCount">0 chunks</span><span class="chip" id="chunkNow">chunk 0</span><span class="chip" id="savedCount">saved 0</span></div>
+    <label class="small" for="chunkSize">Chunk size</label>
+    <select id="chunkSize" onchange="rebuildChunks()">
+      <option value="18000">Extra safe — 18k characters</option>
+      <option value="30000" selected>Normal — 30k characters</option>
+      <option value="50000">Large — 50k characters</option>
+    </select>
+    <div class="grid" style="margin-top:12px">
+      <button onclick="copyCurrentChunk()">Copy Current Chunk</button>
+      <button onclick="copyAndRunShortcut()">Copy + Run Shortcut</button>
+      <button onclick="markSavedNext()">Mark Saved + Next</button>
+      <button onclick="copyAllSmall()">Copy Full Payload if Small</button>
+    </div>
+    <textarea id="currentChunk" readonly></textarea>
+    <div id="chunkStatus" class="status warn">Scan a ZIP first.</div>
+  </section>
+
+  <section class="card hidden" id="finalCard">
+    <h2>5. Finish</h2>
+    <div class="status">After all chunks are saved, open Notes and confirm the note contains chunk 1 through the final chunk. Then tell Resident: “Run lossless quality on Notes Backend Bug Memory import.”</div>
+    <button onclick="copyResidentPrompt()">Copy Resident Lossless Prompt</button>
+  </section>
+</div>
+<script>
+const SHORTCUT_NAME='PMP Save Private Memory';
+const NOTE_NAME='PMP Private Bug Memory';
+const REQUIRED=['id','name','symptom','likely_cause','fix_direction'];
+let zipFile=null, scan=null, payload='', chunks=[], ix=0, saved=new Set();
+function now(){return new Date().toISOString()}
+function esc(s){return String(s||'').replace(/[&<>'\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[c]))}
+function hash(str){let h=2166136261; for(let i=0;i<str.length;i++){h^=str.charCodeAt(i); h=Math.imul(h,16777619)} return (h>>>0).toString(16).padStart(8,'0')}
+function band(path){ if(/^BUG_MEMORY_MANIFEST\.json$/i.test(path))return'manifest'; if(/^IMPORT_INSTRUCTIONS\.json$/i.test(path))return'import_instructions'; if(/^00_PRIVATE_SERVER_VERIFICATION_PACKET\.json$/i.test(path))return'private_server_verification'; if(/^bugs\/BUG-\d{3}\.json$/i.test(path))return'bug_files'; if(/^resident_xray_specs\//i.test(path))return'resident_xray_specs'; if(/^validation\//i.test(path))return'validation'; if(/^timelines\//i.test(path))return'timelines'; if(/^indexes\//i.test(path))return'indexes'; if(/^reports\//i.test(path))return'reports'; if(/^schema\//i.test(path))return'schema'; if(/^tests\//i.test(path))return'tests'; if(/^playbooks\//i.test(path))return'playbooks'; if(/^lossless\//i.test(path))return'lossless'; if(/\.json$/i.test(path))return'json_extra'; return'other'; }
+function showReport(obj, cls='status'){const el=document.getElementById('report'); el.className=cls; el.textContent=typeof obj==='string'?obj:JSON.stringify(obj,null,2)}
+function chips(counts){document.getElementById('bandBox').innerHTML=Object.entries(counts).map(([k,v])=>`<span class="chip">${esc(k)}: ${v}</span>`).join('')}
+async function scanZip(){
+  const f=document.getElementById('zipInput').files[0]; if(!f){showReport('Choose a ZIP first.','status bad');return}
+  zipFile=f; showReport('Scanning ZIP locally...');
+  const zip=await JSZip.loadAsync(f);
+  const files=Object.keys(zip.files).filter(p=>!zip.files[p].dir);
+  const unsafe=files.filter(p=>p.includes('..')||p.startsWith('/')||p.includes('\\\\'));
+  const counts={}; files.forEach(p=>counts[band(p)]=(counts[band(p)]||0)+1); chips(counts);
+  const bugPaths=files.filter(p=>band(p)==='bug_files').sort();
+  const bugs=[]; const missing=[]; const ids=[]; const parseErrors=[];
+  for(const p of bugPaths){ try{const obj=JSON.parse(await zip.file(p).async('string')); bugs.push(obj); ids.push(obj.id); const miss=REQUIRED.filter(k=>obj[k]===undefined||obj[k]===null||obj[k]===''); if(miss.length)missing.push({path:p,id:obj.id||null,missing:miss}); }catch(e){parseErrors.push({path:p,error:String(e.message||e)})} }
+  const dupeIds=ids.filter((id,i)=>id&&ids.indexOf(id)!==i);
+  let supportFiles=[];
+  for(const p of files.filter(p=>band(p)!=='bug_files')){ if(/\.json$/i.test(p)){ try{supportFiles.push({path:p,band:band(p),json:JSON.parse(await zip.file(p).async('string'))}); }catch(e){ supportFiles.push({path:p,band:band(p),parse_error:String(e.message||e)})} } else { supportFiles.push({path:p,band:band(p),note:'non_json_support_file'}); } }
+  const verdict = unsafe.length||parseErrors.length||missing.length||dupeIds.length||bugPaths.length!==38 ? 'REVIEW_BEFORE_NOTES_SAVE' : 'READY_FOR_NOTES_BACKEND_SAVE';
+  scan={type:'PMP_NOTES_BACKEND_XRAY_REPORT_V2',built_at:now(),stage:'scanned',zip_name:f.name,file_count:files.length,band_counts:counts,unsafe_paths:unsafe,bug_files_found:bugPaths.length,unique_bug_ids:[...new Set(ids)].length,duplicate_bug_ids:[...new Set(dupeIds)],bug_files_missing_required_fields:missing,parse_errors:parseErrors,verdict};
+  payload=JSON.stringify({type:'PMP_NOTES_BACKEND_BUG_MEMORY_IMPORT_PAYLOAD_V2',built_at:now(),target_note:NOTE_NAME,privacy:'apple_notes_private_backend',source_zip:f.name,scan_report:scan,bugs, support_files:supportFiles,lossless_rule:'Notes copy is the private source. Public GitHub app shell must not contain Bug Memory.'});
+  showReport(scan, verdict.startsWith('READY')?'status':'status bad');
+  if(verdict.startsWith('READY')){document.getElementById('chunkCard').classList.remove('hidden'); rebuildChunks();}
+}
+function rebuildChunks(){ if(!payload)return; const size=Number(document.getElementById('chunkSize').value||30000); chunks=[]; const transferId='PMP-NOTES-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,7); const total=Math.ceil(payload.length/size); for(let i=0;i<total;i++){const fragment=payload.slice(i*size,(i+1)*size); chunks.push(JSON.stringify({type:'PMP_NOTES_BACKEND_CHUNK_V1',transfer_id:transferId,note_name:NOTE_NAME,chunk_index:i+1,chunk_count:total,payload_hash:hash(payload),fragment_hash:hash(fragment),content:fragment},null,2));} ix=0; saved=new Set(); updateChunk();}
+function updateChunk(){document.getElementById('chunkCard').classList.remove('hidden'); document.getElementById('chunkCount').textContent=chunks.length+' chunks'; document.getElementById('chunkNow').textContent='chunk '+(ix+1)+' / '+chunks.length; document.getElementById('savedCount').textContent='saved '+saved.size; document.getElementById('currentChunk').value=chunks[ix]||''; document.getElementById('chunkStatus').textContent=chunks.length?`Copy chunk ${ix+1}, run the Shortcut, then tap Mark Saved + Next.`:'No chunks built.'; if(saved.size===chunks.length && chunks.length){document.getElementById('finalCard').classList.remove('hidden')}}
+async function copyText(t){await navigator.clipboard.writeText(t)}
+async function copyCurrentChunk(){ if(!chunks.length)return; await copyText(chunks[ix]); document.getElementById('chunkStatus').textContent='Copied chunk '+(ix+1)+' to clipboard. Now run the Shortcut.';}
+async function copyAndRunShortcut(){ await copyCurrentChunk(); location.href='shortcuts://run-shortcut?name='+encodeURIComponent(SHORTCUT_NAME)+'&input=clipboard'; }
+function markSavedNext(){ if(!chunks.length)return; saved.add(ix); if(ix<chunks.length-1)ix++; updateChunk(); }
+async function copyAllSmall(){ if(!payload)return; if(payload.length>80000){document.getElementById('chunkStatus').textContent='Full payload is too large for safe one-copy mode. Use chunks.';return} await copyText(payload); document.getElementById('chunkStatus').textContent='Copied full payload. Run the Shortcut once.'; }
+async function copyShortcutRecipe(){ const recipe=`Create iPhone Shortcut named: ${SHORTCUT_NAME}\n\nActions:\n1. Get Clipboard\n2. Append Clipboard to Note: ${NOTE_NAME}\n3. Show Notification: PMP private memory saved\n\nUse with PMP Notes Backend Bridge: copy a chunk, run this shortcut, then return and mark saved.`; await copyText(recipe); alert('Shortcut recipe copied.');}
+function openShortcutEditor(){ location.href='shortcuts://create-shortcut'; }
+async function copyResidentPrompt(){ await copyText('Run lossless quality on Notes Backend Bug Memory import. Verify chunk count, transfer id, payload hash, bug count 38, duplicate IDs 0, missing fields 0, private-only status, and that no Bug Memory went to GitHub.'); alert('Resident prompt copied.');}
+function clearAll(){zipFile=null;scan=null;payload='';chunks=[];ix=0;saved=new Set();document.getElementById('zipInput').value='';document.getElementById('bandBox').innerHTML='';showReport('No ZIP scanned yet.');document.getElementById('chunkCard').classList.add('hidden');document.getElementById('finalCard').classList.add('hidden')}
+</script>
+</body>
+</html>
