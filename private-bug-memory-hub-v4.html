@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#52b5df">
+<title>Bug Memory Hub v4</title>
+<script src="pmp-shared-theme-v1.js"></script>
+</head>
+<body>
+<div class="pmp-wrap">
+  <section class="pmp-card">
+    <h1>Bug Memory</h1>
+    <p class="pmp-sub">Save it, load it, or study it. Notes holds the real memory.</p>
+    <div class="pmp-helper">Resident lives in the top tab. The page keeps the same saved colors and contrast as the main app.</div>
+  </section>
+
+  <section class="pmp-card">
+    <h2>Main actions</h2>
+    <div class="pmp-stack">
+      <a class="pmp-btn pmp-big" href="resident-notes-catalog-v4.html">Save / Update Memory</a>
+      <button class="pmp-btn pmp-big" onclick="openPanel('load')">Load Memory</button>
+      <button class="pmp-btn pmp-big pmp-soft" onclick="openPanel('lab')">Bug Lab</button>
+    </div>
+  </section>
+
+  <section class="pmp-card panel" id="loadPanel">
+    <h2>Load Memory</h2>
+    <div class="pmp-helper">Copy bug memory from Notes, paste it here, then tap Copy for Resident. Resident can use it for this private session.</div>
+    <textarea id="loadBox" placeholder="Paste bug catalog / prediction ledger from Notes here."></textarea>
+    <div class="pmp-grid" style="margin-top:12px">
+      <button class="pmp-btn" onclick="loadSessionMemory()">Load for This Session</button>
+      <button class="pmp-btn" onclick="copyToResident()">Copy for Resident</button>
+      <button class="pmp-btn" onclick="copyLoadSteps()">Copy Load Steps</button>
+      <button class="pmp-btn" onclick="copyLosslessPrompt()">Copy Quality Check</button>
+      <button class="pmp-btn pmp-soft" onclick="clearLoaded()">Clear Loaded Memory</button>
+      <button class="pmp-btn pmp-soft" onclick="openPanel('')">Close</button>
+    </div>
+    <div id="sessionStatus" class="pmp-status pmp-warn" style="margin-top:12px">No memory loaded in this page.</div>
+  </section>
+
+  <section class="pmp-card panel" id="labPanel">
+    <h2>Bug Lab</h2>
+    <div class="pmp-helper">Predict, save, and test carefully. The lab does not change the live app.</div>
+    <div class="pmp-grid" style="margin-top:12px">
+      <a class="pmp-btn" href="resident-notes-catalog-v4.html">Open Catalog</a>
+      <a class="pmp-btn" href="private-bug-mixer-lab-v2.html">Open Mixer</a>
+      <button class="pmp-btn" onclick="showLedger()">Prediction Ledger</button>
+      <button class="pmp-btn" onclick="showTests()">Controlled Test Plans</button>
+      <button class="pmp-btn pmp-soft" onclick="openPanel('more')">More</button>
+      <button class="pmp-btn pmp-soft" onclick="openPanel('')">Close</button>
+    </div>
+    <div id="labOutput" class="pmp-status pmp-warn" style="margin-top:12px">Bug Lab ready.</div>
+  </section>
+
+  <section class="pmp-card panel" id="morePanel">
+    <h2>More</h2>
+    <div class="pmp-grid">
+      <a class="pmp-btn" href="private-window-bug-memory-entry-v1.html">Entry Page</a>
+      <a class="pmp-btn" href="resident-notes-backend-v2.html">Notes Bridge</a>
+      <a class="pmp-btn" href="private-bug-mixer-lab-spec-v1.json">Mixer Spec</a>
+      <a class="pmp-btn" href="pmp-home-single-v12.html#control">Back to App</a>
+      <button class="pmp-btn pmp-soft" onclick="clearLoaded()">Clear Session</button>
+      <button class="pmp-btn pmp-soft" onclick="openPanel('')">Close</button>
+    </div>
+  </section>
+</div>
+<script>
+let sessionMemory='';
+function now(){return new Date().toISOString()}
+function openPanel(name){for(const id of ['loadPanel','labPanel','morePanel'])document.getElementById(id).classList.remove('on');if(name==='load')document.getElementById('loadPanel').classList.add('on');if(name==='lab')document.getElementById('labPanel').classList.add('on');if(name==='more')document.getElementById('morePanel').classList.add('on')}
+async function copyText(t){await navigator.clipboard.writeText(t)}
+async function copyLoadSteps(){const t='Load Bug Memory from Notes:\n1. Open Notes.\n2. Open PMP Private Bug Memory.\n3. Copy the catalog or ledger text.\n4. Return to Bug Memory Hub.\n5. Paste it into Load Memory.\n6. Tap Load for This Session.\n7. Tap Copy for Resident.';await copyText(t);document.getElementById('sessionStatus').textContent='Load steps copied.'}
+async function copyLosslessPrompt(){const t='Run lossless quality on Bug Memory. Verify private Notes storage, loaded session only, bug count if provided, catalog ranking, prediction ledger state, and controlled-test safety. Report in Plain Brain language.';await copyText(t);document.getElementById('sessionStatus').textContent='Quality check prompt copied.'}
+function loadSessionMemory(){sessionMemory=document.getElementById('loadBox').value.trim();document.getElementById('sessionStatus').textContent=sessionMemory?`Loaded ${sessionMemory.length} characters for this private page session.`:'Paste memory first.'}
+async function copyToResident(){if(!sessionMemory){document.getElementById('sessionStatus').textContent='Paste and load memory first.';return}const packet={type:'PMP_PRIVATE_BUG_MEMORY_SESSION_PACKET',built_at:now(),privacy:'loaded_from_notes_for_private_session_only',instruction:'Resident may use this bug memory in this private session. Do not store it in public app state.',content:sessionMemory};await copyText(JSON.stringify(packet,null,2));document.getElementById('sessionStatus').textContent='Copied private session packet for Resident.'}
+function clearLoaded(){sessionMemory='';let b=document.getElementById('loadBox');if(b)b.value='';let s=document.getElementById('sessionStatus');if(s)s.textContent='Loaded memory cleared from this page.'}
+function showLedger(){document.getElementById('labOutput').textContent='Prediction Ledger lives in Notes. Use the Mixer to create a prediction, then save it to Notes. Status words: untested, testing planned, sandbox tested, confirmed, partly confirmed, weakened, rejected, still unknown.'}
+function showTests(){document.getElementById('labOutput').textContent='Controlled test order:\n1. Theory only\n2. Fake state test\n3. Local sandbox copy\n4. Disposable test file\n5. Safe Writer guarded test\n6. Current app only after everything else passes\n\nRules: no latest pointer change, no private data exposure, no auto promotion, rollback path required.'}
+</script>
+</body>
+</html>
