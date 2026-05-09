@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#52b5df">
+<title>Bug Memory Room v7</title>
+<script>
+const COLOR_KEY='pmp_single_colors_v6',PREV_KEY='pmp_single_colors_v5',READ_KEY='pmp_readability_layer_v6';
+const DEFAULT_COLORS={accent:'#a1fcfd',background:'#52b5df',card:'#46a9d3',line:'#ffffff'};
+function jj(k){try{return JSON.parse(localStorage.getItem(k)||'{}')}catch(e){return{}}}
+function activeColors(){return{...DEFAULT_COLORS,...jj(PREV_KEY),...jj(COLOR_KEY)}}
+function readLevel(){let r=jj(READ_KEY);return Number.isFinite(+r.value)?Math.max(0,Math.min(100,+r.value)):50}
+function hex(h){h=(h||'#000').replace('#','');if(h.length===3)h=h.split('').map(x=>x+x).join('');let n=parseInt(h,16);return{r:(n>>16)&255,g:(n>>8)&255,b:n&255}}
+function toHex(c){let f=x=>Math.max(0,Math.min(255,Math.round(x))).toString(16).padStart(2,'0');return'#'+f(c.r)+f(c.g)+f(c.b)}
+function lum(h){let c=hex(h);let a=[c.r,c.g,c.b].map(v=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*a[0]+.7152*a[1]+.0722*a[2]}
+function mix(a,b,t){let x=hex(a),y=hex(b);return toHex({r:x.r+(y.r-x.r)*t,g:x.g+(y.g-x.g)*t,b:x.b+(y.b-x.b)*t})}
+function bestText(bg){return lum(bg)>.48?'#07101c':'#f8fbff'}
+function bootTheme(){let c=activeColors(),v=readLevel(),t=v/100,strong=Math.pow(t,.72),bgText=bestText(c.background),cardText=bestText(c.card),accentText=bestText(c.accent);let line=v<5?c.line:mix(c.line,bgText==='#07101c'?'#07101c':'#ffffff',.02+.08*strong);let panel=mix('#172234',bgText==='#07101c'?'#ffffff':'#000000',.05+.24*strong);let input=mix('#0c141e',bgText==='#07101c'?'#ffffff':'#000000',.02+.20*strong);let tab=mix(c.background,bgText==='#07101c'?'#ffffff':'#000000',.12+.40*strong);let note=mix('#123024',bgText==='#07101c'?'#ffffff':'#000000',.02+.16*strong);let muted=cardText==='#07101c'?mix('#234a5d','#07101c',.25+.55*strong):mix('#c9d9e6','#ffffff',.22+.55*strong);let r=document.documentElement.style;r.setProperty('--a',c.accent);r.setProperty('--bg',c.background);r.setProperty('--floor',c.background);r.setProperty('--card',c.card);r.setProperty('--themeLine',c.line);r.setProperty('--line',line);r.setProperty('--buttonText',accentText);r.setProperty('--text',cardText);r.setProperty('--muted',muted);r.setProperty('--panel',panel);r.setProperty('--input',input);r.setProperty('--tabBg',tab);r.setProperty('--tabText',mix('#9fb0c3',bgText,.35+.45*strong));r.setProperty('--tabActive',c.accent);r.setProperty('--noteBg',note);r.setProperty('--borderWidth','2px');r.setProperty('--buttonBorder','0px');r.setProperty('--tabGlow',(2+10*strong)+'px');r.setProperty('--tabShadow',(.16+.34*strong));r.setProperty('--shadow','0 '+(7+Math.round(18*strong))+'px '+(14+Math.round(34*strong))+'px rgba(0,0,0,'+(.14+.40*strong)+')');r.setProperty('--miniShadow','0 '+(3+Math.round(7*strong))+'px '+(10+Math.round(18*strong))+'px rgba(0,0,0,'+(.12+.32*strong)+')');document.querySelector('meta[name="theme-color"]').setAttribute('content',c.background)}
+bootTheme();
+</script>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;width:100%;min-height:100%;overflow-x:hidden;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;touch-action:manipulation;-webkit-text-size-adjust:100%;overscroll-behavior:none;background:var(--floor)!important}body:before{content:"";position:fixed;inset:0;background:var(--floor);z-index:-10}.wrap{max-width:820px;margin:auto;padding:calc(38px + env(safe-area-inset-top)) 14px calc(120px + env(safe-area-inset-bottom));background:var(--floor);min-height:100vh}.card{background:var(--card);border:var(--borderWidth,2px) solid var(--line);border-radius:28px;padding:18px;margin:0 0 16px;box-shadow:var(--shadow)}h1{margin:0 0 8px;font-size:34px;color:var(--text)}h2{margin:0 0 9px}.sub{color:var(--muted);font-weight:900;line-height:1.32}.big{display:flex;align-items:center;gap:14px;width:100%;border:var(--buttonBorder,0px) solid var(--line);border-radius:20px;padding:15px;margin:9px 0;color:var(--buttonText);background:var(--a);text-align:left;font:inherit;font-weight:950;font-size:18px;box-shadow:var(--shadow);text-decoration:none}.big small{display:block;font-size:13px;font-weight:800;opacity:.96}.icon{font-size:26px;width:36px;text-align:center}.chev{margin-left:auto;font-size:30px}.mini{border:1px solid var(--line);background:var(--panel);color:#eef4fb;border-radius:14px;padding:11px;font:inherit;font-weight:950;width:100%;margin-top:7px;box-shadow:var(--miniShadow,0 3px 12px #0001)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.panel{background:var(--panel);border:var(--borderWidth,2px) solid var(--line);color:#eef4fb;border-radius:20px;padding:12px;margin-top:10px}.note{background:var(--noteBg,#123024);border:var(--borderWidth,2px) solid var(--line);color:#d8ffe2;border-radius:22px;padding:13px;white-space:pre-wrap;overflow-wrap:anywhere}.warn{background:#2b2010;border:2px solid #745522;color:#ffe0a3;border-radius:22px;padding:13px;white-space:pre-wrap}.hidden{display:none!important}.statusbar{font-size:12px;font-weight:950;background:var(--input);color:#d8ffe2;border:1px solid var(--line);border-radius:999px;padding:8px 10px;margin:8px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--tabBg);border-top:var(--borderWidth,1px) solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding:7px 6px max(7px,env(safe-area-inset-bottom));z-index:10;box-shadow:0 -10px 30px rgba(0,0,0,var(--tabShadow,.18))}.tab{background:transparent;border:0;color:var(--tabText,#9fb0c3);font:inherit;font-size:11px}.tab b{display:block;font-size:20px}.tab.on{color:var(--tabActive,var(--a));font-weight:950;text-shadow:0 0 var(--tabGlow,0px) #fff}.float{position:fixed;top:calc(10px + env(safe-area-inset-top));z-index:30;border:var(--borderWidth,2px) solid var(--line);background:var(--a);color:var(--buttonText);border-radius:999px;padding:8px 12px;font-weight:950;font-size:12px;box-shadow:var(--shadow)}.left{left:10px}.right{right:10px}textarea{width:100%;border:1px solid var(--line);border-radius:14px;background:var(--input);color:#eef4fb;padding:11px;font:inherit;margin-top:7px;min-height:92px;font-family:ui-monospace,Menlo,monospace;font-size:13px}.drawer{position:fixed;right:10px;left:10px;top:calc(54px + env(safe-area-inset-top));z-index:40;display:none;background:var(--panel);color:#eef4fb;border:2px solid var(--a);border-radius:20px;padding:12px;box-shadow:0 8px 28px #0007;max-height:78vh;overflow:auto}.reply{background:var(--noteBg,#123024);border:var(--borderWidth,2px) solid var(--line);color:#d8ffe2;border-radius:18px;padding:12px;margin-top:8px;white-space:pre-wrap;font-size:15px;line-height:1.35}@media(max-width:700px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<button class="float left" onclick="toggleDrawer('launcher')">Launcher</button>
+<button class="float right" onclick="toggleDrawer('resident')">Resident</button>
+<div id="launcher" class="drawer"><h2>Launcher</h2><div class="statusbar">Bug Memory room ready.</div><button class="mini" onclick="location.href='pmp-home-single-v12.html#control'">Back to Control Room</button><button class="mini" onclick="toggleDrawer('launcher')">Close</button></div>
+<div id="resident" class="drawer"><h2>Resident</h2><p>Resident tab is here on the same app mold. Shared drawer wiring comes next.</p><textarea id="ask" placeholder="Tell Resident what to do next."></textarea><div class="grid"><button class="mini" onclick="copyResidentPrompt()">Copy Prompt</button><button class="mini" onclick="toggleDrawer('resident')">Close</button></div><div id="residentReply" class="reply">Ready inside Bug Memory.</div></div>
+<div class="wrap">
+  <section class="card">
+    <h1>Bug Memory</h1>
+    <p class="sub">Notes holds the repair memory. This room lets Resident use it when you choose.</p>
+    <a class="big" href="resident-notes-catalog-v4.html"><span class="icon">📝</span><span>Save Memory<small>Scan the bug ZIP and save the catalog into Notes</small></span><span class="chev">›</span></a>
+    <button class="big" onclick="openBox('loadBox')"><span class="icon">📖</span><span>Load Memory<small>Bring memory from Notes into this private session</small></span><span class="chev">›</span></button>
+    <button class="big" onclick="openBox('labBox')"><span class="icon">🧪</span><span>Bug Lab<small>Mix bugs, save predictions, and plan safe tests</small></span><span class="chev">›</span></button>
+    <div class="note">Notes holds the book.
+This room opens the door.
+Resident reads it only when you choose.</div>
+  </section>
+
+  <section id="loadBox" class="card hidden">
+    <h1>Load Memory</h1>
+    <p class="sub">Paste bug memory from Notes here, then copy it for Resident.</p>
+    <textarea id="loadText" placeholder="Paste bug catalog / prediction ledger from Notes here."></textarea>
+    <div class="grid"><button class="mini" onclick="loadSessionMemory()">Load This Session</button><button class="mini" onclick="copyToResident()">Copy for Resident</button></div>
+    <div class="grid"><button class="mini" onclick="copyLoadSteps()">Copy Load Steps</button><button class="mini" onclick="openBox('')">Close</button></div>
+    <div id="sessionStatus" class="note">No memory loaded in this page.</div>
+  </section>
+
+  <section id="labBox" class="card hidden">
+    <h1>Bug Lab</h1>
+    <p class="sub">Predict and test carefully. The lab does not change the live app by itself.</p>
+    <a class="big" href="resident-notes-catalog-v4.html"><span class="icon">📚</span><span>Open Catalog<small>See the saved bug catalog flow</small></span><span class="chev">›</span></a>
+    <a class="big" href="private-bug-mixer-lab-v2.html"><span class="icon">🧪</span><span>Open Mixer<small>Combine bugs and save predictions</small></span><span class="chev">›</span></a>
+    <div class="grid"><button class="mini" onclick="showLedger()">Prediction Ledger</button><button class="mini" onclick="showTests()">Controlled Tests</button></div>
+    <div id="labOutput" class="note">Bug Lab ready.</div>
+  </section>
+</div>
+<nav class="tabs"><button class="tab" onclick="location.href='pmp-home-single-v12.html#world'"><b>◎</b>World</button><button class="tab" onclick="location.href='pmp-home-single-v12.html#bridge'"><b>↔</b>Bridge</button><button class="tab" onclick="location.href='pmp-home-single-v12.html#library'"><b>▤</b>Library</button><button class="tab" onclick="location.href='pmp-home-single-v12.html#workshop'"><b>⚒</b>Workshop</button><button class="tab on" onclick="location.href='pmp-home-single-v12.html#control'"><b>⚙</b>Control</button></nav>
+<script>
+let sessionMemory='';
+function now(){return new Date().toISOString()}
+function toggleDrawer(id){let el=document.getElementById(id);el.style.display=el.style.display==='block'?'none':'block'}
+function openBox(id){for(const x of ['loadBox','labBox'])document.getElementById(x).classList.add('hidden');if(id)document.getElementById(id).classList.remove('hidden');setTimeout(()=>{if(id)document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'})},60)}
+async function copyText(t){await navigator.clipboard.writeText(t)}
+async function copyLoadSteps(){const t='Load Bug Memory from Notes:\n1. Open Notes.\n2. Open PMP Private Bug Memory.\n3. Copy the catalog or ledger text.\n4. Return to Bug Memory.\n5. Paste it into Load Memory.\n6. Tap Load This Session.\n7. Tap Copy for Resident.';await copyText(t);document.getElementById('sessionStatus').textContent='Load steps copied.'}
+function loadSessionMemory(){sessionMemory=document.getElementById('loadText').value.trim();document.getElementById('sessionStatus').textContent=sessionMemory?`Loaded ${sessionMemory.length} characters for this private page session.`:'Paste memory first.'}
+async function copyToResident(){if(!sessionMemory){document.getElementById('sessionStatus').textContent='Paste and load memory first.';return}const packet={type:'PMP_PRIVATE_BUG_MEMORY_SESSION_PACKET',built_at:now(),privacy:'loaded_from_notes_for_private_session_only',instruction:'Resident may use this bug memory in this private session. Do not store it in public app state.',content:sessionMemory};await copyText(JSON.stringify(packet,null,2));document.getElementById('sessionStatus').textContent='Copied private session packet for Resident.'}
+function showLedger(){document.getElementById('labOutput').textContent='Prediction Ledger lives in Notes. Use the Mixer to create a prediction, then save it to Notes.'}
+function showTests(){document.getElementById('labOutput').textContent='Controlled test order:\n1. Theory only\n2. Fake state test\n3. Local sandbox copy\n4. Disposable test file\n5. Safe Writer guarded test\n6. Current app only after everything else passes'}
+async function copyResidentPrompt(){await copyText('Run lossless quality on Bug Memory. Verify private Notes storage, loaded session only, catalog ranking, prediction ledger state, and controlled-test safety. Report in Plain Brain language.');document.getElementById('residentReply').textContent='Resident prompt copied.'}
+window.addEventListener('storage',bootTheme);
+</script>
+</body>
+</html>
