@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#52b5df">
+<title>Bug Memory Room v6</title>
+<style>
+:root{--a:#a1fcfd;--bg:#52b5df;--card:#46a9d3;--line:#ffffff;--text:#071523;--pageText:#071523;--panel:#ffc5ab;--input:#0c141e;--noteBg:#123024;--muted:#102034;--buttonText:#071523;--shadow:0 16px 40px rgba(0,0,0,.26);--miniShadow:0 8px 20px rgba(0,0,0,.22)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--pageText);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;touch-action:manipulation;-webkit-text-size-adjust:100%}body{padding:calc(env(safe-area-inset-top) + 48px) 16px calc(env(safe-area-inset-bottom) + 118px);overflow-x:hidden}.topRail{position:fixed;left:0;right:0;top:0;z-index:50;height:calc(env(safe-area-inset-top) + 60px);background:linear-gradient(var(--bg),rgba(255,255,255,.10));pointer-events:none}.topBtn{position:fixed;top:calc(env(safe-area-inset-top) + 8px);z-index:60;background:var(--a);color:var(--buttonText);border:3px solid var(--line);border-radius:999px;padding:10px 18px;font-weight:950;font-size:17px;box-shadow:var(--shadow);min-height:44px}.topLeft{left:16px}.topRight{right:16px}.wrap{max-width:850px;margin:0 auto}.roomCard{background:var(--panel);color:var(--text);border:4px solid var(--line);border-radius:38px;padding:28px 22px 22px;margin:0 0 18px;box-shadow:var(--shadow)}.eyebrow{display:inline-flex;gap:8px;align-items:center;background:var(--a);color:var(--buttonText);border:3px solid var(--line);border-radius:999px;padding:8px 14px;font-weight:950;box-shadow:var(--miniShadow);margin-bottom:20px}h1{font-size:54px;line-height:.98;margin:0 0 14px;color:var(--text);letter-spacing:-1.7px}h2{font-size:28px;line-height:1.08;margin:0 0 12px;color:var(--text)}.sub{font-size:22px;font-weight:900;color:var(--muted);line-height:1.32;margin:0 0 22px}.actions{display:grid;gap:14px}.action{display:grid;grid-template-columns:62px 1fr auto;gap:14px;align-items:center;width:100%;border:4px solid rgba(0,0,0,.78);border-radius:28px;background:var(--a);color:var(--buttonText);padding:17px 18px;min-height:96px;text-align:left;text-decoration:none;box-shadow:var(--miniShadow),inset 0 -3px 0 rgba(0,0,0,.13);font:inherit}.action .icon{font-size:35px;text-align:center}.action b{display:block;font-size:25px;line-height:1.04}.action small{display:block;font-size:16px;line-height:1.22;font-weight:900;opacity:.94;margin-top:5px}.chev{font-size:38px;font-weight:950;opacity:.88}.plain{background:var(--noteBg);border:4px solid var(--line);color:#d7ffe8;border-radius:26px;padding:17px;font-size:21px;line-height:1.35;white-space:pre-wrap;box-shadow:var(--miniShadow);margin-top:16px}.panelCard{display:none;background:var(--panel);color:var(--text);border:4px solid var(--line);border-radius:34px;padding:20px;margin:18px 0;box-shadow:var(--shadow)}.panelCard.on{display:block}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.mini{border:3px solid rgba(0,0,0,.70);border-radius:20px;background:var(--a);color:var(--buttonText);font-weight:950;font-size:17px;padding:15px;min-height:58px;box-shadow:var(--miniShadow);width:100%;text-decoration:none;display:flex;align-items:center;justify-content:center}.mini.soft{background:var(--input);color:#f5fbff;border:2px solid rgba(255,255,255,.24)}textarea{width:100%;min-height:190px;background:var(--input);color:#f5fbff;border:2px solid rgba(255,255,255,.22);border-radius:22px;padding:16px;font-size:16px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;box-shadow:inset 0 2px 8px rgba(0,0,0,.22)}.status{white-space:pre-wrap;background:var(--noteBg);border:4px solid var(--line);border-radius:24px;padding:16px;color:#d7ffe8;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;overflow:auto;max-height:360px;box-shadow:var(--miniShadow)}.warn{background:#3b2a0c;color:#ffe8b3}.helper{background:var(--input);border-left:7px solid var(--a);border-radius:22px;padding:16px;color:#eaf7ff;line-height:1.35;font-size:18px;margin:12px 0}@media(max-width:700px){body{padding-left:10px;padding-right:10px}.roomCard{padding:24px 18px 18px;border-radius:34px}h1{font-size:48px}.sub{font-size:21px}.action{grid-template-columns:50px 1fr auto;padding:15px 14px;min-height:88px}.action .icon{font-size:31px}.action b{font-size:23px}.action small{font-size:15px}.grid{grid-template-columns:1fr}.topBtn{font-size:15px;padding:9px 14px}.topLeft{left:10px}.topRight{right:10px}}
+</style>
+</head>
+<body>
+<div class="topRail"></div>
+<button class="topBtn topLeft" onclick="location.href='pmp-home-single-v12.html#control'">Launcher</button>
+<button class="topBtn topRight" onclick="openResident()">Resident</button>
+<div class="wrap">
+  <section class="roomCard">
+    <div class="eyebrow">🐞 Private Room</div>
+    <h1>Bug Memory</h1>
+    <p class="sub">Notes holds the repair memory. This room lets Resident use it when you choose.</p>
+    <div class="actions">
+      <a class="action" href="resident-notes-catalog-v4.html">
+        <span class="icon">📝</span>
+        <span><b>Save Memory</b><small>Scan the bug ZIP and save the catalog into Notes.</small></span>
+        <span class="chev">›</span>
+      </a>
+      <button class="action" onclick="openPanel('load')">
+        <span class="icon">📖</span>
+        <span><b>Load Memory</b><small>Bring memory from Notes into this private session.</small></span>
+        <span class="chev">›</span>
+      </button>
+      <button class="action" onclick="openPanel('lab')">
+        <span class="icon">🧪</span>
+        <span><b>Bug Lab</b><small>Mix bugs, save predictions, and plan safe tests.</small></span>
+        <span class="chev">›</span>
+      </button>
+    </div>
+    <div class="plain">Notes holds the book.
+This room opens the door.
+Resident reads it only when you choose.</div>
+  </section>
+
+  <section class="panelCard" id="loadPanel">
+    <h2>Load Memory</h2>
+    <div class="helper">Copy bug memory from Notes, paste it here, then copy it for Resident. This does not permanently store the memory in the public app.</div>
+    <textarea id="loadBox" placeholder="Paste bug catalog / prediction ledger from Notes here."></textarea>
+    <div class="grid" style="margin-top:12px">
+      <button class="mini" onclick="loadSessionMemory()">Load This Session</button>
+      <button class="mini" onclick="copyToResident()">Copy for Resident</button>
+      <button class="mini" onclick="copyLoadSteps()">Copy Load Steps</button>
+      <button class="mini" onclick="copyLosslessPrompt()">Copy Quality Check</button>
+      <button class="mini soft" onclick="clearLoaded()">Clear Memory</button>
+      <button class="mini soft" onclick="openPanel('')">Close</button>
+    </div>
+    <div id="sessionStatus" class="status warn" style="margin-top:12px">No memory loaded in this page.</div>
+  </section>
+
+  <section class="panelCard" id="labPanel">
+    <h2>Bug Lab</h2>
+    <div class="helper">The lab is for prediction and controlled testing. It must not change the live app by itself.</div>
+    <div class="grid">
+      <a class="mini" href="resident-notes-catalog-v4.html">Open Catalog</a>
+      <a class="mini" href="private-bug-mixer-lab-v2.html">Open Mixer</a>
+      <button class="mini" onclick="showLedger()">Prediction Ledger</button>
+      <button class="mini" onclick="showTests()">Controlled Tests</button>
+      <button class="mini soft" onclick="openPanel('more')">More</button>
+      <button class="mini soft" onclick="openPanel('')">Close</button>
+    </div>
+    <div id="labOutput" class="status warn" style="margin-top:12px">Bug Lab ready.</div>
+  </section>
+
+  <section class="panelCard" id="morePanel">
+    <h2>More</h2>
+    <div class="grid">
+      <a class="mini" href="private-window-bug-memory-entry-v1.html">Entry Page</a>
+      <a class="mini" href="resident-notes-backend-v2.html">Notes Bridge</a>
+      <a class="mini" href="private-bug-mixer-lab-spec-v1.json">Mixer Spec</a>
+      <a class="mini" href="pmp-home-single-v12.html#control">Back to App</a>
+      <button class="mini soft" onclick="clearLoaded()">Clear Session</button>
+      <button class="mini soft" onclick="openPanel('')">Close</button>
+    </div>
+  </section>
+</div>
+<script>
+const COLOR_KEY='pmp_single_colors_v6',PREV_KEY='pmp_single_colors_v5',READ_KEY='pmp_readability_layer_v6';let sessionMemory='';
+function read(k,f){try{let v=localStorage.getItem(k);return v?JSON.parse(v):f}catch(e){return f}}
+function hex(h){h=(h||'#000').replace('#','');if(h.length===3)h=h.split('').map(x=>x+x).join('');let n=parseInt(h,16);return{r:(n>>16)&255,g:(n>>8)&255,b:n&255}}
+function toHex(c){let f=x=>Math.max(0,Math.min(255,Math.round(x))).toString(16).padStart(2,'0');return'#'+f(c.r)+f(c.g)+f(c.b)}
+function lum(h){let c=hex(h);let a=[c.r,c.g,c.b].map(v=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*a[0]+.7152*a[1]+.0722*a[2]}
+function mix(a,b,t){let x=hex(a),y=hex(b);return toHex({r:x.r+(y.r-x.r)*t,g:x.g+(y.g-x.g)*t,b:x.b+(y.b-x.b)*t})}
+function bestText(bg){return lum(bg)>.48?'#071523':'#f8fbff'}
+function theme(){let d={accent:'#a1fcfd',background:'#52b5df',card:'#46a9d3',line:'#ffffff'};return{...d,...read(PREV_KEY,{}),...read(COLOR_KEY,{})}}
+function readLevel(){let r=read(READ_KEY,{value:50});let v=+r.value;return Number.isFinite(v)?Math.max(0,Math.min(100,v)):50}
+function applyTheme(){let c=theme(),v=readLevel(),t=v/100,strong=Math.pow(t,.72),bgText=bestText(c.background),cardText=bestText(c.card),btnText=bestText(c.accent),root=document.documentElement.style;let panel=mix(c.card,bgText==='#071523'?'#000000':'#ffffff',.04+.12*strong);let input=mix('#0c141e',bgText==='#071523'?'#ffffff':'#000000',.03+.18*strong);let note=mix('#123024',bgText==='#071523'?'#ffffff':'#000000',.02+.14*strong);let line=v<5?c.line:mix(c.line,bgText==='#071523'?'#071523':'#ffffff',.02+.08*strong);root.setProperty('--a',c.accent);root.setProperty('--bg',c.background);root.setProperty('--card',c.card);root.setProperty('--line',line);root.setProperty('--text',cardText);root.setProperty('--pageText',bgText);root.setProperty('--buttonText',btnText);root.setProperty('--panel',panel);root.setProperty('--input',input);root.setProperty('--noteBg',note);root.setProperty('--muted',cardText==='#071523'?mix('#102034','#071523',.18+.28*strong):mix('#c9d9e6','#ffffff',.25+.45*strong));root.setProperty('--shadow','0 '+(10+Math.round(16*strong))+'px '+(24+Math.round(30*strong))+'px rgba(0,0,0,'+(.18+.30*strong)+')');root.setProperty('--miniShadow','0 '+(5+Math.round(8*strong))+'px '+(14+Math.round(18*strong))+'px rgba(0,0,0,'+(.14+.24*strong)+')');document.body.style.background=c.background;document.querySelector('meta[name="theme-color"]').setAttribute('content',c.background)}
+function now(){return new Date().toISOString()}function openResident(){alert('Resident tab is present. Next upgrade will open the same Resident drawer on every PMP room.')}function openPanel(name){for(const id of ['loadPanel','labPanel','morePanel'])document.getElementById(id).classList.remove('on');if(name==='load')document.getElementById('loadPanel').classList.add('on');if(name==='lab')document.getElementById('labPanel').classList.add('on');if(name==='more')document.getElementById('morePanel').classList.add('on');setTimeout(()=>{let p=document.querySelector('.panelCard.on');if(p)p.scrollIntoView({behavior:'smooth',block:'start'})},60)}
+async function copyText(t){await navigator.clipboard.writeText(t)}
+async function copyLoadSteps(){const t='Load Bug Memory from Notes:\n1. Open Notes.\n2. Open PMP Private Bug Memory.\n3. Copy the catalog or ledger text.\n4. Return to Bug Memory.\n5. Paste it into Load Memory.\n6. Tap Load This Session.\n7. Tap Copy for Resident.';await copyText(t);document.getElementById('sessionStatus').textContent='Load steps copied.'}
+async function copyLosslessPrompt(){const t='Run lossless quality on Bug Memory. Verify private Notes storage, loaded session only, bug count if provided, catalog ranking, prediction ledger state, and controlled-test safety. Report in Plain Brain language.';await copyText(t);document.getElementById('sessionStatus').textContent='Quality check prompt copied.'}
+function loadSessionMemory(){sessionMemory=document.getElementById('loadBox').value.trim();document.getElementById('sessionStatus').textContent=sessionMemory?`Loaded ${sessionMemory.length} characters for this private page session.`:'Paste memory first.'}
+async function copyToResident(){if(!sessionMemory){document.getElementById('sessionStatus').textContent='Paste and load memory first.';return}const packet={type:'PMP_PRIVATE_BUG_MEMORY_SESSION_PACKET',built_at:now(),privacy:'loaded_from_notes_for_private_session_only',instruction:'Resident may use this bug memory in this private session. Do not store it in public app state.',content:sessionMemory};await copyText(JSON.stringify(packet,null,2));document.getElementById('sessionStatus').textContent='Copied private session packet for Resident.'}
+function clearLoaded(){sessionMemory='';let b=document.getElementById('loadBox');if(b)b.value='';let s=document.getElementById('sessionStatus');if(s)s.textContent='Loaded memory cleared from this page.'}
+function showLedger(){document.getElementById('labOutput').textContent='Prediction Ledger lives in Notes. Use the Mixer to create a prediction, then save it to Notes. Status words: untested, testing planned, sandbox tested, confirmed, partly confirmed, weakened, rejected, still unknown.'}
+function showTests(){document.getElementById('labOutput').textContent='Controlled test order:\n1. Theory only\n2. Fake state test\n3. Local sandbox copy\n4. Disposable test file\n5. Safe Writer guarded test\n6. Current app only after everything else passes\n\nRules: no latest pointer change, no private data exposure, no auto promotion, rollback path required.'}
+applyTheme();window.addEventListener('storage',applyTheme);
+</script>
+</body>
+</html>
