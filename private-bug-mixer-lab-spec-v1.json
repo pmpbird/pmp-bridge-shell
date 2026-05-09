@@ -1,55 +1,76 @@
 {
   "type": "PMP_PRIVATE_BUG_MIXER_LAB_SPEC",
-  "version": "1.0",
+  "version": "1.1",
   "visibility": "public_safe_spec_only",
-  "private_data_rule": "This spec contains no private bug memory. Private bug records and predictions must live in Apple Notes/private storage only.",
+  "private_data_rule": "This spec contains no private bug memory. Private bug records, bug catalog contents, and predictions must live in Apple Notes/private storage only.",
   "core_name": "Private Bug Mixer Lab",
+  "locked_home": {
+    "rule": "Private Bug Mixer Lab must live inside Bug Memory in the Private Window.",
+    "path": [
+      "Private Window",
+      "Bug Memory",
+      "Bug Catalog",
+      "Bug Mixer Lab",
+      "Prediction Ledger",
+      "Controlled Test Plans",
+      "Notes Backend Bridge"
+    ],
+    "not_allowed_homes": [
+      "normal Control Room",
+      "public app menu",
+      "public GitHub data file",
+      "standalone public storage of private records"
+    ],
+    "public_tool_rule": "A public-safe empty tool shell may exist for development/testing, but the real Bug Mixer must be launched from Private Window → Bug Memory and must load records from Notes/private storage only."
+  },
   "plain_rule": "Predictions are not truth yet. They are questions saved for controlled testing.",
   "plain_brain_image": "A prediction is a seed. A test is where we see if the seed grows. Until then, we do not call it a tree.",
-  "purpose": "Combine known bugs in a safe private lab to predict possible compound bugs, explain them simply, save them to the Prediction Ledger, and build controlled test plans.",
+  "purpose": "Inside private Bug Memory, combine known bugs to predict possible compound bugs, explain them simply, save them to the Prediction Ledger, and build controlled test plans.",
   "hard_rules": [
     "Do not create real bugs in the live app.",
     "Do not test predictions on the live good app first.",
     "Do not change latest pointer during prediction tests.",
-    "Do not expose private Bug Memory in normal Control Room.",
+    "Do not expose Bug Memory, Bug Catalog, or Prediction Ledger in normal Control Room.",
     "Do not upload private Bug Memory or predictions to public GitHub.",
     "Do not call a prediction confirmed until controlled testing supports it.",
     "Do not use wrapper patching as a final fix for core app behavior."
   ],
   "private_window_role": {
     "meaning": "The private window is the private command room, not the permanent storage box.",
-    "can_show_temporarily": [
+    "bug_memory_button_should_open": "Private Bug Memory Hub",
+    "private_bug_memory_hub_contains": [
       "Bug Catalog loaded from Notes",
       "Bug Mixer Lab",
-      "Prediction Ledger view loaded from Notes",
+      "Prediction Ledger loaded from Notes",
       "Controlled Test Plans",
+      "Notes Backend Bridge",
       "Lossless Quality reports",
       "App X-Ray reports"
     ],
-    "must_clear_or_not_keep_publicly": [
-      "full private Bug Memory",
-      "full prediction ledger",
-      "private server or Notes bridge internals",
-      "secret entrance details"
-    ],
-    "permanent_storage_target": "Apple Notes through the Notes Backend Bridge"
+    "permanent_storage_target": "Apple Notes through the Notes Backend Bridge",
+    "temporary_private_window_view_rule": "The private window may show loaded bug catalog and prediction data while the private session is open, but the app should not persist full private records in public/local app state."
   },
   "rooms": [
     {
       "name": "Bug Catalog",
+      "home": "Private Window → Bug Memory",
       "role": "Known bugs, easy names, fundamental ranking, Plain Brain explanations.",
       "source": "Loaded from Apple Notes/private bug memory ZIP, not stored in public app."
     },
     {
-      "name": "Bug Mixer",
+      "name": "Bug Mixer Lab",
+      "home": "Private Window → Bug Memory → Bug Catalog",
       "role": "Pick Bug A and Bug B, then predict the possible third failure."
     },
     {
       "name": "Prediction Ledger",
-      "role": "Save predictions as untested records so they can be tested later."
+      "home": "Private Window → Bug Memory",
+      "role": "Save predictions as untested records so they can be tested later.",
+      "storage": "Apple Notes through Notes Backend Bridge"
     },
     {
       "name": "Controlled Test Lab",
+      "home": "Private Window → Bug Memory",
       "role": "Build safe test plans and record test results without damaging the live app."
     }
   ],
@@ -97,16 +118,8 @@
     "prediction_id": "stable generated id",
     "status": "untested | testing_planned | sandbox_tested | confirmed | partly_confirmed | weakened | rejected | still_unknown",
     "created_at": "ISO timestamp",
-    "bug_a": {
-      "id": "known bug id",
-      "easy_name": "plain name",
-      "type": "bug type"
-    },
-    "bug_b": {
-      "id": "known bug id",
-      "easy_name": "plain name",
-      "type": "bug type"
-    },
+    "bug_a": {"id": "known bug id", "easy_name": "plain name", "type": "bug type"},
+    "bug_b": {"id": "known bug id", "easy_name": "plain name", "type": "bug type"},
     "possible_bug_name": "easy name for predicted compound bug",
     "plain_brain_explanation": "simple explanation",
     "why_they_might_combine": "causal bridge",
@@ -168,7 +181,8 @@
   },
   "first_build_scope": {
     "tool_name": "private-bug-mixer-lab-v1.html",
-    "loads": "Bug Catalog JSON pasted or loaded from Notes bridge output",
+    "final_route": "Private Window → Bug Memory → Bug Mixer Lab",
+    "loads": "Bug Catalog JSON pasted or loaded from Notes bridge output inside private Bug Memory",
     "features": [
       "show easy bug names",
       "pick Bug A",
@@ -188,5 +202,5 @@
       "public storage of predictions"
     ]
   },
-  "next_after_spec": "Build private-bug-mixer-lab-v1.html as a separate private tool. Do not alter the main app visual layout yet."
+  "next_after_spec": "Build private-bug-mixer-lab-v1.html, then wire it so the actual entry point is Private Window → Bug Memory. Do not place Bug Mixer in normal Control Room."
 }
