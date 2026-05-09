@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#55b6d8">
+<title>Private Bug Mixer Lab v1</title>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<style>
+:root{--bg:#55b6d8;--card:#122033;--ink:#f5fbff;--muted:#c9e7ee;--accent:#9cf6f2;--line:#ffffff;--good:#0f3f2c;--warn:#3b2a0c;--bad:#4a1212}*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;min-height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:#061525}body{padding:calc(env(safe-area-inset-top) + 18px) 16px calc(env(safe-area-inset-bottom) + 32px)}.wrap{max-width:950px;margin:0 auto}.pill{display:inline-flex;gap:8px;align-items:center;padding:9px 14px;border:3px solid var(--line);border-radius:999px;background:var(--accent);font-weight:900;box-shadow:0 10px 26px rgba(0,0,0,.18)}h1{font-size:42px;line-height:1.02;margin:18px 0 8px}h2{font-size:28px;margin:0 0 14px}.sub{font-size:20px;font-weight:800;opacity:.78;margin-bottom:18px}.card{background:rgba(18,32,51,.96);color:var(--ink);border:4px solid var(--line);border-radius:28px;padding:22px;margin:18px 0;box-shadow:0 16px 40px rgba(0,0,0,.25)}.card p{font-size:18px;line-height:1.42}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}@media(max-width:730px){.grid,.grid3{grid-template-columns:1fr}h1{font-size:34px}}button{border:0;border-radius:18px;background:var(--accent);color:#071523;font-weight:900;font-size:17px;padding:15px 16px;min-height:56px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.14);text-align:center}button:disabled{opacity:.45}input,textarea,select{width:100%;background:#0b1522;color:var(--ink);border:2px solid rgba(255,255,255,.16);border-radius:18px;padding:14px;font-size:16px}textarea{min-height:180px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.status{white-space:pre-wrap;background:var(--good);border:3px solid var(--line);border-radius:20px;padding:16px;color:#d7ffe8;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;overflow:auto;max-height:460px}.warn{background:var(--warn);color:#ffe8b3}.bad{background:var(--bad);color:#ffd3d3}.chips{display:flex;flex-wrap:wrap;gap:8px}.chip{background:#0b1522;border:2px solid rgba(255,255,255,.14);color:#d7ffe8;border-radius:999px;padding:9px 12px;font-weight:800}.small{font-size:14px;color:var(--muted)}.step{border-left:5px solid var(--accent);padding-left:14px;margin:14px 0}.topbar{position:sticky;top:0;z-index:5;padding:8px 0;background:linear-gradient(var(--bg),rgba(85,182,216,.72))}.hidden{display:none}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.list{display:grid;gap:10px}.item{background:#0b1522;border:2px solid rgba(255,255,255,.16);border-radius:18px;padding:14px}.item b{color:#fff}.rank{font-size:13px;color:#bff9e4;font-weight:900}.pb{background:#0b1522;border-left:5px solid var(--accent);padding:12px;border-radius:14px;margin-top:10px}</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar"><span class="pill">🧪 Private Bug Mixer Lab v1</span></div>
+  <h1>Bug Mixer Lab</h1>
+  <div class="sub">Load Bug Catalog privately, mix two bugs, save a prediction for controlled testing later.</div>
+
+  <section class="card">
+    <h2>Private rule</h2>
+    <p>This tool is a shell. It contains no private bug memory until you load it. It does not save private bug data to GitHub. Use it from <b>Private Window → Bug Memory</b>.</p>
+    <div class="status warn">Prediction rule: predictions are not truth yet. They are questions saved for controlled testing.</div>
+  </section>
+
+  <section class="card">
+    <h2>1. Load Bug Catalog</h2>
+    <p class="small">Use a catalog JSON, the maximum-detail bug ZIP, or paste catalog JSON from Notes.</p>
+    <input id="fileInput" type="file" accept=".json,.zip,application/json,application/zip">
+    <textarea id="pasteBox" placeholder="Or paste Bug Catalog JSON here."></textarea>
+    <div class="grid" style="margin-top:12px">
+      <button onclick="loadFromFile()">Load File</button>
+      <button onclick="loadFromPaste()">Load Pasted JSON</button>
+    </div>
+    <div id="loadReport" class="status warn">No catalog loaded yet.</div>
+  </section>
+
+  <section class="card hidden" id="catalogCard">
+    <h2>2. Bug Catalog</h2>
+    <div class="row"><span class="chip" id="bugCount">0 bugs</span><span class="chip" id="rootCount">0 root-level</span><span class="chip">easy names enabled</span></div>
+    <div class="grid" style="margin-top:14px">
+      <label>Bug A<select id="bugA"></select></label>
+      <label>Bug B<select id="bugB"></select></label>
+    </div>
+    <div class="grid3" style="margin-top:12px">
+      <button onclick="mixBugs()">Mix Bugs</button>
+      <button onclick="showCatalog()">Show Catalog</button>
+      <button onclick="clearLoaded()">Clear Loaded Memory</button>
+    </div>
+    <div id="catalogList" class="list" style="margin-top:14px"></div>
+  </section>
+
+  <section class="card hidden" id="predictionCard">
+    <h2>3. Prediction</h2>
+    <div id="predictionOut" class="status">No prediction yet.</div>
+    <div class="grid3" style="margin-top:12px">
+      <button onclick="copyPrediction()">Copy Prediction JSON</button>
+      <button onclick="copyPredictionPrompt()">Copy Plain Brain Prompt</button>
+      <button onclick="downloadPredictionZip()">Download Prediction ZIP</button>
+      <button onclick="copyAndRunShortcut()">Copy + Save to Notes</button>
+      <button onclick="addToSessionLedger()">Add to Session Ledger</button>
+      <button onclick="clearPrediction()">Clear Prediction</button>
+    </div>
+  </section>
+
+  <section class="card hidden" id="ledgerCard">
+    <h2>4. Session Prediction Ledger</h2>
+    <p class="small">Temporary only. Use Save to Notes for permanent storage.</p>
+    <div class="grid" style="margin-top:12px"><button onclick="copyLedger()">Copy Ledger JSON</button><button onclick="clearLedger()">Clear Session Ledger</button></div>
+    <div id="ledgerOut" class="status warn">No session predictions.</div>
+  </section>
+</div>
+<script>
+const SHORTCUT_NAME='PMP Save Private Memory'; const NOTE_NAME='PMP Private Bug Memory';
+let bugs=[], currentPrediction=null, ledger=[];
+function now(){return new Date().toISOString()} function j(x){return JSON.stringify(x,null,2)}
+function hash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return (h>>>0).toString(16).padStart(8,'0')}
+function set(id,text,cls){let el=document.getElementById(id); el.className=cls||el.className; el.textContent=typeof text==='string'?text:j(text)}
+function textOf(b){return JSON.stringify(b||{}).toLowerCase()}
+function bugKind(b){const t=textOf(b); if(/wrapper|version|identity|automatic app update|update target|latest pointer/.test(t))return'version_identity'; if(/private|secret|bug memory|rhythm/.test(t))return'privacy_boundary'; if(/source of truth|localstorage|sessionstorage|memory/.test(t))return'memory_source_of_truth'; if(/resident|x-ray|xray/.test(t))return'resident_blindness'; if(/theme|color|readability|contrast|line/.test(t))return'theme_readability'; if(/backend|notes|archive|server/.test(t))return'backend_notes'; if(/bridge|connections|share|button|navigation/.test(t))return'button_navigation'; if(/404|github|publish|link/.test(t))return'publishing_link'; return'general_app';}
+function orderValue(kind){return {version_identity:100,privacy_boundary:95,wrapper_layer:92,memory_source_of_truth:88,resident_blindness:82,theme_readability:70,button_navigation:55,backend_notes:50,publishing_link:35,general_app:20}[kind]||20}
+function severityValue(b){return {critical:30,high:22,medium:12,low:5}[String(b.severity||'medium').toLowerCase()]||12}
+function easyName(b){const id=b.id||'BUG'; const name=String(b.name||'').toLowerCase(); const t=textOf(b); if(/wrapper|layer fight/.test(t))return id+' — Layer Fight Bug'; if(/version|identity|automatic app update/.test(t))return id+' — Version Split Bug'; if(/private|secret|bug memory/.test(t))return id+' — Private Memory Boundary Bug'; if(/theme|saved themes|color copy/.test(t))return id+' — Theme Copy Bug'; if(/readability|contrast|slider/.test(t))return id+' — Readability Shift Bug'; if(/resident/.test(t))return id+' — Resident Blind Spot Bug'; if(/backend|notes|archive/.test(t))return id+' — Memory Bridge Bug'; if(/button|navigation|connections|share/.test(t))return id+' — Button Path Bug'; if(/404|link|github/.test(t))return id+' — Link Door Bug'; return id+' — '+(b.name||'App Bug')}
+function fundamentalScore(b){const k=bugKind(b); let s=orderValue(k)+severityValue(b); if(Array.isArray(b.related_bugs))s+=Math.min(20,b.related_bugs.length*3); if(/wrapper/.test(textOf(b)))s+=15; if(/private/.test(textOf(b)))s+=10; return s}
+function normalizeBug(raw,idx){const source=raw.source||raw; return {...source, id:source.id||('BUG-X'+String(idx+1).padStart(3,'0')), easy_name:source.easy_name||easyName(source), bug_type:source.bug_type||bugKind(source), fundamental_score:source.fundamental_score||source._fundamental_score||fundamentalScore(source)} }
+async function loadFromFile(){const f=document.getElementById('fileInput').files[0]; if(!f){set('loadReport','Choose a file first.','status bad');return} const name=f.name.toLowerCase(); if(name.endsWith('.zip')){const zip=await JSZip.loadAsync(f); const files=Object.keys(zip.files).filter(p=>!zip.files[p].dir); let found=[]; const catalogFile=files.find(p=>/catalog.*\.json$/i.test(p))||files.find(p=>/ALL_BUGS.*\.json$/i.test(p)); if(catalogFile){const obj=JSON.parse(await zip.file(catalogFile).async('string')); found=extractBugs(obj)} if(!found.length){const bugPaths=files.filter(p=>/^bugs\/BUG-\d{3}\.json$/i.test(p)).sort(); for(const p of bugPaths){found.push(JSON.parse(await zip.file(p).async('string')))} } loadBugs(found,'Loaded from ZIP: '+f.name); } else {const txt=await f.text(); loadObject(JSON.parse(txt),'Loaded JSON: '+f.name)} }
+function loadFromPaste(){const txt=document.getElementById('pasteBox').value.trim(); if(!txt){set('loadReport','Paste JSON first.','status bad');return} loadObject(JSON.parse(txt),'Loaded pasted JSON')}
+function loadObject(obj,msg){loadBugs(extractBugs(obj),msg)}
+function extractBugs(obj){ if(!obj)return[]; if(Array.isArray(obj))return obj; if(Array.isArray(obj.ranked_bugs))return obj.ranked_bugs.map(x=>x.source||x); if(Array.isArray(obj.bugs))return obj.bugs; if(obj.catalog&&Array.isArray(obj.catalog.ranked_bugs))return obj.catalog.ranked_bugs.map(x=>x.source||x); if(obj.body&&Array.isArray(obj.body.bugs))return obj.body.bugs; return []}
+function loadBugs(list,msg){bugs=list.map(normalizeBug).sort((a,b)=>b.fundamental_score-a.fundamental_score||String(a.id).localeCompare(String(b.id))); if(!bugs.length){set('loadReport','No bugs found in this file.','status bad');return} document.getElementById('catalogCard').classList.remove('hidden'); document.getElementById('bugCount').textContent=bugs.length+' bugs'; document.getElementById('rootCount').textContent=bugs.filter(b=>b.fundamental_score>=90).length+' root-level'; fillSelectors(); showCatalog(); set('loadReport',{status:'loaded',message:msg,bug_count:bugs.length,privacy:'temporary session only; save outputs to Notes'},'status')}
+function fillSelectors(){const a=document.getElementById('bugA'), b=document.getElementById('bugB'); a.innerHTML=''; b.innerHTML=''; bugs.forEach((bug,i)=>{const label=(i+1)+'. '+bug.easy_name; a.add(new Option(label,bug.id)); b.add(new Option(label,bug.id));}); if(bugs.length>1)b.selectedIndex=1}
+function showCatalog(){document.getElementById('catalogList').innerHTML=bugs.map((b,i)=>`<div class="item"><div class="rank">#${i+1} • ${b.bug_type} • score ${b.fundamental_score}</div><b>${escapeHtml(b.easy_name)}</b><div class="small">${escapeHtml(b.symptom||b.name||'')}</div></div>`).join('')}
+function escapeHtml(s){return String(s||'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+function compoundName(a,b){const pair=[a.bug_type,b.bug_type].sort().join('+'); if(/version_identity/.test(pair)&&/theme_readability/.test(pair))return'False Theme Safety Bug'; if(/version_identity/.test(pair)&&/memory_source_of_truth|backend_notes/.test(pair))return'False Safe Update Bug'; if(/privacy_boundary/.test(pair)&&/button_navigation|version_identity/.test(pair))return'Private Door Leak Bug'; if(/wrapper_layer|version_identity/.test(pair)&&/resident_blindness/.test(pair))return'Blind Repair Loop Bug'; if(/theme_readability/.test(pair)&&/memory_source_of_truth/.test(pair))return'Saved State Smear Bug'; if(/backend_notes/.test(pair)&&/privacy_boundary/.test(pair))return'Wrong Memory Home Bug'; return 'Compound '+a.easy_name.replace(/^BUG-\d+\s—\s/,'')+' + '+b.easy_name.replace(/^BUG-\d+\s—\s/,'')}
+function riskLevel(score){if(score>=185)return'critical'; if(score>=155)return'high'; if(score>=115)return'medium'; return'low'}
+function plainExplain(a,b,name){return `One bug is ${a.easy_name}. The other bug is ${b.easy_name}. If they happen together, they may make ${name}. Plain Brain: one problem shakes one part of the tree, and the other problem shakes another part. If both shake at the same time, a new branch can crack. This is not truth yet. It is a seed to test carefully.`}
+function testPlan(a,b,name,risk){return {stage:'theory_only_first',goal:'Find out whether '+name+' can happen without touching the live good app.',protected_things:['latest pointer','last_good','private data','normal Control Room privacy','current good app'],steps:['Explain the possible interaction in plain words.','Create fake state for Bug A and Bug B, not real live app damage.','Use a disposable test copy if code testing is needed.','Check the expected signal.','Record result as confirmed, weakened, rejected, or still unknown.'],expected_if_true:['A third failure appears that is not just Bug A or Bug B alone.'],expected_if_false:['Bug A and Bug B do not create a new failure under controlled conditions.'],rollback:['Discard disposable test copy.','Do not promote.','Clear fake state.'],risk_level:risk}}
+function mixBugs(){const idA=document.getElementById('bugA').value, idB=document.getElementById('bugB').value; if(idA===idB){alert('Pick two different bugs.');return} const a=bugs.find(x=>x.id===idA), b=bugs.find(x=>x.id===idB); const score=a.fundamental_score+b.fundamental_score; const name=compoundName(a,b); const risk=riskLevel(score); currentPrediction={type:'PMP_BUG_PREDICTION',prediction_id:'PRED-'+Date.now().toString(36)+'-'+hash(idA+idB+now()).slice(0,6),status:'untested',created_at:now(),bug_a:{id:a.id,easy_name:a.easy_name,type:a.bug_type},bug_b:{id:b.id,easy_name:b.easy_name,type:b.bug_type},possible_bug_name:name,plain_brain_explanation:plainExplain(a,b,name),why_they_might_combine:'These two bugs affect nearby truth layers: '+a.bug_type+' and '+b.bug_type+'. The mixer predicts the third failure that could appear between them.',risk_level:risk,fundamental_score:score,what_would_prove_it:['A controlled sandbox shows a new failure that depends on both bugs together.'],what_would_disprove_it:['Bug A and Bug B do not interact under controlled tests.'],controlled_test_plan:testPlan(a,b,name,risk),save_target:'Apple Notes Prediction Ledger'}; document.getElementById('predictionCard').classList.remove('hidden'); set('predictionOut',currentPrediction,'status')}
+async function copyText(t){await navigator.clipboard.writeText(t)}
+async function copyPrediction(){if(!currentPrediction)return; await copyText(j(currentPrediction));}
+async function copyPredictionPrompt(){if(!currentPrediction)return; await copyText(currentPrediction.plain_brain_explanation+'\n\nControlled test plan:\n'+j(currentPrediction.controlled_test_plan));}
+async function copyAndRunShortcut(){if(!currentPrediction)return; await copyText(j({type:'PMP_NOTES_PREDICTION_LEDGER_ENTRY',note_name:NOTE_NAME,prediction:currentPrediction})); location.href='shortcuts://run-shortcut?name='+encodeURIComponent(SHORTCUT_NAME)+'&input=clipboard'}
+async function downloadPredictionZip(){if(!currentPrediction)return; const z=new JSZip(); z.file('PREDICTION.json',j(currentPrediction)); z.file('PLAIN_BRAIN.txt',currentPrediction.plain_brain_explanation); z.file('CONTROLLED_TEST_PLAN.json',j(currentPrediction.controlled_test_plan)); const blob=await z.generateAsync({type:'blob',compression:'DEFLATE'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=currentPrediction.prediction_id+'_bug_prediction.zip'; a.click(); URL.revokeObjectURL(a.href)}
+function addToSessionLedger(){if(!currentPrediction)return; ledger.push(currentPrediction); document.getElementById('ledgerCard').classList.remove('hidden'); set('ledgerOut',{type:'PMP_SESSION_PREDICTION_LEDGER',temporary:true,count:ledger.length,predictions:ledger},'status warn')}
+async function copyLedger(){await copyText(j({type:'PMP_SESSION_PREDICTION_LEDGER',created_at:now(),predictions:ledger}))}
+function clearLedger(){ledger=[]; set('ledgerOut','No session predictions.','status warn')}
+function clearPrediction(){currentPrediction=null; document.getElementById('predictionCard').classList.add('hidden')}
+function clearLoaded(){bugs=[]; currentPrediction=null; document.getElementById('catalogCard').classList.add('hidden'); document.getElementById('predictionCard').classList.add('hidden'); set('loadReport','Loaded bug memory cleared from this page.','status warn')}
+</script>
+</body>
+</html>
