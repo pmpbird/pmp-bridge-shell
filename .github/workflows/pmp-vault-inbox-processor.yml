@@ -1,0 +1,297 @@
+name: PMP Vault Inbox Processor
+
+on:
+  issue_comment:
+    types: [created]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: read
+
+jobs:
+  process-pmp-vault-inbox:
+    if: github.event_name == 'workflow_dispatch' || github.event.issue.number == 1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Process latest PMP vault inbox comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const issue_number = 1;
+
+            function ensureDir(filePath) {
+              fs.mkdirSync(path.dirname(filePath), { recursive: true });
+            }
+
+            function readJson(filePath, fallback) {
+              try { return JSON.parse(fs.readFileSync(filePath, 'utf8')); }
+              catch (_) { return fallback; }
+            }
+
+            function writeJson(filePath, value) {
+              ensureDir(filePath);
+              fs.writeFileSync(filePath, JSON.stringify(value, null, 2) + '\n');
+            }
+
+            function stableRecordId(date, n) {
+              const yyyy = date.getUTCFullYear();
+              const mm = String(date.getUTCMonth() + 1).padStart(2, '0');
+              const dd = String(date.getUTCDate()).padStart(2, '0');
+              return `PMP-INV-${yyyy}-${mm}-${dd}-${String(n).padStart(4, '0')}`;
+            }
+
+            function deltaId(date, n) {
+              const yyyy = date.getUTCFullYear();
+              const mm = String(date.getUTCMonth() + 1).padStart(2, '0');
+              const dd = String(date.getUTCDate()).padStart(2, '0');
+              return `PMP-DELTA-${yyyy}-${mm}-${dd}-${String(n).padStart(4, '0')}`;
+            }
+
+            function findJsonPayload(body) {
+              const firstBrace = body.indexOf('{');
+              if (firstBrace < 0) throw new Error('No JSON object found in inbox comment.');
+              const jsonText = body.slice(firstBrace).trim();
+              return JSON.parse(jsonText);
+            }
+
+            function validatePacketOrReport(payload) {
+              let packet = null;
+              let report = null;
+              if (payload.type === 'PMP_LOSSLESS_VAULT_WRITE_PACKET') {
+                packet = payload;
+                report = payload.report;
+              } else if (payload.type === 'PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES') {
+                report = payload;
+              } else {
+                throw new Error(`Unsupported payload type: ${payload && payload.type}`);
+              }
+
+              if (!report || report.type !== 'PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES') {
+                throw new Error('Missing PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES report.');
+              }
+
+              if (packet) {
+                if (packet.writer_name !== 'Vault GitHub Writer') throw new Error('Wrong writer_name.');
+                if (packet.storage_area !== 'PMP Lossless Inventory Vault') throw new Error('Wrong storage_area.');
+                const gate = packet.privacy_gate || {};
+                const requiredFalse = ['private_bug_memory','apple_notes_contents','tokens','passwords','secrets','private_values'];
+                for (const key of requiredFalse) {
+                  if (gate[key] !== false) throw new Error(`Privacy gate failed: ${key}`);
+                }
+                if (gate.localStorage_key_names_only !== true) throw new Error('Privacy gate failed: localStorage_key_names_only');
+              }
+
+              const raw = JSON.stringify(payload);
+              const forbiddenPatterns = [
+                /ghp_[A-Za-z0-9_]{20,}/,
+                /github_pat_[A-Za-z0-9_]{20,}/,
+                /BEGIN PRIVATE KEY/,
+                /password\s*[:=]\s*[^,}\n]+/i,
+                /secret\s*[:=]\s*[^,}\n]+/i,
+                /token\s*[:=]\s*[^,}\n]+/i
+              ];
+              for (const pattern of forbiddenPatterns) {
+                if (pattern.test(raw)) throw new Error(`Forbidden private-looking value found: ${pattern}`);
+              }
+
+              const storageKeys = report.inventory_eyes?.live_screen?.local_storage_keys || [];
+              for (const k of storageKeys) {
+                if (k.value_captured !== false) throw new Error(`localStorage value captured for key: ${k.key}`);
+              }
+
+              return { packet, report };
+            }
+
+            function categoryTags(report) {
+              const tags = ['inventory_eyes', 'lossless_quality', 'app_inventory'];
+              const summary = report.scan_summary || report.inventory_eyes?.summary || {};
+              if (summary.active_files !== undefined) tags.push('active_files');
+              if (summary.inactive_files !== undefined) tags.push('inactive_files');
+              if (summary.theme_review_targets !== undefined) tags.push('theme_review');
+              if (summary.privacy_sensitive_surfaces !== undefined) tags.push('privacy_surfaces');
+              if (summary.local_storage_keys !== undefined) tags.push('local_storage_key_names');
+              tags.push('version_control', 'route_control');
+              return [...new Set(tags)];
+            }
+
+            function buildDelta(previousCurrent, currentRecord, recordId, ordinal) {
+              const now = new Date();
+              const prev = previousCurrent?.scan_summary || {};
+              const curr = currentRecord.scan_summary || {};
+              const keys = [...new Set([...Object.keys(prev), ...Object.keys(curr)])];
+              const count_changes = {};
+              for (const key of keys) {
+                if (prev[key] !== curr[key]) count_changes[key] = { previous: prev[key] ?? null, current: curr[key] ?? null };
+              }
+              const prevActive = previousCurrent?.active_files || [];
+              const currActive = currentRecord.active_files || [];
+              const added_active_files = currActive.filter(x => !prevActive.includes(x));
+              const removed_active_files = prevActive.filter(x => !currActive.includes(x));
+              return {
+                type: 'PMP_VAULT_DELTA_RECORD',
+                version: '1.1.0-auto-processor',
+                record_id: deltaId(now, ordinal),
+                source_record_id: recordId,
+                built_at: now.toISOString(),
+                previous_current_record_id: previousCurrent?.current_record_id || null,
+                current_record_id: recordId,
+                delta_status: previousCurrent?.current_record_id ? 'compared' : 'baseline_created',
+                count_changes,
+                active_file_changes: { added_active_files, removed_active_files },
+                next_delta_rule: 'Compare summary counts, active_files, privacy surface count, theme_review_targets count, and route/version status against this baseline.'
+              };
+            }
+
+            let comment;
+            if (context.eventName === 'issue_comment') {
+              comment = context.payload.comment;
+            } else {
+              const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number, per_page: 100 });
+              comment = [...comments].reverse().find(c => (c.body || '').includes('PMP LOSSLESS INVENTORY REPORT'));
+              if (!comment) throw new Error('No PMP inbox report comment found.');
+            }
+
+            const body = comment.body || '';
+            if (!body.includes('PMP LOSSLESS INVENTORY REPORT')) {
+              core.info('Comment does not look like a PMP lossless report. Ignoring.');
+              return;
+            }
+
+            const payload = findJsonPayload(body);
+            const { packet, report } = validatePacketOrReport(payload);
+
+            const ledgerPath = 'pmp-lossless-inventory-vault/record-ledger.json';
+            const currentPath = 'pmp-lossless-inventory-vault/current.json';
+            const latestDeltaPath = 'pmp-lossless-inventory-vault/deltas/latest-delta.json';
+            const intakePath = 'pmp-lossless-inventory-vault/inbox-intake-status.json';
+
+            const ledger = readJson(ledgerPath, {
+              type: 'PMP_VAULT_RECORD_LEDGER',
+              version: '1.1.0-auto-processor',
+              purpose: 'Permanent compact index for every accepted public-safe PMP Lossless Inventory Vault record.',
+              storage_area_name: 'PMP Lossless Inventory Vault',
+              records: []
+            });
+            ledger.records = Array.isArray(ledger.records) ? ledger.records : [];
+
+            const nowDate = new Date();
+            const nextOrdinal = ledger.records.length + 1;
+            const recordId = stableRecordId(nowDate, nextOrdinal);
+            const previousCurrent = readJson(currentPath, null);
+            const summary = report.scan_summary || report.inventory_eyes?.summary || {};
+            const activeFiles = (report.inventory_eyes?.active_files || []).map(x => x.path || x).filter(Boolean);
+            const tags = categoryTags(report);
+
+            const currentRecord = {
+              type: 'PMP_LOSSLESS_INVENTORY_VAULT_CURRENT',
+              version: '2.1.0-auto-processor',
+              status: 'CURRENT_FROM_AUTOMATED_INBOX_PROCESSOR',
+              storage_area_name: 'PMP Lossless Inventory Vault',
+              current_record_id: recordId,
+              source: {
+                source_kind: 'github_issue_inbox_comment',
+                issue: `https://github.com/${owner}/${repo}/issues/${issue_number}`,
+                comment_url: comment.html_url,
+                comment_id: comment.id,
+                note: 'Full report is preserved in the inbox comment; this file stores normalized current record and summary so current.json stays compact.'
+              },
+              report_identity: {
+                packet_type: packet?.type || null,
+                packet_version: packet?.version || null,
+                packet_built_at: packet?.built_at || null,
+                report_type: report.type,
+                report_built_at: report.built_at || null,
+                inventory_eyes_version: report.inventory_eyes?.version || null,
+                inventory_eyes_built_at: report.inventory_eyes?.built_at || null
+              },
+              record_classification: {
+                primary_category: 'app_inventory',
+                record_kind: 'inventory_eyes_lossless_report',
+                record_status: 'accepted_current',
+                keep_full_report: 'source_inbox_comment_for_now',
+                promote_to_history: false,
+                delta_required: true,
+                privacy_gate: 'passed_by_automated_validator',
+                confidence: 'high'
+              },
+              scan_summary: summary,
+              active_files: activeFiles,
+              category_tags: tags,
+              truth_boundary: 'This current record is a normalized pointer and summary of the latest full inbox report. Private values are not captured; only key names and app structure are allowed.',
+              next_actions: [
+                'Use record-ledger.json as permanent compact index.',
+                'Use category-map.json to sort records.',
+                'Use latest-delta.json to compare against previous current state.',
+                'Do not store private Bug Memory or Apple Notes contents in this vault.',
+                'Keep inbox as temporary intake, not permanent storage of all reports forever.'
+              ]
+            };
+
+            const delta = buildDelta(previousCurrent, currentRecord, recordId, nextOrdinal);
+
+            const ledgerEntry = {
+              record_id: recordId,
+              record_kind: 'inventory_eyes_lossless_report',
+              primary_category: 'app_inventory',
+              status: 'accepted_current',
+              source_kind: 'github_issue_inbox_comment',
+              source_url: comment.html_url,
+              source_comment_id: comment.id,
+              packet_built_at: packet?.built_at || null,
+              report_built_at: report.built_at || null,
+              summary,
+              categories: tags,
+              full_report_location: `github_issue_1_comment_${comment.id}`,
+              promoted_to_current: true,
+              promoted_to_history: false,
+              delta_record: latestDeltaPath,
+              notes: 'Automatically processed from GitHub Issue #1 inbox.'
+            };
+
+            const alreadyProcessed = ledger.records.some(r => String(r.source_comment_id) === String(comment.id));
+            if (alreadyProcessed) {
+              writeJson(intakePath, {
+                type: 'PMP_VAULT_INBOX_INTAKE_STATUS',
+                status: 'already_processed',
+                comment_id: comment.id,
+                checked_at: new Date().toISOString()
+              });
+            } else {
+              ledger.records.push(ledgerEntry);
+              ledger.version = '1.1.0-auto-processor';
+              ledger.updated_at = new Date().toISOString();
+              writeJson(currentPath, currentRecord);
+              writeJson(ledgerPath, ledger);
+              writeJson(latestDeltaPath, delta);
+              writeJson(intakePath, {
+                type: 'PMP_VAULT_INBOX_INTAKE_STATUS',
+                status: 'accepted_and_promoted',
+                comment_id: comment.id,
+                record_id: recordId,
+                checked_at: new Date().toISOString(),
+                summary
+              });
+            }
+
+            const status = await exec.getExecOutput('git', ['status', '--porcelain']);
+            if (!status.stdout.trim()) {
+              core.info('No vault file changes to commit.');
+              return;
+            }
+
+            await exec.exec('git', ['config', 'user.name', 'github-actions[bot]']);
+            await exec.exec('git', ['config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com']);
+            await exec.exec('git', ['add', 'pmp-lossless-inventory-vault']);
+            await exec.exec('git', ['commit', '-m', `Auto-process PMP vault inbox report ${comment.id}`]);
+            await exec.exec('git', ['push']);
