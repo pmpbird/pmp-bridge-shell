@@ -44,8 +44,7 @@
     topButton.style.padding = '0 14px';
     topButton.style.overflow = 'hidden';
     topButton.style.webkitAppearance = 'none';
-    topButton.style.display = 'grid';
-    topButton.style.gridTemplateColumns = '34px 1fr 18px';
+    topButton.style.gridTemplateColumns = '40px 1fr 22px';
     topButton.style.alignItems = 'center';
     topButton.style.columnGap = '10px';
     topButton.style.textAlign = 'left';
@@ -63,11 +62,11 @@
     const title = b.querySelector('.pmpCopyTitle');
     const small = b.querySelector('small');
     const arrow = b.querySelector('.pmpCopyArrow');
-    if (icon) { icon.style.fontSize = '24px'; icon.style.lineHeight = '1'; icon.style.textAlign = 'center'; }
-    if (text) { text.style.display = 'block'; text.style.minWidth = '0'; }
-    if (title) { title.style.display = 'block'; title.style.fontSize = '16px'; title.style.lineHeight = '1.12'; title.style.fontWeight = '950'; whiteSpace = 'nowrap'; }
-    if (small) { small.style.display = 'block'; small.style.fontSize = '11px'; small.style.lineHeight = '1.12'; small.style.fontWeight = '800'; small.style.opacity = '.82'; small.style.marginTop = '3px'; }
-    if (arrow) { arrow.style.fontSize = '28px'; arrow.style.fontWeight = '800'; arrow.style.lineHeight = '1'; arrow.style.textAlign = 'right'; arrow.style.opacity = '.75'; }
+    if (icon) { icon.style.fontSize = '23px'; icon.style.lineHeight = '1'; icon.style.textAlign = 'center'; icon.style.display = 'block'; }
+    if (text) { text.style.display = 'block'; text.style.minWidth = '0'; text.style.textAlign = 'left'; }
+    if (title) { title.style.display = 'block'; title.style.fontSize = '16px'; title.style.lineHeight = '1.12'; title.style.fontWeight = '950'; title.style.whiteSpace = 'nowrap'; title.style.overflow = 'hidden'; title.style.textOverflow = 'ellipsis'; }
+    if (small) { small.style.display = 'block'; small.style.fontSize = '11px'; small.style.lineHeight = '1.12'; small.style.fontWeight = '800'; small.style.opacity = '.82'; small.style.marginTop = '3px'; small.style.whiteSpace = 'nowrap'; small.style.overflow = 'hidden'; small.style.textOverflow = 'ellipsis'; }
+    if (arrow) { arrow.style.fontSize = '30px'; arrow.style.fontWeight = '900'; arrow.style.lineHeight = '1'; arrow.style.textAlign = 'right'; arrow.style.opacity = '.85'; }
   }
   function update() {
     const o = inner();
@@ -82,6 +81,7 @@
     b.style.height = Math.round(r.height) + 'px';
     styleChildren(b);
   }
-  setInterval(update, 300);
-  setTimeout(update, 200);
+  window.pmpRefreshTopCopyLosslessButton = update;
+  setInterval(update, 250);
+  setTimeout(update, 100);
 })();
