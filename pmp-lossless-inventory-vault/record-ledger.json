@@ -1,6 +1,6 @@
 {
   "type": "PMP_VAULT_RECORD_LEDGER",
-  "version": "2.0.0-hardened-processor",
+  "version": "2.1.0-type-isolated-processor",
   "purpose": "Permanent compact index for every accepted public-safe PMP Lossless Inventory Vault record.",
   "storage_area_name": "PMP Lossless Inventory Vault",
   "record_policy": {
@@ -116,7 +116,50 @@
       "promoted_to_history": false,
       "delta_record": "pmp-lossless-inventory-vault/deltas/latest-delta.json",
       "notes": "Automatically processed from GitHub Issue #1 inbox by hardened processor."
+    },
+    {
+      "record_id": "PMP-INV-2026-05-10-0003",
+      "record_kind": "inventory_eyes_lossless_report",
+      "primary_category": "app_inventory",
+      "status": "accepted_current",
+      "source_kind": "github_issue_inbox_comment",
+      "source_url": "https://github.com/pmpbird/pmp-bridge-shell/issues/1#issuecomment-4416353544",
+      "source_comment_id": 4416353544,
+      "body_hash": "555b1c4cf39ff54faed249a532502a92d94d654ff0072575789689f24fcc2e72",
+      "packet_built_at": "2026-05-10T21:00:23.821Z",
+      "report_built_at": "2026-05-10T21:00:23.821Z",
+      "summary": {
+        "manifest_paths": 55,
+        "active_files": 11,
+        "inactive_files": 44,
+        "helper_or_support_files": 21,
+        "privacy_sensitive_surfaces": 20,
+        "theme_review_targets": 17,
+        "local_storage_keys": 11,
+        "html_pages": 35,
+        "json_files": 13,
+        "js_files": 6,
+        "css_files": 0,
+        "config_files": 3
+      },
+      "categories": [
+        "inventory_eyes",
+        "lossless_quality",
+        "app_inventory",
+        "active_files",
+        "inactive_files",
+        "theme_review",
+        "privacy_surfaces",
+        "local_storage_key_names",
+        "version_control",
+        "route_control"
+      ],
+      "full_report_location": "github_issue_1_comment_4416353544",
+      "promoted_to_current": true,
+      "promoted_to_history": false,
+      "delta_record": "pmp-lossless-inventory-vault/deltas/latest-delta.json",
+      "notes": "Automatically processed from GitHub Issue #1 inbox by type-isolated processor."
     }
   ],
-  "updated_at": "2026-05-10T07:57:13.827Z"
+  "updated_at": "2026-05-10T21:08:54.826Z"
 }
