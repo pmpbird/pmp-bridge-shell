@@ -1,0 +1,77 @@
+{
+  "type": "PMP_VAULT_GITHUB_WRITER_CONTRACT",
+  "version": "1.0.0",
+  "writer_name": "Vault GitHub Writer",
+  "built_at": "2026-05-10T00:00:00.000Z",
+  "purpose": "Define the exact public-safe write contract for saving PMP Inventory Eyes / Lossless Quality reports into the PMP Lossless Inventory Vault.",
+  "not_safe_writer": true,
+  "name_boundary": {
+    "vault_github_writer": "Writes public-safe lossless/inventory reports into GitHub vault files.",
+    "safe_writer": "Separate existing PMP code/app writing tool. Do not confuse the two."
+  },
+  "input_packet_type": "PMP_LOSSLESS_VAULT_WRITE_PACKET",
+  "accepted_report_type": "PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES",
+  "write_targets": {
+    "current": "pmp-lossless-inventory-vault/current.json",
+    "history_folder": "pmp-lossless-inventory-vault/history/",
+    "history_filename_pattern": "YYYY-MM-DDTHH-MM-SSZ.json"
+  },
+  "required_packet_fields": [
+    "type",
+    "version",
+    "built_at",
+    "writer_name",
+    "storage_area",
+    "target_current",
+    "target_history",
+    "privacy_gate",
+    "report"
+  ],
+  "required_privacy_gate": {
+    "private_bug_memory": false,
+    "apple_notes_contents": false,
+    "tokens": false,
+    "passwords": false,
+    "secrets": false,
+    "private_values": false,
+    "localStorage_key_names_only": true
+  },
+  "write_steps": [
+    "Receive PMP_LOSSLESS_VAULT_WRITE_PACKET.",
+    "Verify packet.type is PMP_LOSSLESS_VAULT_WRITE_PACKET.",
+    "Verify packet.writer_name is Vault GitHub Writer.",
+    "Verify packet.target_current is pmp-lossless-inventory-vault/current.json.",
+    "Verify privacy_gate passes exactly: no private Bug Memory, no Apple Notes contents, no tokens, no passwords, no secrets, no private values, localStorage key names only.",
+    "Verify packet.report.type is PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES.",
+    "Write packet.report to pmp-lossless-inventory-vault/current.json.",
+    "If history write is enabled, also write packet.report to packet.target_history.",
+    "Return a compact write receipt with current target, optional history target, timestamp, and privacy pass result."
+  ],
+  "hard_blocks": [
+    "Any token/password/secret present in packet or report.",
+    "Any private Bug Memory record value present in packet or report.",
+    "Any Apple Notes private content present in packet or report.",
+    "Any private localStorage value present instead of key name only.",
+    "Wrong target_current path.",
+    "Wrong writer name.",
+    "Wrong packet type."
+  ],
+  "allowed_writers": [
+    "ChatGPT GitHub connector action approved by the user",
+    "future private backend controlled by the user",
+    "future private authenticated writer controlled by the user"
+  ],
+  "forbidden_writers": [
+    "public GitHub Pages HTML containing a GitHub token",
+    "public JavaScript containing a GitHub token",
+    "any writer that stores private Bug Memory or Apple Notes contents in this vault"
+  ],
+  "current_implementation_status": {
+    "vault_exists": true,
+    "packet_format_defined": true,
+    "chatgpt_connector_writer_possible": true,
+    "browser_direct_github_writer_deployed": false,
+    "private_backend_deployed": false
+  },
+  "next_step": "When a PMP_LOSSLESS_VAULT_WRITE_PACKET is uploaded or provided, use the ChatGPT GitHub connector as Vault GitHub Writer to update current.json and optionally history."
+}
