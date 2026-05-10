@@ -21,7 +21,14 @@
       "rejected_at": "2026-05-10T21:08:48.841Z",
       "reason": "Not a current app update request.",
       "body_hash": "555b1c4cf39ff54faed249a532502a92d94d654ff0072575789689f24fcc2e72"
+    },
+    {
+      "source_comment_id": 4416367678,
+      "source_url": "https://github.com/pmpbird/pmp-bridge-shell/issues/1#issuecomment-4416367678",
+      "rejected_at": "2026-05-10T21:15:27.928Z",
+      "reason": "Not a current app update request.",
+      "body_hash": "0c4f397d0c8713b0b5e7c9911a0fd0c0464e044c8060b1b014c1f2104602793f"
     }
   ],
-  "updated_at": "2026-05-10T21:08:48.842Z"
+  "updated_at": "2026-05-10T21:15:27.929Z"
 }
