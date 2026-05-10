@@ -14,6 +14,14 @@
       return d;
     } catch (_) { return null; }
   }
+  function removeLowerDuplicates(d) {
+    if (!d) return;
+    for (const el of Array.from(d.querySelectorAll('a,button'))) {
+      if (el.id === 'pmpVaultShortcutDirectLink' || ((el.textContent || '').replace(/\s+/g,' ').trim() === 'Open Vault Shortcut')) {
+        if (el.id !== 'pmpTopVaultShortcutButton') el.remove();
+      }
+    }
+  }
   function makeButton() {
     if (button) return button;
     button = document.createElement('button');
@@ -52,6 +60,7 @@
   }
   function update() {
     const d = innerDoc();
+    removeLowerDuplicates(d);
     const btn = makeButton();
     const pos = findBridgeToolBottom(d);
     if (!pos) { btn.style.display = 'none'; return; }
@@ -61,6 +70,6 @@
     btn.style.width = Math.max(280, pos.width) + 'px';
     btn.style.right = 'auto';
   }
-  setInterval(update, 400);
-  setTimeout(update, 300);
+  setInterval(update, 300);
+  setTimeout(update, 200);
 })();
