@@ -1,5 +1,4 @@
 (() => {
-  const URL = 'shortcuts://run-shortcut?name=' + encodeURIComponent('PMP Vault GitHub Writer');
   let topButton = null;
   function inner() {
     try {
@@ -25,12 +24,6 @@
     }
     return null;
   }
-  function status(d, msg) {
-    const r = d && d.getElementById('residentReply');
-    const c = d && d.getElementById('controlStatus');
-    if (r) r.textContent = msg;
-    if (c) c.textContent = msg;
-  }
   function make() {
     if (topButton) return topButton;
     topButton = document.createElement('button');
@@ -50,10 +43,7 @@
     topButton.addEventListener('click', e => {
       e.preventDefault();
       e.stopPropagation();
-      const o = inner();
-      try { if (o.w && typeof o.w.copyCurrent === 'function') o.w.copyCurrent(); } catch (_) {}
-      status(o.d, 'Opening PMP Vault GitHub Writer Shortcut.');
-      window.location.href = URL;
+      if (typeof window.pmpTopLosslessCopyAndOpen === 'function') window.pmpTopLosslessCopyAndOpen();
     }, true);
     document.body.appendChild(topButton);
     return topButton;
