@@ -1,0 +1,165 @@
+{
+  "type": "PMP_INVENTORY_EYES_DETAIL_MAP",
+  "version": "1.0.0",
+  "name": "Full Safe App Detail and Aspect Map",
+  "purpose": "Define every safe observable app aspect Inventory Eyes should track as the app keeps upgrading.",
+  "truth_boundary": "This is a coverage map for safe app structure. It does not authorize reading private Notes contents, private Bug Memory contents, tokens, passwords, secrets, or private values.",
+  "ownership": {
+    "inventory_eyes": "vault-grade full safe app inventory when Lossless Quality runs",
+    "resident_xray": "live behind-the-scenes screen and runtime perception",
+    "vault": "long-term public-safe record of Inventory Eyes outputs"
+  },
+  "coverage_layers": {
+    "identity_layer": [
+      "app name",
+      "user-facing version",
+      "current map path",
+      "current loaded app path",
+      "fallback path",
+      "install path",
+      "Home Screen shell path"
+    ],
+    "file_layer": [
+      "current active files",
+      "hidden support files",
+      "vault support files",
+      "map/update files",
+      "private-boundary tool files",
+      "archive/version residue files",
+      "expected missing or future files",
+      "helper scripts",
+      "public JSON records",
+      "worker/config files"
+    ],
+    "route_layer": [
+      "all local links",
+      "all hash routes",
+      "external schemes",
+      "Shortcut-opening routes",
+      "missing local HTML files",
+      "stale versioned routes",
+      "current route target",
+      "return route target"
+    ],
+    "screen_layer": [
+      "rooms",
+      "cards",
+      "panels",
+      "drawers",
+      "tabs",
+      "modals",
+      "notes",
+      "warnings",
+      "status bars",
+      "visible and hidden sections"
+    ],
+    "interaction_layer": [
+      "buttons",
+      "links",
+      "inputs",
+      "textareas",
+      "selects",
+      "file pickers",
+      "click handlers",
+      "copy actions",
+      "open actions",
+      "save actions",
+      "refresh actions",
+      "shortcut triggers"
+    ],
+    "state_layer": [
+      "localStorage key names only",
+      "theme keys",
+      "readability keys",
+      "xray keys",
+      "inventory keys",
+      "vault keys",
+      "bug-memory key names only",
+      "private key names only without values"
+    ],
+    "theme_layer": [
+      "accent color",
+      "background color",
+      "card color",
+      "line color",
+      "readability level",
+      "contrast behavior",
+      "outline/border behavior",
+      "Home Screen storage boundary"
+    ],
+    "resident_layer": [
+      "Resident drawer",
+      "Resident run command",
+      "Resident X-Ray context keys",
+      "Resident X-Ray refresh status",
+      "Resident lossless command bridge",
+      "Resident normal-conversation support"
+    ],
+    "bug_memory_layer": [
+      "Bug Memory room path",
+      "Notes catalog path",
+      "Notes backend path",
+      "ZIP X-Ray path",
+      "Bug Mixer path",
+      "private/public boundary",
+      "Notes bridge status",
+      "safe import gates"
+    ],
+    "lossless_layer": [
+      "Improve Lossless Quality button flow",
+      "Inventory Eyes output keys",
+      "Copy Lossless Report button flow",
+      "Vault packet shape",
+      "GitHub inbox processor",
+      "current report",
+      "record ledger",
+      "delta ledger",
+      "processor health"
+    ],
+    "update_layer": [
+      "PMP Current shell",
+      "current map",
+      "automatic update button behavior",
+      "current-map updater workflow",
+      "update ledger",
+      "update status",
+      "no-shortcut rule for Automatic App Update"
+    ],
+    "safety_layer": [
+      "private value exclusion",
+      "token/password/secret exclusion",
+      "Apple Notes exclusion",
+      "private Bug Memory content exclusion",
+      "public-safe route and file reporting",
+      "read-only X-Ray relationship"
+    ],
+    "history_layer": [
+      "current vs previous map",
+      "active file changes",
+      "missing route changes",
+      "vault deltas",
+      "app update ledger",
+      "X-Ray history",
+      "inventory report history"
+    ]
+  },
+  "required_report_shape": {
+    "identity": true,
+    "current_flow": true,
+    "file_inventory": true,
+    "classification_counts": true,
+    "live_screen_snapshot": true,
+    "route_findings": true,
+    "storage_key_names": true,
+    "theme_readability_state": true,
+    "resident_wiring_state": true,
+    "bug_memory_tool_state": true,
+    "lossless_vault_state": true,
+    "update_system_state": true,
+    "privacy_boundary_result": true,
+    "missing_or_stale_items": true,
+    "next_safe_upgrades": true
+  },
+  "completion_rule": "Inventory Eyes is not complete because a fixed list says so. It is complete only when the current safe observable app surface, known public app files, route map, support records, vault records, and current UI state are all represented without private value capture.",
+  "upgrade_rule": "Every time the app gains a new safe observable file, route, tool, room, support record, or behavior, add it to the baseline so future Lossless Quality reports see it."
+}
