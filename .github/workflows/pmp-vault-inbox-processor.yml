@@ -35,6 +35,7 @@ jobs:
             const repo = context.repo.repo;
             const issue_number = 1;
             const MARKER = 'PMP LOSSLESS INVENTORY REPORT';
+            const LOSSLESS_PAYLOAD_TYPES = ['PMP_LOSSLESS_VAULT_WRITE_PACKET', 'PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES'];
             const VAULT = 'pmp-lossless-inventory-vault';
             const paths = {
               current: `${VAULT}/current.json`,
@@ -57,7 +58,7 @@ jobs:
             function loadLedger() {
               const ledger = readJson(paths.ledger, {
                 type: 'PMP_VAULT_RECORD_LEDGER',
-                version: '2.0.0-hardened-processor',
+                version: '2.1.0-type-isolated-processor',
                 purpose: 'Permanent compact index for every accepted public-safe PMP Lossless Inventory Vault record.',
                 storage_area_name: 'PMP Lossless Inventory Vault',
                 record_policy: {
@@ -112,6 +113,10 @@ jobs:
               const firstBrace = body.indexOf('{');
               if (firstBrace < 0) throw new Error('No JSON object found in inbox comment.');
               return JSON.parse(body.slice(firstBrace).trim());
+            }
+
+            function isLosslessPayload(payload) {
+              return payload && LOSSLESS_PAYLOAD_TYPES.includes(payload.type);
             }
 
             function validatePayload(payload) {
@@ -187,7 +192,7 @@ jobs:
               const currActive = currentRecord.active_files || [];
               return {
                 type: 'PMP_VAULT_DELTA_RECORD',
-                version: '2.0.0-hardened-processor',
+                version: '2.1.0-type-isolated-processor',
                 record_id: deltaId(now, ordinal),
                 source_record_id: rid,
                 built_at: now.toISOString(),
@@ -217,6 +222,7 @@ jobs:
             let accepted = 0;
             let rejectedCount = 0;
             let skipped = 0;
+            let ignoredOtherType = 0;
             let latestAccepted = null;
             const candidates = await getCandidateComments();
 
@@ -235,6 +241,7 @@ jobs:
               let payload, packet, report;
               try {
                 payload = findJsonPayload(body);
+                if (!isLosslessPayload(payload)) { ignoredOtherType++; continue; }
                 ({ packet, report } = validatePayload(payload));
               } catch (error) {
                 rejectComment(comment, 'validation_failed', error.message || error, rejected, bodyHash);
@@ -248,8 +255,8 @@ jobs:
               const tags = categoryTags(report);
               const currentRecord = {
                 type: 'PMP_LOSSLESS_INVENTORY_VAULT_CURRENT',
-                version: '3.0.0-hardened-processor',
-                status: 'CURRENT_FROM_HARDENED_INBOX_PROCESSOR',
+                version: '3.1.0-type-isolated-processor',
+                status: 'CURRENT_FROM_TYPE_ISOLATED_INBOX_PROCESSOR',
                 storage_area_name: 'PMP Lossless Inventory Vault',
                 current_record_id: rid,
                 source: {
@@ -276,7 +283,7 @@ jobs:
                   keep_full_report: 'source_inbox_comment_for_now',
                   promote_to_history: false,
                   delta_required: true,
-                  privacy_gate: 'passed_by_hardened_automated_validator',
+                  privacy_gate: 'passed_by_type_isolated_automated_validator',
                   confidence: 'high'
                 },
                 scan_summary: summary,
@@ -309,11 +316,11 @@ jobs:
                 promoted_to_current: true,
                 promoted_to_history: false,
                 delta_record: paths.delta,
-                notes: 'Automatically processed from GitHub Issue #1 inbox by hardened processor.'
+                notes: 'Automatically processed from GitHub Issue #1 inbox by type-isolated processor.'
               };
 
               ledger.records.push(ledgerEntry);
-              ledger.version = '2.0.0-hardened-processor';
+              ledger.version = '2.1.0-type-isolated-processor';
               ledger.updated_at = new Date().toISOString();
               writeJson(paths.current, currentRecord);
               writeJson(paths.delta, delta);
@@ -326,31 +333,34 @@ jobs:
             writeJson(paths.rejected, rejected);
             writeJson(paths.intake, {
               type: 'PMP_VAULT_INBOX_INTAKE_STATUS',
-              version: '2.0.0-hardened-processor',
-              status: accepted ? 'accepted_and_promoted' : 'no_new_valid_reports',
+              version: '2.1.0-type-isolated-processor',
+              status: accepted ? 'accepted_and_promoted' : 'no_new_valid_lossless_reports',
               checked_at: new Date().toISOString(),
               candidates_checked: candidates.length,
               accepted,
               rejected: rejectedCount,
               skipped,
+              ignored_other_payload_type: ignoredOtherType,
               latest_accepted: latestAccepted
             });
             writeJson(paths.health, {
               type: 'PMP_VAULT_PROCESSOR_HEALTH',
-              version: '1.0.0',
+              version: '1.1.0-type-isolated',
               status: 'processor_ran',
               checked_at: new Date().toISOString(),
               issue_number,
               accepted_this_run: accepted,
               rejected_this_run: rejectedCount,
               skipped_this_run: skipped,
+              ignored_other_payload_type: ignoredOtherType,
               total_records: ledger.records.length,
               total_rejections: rejected.rejected_records.length,
               latest_record_id: ledger.records.length ? ledger.records[ledger.records.length - 1].record_id : null,
               guardrails: [
                 'Only owner comments are accepted.',
-                'Blank and malformed bodies are rejected.',
-                'Wrong payload types are rejected.',
+                'Blank and malformed lossless bodies are rejected.',
+                'Non-lossless payload types are ignored, not rejected.',
+                'Wrong lossless payload types are rejected.',
                 'Privacy gate must pass.',
                 'Private-looking token/password/secret patterns are rejected.',
                 'localStorage values must not be captured.',
@@ -363,10 +373,6 @@ jobs:
             await exec.exec('git', ['config', 'user.name', 'github-actions[bot]']);
             await exec.exec('git', ['config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com']);
             await exec.exec('git', ['add', VAULT]);
-            await exec.exec('git', ['commit', '-m', `Hardened process PMP vault inbox (${accepted} accepted, ${rejectedCount} rejected)`]);
-            try {
-              await exec.exec('git', ['push']);
-            } catch (error) {
-              await exec.exec('git', ['pull', '--rebase']);
-              await exec.exec('git', ['push']);
-            }
+            await exec.exec('git', ['commit', '-m', `Type-isolated process PMP vault inbox (${accepted} accepted, ${rejectedCount} rejected, ${ignoredOtherType} ignored)`]);
+            try { await exec.exec('git', ['push']); }
+            catch (error) { await exec.exec('git', ['pull', '--rebase']); await exec.exec('git', ['push']); }
