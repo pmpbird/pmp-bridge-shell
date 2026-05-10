@@ -14,12 +14,27 @@
       return { w, d };
     } catch (_) { return {}; }
   }
+  function text(el) { return (el && el.textContent || '').replace(/\s+/g, ' ').trim(); }
+  function drawerOpen(d) {
+    if (!d) return true;
+    const candidates = Array.from(d.querySelectorAll('[id*="resident"],[id*="launcher"],[class*="drawer"],[class*="modal"],[class*="overlay"],.float,.panel'));
+    for (const el of candidates) {
+      const t = text(el).toLowerCase();
+      if (!t) continue;
+      const shown = el.offsetParent !== null || getComputedStyle(el).position === 'fixed';
+      if (!shown) continue;
+      if ((t.includes('talk normally') && t.includes('your messages move into chat')) ||
+          (t.includes('packet request') && t.includes('copy work')) ||
+          (t.includes('launcher') && t.includes('reload') && t.includes('last good'))) return true;
+    }
+    return false;
+  }
   function bridgeCopyButton(d) {
-    if (!d) return null;
+    if (!d || drawerOpen(d)) return null;
     const bridge = d.getElementById('bridge');
     if (!bridge || !bridge.classList.contains('on')) return null;
     for (const b of Array.from(d.querySelectorAll('button'))) {
-      const t = (b.textContent || '').replace(/\s+/g, ' ').trim();
+      const t = text(b);
       if (/Copy Lossless Report|Copy Current|Copy Green Box/i.test(t)) return b;
     }
     return null;
@@ -58,12 +73,12 @@
   }
   function styleChildren(b) {
     const icon = b.querySelector('.pmpCopyIcon');
-    const text = b.querySelector('.pmpCopyText');
+    const textSpan = b.querySelector('.pmpCopyText');
     const title = b.querySelector('.pmpCopyTitle');
     const small = b.querySelector('small');
     const arrow = b.querySelector('.pmpCopyArrow');
     if (icon) { icon.style.fontSize = '23px'; icon.style.lineHeight = '1'; icon.style.textAlign = 'center'; icon.style.display = 'block'; }
-    if (text) { text.style.display = 'block'; text.style.minWidth = '0'; text.style.textAlign = 'left'; }
+    if (textSpan) { textSpan.style.display = 'block'; textSpan.style.minWidth = '0'; textSpan.style.textAlign = 'left'; }
     if (title) { title.style.display = 'block'; title.style.fontSize = '16px'; title.style.lineHeight = '1.12'; title.style.fontWeight = '950'; title.style.whiteSpace = 'nowrap'; title.style.overflow = 'hidden'; title.style.textOverflow = 'ellipsis'; }
     if (small) { small.style.display = 'block'; small.style.fontSize = '11px'; small.style.lineHeight = '1.12'; small.style.fontWeight = '800'; small.style.opacity = '.82'; small.style.marginTop = '3px'; small.style.whiteSpace = 'nowrap'; small.style.overflow = 'hidden'; small.style.textOverflow = 'ellipsis'; }
     if (arrow) { arrow.style.fontSize = '30px'; arrow.style.fontWeight = '900'; arrow.style.lineHeight = '1'; arrow.style.textAlign = 'right'; arrow.style.opacity = '.85'; }
