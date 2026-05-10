@@ -1,14 +1,16 @@
 {
   "type": "PMP_LOSSLESS_INVENTORY_VAULT_INDEX",
-  "version": "1.1.0",
+  "version": "1.3.0",
   "storage_area_name": "PMP Lossless Inventory Vault",
   "built_at": "2026-05-10T00:00:00.000Z",
   "purpose": "Index for public-safe GitHub storage of PMP app-layer lossless quality and Inventory Eyes reports.",
   "current_report": "pmp-lossless-inventory-vault/current.json",
   "history_folder": "pmp-lossless-inventory-vault/history/",
   "writer_name": "Vault GitHub Writer",
+  "active_writer_mode": "PMP Vault GitHub Shortcut",
   "writer_name_warning": "Do not call this Safe Writer. Safe Writer is already a separate PMP app/code-writing tool.",
   "writer_role": "Vault GitHub Writer writes public-safe Inventory Eyes / Lossless Quality reports into the PMP Lossless Inventory Vault.",
+  "shortcut_name": "PMP Vault GitHub Writer",
   "allowed_report_types": [
     "PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES",
     "PMP_INVENTORY_EYES_APP_SCAN",
@@ -28,13 +30,32 @@
     "role": "support vault for app cleanup, lossless quality, Inventory Eyes, and version-control reports",
     "resident_use": "Resident may read this as app-layer context for lossless quality, but must not treat it as private memory or master truth."
   },
+  "writer_modes": {
+    "mode_1_shortcut_automatic": {
+      "name": "PMP Vault GitHub Shortcut",
+      "status": "PRIMARY_NOW",
+      "flow": "App creates PMP_LOSSLESS_VAULT_WRITE_PACKET -> app copies packet to clipboard -> app opens Shortcut -> Shortcut reads clipboard -> Shortcut writes packet.report to current.json through GitHub API.",
+      "requires_cloudflare": false,
+      "requires_laptop": false,
+      "token_location": "Private iPhone Shortcut only; never public app HTML or public JavaScript."
+    },
+    "mode_2_chatgpt_connector": {
+      "name": "ChatGPT GitHub Connector Writer",
+      "status": "MANUAL_FALLBACK",
+      "flow": "App creates packet -> user uploads/sends packet to ChatGPT -> ChatGPT uses GitHub connector as Vault GitHub Writer -> current.json is updated.",
+      "requires_cloudflare": false,
+      "requires_laptop": false,
+      "requires_user_to_share_secret": false
+    }
+  },
   "write_model": {
-    "preferred_flow": "Improve Lossless Quality creates report -> Copy Lossless Report creates a PMP_LOSSLESS_VAULT_WRITE_PACKET -> Vault GitHub Writer writes packet.report to current_report.",
+    "preferred_flow_now": "Improve Lossless Quality creates report -> Copy Lossless Report creates a PMP_LOSSLESS_VAULT_WRITE_PACKET -> app opens PMP Vault GitHub Writer Shortcut -> Shortcut writes packet.report to current_report.",
+    "fallback_flow": "If Shortcut fails, upload/send the packet to ChatGPT and ChatGPT writes packet.report to current_report through the GitHub connector.",
     "current_report_target": "pmp-lossless-inventory-vault/current.json",
     "history_target_pattern": "pmp-lossless-inventory-vault/history/YYYY-MM-DDTHH-MM-SSZ.json",
     "browser_public_html_must_not_hold_github_token": true,
     "allowed_writers": [
-      "Vault GitHub Writer private backend",
+      "PMP Vault GitHub Shortcut controlled by the user",
       "ChatGPT GitHub connector action approved by user",
       "other private authenticated writer controlled by the user"
     ],
@@ -44,6 +65,6 @@
       "any writer that stores private Bug Memory in this vault"
     ]
   },
-  "current_status": "vault_target_defined_writer_bridge_not_yet_deployed",
-  "next_step": "Update the app report export so Copy Lossless Report emits a PMP_LOSSLESS_VAULT_WRITE_PACKET naming this vault target."
+  "current_status": "shortcut_writer_mode_active_cloudflare_removed",
+  "next_step": "Create the iPhone Shortcut named PMP Vault GitHub Writer. It must read the clipboard packet, verify privacy gate, and write packet.report to pmp-lossless-inventory-vault/current.json."
 }
