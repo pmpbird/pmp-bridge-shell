@@ -1,0 +1,11 @@
+(() => {
+  function deep(){try{let f=document.getElementById('app'),w=f&&f.contentWindow,d=w&&(f.contentDocument||w.document);for(let i=0;i<10;i++){let n=d&&d.getElementById&&d.getElementById('app');if(!n)break;w=n.contentWindow;d=n.contentDocument||w.document}return{w,d}}catch(e){return{}}}
+  async function copyText(t){try{await navigator.clipboard.writeText(t);return true}catch(e){try{let ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.focus();ta.select();document.execCommand('copy');ta.remove();return true}catch(_){return false}}}
+  function readDiag(){try{return JSON.parse(localStorage.getItem('pmp_copy_lossless_diagnostic_v1')||'null')}catch(e){return null}}
+  function ask(d){let a=d&&d.getElementById('ask');return String(a&&a.value||'').toLowerCase()}
+  function text(d){let w=d&&d.getElementById('residentWork');let r=d&&d.getElementById('residentReply');let t=w?(w.textContent||'').trim():'';if(t&&t!=='Work appears here when you ask for it.')return t;let dg=readDiag();if(ask(d).includes('diagnose')&&ask(d).includes('copy')&&ask(d).includes('lossless')&&dg)return JSON.stringify(dg,null,2);return JSON.stringify({type:'PMP_RESIDENT_VISIBLE_REPLY_COPY',plain:r?(r.textContent||'').trim():'',work:{},saved_at:new Date().toISOString()},null,2)}
+  function show(d){let w=d&&d.getElementById('residentWork');if(!w)return false;w.classList.remove('hidden');w.textContent=text(d);return true}
+  async function copy(d){show(d);let ok=await copyText(text(d));let r=d&&d.getElementById('residentReply');if(r)r.textContent=ok?'Work copied.':'Copy Work failed.';return ok}
+  function patch(){let o=deep(),d=o.d,w=o.w;if(!d||!w)return;w.showWork=function(){return show(d)};w.copyWork=function(){return copy(d)};for(let b of Array.from(d.querySelectorAll('button'))){let t=(b.textContent||'').replace(/\s+/g,' ').trim();if(t==='Show Work'&&!b.dataset.pmpResidentWorkFix){b.dataset.pmpResidentWorkFix='1';b.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();show(d)},true)}if(t==='Copy Work'&&!b.dataset.pmpResidentCopyWorkFix){b.dataset.pmpResidentCopyWorkFix='1';b.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();copy(d)},true)}}}
+  setInterval(patch,500);setTimeout(patch,200);window.pmpResidentWorkFix=patch;
+})();
