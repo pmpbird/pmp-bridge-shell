@@ -1,0 +1,52 @@
+{
+  "type": "PMP_VAULT_CATEGORY_MAP",
+  "version": "1.0.0",
+  "purpose": "Categorize every PMP Lossless Inventory Vault record so the vault can track records without storing every full report forever.",
+  "categories": {
+    "current_report": {
+      "role": "Latest accepted normalized full-report summary.",
+      "storage": "pmp-lossless-inventory-vault/current.json",
+      "rewrite_policy": "overwrite latest current summary"
+    },
+    "history_snapshot": {
+      "role": "Important milestone snapshot worth preserving as a full record.",
+      "storage": "pmp-lossless-inventory-vault/history/",
+      "promotion_rule": "only when app state, route architecture, privacy boundary, or major inventory shape materially changes"
+    },
+    "delta_record": {
+      "role": "What changed since previous accepted report.",
+      "storage": "pmp-lossless-inventory-vault/deltas/",
+      "promotion_rule": "create for every accepted current update once previous baseline exists"
+    },
+    "app_inventory": {
+      "role": "Counts and lists of active/inactive/helper/support app files and live app screen structure.",
+      "signals": ["manifest_paths", "active_files", "inactive_files", "helper_or_support_files", "html_pages", "json_files", "js_files", "css_files"]
+    },
+    "theme_review": {
+      "role": "Pages needing room shell, Control Room mold, contrast, outline, spacing, tabs, button, and card checks.",
+      "signals": ["theme_review_targets", "room_shell", "contrast", "outline", "tabs", "card_mold"]
+    },
+    "privacy_surface": {
+      "role": "Private/sensitive surfaces by key name and route, without storing private values.",
+      "signals": ["privacy_sensitive_surfaces", "private_or_sensitive_key_name_only", "bug_memory", "pass", "secret", "notes"]
+    },
+    "version_route_control": {
+      "role": "Current/active/archive/helper status and route aliases/current pointers.",
+      "signals": ["active_current", "inactive_version_candidate", "inactive_archive_or_test", "helper_not_user_facing"]
+    },
+    "shortcut_writer_test": {
+      "role": "Records about iPhone Shortcut, GitHub Issue Inbox, write success/failure, token route, and handoff tests.",
+      "signals": ["PMP Vault GitHub Writer", "GitHub Issue Inbox", "Copy Lossless Report", "Shortcut"]
+    },
+    "error_record": {
+      "role": "Failures that must not be confused with valid inventory truth.",
+      "signals": ["malformed path", "body not supplied", "token permission", "network lost", "blank report"]
+    },
+    "decision_record": {
+      "role": "Human/assistant decision records, including abandoned paths and active paths.",
+      "signals": ["Cloudflare removed", "Issue Inbox active", "current.json direct write abandoned"]
+    }
+  },
+  "routing_rule": "Every inbox item must be classified before it becomes current, history, delta, test, error, or ignored.",
+  "space_rule": "The ledger keeps all records compactly. Full reports are stored only as current, selected history, or external source pointers. Test/noise comments should not become permanent full snapshots."
+}
