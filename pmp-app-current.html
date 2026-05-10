@@ -24,14 +24,53 @@ iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#52b5df
 <script>
 const MAP_PATH='pmp-current-map-v1.0.0.json';
 const DEFAULT_APP='pmp-home-single-v14.html';
+const SHORTCUT_NAME='PMP Vault GitHub Writer';
+const SHORTCUT_URL='shortcuts://run-shortcut?name='+encodeURIComponent(SHORTCUT_NAME);
 const F=document.getElementById('app');
 const BOOT=document.getElementById('boot');
+let CURRENT_MAP=null;
+let CURRENT_PATH=DEFAULT_APP;
 function nowKey(){return Date.now().toString(36)}
+function now(){return new Date().toISOString()}
 function setStatus(t){if(BOOT)BOOT.innerHTML='<div>'+String(t).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))+'</div>'}
 function cleanPath(p){p=String(p||DEFAULT_APP).trim();if(!/^[a-zA-Z0-9._\/-]+\.html$/.test(p))return DEFAULT_APP;return p.replace(/^\/+/, '')}
 async function loadMap(){try{const r=await fetch(MAP_PATH+'?fresh='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('map '+r.status);return await r.json()}catch(e){return{type:'PMP_CURRENT_APP_MAP_FALLBACK',current_app:{path:DEFAULT_APP,cache_key:'fallback-'+nowKey()},fallback_error:String(e.message||e)}}}
-async function boot(){setStatus('PMP checking current app...');const map=await loadMap();const current=map.current_app||{};const path=cleanPath(current.path||DEFAULT_APP);const key=encodeURIComponent(current.cache_key||map.version||nowKey());F.src=path+'?fresh=current-shell-'+key+'-'+Date.now()+location.hash;F.onload=()=>{if(BOOT)BOOT.style.display='none'};setTimeout(()=>{if(BOOT)BOOT.style.display='none'},3500)}
+function deep(){try{let w=F.contentWindow,d=F.contentDocument||w.document;for(let i=0;i<8;i++){let n=d&&d.getElementById&&d.getElementById('app');if(!n)break;w=n.contentWindow;d=n.contentDocument||w.document}return{w,d}}catch(e){return null}}
+function writeInnerStatus(msg){let o=deep(),d=o&&o.d;if(!d)return;let c=d.getElementById('controlStatus');if(c)c.textContent=msg;let r=d.getElementById('residentReply');if(r)r.textContent=msg}
+async function copyText(value){try{await navigator.clipboard.writeText(value);return true}catch(e){try{let ta=document.createElement('textarea');ta.value=value;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.focus();ta.select();let ok=document.execCommand('copy');ta.remove();return ok}catch(err){return false}}}
+function appUpdatePacket(){let map=CURRENT_MAP||{};let cur=map.current_app||{};let path=cleanPath(cur.path||CURRENT_PATH||DEFAULT_APP);let cacheKey='auto-update-'+path.replace(/[^a-zA-Z0-9]+/g,'-')+'-'+Date.now();return{
+  type:'PMP_APP_CURRENT_UPDATE_REQUEST',
+  version:'1.0.0-current-shell',
+  built_at:now(),
+  requested_by:'pmp-app-current.html',
+  shortcut_name:SHORTCUT_NAME,
+  target_map:MAP_PATH,
+  requested_current_app:{
+    path,
+    label:cur.label||'PMP current app',
+    cache_key:cacheKey,
+    status:'current',
+    reason:'One-button Home Screen app update request from stable pmp-app-current.html shell.'
+  },
+  safety_gate:{
+    html_path_only:true,
+    no_private_data:true,
+    no_tokens:true,
+    no_passwords:true,
+    no_secrets:true,
+    no_cloudflare_required:true,
+    keep_home_screen_shell:true,
+    use_current_map:true
+  },
+  instruction:'GitHub Action should validate the requested HTML path exists, update pmp-current-map-v1.0.0.json, log the update, and keep pmp-app-current.html as the permanent Home Screen shell.'
+}}
+async function runRealAppUpdate(){let packet=appUpdatePacket();let payload=JSON.stringify(packet,null,2);let ok=await copyText(payload);if(!ok){writeInnerStatus('Automatic App Update could not copy the update request.');return false}writeInnerStatus('Automatic App Update request copied. Opening PMP Vault GitHub Writer Shortcut.');setTimeout(()=>{location.href=SHORTCUT_URL},250);return true}
+function patchAutomaticUpdater(){let o=deep();if(!o||!o.d||!o.w)return;let {d,w}=o;if(!w.__pmpRealCurrentUpdater){w.__pmpRealCurrentUpdater=1;w.automaticAppUpdate=function(){return runRealAppUpdate()}}for(const b of [...d.querySelectorAll('button')]){let t=(b.textContent||'').replace(/\s+/g,' ').trim();if(t.includes('Automatic App Update')&&!b.dataset.pmpRealCurrentUpdater){b.dataset.pmpRealCurrentUpdater='1';b.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();runRealAppUpdate()},true);let small=b.querySelector('small');if(small)small.textContent='real current-map updater';}}
+}
+async function boot(){setStatus('PMP checking current app...');const map=await loadMap();CURRENT_MAP=map;const current=map.current_app||{};const path=cleanPath(current.path||DEFAULT_APP);CURRENT_PATH=path;const key=encodeURIComponent(current.cache_key||map.version||nowKey());F.src=path+'?fresh=current-shell-'+key+'-'+Date.now()+location.hash;F.onload=()=>{if(BOOT)BOOT.style.display='none';setTimeout(patchAutomaticUpdater,250);setTimeout(patchAutomaticUpdater,1000);setTimeout(patchAutomaticUpdater,2500)};setTimeout(()=>{if(BOOT)BOOT.style.display='none'},3500)}
 window.pmpCurrentReload=boot;
+window.pmpRunRealAppUpdate=runRealAppUpdate;
+setInterval(patchAutomaticUpdater,1000);
 boot();
 </script>
 </body>
