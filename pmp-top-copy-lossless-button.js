@@ -14,30 +14,59 @@
       return { w, d };
     } catch (_) { return {}; }
   }
-  function text(el) { return (el && el.textContent || '').replace(/\s+/g, ' ').trim(); }
-  function drawerOpen(d) {
-    if (!d) return true;
-    const candidates = Array.from(d.querySelectorAll('[id*="resident"],[id*="launcher"],[class*="drawer"],[class*="modal"],[class*="overlay"],.float,.panel'));
-    for (const el of candidates) {
-      const t = text(el).toLowerCase();
-      if (!t) continue;
-      const shown = el.offsetParent !== null || getComputedStyle(el).position === 'fixed';
-      if (!shown) continue;
-      if ((t.includes('talk normally') && t.includes('your messages move into chat')) ||
-          (t.includes('packet request') && t.includes('copy work')) ||
-          (t.includes('launcher') && t.includes('reload') && t.includes('last good'))) return true;
-    }
-    return false;
-  }
-  function bridgeCopyButton(d) {
-    if (!d || drawerOpen(d)) return null;
+  function clean(el) { return (el && el.textContent || '').replace(/\s+/g, ' ').trim(); }
+  function shown(el) { try { return !!el && (el.offsetParent !== null || getComputedStyle(el).position === 'fixed'); } catch (_) { return false; } }
+  function activeBridgeCopyButton(d) {
+    if (!d) return null;
     const bridge = d.getElementById('bridge');
     if (!bridge || !bridge.classList.contains('on')) return null;
     for (const b of Array.from(d.querySelectorAll('button'))) {
-      const t = text(b);
+      const t = clean(b);
       if (/Copy Lossless Report|Copy Current|Copy Green Box/i.test(t)) return b;
     }
     return null;
+  }
+  function residentDrawer(d) {
+    if (!d) return null;
+    const candidates = Array.from(d.querySelectorAll('[id*="resident"],[class*="drawer"],.float,.panel'));
+    for (const el of candidates) {
+      if (!shown(el)) continue;
+      const t = clean(el).toLowerCase();
+      if ((t.includes('talk normally') && t.includes('your messages move into chat')) ||
+          (t.includes('packet request') && t.includes('copy work'))) return el;
+    }
+    return null;
+  }
+  function launcherDrawer(d) {
+    if (!d) return null;
+    const candidates = Array.from(d.querySelectorAll('[id*="launcher"],[class*="drawer"],.float,.panel'));
+    for (const el of candidates) {
+      if (!shown(el)) continue;
+      const t = clean(el).toLowerCase();
+      if (t.includes('launcher') && t.includes('reload') && t.includes('last good')) return el;
+    }
+    return null;
+  }
+  function residentAnchor(d) {
+    const drawer = residentDrawer(d);
+    if (!drawer) return null;
+    const buttons = Array.from(drawer.querySelectorAll('button'));
+    let after = null;
+    for (const b of buttons) {
+      const t = clean(b);
+      if (/Copy Work|Show Work|Run/i.test(t)) after = b;
+    }
+    const r = (after || drawer).getBoundingClientRect();
+    const dr = drawer.getBoundingClientRect();
+    const top = after ? Math.min(r.bottom + 8, dr.bottom - 80) : dr.top + 76;
+    return { left: Math.round(dr.left + 14), top: Math.round(top), width: Math.round(Math.max(260, dr.width - 28)), height: 68 };
+  }
+  function bridgeAnchor(d) {
+    if (residentDrawer(d) || launcherDrawer(d)) return null;
+    const target = activeBridgeCopyButton(d);
+    if (!target) return null;
+    const r = target.getBoundingClientRect();
+    return { left: Math.round(r.left), top: Math.round(r.top), width: Math.round(r.width), height: Math.round(r.height) };
   }
   function make() {
     if (topButton) return topButton;
@@ -85,15 +114,15 @@
   }
   function update() {
     const o = inner();
-    const target = bridgeCopyButton(o.d);
+    const d = o.d;
     const b = make();
-    if (!target) { b.style.display = 'none'; return; }
-    const r = target.getBoundingClientRect();
+    const pos = residentAnchor(d) || bridgeAnchor(d);
+    if (!pos) { b.style.display = 'none'; return; }
     b.style.display = 'grid';
-    b.style.left = Math.round(r.left) + 'px';
-    b.style.top = Math.round(r.top) + 'px';
-    b.style.width = Math.round(r.width) + 'px';
-    b.style.height = Math.round(r.height) + 'px';
+    b.style.left = pos.left + 'px';
+    b.style.top = pos.top + 'px';
+    b.style.width = pos.width + 'px';
+    b.style.height = pos.height + 'px';
     styleChildren(b);
   }
   window.pmpRefreshTopCopyLosslessButton = update;
