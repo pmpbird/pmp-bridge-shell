@@ -1,0 +1,24 @@
+{
+  "type": "PMP_LOSSLESS_INVENTORY_VAULT_CURRENT",
+  "version": "1.0.0",
+  "status": "READY_FOR_APP_REPORT",
+  "built_at": "2026-05-10T00:00:00.000Z",
+  "storage_area_name": "PMP Lossless Inventory Vault",
+  "purpose": "Public-safe GitHub storage target for PMP app-layer lossless quality and Inventory Eyes reports.",
+  "scope": "App-layer inventory, route, theme, version, helper/support, privacy-surface, and lossless handoff reports.",
+  "not_scope": [
+    "PMP Master rewrite",
+    "private Bug Memory contents",
+    "Apple Notes private contents",
+    "tokens",
+    "passwords",
+    "secrets",
+    "private user data values"
+  ],
+  "privacy_rule": "Reports stored here must contain public app structure, route/status metadata, and localStorage key names only. They must not contain private values or private Bug Memory records.",
+  "attachment_rule": "This vault is attached to the app as an app-layer support store, not as part of the PMP Master and not as private memory.",
+  "current_expected_report_type": "PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES",
+  "writer_status": "NO_BROWSER_GITHUB_WRITE_BACKEND_VERIFIED_YET",
+  "reader_status": "CHATGPT_CAN_READ_THIS_GITHUB_FILE_WHEN_CONNECTED",
+  "next_step": "Wire app/backend so Copy Lossless Report can write the newest report here safely without exposing a GitHub token in public HTML."
+}
