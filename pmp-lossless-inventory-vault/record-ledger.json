@@ -1,6 +1,6 @@
 {
   "type": "PMP_VAULT_RECORD_LEDGER",
-  "version": "1.0.0",
+  "version": "2.0.0-hardened-processor",
   "purpose": "Permanent compact index for every accepted public-safe PMP Lossless Inventory Vault record.",
   "storage_area_name": "PMP Lossless Inventory Vault",
   "record_policy": {
@@ -73,6 +73,50 @@
       "promoted_to_history": false,
       "delta_record": "pmp-lossless-inventory-vault/deltas/latest-delta.json",
       "notes": "First successful Shortcut-to-GitHub inbox full report. Current file stores compact normalized summary; full report remains in inbox comment for now."
+    },
+    {
+      "record_id": "PMP-INV-2026-05-10-0002",
+      "record_kind": "inventory_eyes_lossless_report",
+      "primary_category": "app_inventory",
+      "status": "accepted_current",
+      "source_kind": "github_issue_inbox_comment",
+      "source_url": "https://github.com/pmpbird/pmp-bridge-shell/issues/1#issuecomment-4414782127",
+      "source_comment_id": 4414782127,
+      "body_hash": "044dcb133106731ee4885e91bac5080b140e4a1b70d7bc2725ca434b48008a0c",
+      "packet_built_at": "2026-05-10T07:57:00.864Z",
+      "report_built_at": "2026-05-10T07:57:00.864Z",
+      "summary": {
+        "manifest_paths": 140,
+        "active_files": 8,
+        "inactive_files": 132,
+        "helper_or_support_files": 16,
+        "privacy_sensitive_surfaces": 37,
+        "theme_review_targets": 41,
+        "local_storage_keys": 53,
+        "html_pages": 127,
+        "json_files": 7,
+        "js_files": 4,
+        "css_files": 1,
+        "config_files": 3
+      },
+      "categories": [
+        "inventory_eyes",
+        "lossless_quality",
+        "app_inventory",
+        "active_files",
+        "inactive_files",
+        "theme_review",
+        "privacy_surfaces",
+        "local_storage_key_names",
+        "version_control",
+        "route_control"
+      ],
+      "full_report_location": "github_issue_1_comment_4414782127",
+      "promoted_to_current": true,
+      "promoted_to_history": false,
+      "delta_record": "pmp-lossless-inventory-vault/deltas/latest-delta.json",
+      "notes": "Automatically processed from GitHub Issue #1 inbox by hardened processor."
     }
-  ]
+  ],
+  "updated_at": "2026-05-10T07:57:13.827Z"
 }

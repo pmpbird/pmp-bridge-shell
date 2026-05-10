@@ -1,0 +1,28 @@
+{
+  "type": "PMP_VAULT_INBOX_INTAKE_STATUS",
+  "version": "2.0.0-hardened-processor",
+  "status": "accepted_and_promoted",
+  "checked_at": "2026-05-10T07:57:13.828Z",
+  "candidates_checked": 1,
+  "accepted": 1,
+  "rejected": 0,
+  "skipped": 0,
+  "latest_accepted": {
+    "comment_id": 4414782127,
+    "record_id": "PMP-INV-2026-05-10-0002",
+    "summary": {
+      "manifest_paths": 140,
+      "active_files": 8,
+      "inactive_files": 132,
+      "helper_or_support_files": 16,
+      "privacy_sensitive_surfaces": 37,
+      "theme_review_targets": 41,
+      "local_storage_keys": 53,
+      "html_pages": 127,
+      "json_files": 7,
+      "js_files": 4,
+      "css_files": 1,
+      "config_files": 3
+    }
+  }
+}

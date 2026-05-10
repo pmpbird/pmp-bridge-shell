@@ -1,24 +1,25 @@
 {
   "type": "PMP_LOSSLESS_INVENTORY_VAULT_CURRENT",
-  "version": "2.0.0-record-system",
-  "status": "CURRENT_FROM_INBOX",
+  "version": "3.0.0-hardened-processor",
+  "status": "CURRENT_FROM_HARDENED_INBOX_PROCESSOR",
   "storage_area_name": "PMP Lossless Inventory Vault",
-  "current_record_id": "PMP-INV-2026-05-10-0001",
+  "current_record_id": "PMP-INV-2026-05-10-0002",
   "source": {
     "source_kind": "github_issue_inbox_comment",
     "issue": "https://github.com/pmpbird/pmp-bridge-shell/issues/1",
-    "comment_url": "https://github.com/pmpbird/pmp-bridge-shell/issues/1#issuecomment-4414752866",
-    "comment_id": 4414752866,
-    "note": "Full report is preserved in the inbox comment; this file stores the normalized current record and summary so current.json stays compact."
+    "comment_url": "https://github.com/pmpbird/pmp-bridge-shell/issues/1#issuecomment-4414782127",
+    "comment_id": 4414782127,
+    "body_hash": "044dcb133106731ee4885e91bac5080b140e4a1b70d7bc2725ca434b48008a0c",
+    "note": "Full report is preserved in the inbox comment; current.json stores compact normalized current state."
   },
   "report_identity": {
     "packet_type": "PMP_LOSSLESS_VAULT_WRITE_PACKET",
     "packet_version": "1.1.0-shortcut",
-    "packet_built_at": "2026-05-10T07:40:08.934Z",
+    "packet_built_at": "2026-05-10T07:57:00.864Z",
     "report_type": "PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES",
-    "report_built_at": "2026-05-10T07:40:08.934Z",
+    "report_built_at": "2026-05-10T07:57:00.864Z",
     "inventory_eyes_version": "2.6.0-shortcut-vault-writer",
-    "inventory_eyes_built_at": "2026-05-10T07:36:10.330Z"
+    "inventory_eyes_built_at": "2026-05-10T07:57:00.071Z"
   },
   "record_classification": {
     "primary_category": "app_inventory",
@@ -27,8 +28,8 @@
     "keep_full_report": "source_inbox_comment_for_now",
     "promote_to_history": false,
     "delta_required": true,
-    "privacy_gate": "passed_by_packet_claim_and_key-name-only design",
-    "confidence": "medium_high"
+    "privacy_gate": "passed_by_hardened_automated_validator",
+    "confidence": "high"
   },
   "scan_summary": {
     "manifest_paths": 140,
@@ -66,12 +67,11 @@
     "version_control",
     "route_control"
   ],
-  "truth_boundary": "This current record is a normalized pointer and summary of the latest full inbox report. The full copied report is stored in GitHub Issue #1 comment 4414752866. Private values are not captured; only key names and app structure are allowed.",
+  "truth_boundary": "This is a compact normalized pointer and summary of the latest full inbox report. Private values are not captured; only key names and app structure are allowed.",
   "next_actions": [
-    "Use record-ledger.json as the permanent index.",
-    "Use category-map.json to sort future records.",
-    "Use latest-delta.json to compare against the previous current state.",
-    "Do not store private Bug Memory or Apple Notes contents in this vault.",
-    "Later, replace inbox-comment storage with compact current plus selected history snapshots."
+    "Use record-ledger.json as permanent compact index.",
+    "Use category-map.json to sort records.",
+    "Use latest-delta.json to compare against previous current state.",
+    "Keep inbox as temporary intake, not permanent storage of all reports forever."
   ]
 }

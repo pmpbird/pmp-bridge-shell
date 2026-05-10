@@ -1,0 +1,6 @@
+{
+  "type": "PMP_VAULT_REJECTED_LEDGER",
+  "version": "1.0.0",
+  "purpose": "Permanent compact index of rejected inbox comments and why they were not promoted.",
+  "rejected_records": []
+}
