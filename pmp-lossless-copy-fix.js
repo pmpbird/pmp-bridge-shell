@@ -46,7 +46,7 @@
     };
     return JSON.stringify({
       type: 'PMP_LOSSLESS_VAULT_WRITE_PACKET',
-      version: '1.2.0-copy-fix',
+      version: '1.4.0-direct-tap-open',
       built_at: stamp,
       writer_name: 'Vault GitHub Writer',
       shortcut_name: SHORTCUT,
@@ -66,11 +66,8 @@
       report
     }, null, 2);
   }
-  async function copyAndOpen() {
-    const txt = packetText();
-    if (!txt) { status('No full report found. Run Improve Lossless Quality first.'); return false; }
-    try { await navigator.clipboard.writeText(txt); }
-    catch (_) {
+  function fallbackCopy(txt) {
+    try {
       const ta = document.createElement('textarea');
       ta.value = txt;
       ta.style.position = 'fixed';
@@ -80,9 +77,22 @@
       ta.select();
       document.execCommand('copy');
       ta.remove();
-    }
-    status('Copied long Vault Write Packet. Opening Vault Shortcut.');
-    setTimeout(() => { location.href = SHORTCUT_URL; }, 250);
+      return true;
+    } catch (_) { return false; }
+  }
+  function openShortcutNow() {
+    try { window.top.location.href = SHORTCUT_URL; return true; } catch (_) {}
+    try { window.parent.location.href = SHORTCUT_URL; return true; } catch (_) {}
+    try { location.href = SHORTCUT_URL; return true; } catch (_) {}
+    return false;
+  }
+  function copyAndOpen() {
+    const txt = packetText();
+    if (!txt) { status('No full report found. Run Improve Lossless Quality first.'); return false; }
+    fallbackCopy(txt);
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).catch(()=>{});
+    status('Copied Vault Write Packet. Opening PMP Vault GitHub Writer Shortcut.');
+    openShortcutNow();
     return true;
   }
   function patch() {
@@ -93,8 +103,8 @@
     w.copyLosslessReport = copyAndOpen;
     for (const b of Array.from(d.querySelectorAll('button'))) {
       const t = (b.textContent || '').replace(/\s+/g, ' ').trim();
-      if (/Copy Lossless Report|Copy Current|Copy Green Box/i.test(t) && !b.dataset.losslessCopyFix) {
-        b.dataset.losslessCopyFix = '1';
+      if (/Copy Lossless Report|Copy Current|Copy Green Box/i.test(t) && !b.dataset.losslessDirectTapOpen) {
+        b.dataset.losslessDirectTapOpen = '1';
         b.addEventListener('click', e => {
           e.preventDefault();
           e.stopImmediatePropagation();
@@ -103,7 +113,7 @@
       }
     }
   }
-  setInterval(patch, 800);
-  setTimeout(patch, 400);
+  setInterval(patch, 500);
+  setTimeout(patch, 300);
   window.pmpLosslessCopyFix = copyAndOpen;
 })();
