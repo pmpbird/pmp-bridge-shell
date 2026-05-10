@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PMP">
+<meta name="theme-color" content="#52b5df">
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>PMP Current</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#52b5df;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#101827}
+iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#52b5df}
+#boot{position:fixed;inset:0;display:grid;place-items:center;background:#52b5df;font-weight:950;text-align:center;padding:20px;z-index:5}
+#boot div{background:#46a9d3;border:3px solid #07101c;border-radius:28px;padding:18px;box-shadow:0 10px 24px rgba(0,0,0,.2)}
+</style>
+</head>
+<body>
+<div id="boot"><div>PMP loading current app...</div></div>
+<iframe id="app" title="PMP Current App"></iframe>
+<script>
+const MAP_PATH='pmp-current-map-v1.0.0.json';
+const DEFAULT_APP='pmp-home-single-v14.html';
+const F=document.getElementById('app');
+const BOOT=document.getElementById('boot');
+function nowKey(){return Date.now().toString(36)}
+function setStatus(t){if(BOOT)BOOT.innerHTML='<div>'+String(t).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))+'</div>'}
+function cleanPath(p){p=String(p||DEFAULT_APP).trim();if(!/^[a-zA-Z0-9._\/-]+\.html$/.test(p))return DEFAULT_APP;return p.replace(/^\/+/, '')}
+async function loadMap(){try{const r=await fetch(MAP_PATH+'?fresh='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('map '+r.status);return await r.json()}catch(e){return{type:'PMP_CURRENT_APP_MAP_FALLBACK',current_app:{path:DEFAULT_APP,cache_key:'fallback-'+nowKey()},fallback_error:String(e.message||e)}}}
+async function boot(){setStatus('PMP checking current app...');const map=await loadMap();const current=map.current_app||{};const path=cleanPath(current.path||DEFAULT_APP);const key=encodeURIComponent(current.cache_key||map.version||nowKey());F.src=path+'?fresh=current-shell-'+key+'-'+Date.now()+location.hash;F.onload=()=>{if(BOOT)BOOT.style.display='none'};setTimeout(()=>{if(BOOT)BOOT.style.display='none'},3500)}
+window.pmpCurrentReload=boot;
+boot();
+</script>
+</body>
+</html>
