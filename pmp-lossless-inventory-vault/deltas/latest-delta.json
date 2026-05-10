@@ -1,0 +1,32 @@
+{
+  "type": "PMP_VAULT_DELTA_RECORD",
+  "version": "1.0.0",
+  "record_id": "PMP-DELTA-2026-05-10-0001",
+  "basis": "First accepted inbox report after vault record system installation.",
+  "source_record_id": "PMP-INV-2026-05-10-0001",
+  "previous_baseline": "placeholder current.json v1.0.0",
+  "current_baseline": "current.json v2.0.0-record-system",
+  "delta_status": "baseline_created",
+  "major_changes": [
+    "Vault now has a current normalized record instead of only a placeholder.",
+    "First full report source is GitHub Issue #1 comment 4414752866.",
+    "Record ledger installed.",
+    "Category map installed.",
+    "Delta system started."
+  ],
+  "current_summary": {
+    "manifest_paths": 140,
+    "active_files": 8,
+    "inactive_files": 132,
+    "helper_or_support_files": 16,
+    "privacy_sensitive_surfaces": 37,
+    "theme_review_targets": 41,
+    "local_storage_keys": 53,
+    "html_pages": 127,
+    "json_files": 7,
+    "js_files": 4,
+    "css_files": 1,
+    "config_files": 3
+  },
+  "next_delta_rule": "For the next accepted report, compare summary counts, active_files, category tags, privacy surface count, theme_review_targets count, and route/version status against this baseline."
+}
