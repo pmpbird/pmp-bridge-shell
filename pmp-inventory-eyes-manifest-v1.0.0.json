@@ -1,12 +1,13 @@
 {
   "type": "PMP_INVENTORY_EYES_MANIFEST",
-  "version": "2.0.0-full-safe-current-baseline",
-  "purpose": "Full safe current-app baseline for Inventory Eyes. This lets Lossless Quality map the current PMP app, active support files, internal support files, and known archive/version residue without exposing private values.",
+  "version": "2.1.0-full-safe-detail-baseline",
+  "purpose": "Full safe current-app baseline for Inventory Eyes. This lets Lossless Quality map the current PMP app, active support files, internal support files, detail/aspect coverage, and known archive/version residue without exposing private values.",
   "truth_boundary": "This is a safe app-structure manifest, not private Bug Memory and not Apple Notes. It is the current working baseline for the app path we are using now. It should be improved as new files are created or verified.",
   "privacy_rule": "Public app paths and public-safe structural files only. No private Bug Memory records, private Notes contents, tokens, passwords, secrets, or private localStorage values.",
   "inventory_eyes_rule": "Improve Lossless Quality owns vault-grade Inventory Eyes reports. Upgrades should improve what Inventory Eyes records, not break the button or replace its flow.",
   "resident_xray_rule": "Resident X-Ray may read the latest Inventory Eyes output for better app awareness, but X-Ray stays separate and must not write to Inventory Eyes keys.",
   "current_user_facing_version": "PMP Current / PMP-CURRENT-1",
+  "detail_map": "pmp-inventory-eyes-detail-map-v1.0.0.json",
   "current_flow": [
     "pmp-app-current.html",
     "pmp-current-map.json",
@@ -31,6 +32,7 @@
     "pmp-resident-xray-core.js",
     "pmp-resident-xray-finish.js",
     "pmp-inventory-eyes-xray-feed.js",
+    "pmp-inventory-eyes-detail-map-v1.0.0.json",
     "pmp-shared-theme-v1.js",
     "pmp-inventory-eyes-manifest-v1.0.0.json",
     "pmp-lossless-inventory-vault/current.json",
@@ -88,6 +90,7 @@
       "pmp-resident-xray-core.js",
       "pmp-resident-xray-finish.js",
       "pmp-inventory-eyes-xray-feed.js",
+      "pmp-inventory-eyes-detail-map-v1.0.0.json",
       "pmp-shared-theme-v1.js",
       "private-bug-mixer-lab-spec-v1.json"
     ],
@@ -108,6 +111,7 @@
       "pmp-resident-xray-core.js",
       "pmp-resident-xray-finish.js",
       "pmp-inventory-eyes-xray-feed.js",
+      "pmp-inventory-eyes-detail-map-v1.0.0.json",
       "pmp-shared-theme-v1.js",
       "private-bug-mixer-lab-spec-v1.json",
       "wrangler.toml",
@@ -135,7 +139,7 @@
     ]
   },
   "baseline_record": {
-    "name": "Full Safe App Inventory Baseline",
+    "name": "Full Safe App Inventory Baseline plus Detail Map",
     "status": "installed_for_lossless_quality_scans",
     "what_it_improves": [
       "current active app path clarity",
@@ -143,7 +147,8 @@
       "vault support visibility",
       "current-map and updater support visibility",
       "archive/version residue separation",
-      "Bug Memory tool structure visibility without private contents"
+      "Bug Memory tool structure visibility without private contents",
+      "full safe app detail/aspect coverage expectations"
     ],
     "what_it_does_not_do": [
       "does not read Apple Notes",
@@ -153,5 +158,5 @@
       "does not change the Lossless Quality button flow"
     ]
   },
-  "next_manifest_upgrade": "After the next Lossless Quality report, compare vault output against this baseline and add any missing public-safe files that X-Ray or app updates reveal."
+  "next_manifest_upgrade": "After the next Lossless Quality report, compare vault output against this baseline and detail map, then add any missing public-safe files/aspects that X-Ray or app updates reveal."
 }
