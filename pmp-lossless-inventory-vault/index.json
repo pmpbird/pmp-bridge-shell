@@ -1,20 +1,25 @@
 {
   "type": "PMP_LOSSLESS_INVENTORY_VAULT_INDEX",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "storage_area_name": "PMP Lossless Inventory Vault",
   "built_at": "2026-05-10T00:00:00.000Z",
   "purpose": "Index for public-safe GitHub storage of PMP app-layer lossless quality and Inventory Eyes reports.",
   "current_report": "pmp-lossless-inventory-vault/current.json",
   "history_folder": "pmp-lossless-inventory-vault/history/",
+  "writer_name": "Vault GitHub Writer",
+  "writer_name_warning": "Do not call this Safe Writer. Safe Writer is already a separate PMP app/code-writing tool.",
+  "writer_role": "Vault GitHub Writer writes public-safe Inventory Eyes / Lossless Quality reports into the PMP Lossless Inventory Vault.",
   "allowed_report_types": [
     "PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES",
     "PMP_INVENTORY_EYES_APP_SCAN",
-    "PMP_LOSSLESS_REPORT_RECEIPT"
+    "PMP_LOSSLESS_REPORT_RECEIPT",
+    "PMP_LOSSLESS_VAULT_WRITE_PACKET"
   ],
   "privacy_rules": [
     "No private Bug Memory records.",
     "No Apple Notes contents.",
     "No tokens, passwords, or secrets.",
+    "No private user data values.",
     "Only public app structure, inventory metadata, route status, theme/status findings, and localStorage key names are allowed."
   ],
   "attachment_model": {
@@ -23,9 +28,22 @@
     "role": "support vault for app cleanup, lossless quality, Inventory Eyes, and version-control reports",
     "resident_use": "Resident may read this as app-layer context for lossless quality, but must not treat it as private memory or master truth."
   },
-  "write_safety": {
-    "browser_must_not_hold_github_token": true,
-    "safe_write_requires": "private backend, private writer, or ChatGPT/GitHub connector action",
-    "current_status": "vault_created_but_browser_write_bridge_not_yet_verified"
-  }
+  "write_model": {
+    "preferred_flow": "Improve Lossless Quality creates report -> Copy Lossless Report creates a PMP_LOSSLESS_VAULT_WRITE_PACKET -> Vault GitHub Writer writes packet.report to current_report.",
+    "current_report_target": "pmp-lossless-inventory-vault/current.json",
+    "history_target_pattern": "pmp-lossless-inventory-vault/history/YYYY-MM-DDTHH-MM-SSZ.json",
+    "browser_public_html_must_not_hold_github_token": true,
+    "allowed_writers": [
+      "Vault GitHub Writer private backend",
+      "ChatGPT GitHub connector action approved by user",
+      "other private authenticated writer controlled by the user"
+    ],
+    "not_allowed_writers": [
+      "public GitHub Pages HTML containing a token",
+      "public JavaScript containing a GitHub token",
+      "any writer that stores private Bug Memory in this vault"
+    ]
+  },
+  "current_status": "vault_target_defined_writer_bridge_not_yet_deployed",
+  "next_step": "Update the app report export so Copy Lossless Report emits a PMP_LOSSLESS_VAULT_WRITE_PACKET naming this vault target."
 }
