@@ -47,4 +47,5 @@
     }, null, 2);
   }
   window.pmpTopLosslessBuildPacket = build;
+  try { window.top.pmpTopLosslessBuildPacket = build; } catch (_) {}
 })();
