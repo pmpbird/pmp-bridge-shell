@@ -28,13 +28,12 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            const path = require('path');
             const crypto = require('crypto');
 
             const owner = context.repo.owner;
             const repo = context.repo.repo;
             const issue_number = 1;
-            const MAP_PATH = 'pmp-current-map-v1.0.0.json';
+            const MAP_PATH = 'pmp-current-map.json';
             const LOG_PATH = 'pmp-current-update-ledger.json';
             const STATUS_PATH = 'pmp-current-update-status.json';
 
@@ -66,7 +65,7 @@ jobs:
               for (const f of forbidden) if (f.test(raw)) throw new Error(`Forbidden private-looking value in update request: ${f}`);
               return {
                 path: p,
-                label: String(req.label || p).slice(0, 120),
+                label: String(req.label || 'PMP Current').slice(0, 120),
                 cache_key: String(req.cache_key || ('current-' + Date.now())).replace(/[^a-zA-Z0-9._-]+/g, '-').slice(0, 160),
                 reason: String(req.reason || 'Current app update request.').slice(0, 500)
               };
@@ -77,7 +76,7 @@ jobs:
               return comments.filter(c => (c.body || '').includes('PMP_APP_CURRENT_UPDATE_REQUEST')).slice(-20);
             }
 
-            const log = readJson(LOG_PATH, { type: 'PMP_CURRENT_UPDATE_LEDGER', version: '1.0.0', records: [], rejected: [] });
+            const log = readJson(LOG_PATH, { type: 'PMP_CURRENT_UPDATE_LEDGER', version: '1.1.0-unversioned-map', records: [], rejected: [] });
             log.records = Array.isArray(log.records) ? log.records : [];
             log.rejected = Array.isArray(log.rejected) ? log.rejected : [];
             const processed = new Set([...log.records, ...log.rejected].map(r => String(r.source_comment_id)));
@@ -102,21 +101,24 @@ jobs:
               const previous = readJson(MAP_PATH, null);
               const nextMap = {
                 type: 'PMP_CURRENT_APP_MAP',
-                version: '1.1.0-auto-updated',
+                app_name: 'PMP Current',
+                app_version: previous && previous.app_version ? previous.app_version : 'PMP-CURRENT-1',
                 updated_at: new Date().toISOString(),
-                purpose: 'Stable Home Screen app pointer. The Home Screen icon points to pmp-app-current.html; this map decides which app file is current.',
+                purpose: 'Single user-facing Home Screen app pointer. The Home Screen icon points to pmp-app-current.html; this map decides which internal file is currently loaded.',
                 current_app: {
                   path: req.path,
-                  label: req.label,
+                  label: req.label || 'PMP Current',
                   cache_key: req.cache_key,
                   status: 'current',
                   reason: req.reason,
                   source_comment_id: comment.id,
                   source_url: commentUrl(comment)
                 },
-                update_rule: 'Future app updates should update this map, not require a new Home Screen install.',
-                home_screen_rule: 'Install pmp-app-current.html once. Do not install individual version files again unless recovering from a broken current pointer.',
-                fallback_app: previous && previous.fallback_app ? previous.fallback_app : { path: 'pmp-home-single-v14.html', cache_key: 'fallback-v14-direct' }
+                user_facing_rule: 'Only show PMP Current / PMP-CURRENT-1 as the app version. Do not ask the user to install numbered app files.',
+                update_rule: 'Future updates should update this map or pmp-app-current.html. The Home Screen app remains pmp-app-current.html.',
+                home_screen_rule: 'Install pmp-app-current.html once. Do not install individual version files again unless recovering from a broken current shell.',
+                internal_file_rule: 'Numbered files are internal implementation/archive files, not the public app version.',
+                fallback_app: previous && previous.fallback_app ? previous.fallback_app : { path: 'pmp-home-single-v14.html', cache_key: 'fallback-pmp-current-1' }
               };
               writeJson(MAP_PATH, nextMap);
               const rec = {
@@ -128,21 +130,22 @@ jobs:
                 new_path: req.path,
                 cache_key: req.cache_key,
                 body_hash: hashText(comment.body || ''),
-                status: 'accepted_current_map_updated'
+                status: 'accepted_unversioned_current_map_updated'
               };
               log.records.push(rec);
               latest = rec;
               accepted++;
             }
+            log.version = '1.1.0-unversioned-map';
             log.updated_at = new Date().toISOString();
             writeJson(LOG_PATH, log);
-            writeJson(STATUS_PATH, { type: 'PMP_CURRENT_UPDATE_STATUS', version: '1.0.0', checked_at: new Date().toISOString(), candidates_checked: candidates.length, accepted, rejected, skipped, latest });
+            writeJson(STATUS_PATH, { type: 'PMP_CURRENT_UPDATE_STATUS', version: '1.1.0-unversioned-map', checked_at: new Date().toISOString(), target_map: MAP_PATH, candidates_checked: candidates.length, accepted, rejected, skipped, latest });
 
             const status = await exec.getExecOutput('git', ['status', '--porcelain']);
             if (!status.stdout.trim()) { core.info('No current-app update changes to commit.'); return; }
             await exec.exec('git', ['config', 'user.name', 'github-actions[bot]']);
             await exec.exec('git', ['config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com']);
             await exec.exec('git', ['add', MAP_PATH, LOG_PATH, STATUS_PATH]);
-            await exec.exec('git', ['commit', '-m', `Auto-update PMP current app pointer (${accepted} accepted, ${rejected} rejected)`]);
+            await exec.exec('git', ['commit', '-m', `Auto-update PMP Current pointer (${accepted} accepted, ${rejected} rejected)`]);
             try { await exec.exec('git', ['push']); }
             catch (e) { await exec.exec('git', ['pull', '--rebase']); await exec.exec('git', ['push']); }
