@@ -1,0 +1,74 @@
+{
+  "type": "PMP_INVENTORY_EYES_MANIFEST",
+  "version": "1.0.0",
+  "purpose": "Seed list for the app-wide Inventory Eyes scanner. The scanner also crawls same-origin links it discovers from these files.",
+  "privacy_rule": "This manifest contains public app file paths only. It must not contain private Bug Memory records, private Notes contents, tokens, passwords, or server secrets.",
+  "scan_rule": "Improve Lossless Quality should scan live screen state, localStorage key names only, this manifest, each fetchable app file, and same-origin links discovered inside those files.",
+  "paths": [
+    "index.html",
+    "pmp-home-single-v6.html",
+    "pmp-home-single-v7.html",
+    "pmp-home-single-v10.html",
+    "pmp-home-single-v12.html",
+    "bm.html",
+    "private-bug-memory-hub-v1.html",
+    "private-bug-memory-hub-v2.html",
+    "private-bug-memory-hub-v3.html",
+    "private-bug-memory-hub-v4.html",
+    "private-bug-memory-hub-v5.html",
+    "private-bug-memory-hub-v6.html",
+    "private-bug-memory-hub-v7.html",
+    "private-bug-memory-hub-v8.html",
+    "private-bug-memory-hub-v9.html",
+    "resident-notes-catalog-v1.html",
+    "resident-notes-catalog-v2.html",
+    "resident-notes-catalog-v3.html",
+    "resident-notes-catalog-v4.html",
+    "resident-notes-backend-v1.html",
+    "resident-notes-backend-v2.html",
+    "resident-zip-xray-v1.html",
+    "resident-zip-xray-v2.html",
+    "private-bug-mixer-lab-v1.html",
+    "private-bug-mixer-lab-v2.html",
+    "private-bug-mixer-lab-spec-v1.json",
+    "pmp-shared-theme-v1.js",
+    "safe-writer-v14.html",
+    "code-safety-v13.html",
+    "resident.html",
+    "pmp-latest.json",
+    "pmp-app-lossless-inventory-v1.0.0.json",
+    "pmp-app-page-inventory-v1.0.0.json",
+    "pmp-current-map-v1.0.0.json",
+    "pmp-tool-index-v1.0.0.json",
+    "pmp-room-shell-v1.0.0.css",
+    "pmp-room-shell-v1.0.0.js"
+  ],
+  "classification_rules": {
+    "current_active": [
+      "pmp-home-single-v10.html",
+      "pmp-home-single-v12.html",
+      "bm.html",
+      "private-bug-memory-hub-v9.html",
+      "resident-notes-catalog-v3.html",
+      "resident-notes-backend-v2.html",
+      "resident-zip-xray-v2.html",
+      "private-bug-mixer-lab-v1.html"
+    ],
+    "visual_reference": [
+      "private-bug-memory-hub-v9.html"
+    ],
+    "helper_not_user_facing": [
+      "pmp-shared-theme-v1.js",
+      "private-bug-mixer-lab-spec-v1.json"
+    ],
+    "expected_missing_or_future": [
+      "resident-notes-catalog-v4.html",
+      "private-bug-mixer-lab-v2.html",
+      "pmp-app-lossless-inventory-v1.0.0.json",
+      "pmp-current-map-v1.0.0.json",
+      "pmp-tool-index-v1.0.0.json",
+      "pmp-room-shell-v1.0.0.css",
+      "pmp-room-shell-v1.0.0.js"
+    ]
+  }
+}
