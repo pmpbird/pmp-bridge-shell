@@ -1,24 +1,77 @@
 {
   "type": "PMP_LOSSLESS_INVENTORY_VAULT_CURRENT",
-  "version": "1.0.0",
-  "status": "READY_FOR_APP_REPORT",
-  "built_at": "2026-05-10T00:00:00.000Z",
+  "version": "2.0.0-record-system",
+  "status": "CURRENT_FROM_INBOX",
   "storage_area_name": "PMP Lossless Inventory Vault",
-  "purpose": "Public-safe GitHub storage target for PMP app-layer lossless quality and Inventory Eyes reports.",
-  "scope": "App-layer inventory, route, theme, version, helper/support, privacy-surface, and lossless handoff reports.",
-  "not_scope": [
-    "PMP Master rewrite",
-    "private Bug Memory contents",
-    "Apple Notes private contents",
-    "tokens",
-    "passwords",
-    "secrets",
-    "private user data values"
+  "current_record_id": "PMP-INV-2026-05-10-0001",
+  "source": {
+    "source_kind": "github_issue_inbox_comment",
+    "issue": "https://github.com/pmpbird/pmp-bridge-shell/issues/1",
+    "comment_url": "https://github.com/pmpbird/pmp-bridge-shell/issues/1#issuecomment-4414752866",
+    "comment_id": 4414752866,
+    "note": "Full report is preserved in the inbox comment; this file stores the normalized current record and summary so current.json stays compact."
+  },
+  "report_identity": {
+    "packet_type": "PMP_LOSSLESS_VAULT_WRITE_PACKET",
+    "packet_version": "1.1.0-shortcut",
+    "packet_built_at": "2026-05-10T07:40:08.934Z",
+    "report_type": "PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES",
+    "report_built_at": "2026-05-10T07:40:08.934Z",
+    "inventory_eyes_version": "2.6.0-shortcut-vault-writer",
+    "inventory_eyes_built_at": "2026-05-10T07:36:10.330Z"
+  },
+  "record_classification": {
+    "primary_category": "app_inventory",
+    "record_kind": "inventory_eyes_lossless_report",
+    "record_status": "accepted_current",
+    "keep_full_report": "source_inbox_comment_for_now",
+    "promote_to_history": false,
+    "delta_required": true,
+    "privacy_gate": "passed_by_packet_claim_and_key-name-only design",
+    "confidence": "medium_high"
+  },
+  "scan_summary": {
+    "manifest_paths": 140,
+    "active_files": 8,
+    "inactive_files": 132,
+    "helper_or_support_files": 16,
+    "privacy_sensitive_surfaces": 37,
+    "theme_review_targets": 41,
+    "local_storage_keys": 53,
+    "html_pages": 127,
+    "json_files": 7,
+    "js_files": 4,
+    "css_files": 1,
+    "config_files": 3
+  },
+  "active_files": [
+    "pmp-home-single-v10.html",
+    "pmp-home-single-v12.html",
+    "bm.html",
+    "private-bug-memory-hub-v9.html",
+    "resident-notes-catalog-v3.html",
+    "resident-notes-backend-v2.html",
+    "resident-zip-xray-v2.html",
+    "private-bug-mixer-lab-v1.html"
   ],
-  "privacy_rule": "Reports stored here must contain public app structure, route/status metadata, and localStorage key names only. They must not contain private values or private Bug Memory records.",
-  "attachment_rule": "This vault is attached to the app as an app-layer support store, not as part of the PMP Master and not as private memory.",
-  "current_expected_report_type": "PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES",
-  "writer_status": "NO_BROWSER_GITHUB_WRITE_BACKEND_VERIFIED_YET",
-  "reader_status": "CHATGPT_CAN_READ_THIS_GITHUB_FILE_WHEN_CONNECTED",
-  "next_step": "Wire app/backend so Copy Lossless Report can write the newest report here safely without exposing a GitHub token in public HTML."
+  "category_tags": [
+    "inventory_eyes",
+    "lossless_quality",
+    "app_inventory",
+    "active_files",
+    "inactive_files",
+    "theme_review",
+    "privacy_surfaces",
+    "local_storage_key_names",
+    "version_control",
+    "route_control"
+  ],
+  "truth_boundary": "This current record is a normalized pointer and summary of the latest full inbox report. The full copied report is stored in GitHub Issue #1 comment 4414752866. Private values are not captured; only key names and app structure are allowed.",
+  "next_actions": [
+    "Use record-ledger.json as the permanent index.",
+    "Use category-map.json to sort future records.",
+    "Use latest-delta.json to compare against the previous current state.",
+    "Do not store private Bug Memory or Apple Notes contents in this vault.",
+    "Later, replace inbox-comment storage with compact current plus selected history snapshots."
+  ]
 }
