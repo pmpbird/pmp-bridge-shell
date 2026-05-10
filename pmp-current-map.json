@@ -2,19 +2,21 @@
   "type": "PMP_CURRENT_APP_MAP",
   "app_name": "PMP Current",
   "app_version": "PMP-CURRENT-1",
-  "updated_at": "2026-05-10T00:00:00.000Z",
+  "updated_at": "2026-05-10T19:00:15.288Z",
   "purpose": "Single user-facing Home Screen app pointer. The Home Screen icon points to pmp-app-current.html; this map decides which internal file is currently loaded.",
   "current_app": {
     "path": "pmp-home-single-v14.html",
-    "label": "PMP Current",
-    "cache_key": "pmp-current-1",
+    "label": "PMP v14 direct Home Screen app",
+    "cache_key": "auto-update-pmp-home-single-v14-html-1778439604794",
     "status": "current",
-    "reason": "Single current Home Screen app path. Internal numbered files are implementation/archive details, not user-facing app versions."
+    "reason": "One-button Home Screen app update request from stable pmp-app-current.html shell.",
+    "source_comment_id": 4416081863,
+    "source_url": "https://github.com/pmpbird/pmp-bridge-shell/issues/1#issuecomment-4416081863"
   },
   "user_facing_rule": "Only show PMP Current / PMP-CURRENT-1 as the app version. Do not ask the user to install numbered app files.",
   "update_rule": "Future updates should update this map or pmp-app-current.html. The Home Screen app remains pmp-app-current.html.",
   "home_screen_rule": "Install pmp-app-current.html once. Do not install individual version files again unless recovering from a broken current shell.",
-  "internal_file_rule": "Files like pmp-home-single-v6.html, v10, v12, and v14 are internal implementation/archive files. They may exist in the repo, but they are not the public app version.",
+  "internal_file_rule": "Numbered files are internal implementation/archive files, not the public app version.",
   "fallback_app": {
     "path": "pmp-home-single-v14.html",
     "cache_key": "fallback-pmp-current-1"
