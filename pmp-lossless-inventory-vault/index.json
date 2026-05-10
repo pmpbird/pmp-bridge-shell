@@ -1,0 +1,31 @@
+{
+  "type": "PMP_LOSSLESS_INVENTORY_VAULT_INDEX",
+  "version": "1.0.0",
+  "storage_area_name": "PMP Lossless Inventory Vault",
+  "built_at": "2026-05-10T00:00:00.000Z",
+  "purpose": "Index for public-safe GitHub storage of PMP app-layer lossless quality and Inventory Eyes reports.",
+  "current_report": "pmp-lossless-inventory-vault/current.json",
+  "history_folder": "pmp-lossless-inventory-vault/history/",
+  "allowed_report_types": [
+    "PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES",
+    "PMP_INVENTORY_EYES_APP_SCAN",
+    "PMP_LOSSLESS_REPORT_RECEIPT"
+  ],
+  "privacy_rules": [
+    "No private Bug Memory records.",
+    "No Apple Notes contents.",
+    "No tokens, passwords, or secrets.",
+    "Only public app structure, inventory metadata, route status, theme/status findings, and localStorage key names are allowed."
+  ],
+  "attachment_model": {
+    "attached_to": "PMP app layer",
+    "not_attached_to": "PMP Master",
+    "role": "support vault for app cleanup, lossless quality, Inventory Eyes, and version-control reports",
+    "resident_use": "Resident may read this as app-layer context for lossless quality, but must not treat it as private memory or master truth."
+  },
+  "write_safety": {
+    "browser_must_not_hold_github_token": true,
+    "safe_write_requires": "private backend, private writer, or ChatGPT/GitHub connector action",
+    "current_status": "vault_created_but_browser_write_bridge_not_yet_verified"
+  }
+}
