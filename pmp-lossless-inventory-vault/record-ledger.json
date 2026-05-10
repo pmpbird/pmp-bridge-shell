@@ -1,0 +1,78 @@
+{
+  "type": "PMP_VAULT_RECORD_LEDGER",
+  "version": "1.0.0",
+  "purpose": "Permanent compact index for every accepted public-safe PMP Lossless Inventory Vault record.",
+  "storage_area_name": "PMP Lossless Inventory Vault",
+  "record_policy": {
+    "store_every_record": true,
+    "store_every_full_report_forever": false,
+    "current_report_rewrites": true,
+    "history_snapshots_only_when_important": true,
+    "deltas_track_changes": true,
+    "inbox_is_temporary_intake": true,
+    "vault_is_long_term_record_system": true
+  },
+  "privacy_boundary": {
+    "allowed": [
+      "public app structure",
+      "route/status metadata",
+      "theme/status findings",
+      "version status",
+      "privacy-surface flags",
+      "localStorage key names only"
+    ],
+    "forbidden": [
+      "private Bug Memory records",
+      "Apple Notes contents",
+      "tokens",
+      "passwords",
+      "secrets",
+      "private localStorage values",
+      "private user data values"
+    ]
+  },
+  "records": [
+    {
+      "record_id": "PMP-INV-2026-05-10-0001",
+      "record_kind": "inventory_eyes_lossless_report",
+      "primary_category": "app_inventory",
+      "status": "accepted_current",
+      "source_kind": "github_issue_inbox_comment",
+      "source_url": "https://github.com/pmpbird/pmp-bridge-shell/issues/1#issuecomment-4414752866",
+      "source_comment_id": 4414752866,
+      "packet_built_at": "2026-05-10T07:40:08.934Z",
+      "report_built_at": "2026-05-10T07:40:08.934Z",
+      "summary": {
+        "manifest_paths": 140,
+        "active_files": 8,
+        "inactive_files": 132,
+        "helper_or_support_files": 16,
+        "privacy_sensitive_surfaces": 37,
+        "theme_review_targets": 41,
+        "local_storage_keys": 53,
+        "html_pages": 127,
+        "json_files": 7,
+        "js_files": 4,
+        "css_files": 1,
+        "config_files": 3
+      },
+      "categories": [
+        "inventory_eyes",
+        "lossless_quality",
+        "app_inventory",
+        "active_files",
+        "inactive_files",
+        "theme_review",
+        "privacy_surfaces",
+        "local_storage_key_names",
+        "version_control",
+        "route_control"
+      ],
+      "full_report_location": "github_issue_1_comment_4414752866",
+      "promoted_to_current": true,
+      "promoted_to_history": false,
+      "delta_record": "pmp-lossless-inventory-vault/deltas/latest-delta.json",
+      "notes": "First successful Shortcut-to-GitHub inbox full report. Current file stores compact normalized summary; full report remains in inbox comment for now."
+    }
+  ]
+}
