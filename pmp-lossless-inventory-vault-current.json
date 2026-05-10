@@ -1,0 +1,10 @@
+{
+  "type": "PMP_LOSSLESS_INVENTORY_VAULT_SHORTCUT_CURRENT",
+  "version": "1.0.0",
+  "status": "READY_FOR_SHORTCUT_REPORT",
+  "storage_area_name": "PMP Lossless Inventory Vault",
+  "role": "Root-level iPhone Shortcut write target to avoid iOS Shortcuts folder-path PUT errors. ChatGPT can read this file and mirror it into the canonical vault current file if needed.",
+  "current_expected_report_type": "PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES",
+  "privacy_rule": "Public-safe app inventory only; no private content or private values; localStorage key names only.",
+  "next_step": "Set Shortcut GET and PUT URLs to /contents/pmp-lossless-inventory-vault-current.json"
+}
