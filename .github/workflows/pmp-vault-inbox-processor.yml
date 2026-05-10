@@ -9,6 +9,10 @@ permissions:
   contents: write
   issues: read
 
+concurrency:
+  group: pmp-vault-inbox-processor
+  cancel-in-progress: false
+
 jobs:
   process-pmp-vault-inbox:
     if: github.event_name == 'workflow_dispatch' || github.event.issue.number == 1
@@ -19,59 +23,104 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Process latest PMP vault inbox comment
+      - name: Process PMP vault inbox comments
         uses: actions/github-script@v7
         with:
           script: |
             const fs = require('fs');
             const path = require('path');
+            const crypto = require('crypto');
 
             const owner = context.repo.owner;
             const repo = context.repo.repo;
             const issue_number = 1;
+            const MARKER = 'PMP LOSSLESS INVENTORY REPORT';
+            const VAULT = 'pmp-lossless-inventory-vault';
+            const paths = {
+              current: `${VAULT}/current.json`,
+              ledger: `${VAULT}/record-ledger.json`,
+              delta: `${VAULT}/deltas/latest-delta.json`,
+              intake: `${VAULT}/inbox-intake-status.json`,
+              rejected: `${VAULT}/rejected-ledger.json`,
+              health: `${VAULT}/processor-health.json`
+            };
 
-            function ensureDir(filePath) {
-              fs.mkdirSync(path.dirname(filePath), { recursive: true });
+            function ensureDir(filePath) { fs.mkdirSync(path.dirname(filePath), { recursive: true }); }
+            function readJson(filePath, fallback) { try { return JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch (_) { return fallback; } }
+            function writeJson(filePath, value) { ensureDir(filePath); fs.writeFileSync(filePath, JSON.stringify(value, null, 2) + '\n'); }
+            function hashText(text) { return crypto.createHash('sha256').update(String(text || '')).digest('hex'); }
+            function ymd(date) { return `${date.getUTCFullYear()}-${String(date.getUTCMonth()+1).padStart(2,'0')}-${String(date.getUTCDate()).padStart(2,'0')}`; }
+            function recordId(date, n) { return `PMP-INV-${ymd(date)}-${String(n).padStart(4,'0')}`; }
+            function deltaId(date, n) { return `PMP-DELTA-${ymd(date)}-${String(n).padStart(4,'0')}`; }
+            function commentUrl(c) { return c.html_url || `https://github.com/${owner}/${repo}/issues/${issue_number}#issuecomment-${c.id}`; }
+
+            function loadLedger() {
+              const ledger = readJson(paths.ledger, {
+                type: 'PMP_VAULT_RECORD_LEDGER',
+                version: '2.0.0-hardened-processor',
+                purpose: 'Permanent compact index for every accepted public-safe PMP Lossless Inventory Vault record.',
+                storage_area_name: 'PMP Lossless Inventory Vault',
+                record_policy: {
+                  store_every_record: true,
+                  store_every_full_report_forever: false,
+                  current_report_rewrites: true,
+                  history_snapshots_only_when_important: true,
+                  deltas_track_changes: true,
+                  inbox_is_temporary_intake: true,
+                  vault_is_long_term_record_system: true
+                },
+                records: []
+              });
+              ledger.records = Array.isArray(ledger.records) ? ledger.records : [];
+              return ledger;
             }
 
-            function readJson(filePath, fallback) {
-              try { return JSON.parse(fs.readFileSync(filePath, 'utf8')); }
-              catch (_) { return fallback; }
+            function loadRejected() {
+              const rejected = readJson(paths.rejected, {
+                type: 'PMP_VAULT_REJECTED_LEDGER',
+                version: '1.0.0',
+                purpose: 'Permanent compact index of rejected inbox comments and why they were not promoted.',
+                rejected_records: []
+              });
+              rejected.rejected_records = Array.isArray(rejected.rejected_records) ? rejected.rejected_records : [];
+              return rejected;
             }
 
-            function writeJson(filePath, value) {
-              ensureDir(filePath);
-              fs.writeFileSync(filePath, JSON.stringify(value, null, 2) + '\n');
-            }
-
-            function stableRecordId(date, n) {
-              const yyyy = date.getUTCFullYear();
-              const mm = String(date.getUTCMonth() + 1).padStart(2, '0');
-              const dd = String(date.getUTCDate()).padStart(2, '0');
-              return `PMP-INV-${yyyy}-${mm}-${dd}-${String(n).padStart(4, '0')}`;
-            }
-
-            function deltaId(date, n) {
-              const yyyy = date.getUTCFullYear();
-              const mm = String(date.getUTCMonth() + 1).padStart(2, '0');
-              const dd = String(date.getUTCDate()).padStart(2, '0');
-              return `PMP-DELTA-${yyyy}-${mm}-${dd}-${String(n).padStart(4, '0')}`;
+            function rejectComment(comment, reason, detail, rejected, processedBodyHash) {
+              const existing = rejected.rejected_records.some(r => String(r.source_comment_id) === String(comment.id));
+              if (existing) return { status: 'already_rejected', reason };
+              const rec = {
+                rejected_id: `PMP-REJECT-${new Date().toISOString().replace(/[:.]/g,'-')}`,
+                source_comment_id: comment.id,
+                source_url: commentUrl(comment),
+                source_user: comment.user && comment.user.login || null,
+                author_association: comment.author_association || null,
+                rejected_at: new Date().toISOString(),
+                reason,
+                detail: String(detail || '').slice(0, 1000),
+                body_hash: processedBodyHash || hashText(comment.body || ''),
+                body_preview: String(comment.body || '').replace(/\s+/g, ' ').slice(0, 220),
+                promoted_to_current: false
+              };
+              rejected.rejected_records.push(rec);
+              rejected.updated_at = new Date().toISOString();
+              core.warning(`Rejected PMP vault inbox comment ${comment.id}: ${reason} ${detail || ''}`);
+              return { status: 'rejected', reason };
             }
 
             function findJsonPayload(body) {
               const firstBrace = body.indexOf('{');
               if (firstBrace < 0) throw new Error('No JSON object found in inbox comment.');
-              const jsonText = body.slice(firstBrace).trim();
-              return JSON.parse(jsonText);
+              return JSON.parse(body.slice(firstBrace).trim());
             }
 
-            function validatePacketOrReport(payload) {
+            function validatePayload(payload) {
               let packet = null;
               let report = null;
-              if (payload.type === 'PMP_LOSSLESS_VAULT_WRITE_PACKET') {
+              if (payload && payload.type === 'PMP_LOSSLESS_VAULT_WRITE_PACKET') {
                 packet = payload;
                 report = payload.report;
-              } else if (payload.type === 'PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES') {
+              } else if (payload && payload.type === 'PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES') {
                 report = payload;
               } else {
                 throw new Error(`Unsupported payload type: ${payload && payload.type}`);
@@ -80,13 +129,15 @@ jobs:
               if (!report || report.type !== 'PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES') {
                 throw new Error('Missing PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES report.');
               }
+              if (!report.inventory_eyes || report.inventory_eyes.type !== 'PMP_INVENTORY_EYES_APP_SCAN') {
+                throw new Error('Missing PMP_INVENTORY_EYES_APP_SCAN body.');
+              }
 
               if (packet) {
                 if (packet.writer_name !== 'Vault GitHub Writer') throw new Error('Wrong writer_name.');
                 if (packet.storage_area !== 'PMP Lossless Inventory Vault') throw new Error('Wrong storage_area.');
                 const gate = packet.privacy_gate || {};
-                const requiredFalse = ['private_bug_memory','apple_notes_contents','tokens','passwords','secrets','private_values'];
-                for (const key of requiredFalse) {
+                for (const key of ['private_bug_memory','apple_notes_contents','tokens','passwords','secrets','private_values']) {
                   if (gate[key] !== false) throw new Error(`Privacy gate failed: ${key}`);
                 }
                 if (gate.localStorage_key_names_only !== true) throw new Error('Privacy gate failed: localStorage_key_names_only');
@@ -99,7 +150,7 @@ jobs:
                 /BEGIN PRIVATE KEY/,
                 /password\s*[:=]\s*[^,}\n]+/i,
                 /secret\s*[:=]\s*[^,}\n]+/i,
-                /token\s*[:=]\s*[^,}\n]+/i
+                /\btoken\s*[:=]\s*[^,}\n]+/i
               ];
               for (const pattern of forbiddenPatterns) {
                 if (pattern.test(raw)) throw new Error(`Forbidden private-looking value found: ${pattern}`);
@@ -108,8 +159,8 @@ jobs:
               const storageKeys = report.inventory_eyes?.live_screen?.local_storage_keys || [];
               for (const k of storageKeys) {
                 if (k.value_captured !== false) throw new Error(`localStorage value captured for key: ${k.key}`);
+                if (Object.prototype.hasOwnProperty.call(k, 'value')) throw new Error(`localStorage private value field present for key: ${k.key}`);
               }
-
               return { packet, report };
             }
 
@@ -125,173 +176,197 @@ jobs:
               return [...new Set(tags)];
             }
 
-            function buildDelta(previousCurrent, currentRecord, recordId, ordinal) {
+            function buildDelta(previousCurrent, currentRecord, rid, ordinal) {
               const now = new Date();
-              const prev = previousCurrent?.scan_summary || {};
+              const prev = previousCurrent && previousCurrent.scan_summary || {};
               const curr = currentRecord.scan_summary || {};
               const keys = [...new Set([...Object.keys(prev), ...Object.keys(curr)])];
               const count_changes = {};
-              for (const key of keys) {
-                if (prev[key] !== curr[key]) count_changes[key] = { previous: prev[key] ?? null, current: curr[key] ?? null };
-              }
-              const prevActive = previousCurrent?.active_files || [];
+              for (const key of keys) if (prev[key] !== curr[key]) count_changes[key] = { previous: prev[key] ?? null, current: curr[key] ?? null };
+              const prevActive = previousCurrent && previousCurrent.active_files || [];
               const currActive = currentRecord.active_files || [];
-              const added_active_files = currActive.filter(x => !prevActive.includes(x));
-              const removed_active_files = prevActive.filter(x => !currActive.includes(x));
               return {
                 type: 'PMP_VAULT_DELTA_RECORD',
-                version: '1.1.0-auto-processor',
+                version: '2.0.0-hardened-processor',
                 record_id: deltaId(now, ordinal),
-                source_record_id: recordId,
+                source_record_id: rid,
                 built_at: now.toISOString(),
-                previous_current_record_id: previousCurrent?.current_record_id || null,
-                current_record_id: recordId,
-                delta_status: previousCurrent?.current_record_id ? 'compared' : 'baseline_created',
+                previous_current_record_id: previousCurrent && previousCurrent.current_record_id || null,
+                current_record_id: rid,
+                delta_status: previousCurrent && previousCurrent.current_record_id ? 'compared' : 'baseline_created',
                 count_changes,
-                active_file_changes: { added_active_files, removed_active_files },
+                active_file_changes: {
+                  added_active_files: currActive.filter(x => !prevActive.includes(x)),
+                  removed_active_files: prevActive.filter(x => !currActive.includes(x))
+                },
                 next_delta_rule: 'Compare summary counts, active_files, privacy surface count, theme_review_targets count, and route/version status against this baseline.'
               };
             }
 
-            let comment;
-            if (context.eventName === 'issue_comment') {
-              comment = context.payload.comment;
-            } else {
+            async function getCandidateComments() {
+              if (context.eventName === 'issue_comment') return [context.payload.comment];
               const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number, per_page: 100 });
-              comment = [...comments].reverse().find(c => (c.body || '').includes('PMP LOSSLESS INVENTORY REPORT'));
-              if (!comment) throw new Error('No PMP inbox report comment found.');
+              return comments.filter(c => (c.body || '').includes(MARKER)).slice(-25);
             }
 
-            const body = comment.body || '';
-            if (!body.includes('PMP LOSSLESS INVENTORY REPORT')) {
-              core.info('Comment does not look like a PMP lossless report. Ignoring.');
-              return;
-            }
+            const ledger = loadLedger();
+            const rejected = loadRejected();
+            const processedIds = new Set(ledger.records.map(r => String(r.source_comment_id)));
+            const rejectedIds = new Set(rejected.rejected_records.map(r => String(r.source_comment_id)));
+            let previousCurrent = readJson(paths.current, null);
+            let accepted = 0;
+            let rejectedCount = 0;
+            let skipped = 0;
+            let latestAccepted = null;
+            const candidates = await getCandidateComments();
 
-            const payload = findJsonPayload(body);
-            const { packet, report } = validatePacketOrReport(payload);
+            for (const comment of candidates) {
+              const body = comment.body || '';
+              const bodyHash = hashText(body);
 
-            const ledgerPath = 'pmp-lossless-inventory-vault/record-ledger.json';
-            const currentPath = 'pmp-lossless-inventory-vault/current.json';
-            const latestDeltaPath = 'pmp-lossless-inventory-vault/deltas/latest-delta.json';
-            const intakePath = 'pmp-lossless-inventory-vault/inbox-intake-status.json';
+              if (!body.includes(MARKER)) { skipped++; continue; }
+              if (processedIds.has(String(comment.id))) { skipped++; continue; }
+              if (rejectedIds.has(String(comment.id))) { skipped++; continue; }
+              if ((comment.user && comment.user.login) !== owner) {
+                rejectComment(comment, 'unauthorized_comment_author', `Expected ${owner}`, rejected, bodyHash);
+                rejectedCount++; continue;
+              }
 
-            const ledger = readJson(ledgerPath, {
-              type: 'PMP_VAULT_RECORD_LEDGER',
-              version: '1.1.0-auto-processor',
-              purpose: 'Permanent compact index for every accepted public-safe PMP Lossless Inventory Vault record.',
-              storage_area_name: 'PMP Lossless Inventory Vault',
-              records: []
-            });
-            ledger.records = Array.isArray(ledger.records) ? ledger.records : [];
+              let payload, packet, report;
+              try {
+                payload = findJsonPayload(body);
+                ({ packet, report } = validatePayload(payload));
+              } catch (error) {
+                rejectComment(comment, 'validation_failed', error.message || error, rejected, bodyHash);
+                rejectedCount++; continue;
+              }
 
-            const nowDate = new Date();
-            const nextOrdinal = ledger.records.length + 1;
-            const recordId = stableRecordId(nowDate, nextOrdinal);
-            const previousCurrent = readJson(currentPath, null);
-            const summary = report.scan_summary || report.inventory_eyes?.summary || {};
-            const activeFiles = (report.inventory_eyes?.active_files || []).map(x => x.path || x).filter(Boolean);
-            const tags = categoryTags(report);
+              const ordinal = ledger.records.length + 1;
+              const rid = recordId(new Date(), ordinal);
+              const summary = report.scan_summary || report.inventory_eyes?.summary || {};
+              const activeFiles = (report.inventory_eyes?.active_files || []).map(x => x.path || x).filter(Boolean);
+              const tags = categoryTags(report);
+              const currentRecord = {
+                type: 'PMP_LOSSLESS_INVENTORY_VAULT_CURRENT',
+                version: '3.0.0-hardened-processor',
+                status: 'CURRENT_FROM_HARDENED_INBOX_PROCESSOR',
+                storage_area_name: 'PMP Lossless Inventory Vault',
+                current_record_id: rid,
+                source: {
+                  source_kind: 'github_issue_inbox_comment',
+                  issue: `https://github.com/${owner}/${repo}/issues/${issue_number}`,
+                  comment_url: commentUrl(comment),
+                  comment_id: comment.id,
+                  body_hash: bodyHash,
+                  note: 'Full report is preserved in the inbox comment; current.json stores compact normalized current state.'
+                },
+                report_identity: {
+                  packet_type: packet && packet.type || null,
+                  packet_version: packet && packet.version || null,
+                  packet_built_at: packet && packet.built_at || null,
+                  report_type: report.type,
+                  report_built_at: report.built_at || null,
+                  inventory_eyes_version: report.inventory_eyes && report.inventory_eyes.version || null,
+                  inventory_eyes_built_at: report.inventory_eyes && report.inventory_eyes.built_at || null
+                },
+                record_classification: {
+                  primary_category: 'app_inventory',
+                  record_kind: 'inventory_eyes_lossless_report',
+                  record_status: 'accepted_current',
+                  keep_full_report: 'source_inbox_comment_for_now',
+                  promote_to_history: false,
+                  delta_required: true,
+                  privacy_gate: 'passed_by_hardened_automated_validator',
+                  confidence: 'high'
+                },
+                scan_summary: summary,
+                active_files: activeFiles,
+                category_tags: tags,
+                truth_boundary: 'This is a compact normalized pointer and summary of the latest full inbox report. Private values are not captured; only key names and app structure are allowed.',
+                next_actions: [
+                  'Use record-ledger.json as permanent compact index.',
+                  'Use category-map.json to sort records.',
+                  'Use latest-delta.json to compare against previous current state.',
+                  'Keep inbox as temporary intake, not permanent storage of all reports forever.'
+                ]
+              };
 
-            const currentRecord = {
-              type: 'PMP_LOSSLESS_INVENTORY_VAULT_CURRENT',
-              version: '2.1.0-auto-processor',
-              status: 'CURRENT_FROM_AUTOMATED_INBOX_PROCESSOR',
-              storage_area_name: 'PMP Lossless Inventory Vault',
-              current_record_id: recordId,
-              source: {
-                source_kind: 'github_issue_inbox_comment',
-                issue: `https://github.com/${owner}/${repo}/issues/${issue_number}`,
-                comment_url: comment.html_url,
-                comment_id: comment.id,
-                note: 'Full report is preserved in the inbox comment; this file stores normalized current record and summary so current.json stays compact.'
-              },
-              report_identity: {
-                packet_type: packet?.type || null,
-                packet_version: packet?.version || null,
-                packet_built_at: packet?.built_at || null,
-                report_type: report.type,
-                report_built_at: report.built_at || null,
-                inventory_eyes_version: report.inventory_eyes?.version || null,
-                inventory_eyes_built_at: report.inventory_eyes?.built_at || null
-              },
-              record_classification: {
-                primary_category: 'app_inventory',
+              const delta = buildDelta(previousCurrent, currentRecord, rid, ordinal);
+              const ledgerEntry = {
+                record_id: rid,
                 record_kind: 'inventory_eyes_lossless_report',
-                record_status: 'accepted_current',
-                keep_full_report: 'source_inbox_comment_for_now',
-                promote_to_history: false,
-                delta_required: true,
-                privacy_gate: 'passed_by_automated_validator',
-                confidence: 'high'
-              },
-              scan_summary: summary,
-              active_files: activeFiles,
-              category_tags: tags,
-              truth_boundary: 'This current record is a normalized pointer and summary of the latest full inbox report. Private values are not captured; only key names and app structure are allowed.',
-              next_actions: [
-                'Use record-ledger.json as permanent compact index.',
-                'Use category-map.json to sort records.',
-                'Use latest-delta.json to compare against previous current state.',
-                'Do not store private Bug Memory or Apple Notes contents in this vault.',
-                'Keep inbox as temporary intake, not permanent storage of all reports forever.'
-              ]
-            };
+                primary_category: 'app_inventory',
+                status: 'accepted_current',
+                source_kind: 'github_issue_inbox_comment',
+                source_url: commentUrl(comment),
+                source_comment_id: comment.id,
+                body_hash: bodyHash,
+                packet_built_at: packet && packet.built_at || null,
+                report_built_at: report.built_at || null,
+                summary,
+                categories: tags,
+                full_report_location: `github_issue_1_comment_${comment.id}`,
+                promoted_to_current: true,
+                promoted_to_history: false,
+                delta_record: paths.delta,
+                notes: 'Automatically processed from GitHub Issue #1 inbox by hardened processor.'
+              };
 
-            const delta = buildDelta(previousCurrent, currentRecord, recordId, nextOrdinal);
-
-            const ledgerEntry = {
-              record_id: recordId,
-              record_kind: 'inventory_eyes_lossless_report',
-              primary_category: 'app_inventory',
-              status: 'accepted_current',
-              source_kind: 'github_issue_inbox_comment',
-              source_url: comment.html_url,
-              source_comment_id: comment.id,
-              packet_built_at: packet?.built_at || null,
-              report_built_at: report.built_at || null,
-              summary,
-              categories: tags,
-              full_report_location: `github_issue_1_comment_${comment.id}`,
-              promoted_to_current: true,
-              promoted_to_history: false,
-              delta_record: latestDeltaPath,
-              notes: 'Automatically processed from GitHub Issue #1 inbox.'
-            };
-
-            const alreadyProcessed = ledger.records.some(r => String(r.source_comment_id) === String(comment.id));
-            if (alreadyProcessed) {
-              writeJson(intakePath, {
-                type: 'PMP_VAULT_INBOX_INTAKE_STATUS',
-                status: 'already_processed',
-                comment_id: comment.id,
-                checked_at: new Date().toISOString()
-              });
-            } else {
               ledger.records.push(ledgerEntry);
-              ledger.version = '1.1.0-auto-processor';
+              ledger.version = '2.0.0-hardened-processor';
               ledger.updated_at = new Date().toISOString();
-              writeJson(currentPath, currentRecord);
-              writeJson(ledgerPath, ledger);
-              writeJson(latestDeltaPath, delta);
-              writeJson(intakePath, {
-                type: 'PMP_VAULT_INBOX_INTAKE_STATUS',
-                status: 'accepted_and_promoted',
-                comment_id: comment.id,
-                record_id: recordId,
-                checked_at: new Date().toISOString(),
-                summary
-              });
+              writeJson(paths.current, currentRecord);
+              writeJson(paths.delta, delta);
+              previousCurrent = currentRecord;
+              accepted++;
+              latestAccepted = { comment_id: comment.id, record_id: rid, summary };
             }
+
+            writeJson(paths.ledger, ledger);
+            writeJson(paths.rejected, rejected);
+            writeJson(paths.intake, {
+              type: 'PMP_VAULT_INBOX_INTAKE_STATUS',
+              version: '2.0.0-hardened-processor',
+              status: accepted ? 'accepted_and_promoted' : 'no_new_valid_reports',
+              checked_at: new Date().toISOString(),
+              candidates_checked: candidates.length,
+              accepted,
+              rejected: rejectedCount,
+              skipped,
+              latest_accepted: latestAccepted
+            });
+            writeJson(paths.health, {
+              type: 'PMP_VAULT_PROCESSOR_HEALTH',
+              version: '1.0.0',
+              status: 'processor_ran',
+              checked_at: new Date().toISOString(),
+              issue_number,
+              accepted_this_run: accepted,
+              rejected_this_run: rejectedCount,
+              skipped_this_run: skipped,
+              total_records: ledger.records.length,
+              total_rejections: rejected.rejected_records.length,
+              latest_record_id: ledger.records.length ? ledger.records[ledger.records.length - 1].record_id : null,
+              guardrails: [
+                'Only owner comments are accepted.',
+                'Blank and malformed bodies are rejected.',
+                'Wrong payload types are rejected.',
+                'Privacy gate must pass.',
+                'Private-looking token/password/secret patterns are rejected.',
+                'localStorage values must not be captured.',
+                'Duplicate source comments are skipped.'
+              ]
+            });
 
             const status = await exec.getExecOutput('git', ['status', '--porcelain']);
-            if (!status.stdout.trim()) {
-              core.info('No vault file changes to commit.');
-              return;
-            }
-
+            if (!status.stdout.trim()) { core.info('No vault file changes to commit.'); return; }
             await exec.exec('git', ['config', 'user.name', 'github-actions[bot]']);
             await exec.exec('git', ['config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com']);
-            await exec.exec('git', ['add', 'pmp-lossless-inventory-vault']);
-            await exec.exec('git', ['commit', '-m', `Auto-process PMP vault inbox report ${comment.id}`]);
-            await exec.exec('git', ['push']);
+            await exec.exec('git', ['add', VAULT]);
+            await exec.exec('git', ['commit', '-m', `Hardened process PMP vault inbox (${accepted} accepted, ${rejectedCount} rejected)`]);
+            try {
+              await exec.exec('git', ['push']);
+            } catch (error) {
+              await exec.exec('git', ['pull', '--rebase']);
+              await exec.exec('git', ['push']);
+            }
