@@ -2,19 +2,15 @@
   "type": "PMP_CURRENT_APP_MAP",
   "app_name": "PMP Current",
   "app_version": "PMP-CURRENT-1",
-  "updated_at": "2026-05-10T20:25:00.000Z",
-  "purpose": "Single user-facing Home Screen app pointer. The Home Screen icon points to pmp-app-current.html; this map decides which runtime file is currently loaded.",
+  "updated_at": "2026-05-10T20:36:00.000Z",
   "current_app": {
-    "path": "pmp-current-runtime.html",
+    "path": "pmp-current-inner.html",
     "label": "PMP Current",
-    "cache_key": "pmp-current-runtime-flattened-v1",
-    "status": "current",
-    "reason": "Flatten current runtime so support scripts attach closer to the visible app layer. This should make Copy Lossless Report and Resident diagnostics more reliable. User-facing version remains PMP Current."
+    "cache_key": "pmp-current-restore-inner-v1",
+    "status": "current"
   },
-  "user_facing_rule": "Only show PMP Current / PMP-CURRENT-1 as the app version. Do not ask the user to install numbered app files.",
-  "update_rule": "Future updates should update this map or pmp-app-current.html. The Home Screen app remains pmp-app-current.html.",
-  "home_screen_rule": "Install pmp-app-current.html once. Do not install individual version files again unless recovering from a broken current shell.",
-  "internal_file_rule": "Numbered files are internal implementation/archive files, not the public app version. pmp-current-runtime.html is the flattened internal runtime, not a user-facing version.",
+  "user_facing_rule": "Only show PMP Current / PMP-CURRENT-1 as the app version.",
+  "home_screen_rule": "Install pmp-app-current.html once.",
   "fallback_app": {
     "path": "pmp-home-single-v14.html",
     "cache_key": "fallback-pmp-current-1"
