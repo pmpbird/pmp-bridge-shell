@@ -1,70 +1,16 @@
 {
   "type": "PMP_VAULT_DELTA_RECORD",
   "version": "2.1.0-type-isolated-processor",
-  "record_id": "PMP-DELTA-2026-05-10-0003",
-  "source_record_id": "PMP-INV-2026-05-10-0003",
-  "built_at": "2026-05-10T21:08:54.826Z",
-  "previous_current_record_id": "PMP-INV-2026-05-10-0002",
-  "current_record_id": "PMP-INV-2026-05-10-0003",
+  "record_id": "PMP-DELTA-2026-05-10-0004",
+  "source_record_id": "PMP-INV-2026-05-10-0004",
+  "built_at": "2026-05-10T21:15:27.901Z",
+  "previous_current_record_id": "PMP-INV-2026-05-10-0003",
+  "current_record_id": "PMP-INV-2026-05-10-0004",
   "delta_status": "compared",
-  "count_changes": {
-    "manifest_paths": {
-      "previous": 140,
-      "current": 55
-    },
-    "active_files": {
-      "previous": 8,
-      "current": 11
-    },
-    "inactive_files": {
-      "previous": 132,
-      "current": 44
-    },
-    "helper_or_support_files": {
-      "previous": 16,
-      "current": 21
-    },
-    "privacy_sensitive_surfaces": {
-      "previous": 37,
-      "current": 20
-    },
-    "theme_review_targets": {
-      "previous": 41,
-      "current": 17
-    },
-    "local_storage_keys": {
-      "previous": 53,
-      "current": 11
-    },
-    "html_pages": {
-      "previous": 127,
-      "current": 35
-    },
-    "json_files": {
-      "previous": 7,
-      "current": 13
-    },
-    "js_files": {
-      "previous": 4,
-      "current": 6
-    },
-    "css_files": {
-      "previous": 1,
-      "current": 0
-    }
-  },
+  "count_changes": {},
   "active_file_changes": {
-    "added_active_files": [
-      "pmp-app-current.html",
-      "pmp-current-map.json",
-      "pmp-current-inner.html",
-      "pmp-home-single-v14.html",
-      "pmp-home-single-v6.html"
-    ],
-    "removed_active_files": [
-      "pmp-home-single-v10.html",
-      "pmp-home-single-v12.html"
-    ]
+    "added_active_files": [],
+    "removed_active_files": []
   },
   "next_delta_rule": "Compare summary counts, active_files, privacy surface count, theme_review_targets count, and route/version status against this baseline."
 }
