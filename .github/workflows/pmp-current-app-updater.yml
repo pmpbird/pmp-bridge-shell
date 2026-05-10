@@ -1,0 +1,148 @@
+name: PMP Current App Updater
+
+on:
+  issue_comment:
+    types: [created]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: read
+
+concurrency:
+  group: pmp-current-app-updater
+  cancel-in-progress: false
+
+jobs:
+  process-current-app-update:
+    if: github.event_name == 'workflow_dispatch' || github.event.issue.number == 1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Process PMP current app update request
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const crypto = require('crypto');
+
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const issue_number = 1;
+            const MAP_PATH = 'pmp-current-map-v1.0.0.json';
+            const LOG_PATH = 'pmp-current-update-ledger.json';
+            const STATUS_PATH = 'pmp-current-update-status.json';
+
+            function readJson(filePath, fallback) { try { return JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch (_) { return fallback; } }
+            function writeJson(filePath, value) { fs.writeFileSync(filePath, JSON.stringify(value, null, 2) + '\n'); }
+            function hashText(text) { return crypto.createHash('sha256').update(String(text || '')).digest('hex'); }
+            function commentUrl(c) { return c.html_url || `https://github.com/${owner}/${repo}/issues/${issue_number}#issuecomment-${c.id}`; }
+            function cleanPath(p) {
+              p = String(p || '').trim().replace(/^\/+/, '');
+              if (!/^[a-zA-Z0-9._\/-]+\.html$/.test(p)) throw new Error('Requested app path must be a safe .html repo path.');
+              if (p.includes('..')) throw new Error('Requested app path may not contain ..');
+              return p;
+            }
+            function findJson(body) {
+              const first = String(body || '').indexOf('{');
+              if (first < 0) throw new Error('No JSON object found.');
+              return JSON.parse(String(body).slice(first).trim());
+            }
+            function validateRequest(payload) {
+              if (!payload || payload.type !== 'PMP_APP_CURRENT_UPDATE_REQUEST') throw new Error('Not a current app update request.');
+              const req = payload.requested_current_app || {};
+              const p = cleanPath(req.path);
+              if (!fs.existsSync(p)) throw new Error(`Requested app file does not exist: ${p}`);
+              const gate = payload.safety_gate || {};
+              const mustTrue = ['html_path_only','no_private_data','no_tokens','no_passwords','no_secrets','keep_home_screen_shell','use_current_map'];
+              for (const k of mustTrue) if (gate[k] !== true) throw new Error(`Safety gate missing/false: ${k}`);
+              const raw = JSON.stringify(payload);
+              const forbidden = [/ghp_[A-Za-z0-9_]{20,}/, /github_pat_[A-Za-z0-9_]{20,}/, /password\s*[:=]/i, /secret\s*[:=]/i, /\btoken\s*[:=]/i];
+              for (const f of forbidden) if (f.test(raw)) throw new Error(`Forbidden private-looking value in update request: ${f}`);
+              return {
+                path: p,
+                label: String(req.label || p).slice(0, 120),
+                cache_key: String(req.cache_key || ('current-' + Date.now())).replace(/[^a-zA-Z0-9._-]+/g, '-').slice(0, 160),
+                reason: String(req.reason || 'Current app update request.').slice(0, 500)
+              };
+            }
+            async function getCandidateComments() {
+              if (context.eventName === 'issue_comment') return [context.payload.comment];
+              const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number, per_page: 100 });
+              return comments.filter(c => (c.body || '').includes('PMP_APP_CURRENT_UPDATE_REQUEST')).slice(-20);
+            }
+
+            const log = readJson(LOG_PATH, { type: 'PMP_CURRENT_UPDATE_LEDGER', version: '1.0.0', records: [], rejected: [] });
+            log.records = Array.isArray(log.records) ? log.records : [];
+            log.rejected = Array.isArray(log.rejected) ? log.rejected : [];
+            const processed = new Set([...log.records, ...log.rejected].map(r => String(r.source_comment_id)));
+
+            let accepted = 0, rejected = 0, skipped = 0, latest = null;
+            const candidates = await getCandidateComments();
+            for (const comment of candidates) {
+              if (processed.has(String(comment.id))) { skipped++; continue; }
+              if ((comment.user && comment.user.login) !== owner) {
+                log.rejected.push({ source_comment_id: comment.id, source_url: commentUrl(comment), rejected_at: new Date().toISOString(), reason: 'unauthorized_author' });
+                rejected++; continue;
+              }
+              let payload, req;
+              try {
+                payload = findJson(comment.body || '');
+                req = validateRequest(payload);
+              } catch (e) {
+                log.rejected.push({ source_comment_id: comment.id, source_url: commentUrl(comment), rejected_at: new Date().toISOString(), reason: String(e.message || e), body_hash: hashText(comment.body || '') });
+                rejected++; continue;
+              }
+
+              const previous = readJson(MAP_PATH, null);
+              const nextMap = {
+                type: 'PMP_CURRENT_APP_MAP',
+                version: '1.1.0-auto-updated',
+                updated_at: new Date().toISOString(),
+                purpose: 'Stable Home Screen app pointer. The Home Screen icon points to pmp-app-current.html; this map decides which app file is current.',
+                current_app: {
+                  path: req.path,
+                  label: req.label,
+                  cache_key: req.cache_key,
+                  status: 'current',
+                  reason: req.reason,
+                  source_comment_id: comment.id,
+                  source_url: commentUrl(comment)
+                },
+                update_rule: 'Future app updates should update this map, not require a new Home Screen install.',
+                home_screen_rule: 'Install pmp-app-current.html once. Do not install individual version files again unless recovering from a broken current pointer.',
+                fallback_app: previous && previous.fallback_app ? previous.fallback_app : { path: 'pmp-home-single-v14.html', cache_key: 'fallback-v14-direct' }
+              };
+              writeJson(MAP_PATH, nextMap);
+              const rec = {
+                update_id: `PMP-CURRENT-UPDATE-${new Date().toISOString().replace(/[:.]/g,'-')}`,
+                source_comment_id: comment.id,
+                source_url: commentUrl(comment),
+                accepted_at: new Date().toISOString(),
+                previous_path: previous && previous.current_app && previous.current_app.path || null,
+                new_path: req.path,
+                cache_key: req.cache_key,
+                body_hash: hashText(comment.body || ''),
+                status: 'accepted_current_map_updated'
+              };
+              log.records.push(rec);
+              latest = rec;
+              accepted++;
+            }
+            log.updated_at = new Date().toISOString();
+            writeJson(LOG_PATH, log);
+            writeJson(STATUS_PATH, { type: 'PMP_CURRENT_UPDATE_STATUS', version: '1.0.0', checked_at: new Date().toISOString(), candidates_checked: candidates.length, accepted, rejected, skipped, latest });
+
+            const status = await exec.getExecOutput('git', ['status', '--porcelain']);
+            if (!status.stdout.trim()) { core.info('No current-app update changes to commit.'); return; }
+            await exec.exec('git', ['config', 'user.name', 'github-actions[bot]']);
+            await exec.exec('git', ['config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com']);
+            await exec.exec('git', ['add', MAP_PATH, LOG_PATH, STATUS_PATH]);
+            await exec.exec('git', ['commit', '-m', `Auto-update PMP current app pointer (${accepted} accepted, ${rejected} rejected)`]);
+            try { await exec.exec('git', ['push']); }
+            catch (e) { await exec.exec('git', ['pull', '--rebase']); await exec.exec('git', ['push']); }
