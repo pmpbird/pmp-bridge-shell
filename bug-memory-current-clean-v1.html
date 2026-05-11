@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#52b5df">
+<title>Bug Memory Current Clean</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;width:100%;min-height:100%;overflow-x:hidden;background:#52b5df;color:#f8fbff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;touch-action:manipulation;-webkit-text-size-adjust:100%;overscroll-behavior:none}body{padding:calc(72px + env(safe-area-inset-top)) 14px calc(110px + env(safe-area-inset-bottom))}.wrap{max-width:820px;margin:auto}.card{background:#46a9d3;border:2px solid #fff;border-radius:28px;padding:18px;margin:0 0 16px;box-shadow:0 18px 44px rgba(0,0,0,.22)}h1{margin:0 0 8px;font-size:40px;color:#f8fbff;line-height:1.05}h2{margin:0 0 9px;color:#f8fbff}.sub{color:#f8fbff;font-weight:900;line-height:1.32;font-size:18px}.big{display:flex;align-items:center;gap:14px;width:100%;border:2px solid #fff;border-radius:20px;padding:15px;margin:12px 0;color:#071523;background:#a1fcfd;text-align:left;font:inherit;font-weight:950;font-size:20px;box-shadow:0 16px 40px rgba(0,0,0,.22);text-decoration:none;min-height:86px}.big small{display:block;font-size:14px;font-weight:850;color:#f8fbff;opacity:.96;line-height:1.22}.icon{font-size:26px;width:36px;text-align:center}.chev{margin-left:auto;font-size:34px}.mini{border:1px solid #fff;background:#101a2a;color:#eef4fb;border-radius:14px;padding:13px;font:inherit;font-weight:950;width:100%;margin-top:8px;box-shadow:0 8px 18px rgba(0,0,0,.16)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.note{background:#0f3325;border:2px solid #fff;color:#d8ffe2;border-radius:22px;padding:14px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:18px;line-height:1.35;box-shadow:0 10px 22px rgba(0,0,0,.16)}.hidden{display:none!important}.float{position:fixed;top:calc(10px + env(safe-area-inset-top));z-index:30;border:2px solid #fff;background:#a1fcfd;color:#071523;border-radius:999px;padding:10px 16px;font-weight:950;font-size:15px;box-shadow:0 10px 26px rgba(0,0,0,.20)}.left{left:14px}.right{right:14px}.drawer{position:fixed;right:10px;left:10px;top:calc(62px + env(safe-area-inset-top));z-index:40;display:none;background:#101a2a;color:#eef4fb;border:2px solid #a1fcfd;border-radius:22px;padding:14px;box-shadow:0 8px 28px #0007;max-height:78vh;overflow:auto}.reply{background:#0f3325;border:2px solid #fff;color:#d8ffe2;border-radius:18px;padding:12px;margin-top:8px;white-space:pre-wrap;font-size:15px;line-height:1.35}textarea{width:100%;border:1px solid #fff;border-radius:14px;background:#08111c;color:#eef4fb;padding:12px;font:inherit;margin-top:8px;min-height:92px;font-family:ui-monospace,Menlo,monospace;font-size:14px}.tabs{position:fixed;left:0;right:0;bottom:0;background:#245f73;border-top:1px solid #fff;display:grid;grid-template-columns:repeat(5,1fr);padding:7px 6px max(7px,env(safe-area-inset-bottom));z-index:20;box-shadow:0 -10px 30px rgba(0,0,0,.18)}.tab{background:transparent;border:0;color:#eaf7ff;font:inherit;font-size:12px}.tab b{display:block;font-size:21px}.tab.on{color:#a1fcfd;font-weight:950;text-shadow:0 0 8px rgba(255,255,255,.55)}@media(max-width:700px){.grid{grid-template-columns:1fr}h1{font-size:36px}}
+</style>
+</head>
+<body>
+<button class="float left" onclick="toggleDrawer('launcher')">Launcher</button>
+<button class="float right" onclick="toggleDrawer('resident')">Resident</button>
+<div id="launcher" class="drawer"><h2>Launcher</h2><div class="note">Bug Memory current clean room ready.</div><div class="grid"><button class="mini" onclick="location.href='pmp-app-current.html#control'">Back to Control Room</button><button class="mini" onclick="location.reload()">Reload</button><button class="mini" onclick="location.href='pmp-app-current.html#world'">PMP Current</button><button class="mini" onclick="toggleDrawer('launcher')">Close</button></div></div>
+<div id="resident" class="drawer"><h2>Resident</h2><p>Talk normally. Bug Memory tools stay private to Notes.</p><div class="grid"><button class="mini" onclick="residentChat()">Chat</button><button class="mini" onclick="residentTools()">Tools</button></div><textarea id="ask" placeholder="Tell Resident what to do next."></textarea><div class="grid"><button class="mini" onclick="residentRun()">Run</button><button class="mini" onclick="toggleDrawer('resident')">Close</button></div><textarea id="workBox" placeholder="Paste bug memory, notes, or ChatGPT answer here."></textarea><div class="grid"><button class="mini" onclick="copyResidentPrompt()">Copy Prompt</button><button class="mini" onclick="clearResident()">Reset Chat</button></div><div id="residentReply" class="reply">Ready inside Bug Memory.</div></div>
+<div class="wrap">
+  <section class="card">
+    <h1>Bug Memory</h1>
+    <p class="sub">Notes holds the repair memory. This room lets Resident use it when you choose.</p>
+    <a class="big" href="resident-notes-catalog-v3-one-button.html?fresh=save-bug-memory-current-clean-v1"><span class="icon">📝</span><span>Save Bug Memory<small>Paste bug, prepare pack, save to Notes</small></span><span class="chev">›</span></a>
+    <button class="big" onclick="openBox('loadBox')"><span class="icon">📖</span><span>Load Memory<small>Bring memory from Notes into this private session</small></span><span class="chev">›</span></button>
+    <button class="big" onclick="openBox('labBox')"><span class="icon">🧪</span><span>Bug Lab<small>Mix bugs, save predictions, and plan safe tests</small></span><span class="chev">›</span></button>
+    <div class="note">Notes holds the book.
+This room opens the door.
+Resident reads it only when you choose.</div>
+  </section>
+  <section id="loadBox" class="card hidden">
+    <h1>Load Memory</h1>
+    <p class="sub">Paste bug memory from Notes here, then copy it for Resident.</p>
+    <textarea id="loadText" placeholder="Paste bug catalog / prediction ledger from Notes here."></textarea>
+    <div class="grid"><button class="mini" onclick="loadSessionMemory()">Load This Session</button><button class="mini" onclick="copyToResident()">Copy for Resident</button><button class="mini" onclick="copyLoadSteps()">Copy Load Steps</button><button class="mini" onclick="openBox('')">Close</button></div>
+    <div id="sessionStatus" class="note">No memory loaded in this page.</div>
+  </section>
+  <section id="labBox" class="card hidden">
+    <h1>Bug Lab</h1>
+    <p class="sub">Predict and test carefully. The lab does not change the live app by itself.</p>
+    <a class="big" href="private-bug-mixer-lab-v1-shell.html?fresh=bug-mixer-shell-current-clean-v1"><span class="icon">🧪</span><span>Open Mixer<small>Combine bugs and save predictions</small></span><span class="chev">›</span></a>
+    <button class="mini" onclick="showLedger()">Prediction Ledger</button>
+    <button class="mini" onclick="showTests()">Controlled Tests</button>
+    <div id="labOutput" class="note">Bug Lab ready.</div>
+  </section>
+</div>
+<nav class="tabs"><button class="tab" onclick="location.href='pmp-app-current.html#world'"><b>◎</b>World</button><button class="tab" onclick="location.href='pmp-app-current.html#bridge'"><b>↔</b>Bridge</button><button class="tab" onclick="location.href='pmp-app-current.html#library'"><b>▤</b>Library</button><button class="tab" onclick="location.href='pmp-app-current.html#workshop'"><b>⚒</b>Workshop</button><button class="tab on" onclick="location.href='pmp-app-current.html#control'"><b>⚙</b>Control</button></nav>
+<script>
+let sessionMemory='';
+function now(){return new Date().toISOString()}
+function toggleDrawer(id){let el=document.getElementById(id);el.style.display=el.style.display==='block'?'none':'block'}
+function openBox(id){for(const x of ['loadBox','labBox'])document.getElementById(x).classList.add('hidden');if(id)document.getElementById(id).classList.remove('hidden');setTimeout(()=>{if(id)document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'})},60)}
+async function copyText(t){await navigator.clipboard.writeText(t)}
+function residentChat(){document.getElementById('residentReply').textContent='Chat mode ready.'}
+function residentTools(){document.getElementById('residentReply').textContent='Tools mode ready. Use Save Bug Memory, Load Memory, or Bug Lab.'}
+function residentRun(){let q=(document.getElementById('ask').value||'').trim();document.getElementById('residentReply').textContent=q?'Resident heard: '+q:'Tell Resident what to do next.'}
+function clearResident(){document.getElementById('ask').value='';document.getElementById('workBox').value='';document.getElementById('residentReply').textContent='Ready inside Bug Memory.'}
+async function copyLoadSteps(){const t='Load Bug Memory from Notes:\n1. Open Notes.\n2. Open PMP Private Bug Memory.\n3. Copy the catalog or ledger text.\n4. Return to Bug Memory.\n5. Paste it into Load Memory.\n6. Tap Load This Session.\n7. Tap Copy for Resident.';await copyText(t);document.getElementById('sessionStatus').textContent='Load steps copied.'}
+function loadSessionMemory(){sessionMemory=document.getElementById('loadText').value.trim();document.getElementById('sessionStatus').textContent=sessionMemory?`Loaded ${sessionMemory.length} characters for this private page session.`:'Paste memory first.'}
+async function copyToResident(){if(!sessionMemory){document.getElementById('sessionStatus').textContent='Paste and load memory first.';return}const packet={type:'PMP_PRIVATE_BUG_MEMORY_SESSION_PACKET',built_at:now(),privacy:'loaded_from_notes_for_private_session_only',instruction:'Resident may use this bug memory in this private session. Do not store it in public app state.',content:sessionMemory};await copyText(JSON.stringify(packet,null,2));document.getElementById('sessionStatus').textContent='Copied private session packet for Resident.'}
+function showLedger(){document.getElementById('labOutput').textContent='Prediction Ledger lives in Notes. Use the Mixer to create a prediction, then save it to Notes.'}
+function showTests(){document.getElementById('labOutput').textContent='Controlled test order:\n1. Theory only\n2. Fake state test\n3. Local sandbox copy\n4. Disposable test file\n5. Safe Writer guarded test\n6. Current app only after everything else passes'}
+async function copyResidentPrompt(){await copyText('Run lossless quality on Bug Memory. Verify private Notes storage, loaded session only, catalog ranking, prediction ledger state, and controlled-test safety. Report in Plain Brain language.');document.getElementById('residentReply').textContent='Resident prompt copied.'}
+</script>
+</body>
+</html>
