@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PMP">
+<meta name="theme-color" content="#52b5df">
+<title>PMP Current Inner Clean Bug</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#52b5df}
+iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#52b5df}
+</style>
+</head>
+<body>
+<iframe id="app" src="pmp-home-single-v6.html?fresh=current-cleanbug-v1#world"></iframe>
+<script src="pmp-top-lossless-injector.js?fresh=cleanbug-v1"></script>
+<script src="pmp-resident-lossless-readiness.js?fresh=cleanbug-v1"></script>
+<script src="pmp-current-truth-face.js?fresh=cleanbug-v1"></script>
+<script src="pmp-resident-xray-core.js?fresh=cleanbug-v1"></script>
+<script src="pmp-resident-xray-finish.js?fresh=cleanbug-v1"></script>
+<script src="pmp-lossless-copy-fix.js?fresh=cleanbug-v1"></script>
+<script src="pmp-copy-lossless-diagnostic.js?fresh=cleanbug-v1"></script>
+<script src="pmp-resident-work-fix.js?fresh=cleanbug-v1"></script>
+<script>
+const F=document.getElementById('app');
+function bugUrl(){return 'bug-memory-current-clean-v1.html?fresh=open-'+Date.now();}
+function inside(){try{return{w:F.contentWindow,d:F.contentDocument||F.contentWindow.document}}catch(e){return{}}}
+function openBugMemory(){location.href=bugUrl();return false;}
+function patchBugMemory(){
+  const o=inside(),w=o.w,d=o.d;
+  if(!w||!d)return;
+  if(!w.__cleanBugMemoryRoute){
+    const old=typeof w.showSecret==='function'?w.showSecret:null;
+    w.__cleanBugMemoryRoute=true;
+    w.showSecret=function(name){
+      if(String(name)==='Bug Memory')return openBugMemory();
+      if(old)return old.apply(this,arguments);
+    };
+  }
+  for(const b of Array.from(d.querySelectorAll('button'))){
+    const t=(b.textContent||'').replace(/\s+/g,' ').trim();
+    if(t==='Bug Memory'){
+      b.onclick=function(e){if(e)e.preventDefault();return openBugMemory();};
+    }
+  }
+}
+F.addEventListener('load',()=>{setTimeout(patchBugMemory,100);setTimeout(patchBugMemory,700);setTimeout(patchBugMemory,1800)});
+setInterval(patchBugMemory,1000);
+</script>
+</body>
+</html>
