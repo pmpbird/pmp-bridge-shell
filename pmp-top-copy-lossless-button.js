@@ -1,5 +1,6 @@
 (() => {
   let topButton = null;
+  const READY_KEY = 'pmp_resident_lossless_readiness_latest_v1';
   function inner() {
     try {
       const frame = document.getElementById('app');
@@ -16,6 +17,14 @@
   }
   function clean(el) { return (el && el.textContent || '').replace(/\s+/g, ' ').trim(); }
   function shown(el) { try { return !!el && (el.offsetParent !== null || getComputedStyle(el).position === 'fixed'); } catch (_) { return false; } }
+  function latestReadyInResident() {
+    try {
+      const r = JSON.parse(localStorage.getItem(READY_KEY) || 'null');
+      if (!r || r.status !== 'READY_IN_RESIDENT') return false;
+      const age = Date.now() - Date.parse(r.built_at || 0);
+      return Number.isFinite(age) && age >= 0 && age < 10 * 60 * 1000;
+    } catch (_) { return false; }
+  }
   function activeBridgeCopyButton(d) {
     if (!d) return null;
     const bridge = d.getElementById('bridge');
@@ -48,6 +57,7 @@
     return null;
   }
   function residentAnchor(d) {
+    if (!latestReadyInResident()) return null;
     const drawer = residentDrawer(d);
     if (!drawer) return null;
     const buttons = Array.from(drawer.querySelectorAll('button'));
