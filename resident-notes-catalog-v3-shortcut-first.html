@@ -4,17 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#55b6d8">
-<title>Resident Notes Catalog Shortcut First</title>
+<title>Resident Notes Catalog Shortcut Only</title>
 <style>
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#55b6d8}
 iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#55b6d8}
 </style>
 </head>
 <body>
-<iframe id="app" src="resident-notes-catalog-v3.html?fresh=shortcut-first-v1"></iframe>
+<iframe id="app" src="resident-notes-catalog-v3.html?fresh=shortcut-only-v1"></iframe>
 <script>
 const F=document.getElementById('app');
 function txt(el){return (el&&el.textContent||'').replace(/\s+/g,' ').trim()}
+function hide(el){if(el)el.style.display='none'}
 function patch(){
   try{
     const w=F.contentWindow,d=F.contentDocument||w.document;
@@ -24,12 +25,22 @@ function patch(){
       if(t==='Build Full ZIP + Scan') b.textContent='Build Full ZIP + Auto Scan';
       if(t==='Scan + Build Catalog') b.textContent='Scan Chosen ZIP + Build Catalog';
       if(t==='Save Catalog to Notes') b.textContent='Save Catalog to Notes with Shortcut';
+      if(t==='Share ZIP') hide(b);
     }
     const saveCard=Array.from(d.querySelectorAll('section.card')).find(s=>txt(s).includes('Save to Notes'));
     if(saveCard){
       const p=saveCard.querySelector('p.small');
-      if(p)p.textContent='Main path uses your PMP Save Private Memory Shortcut. More Options is only for backup tools like the share sheet.';
+      if(p)p.textContent='Save uses your PMP Save Private Memory Shortcut. The share sheet is removed.';
+      const more=saveCard.querySelector('#moreBox');
+      if(more){
+        for(const b of Array.from(more.querySelectorAll('button'))){
+          if(txt(b)==='Share ZIP') hide(b);
+        }
+      }
     }
+    w.shareCatalogZip=async function(){
+      w.setStatus&&w.setStatus('Share sheet removed. Use Save Catalog to Notes with Shortcut.');
+    };
     w.saveCatalogSmart=async function(){
       try{
         if(!w.payload){w.setStatus&&w.setStatus('Build the catalog first.');return;}
@@ -38,7 +49,7 @@ function patch(){
         await navigator.clipboard.writeText(d.getElementById('prompt').value||'');
         location.href='shortcuts://run-shortcut?name='+encodeURIComponent('PMP Save Private Memory')+'&input=clipboard';
       }catch(e){
-        w.setStatus&&w.setStatus('Shortcut path failed. Use More Options as backup. '+String(e&&e.message||e));
+        w.setStatus&&w.setStatus('Shortcut path failed. Copy Catalog JSON from More Options, then run PMP Save Private Memory manually. '+String(e&&e.message||e));
       }
     };
   }catch(e){}
