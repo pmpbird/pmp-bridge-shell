@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#55b6d8">
+<title>Resident Notes Catalog Shortcut First</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#55b6d8}
+iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#55b6d8}
+</style>
+</head>
+<body>
+<iframe id="app" src="resident-notes-catalog-v3.html?fresh=shortcut-first-v1"></iframe>
+<script>
+const F=document.getElementById('app');
+function txt(el){return (el&&el.textContent||'').replace(/\s+/g,' ').trim()}
+function patch(){
+  try{
+    const w=F.contentWindow,d=F.contentDocument||w.document;
+    if(!w||!d)return;
+    for(const b of Array.from(d.querySelectorAll('button'))){
+      const t=txt(b);
+      if(t==='Build Full ZIP + Scan') b.textContent='Build Full ZIP + Auto Scan';
+      if(t==='Scan + Build Catalog') b.textContent='Scan Chosen ZIP + Build Catalog';
+      if(t==='Save Catalog to Notes') b.textContent='Save Catalog to Notes with Shortcut';
+    }
+    const saveCard=Array.from(d.querySelectorAll('section.card')).find(s=>txt(s).includes('Save to Notes'));
+    if(saveCard){
+      const p=saveCard.querySelector('p.small');
+      if(p)p.textContent='Main path uses your PMP Save Private Memory Shortcut. More Options is only for backup tools like the share sheet.';
+    }
+    w.saveCatalogSmart=async function(){
+      try{
+        if(!w.payload){w.setStatus&&w.setStatus('Build the catalog first.');return;}
+        w.setStatus&&w.setStatus('Copied catalog to clipboard. Opening PMP Save Private Memory Shortcut.');
+        if(typeof w.copyPlainAndRunShortcut==='function') return await w.copyPlainAndRunShortcut();
+        await navigator.clipboard.writeText(d.getElementById('prompt').value||'');
+        location.href='shortcuts://run-shortcut?name='+encodeURIComponent('PMP Save Private Memory')+'&input=clipboard';
+      }catch(e){
+        w.setStatus&&w.setStatus('Shortcut path failed. Use More Options as backup. '+String(e&&e.message||e));
+      }
+    };
+  }catch(e){}
+}
+F.addEventListener('load',()=>{setTimeout(patch,250);setTimeout(patch,1000);setTimeout(patch,2500)});
+setInterval(patch,1000);
+</script>
+</body>
+</html>
