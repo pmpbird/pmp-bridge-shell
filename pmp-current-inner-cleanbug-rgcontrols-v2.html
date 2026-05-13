@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PMP">
+<meta name="theme-color" content="#52b5df">
+<title>PMP Current Inner Clean Bug RG Controls v2</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#52b5df}
+iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#52b5df}
+</style>
+</head>
+<body>
+<iframe id="app" src="pmp-home-single-v6.html?fresh=current-cleanbug-rgcontrols-v2#world"></iframe>
+<script src="pmp-top-lossless-injector.js?fresh=cleanbug-rgcontrols-v2"></script>
+<script src="pmp-resident-lossless-readiness.js?fresh=cleanbug-rgcontrols-v2"></script>
+<script src="pmp-current-truth-face.js?fresh=cleanbug-rgcontrols-v2"></script>
+<script src="pmp-resident-xray-core.js?fresh=cleanbug-rgcontrols-v2"></script>
+<script src="pmp-resident-xray-finish.js?fresh=cleanbug-rgcontrols-v2"></script>
+<script src="pmp-lossless-copy-fix.js?fresh=cleanbug-rgcontrols-v2"></script>
+<script src="pmp-copy-lossless-diagnostic.js?fresh=cleanbug-rgcontrols-v2"></script>
+<script src="pmp-resident-work-fix.js?fresh=cleanbug-rgcontrols-v2"></script>
+<script>
+const F=document.getElementById('app');
+function inside(){try{return{w:F.contentWindow,d:F.contentDocument||F.contentWindow.document}}catch(e){return{}}}
+function bugUrl(){return 'bug-memory-current-clean-v1.html?fresh=open-'+Date.now()}
+function actionUrl(kind){return 'pmp-route-guardian-action-v2.html?action='+encodeURIComponent(kind)+'&from=current-inner-rgcontrols-v2&fresh='+Date.now()}
+function goBug(){location.href=bugUrl();return false}
+function goAction(kind){location.href=actionUrl(kind);return false}
+function textOf(x){return (x&&x.textContent||'').replace(/\s+/g,' ').trim()}
+function patch(){
+  const o=inside(),w=o.w,d=o.d;if(!w||!d)return;
+  const oldShow=typeof w.showSecret==='function'?w.showSecret:null;
+  if(!w.__pmpRgControlsV2){
+    w.__pmpRgControlsV2=true;
+    w.showSecret=function(name){if(String(name)==='Bug Memory')return goBug();if(oldShow)return oldShow.apply(this,arguments)};
+    w.automaticAppUpdate=function(){return goAction('appUpdate')};
+  }
+  if(!d.documentElement.dataset.pmpRgControlsV2Delegate){
+    d.documentElement.dataset.pmpRgControlsV2Delegate='1';
+    d.addEventListener('click',function(e){
+      const b=e.target&&e.target.closest&&e.target.closest('button');if(!b)return;
+      const t=textOf(b);
+      if(t==='Bug Memory'){e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();return goBug()}
+      if(t.includes('Automatic App Update')){e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();return goAction('appUpdate')}
+      if(t.includes('Open Code Safety')){e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();return goAction('codeSafety')}
+    },true);
+  }
+  Array.from(d.querySelectorAll('button')).forEach(b=>{
+    const t=textOf(b);
+    if(t==='Bug Memory')b.onclick=function(e){if(e)e.preventDefault();return goBug()};
+    if(t.includes('Automatic App Update')){b.onclick=function(e){if(e)e.preventDefault();return goAction('appUpdate')};const s=b.querySelector('small');if(s)s.textContent='Route Guardian first, then current check'}
+    if(t.includes('Open Code Safety')){b.onclick=function(e){if(e)e.preventDefault();return goAction('codeSafety')};const s=b.querySelector('small');if(s)s.textContent='Route Guardian first, then Code Safety'}
+  });
+}
+F.addEventListener('load',()=>{setTimeout(patch,100);setTimeout(patch,700);setTimeout(patch,1800)});
+setInterval(patch,1000);
+</script>
+</body>
+</html>
