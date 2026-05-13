@@ -1,0 +1,85 @@
+{
+  "type": "PMP_ACCEPTANCE_RECEIPT",
+  "receipt_type": "ROUTE_GUARDIAN_WORLD_ENTRY_TEST_PASS",
+  "receipt_id": "PMP-RECEIPT-ROUTE-GUARDIAN-WORLD-ENTRY-PASS-2026-05-12",
+  "created_at": "2026-05-12T22:26:04.338-07:00",
+  "source_report_built_at": "2026-05-13T05:26:04.338Z",
+  "scope": "pmp-route-guardian-test-v1.html?world=entry-v1 on user device",
+  "result": "PASS",
+  "deletion_permission_after_receipt": false,
+  "archive_permission_after_receipt": false,
+  "app_files_changed_by_test": false,
+  "cleanup_archive_delete_done": false,
+  "tested_files": [
+    "pmp-route-guardian-test-v1.html",
+    "pmp-route-guardian-v1.js",
+    "pmp-current-map.json",
+    "pmp-current-inner-cleanbug-v1.html",
+    "pmp-home-single-v6.html"
+  ],
+  "user_confirmation": {
+    "message": "Everything looks good",
+    "interpreted_meaning": "Route Guardian appears first, route proof passes, the flow opens the World page, and the test behavior is acceptable on the user's device."
+  },
+  "json_report_summary": {
+    "route_guardian_version": "1.0.2-standalone-support-test",
+    "mode": "standalone_support_test_not_wired",
+    "current_surface_href": "https://pmpbird.github.io/pmp-bridge-shell/pmp-route-guardian-test-v1.html?world=entry-v1",
+    "current_surface_file": "pmp-route-guardian-test-v1.html",
+    "approved_support_test_surface": true,
+    "surface_kind": "SAFARI_OR_BROWSER",
+    "current_map_fetch_ok": true,
+    "current_map_parse_ok": true,
+    "current_map_size": 905,
+    "current_path": "pmp-current-inner-cleanbug-v1.html",
+    "current_label": "PMP Current Clean Bug Memory",
+    "current_cache_key": "pmp-current-cleanbug-v1",
+    "current_status": "current",
+    "fallback_path": "pmp-current-inner-cleanbug-v1.html",
+    "fallback_cache_key": "fallback-cleanbug-v1",
+    "current_path_matches_expected": true,
+    "fallback_path_matches_expected": true,
+    "home_screen_rule_matches_expected": true,
+    "user_facing_rule_hides_internal_files": true,
+    "current_inner_fetch_ok": true,
+    "current_inner_status": 200,
+    "loads_base_app": true,
+    "routes_bug_memory_clean": true,
+    "support_file_count_present": 8,
+    "blocks_old_bug_memory_route": true,
+    "observed_world_frame_present": true,
+    "world_frame_id": "worldFrame",
+    "world_frame_title": "World after Route Guardian",
+    "stale_shell_risk_count": 0,
+    "likely_stale_shell": false,
+    "verdict": "PASS_ROUTE_CHAIN_STATIC_PROOF"
+  },
+  "confirmed_behavior": [
+    "Route Guardian appears before the app/world screen.",
+    "Route Guardian proves current map and current inner app before World entry.",
+    "Copy Report remains available before opening World.",
+    "The World entry test uses the current map target pmp-current-inner-cleanbug-v1.html.",
+    "The route chain points to pmp-home-single-v6.html and clean Bug Memory route.",
+    "The visible World entry test is accepted by the user."
+  ],
+  "world_title_test": {
+    "desired_visible_title": "World",
+    "previous_visible_title": "PMP World",
+    "test_page_intended_patch": "Change the visible world h1 from PMP World to World inside the test frame only.",
+    "real_app_file_changed": false,
+    "real_title_patch_permission": false
+  },
+  "holds": [
+    "This pass proves the test/proof page flow, not a real pmp-app-current.html boot-gate patch.",
+    "The real pmp-home-single-v6.html still has not been patched to rename PMP World to World.",
+    "The real pmp-app-current.html still has not been patched to show Route Guardian first.",
+    "A proposal/update is still required before touching real app files."
+  ],
+  "permissions_after_receipt": {
+    "real_current_app_patch_permission": false,
+    "real_world_title_patch_permission": false,
+    "archive_permission": false,
+    "deletion_permission": false
+  },
+  "next_action": "Create a real-app patch proposal for Route Guardian first-screen entry and World title rename, then build a test copy before changing real app files."
+}
