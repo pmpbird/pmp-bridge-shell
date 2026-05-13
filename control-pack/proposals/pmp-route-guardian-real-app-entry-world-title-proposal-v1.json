@@ -1,0 +1,128 @@
+{
+  "type": "PMP_CLEANUP_CHANGE_PROPOSAL",
+  "version": "1.0",
+  "proposal_id": "PMP-ROUTE-GUARDIAN-REAL-APP-ENTRY-WORLD-TITLE-001",
+  "proposal_type": "ROUTE_CHANGE",
+  "title": "Route Guardian first-screen entry and World title rename",
+  "created_at": "2026-05-12T22:32:00.000-07:00",
+  "approval_state": "DRAFT",
+  "main_branch_allowed": false,
+  "deletion_permission": false,
+  "archive_permission": false,
+  "real_app_patch_permission": false,
+  "source_receipts": [
+    "control-pack/receipts/pmp-route-guardian-one-button-json-pass-2026-05-12.json",
+    "control-pack/receipts/pmp-route-guardian-world-entry-test-pass-2026-05-12.json"
+  ],
+  "source_plan_or_prior_proposals": [
+    "control-pack/plans/pmp-route-guardian-control-room-replacement-plan-v1.md",
+    "control-pack/proposals/pmp-route-guardian-boot-gate-promotion-proposal-v1.json",
+    "control-pack/proposals/pmp-control-room-route-guardian-button-proposal-v1.json"
+  ],
+  "requested_real_changes_later_if_approved": [
+    {
+      "file": "pmp-app-current.html",
+      "change": "Show Route Guardian first before loading the current app/world route.",
+      "goal": "Route Guardian becomes the first screen for current-version proof, then routes into World after pass."
+    },
+    {
+      "file": "pmp-home-single-v6.html",
+      "change": "Rename the visible World heading from PMP World to World.",
+      "goal": "The World screen title should say World, not PMP World."
+    }
+  ],
+  "test_copy_required_first": [
+    "pmp-app-current-route-guardian-real-entry-test.html",
+    "pmp-home-single-v6-world-title-test.html"
+  ],
+  "current_proof": {
+    "route_guardian_world_entry_test": "PASS",
+    "receipt": "control-pack/receipts/pmp-route-guardian-world-entry-test-pass-2026-05-12.json",
+    "route_guardian_version": "1.0.2-standalone-support-test",
+    "approved_support_test_surface": true,
+    "stale_shell_risk_count": 0,
+    "current_route_verdict": "PASS_ROUTE_CHAIN_STATIC_PROOF",
+    "user_confirmation": "Everything looks good"
+  },
+  "route_guardian_first_screen_required_behavior": [
+    "Route Guardian appears before World loads.",
+    "Primary button starts as Check Route.",
+    "Copy Report remains available before World opens.",
+    "Route Guardian checks pmp-current-map.json.",
+    "Route Guardian confirms pmp-current-map.json points to pmp-current-inner-cleanbug-v1.html.",
+    "Route Guardian confirms pmp-current-inner-cleanbug-v1.html loads pmp-home-single-v6.html.",
+    "Route Guardian confirms the clean Bug Memory route is present.",
+    "If route proof passes, the primary button changes to Open World or Load World.",
+    "If route proof fails, Route Guardian turns red and does not load World automatically.",
+    "Red/problem state keeps Copy Report and protected repair links available."
+  ],
+  "world_title_required_behavior": [
+    "The visible h1 on the World screen should say World.",
+    "The visible h1 should not say PMP World.",
+    "This is a display/title cleanup only, not a route change by itself."
+  ],
+  "must_keep_unchanged_until_later_approval": [
+    "pmp-app-current.html",
+    "pmp-home-single-v6.html",
+    "pmp-current-map.json",
+    "pmp-current-inner-cleanbug-v1.html",
+    "bug-memory-current-clean-v1.html",
+    "safe-writer-v14.html",
+    "code-safety-v13.html",
+    "hard-fresh.html"
+  ],
+  "must_keep_visible_or_protected": [
+    "Safe Writer / Safety Rider remains visible in Control Room.",
+    "Deep Resident Intelligence remains visible in Control Room.",
+    "Color Settings remains visible in Control Room.",
+    "Code Safety remains protected even if later moved to Route Guardian red/problem state.",
+    "Hard Fresh remains protected as a route/problem recovery tool."
+  ],
+  "not_allowed_in_this_proposal": [
+    "No direct patch to pmp-app-current.html from this proposal alone.",
+    "No direct patch to pmp-home-single-v6.html from this proposal alone.",
+    "No deletion.",
+    "No archive.",
+    "No current map rewrite.",
+    "No Safe Writer deletion.",
+    "No Code Safety deletion.",
+    "No Hard Fresh deletion."
+  ],
+  "test_copy_battery_before_real_patch": [
+    "Open the Route Guardian real-entry test copy on iPhone.",
+    "Confirm Route Guardian appears first.",
+    "Tap Check Route.",
+    "Confirm route proof passes green.",
+    "Confirm Copy Report still works before opening World.",
+    "Tap Open World / Load World.",
+    "Confirm World opens through the current map target.",
+    "Confirm the visible heading says World, not PMP World.",
+    "Confirm tabs still work.",
+    "Confirm Control Room still keeps Safe Writer / Safety Rider, Deep Resident Intelligence, and Color Settings.",
+    "Confirm Bug Memory clean route still opens.",
+    "Confirm no test controls block the app after World loads.",
+    "Confirm pmp-app-current.html and pmp-home-single-v6.html are still untouched during test-copy stage."
+  ],
+  "promotion_gate_for_real_patch": [
+    "Test copy pass receipt exists.",
+    "User explicitly approves real patch after seeing test copy.",
+    "Backup branch exists and restore drill remains valid.",
+    "Route Guardian report from test copy shows stale_shell_risk_count 0.",
+    "World title test passes on iPhone.",
+    "Control Room keep-visible requirements pass.",
+    "Rollback plan is written."
+  ],
+  "rollback_plan_if_real_patch_later_fails": [
+    "Restore pmp-app-current.html from backup branch or previous commit.",
+    "Restore pmp-home-single-v6.html from backup branch or previous commit.",
+    "Use the working proof page pmp-route-guardian-test-v1.html as external Route Guardian proof until repaired.",
+    "Do not alter pmp-current-map.json unless a separate map proposal is approved."
+  ],
+  "blocked_by": [
+    "Test copies are not built yet.",
+    "No user-device test pass exists for the real-entry test copy yet.",
+    "No explicit approval to patch pmp-app-current.html.",
+    "No explicit approval to patch pmp-home-single-v6.html."
+  ],
+  "next_action": "Build test copies for Route Guardian real-app entry and World title rename before touching real app files."
+}
