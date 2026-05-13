@@ -1,0 +1,45 @@
+{
+  "type": "PMP_ACCEPTANCE_RECEIPT",
+  "receipt_type": "EXTRACTION_TESTED",
+  "receipt_id": "PMP-RECEIPT-ROUTE-GUARDIAN-TEST-2026-05-12",
+  "created_at": "2026-05-12T00:00:00.000-07:00",
+  "scope": "pmp-route-guardian-v1.js standalone support/test file",
+  "result": "PASS_WITH_HOLD",
+  "deletion_permission_after_receipt": false,
+  "archive_permission_after_receipt": false,
+  "tested_file": "pmp-route-guardian-v1.js",
+  "test_mode": "static_file_review_and_safety_contract_check",
+  "runtime_browser_test_done": false,
+  "wired_into_current_app": false,
+  "app_files_changed": false,
+  "cleanup_archive_delete_done": false,
+  "evidence": [
+    "pmp-route-guardian-v1.js exists on main.",
+    "File header states it is a standalone support/test file and is not wired into the current PMP app.",
+    "File safety rules state it does not redirect, does not edit pmp-current-map.json, does not change app state, does not delete/archive/write app files, and does not capture private values.",
+    "Expected route chain is encoded as pmp-app-current.html -> pmp-current-map.json -> pmp-current-inner-cleanbug-v1.html -> pmp-home-single-v6.html.",
+    "Bug Memory expected clean route is encoded as bug-memory-current-clean-v1.html.",
+    "Support-file list includes top lossless, Resident readiness, current truth face, Resident X-Ray, lossless copy fix, diagnostic, and Resident work fix files.",
+    "Report builder fetches pmp-current-map.json and the mapped current inner file with no-store cache-busting query parameters.",
+    "Report builder checks map target, Home Screen rule, inner base-app load, and clean Bug Memory route.",
+    "Report verdicts are PASS_ROUTE_CHAIN_STATIC_PROOF or BLOCKED_ROUTE_CHAIN_NEEDS_REVIEW."
+  ],
+  "holds": [
+    "This receipt does not prove browser runtime behavior on iPhone.",
+    "This receipt does not prove Home Screen standalone behavior.",
+    "This receipt does not prove clipboard copy behavior.",
+    "This receipt does not approve wiring Route Guardian into the current app."
+  ],
+  "risk_result": {
+    "route_risk": "low while standalone; unknown until browser runtime test",
+    "privacy_risk": "low by static review; no private values intentionally captured",
+    "memory_risk": "low while standalone; optional localStorage write only if called with store:true",
+    "ui_layer_risk": "none while standalone; not injected into UI",
+    "cleanup_risk": "none; no cleanup/archive/delete action"
+  },
+  "decision_needed": {
+    "question": "Use console/manual only, or create a tiny manual test page?",
+    "recommended_decision": "Create a tiny manual test page because iPhone console testing is awkward and the page can run Route Guardian without wiring it into the current app."
+  },
+  "next_action": "Create pmp-route-guardian-test-v1.html as a standalone manual test page, unless user rejects that path."
+}
