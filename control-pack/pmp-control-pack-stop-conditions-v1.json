@@ -1,0 +1,21 @@
+{
+  "type": "PMP_CONTROL_PACK_STOP_CONDITIONS",
+  "version": "1.0",
+  "status": "active_stop_rule",
+  "created_for": "PMP app cleanup/remodel safety",
+  "deletion_permission": false,
+  "archive_permission": false,
+  "source_scope": "pmpbird/pmp-bridge-shell + pmpbird/Code",
+  "current_app_protection": "pmp-app-current.html route chain remains protected",
+  "last_reviewed_at": "2026-05-12T00:00:00.000-07:00",
+  "conflict_policy": "If another file encourages endless upgrade, this stop rule wins unless new protection is added.",
+  "stop_conditions": [
+    "Next upgrade only renames files.",
+    "Next upgrade adds categories but no new proof.",
+    "Next upgrade duplicates existing gates.",
+    "Next upgrade makes cleanup harder without making it safer.",
+    "Schema, manifest, trust ledger, graph, gates, audit runner, restore drill, test battery, archive plan, proposal template, receipts, decision log, conflict resolver, and save order are all present.",
+    "The next useful move is saving the pack, running first-run checks, and building Route Guardian."
+  ],
+  "current_status": "Control pack is strong enough to save. Further upgrades should stop unless they add real proof or protection."
+}
