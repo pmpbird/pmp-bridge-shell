@@ -1,0 +1,25 @@
+{
+  "type": "PMP_CONTROL_PACK_CONFLICT_RESOLVER",
+  "version": "1.0",
+  "status": "active_conflict_resolver",
+  "created_for": "PMP app cleanup/remodel safety",
+  "deletion_permission": false,
+  "archive_permission": false,
+  "source_scope": "pmpbird/pmp-bridge-shell + pmpbird/Code",
+  "current_app_protection": "Conflicts touching the current app route chain resolve to keep/hold/block, never delete.",
+  "last_reviewed_at": "2026-05-12T00:00:00.000-07:00",
+  "conflict_policy": "If conflict touches current route, safety, privacy, vault, or Bug Memory, choose the safer answer and block cleanup.",
+  "priority_order": [
+    "current_live_route_proof",
+    "control_pack_manifest",
+    "delete_gates",
+    "route_dependency_graph",
+    "file_trust_ledger",
+    "classification_map",
+    "remodel_extraction_ledger",
+    "older_notes_or_chat_summaries"
+  ],
+  "allowed_results": ["RESOLVED_KEEP", "RESOLVED_HOLD", "RESOLVED_REMODEL", "BLOCKED_FOR_AUDIT"],
+  "forbidden_results": ["RESOLVED_DELETE"],
+  "hard_rule": "Deletion can never be resolved by conflict logic alone. It requires proposal, archive, tests, restore proof, and explicit user approval."
+}
