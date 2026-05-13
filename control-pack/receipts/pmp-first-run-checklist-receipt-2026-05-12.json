@@ -1,0 +1,133 @@
+{
+  "type": "PMP_ACCEPTANCE_RECEIPT",
+  "receipt_type": "FIRST_RUN_CHECKLIST_DONE",
+  "receipt_id": "PMP-RECEIPT-FIRST-RUN-CHECKLIST-2026-05-12",
+  "created_at": "2026-05-12T00:00:00.000-07:00",
+  "scope": "pmpbird/pmp-bridge-shell control-pack first-run checklist",
+  "result": "PASS_WITH_HOLD",
+  "deletion_permission_after_receipt": false,
+  "archive_permission_after_receipt": false,
+  "checks": [
+    {
+      "id": "FR-1",
+      "name": "Confirm backup branches exist",
+      "result": "PASS",
+      "evidence": [
+        "pmpbird/pmp-bridge-shell has branch backup-before-pmp-cleanup-2026-05-12",
+        "pmpbird/Code has branch backup-before-pmp-cleanup-2026-05-12"
+      ]
+    },
+    {
+      "id": "FR-2",
+      "name": "Confirm current app entry",
+      "result": "PASS",
+      "evidence": [
+        "pmp-app-current.html exists on main and is titled PMP Current."
+      ]
+    },
+    {
+      "id": "FR-3",
+      "name": "Confirm current map target",
+      "result": "PASS",
+      "evidence": [
+        "pmp-current-map.json current_app.path is pmp-current-inner-cleanbug-v1.html."
+      ]
+    },
+    {
+      "id": "FR-4",
+      "name": "Confirm current inner loads base app",
+      "result": "PASS",
+      "evidence": [
+        "pmp-current-inner-cleanbug-v1.html iframe src is pmp-home-single-v6.html?fresh=current-cleanbug-v1#world."
+      ]
+    },
+    {
+      "id": "FR-5",
+      "name": "Confirm Bug Memory clean route exists",
+      "result": "PASS",
+      "evidence": [
+        "bug-memory-current-clean-v1.html exists and contains Load Memory / Bug Lab clean route logic."
+      ]
+    },
+    {
+      "id": "FR-6",
+      "name": "Confirm Resident X-Ray files exist",
+      "result": "PASS",
+      "evidence": [
+        "pmp-resident-xray-core.js exists and reads current map, Inventory Eyes manifest, vault current, DOM, and localStorage key names only."
+      ]
+    },
+    {
+      "id": "FR-7",
+      "name": "Confirm Inventory Eyes / Lossless Vault files exist",
+      "result": "PASS",
+      "evidence": [
+        "pmp-inventory-eyes-manifest-v1.0.0.json exists and states public-safe structure only, no private values."
+      ]
+    },
+    {
+      "id": "FR-8",
+      "name": "Confirm Safe Writer / Code Safety / Hard Fresh exist",
+      "result": "PASS",
+      "evidence": [
+        "safe-writer-v14.html exists.",
+        "code-safety-v13.html exists.",
+        "hard-fresh.html exists."
+      ]
+    },
+    {
+      "id": "FR-9",
+      "name": "Confirm deletion permission false",
+      "result": "PASS",
+      "evidence": [
+        "Saved control pack files declare deletion_permission false."
+      ]
+    },
+    {
+      "id": "FR-10",
+      "name": "Confirm archive permission false",
+      "result": "PASS",
+      "evidence": [
+        "Saved control pack files declare archive_permission false."
+      ]
+    },
+    {
+      "id": "FR-11",
+      "name": "Create read-only audit receipt",
+      "result": "PASS_WITH_HOLD",
+      "evidence": [
+        "This receipt records read-only audit evidence from GitHub files. It is not a browser runtime test."
+      ]
+    },
+    {
+      "id": "FR-12",
+      "name": "Create smoke-test receipt",
+      "result": "PASS_WITH_HOLD",
+      "evidence": [
+        "Static smoke-test evidence from route files passed. User-visible iPhone browser smoke test is still pending."
+      ]
+    },
+    {
+      "id": "FR-13",
+      "name": "Create Route Guardian change proposal",
+      "result": "PENDING_AT_RECEIPT_TIME",
+      "evidence": [
+        "Route Guardian proposal is the next file to create after this receipt."
+      ]
+    },
+    {
+      "id": "FR-14",
+      "name": "Do not touch cleanup/delete/archive until receipts exist",
+      "result": "PASS",
+      "evidence": [
+        "No app files were changed. No cleanup, archive, or deletion actions were performed."
+      ]
+    }
+  ],
+  "blocked_by": [
+    "User-visible iPhone smoke test still pending.",
+    "Route Guardian change proposal still needs to be created after this receipt.",
+    "Route Guardian code not built yet."
+  ],
+  "next_action": "Create Route Guardian change proposal, then build Route Guardian in support/test mode."
+}
