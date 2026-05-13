@@ -17,7 +17,7 @@
 (function () {
   'use strict';
 
-  const VERSION = '1.0.0-standalone-support-test';
+  const VERSION = '1.0.1-standalone-support-test';
   const EXPECTED = Object.freeze({
     entry: 'pmp-app-current.html',
     map: 'pmp-current-map.json',
@@ -26,6 +26,11 @@
     bugMemory: 'bug-memory-current-clean-v1.html',
     userFacingVersion: 'PMP Current / PMP-CURRENT-1'
   });
+
+  const ALLOWED_SUPPORT_TEST_SURFACES = Object.freeze([
+    'pmp-route-guardian-test-v1.html',
+    'pmp-app-current-route-guardian-test.html'
+  ]);
 
   const SUPPORT_FILES = Object.freeze([
     'pmp-top-lossless-injector.js',
@@ -40,10 +45,6 @@
 
   function now() {
     return new Date().toISOString();
-  }
-
-  function safeString(value, limit) {
-    return String(value == null ? '' : value).replace(/\s+/g, ' ').trim().slice(0, limit || 500);
   }
 
   function baseUrl() {
@@ -78,8 +79,8 @@
     return 'UNKNOWN_BROWSER_SURFACE';
   }
 
-  function verdict(ok, label, details) {
-    return { ok: !!ok, label, details: details || {} };
+  function isApprovedSupportTestSurface(file) {
+    return ALLOWED_SUPPORT_TEST_SURFACES.includes(String(file || ''));
   }
 
   async function fetchText(path) {
@@ -177,9 +178,9 @@
     };
   }
 
-  function staleRisk(currentFile, mapView, innerView) {
+  function staleRisk(currentFile, mapView, innerView, isApprovedSupportSurface) {
     const risks = [];
-    if (currentFile && currentFile !== EXPECTED.entry && currentFile !== EXPECTED.currentInner && currentFile !== EXPECTED.baseApp) {
+    if (!isApprovedSupportSurface && currentFile && currentFile !== EXPECTED.entry && currentFile !== EXPECTED.currentInner && currentFile !== EXPECTED.baseApp) {
       risks.push('Current browser file is not the expected entry/current-inner/base-app. User may be on an old route or support page.');
     }
     if (mapView && mapView.current_path_matches_expected === false) {
@@ -200,6 +201,7 @@
   async function buildReport(options) {
     const opts = options || {};
     const currentFile = fileNameFromUrl(window.location.href);
+    const approvedSupportSurface = isApprovedSupportTestSurface(currentFile);
     const mapFetch = await fetchJson(EXPECTED.map);
     const innerPath = mapFetch.json && mapFetch.json.current_app && mapFetch.json.current_app.path || EXPECTED.currentInner;
     const innerFetch = await fetchText(innerPath);
@@ -207,7 +209,7 @@
     const innerView = innerAssessment(innerFetch.text || '');
     const frames = scanLoadedFrames();
     const scripts = scanScriptTags();
-    const risks = staleRisk(currentFile, mapView, innerView);
+    const risks = staleRisk(currentFile, mapView, innerView, approvedSupportSurface);
     const pass = !!(
       mapFetch.ok &&
       mapFetch.parse_ok &&
@@ -232,7 +234,8 @@
         hash: window.location.hash || '',
         base_url: baseUrl(),
         standalone: isStandalone(),
-        surface_kind: surfaceKind()
+        surface_kind: surfaceKind(),
+        approved_support_test_surface: approvedSupportSurface
       },
       expected: EXPECTED,
       current_map_fetch: {
@@ -260,7 +263,8 @@
       stale_shell_risk: {
         risk_count: risks.length,
         risks,
-        likely_stale_shell: risks.length > 0 && currentFile !== EXPECTED.entry
+        likely_stale_shell: risks.length > 0 && !approvedSupportSurface && currentFile !== EXPECTED.entry,
+        support_test_surface_note: approvedSupportSurface ? 'Current file is an approved standalone support/test surface, so it is not counted as stale shell.' : null
       },
       verdict: pass ? 'PASS_ROUTE_CHAIN_STATIC_PROOF' : 'BLOCKED_ROUTE_CHAIN_NEEDS_REVIEW',
       resident_summary: pass
@@ -297,6 +301,7 @@
   window.PMPRouteGuardianV1 = Object.freeze({
     version: VERSION,
     expected: EXPECTED,
+    allowedSupportTestSurfaces: ALLOWED_SUPPORT_TEST_SURFACES.slice(),
     supportFiles: SUPPORT_FILES.slice(),
     buildReport,
     copyReport,
