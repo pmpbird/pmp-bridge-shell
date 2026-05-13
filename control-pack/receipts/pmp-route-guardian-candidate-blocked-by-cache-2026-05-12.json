@@ -1,0 +1,58 @@
+{
+  "type": "PMP_ACCEPTANCE_RECEIPT",
+  "receipt_type": "ROUTE_GUARDIAN_CANDIDATE_TEST_BLOCKED",
+  "receipt_id": "PMP-RECEIPT-ROUTE-GUARDIAN-CANDIDATE-BLOCKED-BY-CACHE-2026-05-12",
+  "created_at": "2026-05-12T21:45:00.000-07:00",
+  "scope": "pmp-app-current-route-guardian-candidate.html user-device test",
+  "result": "BLOCKED_BY_CACHE_NOT_ROUTE_FAILURE",
+  "deletion_permission_after_receipt": false,
+  "archive_permission_after_receipt": false,
+  "app_files_changed_by_test": false,
+  "cleanup_archive_delete_done": false,
+  "tested_files": [
+    "pmp-app-current-route-guardian-candidate.html",
+    "pmp-route-guardian-v1.js",
+    "pmp-current-map.json",
+    "pmp-current-inner-cleanbug-v1.html"
+  ],
+  "user_report_evidence": {
+    "route_guardian_report_version_seen": "1.0.1-standalone-support-test",
+    "expected_latest_route_guardian_version": "1.0.2-standalone-support-test",
+    "script_seen_in_report": "pmp-route-guardian-v1.js?fresh=candidate-shell-v1",
+    "expected_candidate_script_after_patch": "pmp-route-guardian-v1.js?fresh=candidate-shell-v102-20260512-2145",
+    "candidate_surface_seen": "pmp-app-current-route-guardian-candidate.html?rg=102b",
+    "approved_support_test_surface_seen": false,
+    "expected_approved_support_test_surface_after_patch": true
+  },
+  "route_truth_from_report": {
+    "current_map_fetch_ok": true,
+    "current_map_parse_ok": true,
+    "current_path": "pmp-current-inner-cleanbug-v1.html",
+    "current_path_matches_expected": true,
+    "fallback_path_matches_expected": true,
+    "home_screen_rule_matches_expected": true,
+    "user_facing_rule_hides_internal_files": true,
+    "current_inner_fetch_ok": true,
+    "loads_base_app": true,
+    "routes_bug_memory_clean": true,
+    "support_file_count_present": 8,
+    "blocks_old_bug_memory_route": true,
+    "route_verdict": "PASS_ROUTE_CHAIN_STATIC_PROOF"
+  },
+  "why_blocked_not_failed": [
+    "The actual route chain passed static proof.",
+    "The stale-shell warning was caused by the browser receiving old Route Guardian 1.0.1 code.",
+    "The candidate report still showed the old script cache key candidate-shell-v1 after the file was patched.",
+    "Therefore the candidate-shell test cannot be judged until GitHub Pages/Safari serves the updated candidate and Route Guardian script."
+  ],
+  "working_proof_source_until_retest": {
+    "file": "pmp-route-guardian-test-v1.html",
+    "status": "one-button manual test passed",
+    "behavior": "Main button starts as Check Route, changes to Open PMP Current after pass, and Copy Report remains separate."
+  },
+  "blocked_by": [
+    "GitHub Pages or Safari cache is still serving old candidate HTML/script.",
+    "Latest Route Guardian 1.0.2 was not observed by the user-device candidate test."
+  ],
+  "next_action": "Retest candidate shell only after the live page reports Route Guardian version 1.0.2 and approved_support_test_surface true. Until then, use pmp-route-guardian-test-v1.html as the proof source."
+}
