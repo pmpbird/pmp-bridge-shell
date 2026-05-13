@@ -1,0 +1,33 @@
+{
+  "type": "PMP_ARCHIVE_FIRST_PLAN",
+  "version": "3.0",
+  "status": "archive_before_delete_required",
+  "created_for": "PMP app cleanup/remodel safety",
+  "deletion_permission": false,
+  "archive_permission": false,
+  "source_scope": "pmpbird/pmp-bridge-shell + pmpbird/Code",
+  "current_app_protection": "Current app route chain cannot be archived.",
+  "last_reviewed_at": "2026-05-12T00:00:00.000-07:00",
+  "conflict_policy": "If archive plan conflicts with route/safety/privacy proof, archive is blocked.",
+  "archive_stages": [
+    "ARCHIVE_STAGE_1 mark as archive candidate",
+    "ARCHIVE_STAGE_2 move on cleanup branch",
+    "ARCHIVE_STAGE_3 test current app",
+    "ARCHIVE_STAGE_4 hold as archived during cooling period",
+    "ARCHIVE_STAGE_5 only then consider delete proposal"
+  ],
+  "archive_folders": [
+    "archive/route-history/",
+    "archive/old-visual-shells/",
+    "archive/old-bug-memory-versions/",
+    "archive/old-plain-brain/",
+    "archive/do-not-repeat/",
+    "archive/old-bridge-system/"
+  ],
+  "hard_rules": [
+    "Archive is reversible; delete is last resort.",
+    "If a file has uncertainty, archive it instead of deleting it.",
+    "No direct archive from main without proposal and tests.",
+    "Archive permission remains false until a proposal is approved."
+  ]
+}
