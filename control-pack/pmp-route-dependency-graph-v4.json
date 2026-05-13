@@ -1,0 +1,52 @@
+{
+  "type": "PMP_ROUTE_DEPENDENCY_GRAPH",
+  "version": "4.0",
+  "status": "active_dependency_graph_seed",
+  "created_for": "PMP app cleanup/remodel safety",
+  "deletion_permission": false,
+  "archive_permission": false,
+  "source_scope": "pmpbird/pmp-bridge-shell + pmpbird/Code",
+  "current_app_protection": "Current route chain is absolute keep.",
+  "last_reviewed_at": "2026-05-12T00:00:00.000-07:00",
+  "conflict_policy": "Positive dependency proof blocks archive/delete even if classification says old.",
+  "current_entry": "pmp-app-current.html",
+  "route_chain": [
+    {"file": "pmp-app-current.html", "role": "ENTRY", "proof_level": "DIRECT_LOAD", "loads": ["pmp-current-map.json"]},
+    {"file": "pmp-current-map.json", "role": "CURRENT_MAP", "proof_level": "DATA_DEPENDENCY", "points_to": ["pmp-current-inner-cleanbug-v1.html"]},
+    {"file": "pmp-current-inner-cleanbug-v1.html", "role": "CURRENT_INNER", "proof_level": "INDIRECT_LOAD", "loads": ["pmp-home-single-v6.html"]},
+    {"file": "pmp-home-single-v6.html", "role": "BASE_APP", "proof_level": "INDIRECT_LOAD", "loads": []}
+  ],
+  "protected_routes": [
+    "bm.html",
+    "bug-memory-current-clean-v1.html",
+    "resident-notes-catalog-v3.html",
+    "resident-notes-catalog-v3-one-button.html",
+    "resident-notes-backend-v2.html",
+    "resident-zip-xray-v2.html",
+    "private-bug-mixer-lab-v1-shell.html",
+    "safe-writer-v14.html",
+    "code-safety-v13.html",
+    "hard-fresh.html"
+  ],
+  "protected_support": [
+    "pmp-resident-xray-core.js",
+    "pmp-resident-xray-finish.js",
+    "pmp-inventory-eyes-xray-feed.js",
+    "pmp-resident-lossless-readiness.js",
+    "pmp-current-truth-face.js",
+    "pmp-lossless-copy-fix.js",
+    "pmp-copy-lossless-diagnostic.js",
+    "pmp-resident-work-fix.js",
+    "pmp-shared-theme-v1.js"
+  ],
+  "negative_proof_required_for_archive": [
+    "not_in_pmp_app_current",
+    "not_in_current_map",
+    "not_in_current_inner",
+    "not_in_active_support_scripts",
+    "not_in_bug_memory_routes",
+    "not_in_vault_manifest"
+  ],
+  "dependency_status_values": ["PROTECTED", "REMODEL_ONLY", "HISTORY_ONLY", "UNKNOWN", "NO_DEPENDENCY_FOUND"],
+  "absolute_rule": "Nothing with dependency status PROTECTED can be archived or deleted during cleanup. UNKNOWN defaults to protected."
+}
