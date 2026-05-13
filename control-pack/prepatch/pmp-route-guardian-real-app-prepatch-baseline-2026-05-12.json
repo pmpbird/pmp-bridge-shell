@@ -1,0 +1,62 @@
+{
+  "type": "PMP_PREPATCH_BASELINE_RECORD",
+  "version": "1.0",
+  "baseline_id": "PMP-PREPATCH-ROUTE-GUARDIAN-REAL-APP-2026-05-12",
+  "created_at": "2026-05-12T23:05:00.000-07:00",
+  "scope": "Route Guardian first-screen entry and World title rename preparation",
+  "status": "PREPATCH_BASELINE_RECORDED_WITH_HOME_SHA_HOLD",
+  "deletion_permission": false,
+  "archive_permission": false,
+  "real_app_patch_permission": false,
+  "real_app_files_changed": false,
+  "source_plan": "control-pack/plans/pmp-route-guardian-real-app-patch-plan-v1.md",
+  "source_precheck": "control-pack/checklists/pmp-route-guardian-real-patch-precheck-v1.md",
+  "working_proof_source": {
+    "file": "pmp-route-guardian-test-v1.html?world=entry-v1",
+    "receipt": "control-pack/receipts/pmp-route-guardian-world-entry-test-pass-2026-05-12.json",
+    "status": "PASS"
+  },
+  "protected_real_files": [
+    {
+      "path": "pmp-app-current.html",
+      "role": "current Home Screen shell / future Route Guardian first-screen entry target",
+      "current_sha_before_patch": "c58605d6fcee7ce2822279317dfd7ba45c84ee28",
+      "baseline_confirmed": true,
+      "evidence": "Fetched from main before any real patch."
+    },
+    {
+      "path": "pmp-home-single-v6.html",
+      "role": "current base app / future visible World heading rename target",
+      "current_sha_before_patch": "MUST_REFETCH_EXACT_SHA_BEFORE_PATCH",
+      "baseline_confirmed": true,
+      "evidence": "Fetched from main before any real patch; file content confirmed contains visible heading <h1>PMP World</h1>. Connector output was too large to reliably expose the exact SHA in the visible response, so exact SHA must be re-fetched immediately before patching."
+    }
+  ],
+  "baseline_observations": {
+    "pmp_app_current_current_behavior": [
+      "Loads pmp-current-map.json as current source of truth.",
+      "Loads current app into iframe.",
+      "Current shell still shows default boot text PMP loading current app.",
+      "Current shell has not yet been patched with Route Guardian first-screen gate."
+    ],
+    "pmp_home_single_current_behavior": [
+      "World section exists with id world.",
+      "Visible heading currently says PMP World.",
+      "Tabs include World / Bridge / Library / Workshop / Control.",
+      "Control Room includes Open Safe Writer, Open Code Safety, Automatic App Update, Color Settings, and Deep Resident Intelligence."
+    ]
+  },
+  "rollback_sources": {
+    "backup_branch": "backup-before-pmp-cleanup-2026-05-12",
+    "app_current_restore_source": "previous SHA c58605d6fcee7ce2822279317dfd7ba45c84ee28 or backup branch",
+    "home_single_restore_source": "exact SHA to be re-fetched before patch or backup branch"
+  },
+  "hard_hold_before_real_patch": [
+    "User must explicitly approve patching pmp-app-current.html by name.",
+    "User must explicitly approve patching pmp-home-single-v6.html by name.",
+    "Exact current SHA for pmp-home-single-v6.html must be re-fetched and recorded before any update_file call against that file.",
+    "Rollback instructions must be kept with the patch receipt.",
+    "No deletion or archive is allowed."
+  ],
+  "next_action": "Ask for explicit real-file patch approval by name, or create a separate exact-SHA recheck receipt before real patch."
+}
