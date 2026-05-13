@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PMP Route Candidate">
+<meta name="theme-color" content="#52b5df">
+<title>PMP Current Route Guardian Candidate</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#52b5df;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#101827}
+iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#52b5df}
+#gate{position:fixed;inset:0;display:grid;place-items:center;background:#52b5df;font-weight:950;text-align:center;padding:18px;z-index:20;overflow:auto}
+#gateCard{width:min(760px,100%);background:#46a9d3;border:3px solid #07101c;border-radius:28px;padding:18px;box-shadow:0 10px 24px rgba(0,0,0,.2);line-height:1.35;text-align:left}
+#gateCard h1{font-size:31px;line-height:1.05;margin:0 0 8px;text-align:center}
+#gateText{font-size:16px;font-weight:850;margin:0 0 12px;text-align:center}
+.badge{display:inline-block;background:#a1fcfd;border:2px solid #07101c;border-radius:999px;padding:6px 10px;margin:0 auto 10px;font-size:12px;font-weight:950;color:#101827;text-align:center}
+.center{text-align:center}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}@media(max-width:680px){.grid{grid-template-columns:1fr}}
+button{width:100%;border:0;border-radius:16px;background:#a1fcfd;color:#101827;font:inherit;font-weight:950;padding:13px;box-shadow:0 8px 18px rgba(0,0,0,.16)}
+button.dark{background:#172234;color:#eef4fb;border:1px solid #25354a}.pass #gateCard{border-color:#0b3519}.fail #gateCard{border-color:#7d3333;background:#7b2f2f;color:#fff}.fail #gateText{color:#fff}.hidden{display:none!important}
+#reportPanel{position:fixed;left:10px;right:10px;top:calc(10px + env(safe-area-inset-top));bottom:calc(10px + env(safe-area-inset-bottom));z-index:30;display:none;background:#0c141e;color:#eef4fb;border:2px solid #a1fcfd;border-radius:22px;padding:12px;overflow:auto;white-space:pre-wrap;font:12px/1.35 ui-monospace,Menlo,monospace}
+.pill{display:inline-block;background:#172234;color:#eef4fb;border:1px solid #25354a;border-radius:999px;padding:7px 10px;font-weight:900;font-size:12px;margin:4px 4px 0 0}.ok{background:#123024;color:#d8ffe2}.bad{background:#351414;color:#ffd1d1}.appLoaded #gate{display:none!important}.appLoaded #reportPanel{display:none!important}
+</style>
+</head>
+<body>
+<iframe id="app" title="PMP Current App Route Guardian Candidate"></iframe>
+<div id="gate">
+  <div id="gateCard">
+    <div class="center"><span class="badge">ROUTE GUARDIAN BOOT GATE CANDIDATE</span></div>
+    <h1 id="gateTitle">Route Guardian</h1>
+    <p id="gateText">Tap Check Route before PMP World loads. If the route passes, this same button changes to Load PMP Current.</p>
+    <div id="chips"></div>
+    <div class="grid">
+      <button id="primaryBtn">Check Route</button>
+      <button id="copyBtn" class="dark">Copy Report</button>
+      <button id="showBtn" class="dark">Show / Hide Report</button>
+    </div>
+  </div>
+</div>
+<pre id="reportPanel">No report yet.</pre>
+<script src="pmp-route-guardian-v1.js?fresh=candidate-shell-v1"></script>
+<script>
+const MAP_PATH='pmp-current-map.json';
+const DEFAULT_APP='pmp-home-single-v14.html';
+const F=document.getElementById('app');
+const GATE=document.getElementById('gate');
+const GATE_TITLE=document.getElementById('gateTitle');
+const GATE_TEXT=document.getElementById('gateText');
+const CHIPS=document.getElementById('chips');
+const PRIMARY=document.getElementById('primaryBtn');
+const COPY=document.getElementById('copyBtn');
+const SHOW=document.getElementById('showBtn');
+const REPORT=document.getElementById('reportPanel');
+let CURRENT_MAP=null;
+let latestReport=null;
+let routePassed=false;
+let candidateLoaded=false;
+function esc(t){return String(t).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))}
+function setGate(title,text,kind){document.body.classList.remove('pass','fail','appLoaded');if(kind)document.body.classList.add(kind);GATE.style.display='grid';GATE_TITLE.textContent=title;GATE_TEXT.textContent=text}
+function hideGateForApp(){document.body.classList.add('appLoaded');GATE.style.display='none';REPORT.style.display='none'}
+function pill(text,ok){return '<span class="pill '+(ok?'ok':'bad')+'">'+esc(text)+'</span>'}
+function cleanPath(p){p=String(p||DEFAULT_APP).trim();return /^[a-zA-Z0-9._\/-]+\.html$/.test(p)?p.replace(/^\/+/, ''):DEFAULT_APP}
+async function loadMap(){try{let r=await fetch(MAP_PATH+'?fresh='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('map');return await r.json()}catch(e){return{current_app:{path:DEFAULT_APP,cache_key:'fallback-'+Date.now()}}}}
+function srcWithFresh(path,key){return cleanPath(path)+'?fresh=route-guardian-candidate-'+encodeURIComponent(key||Date.now())+'-'+Date.now()+(location.hash||'#world')}
+function setReport(report){latestReport=report;REPORT.textContent=JSON.stringify(report,null,2)}
+function renderChips(report){const map=report.current_map_assessment||{};const inner=report.current_inner_assessment||{};const risk=(report.stale_shell_risk||{}).risk_count||0;CHIPS.innerHTML=[pill('map '+(map.current_path_matches_expected?'ok':'check'),!!map.current_path_matches_expected),pill('home screen '+(map.home_screen_rule_matches_expected?'ok':'check'),!!map.home_screen_rule_matches_expected),pill('base '+(inner.loads_base_app?'ok':'check'),!!inner.loads_base_app),pill('bug '+(inner.routes_bug_memory_clean?'ok':'check'),!!inner.routes_bug_memory_clean),pill('risk '+risk,risk===0)].join('')}
+async function checkRoute(){setGate('Route Guardian','Checking current app route...',null);PRIMARY.textContent='Checking...';try{if(!window.PMPRouteGuardianV1)throw new Error('Route Guardian did not load.');const report=await window.PMPRouteGuardianV1.buildReport({store:false});setReport(report);renderChips(report);routePassed=String(report.verdict||'').startsWith('PASS')&&((report.stale_shell_risk||{}).risk_count||0)===0;if(routePassed){setGate('Route Guardian Passed','Current route is clean. The same button is now Load PMP Current. Copy Report still works.','pass');PRIMARY.textContent='Load PMP Current'}else{setGate('Route Guardian Blocked',report.resident_summary||'Route risk found. Copy the report before doing app work.','fail');PRIMARY.textContent='Check Route'}}catch(e){routePassed=false;setReport({type:'PMP_ROUTE_GUARDIAN_CANDIDATE_ERROR',built_at:new Date().toISOString(),error:String(e&&e.message||e)});CHIPS.innerHTML=pill('test failed',false);setGate('Route Guardian Error',String(e&&e.message||e),'fail');PRIMARY.textContent='Check Route'}}
+async function loadCurrent(targetHash){if(!routePassed){setGate('Route Not Passed','Run Check Route first. Candidate will not load PMP until Route Guardian passes.','fail');PRIMARY.textContent='Check Route';return}setGate('Loading PMP Current','Route Guardian passed. Loading PMP Current from current map...', 'pass');let map=await loadMap();CURRENT_MAP=map;let cur=map.current_app||{};let path=cleanPath(cur.path||DEFAULT_APP);let key=cur.cache_key||map.app_version||Date.now();F.src=srcWithFresh(path,key);candidateLoaded=true;F.onload=()=>setTimeout(hideGateForApp,550);setTimeout(hideGateForApp,3000)}
+async function copyReport(){if(!latestReport)await checkRoute();try{await navigator.clipboard.writeText(JSON.stringify(latestReport,null,2));setGate('Report Copied',routePassed?'Report copied. The same button is still Load PMP Current.':'Report copied. Route is blocked or uncertain.',routePassed?'pass':'fail');if(routePassed)PRIMARY.textContent='Load PMP Current'}catch(e){REPORT.style.display='block';setGate('Copy Failed','Select the report manually from the report panel.','fail')}}
+PRIMARY.onclick=function(){if(routePassed&&!candidateLoaded){loadCurrent('#world')}else if(routePassed&&candidateLoaded){hideGateForApp()}else{checkRoute()}};
+COPY.onclick=copyReport;
+SHOW.onclick=function(){REPORT.style.display=REPORT.style.display==='block'?'none':'block'};
+window.pmpCandidateRouteGuardianCheck=checkRoute;
+window.pmpCandidateRouteGuardianLoad=loadCurrent;
+</script>
+</body>
+</html>
