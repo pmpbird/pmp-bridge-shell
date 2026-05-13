@@ -17,7 +17,7 @@
 (function () {
   'use strict';
 
-  const VERSION = '1.0.1-standalone-support-test';
+  const VERSION = '1.0.2-standalone-support-test';
   const EXPECTED = Object.freeze({
     entry: 'pmp-app-current.html',
     map: 'pmp-current-map.json',
@@ -29,7 +29,8 @@
 
   const ALLOWED_SUPPORT_TEST_SURFACES = Object.freeze([
     'pmp-route-guardian-test-v1.html',
-    'pmp-app-current-route-guardian-test.html'
+    'pmp-app-current-route-guardian-test.html',
+    'pmp-app-current-route-guardian-candidate.html'
   ]);
 
   const SUPPORT_FILES = Object.freeze([
