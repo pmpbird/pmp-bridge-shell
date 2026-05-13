@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PMP Route Guardian Test">
+<meta name="theme-color" content="#52b5df">
+<title>PMP Route Guardian Test v1</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:#52b5df;color:#101827;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-text-size-adjust:100%}
+.wrap{max-width:860px;margin:auto;padding:calc(26px + env(safe-area-inset-top)) 14px calc(90px + env(safe-area-inset-bottom))}
+.card{background:#46a9d3;border:2px solid #fff;border-radius:28px;padding:18px;margin:0 0 16px;box-shadow:0 12px 28px rgba(0,0,0,.14)}
+h1{margin:0 0 8px;font-size:32px;line-height:1.05}
+h2{margin:0 0 10px;font-size:22px}.sub{color:#234a5d;font-weight:850;line-height:1.35}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}@media(max-width:680px){.grid{grid-template-columns:1fr}}
+button,a.big{display:block;width:100%;border:0;border-radius:18px;padding:15px;margin:8px 0;background:#a1fcfd;color:#101827;text-align:center;text-decoration:none;font:inherit;font-weight:950;font-size:17px;box-shadow:0 8px 20px rgba(0,0,0,.13)}
+button.dark,a.dark{background:#172234;color:#eef4fb;border:1px solid #25354a}.note{background:#123024;border:2px solid #fff;color:#d8ffe2;border-radius:22px;padding:13px;white-space:pre-wrap;overflow-wrap:anywhere}.warn{background:#2b2010;border:2px solid #745522;color:#ffe0a3;border-radius:22px;padding:13px;white-space:pre-wrap;overflow-wrap:anywhere}
+pre{background:#0c141e;color:#eef4fb;border:1px solid #25354a;border-radius:18px;padding:12px;white-space:pre-wrap;overflow-wrap:anywhere;max-height:55vh;overflow:auto;font-size:12px;line-height:1.35}.pill{display:inline-block;background:#172234;color:#eef4fb;border:1px solid #25354a;border-radius:999px;padding:7px 10px;font-weight:900;font-size:12px;margin:4px 4px 0 0}.ok{background:#123024;color:#d8ffe2}.bad{background:#351414;color:#ffd1d1}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="card">
+    <h1>Route Guardian Test</h1>
+    <p class="sub">Standalone manual test page. This is not wired into PMP Current. It only loads <b>pmp-route-guardian-v1.js</b> and lets you run/copy a route truth report.</p>
+    <div class="note">Safety: no redirects, no route edits, no cleanup, no archive, no deletion, no private value capture.</div>
+  </section>
+
+  <section class="card">
+    <h2>Run Test</h2>
+    <div class="grid">
+      <button onclick="runTest()">Run Route Guardian</button>
+      <button class="dark" onclick="copyReport()">Copy Report</button>
+    </div>
+    <div class="grid">
+      <a class="big dark" href="pmp-app-current.html?fresh=route-guardian-test#world">Open PMP Current</a>
+      <button class="dark" onclick="clearReport()">Clear</button>
+    </div>
+    <div id="status" class="warn">Not run yet.</div>
+  </section>
+
+  <section class="card">
+    <h2>Quick Verdict</h2>
+    <div id="quick" class="note">Waiting for report.</div>
+    <div id="chips"></div>
+  </section>
+
+  <section class="card">
+    <h2>Full Report</h2>
+    <pre id="out">Tap Run Route Guardian.</pre>
+  </section>
+</div>
+
+<script src="pmp-route-guardian-v1.js?fresh=test-page-v1"></script>
+<script>
+let latestReport=null;
+function $(id){return document.getElementById(id)}
+function chip(text,good){return '<span class="pill '+(good?'ok':'bad')+'">'+String(text).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))+'</span>'}
+function escapeText(t){return String(t==null?'':t).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))}
+function render(report){
+  latestReport=report;
+  $('out').textContent=JSON.stringify(report,null,2);
+  const pass=report&&String(report.verdict||'').startsWith('PASS');
+  $('status').className=pass?'note':'warn';
+  $('status').textContent=pass?'Route Guardian report built. Static route proof passed.':'Route Guardian report built with warnings. Review before judging any app fix.';
+  $('quick').textContent=(report&&report.resident_summary)||'No summary.';
+  const map=report.current_map_assessment||{};
+  const inner=report.current_inner_assessment||{};
+  $('chips').innerHTML=[
+    chip('map target '+(map.current_path_matches_expected?'ok':'check'),!!map.current_path_matches_expected),
+    chip('home screen rule '+(map.home_screen_rule_matches_expected?'ok':'check'),!!map.home_screen_rule_matches_expected),
+    chip('base app '+(inner.loads_base_app?'ok':'check'),!!inner.loads_base_app),
+    chip('bug memory '+(inner.routes_bug_memory_clean?'ok':'check'),!!inner.routes_bug_memory_clean),
+    chip('risk count '+((report.stale_shell_risk||{}).risk_count||0),((report.stale_shell_risk||{}).risk_count||0)===0)
+  ].join('');
+}
+async function runTest(){
+  $('status').className='warn';
+  $('status').textContent='Running Route Guardian...';
+  try{
+    if(!window.PMPRouteGuardianV1)throw new Error('PMPRouteGuardianV1 did not load.');
+    const report=await window.PMPRouteGuardianV1.buildReport({store:false});
+    render(report);
+  }catch(e){
+    const fail={type:'PMP_ROUTE_GUARDIAN_TEST_PAGE_ERROR',built_at:new Date().toISOString(),error:String(e&&e.message||e)};
+    latestReport=fail;
+    $('status').className='warn';
+    $('status').textContent='Route Guardian test failed to run.';
+    $('quick').textContent=String(e&&e.message||e);
+    $('out').textContent=JSON.stringify(fail,null,2);
+    $('chips').innerHTML=chip('test failed',false);
+  }
+}
+async function copyReport(){
+  if(!latestReport){await runTest();}
+  const text=JSON.stringify(latestReport,null,2);
+  try{await navigator.clipboard.writeText(text);$('status').className='note';$('status').textContent='Route Guardian report copied.';}
+  catch(e){$('status').className='warn';$('status').textContent='Copy failed. Select the report text manually.';}
+}
+function clearReport(){latestReport=null;$('status').className='warn';$('status').textContent='Cleared. Not run yet.';$('quick').textContent='Waiting for report.';$('out').textContent='Tap Run Route Guardian.';$('chips').innerHTML='';}
+window.addEventListener('load',()=>setTimeout(runTest,350));
+</script>
+</body>
+</html>
