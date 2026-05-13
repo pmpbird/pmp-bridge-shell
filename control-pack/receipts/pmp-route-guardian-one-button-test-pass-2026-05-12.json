@@ -1,0 +1,42 @@
+{
+  "type": "PMP_ACCEPTANCE_RECEIPT",
+  "receipt_type": "ROUTE_GUARDIAN_ONE_BUTTON_MANUAL_TEST_DONE",
+  "receipt_id": "PMP-RECEIPT-ROUTE-GUARDIAN-ONE-BUTTON-PASS-2026-05-12",
+  "created_at": "2026-05-12T21:20:00.000-07:00",
+  "scope": "pmp-route-guardian-test-v1.html one-button manual test on user device",
+  "result": "PASS",
+  "deletion_permission_after_receipt": false,
+  "archive_permission_after_receipt": false,
+  "app_files_changed_by_test": false,
+  "cleanup_archive_delete_done": false,
+  "tested_files": [
+    "pmp-route-guardian-test-v1.html",
+    "pmp-route-guardian-v1.js"
+  ],
+  "user_confirmed": {
+    "worked": true,
+    "notes": "One-button Route Guardian test worked. Main button starts as Check Route, changes to Open PMP Current after route pass, and Copy Report stays as a separate button."
+  },
+  "expected_behavior_confirmed": [
+    "Route Guardian opens as a manual page.",
+    "Primary button starts as Check Route.",
+    "Route check can run before opening PMP Current.",
+    "After a successful route check, the same primary button changes to Open PMP Current.",
+    "Copy Report remains available as a separate button.",
+    "No real current app route was changed by the test.",
+    "No cleanup, archive, or deletion happened."
+  ],
+  "route_guardian_state_after_receipt": {
+    "manual_test_page": "working",
+    "standalone_support_file": "working enough for promotion proposal",
+    "wired_into_current_app": false,
+    "ready_for_real_shell_patch": false,
+    "next_required_stage": "candidate shell test"
+  },
+  "blocked_by": [
+    "Route Guardian is not yet tested inside a candidate copy of the real current shell.",
+    "No approval yet to patch pmp-app-current.html.",
+    "Need promotion proposal before candidate shell work."
+  ],
+  "next_action": "Create Route Guardian Boot Gate v1 promotion proposal, then build pmp-app-current-route-guardian-candidate.html as a test copy."
+}
