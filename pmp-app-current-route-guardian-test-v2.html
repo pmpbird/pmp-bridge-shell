@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PMP Route Guard v2">
+<meta name="theme-color" content="#52b5df">
+<title>PMP Route Guardian Manual Test v2</title>
+<style>
+html,body{margin:0;width:100%;min-height:100%;background:#52b5df;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#101827}
+body{padding:calc(24px + env(safe-area-inset-top)) 14px calc(40px + env(safe-area-inset-bottom));overflow:auto}
+.card{max-width:760px;margin:0 auto 14px;background:#46a9d3;border:3px solid #07101c;border-radius:28px;padding:18px;box-shadow:0 10px 24px rgba(0,0,0,.2);line-height:1.35}
+h1{font-size:31px;font-weight:950;margin:0 0 8px}.sub{font-size:16px;font-weight:850;color:#101827;margin:0 0 12px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}@media(max-width:680px){.actions{grid-template-columns:1fr}}
+button,a.big{display:block;width:100%;border:0;border-radius:16px;background:#a1fcfd;color:#101827;text-align:center;text-decoration:none;font:inherit;font-weight:950;padding:13px;box-shadow:0 8px 18px rgba(0,0,0,.16)}
+button.dark,a.dark{background:#172234;color:#eef4fb;border:1px solid #25354a}.pass{border-color:#0b3519}.fail{border-color:#7d3333;background:#7b2f2f;color:#fff}.fail .sub{color:#fff}.hidden{display:none!important}
+#reportPanel{max-width:760px;margin:0 auto;background:#0c141e;color:#eef4fb;border:2px solid #a1fcfd;border-radius:22px;padding:12px;overflow:auto;white-space:pre-wrap;font:12px/1.35 ui-monospace,Menlo,monospace;max-height:52vh}.pill{display:inline-block;background:#172234;color:#eef4fb;border:1px solid #25354a;border-radius:999px;padding:7px 10px;font-weight:900;font-size:12px;margin:4px 4px 0 0}.ok{background:#123024;color:#d8ffe2}.bad{background:#351414;color:#ffd1d1}
+.badge{display:inline-block;border:2px solid #07101c;border-radius:999px;padding:6px 10px;margin-bottom:10px;font-size:12px;font-weight:950;background:#a1fcfd;color:#101827}
+</style>
+</head>
+<body>
+<section id="mainCard" class="card">
+  <div class="badge">MANUAL ROUTE GUARDIAN v2 — cache-proof page</div>
+  <h1 id="title">Route Guardian</h1>
+  <p id="text" class="sub">Press Check Route first. This page will not open PMP until you tap Open PMP Current.</p>
+  <div id="chips"></div>
+  <div class="actions">
+    <button onclick="runCheck()">Check Route</button>
+    <button class="dark" onclick="copyReport()">Copy Report</button>
+    <button id="openBtn" class="hidden" onclick="openPmpCurrent()">Open PMP Current</button>
+    <button class="dark" onclick="toggleReport()">Show / Hide Report</button>
+  </div>
+</section>
+<pre id="reportPanel" class="hidden">No report yet.</pre>
+<script src="pmp-route-guardian-v1.js?fresh=manual-test-v2-20260512"></script>
+<script>
+const CARD=document.getElementById('mainCard');
+const TITLE=document.getElementById('title');
+const TEXT=document.getElementById('text');
+const CHIPS=document.getElementById('chips');
+const OPEN_BTN=document.getElementById('openBtn');
+const REPORT_PANEL=document.getElementById('reportPanel');
+let latestReport=null;
+let routePassed=false;
+function chip(text,good){return '<span class="pill '+(good?'ok':'bad')+'">'+String(text).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))+'</span>'}
+function setState(title,text,kind){CARD.classList.remove('pass','fail');if(kind)CARD.classList.add(kind);TITLE.textContent=title;TEXT.textContent=text;}
+function setReport(report){latestReport=report;REPORT_PANEL.textContent=JSON.stringify(report,null,2)}
+function renderChips(report){
+  const map=report.current_map_assessment||{};
+  const inner=report.current_inner_assessment||{};
+  const risk=(report.stale_shell_risk||{}).risk_count||0;
+  CHIPS.innerHTML=[
+    chip('map '+(map.current_path_matches_expected?'ok':'check'),!!map.current_path_matches_expected),
+    chip('home screen '+(map.home_screen_rule_matches_expected?'ok':'check'),!!map.home_screen_rule_matches_expected),
+    chip('base app '+(inner.loads_base_app?'ok':'check'),!!inner.loads_base_app),
+    chip('bug memory '+(inner.routes_bug_memory_clean?'ok':'check'),!!inner.routes_bug_memory_clean),
+    chip('risk '+risk,risk===0)
+  ].join('');
+}
+async function runCheck(){
+  setState('Route Guardian','Checking current app route...',null);
+  OPEN_BTN.classList.add('hidden');
+  try{
+    if(!window.PMPRouteGuardianV1)throw new Error('PMPRouteGuardianV1 did not load.');
+    const report=await window.PMPRouteGuardianV1.buildReport({store:false});
+    setReport(report);
+    renderChips(report);
+    routePassed=String(report.verdict||'').startsWith('PASS') && ((report.stale_shell_risk||{}).risk_count||0)===0;
+    if(routePassed){
+      setState('Route Guardian Passed','Current route is clean. You can copy the report or tap Open PMP Current when you are ready.','pass');
+      OPEN_BTN.classList.remove('hidden');
+    }else{
+      setState('Route Guardian Blocked',(report.resident_summary||'Route risk found.')+' Copy the report before doing app work.','fail');
+    }
+  }catch(e){
+    routePassed=false;
+    setReport({type:'PMP_ROUTE_GUARDIAN_MANUAL_TEST_ERROR',built_at:new Date().toISOString(),error:String(e&&e.message||e)});
+    CHIPS.innerHTML=chip('test failed',false);
+    setState('Route Guardian Error',String(e&&e.message||e),'fail');
+  }
+}
+async function copyReport(){
+  if(!latestReport){await runCheck();}
+  const text=JSON.stringify(latestReport,null,2);
+  try{await navigator.clipboard.writeText(text);setState('Report Copied',routePassed?'Report copied. Tap Open PMP Current when ready.':'Report copied. Route is blocked or uncertain.',routePassed?'pass':'fail');}
+  catch(e){REPORT_PANEL.classList.remove('hidden');setState('Copy Failed','Select the report manually from the report panel.','fail');}
+}
+function toggleReport(){REPORT_PANEL.classList.toggle('hidden')}
+function openPmpCurrent(){
+  if(!routePassed){setState('Route Not Passed','Run Check Route first. PMP will not open from this test page until Route Guardian passes.','fail');return;}
+  location.href='pmp-app-current.html?fresh=route-guardian-manual-v2-pass-'+Date.now()+'#world';
+}
+</script>
+</body>
+</html>
