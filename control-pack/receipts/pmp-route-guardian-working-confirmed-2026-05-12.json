@@ -1,0 +1,42 @@
+{
+  "type": "PMP_ACCEPTANCE_RECEIPT",
+  "receipt_type": "ROUTE_GUARDIAN_WORKING_CONFIRMED",
+  "receipt_id": "PMP-RECEIPT-ROUTE-GUARDIAN-WORKING-CONFIRMED-2026-05-12",
+  "created_at": "2026-05-12T21:55:00.000-07:00",
+  "scope": "Route Guardian user-visible test after proof-source/cache decision",
+  "result": "USER_CONFIRMED_WORKING",
+  "deletion_permission_after_receipt": false,
+  "archive_permission_after_receipt": false,
+  "app_files_changed_by_test": false,
+  "cleanup_archive_delete_done": false,
+  "user_confirmation": {
+    "message": "It worked",
+    "interpreted_meaning": "The Route Guardian flow worked on the user's device after the previous proof-source/cache handling step."
+  },
+  "confirmed_behavior_level": "USER_VISIBLE_BEHAVIOR_CONFIRMED_NOT_JSON_VERIFIED",
+  "not_overclaimed": [
+    "No copied JSON report was included with this confirmation, so this receipt does not claim exact report fields such as version, approved_support_test_surface, or stale_shell_risk count.",
+    "This receipt records the user's visible working result only."
+  ],
+  "current_known_working_proof_source": {
+    "file": "pmp-route-guardian-test-v1.html",
+    "status": "working one-button Route Guardian proof page",
+    "expected_behavior": [
+      "Main button starts as Check Route.",
+      "After route pass, the same button changes to Open PMP Current.",
+      "Copy Report remains separate."
+    ]
+  },
+  "candidate_shell_status": {
+    "file": "pmp-app-current-route-guardian-candidate.html",
+    "previous_status": "BLOCKED_BY_CACHE_NOT_ROUTE_FAILURE",
+    "new_status": "USER_SAYS_WORKED_BUT_JSON_REPORT_NOT_PROVIDED",
+    "promotion_readiness": "not yet promoted; needs explicit candidate pass receipt with copied report or full behavior checklist before touching pmp-app-current.html"
+  },
+  "permissions_after_receipt": {
+    "real_current_app_patch_permission": false,
+    "archive_permission": false,
+    "deletion_permission": false
+  },
+  "next_action": "If the working page was the candidate shell, collect or copy the Route Guardian report and create a candidate pass receipt. Otherwise continue using the one-button proof page as the approved proof source."
+}
