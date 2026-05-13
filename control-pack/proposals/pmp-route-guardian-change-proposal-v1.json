@@ -1,0 +1,75 @@
+{
+  "type": "PMP_CLEANUP_CHANGE_PROPOSAL",
+  "version": "1.0",
+  "proposal_id": "PMP-ROUTE-GUARDIAN-PROP-001",
+  "proposal_type": "REMODEL",
+  "title": "Build PMP Route Guardian v1 in support/test mode",
+  "created_at": "2026-05-12T00:00:00.000-07:00",
+  "approval_state": "DRAFT",
+  "main_branch_allowed": false,
+  "deletion_permission": false,
+  "archive_permission": false,
+  "target_files": [
+    "control-pack/proposals/pmp-route-guardian-change-proposal-v1.json"
+  ],
+  "future_target_files_after_approval": [
+    "pmp-route-guardian-v1.js",
+    "control-pack/receipts/pmp-route-guardian-test-receipt-2026-05-12.json"
+  ],
+  "source_category": "REMODEL_HIGH",
+  "source_families": [
+    "CURRENT_ROUTE_CHAIN",
+    "ROUTE_HISTORY_RESIDUE",
+    "PHONE_CACHE_GUARD"
+  ],
+  "reason": "Route confusion caused stale Home Screen shell, old current paths, wrong file patches, version bouncing, and false no-change debugging. Route Guardian should prove the active route before future fixes or cleanup.",
+  "dependency_graph_result": "Current route chain is protected: pmp-app-current.html -> pmp-current-map.json -> pmp-current-inner-cleanbug-v1.html -> pmp-home-single-v6.html. Route Guardian must read/protect this chain and must not change it during first build.",
+  "file_trust_result": "Current route files are TRUST_5_ACTIVE_CURRENT. Route history and cache guard files are remodel sources or route-history holds, not delete candidates.",
+  "remodel_extraction_result": "RTX-001 Route Guardian is LEDGER_CAPTURED and ready to extract into support/test mode only.",
+  "delete_gate_result": "No deletion allowed. No archive allowed. This proposal is remodel/support only.",
+  "extract_logic": [
+    "current route identity proof",
+    "current map target proof",
+    "fallback/last_good awareness",
+    "cache_key visibility",
+    "Safari vs Home Screen surface check language",
+    "stale shell warning",
+    "Automatic App Update bounce detection",
+    "Resident-readable route truth report"
+  ],
+  "must_not_change": [
+    "pmp-app-current.html entry route",
+    "pmp-current-map.json current_app.path",
+    "pmp-current-inner-cleanbug-v1.html loader behavior",
+    "Bug Memory clean route",
+    "Home Screen install rule",
+    "Safe Writer / Code Safety / Hard Fresh routes"
+  ],
+  "do_not_copy_raw": [
+    "old phone-bridge routes",
+    "version bouncing logic",
+    "direct update bypass without safety",
+    "anything that creates another current app pointer"
+  ],
+  "test_battery_required": [
+    "S1 Open pmp-app-current.html.",
+    "S2 Confirm current map loads.",
+    "S3 Confirm current inner app loads.",
+    "S4 Confirm Bug Memory route opens.",
+    "S5 Confirm Resident opens.",
+    "S6 Confirm no obvious old-version bounce."
+  ],
+  "rollback_plan": [
+    "If Route Guardian support file causes any issue, remove only pmp-route-guardian-v1.js from the test branch or stop loading it.",
+    "Do not alter current route files during first Route Guardian build.",
+    "Use backup-before-pmp-cleanup-2026-05-12 branch if any unexpected route file change occurs."
+  ],
+  "promotion_boundary": "SUPPORT_MODULE_ALLOWED_AFTER_TEST",
+  "approval_required_before_code": true,
+  "blocked_by": [
+    "User-visible smoke test pending.",
+    "Route Guardian support file not created yet.",
+    "No approval to change current app loader yet."
+  ],
+  "next_action": "Review proposal, then create Route Guardian as a standalone support/test file before wiring it into current app."
+}
