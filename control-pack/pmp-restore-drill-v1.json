@@ -1,0 +1,22 @@
+{
+  "type": "PMP_RESTORE_DRILL",
+  "version": "1.0",
+  "status": "restore_required_before_archive_or_delete",
+  "created_for": "PMP app cleanup/remodel safety",
+  "deletion_permission": false,
+  "archive_permission": false,
+  "source_scope": "pmpbird/pmp-bridge-shell + pmpbird/Code",
+  "current_app_protection": "Current app route files must be restorable from backup before any cleanup branch is promoted.",
+  "last_reviewed_at": "2026-05-12T00:00:00.000-07:00",
+  "conflict_policy": "If restore proof is missing, archive/delete is blocked.",
+  "backup_branch": "backup-before-pmp-cleanup-2026-05-12",
+  "checks": [
+    "R1 Backup branch exists.",
+    "R2 Backup branch contains current app route files.",
+    "R3 Backup branch contains delete/remodel candidate source files.",
+    "R4 A file can be compared against backup.",
+    "R5 A file can be restored from backup if needed.",
+    "R6 Restore instructions are written before cleanup."
+  ],
+  "hard_rule": "If restore is not proven, archive/delete is blocked."
+}
