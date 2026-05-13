@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PMP Control Test">
+<meta name="theme-color" content="#52b5df">
+<title>PMP Control Room Route Guardian Test</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#52b5df;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#101827}
+iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#52b5df}
+#testBanner{position:fixed;left:10px;right:10px;top:calc(8px + env(safe-area-inset-top));z-index:80;background:#172234;color:#eef4fb;border:2px solid #a1fcfd;border-radius:18px;padding:9px 12px;font-size:12px;font-weight:950;box-shadow:0 8px 24px rgba(0,0,0,.35);text-align:center}
+#testBanner button{margin-left:8px;border:1px solid #a1fcfd;border-radius:12px;background:#a1fcfd;color:#101827;font:inherit;font-weight:950;padding:5px 8px}
+</style>
+</head>
+<body>
+<div id="testBanner">CONTROL ROOM TEST COPY — real PMP files untouched <button onclick="hideBanner()">Hide</button></div>
+<iframe id="app" title="PMP Home Single v6 Control Room Route Guardian Test" src="pmp-home-single-v6.html?fresh=route-guardian-control-test-v1#control"></iframe>
+<script>
+/*
+  Test-only Control Room remodel wrapper.
+  Does not edit pmp-home-single-v6.html.
+  Does not edit pmp-app-current.html.
+  Does not edit pmp-current-map.json.
+  Does not delete, archive, or write app files.
+*/
+const APP=document.getElementById('app');
+const PROOF_LINK='pmp-route-guardian-test-v1.html?copy=stay-v1';
+let patched=false;
+function hideBanner(){document.getElementById('testBanner').style.display='none'}
+function child(){try{return APP.contentWindow}catch(e){return null}}
+function doc(){try{return APP.contentDocument||APP.contentWindow.document}catch(e){return null}}
+function makeButton(d,cls,icon,title,small,onClick){
+  const b=d.createElement('button');
+  b.className=cls||'big';
+  b.innerHTML='<span class="icon">'+icon+'</span><span>'+title+'<small>'+small+'</small></span><span class="chev">›</span>';
+  b.addEventListener('click',onClick,true);
+  return b;
+}
+function buttonText(el){return (el&&el.textContent||'').replace(/\s+/g,' ').trim()}
+function findControlCard(d){return d.querySelector('#control .card')}
+function findButton(d,needle){return Array.from(d.querySelectorAll('#control button')).find(b=>buttonText(b).includes(needle))}
+function openProofPage(){
+  window.location.href=PROOF_LINK+'&from=control-test-'+Date.now();
+}
+function patchControlRoom(){
+  const w=child(),d=doc();
+  if(!w||!d)return false;
+  try{if(typeof w.go==='function')w.go('control')}catch(e){}
+  const card=findControlCard(d);
+  if(!card)return false;
+  if(d.getElementById('routeGuardianControlTestNote'))return true;
+
+  const note=d.createElement('div');
+  note.id='routeGuardianControlTestNote';
+  note.className='note';
+  note.textContent='Control Room test copy: Safe Writer stays. Deep Resident Intelligence stays. Color Settings stays. Route Guardian is testing whether it can replace the Automatic App Update role. Real app files are untouched.';
+  const title=d.getElementById('controlTitle')||card.firstChild;
+  if(title&&title.parentNode)title.parentNode.insertBefore(note,title.nextSibling);
+  else card.insertBefore(note,card.firstChild);
+
+  const autoBtn=findButton(d,'Automatic App Update');
+  if(autoBtn){
+    const rgBtn=makeButton(d,'big teal','🧭','Route Guardian / Check Current PMP','prove route before app/update work',function(e){e.preventDefault();e.stopImmediatePropagation();openProofPage()});
+    autoBtn.parentNode.replaceChild(rgBtn,autoBtn);
+  }else if(!findButton(d,'Route Guardian / Check Current PMP')){
+    const rgBtn=makeButton(d,'big teal','🧭','Route Guardian / Check Current PMP','prove route before app/update work',function(e){e.preventDefault();e.stopImmediatePropagation();openProofPage()});
+    const colorPanel=d.getElementById('colorPanel');
+    if(colorPanel)card.insertBefore(rgBtn,colorPanel);
+    else card.appendChild(rgBtn);
+  }
+
+  const safeWriter=findButton(d,'Open Safe Writer');
+  if(safeWriter){safeWriter.dataset.routeGuardianKeep='true'}
+  const codeSafety=findButton(d,'Open Code Safety');
+  if(codeSafety){
+    codeSafety.dataset.routeGuardianStillProtected='true';
+    const small=codeSafety.querySelector('small');
+    if(small)small.textContent='still protected during this test';
+  }
+  const deep=findButton(d,'Deep Resident Intelligence');
+  if(deep){deep.dataset.routeGuardianKeep='true'}
+  const color=d.getElementById('colorPanel');
+  if(color){color.dataset.routeGuardianKeep='true'}
+
+  const status=d.getElementById('controlStatus');
+  if(status)status.textContent='Route Guardian Control Room test copy active. Safe Writer, Deep Resident, and Color Settings stay. Automatic App Update role is replaced here only.';
+  patched=true;
+  return true;
+}
+function startPatchLoop(){
+  let tries=0;
+  const id=setInterval(()=>{
+    tries++;
+    if(patchControlRoom()||tries>30)clearInterval(id);
+  },300);
+}
+APP.addEventListener('load',startPatchLoop);
+setTimeout(startPatchLoop,500);
+</script>
+</body>
+</html>
