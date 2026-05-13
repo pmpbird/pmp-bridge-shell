@@ -1,0 +1,19 @@
+{
+  "type": "PMP_CLEANUP_AUDIT_RUNNER",
+  "version": "3.0",
+  "status": "active_read_only_audit_runner",
+  "created_for": "PMP app cleanup/remodel safety",
+  "deletion_permission": false,
+  "archive_permission": false,
+  "source_scope": "pmpbird/pmp-bridge-shell + pmpbird/Code",
+  "current_app_protection": "Audit runner must protect current app route chain.",
+  "last_reviewed_at": "2026-05-12T00:00:00.000-07:00",
+  "conflict_policy": "Audit output cannot override delete gates or current route proof.",
+  "modes": ["READ_ONLY_AUDIT", "ARCHIVE_DRY_RUN", "POST_CHANGE_VERIFICATION"],
+  "default_mode": "READ_ONLY_AUDIT",
+  "required_checks": ["route_graph_check", "dependency_check", "remodel_extraction_check", "privacy_boundary_check", "safety_recovery_check", "current_app_test_check", "post_cleanup_link_check"],
+  "allowed_outputs": ["OFFICIAL_KEEP", "OFFICIAL_REMODEL", "OFFICIAL_HOLD", "READY_FOR_ARCHIVE_PROPOSAL", "BLOCKED_UNKNOWN"],
+  "forbidden_outputs": ["DELETE_NOW"],
+  "default_result": "BLOCKED_UNKNOWN",
+  "rule": "Cleanup is blocked by default. A file must earn permission to move. Audit Runner cannot recommend deletion directly."
+}
