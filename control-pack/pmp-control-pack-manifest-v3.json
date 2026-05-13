@@ -1,0 +1,53 @@
+{
+  "type": "PMP_CONTROL_PACK_MANIFEST",
+  "version": "3.0",
+  "status": "official_control_spine_candidate",
+  "created_for": "PMP app cleanup/remodel safety",
+  "source_scope": ["pmpbird/pmp-bridge-shell", "pmpbird/Code"],
+  "current_app_protection": {
+    "repo": "pmpbird/pmp-bridge-shell",
+    "entry": "pmp-app-current.html",
+    "current_map": "pmp-current-map.json",
+    "current_inner": "pmp-current-inner-cleanbug-v1.html",
+    "base_app": "pmp-home-single-v6.html",
+    "rule": "Nothing in the current route chain can be archived, deleted, or replaced by cleanup work."
+  },
+  "official_current_pack": "v10-save-order",
+  "single_source_of_truth": true,
+  "deletion_permission": false,
+  "archive_permission": false,
+  "older_pack_policy": "superseded_do_not_use_for_cleanup",
+  "conflict_policy": "If any file conflicts with this manifest, choose the safer answer and block cleanup until audited.",
+  "controlled_files": [
+    "pmp-control-pack-manifest-v3.json",
+    "pmp-control-pack-schema-v1.json",
+    "pmp-control-pack-stop-conditions-v1.json",
+    "pmp-cleanup-delete-gates-v5.json",
+    "pmp-file-trust-ledger-v2.json",
+    "pmp-route-dependency-graph-v4.json",
+    "pmp-cleanup-classification-map-v8.json",
+    "pmp-remodel-extraction-ledger-v6.md",
+    "pmp-remodel-extraction-tickets-v4.json",
+    "pmp-cleanup-audit-runner-v3.json",
+    "pmp-current-app-test-battery-v3.json",
+    "pmp-restore-drill-v1.json",
+    "pmp-archive-first-plan-v3.json",
+    "pmp-cleanup-change-proposal-template-v2.json",
+    "pmp-control-pack-first-run-checklist-v1.md",
+    "pmp-control-pack-acceptance-receipts-v1.json",
+    "pmp-control-pack-decision-log-v1.json",
+    "pmp-control-pack-conflict-resolver-v1.json"
+  ],
+  "save_order": [
+    "manifest",
+    "schema",
+    "stop_conditions",
+    "core_protection",
+    "remodel_extraction",
+    "audit_and_tests",
+    "archive_and_proposal",
+    "receipts_and_logs"
+  ],
+  "root_rule": "No cleanup/remodel decision is official unless it agrees with this manifest, the delete gates, and the current app route proof.",
+  "last_reviewed_at": "2026-05-12T00:00:00.000-07:00"
+}
