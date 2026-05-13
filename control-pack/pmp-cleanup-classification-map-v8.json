@@ -1,0 +1,47 @@
+{
+  "type": "PMP_CLEANUP_CLASSIFICATION_MAP",
+  "version": "8.0",
+  "status": "active_classification_map_seed",
+  "created_for": "PMP app cleanup/remodel safety",
+  "deletion_permission": false,
+  "archive_permission": false,
+  "source_scope": "pmpbird/pmp-bridge-shell + pmpbird/Code",
+  "current_app_protection": {
+    "entry": "pmp-app-current.html",
+    "current_map": "pmp-current-map.json",
+    "current_inner": "pmp-current-inner-cleanbug-v1.html",
+    "base_app": "pmp-home-single-v6.html"
+  },
+  "last_reviewed_at": "2026-05-12T00:00:00.000-07:00",
+  "conflict_policy": "Delete gates, route graph, and trust ledger override this map if safer.",
+  "core_rule": "No file may be deleted only because it is old. Useful logic must be extracted or explicitly rejected first.",
+  "categories": [
+    "KEEP_ACTIVE",
+    "KEEP_SUPPORT",
+    "KEEP_SAFETY",
+    "KEEP_VAULT",
+    "REMODEL_HIGH",
+    "REMODEL_MEDIUM",
+    "REMODEL_LOW",
+    "HOLD_ROUTE_HISTORY",
+    "HOLD_RECOVERY",
+    "DO_NOT_REPEAT_REFERENCE",
+    "DELETE_CANDIDATE_AFTER_EXTRACTION",
+    "MISSING_OR_STALE_REFERENCE"
+  ],
+  "families": [
+    {"id": "CURRENT_ROUTE_CHAIN", "category": "KEEP_ACTIVE", "lifecycle_state": "ACTIVE_PROTECTED", "trust": "TRUST_5_ACTIVE_CURRENT", "files": ["pmp-app-current.html", "pmp-current-map.json", "pmp-current-inner-cleanbug-v1.html", "pmp-app-cleanbug-v1.html", "pmp-home-single-v6.html"], "next_action": "Protect and build Route Guardian around this chain."},
+    {"id": "ACTIVE_SUPPORT_SCRIPTS", "category": "KEEP_SUPPORT", "lifecycle_state": "SUPPORT_PROTECTED", "trust": "TRUST_4_ACTIVE_SUPPORT", "next_action": "Keep; remold overlay actions into Direct Tap Action Layer v1."},
+    {"id": "SAFETY_RESTORE_SYSTEM", "category": "KEEP_SAFETY", "lifecycle_state": "SAFETY_PROTECTED", "trust": "TRUST_3_SAFETY_RECOVERY_VAULT", "next_action": "Keep; extract Safety Gate and Hard Fresh Cleaner."},
+    {"id": "LOSSLESS_VAULT_AND_INVENTORY_EYES", "category": "KEEP_VAULT", "lifecycle_state": "VAULT_PROTECTED", "trust": "TRUST_3_SAFETY_RECOVERY_VAULT", "next_action": "Keep; upgrade into Inventory Eyes v2 and Lossless Vault v2."},
+    {"id": "BUG_MEMORY_SAVE_LOAD_READER", "category": "REMODEL_HIGH", "lifecycle_state": "REMODEL_SOURCE", "trust": "TRUST_2_REMODEL_SOURCE", "extraction_ticket": "RTX-003", "next_action": "Extract Save Big Memory Reader / Foundation Batch Reader before any cleanup."},
+    {"id": "BUG_MIXER_AND_PREDICTION_SYSTEM", "category": "REMODEL_HIGH", "lifecycle_state": "REMODEL_SOURCE", "trust": "TRUST_2_REMODEL_SOURCE", "extraction_ticket": "RTX-008", "next_action": "Keep/remodel prediction and controlled test law."},
+    {"id": "PRIVATE_BUG_MEMORY_ROOM_EVOLUTION", "category": "REMODEL_MEDIUM", "lifecycle_state": "REMODEL_SOURCE", "trust": "TRUST_2_REMODEL_SOURCE", "extraction_ticket": "RTX-007", "next_action": "Extract Private Bug Memory Room v10."},
+    {"id": "OLD_BRIDGE_COMMAND_ENGINE", "category": "REMODEL_HIGH", "lifecycle_state": "REMODEL_SOURCE", "trust": "TRUST_2_REMODEL_SOURCE", "extraction_ticket": "RTX-009", "next_action": "Remodel only; do not revive Netlify as a current requirement."},
+    {"id": "PHONE_CACHE_GUARD", "category": "REMODEL_HIGH", "lifecycle_state": "REMODEL_SOURCE", "trust": "TRUST_2_REMODEL_SOURCE", "extraction_ticket": "RTX-010", "next_action": "Extract behavior, not old routes."},
+    {"id": "PLAIN_BRAIN_ABSORPTION", "category": "REMODEL_MEDIUM", "lifecycle_state": "REMODEL_SOURCE", "trust": "TRUST_2_REMODEL_SOURCE", "extraction_ticket": "RTX-011", "next_action": "Hold/remodel later; do not create competing Plain Brain app."},
+    {"id": "ROUTE_HISTORY_RESIDUE", "category": "HOLD_ROUTE_HISTORY", "lifecycle_state": "ROUTE_HISTORY_HOLD", "trust": "TRUST_1_HISTORY_LESSON", "next_action": "Hold until Route Guardian exists."},
+    {"id": "DO_NOT_REPEAT_VISUAL_REFERENCE", "category": "DO_NOT_REPEAT_REFERENCE", "lifecycle_state": "DO_NOT_REPEAT_HOLD", "trust": "TRUST_1_HISTORY_LESSON", "files": ["private-bug-memory-hub-v8.html"], "next_action": "Write lesson before archive proposal."},
+    {"id": "DELETE_CANDIDATES", "category": "DELETE_CANDIDATE_AFTER_EXTRACTION", "lifecycle_state": "BLOCKED_UNKNOWN", "trust": "TRUST_0_STALE_NO_VALUE", "files": [], "next_action": "No deletion candidates approved."}
+  ]
+}
