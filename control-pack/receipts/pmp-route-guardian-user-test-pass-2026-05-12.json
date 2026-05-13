@@ -1,0 +1,35 @@
+{
+  "type": "PMP_ACCEPTANCE_RECEIPT",
+  "receipt_type": "ROUTE_GUARDIAN_USER_TEST_DONE",
+  "receipt_id": "PMP-RECEIPT-ROUTE-GUARDIAN-USER-TEST-PASS-2026-05-12",
+  "created_at": "2026-05-12T20:58:08.008-07:00",
+  "source_report_built_at": "2026-05-13T03:58:08.008Z",
+  "scope": "pmp-route-guardian-test-v1.html on iPhone Safari/browser surface",
+  "result": "PASS_WITH_TEST_PAGE_FALSE_WARNING",
+  "deletion_permission_after_receipt": false,
+  "archive_permission_after_receipt": false,
+  "app_files_changed_by_test": false,
+  "cleanup_archive_delete_done": false,
+  "report_summary": {
+    "current_surface_file": "pmp-route-guardian-test-v1.html",
+    "surface_kind": "SAFARI_OR_BROWSER",
+    "map_fetch_ok": true,
+    "map_parse_ok": true,
+    "current_path": "pmp-current-inner-cleanbug-v1.html",
+    "current_path_matches_expected": true,
+    "fallback_path_matches_expected": true,
+    "home_screen_rule_matches_expected": true,
+    "user_facing_rule_hides_internal_files": true,
+    "current_inner_fetch_ok": true,
+    "loads_base_app": true,
+    "routes_bug_memory_clean": true,
+    "support_file_count_present": 8,
+    "blocks_old_bug_memory_route": true,
+    "verdict": "PASS_ROUTE_CHAIN_STATIC_PROOF"
+  },
+  "hold_or_issue_found": {
+    "kind": "false_stale_shell_warning",
+    "details": "The report flagged likely_stale_shell because the current browser file was pmp-route-guardian-test-v1.html. That is expected for a standalone test page and should not count as stale shell risk when the report mode is standalone_support_test_not_wired."
+  },
+  "next_action": "Patch pmp-route-guardian-v1.js so the standalone test page is treated as an allowed support-test surface, not a stale shell."
+}
