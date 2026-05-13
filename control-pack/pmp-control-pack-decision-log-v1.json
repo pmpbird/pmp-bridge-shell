@@ -1,0 +1,20 @@
+{
+  "type": "PMP_CLEANUP_DECISION_LOG",
+  "version": "1.0",
+  "status": "active_decision_log",
+  "created_for": "PMP app cleanup/remodel safety",
+  "deletion_permission": false,
+  "archive_permission": false,
+  "source_scope": "pmpbird/pmp-bridge-shell + pmpbird/Code",
+  "current_app_protection": "Decision log cannot authorize cleanup against current route proof.",
+  "last_reviewed_at": "2026-05-12T00:00:00.000-07:00",
+  "conflict_policy": "Newer manifest + gates + route proof supersede older decisions if safer.",
+  "decisions": [
+    {"decision_id": "D-001", "date": "2026-05-12", "decision": "Do not delete from current app repo during first cleanup.", "reason": "Current PMP app and support files must be protected first.", "risk": "critical", "reversible": true, "status": "ACTIVE"},
+    {"decision_id": "D-002", "date": "2026-05-12", "decision": "Old code is remodel source until proven otherwise.", "reason": "Many old files contained useful route, safety, memory, vault, and UI logic.", "risk": "high", "reversible": true, "status": "ACTIVE"},
+    {"decision_id": "D-003", "date": "2026-05-12", "decision": "Route Guardian is first extraction target.", "reason": "Route confusion caused stale shell, wrong file patches, and false no-change bugs.", "risk": "critical", "reversible": true, "status": "ACTIVE"},
+    {"decision_id": "D-004", "date": "2026-05-12", "decision": "Save Big Memory Reader is second extraction target.", "reason": "Foundation control batches need safe reading before app ingestion.", "risk": "high", "reversible": true, "status": "ACTIVE"},
+    {"decision_id": "D-005", "date": "2026-05-12", "decision": "Direct deletion is forbidden; archive-first only.", "reason": "Archive is reversible and protects against hidden dependencies.", "risk": "high", "reversible": true, "status": "ACTIVE"},
+    {"decision_id": "D-006", "date": "2026-05-12", "decision": "Control pack v10 is active once saved.", "reason": "The saved pack becomes the cleanup/remodel control spine.", "risk": "medium", "reversible": true, "status": "ACTIVE"}
+  ]
+}
