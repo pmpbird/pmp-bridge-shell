@@ -1,0 +1,76 @@
+{
+  "type": "PMP_CLEANUP_CHANGE_PROPOSAL",
+  "version": "1.0",
+  "proposal_id": "PMP-ROUTE-GUARDIAN-BOOT-GATE-PROMOTION-001",
+  "proposal_type": "REMODEL",
+  "title": "Promote Route Guardian toward Boot Gate v1 through candidate shell testing",
+  "created_at": "2026-05-12T21:22:00.000-07:00",
+  "approval_state": "DRAFT",
+  "main_branch_allowed": false,
+  "deletion_permission": false,
+  "archive_permission": false,
+  "target_files": [
+    "control-pack/proposals/pmp-route-guardian-boot-gate-promotion-proposal-v1.json"
+  ],
+  "future_test_candidate_file": "pmp-app-current-route-guardian-candidate.html",
+  "future_real_target_if_approved_later": "pmp-app-current.html",
+  "source_files": [
+    "pmp-route-guardian-v1.js",
+    "pmp-route-guardian-test-v1.html",
+    "pmp-app-current.html",
+    "pmp-current-map.json",
+    "pmp-current-inner-cleanbug-v1.html"
+  ],
+  "reason": "The one-button Route Guardian manual test passed. The next clean stage is to test Route Guardian as a boot gate in a candidate copy of the real current shell before considering any change to pmp-app-current.html.",
+  "promotion_goal": "Route Guardian Boot Gate v1 should check the current route before loading PMP World, then change the primary button/action to open PMP Current only after route proof passes.",
+  "current_proof": {
+    "manual_one_button_test": "PASS",
+    "receipt": "control-pack/receipts/pmp-route-guardian-one-button-test-pass-2026-05-12.json",
+    "current_route_static_proof": "PASS_ROUTE_CHAIN_STATIC_PROOF",
+    "copy_report_retained": true,
+    "current_app_changed": false
+  },
+  "required_candidate_behavior": [
+    "Open as a candidate shell, not the real Home Screen shell.",
+    "Show Route Guardian first.",
+    "Primary button starts as Check Route.",
+    "Copy Report remains separate.",
+    "After route pass, primary button changes to Open PMP Current or Load PMP Current.",
+    "Candidate shell must load the same current map target as pmp-app-current.html.",
+    "Candidate shell must not change pmp-current-map.json.",
+    "Candidate shell must not redirect automatically before user action.",
+    "Candidate shell must not delete, archive, or write app files."
+  ],
+  "must_not_change": [
+    "pmp-app-current.html",
+    "pmp-current-map.json",
+    "pmp-current-inner-cleanbug-v1.html",
+    "pmp-home-single-v6.html",
+    "bug-memory-current-clean-v1.html",
+    "Safe Writer / Code Safety / Hard Fresh routes"
+  ],
+  "test_battery_required_for_candidate": [
+    "Open candidate shell link.",
+    "Confirm Route Guardian appears before PMP World.",
+    "Tap Check Route.",
+    "Confirm primary button changes to Open PMP Current after pass.",
+    "Tap Copy Report and verify it copies or displays report.",
+    "Tap Open PMP Current and confirm PMP loads.",
+    "Confirm PMP tabs are usable and not blocked by Route Guardian controls.",
+    "Confirm Bug Memory clean route still opens from PMP.",
+    "Confirm no app route files changed."
+  ],
+  "rollback_plan": [
+    "If candidate fails, do not patch pmp-app-current.html.",
+    "Keep pmp-route-guardian-v1.js as manual/support test only.",
+    "Use previous working test page pmp-route-guardian-test-v1.html for manual route proof.",
+    "No restore needed unless a future step modifies real app files."
+  ],
+  "promotion_boundary": "CANDIDATE_SHELL_ONLY_UNTIL_TEST_PASS",
+  "blocked_by": [
+    "Candidate shell not created yet.",
+    "Candidate shell not tested on user device yet.",
+    "No approval to patch pmp-app-current.html."
+  ],
+  "next_action": "Build pmp-app-current-route-guardian-candidate.html as a candidate copy of the real shell."
+}
