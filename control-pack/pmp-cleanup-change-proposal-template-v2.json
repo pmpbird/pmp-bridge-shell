@@ -1,0 +1,31 @@
+{
+  "type": "PMP_CLEANUP_CHANGE_PROPOSAL_TEMPLATE",
+  "version": "2.0",
+  "status": "active_proposal_template",
+  "created_for": "PMP app cleanup/remodel safety",
+  "deletion_permission": false,
+  "archive_permission": false,
+  "source_scope": "pmpbird/pmp-bridge-shell + pmpbird/Code",
+  "current_app_protection": "Any proposal touching the current app route chain is blocked unless it is an approved Route Guardian support change.",
+  "last_reviewed_at": "2026-05-12T00:00:00.000-07:00",
+  "conflict_policy": "No proposal can override delete gates, test battery, restore drill, or current route proof.",
+  "required_fields": [
+    "proposal_id",
+    "proposal_type",
+    "target_files",
+    "source_category",
+    "reason",
+    "dependency_graph_result",
+    "file_trust_result",
+    "remodel_extraction_result",
+    "delete_gate_result",
+    "test_battery_required",
+    "rollback_plan",
+    "approval_state",
+    "main_branch_allowed"
+  ],
+  "proposal_type_values": ["REMODEL", "ARCHIVE", "DELETE", "ROUTE_CHANGE", "SAFETY_CHANGE"],
+  "approval_state_values": ["DRAFT", "READY_FOR_REVIEW", "APPROVED", "REJECTED", "COMPLETED"],
+  "main_branch_allowed_default": false,
+  "hard_rule": "No cleanup action is allowed unless it is written as a change proposal first. main_branch_allowed stays false until tests pass."
+}
