@@ -1,0 +1,34 @@
+{
+  "type": "PMP_FILE_TRUST_LEDGER",
+  "version": "2.0",
+  "status": "active_trust_rules",
+  "created_for": "PMP app cleanup/remodel safety",
+  "deletion_permission": false,
+  "archive_permission": false,
+  "source_scope": "pmpbird/pmp-bridge-shell + pmpbird/Code",
+  "current_app_protection": "Current app route files are TRUST_5_ACTIVE_CURRENT.",
+  "last_reviewed_at": "2026-05-12T00:00:00.000-07:00",
+  "conflict_policy": "Higher trust level wins over lower-trust delete or archive suggestions.",
+  "trust_levels": {
+    "TRUST_5_ACTIVE_CURRENT": {"allowed": ["keep", "test", "protect"], "blocked": ["archive", "delete"]},
+    "TRUST_4_ACTIVE_SUPPORT": {"allowed": ["keep", "upgrade_with_tests"], "blocked": ["archive", "delete_unless_replaced_and_proven"]},
+    "TRUST_3_SAFETY_RECOVERY_VAULT": {"allowed": ["keep", "duplicate_into_stronger_system"], "blocked": ["delete"]},
+    "TRUST_2_REMODEL_SOURCE": {"allowed": ["extract", "test_copy", "archive_after_extraction"], "blocked": ["delete_before_extraction"]},
+    "TRUST_1_HISTORY_LESSON": {"allowed": ["write_lesson", "archive_after_lesson"], "blocked": ["delete_before_lesson"]},
+    "TRUST_0_STALE_NO_VALUE": {"allowed": ["archive_proposal"], "blocked": ["direct_delete"]}
+  },
+  "family_trust": {
+    "current_route_chain": "TRUST_5_ACTIVE_CURRENT",
+    "active_support_scripts": "TRUST_4_ACTIVE_SUPPORT",
+    "safety_restore_system": "TRUST_3_SAFETY_RECOVERY_VAULT",
+    "lossless_vault_inventory_eyes": "TRUST_3_SAFETY_RECOVERY_VAULT",
+    "bug_memory_reader": "TRUST_2_REMODEL_SOURCE",
+    "bug_mixer_prediction_system": "TRUST_2_REMODEL_SOURCE",
+    "old_bridge_command_engine": "TRUST_2_REMODEL_SOURCE",
+    "phone_cache_guard": "TRUST_2_REMODEL_SOURCE",
+    "plain_brain_absorption": "TRUST_2_REMODEL_SOURCE",
+    "route_history_residue": "TRUST_1_HISTORY_LESSON",
+    "bad_visual_experiment_reference": "TRUST_1_HISTORY_LESSON"
+  },
+  "action_rule": "Trust level controls what actions are legal. Unknown files default to protected until audited."
+}
