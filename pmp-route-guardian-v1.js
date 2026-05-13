@@ -1,9 +1,9 @@
 /* PMP Route Guardian v1 */
 (function(){
 'use strict';
-const VERSION='1.0.4-standalone-support-test';
-const EXPECTED=Object.freeze({entry:'pmp-app-current.html',map:'pmp-current-map.json',currentInner:'pmp-current-inner-cleanbug-rgcontrols-v1.html',baseApp:'pmp-home-single-v6.html',bugMemory:'bug-memory-current-clean-v1.html',userFacingVersion:'PMP Current / PMP-CURRENT-1'});
-const ALLOWED_SUPPORT_TEST_SURFACES=Object.freeze(['pmp-route-guardian-test-v1.html','pmp-app-current-route-guardian-test.html','pmp-app-current-route-guardian-candidate.html','pmp-app-current-route-guardian-real-entry-test.html','pmp-route-guardian-world-entry-test.html','pmp-route-guardian-action-v1.html']);
+const VERSION='1.0.5-standalone-support-test';
+const EXPECTED=Object.freeze({entry:'pmp-app-current.html',map:'pmp-current-map.json',currentInner:'pmp-current-inner-cleanbug-rgcontrols-v2.html',baseApp:'pmp-home-single-v6.html',bugMemory:'bug-memory-current-clean-v1.html',userFacingVersion:'PMP Current / PMP-CURRENT-1'});
+const ALLOWED_SUPPORT_TEST_SURFACES=Object.freeze(['pmp-route-guardian-test-v1.html','pmp-app-current-route-guardian-test.html','pmp-app-current-route-guardian-candidate.html','pmp-app-current-route-guardian-real-entry-test.html','pmp-route-guardian-world-entry-test.html','pmp-route-guardian-action-v1.html','pmp-route-guardian-action-v2.html']);
 const SUPPORT_FILES=Object.freeze(['pmp-top-lossless-injector.js','pmp-resident-lossless-readiness.js','pmp-current-truth-face.js','pmp-resident-xray-core.js','pmp-resident-xray-finish.js','pmp-lossless-copy-fix.js','pmp-copy-lossless-diagnostic.js','pmp-resident-work-fix.js']);
 function now(){return new Date().toISOString()}
 function baseUrl(){try{return new URL('.',window.location.href).href}catch(e){return''}}
