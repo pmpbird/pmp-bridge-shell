@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PMP Route Guard Test">
+<meta name="theme-color" content="#52b5df">
+<title>PMP Route Guardian Boot Gate Test</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#52b5df;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#101827}
+iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#52b5df}
+#boot{position:fixed;inset:0;display:grid;place-items:center;background:#52b5df;font-weight:950;text-align:center;padding:18px;z-index:20}
+#bootCard{max-width:720px;background:#46a9d3;border:3px solid #07101c;border-radius:28px;padding:18px;box-shadow:0 10px 24px rgba(0,0,0,.2);white-space:pre-wrap;line-height:1.35}
+#tools{position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:25;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+button{border:0;border-radius:16px;background:#a1fcfd;color:#101827;font:inherit;font-weight:950;padding:12px;box-shadow:0 8px 18px rgba(0,0,0,.16)}
+button.dark{background:#172234;color:#eef4fb;border:1px solid #25354a}
+#reportPanel{position:fixed;left:10px;right:10px;top:calc(10px + env(safe-area-inset-top));bottom:calc(72px + env(safe-area-inset-bottom));z-index:30;display:none;background:#0c141e;color:#eef4fb;border:2px solid #a1fcfd;border-radius:22px;padding:12px;overflow:auto;white-space:pre-wrap;font:12px/1.35 ui-monospace,Menlo,monospace}
+.pass #bootCard{border-color:#0b3519}.fail #bootCard{border-color:#7d3333;background:#7b2f2f;color:#fff}
+</style>
+</head>
+<body>
+<div id="boot"><div id="bootCard">Route Guardian boot test starting...</div></div>
+<iframe id="app" title="PMP Current App Route Guardian Test"></iframe>
+<div id="reportPanel"></div>
+<div id="tools">
+  <button onclick="toggleReport()">Show / Hide Report</button>
+  <button class="dark" onclick="copyReport()">Copy Report</button>
+</div>
+<script src="pmp-route-guardian-v1.js?fresh=boot-test-v1"></script>
+<script>
+const F=document.getElementById('app');
+const BOOT=document.getElementById('boot');
+const BOOT_CARD=document.getElementById('bootCard');
+const REPORT_PANEL=document.getElementById('reportPanel');
+let latestReport=null;
+function esc(t){return String(t==null?'':t).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))}
+function showBoot(msg,kind){BOOT.style.display='grid';document.body.classList.remove('pass','fail');if(kind)document.body.classList.add(kind);BOOT_CARD.textContent=msg;}
+function hideBootSoon(){setTimeout(()=>{BOOT.style.display='none'},950)}
+function srcWithFresh(path,cacheKey){return String(path||'pmp-current-inner-cleanbug-v1.html').replace(/^\/+/, '')+'?fresh=route-guardian-boot-'+encodeURIComponent(cacheKey||Date.now())+'-'+Date.now()+(location.hash||'#world')}
+async function runBootGate(){
+  showBoot('Route Guardian checking current app route...',null);
+  try{
+    if(!window.PMPRouteGuardianV1)throw new Error('Route Guardian did not load.');
+    const report=await window.PMPRouteGuardianV1.buildReport({store:false});
+    latestReport=report;
+    REPORT_PANEL.textContent=JSON.stringify(report,null,2);
+    const pass=String(report.verdict||'').startsWith('PASS') && ((report.stale_shell_risk||{}).risk_count||0)===0;
+    if(!pass){
+      showBoot('Route Guardian blocked load.\n\n'+(report.resident_summary||'Route risk found.')+'\n\nOpen report for details.', 'fail');
+      return;
+    }
+    const map=report.current_map_assessment||{};
+    const target=map.current_path || 'pmp-current-inner-cleanbug-v1.html';
+    const cacheKey=map.current_cache_key || 'route-guardian-test';
+    showBoot('Route Guardian passed.\nLoading PMP Current...', 'pass');
+    F.src=srcWithFresh(target,cacheKey);
+    F.onload=hideBootSoon;
+    setTimeout(hideBootSoon,3500);
+  }catch(e){
+    latestReport={type:'PMP_ROUTE_GUARDIAN_BOOT_TEST_ERROR',built_at:new Date().toISOString(),error:String(e&&e.message||e)};
+    REPORT_PANEL.textContent=JSON.stringify(latestReport,null,2);
+    showBoot('Route Guardian boot test failed.\n\n'+String(e&&e.message||e),'fail');
+  }
+}
+function toggleReport(){REPORT_PANEL.style.display=REPORT_PANEL.style.display==='block'?'none':'block'}
+async function copyReport(){
+  if(!latestReport){await runBootGate();}
+  const text=JSON.stringify(latestReport,null,2);
+  try{await navigator.clipboard.writeText(text);showBoot('Route Guardian report copied.','pass');hideBootSoon();}
+  catch(e){REPORT_PANEL.style.display='block';showBoot('Copy failed. Select report manually.','fail');}
+}
+window.addEventListener('load',()=>setTimeout(runBootGate,150));
+</script>
+</body>
+</html>
