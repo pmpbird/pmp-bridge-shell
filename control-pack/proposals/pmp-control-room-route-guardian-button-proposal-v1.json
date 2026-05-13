@@ -1,0 +1,115 @@
+{
+  "type": "PMP_CLEANUP_CHANGE_PROPOSAL",
+  "version": "1.0",
+  "proposal_id": "PMP-CONTROL-ROOM-ROUTE-GUARDIAN-BUTTON-PROP-001",
+  "proposal_type": "REMODEL",
+  "title": "Replace Control Room current-version/update button role with Route Guardian after test-copy proof",
+  "created_at": "2026-05-12T22:00:00.000-07:00",
+  "approval_state": "DRAFT",
+  "main_branch_allowed": false,
+  "deletion_permission": false,
+  "archive_permission": false,
+  "source_plan": "control-pack/plans/pmp-route-guardian-control-room-replacement-plan-v1.md",
+  "target_real_file_later_if_approved": "pmp-home-single-v6.html",
+  "test_copy_required_first": "pmp-home-single-v6-route-guardian-control-test.html",
+  "current_proof_source": {
+    "file": "pmp-route-guardian-test-v1.html",
+    "receipt": "control-pack/receipts/pmp-route-guardian-one-button-json-pass-2026-05-12.json",
+    "status": "PASS",
+    "route_guardian_version": "1.0.2-standalone-support-test",
+    "approved_support_test_surface": true,
+    "stale_shell_risk_count": 0,
+    "verdict": "PASS_ROUTE_CHAIN_STATIC_PROOF"
+  },
+  "user_locked_keep_visible_in_control_room": [
+    "Safe Writer / Safety Rider",
+    "Deep Resident Intelligence",
+    "Color Settings"
+  ],
+  "primary_replacement_target": {
+    "button_or_role": "Automatic App Update",
+    "current_role": "current-version checking / app update request inside Control Room",
+    "proposed_future_role": "Route Guardian / Check Current PMP owns current-version proof and loading before update-style actions."
+  },
+  "conditional_move_target": {
+    "button_or_role": "Open Code Safety",
+    "current_role": "always-visible Control Room safety button",
+    "proposed_future_role": "protected Route Guardian red/problem-state repair link only, unless user chooses to keep it visible",
+    "important_boundary": "Do not delete code-safety-v13.html. Only consider moving the visible button."
+  },
+  "must_keep_files_protected": [
+    "safe-writer-v14.html",
+    "code-safety-v13.html",
+    "hard-fresh.html",
+    "pmp-app-current.html",
+    "pmp-current-map.json",
+    "pmp-current-inner-cleanbug-v1.html",
+    "pmp-home-single-v6.html",
+    "bug-memory-current-clean-v1.html"
+  ],
+  "proposed_control_room_visible_shape_after_test_pass": [
+    "Open Safe Writer / Safety Rider",
+    "Route Guardian / Check Current PMP",
+    "Color Settings",
+    "Deep Resident Intelligence"
+  ],
+  "route_guardian_green_state_behavior": [
+    "Show route is clean.",
+    "Primary button changes from Check Route to Open / Load PMP Current.",
+    "Copy Report remains available.",
+    "Do not show emergency tools as the main path.",
+    "Do not delete or change app files."
+  ],
+  "route_guardian_red_state_behavior": [
+    "Turn red.",
+    "Do not load PMP Current automatically.",
+    "Show route report.",
+    "Keep Copy Report available.",
+    "Show protected repair links: Open Code Safety, Open Safe Writer / Safety Rider, Open Hard Fresh.",
+    "Explain the route/current-version problem in plain language."
+  ],
+  "required_test_copy_behavior": [
+    "Create pmp-home-single-v6-route-guardian-control-test.html, not a real patch first.",
+    "Control Room keeps Safe Writer / Safety Rider visible.",
+    "Control Room keeps Deep Resident Intelligence visible.",
+    "Control Room keeps Color Settings visible.",
+    "Control Room shows Route Guardian / Check Current PMP button.",
+    "Automatic App Update is hidden or replaced in the test copy only.",
+    "Code Safety is either kept visible for test safety or moved only to Route Guardian red state in the test copy, depending on user review.",
+    "No safety files are deleted.",
+    "No current route files are changed."
+  ],
+  "must_not_change_without_later_approval": [
+    "pmp-home-single-v6.html",
+    "pmp-app-current.html",
+    "pmp-current-map.json",
+    "pmp-current-inner-cleanbug-v1.html",
+    "safe-writer-v14.html",
+    "code-safety-v13.html",
+    "hard-fresh.html"
+  ],
+  "test_battery_required_before_real_patch": [
+    "Open the test copy on iPhone.",
+    "Confirm Control Room still shows Safe Writer / Safety Rider.",
+    "Confirm Control Room still shows Deep Resident Intelligence.",
+    "Confirm Control Room still shows Color Settings.",
+    "Confirm Route Guardian / Check Current PMP appears and works.",
+    "Confirm Automatic App Update is no longer needed in the test copy.",
+    "Confirm Code Safety can still be reached when Route Guardian is red/problem-state or remains visible if user chooses.",
+    "Confirm all tabs still work.",
+    "Confirm no buttons block PMP tabs.",
+    "Confirm pmp-app-current.html is untouched."
+  ],
+  "rollback_plan": [
+    "If the test copy feels wrong, do not patch pmp-home-single-v6.html.",
+    "Keep current Control Room unchanged.",
+    "Continue using the working one-button Route Guardian proof page only.",
+    "No restore required unless a later approved step changes real app files."
+  ],
+  "blocked_by": [
+    "Test copy not created yet.",
+    "User has not tested Control Room replacement layout yet.",
+    "No approval to patch pmp-home-single-v6.html."
+  ],
+  "next_action": "Build pmp-home-single-v6-route-guardian-control-test.html as a test copy of the Control Room layout."
+}
