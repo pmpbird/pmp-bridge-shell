@@ -1,0 +1,43 @@
+{
+  "type": "PMP_CLEANUP_DELETE_GATES",
+  "version": "5.0",
+  "status": "active_hard_gates",
+  "created_for": "PMP app cleanup/remodel safety",
+  "deletion_permission": false,
+  "archive_permission": false,
+  "source_scope": "pmpbird/pmp-bridge-shell + pmpbird/Code",
+  "current_app_protection": "Nothing in pmp-app-current.html -> pmp-current-map.json -> pmp-current-inner-cleanbug-v1.html -> pmp-home-single-v6.html may be removed.",
+  "last_reviewed_at": "2026-05-12T00:00:00.000-07:00",
+  "conflict_policy": "If any classification conflicts with these gates, the gates win and cleanup is blocked.",
+  "delete_candidates_approved_now": 0,
+  "hard_rules": [
+    "No direct deletion from main.",
+    "No deletion without a change proposal.",
+    "No deletion without archive-first path and cooling period.",
+    "No deletion unless dependency proof is NO_DEPENDENCY_FOUND.",
+    "No deletion unless extraction state is SAFE_TO_DELETE.",
+    "No deletion of safety, recovery, privacy, vault, current route, or active support files.",
+    "No deletion without restore drill proof.",
+    "No deletion without explicit user approval after proposal review."
+  ],
+  "gates": [
+    "G1_CURRENT_ROUTE_CLEAR",
+    "G2_ACTIVE_SUPPORT_CLEAR",
+    "G3_REMODEL_EXTRACTION_COMPLETE",
+    "G4_DO_NOT_REPEAT_LESSON_WRITTEN",
+    "G5_BACKUP_BRANCH_EXISTS",
+    "G6_CURRENT_APP_TEST_PASSED",
+    "G7_PRIVACY_BOUNDARY_INTACT",
+    "G8_RECOVERY_PATH_INTACT",
+    "G9_DEPENDENCY_GRAPH_NO_DEPENDENCY",
+    "G10_EXTRACTION_TICKET_CLOSED",
+    "G11_ARCHIVE_FIRST_DONE",
+    "G12_POST_CLEANUP_VERIFIED",
+    "G13_NO_HIDDEN_REFERENCE",
+    "G14_NO_PRIVATE_MEMORY_EXPOSURE",
+    "G15_USER_VISIBLE_CURRENT_APP_PROOF"
+  ],
+  "cooling_period_rule": "No same-day archive-to-delete jump for any file with history, route, remodel, safety, privacy, or memory value.",
+  "allowed_outputs": ["BLOCKED", "READY_FOR_ARCHIVE_PROPOSAL", "ARCHIVE_TEST_REQUIRED"],
+  "forbidden_outputs": ["DELETE_NOW"]
+}
