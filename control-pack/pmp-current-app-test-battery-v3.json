@@ -1,0 +1,38 @@
+{
+  "type": "PMP_CURRENT_APP_TEST_BATTERY",
+  "version": "3.0",
+  "status": "active_test_battery",
+  "created_for": "PMP app cleanup/remodel safety",
+  "deletion_permission": false,
+  "archive_permission": false,
+  "source_scope": "pmpbird/pmp-bridge-shell + pmpbird/Code",
+  "current_app_protection": "Tests protect pmp-app-current.html and its current route chain.",
+  "last_reviewed_at": "2026-05-12T00:00:00.000-07:00",
+  "conflict_policy": "If tests fail, cleanup/remodel promotion is blocked.",
+  "smoke_test": [
+    "S1 Open pmp-app-current.html.",
+    "S2 Confirm current map loads.",
+    "S3 Confirm current inner app loads.",
+    "S4 Confirm Bug Memory route opens.",
+    "S5 Confirm Resident opens.",
+    "S6 Confirm no obvious old-version bounce."
+  ],
+  "deep_test": [
+    "D1 Full current route chain.",
+    "D2 Bug Memory / Load Memory.",
+    "D3 Save Big Memory path.",
+    "D4 ZIP X-Ray.",
+    "D5 Bug Mixer.",
+    "D6 Resident X-Ray.",
+    "D7 Inventory Eyes.",
+    "D8 Lossless Vault packet.",
+    "D9 Copy Lossless Report direct-tap behavior.",
+    "D10 Safe Writer.",
+    "D11 Code Safety.",
+    "D12 Hard Fresh.",
+    "D13 No removed filename referenced.",
+    "D14 No privacy boundary broken.",
+    "D15 User-facing app still says PMP Current."
+  ],
+  "pass_rule": "Smoke test is enough for writing control files. Deep test is required before any archive/delete promotion or touched-tool cleanup."
+}
