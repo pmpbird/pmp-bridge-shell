@@ -1,0 +1,73 @@
+{
+  "type": "PMP_ACCEPTANCE_RECEIPT",
+  "receipt_type": "ROUTE_GUARDIAN_ONE_BUTTON_JSON_PASS",
+  "receipt_id": "PMP-RECEIPT-ROUTE-GUARDIAN-ONE-BUTTON-JSON-PASS-2026-05-12",
+  "created_at": "2026-05-12T21:51:03.202-07:00",
+  "source_report_built_at": "2026-05-13T04:51:03.202Z",
+  "scope": "pmp-route-guardian-test-v1.html?copy=stay-v1 on user device",
+  "result": "PASS",
+  "deletion_permission_after_receipt": false,
+  "archive_permission_after_receipt": false,
+  "app_files_changed_by_test": false,
+  "cleanup_archive_delete_done": false,
+  "tested_files": [
+    "pmp-route-guardian-test-v1.html",
+    "pmp-route-guardian-v1.js",
+    "pmp-current-map.json",
+    "pmp-current-inner-cleanbug-v1.html"
+  ],
+  "json_report_summary": {
+    "route_guardian_version": "1.0.2-standalone-support-test",
+    "mode": "standalone_support_test_not_wired",
+    "current_surface_href": "https://pmpbird.github.io/pmp-bridge-shell/pmp-route-guardian-test-v1.html?copy=stay-v1",
+    "current_surface_file": "pmp-route-guardian-test-v1.html",
+    "surface_kind": "SAFARI_OR_BROWSER",
+    "approved_support_test_surface": true,
+    "current_map_fetch_ok": true,
+    "current_map_parse_ok": true,
+    "current_map_size": 905,
+    "current_path": "pmp-current-inner-cleanbug-v1.html",
+    "current_label": "PMP Current Clean Bug Memory",
+    "current_cache_key": "pmp-current-cleanbug-v1",
+    "current_status": "current",
+    "fallback_path": "pmp-current-inner-cleanbug-v1.html",
+    "fallback_cache_key": "fallback-cleanbug-v1",
+    "current_path_matches_expected": true,
+    "fallback_path_matches_expected": true,
+    "home_screen_rule_matches_expected": true,
+    "user_facing_rule_hides_internal_files": true,
+    "current_inner_fetch_ok": true,
+    "current_inner_status": 200,
+    "loads_base_app": true,
+    "routes_bug_memory_clean": true,
+    "support_file_count_present": 8,
+    "blocks_old_bug_memory_route": true,
+    "stale_shell_risk_count": 0,
+    "likely_stale_shell": false,
+    "verdict": "PASS_ROUTE_CHAIN_STATIC_PROOF"
+  },
+  "confirmed_route_chain": {
+    "entry_rule": "Home Screen rule says install pmp-app-current.html once.",
+    "map": "pmp-current-map.json",
+    "current_inner": "pmp-current-inner-cleanbug-v1.html",
+    "base_app": "pmp-home-single-v6.html",
+    "bug_memory_clean_route": "bug-memory-current-clean-v1.html"
+  },
+  "confirmed_user_flow": {
+    "proof_page": "pmp-route-guardian-test-v1.html?copy=stay-v1",
+    "main_button_behavior": "Check Route changes to Open PMP Current after pass.",
+    "copy_report_stays_separate": true,
+    "route_guardian_not_wired_into_current_app": true
+  },
+  "holds": [
+    "This pass proves the one-button proof page, not the candidate shell.",
+    "This pass does not authorize patching pmp-app-current.html yet.",
+    "Candidate shell remains separate until it gets its own fresh-code pass or is rebuilt through a new safe path."
+  ],
+  "permissions_after_receipt": {
+    "real_current_app_patch_permission": false,
+    "archive_permission": false,
+    "deletion_permission": false
+  },
+  "next_action": "Use this JSON-backed receipt as the working Route Guardian proof source. Candidate shell promotion still needs a separate pass or a revised safe build path."
+}
