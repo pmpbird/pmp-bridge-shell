@@ -1,0 +1,56 @@
+{
+  "type": "PMP_CONTROL_PACK_ACCEPTANCE_RECEIPTS",
+  "version": "1.0",
+  "status": "active_receipt_log",
+  "created_for": "PMP app cleanup/remodel safety",
+  "deletion_permission": false,
+  "archive_permission": false,
+  "source_scope": "pmpbird/pmp-bridge-shell + pmpbird/Code",
+  "current_app_protection": "Receipts cannot grant archive/delete permission for the current app route chain.",
+  "last_reviewed_at": "2026-05-12T00:00:00.000-07:00",
+  "conflict_policy": "A receipt without evidence is not a pass.",
+  "receipt_types": [
+    "CONTROL_PACK_SAVED",
+    "SCHEMA_CHECK_PASSED",
+    "READ_ONLY_AUDIT_DONE",
+    "SMOKE_TEST_DONE",
+    "DEEP_TEST_DONE",
+    "RESTORE_DRILL_DONE",
+    "CHANGE_PROPOSAL_CREATED",
+    "ROUTE_GRAPH_CONFIRMED",
+    "EXTRACTION_STARTED",
+    "EXTRACTION_TESTED",
+    "PROMOTION_APPROVED",
+    "ARCHIVE_DRY_RUN_DONE",
+    "POST_CHANGE_VERIFIED"
+  ],
+  "receipt_shape": {
+    "type": "PMP_ACCEPTANCE_RECEIPT",
+    "receipt_type": "",
+    "receipt_id": "",
+    "created_at": "",
+    "scope": "",
+    "files_checked": [],
+    "result": "PASS | PASS_WITH_HOLD | BLOCKED | FAIL",
+    "evidence": [],
+    "blocked_by": [],
+    "next_action": "",
+    "deletion_permission_after_receipt": false,
+    "archive_permission_after_receipt": false
+  },
+  "receipts": [
+    {
+      "type": "PMP_ACCEPTANCE_RECEIPT",
+      "receipt_type": "CONTROL_PACK_SAVED",
+      "receipt_id": "PMP-RECEIPT-CONTROL-PACK-SAVED-2026-05-12",
+      "created_at": "2026-05-12T00:00:00.000-07:00",
+      "scope": "pmpbird/pmp-bridge-shell/control-pack",
+      "result": "PASS_WITH_HOLD",
+      "evidence": ["Control pack files created in control-pack folder by ChatGPT GitHub connector."],
+      "blocked_by": ["First-run checklist, schema check, read-only audit, smoke test, and Route Guardian proposal are still next."],
+      "deletion_permission_after_receipt": false,
+      "archive_permission_after_receipt": false,
+      "next_action": "Run first-run checklist, then create Route Guardian change proposal."
+    }
+  ]
+}
