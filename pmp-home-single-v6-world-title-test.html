@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PMP World Title Test">
+<meta name="theme-color" content="#52b5df">
+<title>PMP World Title Rename Test</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#52b5df;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#101827}iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#52b5df}#banner{position:fixed;left:10px;right:10px;top:calc(8px + env(safe-area-inset-top));z-index:80;background:#172234;color:#eef4fb;border:2px solid #a1fcfd;border-radius:18px;padding:9px 12px;font-size:12px;font-weight:950;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.35)}#banner button{margin-left:8px;border:1px solid #a1fcfd;border-radius:12px;background:#a1fcfd;color:#101827;font:inherit;font-weight:950;padding:5px 8px}
+</style>
+</head>
+<body>
+<div id="banner">WORLD TITLE TEST COPY — changes visible heading to “World” only in this wrapper <button onclick="document.getElementById('banner').style.display='none'">Hide</button></div>
+<iframe id="app" title="PMP Home Single v6 World Title Test" src="pmp-home-single-v6.html?fresh=world-title-test-v1#world"></iframe>
+<script>
+const APP=document.getElementById('app');
+function patchTitle(){try{let d=APP.contentDocument||APP.contentWindow.document;for(let i=0;i<8;i++){let f=d&&d.getElementById&&d.getElementById('app');if(!f)break;d=f.contentDocument||f.contentWindow.document}let world=d&&d.getElementById&&d.getElementById('world');let h=world&&world.querySelector('h1');if(h&&h.textContent.trim()==='PMP World')h.textContent='World';let status=d&&d.getElementById&&d.getElementById('controlStatus');if(status)status.textContent='World title test active. Real pmp-home-single-v6.html is untouched.'}catch(e){}}
+APP.addEventListener('load',()=>{setTimeout(patchTitle,250);setTimeout(patchTitle,900);setTimeout(patchTitle,1800)});
+setInterval(patchTitle,1500);
+</script>
+</body>
+</html>
