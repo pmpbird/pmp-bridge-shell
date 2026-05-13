@@ -1,0 +1,43 @@
+{
+  "type": "PMP_ACCEPTANCE_RECEIPT",
+  "receipt_type": "ROUTE_GUARDIAN_BOOT_GATE_USER_TEST_DONE",
+  "receipt_id": "PMP-RECEIPT-ROUTE-GUARDIAN-BOOT-GATE-PASS-UI-FIX-2026-05-12",
+  "created_at": "2026-05-12T21:05:06.008-07:00",
+  "source_report_built_at": "2026-05-13T04:05:06.008Z",
+  "scope": "pmp-app-current-route-guardian-test.html on iPhone Safari/browser surface",
+  "result": "PASS_WITH_UI_FIX_NEEDED",
+  "deletion_permission_after_receipt": false,
+  "archive_permission_after_receipt": false,
+  "app_files_changed_by_test": false,
+  "cleanup_archive_delete_done": false,
+  "report_summary": {
+    "current_surface_file": "pmp-app-current-route-guardian-test.html",
+    "approved_support_test_surface": true,
+    "surface_kind": "SAFARI_OR_BROWSER",
+    "map_fetch_ok": true,
+    "map_parse_ok": true,
+    "current_path": "pmp-current-inner-cleanbug-v1.html",
+    "current_path_matches_expected": true,
+    "fallback_path_matches_expected": true,
+    "home_screen_rule_matches_expected": true,
+    "user_facing_rule_hides_internal_files": true,
+    "current_inner_fetch_ok": true,
+    "loads_base_app": true,
+    "routes_bug_memory_clean": true,
+    "support_file_count_present": 8,
+    "blocks_old_bug_memory_route": true,
+    "stale_shell_risk_count": 0,
+    "likely_stale_shell": false,
+    "verdict": "PASS_ROUTE_CHAIN_STATIC_PROOF"
+  },
+  "user_visible_result": {
+    "appeared_to_load_current_pmp": true,
+    "reported_issue": "Copy Report and Show/Hide Report controls stayed over the main app and blocked tab testing. User also wanted to see the first Route Guardian screen more clearly before the app loads."
+  },
+  "required_fix": [
+    "Route Guardian boot test shell should show a clear first screen.",
+    "Report/copy controls should belong to the boot/test screen only.",
+    "After PMP Current loads, Route Guardian controls should hide so they do not block app tabs."
+  ],
+  "next_action": "Patch pmp-app-current-route-guardian-test.html so controls disappear before PMP loads and the first screen is visible."
+}
