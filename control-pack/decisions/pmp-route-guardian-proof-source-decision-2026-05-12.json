@@ -1,0 +1,41 @@
+{
+  "type": "PMP_CLEANUP_DECISION_RECORD",
+  "version": "1.0",
+  "decision_id": "PMP-DECISION-ROUTE-GUARDIAN-PROOF-SOURCE-2026-05-12",
+  "created_at": "2026-05-12T21:50:00.000-07:00",
+  "decision": "Use the working one-button Route Guardian page as the active proof source and retest the candidate shell later after cache catches up.",
+  "active_proof_source": {
+    "file": "pmp-route-guardian-test-v1.html",
+    "user_link": "https://pmpbird.github.io/pmp-bridge-shell/pmp-route-guardian-test-v1.html?copy=stay-v1",
+    "status": "WORKING",
+    "confirmed_behavior": [
+      "Main button starts as Check Route.",
+      "After route pass, the same button changes to Open PMP Current.",
+      "Copy Report remains separate.",
+      "Route proof can be copied before opening PMP Current."
+    ]
+  },
+  "candidate_shell_status": {
+    "file": "pmp-app-current-route-guardian-candidate.html",
+    "status": "BLOCKED_BY_CACHE_NOT_ROUTE_FAILURE",
+    "blocked_receipt": "control-pack/receipts/pmp-route-guardian-candidate-blocked-by-cache-2026-05-12.json",
+    "do_not_promote_until": [
+      "Candidate live page reports Route Guardian version 1.0.2-standalone-support-test or newer.",
+      "Candidate live report shows approved_support_test_surface true.",
+      "Candidate live report shows stale_shell_risk.risk_count 0.",
+      "User confirms candidate loads PMP Current after route pass and controls do not block PMP tabs."
+    ]
+  },
+  "route_truth": {
+    "current_route_static_proof": "PASS",
+    "current_map_target": "pmp-current-inner-cleanbug-v1.html",
+    "base_app": "pmp-home-single-v6.html",
+    "bug_memory_clean_route": "bug-memory-current-clean-v1.html"
+  },
+  "permissions_after_decision": {
+    "deletion_permission": false,
+    "archive_permission": false,
+    "real_current_app_patch_permission": false
+  },
+  "next_action": "Use the working one-button proof page for Route Guardian checks. Retest candidate shell only after cache refresh conditions are met."
+}
