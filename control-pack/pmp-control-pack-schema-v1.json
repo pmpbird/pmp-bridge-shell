@@ -1,0 +1,33 @@
+{
+  "type": "PMP_CONTROL_PACK_SCHEMA",
+  "version": "1.0",
+  "status": "official_control_schema_candidate",
+  "created_for": "PMP app cleanup/remodel safety",
+  "deletion_permission": false,
+  "archive_permission": false,
+  "source_scope": "pmpbird/pmp-bridge-shell + pmpbird/Code",
+  "current_app_protection": "required",
+  "last_reviewed_at": "2026-05-12T00:00:00.000-07:00",
+  "conflict_policy": "Any missing required field blocks official cleanup use.",
+  "required_universal_fields": [
+    "type",
+    "version",
+    "status",
+    "created_for",
+    "deletion_permission",
+    "archive_permission",
+    "source_scope",
+    "current_app_protection",
+    "last_reviewed_at",
+    "conflict_policy"
+  ],
+  "required_control_rules": {
+    "deletion_permission_must_be_false_by_default": true,
+    "archive_permission_must_be_false_by_default": true,
+    "current_app_route_must_be_named": true,
+    "backup_branch_must_be_named_before_archive_or_delete": true,
+    "change_proposal_required_before_archive_delete_or_route_change": true,
+    "no_private_values_in_control_files": true
+  },
+  "official_use_rule": "A control file is not official unless it passes this schema and is listed in pmp-control-pack-manifest-v3.json."
+}
