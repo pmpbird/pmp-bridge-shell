@@ -21,28 +21,28 @@ button.dark,a.dark{background:#172234;color:#eef4fb;border:1px solid #25354a}.pa
 <body>
 <section id="mainCard" class="card">
   <h1 id="title">Route Guardian</h1>
-  <p id="text" class="sub">This page lets you press Route Guardian first. It will not open PMP until you tap the Open PMP Current button.</p>
+  <p id="text" class="sub">This page lets you press Route Guardian first. It will not open PMP until the route passes and this button changes to Open PMP Current.</p>
   <div id="chips"></div>
   <div class="actions">
-    <button onclick="runCheck()">Check Route</button>
+    <button id="primaryBtn" onclick="primaryAction()">Check Route</button>
     <button class="dark" onclick="copyReport()">Copy Report</button>
-    <button id="openBtn" class="hidden" onclick="openPmpCurrent()">Open PMP Current</button>
     <button class="dark" onclick="toggleReport()">Show / Hide Report</button>
   </div>
 </section>
 <pre id="reportPanel" class="hidden">No report yet.</pre>
-<script src="pmp-route-guardian-v1.js?fresh=manual-test-v1"></script>
+<script src="pmp-route-guardian-v1.js?fresh=manual-test-v3"></script>
 <script>
 const CARD=document.getElementById('mainCard');
 const TITLE=document.getElementById('title');
 const TEXT=document.getElementById('text');
 const CHIPS=document.getElementById('chips');
-const OPEN_BTN=document.getElementById('openBtn');
+const PRIMARY_BTN=document.getElementById('primaryBtn');
 const REPORT_PANEL=document.getElementById('reportPanel');
 let latestReport=null;
 let routePassed=false;
 function chip(text,good){return '<span class="pill '+(good?'ok':'bad')+'">'+String(text).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))+'</span>'}
 function setState(title,text,kind){CARD.classList.remove('pass','fail');if(kind)CARD.classList.add(kind);TITLE.textContent=title;TEXT.textContent=text;}
+function setPrimary(text){PRIMARY_BTN.textContent=text;}
 function setReport(report){latestReport=report;REPORT_PANEL.textContent=JSON.stringify(report,null,2)}
 function renderChips(report){
   const map=report.current_map_assessment||{};
@@ -56,9 +56,13 @@ function renderChips(report){
     chip('risk '+risk,risk===0)
   ].join('');
 }
+async function primaryAction(){
+  if(routePassed){openPmpCurrent();return;}
+  await runCheck();
+}
 async function runCheck(){
   setState('Route Guardian','Checking current app route...',null);
-  OPEN_BTN.classList.add('hidden');
+  setPrimary('Checking...');
   try{
     if(!window.PMPRouteGuardianV1)throw new Error('Route Guardian did not load.');
     const report=await window.PMPRouteGuardianV1.buildReport({store:false});
@@ -66,27 +70,29 @@ async function runCheck(){
     renderChips(report);
     routePassed=String(report.verdict||'').startsWith('PASS') && ((report.stale_shell_risk||{}).risk_count||0)===0;
     if(routePassed){
-      setState('Route Guardian Passed','Current route is clean. You can copy the report or tap Open PMP Current when you are ready.','pass');
-      OPEN_BTN.classList.remove('hidden');
+      setState('Route Guardian Passed','Current route is clean. The button is now Open PMP Current.','pass');
+      setPrimary('Open PMP Current');
     }else{
       setState('Route Guardian Blocked',(report.resident_summary||'Route risk found.')+' Copy the report before doing app work.','fail');
+      setPrimary('Check Route');
     }
   }catch(e){
     routePassed=false;
     setReport({type:'PMP_ROUTE_GUARDIAN_MANUAL_TEST_ERROR',built_at:new Date().toISOString(),error:String(e&&e.message||e)});
     CHIPS.innerHTML=chip('test failed',false);
     setState('Route Guardian Error',String(e&&e.message||e),'fail');
+    setPrimary('Check Route');
   }
 }
 async function copyReport(){
   if(!latestReport){await runCheck();}
   const text=JSON.stringify(latestReport,null,2);
-  try{await navigator.clipboard.writeText(text);setState('Report Copied',routePassed?'Report copied. Tap Open PMP Current when ready.':'Report copied. Route is blocked or uncertain.',routePassed?'pass':'fail');}
+  try{await navigator.clipboard.writeText(text);setState('Report Copied',routePassed?'Report copied. The button is still Open PMP Current.':'Report copied. Route is blocked or uncertain.',routePassed?'pass':'fail');if(routePassed)setPrimary('Open PMP Current');}
   catch(e){REPORT_PANEL.classList.remove('hidden');setState('Copy Failed','Select the report manually from the report panel.','fail');}
 }
 function toggleReport(){REPORT_PANEL.classList.toggle('hidden')}
 function openPmpCurrent(){
-  if(!routePassed){setState('Route Not Passed','Run Check Route first. PMP will not open from this test page until Route Guardian passes.','fail');return;}
+  if(!routePassed){setState('Route Not Passed','Run Check Route first. PMP will not open from this test page until Route Guardian passes.','fail');setPrimary('Check Route');return;}
   location.href='pmp-app-current.html?fresh=route-guardian-manual-pass-'+Date.now()+'#world';
 }
 </script>
