@@ -32,6 +32,37 @@ function actionUrl(kind){return 'pmp-route-guardian-action-v2.html?action='+enco
 function goBug(){location.href=bugUrl();return false}
 function goAction(kind){location.href=actionUrl(kind);return false}
 function textOf(x){return (x&&x.textContent||'').replace(/\s+/g,' ').trim()}
+function installBridgeToggleFix(w,d){
+  if(w.__pmpBridgePanelToggleFixV1)return;
+  if(typeof w.openSharePanel!=='function'||typeof w.openConnectionsPanel!=='function')return;
+  w.__pmpBridgePanelToggleFixV1={active:''};
+  const oldShare=w.openSharePanel;
+  const oldConnections=w.openConnectionsPanel;
+  const oldSetBridgeOutput=typeof w.setBridgeOutput==='function'?w.setBridgeOutput:null;
+  function panel(){try{return d.getElementById('bridgePanel')}catch(e){return null}}
+  function closePanel(){
+    const p=panel();
+    if(p){p.className='note';p.textContent='Bridge ready.'}
+    w.__pmpBridgePanelToggleFixV1.active='';
+    return false;
+  }
+  w.openSharePanel=function(){
+    if(w.__pmpBridgePanelToggleFixV1.active==='share')return closePanel();
+    w.__pmpBridgePanelToggleFixV1.active='share';
+    return oldShare.apply(this,arguments);
+  };
+  w.openConnectionsPanel=function(){
+    if(w.__pmpBridgePanelToggleFixV1.active==='connections')return closePanel();
+    w.__pmpBridgePanelToggleFixV1.active='connections';
+    return oldConnections.apply(this,arguments);
+  };
+  if(oldSetBridgeOutput){
+    w.setBridgeOutput=function(){
+      w.__pmpBridgePanelToggleFixV1.active='';
+      return oldSetBridgeOutput.apply(this,arguments);
+    };
+  }
+}
 function patch(){
   const o=inside(),w=o.w,d=o.d;if(!w||!d)return;
   const oldShow=typeof w.showSecret==='function'?w.showSecret:null;
@@ -40,6 +71,7 @@ function patch(){
     w.showSecret=function(name){if(String(name)==='Bug Memory')return goBug();if(oldShow)return oldShow.apply(this,arguments)};
     w.automaticAppUpdate=function(){return goAction('appUpdate')};
   }
+  installBridgeToggleFix(w,d);
   if(!d.documentElement.dataset.pmpRgControlsV3Delegate){
     d.documentElement.dataset.pmpRgControlsV3Delegate='1';
     d.addEventListener('click',function(e){
