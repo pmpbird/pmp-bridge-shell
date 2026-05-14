@@ -2,7 +2,13 @@
   "type": "PMP_CURRENT_APP_MAP",
   "app_name": "PMP Current",
   "app_version": "PMP-CURRENT-1",
-  "updated_at": "2026-05-13T07:05:00.000Z",
+  "updated_at": "2026-05-14T15:35:00.000Z",
+  "route_guardian_loader": {
+    "path": "pmp-route-guardian-current-loader-v1.html",
+    "label": "PMP Current Route Guardian Loader v1",
+    "cache_key": "pmp-route-guardian-current-loader-v1-report-fix",
+    "status": "current"
+  },
   "current_app": {
     "path": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
     "label": "PMP Current Clean Bug Memory + Route Guardian Controls v3 Clean Room",
@@ -10,8 +16,8 @@
     "status": "current"
   },
   "user_facing_rule": "Only show PMP Current / PMP-CURRENT-1 as the app version.",
-  "home_screen_rule": "Install pmp-app-current.html once.",
-  "update_rule": "Current shell loads pmp-current-inner-cleanbug-rgcontrols-v3.html. Bug Memory opens bug-memory-current-clean-v1.html. Code Safety stays inside Route Guardian action v2. Normal Control Room no longer shows Open Code Safety or Automatic App Update buttons.",
+  "home_screen_rule": "Install pmp-app-current.html once. It is now a stable map-driven door and should change as little as possible.",
+  "update_rule": "Stable door loads route_guardian_loader from this map. Route Guardian loader v1 handles Resident, Report dropdown, Repo Index dropdown, route check, and Open World. Current inner app remains pmp-current-inner-cleanbug-rgcontrols-v3.html.",
   "fallback_app": {
     "path": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
     "cache_key": "fallback-cleanbug-rgcontrols-v3"
