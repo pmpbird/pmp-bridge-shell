@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PMP">
+<meta name="theme-color" content="#52b5df">
+<title>PMP Current Repo Dropdown Test</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#52b5df;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#101827}
+iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#52b5df}
+#gate{position:fixed;inset:0;display:grid;place-items:center;background:#52b5df;font-weight:950;text-align:center;padding:18px;z-index:25;overflow:auto}
+#gateCard{width:min(760px,100%);background:#46a9d3;border:3px solid #07101c;border-radius:28px;padding:18px;box-shadow:0 10px 24px rgba(0,0,0,.2);line-height:1.35;text-align:center}
+#gateTitle{font-size:31px;line-height:1.05;margin:0 0 8px}
+#gateText{font-size:16px;font-weight:850;margin:0 0 12px}
+.badge{display:inline-block;background:#a1fcfd;border:2px solid #07101c;border-radius:999px;padding:6px 10px;margin:0 auto 10px;font-size:12px;font-weight:950;color:#101827}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}@media(max-width:680px){.grid{grid-template-columns:1fr}}
+button{width:100%;border:0;border-radius:16px;background:#a1fcfd;color:#101827;font:inherit;font-weight:950;padding:13px;box-shadow:0 8px 18px rgba(0,0,0,.16)}
+button.dark{background:#172234;color:#eef4fb;border:1px solid #25354a}
+.pass #gateCard{border-color:#0b3519}.fail #gateCard{border-color:#7d3333;background:#7b2f2f;color:#fff}.fail #gateText{color:#fff}.loaded #gate{display:none!important}.loaded #reportPanel{display:none!important}.loaded #repoDrop{display:none!important}
+#reportPanel{position:fixed;left:10px;right:10px;top:calc(10px + env(safe-area-inset-top));bottom:calc(10px + env(safe-area-inset-bottom));z-index:30;display:none;background:#0c141e;color:#eef4fb;border:2px solid #a1fcfd;border-radius:22px;padding:12px;overflow:auto;white-space:pre-wrap;font:12px/1.35 ui-monospace,Menlo,monospace}
+.pill{display:inline-block;background:#172234;color:#eef4fb;border:1px solid #25354a;border-radius:999px;padding:7px 10px;font-weight:900;font-size:12px;margin:4px}.ok{background:#123024;color:#d8ffe2}.bad{background:#351414;color:#ffd1d1}
+#repoDrop{display:none;margin-top:10px;background:#0c141e;color:#eef4fb;border:2px solid #a1fcfd;border-radius:18px;padding:10px;text-align:left}
+#repoDrop.open{display:block}.repoDropGrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:8px}@media(max-width:680px){.repoDropGrid{grid-template-columns:1fr}}
+#repoDrop button{padding:10px;border-radius:14px}#repoDropResult{font-size:13px;font-weight:900;line-height:1.35}#repoDropJson{display:none;max-height:28vh;overflow:auto;white-space:pre-wrap;background:#0c141e;color:#eef4fb;border-top:1px solid #25354a;margin-top:8px;padding-top:8px;font:12px/1.35 ui-monospace,Menlo,monospace}
+</style>
+</head>
+<body>
+<iframe id="app" title="PMP Current App"></iframe>
+<div id="gate"><div id="gateCard"><div class="badge">ROUTE GUARDIAN</div><h1 id="gateTitle">Route Guardian</h1><p id="gateText">Check the current route before World opens. Repo Index opens as a dropdown only.</p><div id="chips"></div><div class="grid"><button id="primaryBtn">Check Route</button><button id="copyBtn" class="dark">Copy Report</button><button id="showBtn" class="dark">Show / Hide Report</button><button id="repoBtn" class="dark">Repo Index</button></div><div id="repoDrop"><div class="repoDropGrid"><button id="repoDropScan">Scan Repo Index</button><button id="repoDropCopy" class="dark">Copy Repo Report</button><button id="repoDropHide" class="dark">Hide</button></div><div id="repoDropResult">Repo Index is compact here. Tap Scan Repo Index when you want the deeper route proof.</div><pre id="repoDropJson"></pre></div></div></div>
+<pre id="reportPanel">No report yet.</pre>
+<script src="pmp-route-guardian-v1.js?fresh=repodrop-test-v1"></script>
+<script>
+const MAP_PATH='pmp-current-map.json';
+const DEFAULT_APP='pmp-home-single-v6.html';
+const F=document.getElementById('app');
+const GATE=document.getElementById('gate');
+const GATE_TITLE=document.getElementById('gateTitle');
+const GATE_TEXT=document.getElementById('gateText');
+const CHIPS=document.getElementById('chips');
+const PRIMARY=document.getElementById('primaryBtn');
+const COPY=document.getElementById('copyBtn');
+const SHOW=document.getElementById('showBtn');
+const REPO=document.getElementById('repoBtn');
+const REPORT=document.getElementById('reportPanel');
+const REPO_DROP=document.getElementById('repoDrop');
+const REPO_SCAN=document.getElementById('repoDropScan');
+const REPO_COPY=document.getElementById('repoDropCopy');
+const REPO_HIDE=document.getElementById('repoDropHide');
+const REPO_RESULT=document.getElementById('repoDropResult');
+const REPO_JSON=document.getElementById('repoDropJson');
+let latestReport=null, latestRepoReport=null, routePassed=false, appLoaded=false;
+function esc(t){return String(t).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))}
+function setGate(title,text,kind){document.body.classList.remove('pass','fail','loaded');if(kind)document.body.classList.add(kind);GATE.style.display='grid';GATE_TITLE.textContent=title;GATE_TEXT.textContent=text}
+function hideGate(){document.body.classList.add('loaded');GATE.style.display='none';REPORT.style.display='none';REPO_DROP.classList.remove('open')}
+function pill(text,ok){return '<span class="pill '+(ok?'ok':'bad')+'">'+esc(text)+'</span>'}
+function cleanPath(p){p=String(p||DEFAULT_APP).trim();return /^[a-zA-Z0-9._\/-]+\.html$/.test(p)?p.replace(/^\/+/, ''):DEFAULT_APP}
+async function text(path){const r=await fetch(path+'?fresh='+Date.now(),{cache:'no-store'});const t=await r.text();if(!r.ok)throw Error(path+' '+r.status);return t}
+async function json(path){return JSON.parse(await text(path))}
+async function loadMap(){try{return await json(MAP_PATH)}catch(e){return{current_app:{path:DEFAULT_APP,cache_key:'fallback-'+Date.now()}}}}
+function setReport(report){latestReport=report;REPORT.textContent=JSON.stringify(report,null,2)}
+function renderChips(report){const map=report.current_map_assessment||{};const inner=report.current_inner_assessment||{};const risk=(report.stale_shell_risk||{}).risk_count||0;CHIPS.innerHTML=[pill('map '+(map.current_path_matches_expected?'ok':'check'),!!map.current_path_matches_expected),pill('base '+(inner.loads_base_app?'ok':'check'),!!inner.loads_base_app),pill('bug '+(inner.routes_bug_memory_clean?'ok':'check'),!!inner.routes_bug_memory_clean),pill('risk '+risk,risk===0)].join('')}
+async function checkRoute(){setGate('Route Guardian','Checking current app route...',null);PRIMARY.textContent='Checking...';try{if(!window.PMPRouteGuardianV1)throw new Error('Route Guardian did not load.');const report=await window.PMPRouteGuardianV1.buildReport({store:false});setReport(report);renderChips(report);routePassed=String(report.verdict||'').startsWith('PASS')&&((report.stale_shell_risk||{}).risk_count||0)===0;if(routePassed){setGate('Route Guardian Passed','Current route is clean. The same button is now Open World. Repo Index remains a dropdown.','pass');PRIMARY.textContent='Open World'}else{setGate('Route Guardian Blocked',report.resident_summary||'Route risk found. Copy the report before doing app work.','fail');PRIMARY.textContent='Check Route'}}catch(e){routePassed=false;setReport({type:'PMP_ROUTE_GUARDIAN_REPODROP_TEST_ERROR',built_at:new Date().toISOString(),error:String(e&&e.message||e)});CHIPS.innerHTML=pill('test failed',false);setGate('Route Guardian Error',String(e&&e.message||e),'fail');PRIMARY.textContent='Check Route'}}
+async function loadCurrent(){if(!routePassed){setGate('Route Not Passed','Run Check Route first. World will not open until Route Guardian passes.','fail');PRIMARY.textContent='Check Route';return}setGate('Opening World','Route Guardian passed. Opening World now.','pass');let map=await loadMap();let cur=map.current_app||{};let path=cleanPath(cur.path||DEFAULT_APP);let key=cur.cache_key||map.app_version||Date.now();F.src=path+'?fresh=repodrop-test-'+encodeURIComponent(key)+'-'+Date.now()+'#world';appLoaded=true;F.onload=()=>setTimeout(hideGate,550);setTimeout(hideGate,3500)}
+async function copyRouteReport(){if(!latestReport)await checkRoute();try{await navigator.clipboard.writeText(JSON.stringify(latestReport,null,2));setGate('Report Copied',routePassed?'Report copied. The same button is still Open World.':'Report copied. Route is blocked or uncertain.',routePassed?'pass':'fail');if(routePassed)PRIMARY.textContent='Open World'}catch(e){REPORT.style.display='block';setGate('Copy Failed','Select the report manually from the report panel.','fail')}}
+async function repoCheck(paths){const checks=[];for(const path of [...new Set(paths.filter(Boolean))]){try{const t=await text(path);checks.push({path,ok:true,size:t.length})}catch(e){checks.push({path,ok:false,error:String(e&&e.message||e)})}}const missing=checks.filter(x=>!x.ok).map(x=>x.path);return{required_count:checks.length,ok_count:checks.filter(x=>x.ok).length,missing_count:missing.length,missing_paths:missing,checks}}
+async function scanRepoDropdown(){REPO_RESULT.innerHTML=pill('scanning',true);REPO_JSON.style.display='none';const proofs=['control-pack/receipts/pmp-final-installed-stable-pass-2026-05-13.md','control-pack/receipts/pmp-control-room-route-guardian-cleanup-pass-2026-05-13.md','control-pack/decisions/pmp-route-guardian-repo-index-routing-only-decision-2026-05-13.md','control-pack/receipts/pmp-route-guardian-repo-index-v107-pass-2026-05-14.md'];try{const map=await json(MAP_PATH);const current=map.current_app||{};const fallback=map.fallback_app||{};const guardian=window.PMPRouteGuardianV1||{};const expected=(guardian.expected||{});const active=await repoCheck(['pmp-app-current.html',MAP_PATH,'pmp-route-guardian-v1.js',expected.currentInner,current.path,fallback.path,'pmp-home-single-v6.html','bug-memory-current-clean-v1.html','pmp-route-guardian-action-v2.html','pmp-control-room-cleanup-v1.js']);const receipt=await repoCheck(proofs);const agreement=current.path===expected.currentInner&&fallback.path===expected.currentInner;const warnings=[];if(!agreement)warnings.push('Current map and Route Guardian expected path do not agree.');if(active.missing_count>0)warnings.push('Active route files are missing or unreadable.');if(receipt.missing_count>0)warnings.push('Required proof files are missing or unreadable.');const pass=agreement&&warnings.length===0&&active.missing_count===0&&receipt.missing_count===0;latestRepoReport={type:'PMP_ROUTE_GUARDIAN_REPO_DROPDOWN_REPORT',version:'1.0.0-repodrop-test',repo_index_verdict:pass?'PASS_REPO_INDEX_DROPDOWN_ROUTING_TRUTH':'WARNING_REPO_INDEX_DROPDOWN_NEEDS_REVIEW',built_at:new Date().toISOString(),deletion_permission:false,archive_permission:false,auto_promotion_permission:false,current_route:{map_current_path:current.path||null,map_fallback_path:fallback.path||null,route_guardian_version:guardian.version||null,route_guardian_expected_currentInner:expected.currentInner||null,agreement},warnings,active_file_summary:active,proof_receipt_summary:receipt};REPO_JSON.textContent=JSON.stringify(latestRepoReport,null,2);REPO_RESULT.innerHTML=pill(latestRepoReport.repo_index_verdict,pass)+pill('agreement '+(agreement?'ok':'bad'),agreement)+pill('warnings '+warnings.length,warnings.length===0)+pill('active '+active.ok_count+'/'+active.required_count,active.missing_count===0)+pill('proofs '+receipt.ok_count+'/'+receipt.required_count,receipt.missing_count===0)}catch(e){latestRepoReport={type:'PMP_ROUTE_GUARDIAN_REPO_DROPDOWN_ERROR',version:'1.0.0-repodrop-test',built_at:new Date().toISOString(),error:String(e&&e.message||e),deletion_permission:false,archive_permission:false,auto_promotion_permission:false};REPO_JSON.textContent=JSON.stringify(latestRepoReport,null,2);REPO_RESULT.innerHTML=pill('Repo Index error',false)}}
+PRIMARY.onclick=()=>routePassed&&!appLoaded?loadCurrent():routePassed&&appLoaded?hideGate():checkRoute();
+COPY.onclick=copyRouteReport;
+SHOW.onclick=()=>{REPO_DROP.classList.remove('open');REPORT.style.display=REPORT.style.display==='block'?'none':'block'};
+REPO.onclick=()=>{REPORT.style.display='none';REPO_DROP.classList.toggle('open')};
+REPO_SCAN.onclick=scanRepoDropdown;
+REPO_COPY.onclick=async()=>{if(!latestRepoReport)await scanRepoDropdown();try{await navigator.clipboard.writeText(JSON.stringify(latestRepoReport,null,2));REPO_RESULT.innerHTML+=pill('copied',true)}catch(e){REPO_JSON.style.display='block';REPO_RESULT.innerHTML+=pill('copy failed',false)}};
+REPO_HIDE.onclick=()=>REPO_DROP.classList.remove('open');
+</script>
+</body>
+</html>
