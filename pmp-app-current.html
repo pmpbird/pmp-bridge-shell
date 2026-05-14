@@ -9,115 +9,28 @@
 <meta name="theme-color" content="#52b5df">
 <title>PMP Current</title>
 <style>
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#52b5df;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#101827}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#52b5df;color:#101827;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#52b5df}
-#gate{position:fixed;inset:0;display:grid;place-items:center;background:#52b5df;font-weight:950;text-align:center;padding:18px;z-index:25;overflow:auto}
-#gateCard{width:min(760px,100%);background:#46a9d3;border:3px solid #07101c;border-radius:28px;padding:18px;box-shadow:0 10px 24px rgba(0,0,0,.2);line-height:1.35;text-align:center}
-.topTabs{display:flex;justify-content:flex-end;margin-bottom:6px}.tinyTab{width:auto;border:2px solid #07101c;border-radius:999px;background:#a1fcfd;color:#101827;padding:6px 12px;font-size:12px;font-weight:950;box-shadow:none}
-#gateTitle{font-size:31px;line-height:1.05;margin:0 0 8px}
-#gateText{font-size:16px;font-weight:850;margin:0 0 12px}
-.badge{display:inline-block;background:#a1fcfd;border:2px solid #07101c;border-radius:999px;padding:6px 10px;margin:0 auto 10px;font-size:12px;font-weight:950;color:#101827}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}@media(max-width:680px){.grid{grid-template-columns:1fr}}
-button{width:100%;border:0;border-radius:16px;background:#a1fcfd;color:#101827;font:inherit;font-weight:950;padding:13px;box-shadow:0 8px 18px rgba(0,0,0,.16)}
-button.dark{background:#172234;color:#eef4fb;border:1px solid #25354a}.pass #gateCard{border-color:#0b3519}.fail #gateCard{border-color:#7d3333;background:#7b2f2f;color:#fff}.fail #gateText{color:#fff}.loaded #gate{display:none!important}.loaded #reportPanel,.loaded #repoPanel,.loaded #residentBox{display:none!important}
-.drop{display:none;margin-top:10px;background:#0c141e;color:#eef4fb;border:2px solid #a1fcfd;border-radius:18px;padding:10px;text-align:left}
-.drop.open{display:block}
-#reportPanel{max-height:32vh;overflow:auto;white-space:pre-wrap;font:12px/1.35 ui-monospace,Menlo,monospace}
-#repoPanel{max-height:58vh;overflow:hidden;padding:0;background:#52b5df;color:#101827;border-color:#07101c}
-#repoBar{height:50px;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;background:#46a9d3;border-bottom:2px solid #07101c;padding:8px 10px;font-weight:950}
-#repoBar span{text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#repoClose{width:auto;min-width:88px;padding:9px 12px;background:#172234;color:#eef4fb;border:1px solid #25354a}
-#repoFrame{position:relative!important;inset:auto!important;display:block;width:100%;height:min(52vh,560px);border:0;background:#52b5df}
-.residentNative{display:none;position:fixed;left:10px;right:10px;top:calc(54px + env(safe-area-inset-top));z-index:45;background:transparent;border:0;padding:0;text-align:left;height:min(78vh,560px);overflow:visible}.residentNative.open{display:block}.residentFrame{position:relative!important;inset:auto!important;width:100%;height:100%;border:0;border-radius:20px;background:transparent;box-shadow:0 8px 28px #0007}
-.pill{display:inline-block;background:#172234;color:#eef4fb;border:1px solid #25354a;border-radius:999px;padding:7px 10px;font-weight:900;font-size:12px;margin:4px}.ok{background:#123024;color:#d8ffe2}.bad{background:#351414;color:#ffd1d1}
+#status{position:fixed;inset:0;display:grid;place-items:center;text-align:center;font-weight:950;padding:18px;background:#52b5df;z-index:2}
+.card{width:min(620px,100%);background:#46a9d3;border:3px solid #07101c;border-radius:28px;padding:18px;box-shadow:0 10px 24px rgba(0,0,0,.2)}
+.badge{display:inline-block;background:#a1fcfd;border:2px solid #07101c;border-radius:999px;padding:6px 10px;font-size:12px;margin-bottom:10px}
+h1{font-size:28px;margin:0 0 8px}.hide{display:none!important}
 </style>
 </head>
 <body>
-<iframe id="app" title="PMP Current App"></iframe>
-<div id="gate"><div id="gateCard"><div class="topTabs"><button id="residentBtn" class="tinyTab">Resident</button></div><div class="badge">ROUTE GUARDIAN</div><h1 id="gateTitle">Route Guardian</h1><p id="gateText">Check the current route before World opens. If it passes, this same button changes to Open World.</p><div id="chips"></div><div class="grid"><button id="primaryBtn">Check Route</button><button id="copyBtn" class="dark">Copy Report</button><button id="showBtn" class="dark">Show / Hide Report</button><button id="repoBtn" class="dark">Repo Index</button></div><pre id="reportPanel" class="drop">No report yet.</pre><div id="repoPanel" class="drop"><div id="repoBar"><span>Route Guardian Repo Index</span><button id="repoClose">Close</button></div><iframe id="repoFrame" title="Route Guardian Repo Index"></iframe></div></div></div>
-<div id="residentBox" class="residentNative"><iframe id="residentFrame" class="residentFrame" title="Resident"></iframe></div>
-<script src="pmp-route-guardian-v1.js?fresh=real-current-entry-v3"></script>
+<iframe id="app" title="PMP Current"></iframe>
+<div id="status"><div class="card"><div class="badge">PMP CURRENT</div><h1>Opening Current</h1><div id="msg">Loading the current Route Guardian loader.</div></div></div>
 <script>
 const MAP_PATH='pmp-current-map.json';
-const DEFAULT_APP='pmp-home-single-v14.html';
-const F=document.getElementById('app');
-const GATE=document.getElementById('gate');
-const GATE_TITLE=document.getElementById('gateTitle');
-const GATE_TEXT=document.getElementById('gateText');
-const CHIPS=document.getElementById('chips');
-const PRIMARY=document.getElementById('primaryBtn');
-const COPY=document.getElementById('copyBtn');
-const SHOW=document.getElementById('showBtn');
-const REPO=document.getElementById('repoBtn');
-const RESIDENT=document.getElementById('residentBtn');
-const REPORT=document.getElementById('reportPanel');
-const REPO_PANEL=document.getElementById('repoPanel');
-const REPO_FRAME=document.getElementById('repoFrame');
-const REPO_CLOSE=document.getElementById('repoClose');
-const RESIDENT_BOX=document.getElementById('residentBox');
-const RESIDENT_FRAME=document.getElementById('residentFrame');
-const COLOR_KEY='pmp_single_colors_v6';
-const PREV_COLOR_KEY='pmp_single_colors_v5';
-const READ_KEY='pmp_readability_layer_v6';
-const DEFAULT_COLORS={accent:'#a1fcfd',background:'#52b5df',card:'#46a9d3',line:'#ffffff'};
-let CURRENT_MAP=null;
-let latestReport=null;
-let routePassed=false;
-let appLoaded=false;
-let pendingAction=null;
-let routeChecked=false;
-let codeSafetyRepairAllowed=false;
-function esc(t){return String(t).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))}
-function setGate(title,text,kind){document.body.classList.remove('pass','fail','loaded');if(kind)document.body.classList.add(kind);GATE.style.display='grid';GATE_TITLE.textContent=title;GATE_TEXT.textContent=text}
-function closeDrops(except){if(except!=='resident')RESIDENT_BOX.classList.remove('open');if(except!=='report')REPORT.classList.remove('open');if(except!=='repo')REPO_PANEL.classList.remove('open')}
-function hideGate(){document.body.classList.add('loaded');GATE.style.display='none';closeDrops()}
-function pill(text,ok){return '<span class="pill '+(ok?'ok':'bad')+'">'+esc(text)+'</span>'}
-function cleanPath(p){p=String(p||DEFAULT_APP).trim();return /^[a-zA-Z0-9._\/-]+\.html$/.test(p)?p.replace(/^\/+/, ''):DEFAULT_APP}
-function readStore(k,f){try{let v=localStorage.getItem(k);return v?JSON.parse(v):f}catch(e){return f}}
-function writeStore(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
-async function loadMap(){try{let r=await fetch(MAP_PATH+'?fresh='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('map');return await r.json()}catch(e){return{current_app:{path:DEFAULT_APP,cache_key:'fallback-'+Date.now()}}}}
-function srcWithFresh(path,key,targetHash){return cleanPath(path)+'?fresh=current-shell-'+encodeURIComponent(key||Date.now())+'-'+Date.now()+(targetHash||location.hash||'#world')}
-function setReport(report){latestReport=report;REPORT.textContent=JSON.stringify(report,null,2)}
-function renderChips(report){const map=report.current_map_assessment||{};const inner=report.current_inner_assessment||{};const risk=(report.stale_shell_risk||{}).risk_count||0;CHIPS.innerHTML=[pill('map '+(map.current_path_matches_expected?'ok':'check'),!!map.current_path_matches_expected),pill('base '+(inner.loads_base_app?'ok':'check'),!!inner.loads_base_app),pill('bug '+(inner.routes_bug_memory_clean?'ok':'check'),!!inner.routes_bug_memory_clean),pill('risk '+risk,risk===0)].join('')}
-function pendingLabel(){return pendingAction==='codeSafety'?'Code Safety':pendingAction==='appUpdate'?'Automatic App Update':'World'}
-function passButtonLabel(){return pendingAction==='codeSafety'?'Open Code Safety':pendingAction==='appUpdate'?'Run Current Check':'Open World'}
-function startRouteProtectedAction(action){pendingAction=action;routePassed=false;routeChecked=false;codeSafetyRepairAllowed=false;closeDrops();setGate('Route Guardian','Check the current route before '+pendingLabel()+' continues.',null);PRIMARY.textContent='Check Route'}
-async function checkRoute(){setGate('Route Guardian','Checking current app route...',null);PRIMARY.textContent='Checking...';try{if(!window.PMPRouteGuardianV1)throw new Error('Route Guardian did not load.');const report=await window.PMPRouteGuardianV1.buildReport({store:false});setReport(report);renderChips(report);routeChecked=true;routePassed=String(report.verdict||'').startsWith('PASS')&&((report.stale_shell_risk||{}).risk_count||0)===0;if(routePassed){setGate('Route Guardian Passed','Current route is clean. The same button is now '+passButtonLabel()+'. Copy Report still works.','pass');PRIMARY.textContent=passButtonLabel()}else{if(pendingAction==='codeSafety'){codeSafetyRepairAllowed=true;setGate('Route Guardian Blocked','Route problem found. Copy the report. Code Safety can still open as a repair tool.','fail');PRIMARY.textContent='Open Code Safety Repair'}else{setGate('Route Guardian Blocked',report.resident_summary||'Route risk found. Copy the report before doing app work.','fail');PRIMARY.textContent='Check Route'}}}catch(e){routeChecked=true;routePassed=false;setReport({type:'PMP_ROUTE_GUARDIAN_REAL_ENTRY_ERROR',built_at:new Date().toISOString(),error:String(e&&e.message||e)});CHIPS.innerHTML=pill('test failed',false);if(pendingAction==='codeSafety'){codeSafetyRepairAllowed=true;setGate('Route Guardian Error','Route Guardian errored. Copy the report if possible. Code Safety can still open as a repair tool.','fail');PRIMARY.textContent='Open Code Safety Repair'}else{setGate('Route Guardian Error',String(e&&e.message||e),'fail');PRIMARY.textContent='Check Route'}}}
-function openRepoIndex(){closeDrops('repo');REPO_PANEL.classList.toggle('open');if(REPO_PANEL.classList.contains('open'))REPO_FRAME.src='pmp-route-guardian-repo-index-v1.html?inside=route-guardian&fresh='+Date.now()}
-function closeRepoIndex(){REPO_PANEL.classList.remove('open')}
-function openResident(){closeDrops('resident');RESIDENT_BOX.classList.toggle('open');if(RESIDENT_BOX.classList.contains('open'))RESIDENT_FRAME.src='pmp-resident-route-guardian-surface-v2.html?fresh='+Date.now()}
-window.addEventListener('message',e=>{if(e.data&&e.data.type==='PMP_RESIDENT_SURFACE_CLOSE')RESIDENT_BOX.classList.remove('open')});
-function deep(){try{let w=F.contentWindow,d=F.contentDocument||w.document;for(let i=0;i<8;i++){let n=d&&d.getElementById&&d.getElementById('app');if(!n)break;w=n.contentWindow;d=n.contentDocument||w.document}return{w,d}}catch(e){return null}}
-function patchWorldTitle(){let o=deep(),d=o&&o.d;if(!d)return;try{let world=d.getElementById('world');let h=world&&world.querySelector('h1');if(h&&h.textContent.trim()==='PMP World')h.textContent='World'}catch(e){}}
-function innerStatus(msg){let o=deep(),d=o&&o.d;if(!d)return;let c=d.getElementById('controlStatus');if(c)c.textContent=msg;let r=d.getElementById('residentReply');if(r)r.textContent=msg}
-function hx(h){h=(h||'#000').replace('#','');if(h.length===3)h=h.split('').map(x=>x+x).join('');let n=parseInt(h,16);return{r:(n>>16)&255,g:(n>>8)&255,b:n&255}}
-function toHex(c){let f=x=>Math.max(0,Math.min(255,Math.round(x))).toString(16).padStart(2,'0');return'#'+f(c.r)+f(c.g)+f(c.b)}
-function lum(h){let c=hx(h);let a=[c.r,c.g,c.b].map(v=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*a[0]+.7152*a[1]+.0722*a[2]}
-function mix(a,b,t){let x=hx(a),y=hx(b);return toHex({r:x.r+(y.r-x.r)*t,g:x.g+(y.g-x.g)*t,b:x.b+(y.b-x.b)*t})}
-function bestText(bg){return lum(bg)>.48?'#07101c':'#f8fbff'}
-function readName(v){return v<13?'Pure Theme':v<38?'Gentle Clarity':v<63?'Readable Default':v<88?'Strong Clarity':'Maximum Readability'}
-function activeColors(){return{...DEFAULT_COLORS,...readStore(PREV_COLOR_KEY,{}),...readStore(COLOR_KEY,{})}}
-function readLevel(){let r=readStore(READ_KEY,{value:50});let v=+r.value;return Number.isFinite(v)?Math.max(0,Math.min(100,v)):50}
-function stableContrastApply(show){let o=deep();if(!o||!o.d)return;let d=o.d,c=activeColors(),v=readLevel(),t=v/100,strong=Math.pow(t,.72);let bgText=bestText(c.background),cardText=bestText(c.card),accentText=bestText(c.accent);let line=v<5?c.line:mix(c.line,bgText==='#07101c'?'#07101c':'#ffffff',.02+.08*strong);let panel=mix('#172234',bgText==='#07101c'?'#ffffff':'#000000',.05+.24*strong);let input=mix('#0c141e',bgText==='#07101c'?'#ffffff':'#000000',.02+.20*strong);let tab=mix(c.background,bgText==='#07101c'?'#ffffff':'#000000',.12+.40*strong);let note=mix('#123024',bgText==='#07101c'?'#ffffff':'#000000',.02+.16*strong);let muted=cardText==='#07101c'?mix('#234a5d','#07101c',.25+.55*strong):mix('#c9d9e6','#ffffff',.22+.55*strong);let r=d.documentElement.style;r.setProperty('--a',c.accent);r.setProperty('--bg',c.background);r.setProperty('--floor',c.background);r.setProperty('--card',c.card);r.setProperty('--themeLine',c.line);r.setProperty('--line',line);r.setProperty('--buttonText',accentText);r.setProperty('--text',cardText);r.setProperty('--muted',muted);r.setProperty('--panel',panel);r.setProperty('--input',input);r.setProperty('--tabBg',tab);r.setProperty('--tabText',mix('#9fb0c3',bgText,.35+.45*strong));r.setProperty('--tabActive',c.accent);r.setProperty('--noteBg',note);r.setProperty('--borderWidth','2px');r.setProperty('--buttonBorder','0px');r.setProperty('--tabGlow',(2+10*strong)+'px');r.setProperty('--tabShadow',(.16+.34*strong));r.setProperty('--shadow','0 '+(7+Math.round(18*strong))+'px '+(14+Math.round(34*strong))+'px rgba(0,0,0,'+(.14+.40*strong)+')');r.setProperty('--miniShadow','0 '+(3+Math.round(7*strong))+'px '+(10+Math.round(18*strong))+'px rgba(0,0,0,'+(.12+.32*strong)+')');d.body.style.background=c.background;let out=d.getElementById('readabilityReadout');if(out)out.textContent=v+' — '+readName(v);if(show){let s=d.getElementById('colorStatus');if(s)s.textContent='Readability saved. Layout stayed still.'}}
-function patchStableContrast(){let o=deep();if(!o||!o.d||!o.w)return;let d=o.d,w=o.w;if(!d.getElementById('pmpCurrentStableContrastStyle')){let s=d.createElement('style');s.id='pmpCurrentStableContrastStyle';s.textContent='.card,.panel,.note,.reply{border-width:2px!important}.big,.float{border-width:2px!important;outline:0 solid transparent!important}.mini,.toolstrip button,input,textarea,select,.chatbox,.bubble,.statusbar{border-width:1px!important}.tabs{border-top-width:1px!important}.card,.panel,.note,.reply,.big,.float,.mini,.toolstrip button,.tabs{transition:box-shadow .08s linear,filter .08s linear,color .08s linear,background-color .08s linear!important;transform:none!important}.rhythm{transform:none!important;transition:none!important}';d.head.appendChild(s)}w.applyColors=function(show){stableContrastApply(show)};w.saveReadability=function(){let el=d.getElementById('readability');let v=el?+el.value:readLevel();writeStore(READ_KEY,{value:v});stableContrastApply(true)};let slider=d.getElementById('readability');if(slider&&!slider.dataset.pmpStableContrastCurrent){slider.dataset.pmpStableContrastCurrent='1';slider.addEventListener('input',e=>{e.stopImmediatePropagation();writeStore(READ_KEY,{value:+slider.value});stableContrastApply(false)},true);slider.addEventListener('change',e=>{e.stopImmediatePropagation();writeStore(READ_KEY,{value:+slider.value});stableContrastApply(true)},true)}let note=[...d.querySelectorAll('.note')].find(x=>(x.textContent||'').includes('Contrast is not a color'));if(note)note.textContent='Contrast is not a color. Contrast is the readability layer over the colors. The slider updates quietly; the screen should not move.';stableContrastApply(false)}
-function patchThemeNote(){let o=deep();if(!o||!o.d)return;let d=o.d;if(d.getElementById('pmpThemePersistenceNote'))return;let panel=d.getElementById('colorBody');if(!panel)return;let div=d.createElement('div');div.id='pmpThemePersistenceNote';div.className='note';div.textContent='Theme note: this Home Screen app has its own storage. Set or save the theme here once; future current-app updates should keep it because this permanent shell stays installed.';panel.insertBefore(div,panel.firstChild)}
-async function loadCurrent(targetHash){if(!routePassed){setGate('Route Not Passed','Run Check Route first. World will not open until Route Guardian passes.','fail');PRIMARY.textContent='Check Route';return}setGate('Opening World','Route Guardian passed. Opening World now.','pass');let map=await loadMap();CURRENT_MAP=map;let cur=map.current_app||{};let path=cleanPath(cur.path||DEFAULT_APP);let key=cur.cache_key||map.app_version||Date.now();F.src=srcWithFresh(path,key,targetHash||'#world');appLoaded=true;pendingAction=null;codeSafetyRepairAllowed=false;F.onload=()=>{setTimeout(hideGate,550);setTimeout(patchAll,250);setTimeout(patchAll,1000);setTimeout(patchAll,2500)};setTimeout(hideGate,3500)}
-async function refreshCurrentAfterGuardian(){innerStatus('Route Guardian passed. Checking PMP Current and staying inside the app.');routePassed=true;await loadCurrent('#world');setTimeout(()=>innerStatus('PMP Current checked through Route Guardian. You stayed inside the app.'),700);return true}
-function runCurrentAppUpdate(){startRouteProtectedAction('appUpdate');return true}
-function openCodeSafetyAfterGuardian(){location.href='code-safety-v13.html?from=route-guardian-current&checked='+Date.now()}
-function completePendingAction(){let action=pendingAction;if(action==='codeSafety'){pendingAction=null;openCodeSafetyAfterGuardian();return}if(action==='appUpdate'){pendingAction=null;refreshCurrentAfterGuardian();return}loadCurrent('#world')}
-function patchControlRoomRouteGuardianButtons(){let o=deep();if(!o||!o.d||!o.w)return;let d=o.d,w=o.w;w.automaticAppUpdate=function(){return runCurrentAppUpdate()};for(const b of [...d.querySelectorAll('button')]){let t=(b.textContent||'').replace(/\s+/g,' ').trim();if(t.includes('Automatic App Update')&&!b.dataset.pmpRouteGuardianUpdate){b.dataset.pmpRouteGuardianUpdate='1';b.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();startRouteProtectedAction('appUpdate')},true);let small=b.querySelector('small');if(small)small.textContent='Route Guardian first, then current check'}if(t.includes('Open Code Safety')&&!b.dataset.pmpRouteGuardianCodeSafety){b.dataset.pmpRouteGuardianCodeSafety='1';b.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();startRouteProtectedAction('codeSafety')},true);let small=b.querySelector('small');if(small)small.textContent='Route Guardian first, then Code Safety'}}}
-function patchAll(){patchWorldTitle();patchControlRoomRouteGuardianButtons();patchStableContrast();patchThemeNote()}
-async function copyReport(){if(!latestReport)await checkRoute();try{await navigator.clipboard.writeText(JSON.stringify(latestReport,null,2));setGate('Report Copied',routePassed?'Report copied. The same button is still '+passButtonLabel()+'.':'Report copied. Route is blocked or uncertain.',routePassed?'pass':'fail');if(routePassed)PRIMARY.textContent=passButtonLabel();else if(codeSafetyRepairAllowed)PRIMARY.textContent='Open Code Safety Repair'}catch(e){closeDrops('report');REPORT.classList.add('open');setGate('Copy Failed','Use Show / Hide Report. It opens as a dropdown, not a full-screen trap.','fail')}}
-PRIMARY.onclick=function(){if(codeSafetyRepairAllowed&&pendingAction==='codeSafety'&&!routePassed){completePendingAction()}else if(routePassed&&pendingAction){completePendingAction()}else if(routePassed&&!appLoaded){loadCurrent('#world')}else if(routePassed&&appLoaded){hideGate()}else{checkRoute()}};
-COPY.onclick=copyReport;
-SHOW.onclick=function(){closeDrops('report');REPORT.classList.toggle('open')};
-REPO.onclick=openRepoIndex;
-REPO_CLOSE.onclick=closeRepoIndex;
-RESIDENT.onclick=openResident;
-window.pmpCurrentReload=()=>{routePassed=true;loadCurrent('#world')};
-window.pmpRunRealAppUpdate=runCurrentAppUpdate;
-setInterval(()=>{if(appLoaded)patchAll()},1000);
+const FALLBACK_LOADER='pmp-route-guardian-current-loader-v1.html';
+const app=document.getElementById('app');
+const status=document.getElementById('status');
+const msg=document.getElementById('msg');
+function safePath(path,fallback){path=String(path||fallback||'').trim();return /^[a-zA-Z0-9._\/-]+\.html$/.test(path)?path.replace(/^\/+/, ''):fallback}
+async function loadMap(){const r=await fetch(MAP_PATH+'?fresh='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('Current map did not load: '+r.status);return await r.json()}
+function loaderFromMap(map){const loader=map.route_guardian_loader||map.current_loader||{};const path=safePath(loader.path,FALLBACK_LOADER);const key=loader.cache_key||map.loader_cache_key||map.updated_at||Date.now();return path+'?fresh=stable-door-'+encodeURIComponent(key)+'-'+Date.now()+(location.hash||'')}
+async function boot(){try{const map=await loadMap();app.src=loaderFromMap(map);app.onload=()=>setTimeout(()=>status.classList.add('hide'),350)}catch(e){msg.textContent='Map load failed. Opening fallback Route Guardian loader.';app.src=FALLBACK_LOADER+'?fresh=fallback-'+Date.now()+(location.hash||'');app.onload=()=>setTimeout(()=>status.classList.add('hide'),700)}}
+boot();
 </script>
 </body>
 </html>
