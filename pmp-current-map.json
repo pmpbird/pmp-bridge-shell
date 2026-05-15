@@ -2,11 +2,11 @@
   "type": "PMP_CURRENT_APP_MAP",
   "app_name": "PMP Current",
   "app_version": "PMP-CURRENT-1",
-  "updated_at": "2026-05-15T04:52:00.000Z",
+  "updated_at": "2026-05-15T04:57:00.000Z",
   "route_guardian_loader": {
     "path": "pmp-route-guardian-current-loader-v4.html",
     "label": "PMP Current Route Guardian Loader v4 with self-drift Path Certifier",
-    "cache_key": "pmp-route-guardian-current-loader-v4-self-drift-certifier",
+    "cache_key": "pmp-route-guardian-current-loader-v4-self-drift-certifier-map-rule-clarified",
     "status": "current"
   },
   "current_app": {
@@ -17,7 +17,7 @@
   },
   "user_facing_rule": "Only show PMP Current / PMP-CURRENT-1 as the app version.",
   "home_screen_rule": "Install pmp-app-current.html once. It is a stable map-driven door and should change as little as possible.",
-  "update_rule": "Stable door loads route_guardian_loader from this map. Route Guardian loader v4 handles Resident, Report dropdown, Repo Index dropdown, route check, Path Certifier, active-file checks, proof-receipt checks, self-drift checks, and Open World. Current inner app remains pmp-current-inner-cleanbug-rgcontrols-v3.html.",
+  "update_rule": "Stable door pmp-app-current.html loads route_guardian_loader.path pmp-route-guardian-current-loader-v4.html from this map. pmp-route-guardian-current-loader-v4.html handles Resident, Report dropdown, Repo Index dropdown, route check, Path Certifier, active-file checks, proof-receipt checks, self-drift checks, and Open World. Current inner app remains pmp-current-inner-cleanbug-rgcontrols-v3.html.",
   "fallback_app": {
     "path": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
     "cache_key": "fallback-cleanbug-rgcontrols-v3"
