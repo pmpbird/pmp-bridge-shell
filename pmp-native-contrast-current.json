@@ -1,8 +1,8 @@
 {
-  "type": "PMP_NATIVE_CONTRAST_PROFILE",
-  "version": "1.4.0-soft-native-depth",
-  "updated_at": "2026-05-15T09:43:00.000Z",
-  "source_rule": "Canonical app-owned contrast profile. Native contrast bridge must prefer this file everywhere and use local saved settings only as fallback.",
+  "type": "PMP_NATIVE_VISUAL_PROFILE",
+  "version": "1.5.0-shadow-depth-slider-ready",
+  "updated_at": "2026-05-15T09:55:00.000Z",
+  "source_rule": "Canonical app-owned visual profile. Native contrast bridge must prefer this file for colors/readability and use local saved settings only as fallback. Shadow depth is a separate visual-depth setting and may be locally adjusted by the Shadow Depth slider.",
   "colors": {
     "accent": "#b1d4ff",
     "background": "#ffe2d6",
@@ -10,16 +10,12 @@
     "line": "#000000"
   },
   "readability": 79,
-  "shadows": {
-    "enabled": true,
-    "strength": "soft_native_depth_visible",
-    "card": "0 10px 22px rgba(0,0,0,.18), 0 2px 6px rgba(0,0,0,.10)",
-    "button": "0 6px 14px rgba(0,0,0,.18), 0 2px 4px rgba(0,0,0,.12)",
-    "button_pressed": "0 3px 8px rgba(0,0,0,.16), 0 1px 2px rgba(0,0,0,.14)",
-    "panel": "0 12px 26px rgba(0,0,0,.26), 0 3px 8px rgba(0,0,0,.16)",
-    "frame": "0 12px 30px rgba(0,0,0,.34), 0 3px 10px rgba(0,0,0,.20)",
-    "tab_bar": "0 -8px 22px rgba(0,0,0,.18)",
-    "mini": "0 4px 10px rgba(0,0,0,.15), 0 1px 3px rgba(0,0,0,.10)"
+  "shadow_depth": 50,
+  "shadow_depth_meaning": {
+    "0": "flat / no visual lift",
+    "50": "normal clean app depth",
+    "75": "stronger but still natural depth",
+    "100": "maximum clean depth"
   },
   "scope": {
     "route_guardian": true,
@@ -28,7 +24,8 @@
     "open_world": true,
     "bug_memory": true,
     "nested_same_origin_frames": true,
-    "native_shadow_depth": true
+    "native_shadow_depth": true,
+    "shadow_depth_slider": true
   },
-  "fallback_rule": "If this file cannot be fetched or parsed, use localStorage keys pmp_single_colors_v6 / pmp_single_colors_v5 and pmp_readability_layer_v6 as fallback only."
+  "fallback_rule": "If this file cannot be fetched or parsed, use localStorage keys pmp_single_colors_v6 / pmp_single_colors_v5 and pmp_readability_layer_v6 as fallback. Shadow depth uses localStorage key pmp_shadow_depth_v1 when present, otherwise this profile's shadow_depth."
 }
