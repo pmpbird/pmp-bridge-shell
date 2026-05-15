@@ -1,7 +1,7 @@
 {
   "type": "PMP_NATIVE_VISUAL_PROFILE",
-  "version": "1.5.0-shadow-depth-slider-ready",
-  "updated_at": "2026-05-15T09:55:00.000Z",
+  "version": "1.6.0-visible-shadow-depth-default",
+  "updated_at": "2026-05-15T10:03:00.000Z",
   "source_rule": "Canonical app-owned visual profile. Native contrast bridge must prefer this file for colors/readability and use local saved settings only as fallback. Shadow depth is a separate visual-depth setting and may be locally adjusted by the Shadow Depth slider.",
   "colors": {
     "accent": "#b1d4ff",
@@ -10,7 +10,7 @@
     "line": "#000000"
   },
   "readability": 79,
-  "shadow_depth": 50,
+  "shadow_depth": 75,
   "shadow_depth_meaning": {
     "0": "flat / no visual lift",
     "50": "normal clean app depth",
