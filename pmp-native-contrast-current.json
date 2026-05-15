@@ -1,7 +1,7 @@
 {
   "type": "PMP_NATIVE_CONTRAST_PROFILE",
-  "version": "1.0.0",
-  "updated_at": "2026-05-15T09:18:00.000Z",
+  "version": "1.1.0-shadow-depth",
+  "updated_at": "2026-05-15T09:24:00.000Z",
   "source_rule": "Canonical app-owned contrast profile. Native contrast bridge must prefer this file everywhere and use local saved settings only as fallback.",
   "colors": {
     "accent": "#b1d4ff",
@@ -10,13 +10,24 @@
     "line": "#000000"
   },
   "readability": 79,
+  "shadows": {
+    "enabled": true,
+    "card": "0 14px 34px rgba(0,0,0,.24)",
+    "button": "0 7px 0 rgba(0,0,0,.24), 0 12px 20px rgba(0,0,0,.18)",
+    "button_pressed": "0 3px 0 rgba(0,0,0,.28), 0 7px 12px rgba(0,0,0,.16)",
+    "panel": "0 12px 28px rgba(0,0,0,.28)",
+    "frame": "0 8px 28px rgba(0,0,0,.44)",
+    "tab_bar": "0 -8px 24px rgba(0,0,0,.14)",
+    "mini": "0 3px 12px rgba(0,0,0,.18)"
+  },
   "scope": {
     "route_guardian": true,
     "resident": true,
     "current_inner": true,
     "open_world": true,
     "bug_memory": true,
-    "nested_same_origin_frames": true
+    "nested_same_origin_frames": true,
+    "native_shadow_depth": true
   },
   "fallback_rule": "If this file cannot be fetched or parsed, use localStorage keys pmp_single_colors_v6 / pmp_single_colors_v5 and pmp_readability_layer_v6 as fallback only."
 }
