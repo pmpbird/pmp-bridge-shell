@@ -24,6 +24,7 @@ iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#52b5df
 <script src="pmp-copy-lossless-diagnostic.js?fresh=rgcontrols-v3"></script>
 <script src="pmp-resident-work-fix.js?fresh=rgcontrols-v3"></script>
 <script src="pmp-control-room-cleanup-v1.js?fresh=rgcontrols-v3"></script>
+<script src="pmp-native-contrast-bridge-v1.js?fresh=rgcontrols-v3"></script>
 <script>
 const F=document.getElementById('app');
 function inside(){try{return{w:F.contentWindow,d:F.contentDocument||F.contentWindow.document}}catch(e){return{}}}
@@ -72,6 +73,7 @@ function patch(){
     w.automaticAppUpdate=function(){return goAction('appUpdate')};
   }
   installBridgeToggleFix(w,d);
+  if(window.PMPNativeContrastBridgeV1&&typeof window.PMPNativeContrastBridgeV1.apply==='function')window.PMPNativeContrastBridgeV1.apply();
   if(!d.documentElement.dataset.pmpRgControlsV3Delegate){
     d.documentElement.dataset.pmpRgControlsV3Delegate='1';
     d.addEventListener('click',function(e){
