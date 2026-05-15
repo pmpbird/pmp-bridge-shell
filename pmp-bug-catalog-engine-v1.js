@@ -1,4 +1,19 @@
 (function(){
+  function loadNativeContrastBridge(){
+    try{
+      if(window.PMPNativeContrastBridgeV1&&typeof window.PMPNativeContrastBridgeV1.start==='function'){
+        window.PMPNativeContrastBridgeV1.start();
+        return;
+      }
+      if(document.getElementById('pmp-native-contrast-bridge-v1-script'))return;
+      const s=document.createElement('script');
+      s.id='pmp-native-contrast-bridge-v1-script';
+      s.src='pmp-native-contrast-bridge-v1.js?fresh=bug-catalog-engine-contrast-v1';
+      s.async=false;
+      document.head.appendChild(s);
+    }catch(e){}
+  }
+  loadNativeContrastBridge();
   const CARDS_KEY='pmp_bug_cards_loaded_v1';
   const CATALOG_KEY='pmp_bug_catalog_live_v1';
   const META_KEY='pmp_bug_catalog_meta_v1';
@@ -79,5 +94,5 @@
   function saveCatalogFromText(text){const cards=parseCards(text); const catalog=buildCatalog(cards); localStorage.setItem(CARDS_KEY,JSON.stringify(cards)); localStorage.setItem(CATALOG_KEY,JSON.stringify(catalog)); localStorage.setItem(META_KEY,JSON.stringify({type:'PMP_BUG_CATALOG_LOAD_META',loaded_at:now(),card_count:cards.length,catalog_key:CATALOG_KEY,cards_key:CARDS_KEY})); return {cards,catalog};}
   function loadCatalog(){return safeJson(localStorage.getItem(CATALOG_KEY)||'')||buildCatalog([])}
   function clearCatalog(){localStorage.removeItem(CARDS_KEY); localStorage.removeItem(CATALOG_KEY); localStorage.removeItem(META_KEY)}
-  window.PMPBugCatalogEngine={CARDS_KEY,CATALOG_KEY,META_KEY,parseCards,normalizeBugCard,buildCatalog,saveCatalogFromText,loadCatalog,clearCatalog,kind,score};
+  window.PMPBugCatalogEngine={CARDS_KEY,CATALOG_KEY,META_KEY,parseCards,normalizeBugCard,buildCatalog,saveCatalogFromText,loadCatalog,clearCatalog,kind,score,loadNativeContrastBridge};
 })();
