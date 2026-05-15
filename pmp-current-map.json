@@ -2,11 +2,11 @@
   "type": "PMP_CURRENT_APP_MAP",
   "app_name": "PMP Current",
   "app_version": "PMP-CURRENT-1",
-  "updated_at": "2026-05-15T07:35:00.000Z",
+  "updated_at": "2026-05-15T07:52:00.000Z",
   "route_guardian_loader": {
     "path": "pmp-route-guardian-current-loader-v8.html",
-    "label": "PMP Current Route Guardian Loader v8 with native contrast",
-    "cache_key": "pmp-route-guardian-current-loader-v8-native-contrast-certified-bug-memory-route",
+    "label": "PMP Current Route Guardian Loader v8 with native contrast proof v2",
+    "cache_key": "pmp-route-guardian-current-loader-v8-native-contrast-proof-v2-20260515",
     "status": "current"
   },
   "current_app": {
