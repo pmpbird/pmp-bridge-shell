@@ -1,0 +1,22 @@
+{
+  "type": "PMP_NATIVE_CONTRAST_PROFILE",
+  "version": "1.0.0",
+  "updated_at": "2026-05-15T09:18:00.000Z",
+  "source_rule": "Canonical app-owned contrast profile. Native contrast bridge must prefer this file everywhere and use local saved settings only as fallback.",
+  "colors": {
+    "accent": "#b1d4ff",
+    "background": "#ffe2d6",
+    "card": "#ffffff",
+    "line": "#000000"
+  },
+  "readability": 79,
+  "scope": {
+    "route_guardian": true,
+    "resident": true,
+    "current_inner": true,
+    "open_world": true,
+    "bug_memory": true,
+    "nested_same_origin_frames": true
+  },
+  "fallback_rule": "If this file cannot be fetched or parsed, use localStorage keys pmp_single_colors_v6 / pmp_single_colors_v5 and pmp_readability_layer_v6 as fallback only."
+}
