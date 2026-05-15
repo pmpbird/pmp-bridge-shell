@@ -1,7 +1,7 @@
 {
   "type": "PMP_NATIVE_CONTRAST_PROFILE",
-  "version": "1.1.0-shadow-depth",
-  "updated_at": "2026-05-15T09:24:00.000Z",
+  "version": "1.2.0-strong-shadow-depth",
+  "updated_at": "2026-05-15T09:31:00.000Z",
   "source_rule": "Canonical app-owned contrast profile. Native contrast bridge must prefer this file everywhere and use local saved settings only as fallback.",
   "colors": {
     "accent": "#b1d4ff",
@@ -12,13 +12,14 @@
   "readability": 79,
   "shadows": {
     "enabled": true,
-    "card": "0 14px 34px rgba(0,0,0,.24)",
-    "button": "0 7px 0 rgba(0,0,0,.24), 0 12px 20px rgba(0,0,0,.18)",
-    "button_pressed": "0 3px 0 rgba(0,0,0,.28), 0 7px 12px rgba(0,0,0,.16)",
-    "panel": "0 12px 28px rgba(0,0,0,.28)",
-    "frame": "0 8px 28px rgba(0,0,0,.44)",
-    "tab_bar": "0 -8px 24px rgba(0,0,0,.14)",
-    "mini": "0 3px 12px rgba(0,0,0,.18)"
+    "strength": "visible",
+    "card": "0 18px 0 rgba(0,0,0,.18), 0 26px 44px rgba(0,0,0,.28)",
+    "button": "0 6px 0 rgba(0,0,0,.34), 0 12px 22px rgba(0,0,0,.22)",
+    "button_pressed": "0 2px 0 rgba(0,0,0,.42), 0 6px 12px rgba(0,0,0,.20)",
+    "panel": "0 16px 0 rgba(0,0,0,.16), 0 24px 38px rgba(0,0,0,.30)",
+    "frame": "0 10px 0 rgba(0,0,0,.18), 0 18px 36px rgba(0,0,0,.44)",
+    "tab_bar": "0 -6px 0 rgba(0,0,0,.10), 0 -14px 28px rgba(0,0,0,.18)",
+    "mini": "0 4px 0 rgba(0,0,0,.26), 0 8px 14px rgba(0,0,0,.18)"
   },
   "scope": {
     "route_guardian": true,
