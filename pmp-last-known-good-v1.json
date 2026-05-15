@@ -1,0 +1,58 @@
+{
+  "type": "PMP_ROUTE_GUARDIAN_LAST_KNOWN_GOOD",
+  "version": "1.0.0",
+  "recorded_at": "2026-05-15T05:39:00.000Z",
+  "source": "manual_snapshot_after_clean_v7_home_screen_pass",
+  "rule": "Last Known Good is advisory only. It must not auto-restore, auto-promote, archive, delete, or write app state.",
+  "permissions": {
+    "deletion_permission": false,
+    "archive_permission": false,
+    "auto_promotion_permission": false,
+    "route_guardian_writes_app_state": false
+  },
+  "last_known_good_route": {
+    "entry": "pmp-app-current.html",
+    "map": "pmp-current-map.json",
+    "loader": "pmp-route-guardian-current-loader-v7.html",
+    "certifier": "pmp-path-certifier-v7.js",
+    "current_inner": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+    "fallback_inner": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+    "world_hash": "#world",
+    "bug_memory": "bug-memory-current-clean-v1.html",
+    "resident": "pmp-resident-route-guardian-surface-v2.html",
+    "repo_index": "pmp-route-guardian-repo-index-v1.html"
+  },
+  "last_clean_pass_requirements": {
+    "route_guardian_pass": true,
+    "map_guardian_agreement": true,
+    "stale_shell_risk": false,
+    "active_files_ok": true,
+    "proof_receipts_ok": true,
+    "self_drift_ok": true,
+    "inner_support_listed_ok": true,
+    "inner_support_files_ok": true,
+    "permission_integrity_ok": true,
+    "open_world_handoff_ok": true,
+    "route_confidence": "HIGH",
+    "blocked_reasons_count": 0
+  },
+  "open_world_handoff": {
+    "target_file": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+    "expected_target": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+    "hash": "#world",
+    "cache_key": "pmp-current-cleanbug-rgcontrols-v3",
+    "target_matches_map": true,
+    "target_matches_expected": true,
+    "hash_ok": true,
+    "cache_key_ok": true,
+    "inner_loads_base_app": true,
+    "bug_memory_clean_route": true
+  },
+  "proof_receipts": [
+    "control-pack/receipts/pmp-final-installed-stable-pass-2026-05-13.md",
+    "control-pack/receipts/pmp-control-room-route-guardian-cleanup-pass-2026-05-13.md",
+    "control-pack/decisions/pmp-route-guardian-repo-index-routing-only-decision-2026-05-13.md",
+    "control-pack/receipts/pmp-route-guardian-repo-index-v104-pass-2026-05-13.md"
+  ],
+  "operator_message": "If current route blocks, compare it against this last known good route. Do not auto-repair. Copy the blocked report and this manifest into Resident or ChatGPT for diagnosis."
+}
