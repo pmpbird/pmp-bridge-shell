@@ -2,11 +2,11 @@
   "type": "PMP_CURRENT_APP_MAP",
   "app_name": "PMP Current",
   "app_version": "PMP-CURRENT-1",
-  "updated_at": "2026-05-15T08:28:00.000Z",
+  "updated_at": "2026-05-15T08:35:00.000Z",
   "route_guardian_loader": {
-    "path": "pmp-route-guardian-current-loader-v8.html",
-    "label": "PMP Current Route Guardian v9 compat on reachable v8 path",
-    "cache_key": "pmp-route-guardian-v9-compat-on-v8-path",
+    "path": "pmp-route-guardian-current-loader-v9.html",
+    "label": "PMP Current Route Guardian Loader v9 with native contrast proof v2",
+    "cache_key": "pmp-route-guardian-current-loader-v9-real-root-published",
     "status": "current"
   },
   "current_app": {
@@ -17,7 +17,7 @@
   },
   "user_facing_rule": "Only show PMP Current / PMP-CURRENT-1 as the app version.",
   "home_screen_rule": "Install pmp-app-current.html once. It is a stable map-driven door and should change as little as possible.",
-  "update_rule": "Stable door pmp-app-current.html loads pmp-route-guardian-current-loader-v8.html. That reachable path now runs v9 compatibility logic, native contrast v2 proof, and certified Open World handoff. Current inner app remains pmp-current-inner-cleanbug-rgcontrols-v3.html and keeps certified Bug Memory route bug-memory-current-clean-v1.html.",
+  "update_rule": "Stable door pmp-app-current.html loads route_guardian_loader.path pmp-route-guardian-current-loader-v9.html from this map. This is the real v9 route, not v8 compatibility. Current inner app remains pmp-current-inner-cleanbug-rgcontrols-v3.html and keeps certified Bug Memory route bug-memory-current-clean-v1.html while loading native contrast support.",
   "fallback_app": {
     "path": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
     "cache_key": "fallback-cleanbug-rgcontrols-v3"
