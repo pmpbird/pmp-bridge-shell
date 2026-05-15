@@ -10,11 +10,34 @@ function hx(h){h=String(h||'#000').replace('#','');if(h.length===3)h=h.split('')
 function lum(h){let c=hx(h);let a=[c.r,c.g,c.b].map(v=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*a[0]+.7152*a[1]+.0722*a[2]}
 function textFor(bg){return lum(bg)>.48?'#07101c':'#f8fbff'}
 function cssVars(){let c=colors(),r=readLevel(),strong=r>=75,max=r>=90;let text=textFor(c.card),buttonText=textFor(c.accent),muted=text==='#07101c'?'#234a5d':'#d7eef7';return`:root{--a:${c.accent};--bg:${c.background};--floor:${c.background};--card:${c.card};--line:${c.line};--text:${text};--muted:${muted};--panel:#172234;--input:#0c141e;--buttonText:${buttonText};--shadow:0 ${strong?14:12}px ${max?34:28}px #000${max?4:2};--tabBg:#0f1620;--noteBg:#123024;--borderWidth:${max?3:strong?2:2}px;--buttonBorder:${strong?1:0}px;--miniShadow:0 3px 12px #0002}`}
-function baseCss(){return`${cssVars()}html,body{background:var(--floor)!important;color:var(--text)!important}body:before{background:var(--floor)!important}.card,#card{background:var(--card)!important;border-color:var(--line)!important;color:var(--text)!important}.badge,.tiny,button:not(.dark),.float,.big{background:var(--a)!important;color:var(--buttonText)!important;border-color:var(--line)!important}.dark,.mini,.panel,.dock,.drawer,.drop{background:var(--panel)!important;color:#eef4fb!important;border-color:var(--line)!important}.note,.reply{background:var(--noteBg)!important;color:#d8ffe2!important;border-color:var(--line)!important}.warn{background:var(--panel)!important;color:#eef4fb!important;border-color:var(--line)!important}input,textarea,select,pre{background:var(--input)!important;color:#eef4fb!important;border-color:var(--line)!important}.pill.ok,.ok{background:#123024!important;color:#d8ffe2!important}.pill.bad,.bad,.diagnostic,.block{background:#351414!important;color:#ffd1d1!important;border-color:#ff9a9a!important}.tabs{background:var(--tabBg)!important;border-color:var(--line)!important}.tab.on{color:var(--a)!important}#secretPanel{background:var(--card)!important;border-color:var(--line)!important;color:var(--text)!important}#secretPanel h1,#secretPanel h2{color:var(--text)!important}#secretPanel .warn{background:var(--panel)!important;color:#eef4fb!important;border-color:var(--line)!important}#secretPanel .mini{background:var(--panel)!important;color:#eef4fb!important;border-color:var(--line)!important}#secretOut{background:var(--noteBg)!important;color:#d8ffe2!important;border-color:var(--line)!important}`}
+function baseCss(){return`${cssVars()}
+html,body,#gate{background:var(--floor)!important;color:var(--text)!important}
+body:before{background:var(--floor)!important}
+.card,#card{background:var(--card)!important;border-color:var(--line)!important;color:var(--text)!important}
+#card{box-shadow:var(--shadow)!important}
+.badge,.tiny,.float,.big,button:not(.dark):not(.tab):not(.mini){background:var(--a)!important;color:var(--buttonText)!important;border-color:var(--line)!important}
+.dark,.mini,.panel,.dock,.drawer,.drop{background:var(--panel)!important;color:#eef4fb!important;border-color:var(--line)!important}
+#colorPanel{background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important;color:var(--text)!important}
+#colorPanel .mini{background:var(--a)!important;color:var(--buttonText)!important;border-color:var(--line)!important}
+#colorBody.panel,#colorBody{background:var(--card)!important;color:var(--text)!important;border-color:var(--line)!important}
+.note,.reply,.status{background:var(--noteBg)!important;color:#d8ffe2!important;border-color:var(--line)!important}
+.warn{background:var(--panel)!important;color:#eef4fb!important;border-color:var(--line)!important}
+input,textarea,select,pre{background:var(--input)!important;color:#eef4fb!important;border-color:var(--line)!important}
+.chip{background:var(--input)!important;color:#d8ffe2!important;border-color:var(--line)!important}
+.pill.ok,.ok{background:#123024!important;color:#d8ffe2!important}
+.pill.bad,.bad,.diagnostic,.block{background:#351414!important;color:#ffd1d1!important;border-color:#ff9a9a!important}
+.tabs{background:var(--tabBg)!important;border-top:var(--borderWidth,1px) solid var(--line)!important;border-left:0!important;border-right:0!important;border-bottom:0!important}
+.tab{background:transparent!important;border:0!important;box-shadow:none!important;outline:0!important}
+.tab.on{color:var(--a)!important;text-shadow:none!important}
+#secretPanel{background:var(--card)!important;border-color:var(--line)!important;color:var(--text)!important}
+#secretPanel h1,#secretPanel h2{color:var(--text)!important}
+#secretPanel .warn{background:var(--panel)!important;color:#eef4fb!important;border-color:var(--line)!important}
+#secretPanel .mini{background:var(--panel)!important;color:#eef4fb!important;border-color:var(--line)!important}
+#secretOut{background:var(--noteBg)!important;color:#d8ffe2!important;border-color:var(--line)!important}`}
 function applyDoc(doc,label){try{if(!doc||!doc.head)return false;let id='pmp-native-contrast-bridge-v1-style';let st=doc.getElementById(id);if(!st){st=doc.createElement('style');st.id=id;doc.head.appendChild(st)}st.textContent=baseCss();let m=doc.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',colors().background);doc.documentElement.dataset.pmpNativeContrastBridgeV1=label||'applied';return true}catch(e){return false}}
 function applyChildFrames(doc){let ok=0;try{Array.from((doc||document).querySelectorAll('iframe')).forEach(f=>{try{if(applyDoc(f.contentDocument||f.contentWindow.document,'child-frame'))ok++}catch(e){}})}catch(e){}return ok}
-function apply(){let main=applyDoc(document,'main');let frames=applyChildFrames(document);return{type:'PMP_NATIVE_CONTRAST_BRIDGE_REPORT',version:'1.0.0',built_at:new Date().toISOString(),main_applied:main,child_frames_applied:frames,readability:readLevel(),colors:colors(),rule:'Read-only visual bridge. Does not change route, map, cache, storage, or app state except reading existing local color settings.'}}
-function start(){apply();setTimeout(apply,300);setTimeout(apply,1200);setInterval(apply,2500)}
+function apply(){let main=applyDoc(document,'main');let frames=applyChildFrames(document);return{type:'PMP_NATIVE_CONTRAST_BRIDGE_REPORT',version:'1.0.1-targeted-visuals',built_at:new Date().toISOString(),main_applied:main,child_frames_applied:frames,readability:readLevel(),colors:colors(),rule:'Read-only visual bridge. Does not change route, map, cache, storage, or app state except reading existing local color settings.'}}
+function start(){apply();setTimeout(apply,150);setTimeout(apply,500);setTimeout(apply,1200);setInterval(apply,2500)}
 return{apply,start,colors,readLevel};
 })();
 try{window.PMPNativeContrastBridgeV1.start()}catch(e){}
