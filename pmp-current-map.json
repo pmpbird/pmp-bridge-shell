@@ -2,22 +2,22 @@
   "type": "PMP_CURRENT_APP_MAP",
   "app_name": "PMP Current",
   "app_version": "PMP-CURRENT-1",
-  "updated_at": "2026-05-15T06:24:00.000Z",
+  "updated_at": "2026-05-15T07:35:00.000Z",
   "route_guardian_loader": {
     "path": "pmp-route-guardian-current-loader-v8.html",
-    "label": "PMP Current Route Guardian Loader v8 with native contrast and Open World handoff Path Certifier",
-    "cache_key": "pmp-route-guardian-current-loader-v8-native-contrast",
+    "label": "PMP Current Route Guardian Loader v8 with native contrast",
+    "cache_key": "pmp-route-guardian-current-loader-v8-native-contrast-certified-bug-memory-route",
     "status": "current"
   },
   "current_app": {
     "path": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
-    "label": "PMP Current Clean Bug Memory + Route Guardian Controls v3 Clean Room",
-    "cache_key": "pmp-current-cleanbug-rgcontrols-v3-native-contrast-bug-memory-v2",
+    "label": "PMP Current Clean Bug Memory plus Route Guardian Controls v3 Clean Room",
+    "cache_key": "pmp-current-cleanbug-rgcontrols-v3-native-contrast-certified-bug-memory-route",
     "status": "current"
   },
   "user_facing_rule": "Only show PMP Current / PMP-CURRENT-1 as the app version.",
   "home_screen_rule": "Install pmp-app-current.html once. It is a stable map-driven door and should change as little as possible.",
-  "update_rule": "Stable door pmp-app-current.html loads route_guardian_loader.path pmp-route-guardian-current-loader-v8.html from this map. pmp-route-guardian-current-loader-v8.html handles Resident, Report dropdown, Repo Index dropdown, route check, Path Certifier, active-file checks, proof-receipt checks, self-drift checks, support-file checks, permission-integrity checks, Open World handoff checks, native contrast, and Open World. Current inner app remains pmp-current-inner-cleanbug-rgcontrols-v3.html and routes Bug Memory through bug-memory-current-clean-v2.html for native contrast.",
+  "update_rule": "Stable door pmp-app-current.html loads route_guardian_loader.path pmp-route-guardian-current-loader-v8.html from this map. Current inner app remains pmp-current-inner-cleanbug-rgcontrols-v3.html and keeps certified Bug Memory route bug-memory-current-clean-v1.html while loading native contrast support.",
   "fallback_app": {
     "path": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
     "cache_key": "fallback-cleanbug-rgcontrols-v3"
