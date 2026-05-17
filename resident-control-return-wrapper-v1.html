@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Resident Intelligence</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#ffe2d6;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#07101c}.top{position:fixed;left:0;right:0;top:0;z-index:10;padding:calc(8px + env(safe-area-inset-top)) 10px 8px;background:#ffe2d6;display:grid;grid-template-columns:1fr 1fr;gap:8px;box-shadow:0 8px 22px rgba(0,0,0,.16)}button{border:2px solid #07101c;border-radius:16px;background:#b1d4ff;color:#07101c;font:inherit;font-weight:950;padding:12px;box-shadow:0 8px 18px rgba(0,0,0,.18)}iframe{position:fixed;left:0;right:0;bottom:0;top:calc(62px + env(safe-area-inset-top));width:100%;height:calc(100% - 62px - env(safe-area-inset-top));border:0;background:#ffe2d6}.label{position:fixed;left:0;right:0;top:calc(54px + env(safe-area-inset-top));z-index:9;text-align:center;font-weight:950;font-size:12px;pointer-events:none;color:#07101c}
+</style>
+</head>
+<body>
+<div class="top"><button onclick="backControl()">← Back to Control Room</button><button onclick="reloadResident()">Reload Resident</button></div>
+<div class="label">Resident Intelligence</div>
+<iframe id="residentFrame" title="Resident Intelligence"></iframe>
+<script>
+function backControl(){location.href='pmp-home-single-v6.html#control'}
+function reloadResident(){residentFrame.src='resident.html?from=deep-resident-wrapper&fresh='+Date.now()}
+reloadResident();
+</script>
+</body>
+</html>
