@@ -3,60 +3,91 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#52b5df">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#f3ded4">
 <title>Save Bug Memory</title>
 <script>
-const COLOR_KEY='pmp_single_colors_v6',PREV_KEY='pmp_single_colors_v5',READ_KEY='pmp_readability_layer_v6';
-const DEFAULT_COLORS={accent:'#a1fcfd',background:'#52b5df',card:'#46a9d3',line:'#ffffff'};
+const COLOR_KEY='pmp_single_colors_v6',PREV_KEY='pmp_single_colors_v5';
+const DEFAULT_COLORS={accent:'#b1d4ff',background:'#ffe2d6',card:'#ffffff',line:'#07101c'};
 function jj(k){try{return JSON.parse(localStorage.getItem(k)||'{}')}catch(e){return{}}}
-function activeColors(){return{...DEFAULT_COLORS,...jj(PREV_KEY),...jj(COLOR_KEY)}}
-function bootTheme(){let c=activeColors();let s=document.createElement('style');s.id='nativePmpTheme';s.textContent=':root{--a:'+c.accent+';--bg:'+c.background+';--floor:'+c.background+';--card:'+c.card+';--line:'+c.line+';--text:#101827;--muted:#234a5d;--panel:#172234;--input:#0c141e;--buttonText:#101827;--shadow:0 12px 28px #0002;--tabBg:#0f1620;--noteBg:#123024}html,body{background:'+c.background+'!important}';document.head.appendChild(s);document.querySelector('meta[name="theme-color"]').setAttribute('content',c.background)}
+function activeColors(){let c={...DEFAULT_COLORS,...jj(PREV_KEY),...jj(COLOR_KEY)};if(String(c.background).toLowerCase()==='#52b5df')c.background=DEFAULT_COLORS.background;return c}
+function bootTheme(){let c=activeColors();let s=document.createElement('style');s.id='nativePmpTheme';s.textContent=':root{--a:'+c.accent+';--bg:'+c.background+';--floor:'+c.background+';--card:'+c.card+';--line:'+c.line+';--text:#07101c;--muted:#234a5d;--panel:#172234;--input:#0c141e;--buttonText:#07101c;--shadow:0 12px 28px #0002;--noteBg:#123024}html,body{background:'+c.background+'!important}';document.head.appendChild(s);let m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',c.background)}
 bootTheme();
 </script>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;min-height:100%;background:var(--floor)!important;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;touch-action:manipulation;-webkit-text-size-adjust:100%;overscroll-behavior:none}
-body:before{content:"";position:fixed;inset:0;background:var(--floor);z-index:-10}
-body{padding:calc(env(safe-area-inset-top) + 70px) 16px calc(env(safe-area-inset-bottom) + 34px)}
-.wrap{max-width:900px;margin:auto;background:var(--floor);min-height:100vh}
-.card{background:var(--card);color:var(--text);border:var(--borderWidth,2px) solid var(--line);border-radius:28px;padding:22px;margin:18px 0;box-shadow:var(--shadow)}
-h1{font-size:40px;margin:12px 0;color:var(--text)}
-h2{color:var(--text);margin:0 0 14px;font-size:28px}.sub{font-size:20px;font-weight:850;opacity:.96;line-height:1.3;color:var(--muted);margin:0 0 18px}
-textarea{width:100%;background:var(--input);color:#eef4fb;border:1px solid var(--line);border-radius:18px;padding:14px;font-size:15px;min-height:260px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
-button{width:100%;border:var(--buttonBorder,0px) solid var(--line);border-radius:22px;background:var(--a);color:var(--buttonText);font-weight:950;font-size:24px;padding:18px;min-height:78px;margin-top:14px;text-decoration:none;text-align:center;display:block;box-shadow:var(--shadow)}
-.back{display:inline-block;width:auto;min-height:0;border:var(--borderWidth,2px) solid var(--line);border-radius:999px;background:var(--a);color:var(--buttonText);font-weight:950;font-size:15px;padding:9px 14px;margin:0 0 18px;text-decoration:none;text-align:center;box-shadow:var(--shadow)}
-.status{white-space:pre-wrap;background:var(--noteBg);border:var(--borderWidth,2px) solid var(--line);border-radius:20px;padding:16px;color:#d7ffe8;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;overflow:auto;max-height:360px;margin-top:14px}.warn{background:#3b2a0c;color:#ffe8b3}.bad{background:#4a1212;color:#ffd3d3}.ghost{position:absolute;width:1px;height:1px;opacity:.01;pointer-events:none;left:-10px;top:-10px;border:0}.float{position:fixed;top:calc(10px + env(safe-area-inset-top));z-index:30;border:var(--borderWidth,2px) solid var(--line);background:var(--a);color:var(--buttonText);border-radius:999px;padding:8px 12px;font-weight:950;font-size:12px;box-shadow:var(--shadow);width:auto;min-height:auto;margin:0}.left{left:10px}.right{right:10px}.drawer{position:fixed;right:10px;left:10px;top:calc(54px + env(safe-area-inset-top));z-index:40;display:none;background:var(--panel);color:#eef4fb;border:2px solid var(--a);border-radius:20px;padding:12px;box-shadow:0 8px 28px #0007;max-height:78vh;overflow:auto}.drawer h2,.drawer p{color:#eef4fb}.mini{border:1px solid var(--line);background:var(--panel);color:#eef4fb;border-radius:14px;padding:11px;font:inherit;font-weight:950;width:100%;margin-top:7px;min-height:44px;font-size:16px;box-shadow:var(--miniShadow,0 3px 12px #0001)}.reply{background:var(--noteBg);border:var(--borderWidth,2px) solid var(--line);color:#d8ffe2;border-radius:18px;padding:12px;margin-top:8px;white-space:pre-wrap;font-size:15px;line-height:1.35}
+html,body{margin:0;min-height:100%;background:var(--floor)!important;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;touch-action:manipulation;-webkit-text-size-adjust:100%;overscroll-behavior:none}
+body:before{content:"";position:fixed;inset:0;background:var(--floor);z-index:-10}.wrap{max-width:820px;margin:auto;padding:calc(58px + env(safe-area-inset-top)) 14px calc(44px + env(safe-area-inset-bottom));min-height:100vh}.card{background:var(--card);border:2px solid var(--line);border-radius:28px;padding:20px;margin:0 0 16px;box-shadow:var(--shadow)}h1{font-size:38px;margin:0 0 10px;color:var(--text)}h2{font-size:25px;margin:0 0 10px;color:var(--text)}.sub{font-size:19px;font-weight:900;line-height:1.32;color:var(--muted);margin:0 0 16px}.big{display:grid;grid-template-columns:44px 1fr 28px;align-items:center;gap:12px;width:100%;border:2px solid var(--line);border-radius:22px;background:var(--a);color:var(--buttonText);font:inherit;font-weight:950;font-size:21px;padding:16px;margin:10px 0;text-align:left;box-shadow:var(--shadow)}.big small{display:block;font-size:14px;font-weight:850;line-height:1.15}.icon{font-size:25px;text-align:center}.chev{font-size:34px;text-align:right}.mini{border:2px solid var(--line);background:var(--a);color:var(--buttonText);border-radius:16px;padding:12px;font:inherit;font-weight:950;width:100%;margin-top:8px;box-shadow:var(--shadow)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}textarea{width:100%;border:2px solid var(--line);border-radius:18px;background:var(--input);color:#eef4fb;padding:13px;font:inherit;margin-top:8px;min-height:220px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}.status{white-space:pre-wrap;background:var(--noteBg);border:2px solid var(--line);border-radius:20px;padding:14px;color:#d8ffe2;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;overflow:auto;max-height:360px;margin-top:12px}.warn{background:#3b2a0c;color:#ffe8b3}.bad{background:#4a1212;color:#ffd3d3}.float{position:fixed;top:calc(10px + env(safe-area-inset-top));z-index:30;border:2px solid var(--line);background:var(--a);color:var(--buttonText);border-radius:999px;padding:8px 12px;font-weight:950;font-size:12px;box-shadow:var(--shadow);width:auto;min-height:auto;margin:0}.left{left:10px}.right{right:10px}.drawer{position:fixed;right:10px;left:10px;top:calc(54px + env(safe-area-inset-top));z-index:40;display:none;background:var(--panel);color:#eef4fb;border:2px solid var(--a);border-radius:20px;padding:12px;box-shadow:0 8px 28px #0007;max-height:78vh;overflow:auto}.drawer h2,.drawer p{color:#eef4fb}.drawer textarea{min-height:110px}.reply{background:var(--noteBg);border:2px solid var(--line);color:#d8ffe2;border-radius:18px;padding:12px;margin-top:8px;white-space:pre-wrap;font-size:15px;line-height:1.35}@media(max-width:700px){.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <button class="float left" onclick="toggleDrawer('launcher')">Launcher</button>
 <button class="float right" onclick="toggleDrawer('resident')">Resident</button>
-<div id="launcher" class="drawer"><h2>Launcher</h2><button class="mini" onclick="location.href='bug-memory-current-clean-v1.html?fresh=back-from-save-bug-memory-native-card'">Back to Bug Memory</button><button class="mini" onclick="toggleDrawer('launcher')">Close</button></div>
+<div id="launcher" class="drawer"><h2>Launcher</h2><button class="mini" onclick="backBugMemory()">Back to Bug Memory</button><button class="mini" onclick="location.reload()">Reload</button><button class="mini" onclick="toggleDrawer('launcher')">Close</button></div>
 <div id="resident" class="drawer"><h2>Resident</h2><p>Save Bug Memory tool ready.</p><textarea id="ask" placeholder="Tell Resident what to do next."></textarea><button class="mini" onclick="toggleDrawer('resident')">Close</button><div id="residentReply" class="reply">Ready inside Save Bug Memory.</div></div>
 <div class="wrap">
-  <a class="back" href="bug-memory-current-clean-v1.html?fresh=back-from-save-bug-memory-native-card">← Back to Bug Memory</a>
-  <h1>Save Bug Memory</h1>
-  <div class="sub">One clean path: paste the bug, prepare the memory pack, then save it to Notes with your Shortcut.</div>
   <section class="card">
-    <h2>Paste bug JSON</h2>
-    <textarea id="bugJson" placeholder="Paste one bug JSON here."></textarea>
-    <button id="mainButton" onclick="mainTap()">Prepare Bug Memory</button>
-    <div id="status" class="status warn">Paste the bug JSON, then tap Prepare Bug Memory.</div>
+    <button class="mini" onclick="backBugMemory()">← Back to Bug Memory</button>
+    <h1 style="margin-top:16px">Save Bug Memory</h1>
+    <p class="sub">Paste one bug JSON or raw Bug Card. Prepare it, then save it to Notes through your private Shortcut.</p>
+    <h2>Bug card / bug JSON</h2>
+    <textarea id="bugJson" placeholder="Paste one bug JSON or raw Bug Card here."></textarea>
+    <button id="mainButton" class="big" onclick="mainTap()"><span class="icon">🧠</span><span>Prepare Bug Memory<small>build private memory packet</small></span><span class="chev">›</span></button>
+    <div id="status" class="status warn">Save Bug Memory page loaded. Paste the bug, then tap Prepare Bug Memory.</div>
   </section>
 </div>
-<iframe id="worker" class="ghost" src="resident-notes-catalog-v3.html?fresh=one-button-worker-native-card-v1"></iframe>
 <script>
 const SHORTCUT_URL='shortcuts://run-shortcut?name='+encodeURIComponent('PMP Save Private Memory')+'&input=clipboard';
-let prepared=false;
+let preparedText='';
+function now(){return new Date().toISOString()}
 function toggleDrawer(id){let el=document.getElementById(id);el.style.display=el.style.display==='block'?'none':'block'}
 function setStatus(x,kind){const s=document.getElementById('status');s.className='status '+(kind||'');s.textContent=typeof x==='string'?x:JSON.stringify(x,null,2)}
-function worker(){const f=document.getElementById('worker');try{return{w:f.contentWindow,d:f.contentDocument||f.contentWindow.document}}catch(e){return{}}}
-function copyFallback(text){try{const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.focus();ta.select();document.execCommand('copy');ta.remove();return true}catch(e){return false}}
-function builtText(){const o=worker(),d=o.d;if(!d)return'';const p=d.getElementById('prompt');const c=d.getElementById('chunk');return ((p&&p.value)||'').trim()||((c&&c.value)||'').trim()}
-function openShortcut(){try{window.top.location.href=SHORTCUT_URL;return true}catch(e){}try{parent.location.href=SHORTCUT_URL;return true}catch(e){}try{window.location.href=SHORTCUT_URL;return true}catch(e){}return false}
-async function prepare(){const raw=document.getElementById('bugJson').value.trim();if(!raw){setStatus('Paste the bug JSON first.','bad');return}try{JSON.parse(raw)}catch(e){setStatus('The pasted text is not valid JSON yet.','bad');return}const o=worker(),w=o.w,d=o.d;if(!w||!d||typeof w.buildFullPackAndScan!=='function'){setStatus('Save Bug Memory engine is still loading. Wait one second and tap again.','warn');return}setStatus('Preparing Bug Memory pack...','warn');try{if(typeof w.clearAll==='function')w.clearAll();const box=d.getElementById('pasteBug');if(box)box.value=raw;if(typeof w.addPastedBug==='function')w.addPastedBug();await w.buildFullPackAndScan();const built=builtText();if(!built){setStatus('The pack built, but no catalog text was found yet. Tap Prepare Bug Memory again.','bad');return}prepared=true;document.getElementById('mainButton').textContent='Save Bug Memory to Notes';setStatus({type:'PMP_SAVE_BUG_MEMORY_READY',message:'Bug Memory is prepared. Tap Save Bug Memory to Notes.',catalog_preview:built.slice(0,900)},'')}catch(e){setStatus('Prepare failed: '+String(e&&e.message||e),'bad')}}
-function save(){const built=builtText();if(!built){prepared=false;document.getElementById('mainButton').textContent='Prepare Bug Memory';setStatus('No prepared catalog found. Tap Prepare Bug Memory first.','bad');return}copyFallback(built);if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(built).catch(()=>{});setStatus('Copied Bug Memory catalog to clipboard. Opening PMP Save Private Memory Shortcut.','warn');openShortcut()}
-function mainTap(){prepared?save():prepare()}
+function backBugMemory(){location.href='bug-memory-current-clean-v1.html?fresh=back-from-save-bug-memory-'+Date.now()}
+function parseMaybeJson(raw){try{return JSON.parse(raw)}catch(e){return null}}
+function makePacket(raw){
+  const json=parseMaybeJson(raw);
+  const stamp=now();
+  const name=json&&(json.name||json.title||json.bug_summary||json.short_summary)||'Untitled Bug Memory Card';
+  return {
+    type:'PMP_PRIVATE_BUG_MEMORY_NOTE_PACKET',
+    version:'1.0.0-visible-safe-page',
+    built_at:stamp,
+    privacy:'Private Bug Memory belongs in Apple Notes/private storage. Do not upload private bug contents to public GitHub unless you choose to.',
+    note_target:'PMP Private Bug Memory',
+    source:'Save Bug Memory current visible safe page',
+    card:{
+      id:json&&(json.id||json.bug_id)||('BUG-MEMORY-'+stamp.replace(/[:.]/g,'-')),
+      name:String(name),
+      raw_format:json?'json':'text',
+      raw_text:raw,
+      parsed_json:json||null
+    },
+    load_memory_instruction:'Later, copy raw Bug Cards from Notes and use Load Memory inside Bug Memory to build the live catalog.'
+  }
+}
+function fallbackCopy(text){try{const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.focus();ta.select();document.execCommand('copy');ta.remove();return true}catch(e){return false}}
+async function copyText(text){fallbackCopy(text);if(navigator.clipboard&&navigator.clipboard.writeText){try{await navigator.clipboard.writeText(text)}catch(e){}}return true}
+function setPreparedButton(){document.getElementById('mainButton').innerHTML='<span class="icon">📝</span><span>Save Bug Memory to Notes<small>copy packet and open Shortcut</small></span><span class="chev">›</span>'}
+function setPrepareButton(){document.getElementById('mainButton').innerHTML='<span class="icon">🧠</span><span>Prepare Bug Memory<small>build private memory packet</small></span><span class="chev">›</span>'}
+function prepare(){
+  const raw=document.getElementById('bugJson').value.trim();
+  if(!raw){setStatus('Paste the bug JSON or raw Bug Card first.','bad');return false}
+  const packet=makePacket(raw);
+  preparedText=JSON.stringify(packet,null,2);
+  setPreparedButton();
+  setStatus({type:'PMP_SAVE_BUG_MEMORY_READY',message:'Bug Memory packet prepared. Tap Save Bug Memory to Notes.',card_name:packet.card.name,raw_format:packet.card.raw_format,shortcut:'PMP Save Private Memory'},'');
+  return false;
+}
+async function save(){
+  if(!preparedText){prepare();return false}
+  await copyText(preparedText);
+  setStatus('Copied private Bug Memory packet to clipboard. Opening PMP Save Private Memory Shortcut.','warn');
+  try{window.top.location.href=SHORTCUT_URL;return false}catch(e){}
+  try{location.href=SHORTCUT_URL;return false}catch(e){}
+  return false;
+}
+function mainTap(){return preparedText?save():prepare()}
+window.addEventListener('pageshow',()=>{setTimeout(()=>setStatus(document.getElementById('status').textContent||'Save Bug Memory ready.','warn'),50)});
 </script>
 </body>
 </html>
