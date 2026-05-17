@@ -1,69 +1,16 @@
 window.PMPRouteHealthSummaryV1=(function(){
-function loadScriptOnce(id,src,onload){
-  try{
-    if(document.getElementById(id))return {status:'LOADING_OR_LOADED',src};
-    const s=document.createElement('script');
-    s.id=id;s.src=src+'?fresh='+Date.now();
-    if(onload)s.onload=onload;
-    document.head.appendChild(s);
-    return {status:'LOADING',src};
-  }catch(e){return {status:'ERROR',src,error:String(e&&e.message||e)}}
-}
-function loadShadowSlider(){
-  try{
-    if(window.PMPShadowDepthSliderV1){try{window.PMPShadowDepthSliderV1.start()}catch(e){};return {status:'SHADOW_SLIDER_ACTIVE',helper:'pmp-shadow-depth-slider-v1.js',already_loaded:true};}
-    return loadScriptOnce('pmp-shadow-depth-slider-v1-script','pmp-shadow-depth-slider-v1.js',function(){try{if(window.PMPShadowDepthSliderV1)window.PMPShadowDepthSliderV1.start()}catch(e){}});
-  }catch(e){return {status:'SHADOW_SLIDER_ERROR',helper:'pmp-shadow-depth-slider-v1.js',error:String(e&&e.message||e)};}
-}
-function loadVisualCleanup(){
-  try{
-    if(window.PMPVisualCleanupV1){try{window.PMPVisualCleanupV1.start()}catch(e){};return {status:'VISUAL_CLEANUP_ACTIVE',helper:'pmp-visual-cleanup-v1.js',already_loaded:true};}
-    return loadScriptOnce('pmp-visual-cleanup-v1-script','pmp-visual-cleanup-v1.js',function(){try{if(window.PMPVisualCleanupV1)window.PMPVisualCleanupV1.start()}catch(e){}});
-  }catch(e){return {status:'VISUAL_CLEANUP_ERROR',helper:'pmp-visual-cleanup-v1.js',error:String(e&&e.message||e)};}
-}
-function shadowSliderReport(){
-  try{loadShadowSlider();if(window.PMPShadowDepthSliderV1&&typeof window.PMPShadowDepthSliderV1.apply==='function')return window.PMPShadowDepthSliderV1.apply();}catch(e){return {type:'PMP_SHADOW_DEPTH_SLIDER_REPORT',version:'error',error:String(e&&e.message||e)};}
-  return {type:'PMP_SHADOW_DEPTH_SLIDER_REPORT',version:'loading',shadow_depth:null};
-}
-function visualCleanupReport(){
-  try{loadVisualCleanup();if(window.PMPVisualCleanupV1&&typeof window.PMPVisualCleanupV1.apply==='function')return window.PMPVisualCleanupV1.apply();}catch(e){return {type:'PMP_VISUAL_CLEANUP_REPORT',version:'error',error:String(e&&e.message||e)};}
-  return {type:'PMP_VISUAL_CLEANUP_REPORT',version:'loading'};
-}
-function contrastReport(){
-  try{
-    if(window.PMPNativeContrastBridgeV2&&typeof window.PMPNativeContrastBridgeV2.apply==='function'){
-      const r=window.PMPNativeContrastBridgeV2.apply();
-      return {status:'NATIVE_CONTRAST_ACTIVE',bridge:'pmp-native-contrast-bridge-v2.js',version:(r&&r.version)||'2.x',colors:(r&&r.colors)||null,readability:(r&&r.readability)||null,contrast:(r&&r.contrast)||null,screen_size_safe:!!(r&&r.screen_size_safe),shadow_depth:(r&&r.shadow_depth)||null,shadows:(r&&r.shadows)||null,source:(r&&r.source)||null,main_applied:!!(r&&r.main_applied),child_frames_applied:(r&&r.child_frames_applied)||0};
-    }
-  }catch(e){return {status:'NATIVE_CONTRAST_ERROR',bridge:'pmp-native-contrast-bridge-v2.js',error:String(e&&e.message||e)};}
-  return {status:'NATIVE_CONTRAST_NOT_SEEN',bridge:'pmp-native-contrast-bridge-v2.js'};
-}
-function ensureBlockedRepoLink(){
-  try{
-    const box=document.getElementById('blockDetail');
-    if(!box||!box.classList||!box.classList.contains('open'))return false;
-    if(document.getElementById('pmp-blocked-repo-index-link-v1'))return true;
-    const a=document.createElement('a');
-    a.id='pmp-blocked-repo-index-link-v1';
-    a.href='pmp-route-guardian-repo-index-v1.html?from=blocked-route-v9&fresh='+Date.now();
-    a.textContent='Open Repo Index Diagnostic';
-    a.style.display='block';a.style.textAlign='center';a.style.textDecoration='none';a.style.background='var(--accent,var(--a,#acd1fb))';a.style.color='#07101c';a.style.border='2px solid var(--line,#07101c)';a.style.borderRadius='16px';a.style.padding='12px';a.style.marginTop='10px';a.style.fontWeight='950';a.style.whiteSpace='normal';
-    box.appendChild(a);return true;
-  }catch(e){return false;}
-}
+function loadScriptOnce(id,src,onload){try{if(document.getElementById(id))return {status:'LOADING_OR_LOADED',src};const s=document.createElement('script');s.id=id;s.src=src+'?fresh='+Date.now();if(onload)s.onload=onload;document.head.appendChild(s);return {status:'LOADING',src};}catch(e){return {status:'ERROR',src,error:String(e&&e.message||e)}}}
+function loadShadowSlider(){try{if(window.PMPShadowDepthSliderV1){try{window.PMPShadowDepthSliderV1.start()}catch(e){};return {status:'SHADOW_SLIDER_ACTIVE',helper:'pmp-shadow-depth-slider-v1.js',already_loaded:true};}return loadScriptOnce('pmp-shadow-depth-slider-v1-script','pmp-shadow-depth-slider-v1.js',function(){try{if(window.PMPShadowDepthSliderV1)window.PMPShadowDepthSliderV1.start()}catch(e){}});}catch(e){return {status:'SHADOW_SLIDER_ERROR',helper:'pmp-shadow-depth-slider-v1.js',error:String(e&&e.message||e)};}}
+function loadVisualCleanup(){try{if(window.PMPVisualCleanupV1){try{window.PMPVisualCleanupV1.start()}catch(e){};return {status:'VISUAL_CLEANUP_ACTIVE',helper:'pmp-visual-cleanup-v1.js',already_loaded:true};}return loadScriptOnce('pmp-visual-cleanup-v1-script','pmp-visual-cleanup-v1.js',function(){try{if(window.PMPVisualCleanupV1)window.PMPVisualCleanupV1.start()}catch(e){}});}catch(e){return {status:'VISUAL_CLEANUP_ERROR',helper:'pmp-visual-cleanup-v1.js',error:String(e&&e.message||e)};}}
+function loadSafeWriterOverlay(){try{if(window.PMPSafeWriterOverlayFixV1){try{window.PMPSafeWriterOverlayFixV1.start()}catch(e){};return {status:'SAFE_WRITER_OVERLAY_ACTIVE',helper:'pmp-safe-writer-overlay-fix-v1.js',already_loaded:true};}return loadScriptOnce('pmp-safe-writer-overlay-fix-v1-script','pmp-safe-writer-overlay-fix-v1.js',function(){try{if(window.PMPSafeWriterOverlayFixV1)window.PMPSafeWriterOverlayFixV1.start()}catch(e){}});}catch(e){return {status:'SAFE_WRITER_OVERLAY_ERROR',helper:'pmp-safe-writer-overlay-fix-v1.js',error:String(e&&e.message||e)};}}
+function shadowSliderReport(){try{loadShadowSlider();if(window.PMPShadowDepthSliderV1&&typeof window.PMPShadowDepthSliderV1.apply==='function')return window.PMPShadowDepthSliderV1.apply();}catch(e){return {type:'PMP_SHADOW_DEPTH_SLIDER_REPORT',version:'error',error:String(e&&e.message||e)};}return {type:'PMP_SHADOW_DEPTH_SLIDER_REPORT',version:'loading',shadow_depth:null};}
+function visualCleanupReport(){try{loadVisualCleanup();if(window.PMPVisualCleanupV1&&typeof window.PMPVisualCleanupV1.apply==='function')return window.PMPVisualCleanupV1.apply();}catch(e){return {type:'PMP_VISUAL_CLEANUP_REPORT',version:'error',error:String(e&&e.message||e)};}return {type:'PMP_VISUAL_CLEANUP_REPORT',version:'loading'};}
+function safeWriterOverlayReport(){try{loadSafeWriterOverlay();if(window.PMPSafeWriterOverlayFixV1&&typeof window.PMPSafeWriterOverlayFixV1.apply==='function')return window.PMPSafeWriterOverlayFixV1.apply();}catch(e){return {type:'PMP_SAFE_WRITER_OVERLAY_FIX_REPORT',version:'error',error:String(e&&e.message||e)};}return {type:'PMP_SAFE_WRITER_OVERLAY_FIX_REPORT',version:'loading'};}
+function contrastReport(){try{if(window.PMPNativeContrastBridgeV2&&typeof window.PMPNativeContrastBridgeV2.apply==='function'){const r=window.PMPNativeContrastBridgeV2.apply();return {status:'NATIVE_CONTRAST_ACTIVE',bridge:'pmp-native-contrast-bridge-v2.js',version:(r&&r.version)||'2.x',colors:(r&&r.colors)||null,readability:(r&&r.readability)||null,contrast:(r&&r.contrast)||null,screen_size_safe:!!(r&&r.screen_size_safe),shadow_depth:(r&&r.shadow_depth)||null,shadows:(r&&r.shadows)||null,source:(r&&r.source)||null,main_applied:!!(r&&r.main_applied),child_frames_applied:(r&&r.child_frames_applied)||0};}}catch(e){return {status:'NATIVE_CONTRAST_ERROR',bridge:'pmp-native-contrast-bridge-v2.js',error:String(e&&e.message||e)};}return {status:'NATIVE_CONTRAST_NOT_SEEN',bridge:'pmp-native-contrast-bridge-v2.js'};}
+function ensureBlockedRepoLink(){try{const box=document.getElementById('blockDetail');if(!box||!box.classList||!box.classList.contains('open'))return false;if(document.getElementById('pmp-blocked-repo-index-link-v1'))return true;const a=document.createElement('a');a.id='pmp-blocked-repo-index-link-v1';a.href='pmp-route-guardian-repo-index-v1.html?from=blocked-route-v9&fresh='+Date.now();a.textContent='Open Repo Index Diagnostic';a.style.display='block';a.style.textAlign='center';a.style.textDecoration='none';a.style.background='var(--accent,var(--a,#acd1fb))';a.style.color='#07101c';a.style.border='2px solid var(--line,#07101c)';a.style.borderRadius='16px';a.style.padding='12px';a.style.marginTop='10px';a.style.fontWeight='950';a.style.whiteSpace='normal';box.appendChild(a);return true;}catch(e){return false;}}
 function startBlockedRepoLink(){try{ensureBlockedRepoLink();const box=document.getElementById('blockDetail');if(box&&window.MutationObserver){const mo=new MutationObserver(()=>setTimeout(ensureBlockedRepoLink,0));mo.observe(box,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});}setInterval(ensureBlockedRepoLink,1000);}catch(e){}}
-function build(report,cert,recovery){
-  const ok=!!(cert&&cert.open_world_allowed===true);
-  const lkg=!!(recovery&&recovery.available===true);
-  const blocked=ok?[]:((cert&&cert.blocked_reasons)||['unknown block']);
-  const contrast=contrastReport();
-  const slider=shadowSliderReport();
-  const cleanup=visualCleanupReport();
-  const hidden_support={repo_index:'pmp-route-guardian-repo-index-v1.html',repo_index_visibility:ok?'hidden':'blocked_only',resident:'pmp-resident-route-guardian-surface-v2.html'};
-  setTimeout(startBlockedRepoLink,0);setTimeout(loadShadowSlider,0);setTimeout(loadVisualCleanup,0);
-  return {type:'PMP_ROUTE_GUARDIAN_HEALTH_SUMMARY',version:'2.3.0-visual-cleanup-loader',built_at:new Date().toISOString(),status:ok?'ROUTE_OK':'ROUTE_BLOCKED',route_ok:ok,route_blocked:!ok,open_world_allowed:ok,route_confidence:(cert&&cert.route_confidence)||'UNKNOWN',last_known_good_status:lkg?'LAST_KNOWN_GOOD_AVAILABLE':'LAST_KNOWN_GOOD_NOT_AVAILABLE',last_known_good_available:lkg,next_action:ok?'OPEN_WORLD':'COPY_REPORT_AND_USE_LAST_KNOWN_GOOD_FOR_DIAGNOSIS',blocker_count:blocked.length,blockers:blocked,current_surface:(report&&report.current_surface&&report.current_surface.file)||'unknown',approved_loader:(cert&&cert.paths&&cert.paths.loader)||'unknown',current_inner:(cert&&cert.paths&&cert.paths.current_inner)||'unknown',native_contrast_status:contrast.status,native_contrast_bridge:contrast.bridge,native_contrast_report:contrast,native_shadow_depth_status:(slider&&slider.injected_count>0)?'SHADOW_DEPTH_SLIDER_INJECTED':'SHADOW_DEPTH_SLIDER_LOADING_OR_WAITING_FOR_COLOR_PANEL',native_shadow_depth_helper:'pmp-shadow-depth-slider-v1.js',native_shadow_depth_report:slider,visual_cleanup_status:(cleanup&&cleanup.applied_documents>0)?'VISUAL_CLEANUP_ACTIVE':'VISUAL_CLEANUP_LOADING',visual_cleanup_helper:'pmp-visual-cleanup-v1.js',visual_cleanup_report:cleanup,hidden_support:hidden_support,rule:'Health Summary is read-only. It must not restore, promote, delete, archive, or write app state. Visual cleanup removes clutter only: it makes drawer titles readable and hides unnecessary Color Settings explanation boxes.'};
-}
-function line(h){if(!h)return 'ROUTE_HEALTH_UNKNOWN';return h.status+' | '+h.last_known_good_status+' | '+(h.native_contrast_status||'NATIVE_CONTRAST_UNKNOWN')+' | '+(h.visual_cleanup_status||'VISUAL_CLEANUP_UNKNOWN')+' | next: '+h.next_action;}
-setTimeout(startBlockedRepoLink,0);setTimeout(loadShadowSlider,0);setTimeout(loadVisualCleanup,0);
-return{build,line,contrastReport,ensureBlockedRepoLink,startBlockedRepoLink,loadShadowSlider,shadowSliderReport,loadVisualCleanup,visualCleanupReport};
+function build(report,cert,recovery){const ok=!!(cert&&cert.open_world_allowed===true);const lkg=!!(recovery&&recovery.available===true);const blocked=ok?[]:((cert&&cert.blocked_reasons)||['unknown block']);const contrast=contrastReport();const slider=shadowSliderReport();const cleanup=visualCleanupReport();const safeWriter=safeWriterOverlayReport();const hidden_support={repo_index:'pmp-route-guardian-repo-index-v1.html',repo_index_visibility:ok?'hidden':'blocked_only',resident:'pmp-resident-route-guardian-surface-v2.html'};setTimeout(startBlockedRepoLink,0);setTimeout(loadShadowSlider,0);setTimeout(loadVisualCleanup,0);setTimeout(loadSafeWriterOverlay,0);return {type:'PMP_ROUTE_GUARDIAN_HEALTH_SUMMARY',version:'2.4.0-safe-writer-overlay-loader',built_at:new Date().toISOString(),status:ok?'ROUTE_OK':'ROUTE_BLOCKED',route_ok:ok,route_blocked:!ok,open_world_allowed:ok,route_confidence:(cert&&cert.route_confidence)||'UNKNOWN',last_known_good_status:lkg?'LAST_KNOWN_GOOD_AVAILABLE':'LAST_KNOWN_GOOD_NOT_AVAILABLE',last_known_good_available:lkg,next_action:ok?'OPEN_WORLD':'COPY_REPORT_AND_USE_LAST_KNOWN_GOOD_FOR_DIAGNOSIS',blocker_count:blocked.length,blockers:blocked,current_surface:(report&&report.current_surface&&report.current_surface.file)||'unknown',approved_loader:(cert&&cert.paths&&cert.paths.loader)||'unknown',current_inner:(cert&&cert.paths&&cert.paths.current_inner)||'unknown',native_contrast_status:contrast.status,native_contrast_bridge:contrast.bridge,native_contrast_report:contrast,native_shadow_depth_status:(slider&&slider.injected_count>0)?'SHADOW_DEPTH_SLIDER_INJECTED':'SHADOW_DEPTH_SLIDER_LOADING_OR_WAITING_FOR_COLOR_PANEL',native_shadow_depth_helper:'pmp-shadow-depth-slider-v1.js',native_shadow_depth_report:slider,visual_cleanup_status:(cleanup&&cleanup.applied_documents>0)?'VISUAL_CLEANUP_ACTIVE':'VISUAL_CLEANUP_LOADING',visual_cleanup_helper:'pmp-visual-cleanup-v1.js',visual_cleanup_report:cleanup,safe_writer_overlay_status:(safeWriter&&safeWriter.patched_controls>0)?'SAFE_WRITER_OVERLAY_ACTIVE':'SAFE_WRITER_OVERLAY_LOADING',safe_writer_overlay_helper:'pmp-safe-writer-overlay-fix-v1.js',safe_writer_overlay_report:safeWriter,hidden_support:hidden_support,rule:'Health Summary is read-only. It must not restore, promote, delete, archive, or write app state. Safe Writer opens as current-app overlay so back closes the overlay and does not reload older app routes.'};}
+function line(h){if(!h)return 'ROUTE_HEALTH_UNKNOWN';return h.status+' | '+h.last_known_good_status+' | '+(h.native_contrast_status||'NATIVE_CONTRAST_UNKNOWN')+' | '+(h.visual_cleanup_status||'VISUAL_CLEANUP_UNKNOWN')+' | '+(h.safe_writer_overlay_status||'SAFE_WRITER_OVERLAY_UNKNOWN')+' | next: '+h.next_action;}
+setTimeout(startBlockedRepoLink,0);setTimeout(loadShadowSlider,0);setTimeout(loadVisualCleanup,0);setTimeout(loadSafeWriterOverlay,0);
+return{build,line,contrastReport,ensureBlockedRepoLink,startBlockedRepoLink,loadShadowSlider,shadowSliderReport,loadVisualCleanup,visualCleanupReport,loadSafeWriterOverlay,safeWriterOverlayReport};
 })();
