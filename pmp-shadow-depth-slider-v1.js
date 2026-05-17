@@ -11,8 +11,6 @@ function relabelContrast(doc){
     if(input&&input.parentNode){
       Array.from(input.parentNode.childNodes).forEach(n=>{if(n.nodeType===3&&/Readability/i.test(n.nodeValue||''))n.nodeValue=(n.nodeValue||'').replace(/Readability Layer/i,'Contrast').replace(/Readability/i,'Contrast')});
     }
-    let note=Array.from(doc.querySelectorAll('.note')).find(x=>/Contrast is not a color|readability layer/i.test(x.textContent||''));
-    if(note)note.textContent='Contrast is separate from color. Contrast controls readability and edge strength.';
   }catch(e){}
 }
 function wakeExistingVisualControls(doc){
@@ -37,11 +35,9 @@ function injectDoc(doc){
       wrap.id='pmpShadowDepthControl';
       wrap.style.marginTop='10px';
       wrap.style.paddingTop='0';
-      wrap.innerHTML='<label style="display:grid;gap:6px;font-weight:950">Shadow Depth<input id="pmpShadowDepth" type="range" min="0" max="100" step="1"></label><div id="pmpShadowDepthReadout" class="readout" style="font-weight:900;margin-top:6px">Shadow Depth</div><div class="note" style="margin-top:7px">Shadow is separate from color and contrast. It controls visual lift only.</div>';
+      wrap.innerHTML='<label style="display:grid;gap:6px;font-weight:950">Shadow Depth<input id="pmpShadowDepth" type="range" min="0" max="100" step="1"></label><div id="pmpShadowDepthReadout" class="readout" style="font-weight:900;margin-top:6px">Shadow Depth</div>';
     }
     let rr=doc.getElementById('readabilityReadout');
-    let rInput=doc.getElementById('readability');
-    let target=(rr&&rr.parentNode)?rr.nextSibling:(rInput&&rInput.parentNode?rInput.parentNode.nextSibling:null);
     if(wrap.parentNode!==body)body.appendChild(wrap);
     if(rr&&rr.parentNode&&rr.nextSibling!==wrap)rr.parentNode.insertBefore(wrap,rr.nextSibling);
     let input=doc.getElementById('pmpShadowDepth');
@@ -63,7 +59,7 @@ function scan(doc,depth){
   try{Array.from(doc.querySelectorAll('iframe')).forEach(f=>{try{let d=f.contentDocument||(f.contentWindow&&f.contentWindow.document);count+=scan(d,depth+1)}catch(e){}})}catch(e){}
   return count;
 }
-function apply(){let injected=scan(document,0);bridgeApply();return{type:'PMP_SHADOW_DEPTH_SLIDER_REPORT',version:'1.1.0-contrast-adjacent-live-wake',built_at:new Date().toISOString(),injected_count:injected,shadow_depth:readDepth(),storage_key:KEY,placement:'after_contrast_readout_when_available',rule:'Slider injection only. Places Shadow Depth next to Contrast, wakes the visual bridge when any visual slider moves, and does not change route, map, permissions, or app state beyond the shadow-depth visual setting.'}}
+function apply(){let injected=scan(document,0);bridgeApply();return{type:'PMP_SHADOW_DEPTH_SLIDER_REPORT',version:'1.2.0-no-explanation-box',built_at:new Date().toISOString(),injected_count:injected,shadow_depth:readDepth(),storage_key:KEY,placement:'after_contrast_readout_when_available',rule:'Slider injection only. Places Shadow Depth next to Contrast, wakes the visual bridge when any visual slider moves, and does not change route, map, permissions, or app state beyond the shadow-depth visual setting.'}}
 function start(){apply();[200,600,1200,2500,4500].forEach(t=>setTimeout(apply,t));setInterval(apply,1500)}
 return{apply,start,readDepth,writeDepth};
 })();try{window.PMPShadowDepthSliderV1.start()}catch(e){}
