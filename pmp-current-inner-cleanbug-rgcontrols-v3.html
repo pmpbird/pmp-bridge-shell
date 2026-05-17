@@ -22,7 +22,7 @@ iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:var(--f
 </style>
 </head>
 <body>
-<iframe id="app" src="pmp-home-single-v6.html?fresh=current-rgcontrols-v3#world"></iframe>
+<iframe id="app"></iframe>
 <script src="pmp-top-lossless-injector.js?fresh=rgcontrols-v3"></script>
 <script src="pmp-resident-lossless-readiness.js?fresh=rgcontrols-v3"></script>
 <script src="pmp-current-truth-face.js?fresh=rgcontrols-v3"></script>
@@ -35,41 +35,60 @@ iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:var(--f
 <script src="pmp-native-contrast-bridge-v2.js?fresh=rgcontrols-v3-v2"></script>
 <script>
 const F=document.getElementById('app');
+const startHash=(location.hash&&location.hash!=='#world')?location.hash:'#world';
+F.src='pmp-home-single-v6.html?fresh=current-rgcontrols-v3-current-return-'+Date.now()+startHash;
 function inside(){try{return{w:F.contentWindow,d:F.contentDocument||F.contentWindow.document}}catch(e){return{}}}
 function bugUrl(){return 'bug-memory-current-clean-v1.html?fresh=open-certified-native-contrast-'+Date.now()+'&contrast=2'}
 function actionUrl(kind){return 'pmp-route-guardian-action-v2.html?action='+encodeURIComponent(kind)+'&from=current-inner-rgcontrols-v3&fresh='+Date.now()}
-function goBug(){location.href=bugUrl();return false}
-function goAction(kind){location.href=actionUrl(kind);return false}
 function textOf(x){return (x&&x.textContent||'').replace(/\s+/g,' ').trim()}
+function hideBridgePanel(d){const p=d&&d.getElementById&&d.getElementById('bridgePanel');if(p){p.className='hidden';p.textContent='';p.innerHTML='';}return false}
 function installBridgeToggleFix(w,d){
-  if(w.__pmpBridgePanelToggleFixV1)return;
+  if(w.__pmpBridgePanelToggleFixV2)return;
   if(typeof w.openSharePanel!=='function'||typeof w.openConnectionsPanel!=='function')return;
-  w.__pmpBridgePanelToggleFixV1={active:''};
+  w.__pmpBridgePanelToggleFixV2={active:''};
   const oldShare=w.openSharePanel;
   const oldConnections=w.openConnectionsPanel;
   const oldSetBridgeOutput=typeof w.setBridgeOutput==='function'?w.setBridgeOutput:null;
-  function panel(){try{return d.getElementById('bridgePanel')}catch(e){return null}}
-  function closePanel(){
-    const p=panel();
-    if(p){p.className='note';p.textContent='Bridge ready.'}
-    w.__pmpBridgePanelToggleFixV1.active='';
-    return false;
-  }
   w.openSharePanel=function(){
-    if(w.__pmpBridgePanelToggleFixV1.active==='share')return closePanel();
-    w.__pmpBridgePanelToggleFixV1.active='share';
+    if(w.__pmpBridgePanelToggleFixV2.active==='share'){w.__pmpBridgePanelToggleFixV2.active='';return hideBridgePanel(d)}
+    w.__pmpBridgePanelToggleFixV2.active='share';
     return oldShare.apply(this,arguments);
   };
   w.openConnectionsPanel=function(){
-    if(w.__pmpBridgePanelToggleFixV1.active==='connections')return closePanel();
-    w.__pmpBridgePanelToggleFixV1.active='connections';
+    if(w.__pmpBridgePanelToggleFixV2.active==='connections'){w.__pmpBridgePanelToggleFixV2.active='';return hideBridgePanel(d)}
+    w.__pmpBridgePanelToggleFixV2.active='connections';
     return oldConnections.apply(this,arguments);
   };
   if(oldSetBridgeOutput){
     w.setBridgeOutput=function(){
-      w.__pmpBridgePanelToggleFixV1.active='';
+      w.__pmpBridgePanelToggleFixV2.active='';
       return oldSetBridgeOutput.apply(this,arguments);
     };
+  }
+}
+function installCopyCurrentClipboardOnly(w,d){
+  if(w.__pmpCopyCurrentClipboardOnlyV1)return;
+  w.__pmpCopyCurrentClipboardOnlyV1=true;
+  w.copyCurrent=async function(){
+    let txt='';
+    try{txt=w.currentOutput||JSON.stringify((typeof w.getTruth==='function'?w.getTruth():{type:'PMP_CURRENT_OUTPUT_EMPTY',built_at:new Date().toISOString()}),null,2)}catch(e){txt=''}
+    const p=d.getElementById('bridgePanel');
+    try{
+      await w.navigator.clipboard.writeText(txt||'');
+      if(p){p.className='note';p.textContent='Copied current output to clipboard only.'}
+    }catch(e){
+      if(p){p.className='warn';p.textContent='Copy failed. Select and copy manually. No writer or Shortcuts path was opened.\n\n'+(txt||'')}
+    }
+    return false;
+  }
+}
+function installDeepResidentCurrentReturn(w,d){
+  if(w.__pmpDeepResidentCurrentReturnV1)return;
+  w.__pmpDeepResidentCurrentReturnV1=true;
+  w.openDeepResident=function(){
+    try{w.localStorage.setItem('pmp_deep_resident_return_single_v6',JSON.stringify({return_to:'pmp-current-inner-cleanbug-rgcontrols-v3.html#control',label:'Back to Control Room',at:new Date().toISOString()}))}catch(e){}
+    w.location.href='resident.html?from=pmp-current-inner-rgcontrols-v3&return=pmp-current-inner-cleanbug-rgcontrols-v3.html%23control&fresh='+Date.now();
+    return false;
   }
 }
 function patch(){
@@ -82,6 +101,8 @@ function patch(){
     w.automaticAppUpdate=function(){return goAction('appUpdate')};
   }
   installBridgeToggleFix(w,d);
+  installCopyCurrentClipboardOnly(w,d);
+  installDeepResidentCurrentReturn(w,d);
   if(window.PMPNativeContrastBridgeV2&&typeof window.PMPNativeContrastBridgeV2.apply==='function')window.PMPNativeContrastBridgeV2.apply();
   if(!d.documentElement.dataset.pmpRgControlsV3Delegate){
     d.documentElement.dataset.pmpRgControlsV3Delegate='1';
@@ -101,6 +122,8 @@ function patch(){
   });
   if(window.PMPControlRoomCleanupV1&&typeof window.PMPControlRoomCleanupV1.apply==='function')window.PMPControlRoomCleanupV1.apply(d);
 }
+function goBug(){location.href=bugUrl();return false}
+function goAction(kind){location.href=actionUrl(kind);return false}
 F.addEventListener('load',()=>{setTimeout(patch,100);setTimeout(patch,700);setTimeout(patch,1800)});
 setInterval(patch,1000);
 </script>
