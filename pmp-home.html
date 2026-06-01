@@ -20,7 +20,44 @@ const POINTER='pmp-latest.json';
 const FALLBACK='pmp-clean-v21.html';
 const FRAME=document.getElementById('app');
 let latest=FALLBACK;
-function showStatus(msg){const s=document.getElementById('status');s.textContent=msg;s.style.display='block';clearTimeout(showStatus.t);showStatus.t=setTimeout(()=>{s.style.display='none'},2500)}
+
+const MED_KEYS={
+  hookSlots:'pmp_medium_hook_slots_v1',
+  sourceBodies:'pmp_medium_source_bodies_v1',
+  manifestRecords:'pmp_medium_manifest_records_v1',
+  fieldRegistry:'pmp_medium_field_registry_v1',
+  watchItems:'pmp_medium_watch_items_v1',
+  proofObjects:'pmp_medium_proof_objects_v1',
+  claimControls:'pmp_medium_claim_controls_v1',
+  transferReceipts:'pmp_medium_transfer_receipts_v1',
+  privateBackup:'pmp_private_backup_latest_v1'
+};
+
+const HOOK_NAMES=[
+'Source Body Intake Hook','Manifest Chain Hook','Body Acceptance Hook','Non-Subtraction / Contradiction Hook','Claim Ceiling Hook','Watch Box Hook','Template / Card Mode Hook','Field Dictionary Hook','Route / Source / Current Map Hook','Deployment / Cache Hook','Storage Authority Hook','Privacy / Public Boundary Hook','Shortcut / Handoff Hook','Apple Notes Hook','GitHub Vault Hook','Shell / Core Boundary Hook','Runtime vs Saved Data Hook','Observer / Access Hook','Fix Mechanism Hook','Validation Hook','Rollback Hook','Regression / Scar Hook','Operator Recovery Hook','Fallback Authority Hook','High-Risk Action Hook','User Confirmation Hook','Batch Inventory Hook','Dedup / Candidate Classification Hook','Legacy Migration Hook','Gold / Anti-Example Training Hook','Final Audit Hook','Traceability Hook','Freeze / Certification Boundary Hook','Bug Context / Environment Hook','Reproduction / Test Case Hook','Failure Mode Hook','Severity / Impact / Security Hook','Ownership / Relationship Hook','Data Lifecycle Hook','User Journey / Workaround Hook','Input Validation Hook','Output Validation Hook','Timing / Concurrency Hook','Read / Write Timing Hook','Visual / Layout / Accessibility Hook','Configuration / Settings Hook','Resource / Quota / Capacity Hook','Decision / Change Control Hook','Automation / Trigger / Background Execution Hook','Sync / Propagation / Requirement Authority Hook'
+];
+
+function showStatus(msg){const s=document.getElementById('status');s.textContent=msg;s.style.display='block';clearTimeout(showStatus.t);showStatus.t=setTimeout(()=>{s.style.display='none'},3500)}
+function readStore(k,f){try{let v=localStorage.getItem(k);return v?JSON.parse(v):f}catch(e){return f}}
+function writeStore(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}
+function now(){return new Date().toISOString()}
+function pad(n){return String(n).padStart(3,'0')}
+function hookBodySource(i){if(i<=6)return'BODY-000 through BODY-021';if(i===7)return'BODY-001, BODY-018, BODY-019';if(i===8)return'BODY-002 plus BODY-010 through BODY-021';if(i<=10)return'BODY-010';if(i<=15)return'BODY-011 / BODY-018 / BODY-019 / BODY-020 / BODY-021';if(i<=18)return'BODY-012 / BODY-018';if(i<=22)return'BODY-014 / BODY-015 / BODY-019';if(i<=26)return'BODY-015';if(i<=30)return'BODY-016 / BODY-018 / BODY-021';if(i<=33)return'BODY-017';if(i<=40)return'BODY-018 / BODY-019 / BODY-021';if(i<=48)return'BODY-019 / BODY-020 / BODY-021';if(i===49)return'BODY-020';return'BODY-021'}
+function buildHooks(){let existing=readStore(MED_KEYS.hookSlots,[]);let by={};if(Array.isArray(existing))existing.forEach(h=>{if(h&&h.hook_id)by[h.hook_id]=h});HOOK_NAMES.forEach((name,idx)=>{let id='HOOK-'+pad(idx+1);by[id]={hook_id:id,hook_name:name,body_sources:hookBodySource(idx+1),proof_required:'proof required before stronger claim',proof_collected:[],proof_state:'missing_until_connected',claim_ceiling:'specified_not_wired_not_validated',allowed_claim:'allowed_with_watch only after proof is connected',blocked_claim:'do not claim wired, validated, real-app tested, frozen, or broad all-bug approval',safe_next_action:'wire proof object, run simulated test, then real app test',unsafe_next_action:'do not promote source or claim from name/display alone',test_surface:'not_connected_yet',simulated_test_state:'not_run',real_app_test_state:'not_run',validation_scope:'not_validated',transfer_state:'specified',lossless_status:'slot_preserved_not_wired',...(by[id]||{})}});let out=Object.values(by).sort((a,b)=>a.hook_id.localeCompare(b.hook_id));writeStore(MED_KEYS.hookSlots,out);addReceipt('hook_slots_specified','50 hook slots specified locally from private window. Not wired or validated.');return out}
+function addReceipt(kind,summary){let arr=readStore(MED_KEYS.transferReceipts,[]);if(!Array.isArray(arr))arr=[];arr.push({receipt_id:'receipt_'+Date.now(),type:'PMP_PRIVATE_WINDOW_RECEIPT_V1',kind,summary,created_at:now(),safe_claim:'Local private-window action recorded.',do_not_claim:'Do not call this real app proof, hook validation, GitHub Vault proof, or Notes proof.'});if(arr.length>100)arr=arr.slice(-100);writeStore(MED_KEYS.transferReceipts,arr)}
+function mediumSummary(){let h=readStore(MED_KEYS.hookSlots,[]),sb=readStore(MED_KEYS.sourceBodies,[]),mr=readStore(MED_KEYS.manifestRecords,[]),fr=readStore(MED_KEYS.fieldRegistry,[]),wi=readStore(MED_KEYS.watchItems,[]),po=readStore(MED_KEYS.proofObjects,[]),cc=readStore(MED_KEYS.claimControls,[]),tr=readStore(MED_KEYS.transferReceipts,[]);return{type:'PMP_PRIVATE_STATUS_V1',built_at:now(),medium:Array.isArray(h)&&h.length?'specified':'not_loaded',hook_slots:Array.isArray(h)?h.length:0,source_bodies:Array.isArray(sb)?sb.length:0,manifest_records:Array.isArray(mr)?mr.length:0,field_registry:Array.isArray(fr)?fr.length:0,watch_items:Array.isArray(wi)?wi.length:0,proof_objects:Array.isArray(po)?po.length:0,claim_controls:Array.isArray(cc)?cc.length:0,transfer_receipts:Array.isArray(tr)?tr.length:0,claim_ceiling:'specified_not_wired_not_validated',safe_claim:'Private status shows local Medium state only.',do_not_claim:'Do not call hooks wired, validated, or real-app tested yet.'}}
+function privateBackupObject(){buildHooks();let data={type:'PMP_PRIVATE_WINDOW_BACKUP_V1',built_at:now(),privacy_class:'PRIVATE_TO_USER_PMP_ONLY',source:'control_private_window',summary:mediumSummary(),keys:{}};for(let i=0;i<localStorage.length;i++){let k=localStorage.key(i);if(k&&k.startsWith('pmp_'))data.keys[k]=localStorage.getItem(k)}writeStore(MED_KEYS.privateBackup,data);addReceipt('private_backup_created','Private backup created in localStorage and displayed in Private Window.');return data}
+async function copyText(t){try{await navigator.clipboard.writeText(t);return true}catch(e){return false}}
+function setSecretOutput(d,msg){let out=d.getElementById('secretOut');if(out){out.classList.remove('hidden');out.textContent=typeof msg==='string'?msg:JSON.stringify(msg,null,2)}showStatus(typeof msg==='string'?msg.slice(0,180):'Private output updated.')}
+async function showPrivateStatus(d){buildHooks();let s=mediumSummary();setSecretOutput(d,s);let c=d.getElementById('controlStatus');if(c)c.textContent='Private Status opened. Medium '+s.medium+' · hooks '+s.hook_slots+'/50.'}
+async function showPrivateBackup(d){let b=privateBackupObject();setSecretOutput(d,b);let ok=await copyText(JSON.stringify(b,null,2));let c=d.getElementById('controlStatus');if(c)c.textContent=ok?'Private Backup created and copied.':'Private Backup created. Copy was blocked; output is visible.'}
+function wirePrivateWindow(w,d){if(!w||!d)return;const oldShow=w.showSecret;if(!w.__pmpPrivateButtonsWired){w.__pmpPrivateButtonsWired=true;w.showSecret=function(name){if(name==='Private Status'){showPrivateStatus(d);return}if(name==='Private Backup'){showPrivateBackup(d);return}if(name==='Mold-to-App Wiring'){buildHooks();showPrivateStatus(d);return}if(typeof oldShow==='function')return oldShow.apply(w,arguments);setSecretOutput(d,name+' opened.')}}
+  const buttons=[...d.querySelectorAll('button')];
+  for(const b of buttons){let t=(b.textContent||'').trim();if(t==='Private Status'){b.onclick=function(ev){if(ev){ev.preventDefault();ev.stopPropagation();if(ev.stopImmediatePropagation)ev.stopImmediatePropagation()}showPrivateStatus(d);return false}}if(t==='Private Backup'){b.onclick=function(ev){if(ev){ev.preventDefault();ev.stopPropagation();if(ev.stopImmediatePropagation)ev.stopImmediatePropagation()}showPrivateBackup(d);return false}}}
+  const priv=[...d.querySelectorAll('h1')].find(x=>(x.textContent||'').includes('Private Window'))?.closest('.card')||d.getElementById('secretPanel');
+  if(priv&&!d.getElementById('pmpMediumWiringPrivateBtn')){let grid=priv.querySelector('.grid')||priv;let btn=d.createElement('button');btn.id='pmpMediumWiringPrivateBtn';btn.className='mini';btn.textContent='Mold-to-App Wiring';btn.onclick=function(ev){if(ev){ev.preventDefault();ev.stopPropagation()}buildHooks();showPrivateStatus(d);return false};grid.appendChild(btn)}
+}
+
 async function getLatest(){
   try{
     const r=await fetch(POINTER+'?fresh='+Date.now(),{cache:'no-store'});
@@ -34,18 +71,19 @@ async function loadLatest(reason){
   const target=await getLatest();
   showStatus('Opening newest PMP app.\nTarget: '+target);
   FRAME.src=target+'?fresh='+encodeURIComponent(reason||'home')+'-'+Date.now()+'#control';
-  setTimeout(patchApp,250);setTimeout(patchApp,900);setTimeout(patchApp,1600);
+  setTimeout(patchApp,250);setTimeout(patchApp,900);setTimeout(patchApp,1600);setTimeout(patchApp,2800);
 }
 async function oneTapUpdate(){
   const target=await getLatest();
   try{localStorage.setItem('pmp_last_auto_update',JSON.stringify({type:'PMP_FOREVER_HOME_UPDATE',target,at:new Date().toISOString(),meaning:'Home launcher refreshed newest app inside same Home Screen app.'}))}catch(e){}
   showStatus('Automatic App Update complete.\nNewest app refreshed here.\nNo new Home Screen icon needed.');
   FRAME.src=target+'?fresh=auto-update-'+Date.now()+'#control';
-  setTimeout(patchApp,250);setTimeout(patchApp,900);setTimeout(patchApp,1600);
+  setTimeout(patchApp,250);setTimeout(patchApp,900);setTimeout(patchApp,1600);setTimeout(patchApp,2800);
 }
 function patchApp(){
   let w,d;try{w=FRAME.contentWindow;d=FRAME.contentDocument||w.document}catch(e){return}if(!w||!d)return;
   try{w.automaticAppUpdate=oneTapUpdate}catch(e){}
+  try{wirePrivateWindow(w,d)}catch(e){}
   try{
     const buttons=[...d.querySelectorAll('button')];
     for(const b of buttons){
@@ -58,7 +96,12 @@ function patchApp(){
       d.__pmpHomeUpdateCaptureInstalled=true;
       d.addEventListener('click',function(ev){
         const b=ev.target&&ev.target.closest?ev.target.closest('button'):null;
-        if(b&&(b.textContent||'').includes('Automatic App Update')){ev.preventDefault();ev.stopPropagation();if(ev.stopImmediatePropagation)ev.stopImmediatePropagation();oneTapUpdate();return false}
+        if(!b)return;
+        const text=b.textContent||'';
+        if(text.includes('Automatic App Update')){ev.preventDefault();ev.stopPropagation();if(ev.stopImmediatePropagation)ev.stopImmediatePropagation();oneTapUpdate();return false}
+        if(text.includes('Private Status')){ev.preventDefault();ev.stopPropagation();if(ev.stopImmediatePropagation)ev.stopImmediatePropagation();showPrivateStatus(d);return false}
+        if(text.includes('Private Backup')){ev.preventDefault();ev.stopPropagation();if(ev.stopImmediatePropagation)ev.stopImmediatePropagation();showPrivateBackup(d);return false}
+        if(text.includes('Mold-to-App Wiring')){ev.preventDefault();ev.stopPropagation();if(ev.stopImmediatePropagation)ev.stopImmediatePropagation();buildHooks();showPrivateStatus(d);return false}
       },true);
     }
   }catch(e){}
