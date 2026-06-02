@@ -34,7 +34,8 @@ iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:var(--f
 <script src="pmp-control-room-cleanup-v1.js?fresh=rgcontrols-v3-private-medium"></script>
 <script src="pmp-native-contrast-bridge-v2.js?fresh=rgcontrols-v3-private-medium-v2"></script>
 <script src="pmp-visual-cleanup-v1.js?fresh=rgcontrols-v3-private-medium-return-persist"></script>
-<script src="pmp-private-medium-buttons-v1.js?fresh=rgcontrols-v3-private-medium-buttons"></script>
+<script src="pmp-private-medium-buttons-v1.js?fresh=rgcontrols-v3-private-medium-buttons-proof-v1"></script>
+<script src="pmp-private-claim-controls-v1.js?fresh=rgcontrols-v3-claim-controls-v1"></script>
 <script>
 const F=document.getElementById('app');
 const startHash=(location.hash&&location.hash!=='#world')?location.hash:'#world';
@@ -115,7 +116,7 @@ function installDeepResidentOverlay(w,d){
       if(!rd)return;
       let btn=rd.getElementById('residentBackToControl')||rd.getElementById('pmpResidentBackToControl')||rd.getElementById('pmpResidentBackToControlLive');
       const h=Array.from(rd.querySelectorAll('h1')).find(x=>/^Resident Intelligence$/i.test(textOf(x)));
-      if(!btn&&h){btn=rd.createElement('button');btn.id='pmpResidentBackToControlLive';btn.textContent='← Back to Control Room';btn.style.margin='0 0 14px 0';h.parentNode.insertBefore(btn,h)}
+      if(!btn&&h){btn=rd.createElement('button');btn.id='pmpResidentBackToControlLive';btn.textContent='← Back to Control Room';h.parentNode.insertBefore(btn,h)}
       if(btn){
         btn.textContent='← Back to Control Room';
         btn.onclick=function(e){if(e)e.preventDefault();return closeDeepResident()};
@@ -140,6 +141,7 @@ function patch(){
   const oldShow=typeof w.showSecret==='function'?w.showSecret:null;
   if(!w.__pmpRgControlsV3){w.__pmpRgControlsV3=true;w.showSecret=function(name){if(String(name)==='Bug Memory')return goBug();if(oldShow)return oldShow.apply(this,arguments)};w.automaticAppUpdate=function(){return goAction('appUpdate')}}
   try{if(window.PMPPrivateMediumButtonsV1&&typeof window.PMPPrivateMediumButtonsV1.run==='function')window.PMPPrivateMediumButtonsV1.run()}catch(e){}
+  try{if(window.PMPPrivateClaimControlsV1&&typeof window.PMPPrivateClaimControlsV1.patchMedium==='function')window.PMPPrivateClaimControlsV1.patchMedium()}catch(e){}
   installBridgeToggleFix(w,d);
   simplifyBridgeButtons(w,d);
   installDeepResidentOverlay(w,d);
