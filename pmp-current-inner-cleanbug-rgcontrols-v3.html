@@ -38,6 +38,7 @@ iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:var(--f
 <script src="pmp-private-claim-controls-v1.js?fresh=rgcontrols-v3-claim-controls-v1"></script>
 <script src="pmp-private-source-loader-v1.js?fresh=rgcontrols-v3-source-loader-v1-simple-ui"></script>
 <script src="pmp-private-simple-source-ui-v1.js?fresh=rgcontrols-v3-simple-source-ui-v1"></script>
+<script src="pmp-private-one-button-pages-v2.js?fresh=rgcontrols-v3-one-button-pages-v2"></script>
 <script>
 const F=document.getElementById('app');
 const startHash=(location.hash&&location.hash!=='#world')?location.hash:'#world';
@@ -146,6 +147,7 @@ function patch(){
   try{if(window.PMPPrivateClaimControlsV1&&typeof window.PMPPrivateClaimControlsV1.patchMedium==='function')window.PMPPrivateClaimControlsV1.patchMedium()}catch(e){}
   try{if(window.PMPSourceBodyTextLoaderV1&&typeof window.PMPSourceBodyTextLoaderV1.run==='function')window.PMPSourceBodyTextLoaderV1.run()}catch(e){}
   try{if(window.PMPPrivateSimpleSourceUIV1&&typeof window.PMPPrivateSimpleSourceUIV1.run==='function')window.PMPPrivateSimpleSourceUIV1.run()}catch(e){}
+  try{if(window.PMPOneButtonPrivatePagesV2&&typeof window.PMPOneButtonPrivatePagesV2.run==='function')window.PMPOneButtonPrivatePagesV2.run()}catch(e){}
   installBridgeToggleFix(w,d);
   simplifyBridgeButtons(w,d);
   installDeepResidentOverlay(w,d);
