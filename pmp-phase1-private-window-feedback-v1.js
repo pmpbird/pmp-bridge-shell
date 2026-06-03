@@ -1,5 +1,6 @@
 (()=>{
-  if(window.PMPPhase1PrivateWindowFeedbackV1)return;
+  if(window.PMPPhase1PrivateWindowFeedbackV2)return;
+  window.PMPPhase1PrivateWindowFeedbackV2=true;
   window.PMPPhase1PrivateWindowFeedbackV1=true;
   const K={
     sourceBodies:'pmp_medium_source_bodies_v1',
@@ -8,7 +9,29 @@
   };
   function read(k,f){try{let v=localStorage.getItem(k);return v?JSON.parse(v):f}catch(e){return f}}
   function arr(v){return Array.isArray(v)?v:[]}
+  function bodyId(s){let m=String(s||'').match(/BODY[-_ ]?(\d{3})/i);return m?'BODY-'+m[1]:''}
+  function outputPacket(){
+    try{
+      const o=document.getElementById('pmpPhase1PrivateOut');
+      const txt=o&&o.textContent||'';
+      if(!txt||txt.length<2)return null;
+      const j=JSON.parse(txt);
+      if(j&&j.body_id)return j;
+      if(j&&j.source_packet_id){const b=bodyId(j.source_packet_id);if(b)return {...j,body_id:b}}
+    }catch(e){}
+    return null;
+  }
+  function storagePacketFor(id){
+    if(!id)return null;
+    const list=arr(read(K.sourceBodies,[]));
+    return list.slice().reverse().find(x=>x&&x.body_id===id)||null;
+  }
   function latestPacket(){
+    const visible=outputPacket();
+    if(visible&&visible.body_id){
+      const stored=storagePacketFor(visible.body_id);
+      return stored?{...stored,...visible}:visible;
+    }
     const list=arr(read(K.sourceBodies,[]));
     return list.slice().reverse().find(x=>x&&x.body_id)||null;
   }
@@ -55,23 +78,25 @@
     const accepted=arr(c.accepted_body_list);
     const missing=arr(c.missing_body_list);
     if(action==='stage'){
-      if(p&&p.acceptance_state==='staged')return say('STAGED — '+id+'\nNext: tap Verify Source.', 'ok');
-      if(p)return say('STAGE RESULT — '+id+'\nstate: '+(p.acceptance_state||'unknown')+' / '+(p.verification_state||'unknown'), 'warn');
+      if(p&&p.body_id&&p.verification_state==='staged')return say('STAGED — '+id+'\nNext: tap Verify Source.', 'ok');
+      if(p&&p.body_id&&accepted.includes(id))return say('STAGE RESULT — '+id+'\nAlready accepted / verified.', 'warn');
+      if(p&&p.body_id)return say('STAGE RESULT — '+id+'\nstate: '+(p.acceptance_state||'unknown')+' / '+(p.verification_state||'unknown'), 'warn');
       return say('NO SOURCE STAGED — paste one body first.', 'bad');
     }
     if(action==='verify'){
-      if(p&&p.verification_state==='verified')return say('VERIFY PASSED — '+id+'\nNext: tap Accept Verified Source.', 'ok');
-      if(p&&p.verification_state==='failed')return say('VERIFY FAILED — '+id+'\nBlocked: '+arr(p.blocked_claims).join(', '), 'bad');
-      if(p)return say('VERIFY RESULT — '+id+'\nstate: '+(p.verification_state||'unknown'), 'warn');
+      if(p&&p.body_id&&p.verification_state==='verified')return say('VERIFY PASSED — '+id+'\nNext: tap Accept Verified Source.', 'ok');
+      if(p&&p.body_id&&p.verification_state==='failed')return say('VERIFY FAILED — '+id+'\nBlocked: '+arr(p.blocked_claims).join(', '), 'bad');
+      if(p&&p.body_id)return say('VERIFY RESULT — '+id+'\nstate: '+(p.verification_state||'unknown'), 'warn');
       return say('NO STAGED SOURCE FOUND.', 'bad');
     }
     if(action==='accept'){
-      if(p&&p.acceptance_state==='accepted')return say('ACCEPTED — '+id+'\nAccepted bodies: '+accepted.join(', '), 'ok');
-      if(p)return say('ACCEPT BLOCKED — '+id+'\nstate: '+(p.acceptance_state||'unknown')+' / '+(p.verification_state||'unknown'), 'bad');
+      if(p&&p.body_id&&accepted.includes(id))return say('ACCEPTED — '+id+'\nAccepted bodies: '+accepted.join(', '), 'ok');
+      if(p&&p.body_id&&p.acceptance_state==='accepted')return say('ACCEPTED — '+id+'\nAccepted bodies: '+accepted.join(', '), 'ok');
+      if(p&&p.body_id)return say('ACCEPT BLOCKED — '+id+'\nstate: '+(p.acceptance_state||'unknown')+' / '+(p.verification_state||'unknown'), 'bad');
       return say('NO VERIFIED SOURCE FOUND.', 'bad');
     }
     if(action==='hold'){
-      if(p)return say('HELD — '+id+'\nThis source is not accepted.', 'warn');
+      if(p&&p.body_id)return say('HELD — '+id+'\nThis source is not accepted.', 'warn');
       return say('NO SOURCE FOUND TO HOLD.', 'bad');
     }
     if(action==='chain'){
@@ -91,15 +116,15 @@
     const card=document.getElementById('pmpPhase1PrivateCard');
     if(!card)return;
     banner();
-    if(document.documentElement.dataset.pmpPhase1FeedbackCaptureV1)return;
-    document.documentElement.dataset.pmpPhase1FeedbackCaptureV1='1';
+    if(document.documentElement.dataset.pmpPhase1FeedbackCaptureV2)return;
+    document.documentElement.dataset.pmpPhase1FeedbackCaptureV2='1';
     document.addEventListener('click',function(e){
       const btn=e.target&&e.target.closest&&e.target.closest('#pmpPhase1PrivateCard button');
       if(!btn)return;
       const action=buttonName(btn.textContent);
       say('RUNNING — '+btn.textContent.replace(/\s+/g,' ').trim()+'...', 'info');
-      setTimeout(()=>summarize(action),120);
-      setTimeout(()=>summarize(action),550);
+      setTimeout(()=>summarize(action),180);
+      setTimeout(()=>summarize(action),750);
     },true);
   }
   setInterval(mount,700);
