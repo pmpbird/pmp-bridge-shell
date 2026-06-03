@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#f3ded4">
+<title>PMP Route Guardian v10</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3ded4;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#07101c}#app{position:fixed;inset:0;width:100%;height:100%;border:0;background:#f3ded4}#gate{position:fixed;inset:0;display:grid;place-items:center;background:#f3ded4;padding:18px;text-align:center;z-index:5}.card{width:min(760px,100%);background:#fff;border:3px solid #07101c;border-radius:28px;padding:18px;box-shadow:0 12px 28px #0003}.badge,button{background:#acd1fb;border:2px solid #07101c;border-radius:16px;padding:12px;font:inherit;font-weight:950;color:#07101c}.badge{display:inline-block;border-radius:999px;font-size:12px;padding:6px 10px;margin-bottom:8px}.dark{background:#172234;color:#eef4fb}h1{margin:8px 0;font-size:31px}.grid{display:grid;gap:8px}.loaded #gate{display:none!important}pre{white-space:pre-wrap;text-align:left;background:#102033;color:#eaffef;border-radius:16px;padding:10px;max-height:42vh;overflow:auto;display:none}.open{display:block}
+</style>
+</head>
+<body>
+<iframe id="app" title="PMP Current App"></iframe>
+<div id="gate"><div class="card"><div class="badge">ROUTE GUARDIAN v10 FORCE CURRENT</div><h1>Route Guardian</h1><p id="msg">Press Open Latest App to force-fetch the current app.</p><div class="grid"><button id="openBtn">Open Latest App</button><button id="copyBtn" class="dark">Copy Report</button><button id="showBtn" class="dark">Show / Hide Report</button></div><pre id="report">No report yet.</pre></div></div>
+<script>
+const MAPS=['pmp-current-map-v9.json','pmp-current-map.json'];
+const DEFAULT='pmp-current-inner-cleanbug-rgcontrols-v3.html';
+const app=document.getElementById('app'),msg=document.getElementById('msg'),report=document.getElementById('report');
+let receipt={type:'PMP_ROUTE_GUARDIAN_V10_NOT_OPENED',at:new Date().toISOString()};
+function cleanPath(p,f){p=String(p||f||'').trim();return /^[a-zA-Z0-9._\/-]+\.html$/.test(p)?p:f}
+async function fetchMap(path){const r=await fetch(path+'?rg10='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error(path+' '+r.status);const m=await r.json();m.__map_path=path;return m}
+async function target(){let err='';for(const p of MAPS){try{const m=await fetchMap(p);const cur=m.current_app||{};return{path:cleanPath(cur.path,DEFAULT),cache_key:cur.cache_key||m.updated_at||Date.now(),map_path:p}}catch(e){err=String(e&&e.message||e)}}return{path:DEFAULT,cache_key:'fallback-'+Date.now(),map_path:'fallback',error:err}}
+function deepestDoc(){try{const outer=app.contentWindow,od=app.contentDocument;if(!outer||!od)return null;const inner=od.getElementById('app')||outer.F;if(inner&&inner.contentDocument)return inner.contentDocument;return od}catch(e){return null}}
+function addScript(d,id,src){if(!d||!d.head)return false;if(d.getElementById(id))return true;const s=d.createElement('script');s.id=id;s.src=src;d.head.appendChild(s);return true}
+function forcePhase1(){const d=deepestDoc();if(!d||!d.head)return false;['pmpPhase1PrivateCard','pmpPhase1InlineCard','pmpPhase1CurrentPanel','pmpPhase1FeedbackBanner','pmpFloatP1Btn','pmpFloatP1Panel'].forEach(id=>{try{const x=d.getElementById(id);if(x)x.remove()}catch(e){}});addScript(d,'pmpPhase1OldPanelSuppressScript','pmp-phase1-old-panel-suppress-v1.js?fresh=rg10-'+Date.now());addScript(d,'pmpPhase1PrivateWindowSingleScript','pmp-phase1-private-window-single-v1.js?fresh=rg10-'+Date.now());try{localStorage.setItem('pmp_route_guardian_v10_force_phase1',JSON.stringify({type:'PMP_ROUTE_GUARDIAN_V10_FORCE_PHASE1',at:new Date().toISOString(),safe_claim:'Route Guardian v10 forced the single clean Phase 1 panel and suppressor into the current app.',do_not_claim:'Not source acceptance, hook validation, full transfer, current-clean, frozen, or best-in-world.'}))}catch(e){}return true}
+async function openLatest(){msg.textContent='Force-fetching current map and current app...';const t=await target();receipt={type:'PMP_ROUTE_GUARDIAN_V10_FORCE_CURRENT_OPEN',at:new Date().toISOString(),target:t.path,cache_key:t.cache_key,map_path:t.map_path,safe_claim:'Route Guardian v10 force-fetched the current map and current app and injected the single Phase 1 panel.',do_not_claim:'Not route certification, source acceptance, hook validation, app proof, current-clean, frozen, or best-in-world.'};report.textContent=JSON.stringify(receipt,null,2);try{localStorage.setItem('pmp_route_guardian_v10_receipt',report.textContent);localStorage.setItem('pmp_route_guardian_last_good',t.path)}catch(e){}app.src=t.path+'?fresh=rg10-force-current-'+encodeURIComponent(String(t.cache_key))+'-'+Date.now()+'#control';app.onload=()=>{[120,300,600,1000,1600,2600,4200].forEach(ms=>setTimeout(forcePhase1,ms));setTimeout(()=>document.body.classList.add('loaded'),750)}}
+openBtn.onclick=openLatest;showBtn.onclick=()=>report.classList.toggle('open');copyBtn.onclick=async()=>{try{await navigator.clipboard.writeText(JSON.stringify(receipt,null,2));msg.textContent='Report copied.'}catch(e){report.classList.add('open')}};setInterval(forcePhase1,500);
+</script>
+</body>
+</html>
