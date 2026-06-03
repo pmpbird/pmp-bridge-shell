@@ -1,6 +1,6 @@
 (()=>{
   const STATE_KEY='pmp_phase1_private_window_loader_state_v1';
-  function writeState(state){try{localStorage.setItem(STATE_KEY,JSON.stringify({type:'PMP_PHASE1_PRIVATE_WINDOW_LOADER_STATE_V1',state,at:new Date().toISOString(),safe_claim:'Phase 1 loader is only injecting the native Private Window panel plus visible feedback.',do_not_claim:'This does not prove source acceptance, hook validation, full transfer, current-clean, frozen, or best-in-world.'}))}catch(e){}}
+  function writeState(state){try{localStorage.setItem(STATE_KEY,JSON.stringify({type:'PMP_PHASE1_PRIVATE_WINDOW_LOADER_STATE_V1',state,at:new Date().toISOString(),safe_claim:'Phase 1 loader is injecting native Private Window panel, feedback, and current-visible-body hotfix.',do_not_claim:'This does not prove source acceptance, hook validation, full transfer, current-clean, frozen, or best-in-world.'}))}catch(e){}}
   function innerDoc(){
     try{if(window.F&&window.F.contentDocument)return window.F.contentDocument}catch(e){}
     try{if(typeof window.inside==='function'){const o=window.inside();if(o&&o.d)return o.d}}catch(e){}
@@ -27,7 +27,8 @@
     cleanupOldSurfaces(d||document);
     if(!d||!d.head){writeState('waiting_for_inner_document');return false}
     addScript(d,'pmpPhase1PrivateWindowInnerScript','pmp-phase1-private-window-inner-v1.js?fresh=private-window-native-v1-'+Date.now(),'inner_private_window_script');
-    addScript(d,'pmpPhase1PrivateWindowFeedbackScript','pmp-phase1-private-window-feedback-v1.js?fresh=private-window-feedback-v1-'+Date.now(),'inner_private_window_feedback');
+    addScript(d,'pmpPhase1PrivateWindowFeedbackScript','pmp-phase1-private-window-feedback-v1.js?fresh=private-window-feedback-v2-'+Date.now(),'inner_private_window_feedback');
+    addScript(d,'pmpPhase1PrivateWindowCurrentBodyHotfixScript','pmp-phase1-private-window-current-body-hotfix-v1.js?fresh=current-body-hotfix-v1-'+Date.now(),'current_visible_body_hotfix');
     return true;
   }
   window.PMPPhase1SourceIntakeCurrentV1={run:inject};
