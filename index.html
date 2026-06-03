@@ -14,15 +14,14 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#52b5df;-we
 </style>
 </head>
 <body>
-<iframe id="app" src="pmp-clean-v24.html?fresh=route-guardian-entry-v24#control"></iframe>
+<iframe id="app" src="pmp-clean-v22.html?fresh=route-guardian-entry#control"></iframe>
 <div id="guardianStatus">Route Guardian entry active.</div>
 <script>
 (()=>{
   const POINTER='pmp-latest.json';
   const FALLBACK='pmp-clean-v22.html';
-  const START='pmp-clean-v24.html';
   const FRAME=document.getElementById('app');
-  let activeTarget=START;
+  let activeTarget=FALLBACK;
   let lastLoaded='';
   function status(msg){const s=document.getElementById('guardianStatus');s.textContent=msg;s.style.display='block';clearTimeout(status.t);status.t=setTimeout(()=>{s.style.display='none'},4200)}
   function cleanTarget(t){t=String(t||'').trim();if(!t||/[\s<>"']/.test(t))return FALLBACK;if(!/\.html($|[?#])/.test(t))return FALLBACK;if(/^https?:\/\//i.test(t))return FALLBACK;return t.replace(/^\.\//,'')}
@@ -30,20 +29,20 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#52b5df;-we
     try{
       const r=await fetch(POINTER+'?route_guardian_fresh='+Date.now(),{cache:'no-store'});
       const j=await r.json();
-      return cleanTarget(j.latest||j.last_good||START);
+      return cleanTarget(j.latest||j.last_good||FALLBACK);
     }catch(e){
-      try{return cleanTarget(localStorage.getItem('pmp_route_guardian_last_good')||START)}catch(x){return START}
+      try{return cleanTarget(localStorage.getItem('pmp_route_guardian_last_good')||FALLBACK)}catch(x){return FALLBACK}
     }
   }
   async function routeGuardian(reason){
     const target=await latest();
     activeTarget=target;
-    try{localStorage.setItem('pmp_route_guardian_last_good',target);localStorage.setItem('pmp_route_guardian_receipt',JSON.stringify({type:'PMP_ROUTE_GUARDIAN_ENTRY_RECEIPT_V2',target,reason:reason||'check',at:new Date().toISOString(),safe_claim:'Entry Route Guardian loaded latest pointer into the same Home Screen app.',do_not_claim:'This is route/currentness repair only, not proof that inner hooks are validated.'}))}catch(e){}
+    try{localStorage.setItem('pmp_route_guardian_last_good',target);localStorage.setItem('pmp_route_guardian_receipt',JSON.stringify({type:'PMP_ROUTE_GUARDIAN_ENTRY_RECEIPT_V1',target,reason:reason||'check',at:new Date().toISOString(),safe_claim:'Entry Route Guardian loaded latest pointer into the same Home Screen app.',do_not_claim:'This is route/currentness repair only, not proof that inner hooks are validated.'}))}catch(e){}
     const src=target+'?fresh=route-guardian-'+encodeURIComponent(reason||'check')+'-'+Date.now()+'#control';
     if(lastLoaded!==target){lastLoaded=target;FRAME.src=src;status('Route Guardian loaded current app.\nTarget: '+target)}
   }
   function guardOldDetour(){
-    try{const href=FRAME.contentWindow.location.href;if(/safe-writer/i.test(href)){status('Route Guardian caught old route. Returning to current app.');lastLoaded='';routeGuardian('old-route-caught')}}catch(e){}
+    try{const href=FRAME.contentWindow.location.href;if(/safe-writer/i.test(href)||/pmp-clean-v21\.html/i.test(href)){status('Route Guardian caught old route. Returning to current app.');lastLoaded='';routeGuardian('old-route-caught')}}catch(e){}
   }
   FRAME.addEventListener('load',()=>{setTimeout(guardOldDetour,250);setTimeout(()=>routeGuardian('frame-load-check'),900)});
   setInterval(()=>routeGuardian('periodic-currentness-check'),12000);
