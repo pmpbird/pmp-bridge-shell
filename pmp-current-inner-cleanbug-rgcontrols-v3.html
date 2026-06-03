@@ -39,11 +39,11 @@ iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:var(--f
 <script src="pmp-private-source-loader-v1.js?fresh=rgcontrols-v3-source-loader-v1-simple-ui"></script>
 <script src="pmp-private-simple-source-ui-v1.js?fresh=rgcontrols-v3-simple-source-ui-v1"></script>
 <script src="pmp-private-one-button-pages-v2.js?fresh=rgcontrols-v3-one-button-pages-v2"></script>
-<script src="pmp-phase1-source-intake-current-v1.js?fresh=phase1-current-v1"></script>
+<script src="pmp-phase1-source-intake-current-v1.js?fresh=phase1-current-v2-reload-fix"></script>
 <script>
 const F=document.getElementById('app');
 const startHash=(location.hash&&location.hash!=='#world')?location.hash:'#world';
-F.src='pmp-home-single-v6.html?fresh=current-rgcontrols-v3-private-medium-phase1-'+Date.now()+startHash;
+F.src='pmp-home-single-v6.html?fresh=current-rgcontrols-v3-private-medium-phase1-reload-'+Date.now()+startHash;
 function inside(){try{return{w:F.contentWindow,d:F.contentDocument||F.contentWindow.document}}catch(e){return{}}}
 function bugUrl(){return 'bug-memory-current-clean-v1.html?fresh=open-certified-native-contrast-'+Date.now()+'&contrast=2'}
 function actionUrl(kind){return 'pmp-route-guardian-action-v2.html?action='+encodeURIComponent(kind)+'&from=current-inner-rgcontrols-v3&fresh='+Date.now()}
