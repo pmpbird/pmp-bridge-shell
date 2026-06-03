@@ -26,35 +26,52 @@ h1{margin:8px 0;font-size:31px}.txt{font-weight:850;margin:0 0 12px}.grid{displa
 </head>
 <body>
 <iframe id="app" title="PMP Current App"></iframe>
-<div id="gate"><div id="card"><div class="top"><div class="badge">ROUTE GUARDIAN v9</div><div class="topRight"><button id="residentBtn" class="tiny">Resident</button></div></div><h1 id="title">Route Guardian</h1><p id="text" class="txt">Ready. Push a button to continue.</p><div id="chips"></div><div class="grid"><button id="primary">Open Latest App</button><div class="subgrid"><button id="copy" class="dark">Copy Report</button><button id="show" class="dark">Show / Hide Report</button></div></div><div id="blockDetail" class="diagnostic">No block detail yet.</div><pre id="report" class="drop">No report yet.</pre></div></div>
+<div id="gate"><div id="card"><div class="top"><div class="badge">ROUTE GUARDIAN v9 FORCE CURRENT</div><div class="topRight"><button id="residentBtn" class="tiny">Resident</button></div></div><h1 id="title">Route Guardian</h1><p id="text" class="txt">Ready. Push a button to continue.</p><div id="chips"></div><div class="grid"><button id="primary">Open Latest App</button><div class="subgrid"><button id="copy" class="dark">Copy Report</button><button id="show" class="dark">Show / Hide Report</button></div></div><div id="blockDetail" class="diagnostic">No block detail yet.</div><pre id="report" class="drop">No report yet.</pre></div></div>
 <div id="residentBox" class="residentBox"><iframe id="residentFrame" title="Resident"></iframe></div>
-<script src="pmp-native-contrast-bridge-v2.js?fresh=real-v9-manual-buttons"></script>
-<script src="pmp-route-guardian-v1.js?fresh=real-v9-manual-buttons"></script>
-<script src="pmp-path-certifier-v7.js?fresh=real-v9-manual-buttons"></script>
-<script src="pmp-last-known-good-reader-v1.js?fresh=real-v9-manual-buttons"></script>
-<script src="pmp-route-health-summary-v2.js?fresh=real-v9-manual-buttons"></script>
+<script src="pmp-native-contrast-bridge-v2.js?fresh=real-v9-force-current"></script>
+<script src="pmp-route-guardian-v1.js?fresh=real-v9-force-current"></script>
+<script src="pmp-path-certifier-v7.js?fresh=real-v9-force-current"></script>
+<script src="pmp-last-known-good-reader-v1.js?fresh=real-v9-force-current"></script>
+<script src="pmp-route-health-summary-v2.js?fresh=real-v9-force-current"></script>
 <script>
-const MAP='pmp-current-map.json';
+const MAPS=['pmp-current-map-v9.json','pmp-current-map.json'];
 const DEFAULT='pmp-current-inner-cleanbug-rgcontrols-v3.html';
-let latestTarget=DEFAULT,copyBundle='',loaded=false;
+let latestTarget=DEFAULT,copyBundle='',loaded=false,activeCacheKey='force-current';
 const F=app,G=gate,C=chips,T=title,TXT=text,REP=report,BLOCK=blockDetail,RBOX=residentBox,RFRAME=residentFrame,P=primary;
-const HIDDEN_SUPPORT={repo_index:'pmp-route-guardian-repo-index-v1.html',resident:'pmp-resident-route-guardian-surface-v2.html',rule:'Route Guardian waits for physical button press. No automatic open and no automatic route check.'};
+const HIDDEN_SUPPORT={repo_index:'pmp-route-guardian-repo-index-v1.html',resident:'pmp-resident-route-guardian-surface-v2.html',rule:'Route Guardian force-fetches current map and injects single Private Window Phase 1 panel after physical open.'};
 function vis(){paint();try{if(window.PMPNativeContrastBridgeV2)PMPNativeContrastBridgeV2.apply()}catch(e){}}
 function cleanText(s){return String(s??'').replace(/[<>&]/g,'')}
 function chip(s,ok){return '<span class="pill '+(ok?'ok':'bad')+'">'+cleanText(s)+'</span>'}
 function setGate(a,b,k){document.body.classList.remove('pass','fail','loaded');if(k)document.body.classList.add(k);T.textContent=a;TXT.textContent=b;vis()}
 function safePath(p,f){p=String(p||f||'').trim();return /^[a-zA-Z0-9._\/-]+\.html$/.test(p)?p:f}
-async function getLatestTarget(){try{let r=await fetch(MAP+'?fresh='+Date.now(),{cache:'no-store'});let m=await r.json();let cur=m.current_app||{};return {path:safePath(cur.path,DEFAULT),cache_key:cur.cache_key||'latest',map:m}}catch(e){return {path:DEFAULT,cache_key:'fallback',error:String(e&&e.message||e)}}}
-async function openLatest(reason){setGate('Opening Latest App','Opening current app because you pressed the button.',null);try{let t=await getLatestTarget();latestTarget=t.path;let receipt={type:'PMP_ROUTE_GUARDIAN_V9_MANUAL_OPEN_RECEIPT',at:new Date().toISOString(),reason:reason||'manual_open',target:t.path,cache_key:t.cache_key,safe_claim:'Route Guardian opened the latest app target only after physical button press.',do_not_claim:'This is not route certification, hook validation, or real app proof.'};copyBundle=JSON.stringify({...receipt,hidden_support:HIDDEN_SUPPORT},null,2);REP.textContent=copyBundle;C.innerHTML=chip('latest target',true)+chip('manual button',true)+chip('support hidden',true);try{localStorage.setItem('pmp_route_guardian_v9_manual_open_receipt',copyBundle);localStorage.setItem('pmp_route_guardian_last_good',t.path)}catch(e){}F.src=t.path+'?fresh=route-guardian-manual-open-'+encodeURIComponent(t.cache_key)+'-'+Date.now()+'#control';loaded=true;F.onload=()=>setTimeout(()=>{vis();document.body.classList.add('loaded')},450)}catch(e){setGate('Route Guardian Error','Could not open latest app. Copy report.','fail');copyBundle=String(e&&e.message||e);REP.textContent=copyBundle;BLOCK.textContent=copyBundle;BLOCK.classList.add('open')}}
+async function fetchMap(path){let r=await fetch(path+'?route_guardian_force_current='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error(path+' failed '+r.status);let m=await r.json();m.__map_path=path;return m}
+async function getLatestTarget(){let lastError='';for(const mapPath of MAPS){try{let m=await fetchMap(mapPath);let cur=m.current_app||{};return {path:safePath(cur.path,DEFAULT),cache_key:cur.cache_key||m.updated_at||'latest',map:m,map_path:mapPath}}catch(e){lastError=String(e&&e.message||e)}}return {path:DEFAULT,cache_key:'fallback-'+Date.now(),error:lastError}}
+function deepestDoc(){try{const outer=F.contentWindow,od=F.contentDocument;if(!outer||!od)return null;let inner=od.getElementById('app')||outer.F;if(inner&&inner.contentDocument)return inner.contentDocument;return od}catch(e){return null}}
+function forceSinglePhase1(){
+  try{
+    const d=deepestDoc();
+    if(!d||!d.head)return false;
+    ['pmpPhase1InlineCard','pmpPhase1PrivateCard','pmpPhase1FeedbackBanner','pmpFloatP1Btn','pmpFloatP1Panel'].forEach(id=>{try{const x=d.getElementById(id);if(x)x.remove()}catch(e){}});
+    if(!d.getElementById('pmpPhase1PrivateWindowSingleScript')){
+      const s=d.createElement('script');
+      s.id='pmpPhase1PrivateWindowSingleScript';
+      s.src='pmp-phase1-private-window-single-v1.js?fresh=route-guardian-force-single-'+activeCacheKey+'-'+Date.now();
+      d.head.appendChild(s);
+    }
+    try{localStorage.setItem('pmp_route_guardian_force_phase1_receipt',JSON.stringify({type:'PMP_ROUTE_GUARDIAN_FORCE_PHASE1_RECEIPT_V1',at:new Date().toISOString(),target:latestTarget,cache_key:activeCacheKey,safe_claim:'Route Guardian forced the single Private Window Phase 1 panel into the current app document.',do_not_claim:'This is not source acceptance, hook validation, full transfer, current-clean, frozen, or best-in-world.'}))}catch(e){}
+    return true;
+  }catch(e){return false}
+}
+async function openLatest(reason){setGate('Opening Latest App','Force-fetching current map and current app because you pressed the button.',null);try{let t=await getLatestTarget();latestTarget=t.path;activeCacheKey=String(t.cache_key||Date.now()).replace(/[^a-zA-Z0-9._-]/g,'_');let receipt={type:'PMP_ROUTE_GUARDIAN_V9_FORCE_CURRENT_OPEN_RECEIPT',at:new Date().toISOString(),reason:reason||'manual_open',target:t.path,cache_key:t.cache_key,map_path:t.map_path,safe_claim:'Route Guardian force-fetched the current map, opened the current app target, and will inject the single Phase 1 panel.',do_not_claim:'This is not route certification, hook validation, source acceptance, or real app proof.'};copyBundle=JSON.stringify({...receipt,hidden_support:HIDDEN_SUPPORT},null,2);REP.textContent=copyBundle;C.innerHTML=chip('force current map',true)+chip('target '+t.path,true)+chip('single Phase 1 inject',true);try{localStorage.setItem('pmp_route_guardian_v9_force_current_receipt',copyBundle);localStorage.setItem('pmp_route_guardian_last_good',t.path)}catch(e){}F.src=t.path+'?fresh=route-guardian-force-current-'+encodeURIComponent(activeCacheKey)+'-'+Date.now()+'#control';loaded=true;F.onload=()=>{[250,800,1600,2600,4200].forEach(ms=>setTimeout(forceSinglePhase1,ms));setTimeout(()=>{vis();document.body.classList.add('loaded')},700)}}catch(e){setGate('Route Guardian Error','Could not open latest app. Copy report.','fail');copyBundle=String(e&&e.message||e);REP.textContent=copyBundle;BLOCK.textContent=copyBundle;BLOCK.classList.add('open')}}
 async function manualCheck(){setGate('Route Guardian','Manual route check running because you pressed Copy/Report workflow.',null);try{let r=await PMPRouteGuardianV1.buildReport({store:false});let c=await PMPPathCertifierV7.build(r);let rec=window.PMPLastKnownGoodV1?await PMPLastKnownGoodV1.read(r,c):null;let h=window.PMPRouteHealthSummaryV1?PMPRouteHealthSummaryV1.build(r,c,rec):null;let full={...r,route_health_summary:h,path_certifier:c,hidden_support:HIDDEN_SUPPORT};if(rec&&rec.needed)full.last_known_good=rec;copyBundle=JSON.stringify(full,null,2);REP.textContent=copyBundle;C.innerHTML=chip((h&&h.status)||'ROUTE_UNKNOWN',!!c.open_world_allowed)+chip('manual check',true)+chip('support hidden',true);setGate(c.open_world_allowed?'Route Check Passed':'Route Check Finished',h?PMPRouteHealthSummaryV1.line(h):'Report ready.',c.open_world_allowed?'pass':'fail')}catch(e){copyBundle=String(e&&e.message||e);REP.textContent=copyBundle;setGate('Route Check Error','Copy report.','fail')}}
-function openResident(){RBOX.classList.toggle('open');if(RBOX.classList.contains('open'))RFRAME.src='pmp-resident-route-guardian-surface-v2.html?fresh=real-v9-manual-buttons-'+Date.now()}
+function openResident(){RBOX.classList.toggle('open');if(RBOX.classList.contains('open'))RFRAME.src='pmp-resident-route-guardian-surface-v2.html?fresh=real-v9-force-current-'+Date.now()}
 P.onclick=()=>openLatest('button');
 show.onclick=()=>REP.classList.toggle('open');
-copy.onclick=async()=>{if(!copyBundle){let t=await getLatestTarget();copyBundle=JSON.stringify({type:'PMP_ROUTE_GUARDIAN_V9_REPORT',target:t.path,at:new Date().toISOString(),hidden_support:HIDDEN_SUPPORT,safe_claim:'Report created after physical button press.',do_not_claim:'Report is not app proof.'},null,2);REP.textContent=copyBundle}try{await navigator.clipboard.writeText(copyBundle);setGate('Copied','Report copied.','pass')}catch(e){REP.classList.add('open')}};
+copy.onclick=async()=>{if(!copyBundle){let t=await getLatestTarget();copyBundle=JSON.stringify({type:'PMP_ROUTE_GUARDIAN_V9_FORCE_CURRENT_REPORT',target:t.path,cache_key:t.cache_key,map_path:t.map_path,at:new Date().toISOString(),hidden_support:HIDDEN_SUPPORT,safe_claim:'Report created after physical button press.',do_not_claim:'Report is not app proof.'},null,2);REP.textContent=copyBundle}try{await navigator.clipboard.writeText(copyBundle);setGate('Copied','Report copied.','pass')}catch(e){REP.classList.add('open')}};
 residentBtn.onclick=openResident;
 window.addEventListener('message',e=>{if(e.data&&e.data.type==='PMP_RESIDENT_SURFACE_CLOSE')RBOX.classList.remove('open')});
-C.innerHTML=chip('manual buttons only',true)+chip('no auto open',true)+chip('no auto check',true);
-vis();setInterval(vis,2000);
+C.innerHTML=chip('force current map',true)+chip('physical open',true)+chip('single panel inject',true);
+vis();setInterval(vis,2000);setInterval(forceSinglePhase1,2500);
 </script>
 </body>
 </html>
