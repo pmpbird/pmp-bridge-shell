@@ -1,34 +1,32 @@
 (()=>{
   const STATE_KEY='pmp_phase1_private_window_loader_state_v1';
-  function writeState(state){try{localStorage.setItem(STATE_KEY,JSON.stringify({type:'PMP_PHASE1_PRIVATE_WINDOW_LOADER_STATE_V1',state,at:new Date().toISOString(),safe_claim:'Phase 1 loader is injecting native Private Window panel, feedback, and current-visible-body hotfix.',do_not_claim:'This does not prove source acceptance, hook validation, full transfer, current-clean, frozen, or best-in-world.'}))}catch(e){}}
+  function writeState(state){try{localStorage.setItem(STATE_KEY,JSON.stringify({type:'PMP_PHASE1_PRIVATE_WINDOW_LOADER_STATE_V2_SINGLE_PANEL',state,at:new Date().toISOString(),safe_claim:'Phase 1 loader is injecting one clean Private Window panel only.',do_not_claim:'This does not prove source acceptance, hook validation, full transfer, current-clean, frozen, or best-in-world.'}))}catch(e){}}
   function innerDoc(){
     try{if(window.F&&window.F.contentDocument)return window.F.contentDocument}catch(e){}
     try{if(typeof window.inside==='function'){const o=window.inside();if(o&&o.d)return o.d}}catch(e){}
     return null;
   }
   function cleanupOldSurfaces(d){
-    try{const old=d&&d.getElementById&&d.getElementById('pmpPhase1InlineCard');if(old)old.remove()}catch(e){}
-    try{const oldTop=document.getElementById('pmpFloatP1Btn');if(oldTop)oldTop.remove()}catch(e){}
-    try{const oldTopPanel=document.getElementById('pmpFloatP1Panel');if(oldTopPanel)oldTopPanel.remove()}catch(e){}
-  }
-  function addScript(d,id,src,onState){
-    if(d.getElementById(id))return true;
-    const s=d.createElement('script');
-    s.id=id;
-    s.src=src;
-    s.onload=()=>writeState(onState+'_loaded');
-    s.onerror=()=>writeState(onState+'_failed');
-    d.head.appendChild(s);
-    writeState(onState+'_injected');
-    return true;
+    if(!d)return;
+    ['pmpPhase1InlineCard','pmpPhase1PrivateCard','pmpPhase1FeedbackBanner','pmpFloatP1Btn','pmpFloatP1Panel'].forEach(id=>{try{const x=d.getElementById(id);if(x)x.remove()}catch(e){}});
+    try{const x=document.getElementById('pmpFloatP1Btn');if(x)x.remove()}catch(e){}
+    try{const x=document.getElementById('pmpFloatP1Panel');if(x)x.remove()}catch(e){}
   }
   function inject(){
     const d=innerDoc();
     cleanupOldSurfaces(d||document);
     if(!d||!d.head){writeState('waiting_for_inner_document');return false}
-    addScript(d,'pmpPhase1PrivateWindowInnerScript','pmp-phase1-private-window-inner-v1.js?fresh=private-window-native-v1-'+Date.now(),'inner_private_window_script');
-    addScript(d,'pmpPhase1PrivateWindowFeedbackScript','pmp-phase1-private-window-feedback-v1.js?fresh=private-window-feedback-v2-'+Date.now(),'inner_private_window_feedback');
-    addScript(d,'pmpPhase1PrivateWindowCurrentBodyHotfixScript','pmp-phase1-private-window-current-body-hotfix-v1.js?fresh=current-body-hotfix-v1-'+Date.now(),'current_visible_body_hotfix');
+    if(!d.getElementById('pmpPhase1PrivateWindowSingleScript')){
+      const s=d.createElement('script');
+      s.id='pmpPhase1PrivateWindowSingleScript';
+      s.src='pmp-phase1-private-window-single-v1.js?fresh=single-panel-v1-'+Date.now();
+      s.onload=()=>writeState('single_private_window_panel_loaded');
+      s.onerror=()=>writeState('single_private_window_panel_failed');
+      d.head.appendChild(s);
+      writeState('single_private_window_panel_injected');
+    } else {
+      writeState('single_private_window_panel_already_present');
+    }
     return true;
   }
   window.PMPPhase1SourceIntakeCurrentV1={run:inject};
