@@ -1,6 +1,6 @@
 {
   "type": "PMP_LATEST_APP_POINTER_V2",
-  "latest": "pmp-clean-v23.html",
+  "latest": "pmp-clean-v24.html",
   "last_good": "pmp-clean-v22.html",
   "minimum_good_version": "v22",
   "updated_at": "2026-06-02T00:00:00Z",
@@ -9,5 +9,5 @@
   "blocked_detours": [
     "safe-writer"
   ],
-  "meaning": "Permanent launchers read this file, health-check the newest app, and open it inside the same Home Screen app. v23 wraps v21 and adds Phase 1 Source Intake for local/private staging, marker verification, acceptance gating, body-chain status, manifest-alignment blocking, support-object separation, field-family routing, receipts, and private backup. v22 remains last_good fallback. This pointer change enables Home Screen testing only; it does not prove hooks validated, real app proof, source bodies app-accepted, full transfer, current-clean, frozen, or best-in-world."
+  "meaning": "Permanent launchers read this file, health-check the newest app, and open it inside the same Home Screen app. v24 wraps v21 and force-injects a visible Phase 1 Source Intake panel into the Private Window for local/private staging, marker verification, acceptance gating, body-chain status, manifest-alignment blocking, support-object separation, field-family routing, receipts, and private backup. v22 remains last_good fallback. This pointer change enables Home Screen testing only; it does not prove hooks validated, real app proof, source bodies app-accepted, full transfer, current-clean, frozen, or best-in-world."
 }
