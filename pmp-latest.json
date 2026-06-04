@@ -1,13 +1,13 @@
 {
-  "type": "PMP_LATEST_APP_POINTER_V2",
-  "latest": "pmp-clean-v22.html",
-  "last_good": "pmp-clean-v22.html",
-  "minimum_good_version": "v22",
-  "updated_at": "2026-06-01T00:00:00Z",
+  "type": "PMP_LATEST_APP_POINTER_V3",
+  "latest": "pmp-route-guardian-current-loader-v14.html",
+  "last_good": "pmp-route-guardian-current-loader-v14.html",
+  "minimum_good_version": "v14",
+  "updated_at": "2026-06-04T05:56:00Z",
   "health_required": true,
   "fallback_enabled": true,
   "blocked_detours": [
     "safe-writer"
   ],
-  "meaning": "Permanent launchers read this file, health-check the newest app, and open it inside the same Home Screen app. v22 wraps v21 and directly repairs Private Status, Private Backup, and Mold-to-App Wiring button behavior."
+  "meaning": "Permanent launchers read this file and open Route Guardian v14 inside the same Home Screen app. Route Guardian v14 still requires the user to press Open Latest App before opening the current inner app. It injects the Private Window support set, fixed add-on loader, copy add-on status helper, and plan slot fix helper. This pointer change does not prove app wiring, hook validation, full transfer, current-clean, frozen, or best-in-world."
 }
