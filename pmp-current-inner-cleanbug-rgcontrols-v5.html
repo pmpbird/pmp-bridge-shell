@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#f3ded4">
+<title>PMP Current Inner RG Controls v5</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3ded4;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#07101c}
+iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#f3ded4}
+#pmpSourceRouterCard{position:fixed;left:10px;right:10px;bottom:10px;z-index:99;background:#fff;border:2px solid #07101c;border-radius:18px;padding:10px;box-shadow:0 4px 20px rgba(0,0,0,.18);max-height:42vh;overflow:auto}
+.grid{display:grid;gap:8px}
+button{background:#acd1fb;border:2px solid #07101c;border-radius:14px;padding:10px;font:inherit;font-weight:900;color:#07101c}
+#pmpSourceRouterBanner{font-weight:900;margin-bottom:8px;background:#b8f7c1;border-radius:12px;padding:8px}
+#pmpSourceRouterOut{white-space:pre-wrap;background:#102033;color:#eaffef;border-radius:12px;padding:8px;max-height:22vh;overflow:auto;font-size:12px}
+</style>
+</head>
+<body>
+<iframe id="app" title="PMP Current Inner v4"></iframe>
+<div id="pmpSourceRouterCard"><div id="pmpSourceRouterBanner">Phase 2 verification overlay ready.</div><div class="grid"></div><pre id="pmpSourceRouterOut">No report yet.</pre></div>
+<script src="pmp-phase2-runtime-verification-v1.js?v5=1"></script>
+<script>
+const f=document.getElementById('app');
+const h=(location.hash&&location.hash!=='#world')?location.hash:'#control';
+f.src='pmp-current-inner-cleanbug-rgcontrols-v4.html?fresh=v5-phase2-'+Date.now()+h;
+</script>
+</body>
+</html>
