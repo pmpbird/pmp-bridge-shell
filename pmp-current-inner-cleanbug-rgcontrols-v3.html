@@ -40,6 +40,7 @@ iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:var(--f
 <script src="pmp-private-simple-source-ui-v1.js?fresh=rgcontrols-v3-simple-source-ui-v1"></script>
 <script src="pmp-private-one-button-pages-v2.js?fresh=rgcontrols-v3-one-button-pages-v2"></script>
 <script src="pmp-phase1-source-intake-current-v1.js?fresh=phase1-private-window-loader-v1"></script>
+<script src="pmp-phase2-private-window-adapter-v1.js?fresh=phase2-private-window-adapter-v1"></script>
 <script>
 const F=document.getElementById('app');
 const startHash=(location.hash&&location.hash!=='#world')?location.hash:'#world';
@@ -150,6 +151,7 @@ function patch(){
   try{if(window.PMPPrivateSimpleSourceUIV1&&typeof window.PMPPrivateSimpleSourceUIV1.run==='function')window.PMPPrivateSimpleSourceUIV1.run()}catch(e){}
   try{if(window.PMPOneButtonPrivatePagesV2&&typeof window.PMPOneButtonPrivatePagesV2.run==='function')window.PMPOneButtonPrivatePagesV2.run()}catch(e){}
   try{if(window.PMPPhase1SourceIntakeCurrentV1&&typeof window.PMPPhase1SourceIntakeCurrentV1.run==='function')window.PMPPhase1SourceIntakeCurrentV1.run()}catch(e){}
+  try{if(window.PMPPhase2PrivateWindowAdapterV1&&typeof window.PMPPhase2PrivateWindowAdapterV1.run==='function')window.PMPPhase2PrivateWindowAdapterV1.run(w,d)}catch(e){}
   installBridgeToggleFix(w,d);
   simplifyBridgeButtons(w,d);
   installDeepResidentOverlay(w,d);
