@@ -2,22 +2,22 @@
   "type": "PMP_CURRENT_APP_MAP",
   "app_name": "PMP Current",
   "app_version": "PMP-CURRENT-1",
-  "updated_at": "2026-06-04T20:55:00.000Z",
+  "updated_at": "2026-06-04T21:05:00.000Z",
   "route_guardian_loader": {
     "path": "pmp-route-guardian-current-loader-v14.html",
     "label": "PMP Current Route Guardian Loader v14",
-    "cache_key": "pmp-route-guardian-current-loader-v14-phase2-v5",
+    "cache_key": "pmp-route-guardian-current-loader-v14-private-window-phase2-fix",
     "status": "current"
   },
   "current_app": {
-    "path": "pmp-current-inner-cleanbug-rgcontrols-v5.html",
-    "label": "PMP Current v5 Phase 2 verification wrapper over v4 app",
-    "cache_key": "pmp-current-v5-phase2-runtime-verification-wrapper",
+    "path": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+    "label": "PMP Current v4 migration wrapper over v3 app",
+    "cache_key": "pmp-current-v4-private-window-phase2-fix",
     "status": "current"
   },
   "user_facing_rule": "Only show PMP Current / PMP-CURRENT-1 as the app version.",
   "home_screen_rule": "Install pmp-app-current.html once. It is a stable map-driven door and should change as little as possible.",
-  "update_rule": "Route Guardian v14 opens the current app only after the user presses Open Latest App. Current app v5 loads the existing v4 app and provides a Phase 2 Runtime Verification overlay with a copyable report. This does not prove hook validation, real app proof, current-clean, frozen, or best-in-world.",
+  "update_rule": "Route Guardian v14 opens the current app only after the user presses Open Latest App. Phase 2 Runtime Verification must appear inside the Private Window helper path, not as a Control Room overlay. This does not prove hook validation, real app proof, current-clean, frozen, or best-in-world.",
   "fallback_app": {
     "path": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
     "cache_key": "fallback-cleanbug-rgcontrols-v4"
