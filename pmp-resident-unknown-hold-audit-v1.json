@@ -1,0 +1,129 @@
+{
+  "type": "PMP_RESIDENT_UNKNOWN_HOLD_AUDIT",
+  "version": "v1-current",
+  "built_on": "2026-06-07",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "audit_state": "gate2_file_path_audit_passed_with_watch",
+  "source_inventory": "pmp-resident-current-capability-inventory-v1.json",
+  "architecture": "PMP_CURRENT_RESIDENT_SAFE_CHANGE_ARCHITECTURE_v1-draft.md",
+  "summary": {
+    "paths_checked": 13,
+    "present_and_classified": 2,
+    "manifest_listed_but_missing_at_path": 11,
+    "remaining_unknown_hold_paths_from_this_list": 0,
+    "manifest_cleanup_required": true,
+    "reasoning_engine_audit_still_separate_and_open": true
+  },
+  "present_and_classified": [
+    {
+      "path": "bm.html",
+      "sha": "f201aa2065a71e371ab123c7aeb9732369b58cdf",
+      "classification": "ACTIVE_CURRENT_PRIVATE_BUG_MEMORY_ENTRY",
+      "preservation_status": "PRESERVE_AND_DEDUPLICATE_WITH_PROOF",
+      "capabilities": [
+        "Bug Memory room",
+        "Resident drawer",
+        "Save Bug Memory route",
+        "Load Notes memory for private session",
+        "copy private session packet for Resident",
+        "Bug Lab route",
+        "controlled test order"
+      ],
+      "watch": "bm.html overlaps heavily with private-bug-memory-hub-v7.html but uses current direct route strings. Do not delete either until route identity, wrapper usage, and behavior equivalence are tested."
+    },
+    {
+      "path": "pmp-inventory-eyes-detail-map-v1.0.0.json",
+      "sha": "36fd5d0cf9f48185a9c57ed5d0df953e72f1fcb7",
+      "classification": "ACTIVE_CURRENT_INVENTORY_COVERAGE_CONTRACT",
+      "preservation_status": "NON_NEGOTIABLE_PRESERVE_AND_UPGRADE",
+      "capabilities": [
+        "identity coverage",
+        "file coverage",
+        "route coverage",
+        "screen coverage",
+        "interaction coverage",
+        "state-key-name coverage",
+        "theme coverage",
+        "Resident coverage",
+        "Bug Memory coverage",
+        "lossless coverage",
+        "update coverage",
+        "safety coverage",
+        "history coverage",
+        "required report shape"
+      ],
+      "watch": "Coverage map is an observation contract, not permission to read private values."
+    }
+  ],
+  "manifest_listed_but_missing_at_path": [
+    {
+      "path": "resident-v1.html",
+      "classification": "MANIFEST_RESIDUE_OR_UNAVAILABLE_PATH",
+      "repository_fetch_result": "404_NOT_FOUND"
+    },
+    {
+      "path": "resident-brain-core-v1.html",
+      "classification": "MANIFEST_RESIDUE_OR_UNAVAILABLE_PATH",
+      "repository_fetch_result": "404_NOT_FOUND"
+    },
+    {
+      "path": "resident-intelligence-v1.html",
+      "classification": "MANIFEST_RESIDUE_OR_UNAVAILABLE_PATH",
+      "repository_fetch_result": "404_NOT_FOUND"
+    },
+    {
+      "path": "resident-conversation-layer.html",
+      "classification": "MANIFEST_RESIDUE_OR_UNAVAILABLE_PATH",
+      "repository_fetch_result": "404_NOT_FOUND"
+    },
+    {
+      "path": "resident-chat-menu.html",
+      "classification": "MANIFEST_RESIDUE_OR_UNAVAILABLE_PATH",
+      "repository_fetch_result": "404_NOT_FOUND"
+    },
+    {
+      "path": "local-storage-manager.html",
+      "classification": "MANIFEST_RESIDUE_OR_UNAVAILABLE_PATH",
+      "repository_fetch_result": "404_NOT_FOUND"
+    },
+    {
+      "path": "bridge-contextual-menu.html",
+      "classification": "MANIFEST_RESIDUE_OR_UNAVAILABLE_PATH",
+      "repository_fetch_result": "404_NOT_FOUND"
+    },
+    {
+      "path": "corpus-workbench.html",
+      "classification": "MANIFEST_RESIDUE_OR_UNAVAILABLE_PATH",
+      "repository_fetch_result": "404_NOT_FOUND"
+    },
+    {
+      "path": "project-connection-workbench.html",
+      "classification": "MANIFEST_RESIDUE_OR_UNAVAILABLE_PATH",
+      "repository_fetch_result": "404_NOT_FOUND"
+    },
+    {
+      "path": "lossless-certification-system.html",
+      "classification": "MANIFEST_RESIDUE_OR_UNAVAILABLE_PATH",
+      "repository_fetch_result": "404_NOT_FOUND"
+    },
+    {
+      "path": "proof-ledger-system.html",
+      "classification": "MANIFEST_RESIDUE_OR_UNAVAILABLE_PATH",
+      "repository_fetch_result": "404_NOT_FOUND"
+    }
+  ],
+  "missing_path_law": "A manifest-listed path that returns 404 is not an existing capability and must not be invented, assumed active, or treated as preserved code. It remains manifest residue or unavailable until a real file is found.",
+  "cleanup_rule": "Correct the Inventory Eyes manifest in a separately tested support-file update. Do not create empty placeholder files merely to satisfy the old manifest.",
+  "bm_overlap_rule": "Do not deduplicate bm.html and private-bug-memory-hub-v7/v9 until route use, current-map use, user-visible behavior, and rollback are proven.",
+  "gate2_result": {
+    "gate": "All UNKNOWN — HOLD file paths audited",
+    "status": "PASSED_WITH_WATCH",
+    "remaining_work": [
+      "manifest residue cleanup",
+      "bm.html versus private-bug-memory-hub-v7/v9 equivalence and route audit",
+      "current integrated Resident reasoning/model connection audit"
+    ]
+  },
+  "safe_claim": "Every file path previously listed as UNKNOWN — HOLD has now been checked: two are present and classified, and eleven are manifest-listed missing paths with watch.",
+  "do_not_claim": "Do not claim the missing files never existed historically, the manifest is already corrected, bm.html is safe to delete, or the Resident reasoning engine is fully audited."
+}
