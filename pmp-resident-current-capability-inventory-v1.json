@@ -1,0 +1,259 @@
+{
+  "type": "PMP_RESIDENT_CURRENT_CAPABILITY_INVENTORY",
+  "version": "v1-current",
+  "built_on": "2026-06-07",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "inventory_state": "current_known_capability_inventory_with_watch",
+  "purpose": "Ground the Resident Safe Change Architecture in capabilities that already exist so working functions are preserved, upgraded deliberately, or deprecated only with proof.",
+  "truth_boundary": "Direct audit of the named repository files and the Inventory Eyes manifest. This is not yet proof that every historical or unclassified Resident file is fully understood.",
+  "current_flow": {
+    "outer_current_layer": "pmp-home-single-v14.html",
+    "resident_user_surface": "pmp-home-single-v6.html Resident drawer",
+    "hidden_awareness": [
+      "pmp-resident-xray-core.js",
+      "pmp-resident-xray-finish.js",
+      "pmp-inventory-eyes-xray-feed.js"
+    ],
+    "private_bug_memory_surface": "private-bug-memory-hub-v9.html",
+    "notes_catalog": "resident-notes-catalog-v3.html",
+    "notes_backend_bridge": "resident-notes-backend-v2.html",
+    "zip_xray": "resident-zip-xray-v2.html",
+    "bug_mixer": "private-bug-mixer-lab-v1.html",
+    "protected_edit_tool": "safe-writer.html through safe-writer-v14.html",
+    "safe_point_and_recovery_tool": "code-safety.html through code-safety-v13.html"
+  },
+  "audited_files": [
+    {"path":"pmp-home-single-v14.html","sha":"9450493713a18f7b88b55544e05e9a1a06627428","status":"active_current_outer_layer"},
+    {"path":"pmp-home-single-v6.html","sha":"8f04c9636cb3fac128db54fc5b058020cd23cffc","status":"active_current_resident_surface"},
+    {"path":"resident.html","sha":"9bae980ebdd442e3b576a40277083dc419d7202a","status":"known_inventory_support_or_legacy_surface"},
+    {"path":"pmp-resident-xray-core.js","sha":"19ed683803a09f732cf31199370063722689e731","status":"hidden_current_support"},
+    {"path":"pmp-resident-xray-finish.js","sha":"28a790d4c610a3cb827dcd045ffc128ddc019757","status":"hidden_current_support"},
+    {"path":"pmp-inventory-eyes-xray-feed.js","sha":"cc4186483f79339b1e859ace325141925067bd8a","status":"hidden_current_support"},
+    {"path":"pmp-inventory-eyes-manifest-v1.0.0.json","sha":"05837834e3c7cb6e6a1a5a9bde27498c19a9e614","status":"current_inventory_authority_with_watch"},
+    {"path":"resident-notes-catalog-v3.html","sha":"2a3c2a3a9427edf0776d238e831a63ab7a993748","status":"active_current_private_boundary_tool"},
+    {"path":"resident-notes-backend-v2.html","sha":"e98d91df991cd6213147b9aa5ad51c563eb07746","status":"active_current_private_boundary_tool"},
+    {"path":"resident-zip-xray-v2.html","sha":"c8eaf8a48de37c01a9ecb8e4dfd1adda8638b820","status":"active_current_private_boundary_tool"},
+    {"path":"private-bug-memory-hub-v9.html","sha":"a8cbcb59db1cedd222d82167cfd39a7696073793","status":"active_current_wrapper"},
+    {"path":"private-bug-memory-hub-v7.html","sha":"292d5f30cec4fb3750ede185c024fa99ab1a1bf5","status":"wrapped_implementation_used_by_v9"},
+    {"path":"private-bug-mixer-lab-v1.html","sha":"ddfc998fabb79dc4546f329c1bb36cfb39ad908e","status":"active_current_private_boundary_tool"},
+    {"path":"safe-writer-v14.html","sha":"697f93e50f7188b2bf2668758e35aaf7f0d6e518","status":"linked_resident_context_wrapper"},
+    {"path":"safe-writer.html","sha":"789345bd4bb2c47db62f96803a9780554a236a4a","status":"linked_protected_edit_tool"},
+    {"path":"code-safety-v13.html","sha":"0347ff32b2ea149806ec74ee418ed0f8e827a772","status":"linked_resident_context_wrapper"},
+    {"path":"code-safety.html","sha":"6dedcd1beb80478539e1a66b515b0d5b1c9a8eeb","status":"linked_safe_point_and_recovery_tool"}
+  ],
+  "existing_capabilities": [
+    {
+      "capability_id": "RC-001",
+      "name": "Integrated Resident conversation drawer",
+      "status": "PRESERVE_AND_UPGRADE",
+      "evidence": ["Resident drawer", "normal-language ask box", "Run", "Chat", "Tools", "packet/pipeline/work controls"],
+      "future_role": "Primary user request entry for Resident Safe Change"
+    },
+    {
+      "capability_id": "RC-002",
+      "name": "Guide, Inspector, Diagnose, and Prepare modes",
+      "status": "PRESERVE_AND_MAP",
+      "evidence": ["resident.html autonomy modes"],
+      "future_role": "Explicit reasoning and action authority levels"
+    },
+    {
+      "capability_id": "RC-003",
+      "name": "Active Work Thread",
+      "status": "PRESERVE_AND_UPGRADE",
+      "evidence": ["goal", "phase", "current tool", "safety state", "next safe step"],
+      "future_role": "Persistent change-job state and handoff record"
+    },
+    {
+      "capability_id": "RC-004",
+      "name": "Whole-App Health Snapshot",
+      "status": "UPGRADE",
+      "evidence": ["safe-point bank health", "last good", "quarantine", "App Truth health"],
+      "future_role": "Change-aware health and promotion readiness summary"
+    },
+    {
+      "capability_id": "RC-005",
+      "name": "App Truth Scanner",
+      "status": "PRESERVE_AND_EXPAND",
+      "evidence": ["Bridge contract scan", "hidden/forbidden elements", "extra cards", "raw areas", "touch-triggered DOM change"],
+      "future_role": "Whole-app contract registry and runtime regression scanner"
+    },
+    {
+      "capability_id": "RC-006",
+      "name": "Storage key scanner",
+      "status": "PRESERVE_WITH_PRIVACY_BOUNDARY",
+      "evidence": ["key names and sizes", "no automatic bug claim"],
+      "future_role": "Storage identity and migration impact detection"
+    },
+    {
+      "capability_id": "RC-007",
+      "name": "Bug Memory",
+      "status": "PRESERVE_AND_UPGRADE",
+      "evidence": ["deduplication", "times seen", "status", "severity", "confidence", "history"],
+      "future_role": "Permanent bug registry and regression-test source"
+    },
+    {
+      "capability_id": "RC-008",
+      "name": "Repair request builder",
+      "status": "UPGRADE",
+      "evidence": ["SAFE_WRITER_REPAIR_REQUEST", "repair only proven failures", "verification steps"],
+      "future_role": "Candidate change specification with acceptance tests"
+    },
+    {
+      "capability_id": "RC-009",
+      "name": "Same-origin live PMP mirror",
+      "status": "PRESERVE_AND_ISOLATE",
+      "evidence": ["mirror loads PMP", "DOM inspection without changing normal app"],
+      "future_role": "Candidate preview/runtime sandbox"
+    },
+    {
+      "capability_id": "RC-010",
+      "name": "Hidden Resident X-Ray",
+      "status": "PRESERVE_AND_UPGRADE",
+      "evidence": ["live DOM map", "interactive controls", "screens", "routes", "manifest", "current map", "vault summary", "storage key names", "15-second refresh"],
+      "future_role": "Live dependency map and change-impact evidence"
+    },
+    {
+      "capability_id": "RC-011",
+      "name": "Inventory Eyes and lossless command bridge",
+      "status": "PRESERVE_SEPARATION",
+      "evidence": ["active/inactive file inventory", "lossless report", "vault packet", "Resident commands"],
+      "future_role": "Repository/app inventory authority; separate from X-Ray"
+    },
+    {
+      "capability_id": "RC-012",
+      "name": "Private Bug Memory room",
+      "status": "PRESERVE",
+      "evidence": ["Notes-held memory", "session load", "Resident packet", "controlled test order"],
+      "future_role": "Private historical bug and regression evidence"
+    },
+    {
+      "capability_id": "RC-013",
+      "name": "Bug Memory pack and Notes catalog builder",
+      "status": "PRESERVE_AND_NORMALIZE",
+      "evidence": ["ZIP pack", "bug normalization", "manifest", "tests", "playbooks", "lossless checks", "Notes save paths"],
+      "future_role": "Portable bug/regression pack format"
+    },
+    {
+      "capability_id": "RC-014",
+      "name": "Notes backend bridge",
+      "status": "PRESERVE_WITH_MANUAL_BOUNDARY",
+      "evidence": ["local ZIP scan", "chunk hashes", "clipboard", "Shortcut", "Apple Notes", "no GitHub private Bug Memory"],
+      "future_role": "Private evidence transfer outside public repository"
+    },
+    {
+      "capability_id": "RC-015",
+      "name": "Resident ZIP X-Ray",
+      "status": "PRESERVE_AND_CONNECT",
+      "evidence": ["band classification", "path safety", "size limits", "required fields", "duplicate IDs", "quarantine", "private import"],
+      "future_role": "Bug-pack intake validator and quarantine gate"
+    },
+    {
+      "capability_id": "RC-016",
+      "name": "Bug Mixer Lab",
+      "status": "PRESERVE_AS_HYPOTHESIS_TOOL",
+      "evidence": ["combine two bugs", "fundamental ranking", "prediction", "session ledger", "Notes save"],
+      "future_role": "Generate candidate breaker hypotheses; never treat predictions as truth"
+    },
+    {
+      "capability_id": "RC-017",
+      "name": "Safe Writer protected transaction",
+      "status": "PRESERVE_AND_REFACTOR_TO_CANDIDATE_FLOW",
+      "evidence": ["GitHub fetch", "exact find/replace", "DOM guard", "preview", "before safe point", "commit", "after safe point", "Last Good", "quarantine"],
+      "future_role": "Candidate branch writer and promotion transaction executor"
+    },
+    {
+      "capability_id": "RC-018",
+      "name": "Code Safety safe-point bank",
+      "status": "PRESERVE_AND_UPGRADE",
+      "evidence": ["hashes", "safe points", "Last Good", "pinned emergency", "Auto-Catch", "find", "compare", "export/import", "quarantine"],
+      "future_role": "Protected baseline, rollback bank, and audit ledger"
+    },
+    {
+      "capability_id": "RC-019",
+      "name": "Resident context inside Safe Writer and Code Safety",
+      "status": "PRESERVE_AND_REPLACE_HANDOFF_DEPENDENCY",
+      "evidence": ["reads tool text and local status", "copies handoff", "guides next step"],
+      "future_role": "Resident-native tool control with protected permissions"
+    },
+    {
+      "capability_id": "RC-020",
+      "name": "Privacy boundary separation",
+      "status": "NON_NEGOTIABLE_PRESERVE",
+      "evidence": ["key names only in X-Ray", "no Apple Notes reads", "private Bug Memory not stored publicly", "token/password values excluded"],
+      "future_role": "Permanent trust-zone and data-classification law"
+    }
+  ],
+  "current_storage_and_contract_keys": [
+    "pmp_resident_thread_v1",
+    "pmp_resident_report_v1",
+    "pmp_bug_memory_v1",
+    "pmp_resident_xray_context_v1",
+    "pmp_resident_xray_history_v1",
+    "pmp_resident_xray_rule_v1",
+    "pmp_inventory_eyes_latest_v1",
+    "pmp_lossless_visible_compact_latest_v1",
+    "pmp_app_lossless_inventory_latest_v1",
+    "pmp_resident_auto_lossless_inventory_context_v1",
+    "pmp_lossless_improve_runs_inventory_rule_v1",
+    "pmp_code_safety_bank_v1",
+    "pmp_safe_writer_last_good_v3",
+    "pmp_clean_connection_packets_v5",
+    "pmp_corpus_inbox_v1",
+    "pmp_auto_update_request_v20",
+    "pmp_private_bug_memory_existing_v1",
+    "pmp_backend_config_v1"
+  ],
+  "verified_current_limits": [
+    "Resident does not currently perform independent repository commits from its normal conversation surface.",
+    "Resident does not currently perform independent restore/write-back from its normal conversation surface.",
+    "The standalone App Truth scanner is primarily a Bridge-screen contract scanner, not a complete whole-app change validator.",
+    "Safe Writer can commit with a manually entered GitHub token, but it targets direct protected transactions rather than a complete candidate-branch promotion architecture.",
+    "Code Safety restore write-back is described as not connected in the audited UI.",
+    "Resident wrappers inside Safe Writer and Code Safety guide and copy handoffs; they do not independently control the underlying tools.",
+    "Bug Mixer predictions are hypotheses, not validated bugs.",
+    "The audited system does not yet prove automatic affected-test selection, candidate identity binding, independent outer-guardian approval, or tested-to-promoted identity equality.",
+    "The reasoning/model connection used by the current integrated Resident has not yet been fully audited and remains HOLD until documented."
+  ],
+  "known_manifest_paths_not_yet_fully_audited": [
+    "resident-v1.html",
+    "resident-brain-core-v1.html",
+    "resident-intelligence-v1.html",
+    "resident-conversation-layer.html",
+    "resident-chat-menu.html",
+    "local-storage-manager.html",
+    "bridge-contextual-menu.html",
+    "corpus-workbench.html",
+    "project-connection-workbench.html",
+    "lossless-certification-system.html",
+    "proof-ledger-system.html",
+    "bm.html",
+    "pmp-inventory-eyes-detail-map-v1.0.0.json"
+  ],
+  "preservation_contract": {
+    "law": "No existing Resident capability may be silently removed, renamed, bypassed, or semantically weakened during the Safe Change Architecture build.",
+    "allowed_statuses": ["PRESERVE", "PRESERVE_AND_UPGRADE", "REPLACE_SAFELY", "DEPRECATE_WITH_PROOF", "UNKNOWN_HOLD"],
+    "replacement_requirements": [
+      "old capability identified",
+      "new capability mapped",
+      "data/key migration defined",
+      "behavioral equivalence or intentional improvement tested",
+      "rollback available",
+      "user-visible removal disclosed",
+      "receipt written"
+    ],
+    "high_risk_protected_objects": [
+      "frozen baseline identity",
+      "Code Safety bank",
+      "Last Good and pinned emergency pointers",
+      "Resident X-Ray privacy boundary",
+      "Inventory Eyes separation",
+      "Bug Memory privacy boundary",
+      "claim ceilings",
+      "promotion rules",
+      "rollback authority"
+    ]
+  },
+  "architecture_entry_rule": "The Resident Safe Change Architecture must begin with this inventory as Protected Section 1. Architecture requirements may add or strengthen capabilities, but may not subtract an existing capability without the replacement requirements passing.",
+  "safe_claim": "The known current Resident capability set has been inventoried from direct repository evidence with watch and is ready to become the protected starting point for the Resident Safe Change Architecture.",
+  "do_not_claim": "Do not claim the full repository history is audited, every legacy Resident file is understood, Resident can already code independently, or the Safe Change Architecture is implemented."
+}
