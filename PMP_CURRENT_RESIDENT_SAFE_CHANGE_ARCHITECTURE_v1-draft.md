@@ -4,7 +4,7 @@ CARD NAME:
 PMP Current — Resident Safe Change Architecture
 
 CARD VERSION:
-v1-draft
+v1.1-draft
 
 DOCUMENT STATE:
 architecture planning only
@@ -31,18 +31,28 @@ PMP_CURRENT_RESIDENT_CAPABILITY_INVENTORY_v1-current.md
 AUTHORITATIVE MACHINE-READABLE INVENTORY:
 pmp-resident-current-capability-inventory-v1.json
 
+UNKNOWN-HOLD AUDIT RECEIPT:
+PMP_CURRENT_RESIDENT_UNKNOWN_HOLD_AUDIT_v1-current.md
+
+UNKNOWN-HOLD MACHINE RECORD:
+pmp-resident-unknown-hold-audit-v1.json
+
 INVENTORY STATE:
 current known capability inventory with watch
+file-path hold audit passed with watch
+reasoning-engine connection audit still open
 
 PROTECTED INVENTORY LAW:
 
 1. Every existing Resident capability must be preserved, deliberately upgraded, safely replaced, deprecated with proof, or held as unknown.
 2. No existing capability may be silently deleted, bypassed, renamed, or semantically weakened.
-3. Unknown files and capabilities remain held until audited.
+3. Unknown capabilities remain held until audited.
 4. Storage-key renames require migration.
 5. User-visible workflow changes require disclosure and testing.
 6. Replacements require rollback and a replacement receipt.
 7. The architecture must map every current capability to its future component before implementation.
+8. A manifest-listed missing path is not an implemented capability.
+9. Empty placeholders must not be created merely to satisfy stale manifest residue.
 
 CURRENT PROTECTED CAPABILITY FAMILIES:
 
@@ -85,7 +95,19 @@ CURRENT HIGH-RISK PROTECTED OBJECTS:
 14. outer-guardian rules
 15. authorization controls
 
-UNKNOWN — HOLD FILES:
+FILE-PATH HOLD AUDIT RESULT:
+
+PRESENT AND CLASSIFIED:
+
+1. bm.html
+   classification: active current private Bug Memory entry
+   status: preserve and deduplicate only with proof
+
+2. pmp-inventory-eyes-detail-map-v1.0.0.json
+   classification: active current Inventory Eyes coverage contract
+   status: non-negotiable preserve and upgrade
+
+MANIFEST-LISTED BUT MISSING AT THE NAMED PATH:
 
 1. resident-v1.html
 2. resident-brain-core-v1.html
@@ -98,11 +120,29 @@ UNKNOWN — HOLD FILES:
 9. project-connection-workbench.html
 10. lossless-certification-system.html
 11. proof-ledger-system.html
-12. bm.html
-13. pmp-inventory-eyes-detail-map-v1.0.0.json
 
-HOLD RULE:
-No deletion, merge, replacement, or authority transfer involving an UNKNOWN — HOLD file is allowed until that file is audited and classified.
+CLASSIFICATION FOR THE ELEVEN MISSING PATHS:
+manifest residue or unavailable path
+
+MISSING-PATH LAW:
+A named path that returns 404 is not an existing capability unless another real source proves where that capability lives.
+
+DO NOT:
+
+1. invent the missing file contents
+2. treat the names as implemented modules
+3. create empty placeholder files
+4. build architecture authority on unavailable paths
+5. claim they never existed historically
+
+SEPARATE UNKNOWN — HOLD:
+
+The exact reasoning/model connection used by the current integrated Resident remains UNKNOWN — HOLD until directly audited and documented.
+
+OVERLAP WATCH:
+
+bm.html overlaps with private-bug-memory-hub-v7.html and private-bug-memory-hub-v9.html.
+No Bug Memory entry may be deleted or merged until route use, current-map use, behavior equivalence, storage behavior, return paths, and rollback are proven.
 
 ────────────────────────
 SECTION 2
@@ -460,14 +500,19 @@ GATE 1:
 Current capability inventory complete enough for architecture.
 
 CURRENT STATE:
-PASSED WITH WATCH for known current files.
-UNKNOWN — HOLD audit remains.
+PASSED WITH WATCH.
+Known current capability inventory is saved.
+File-path hold audit is complete.
+Reasoning-engine connection audit remains separate and open.
 
 GATE 2:
-All unknown Resident files audited.
+All previously listed UNKNOWN — HOLD file paths audited.
 
 CURRENT STATE:
-NOT STARTED.
+PASSED WITH WATCH.
+Two paths are present and classified.
+Eleven paths are manifest residue or unavailable at the named path.
+See PMP_CURRENT_RESIDENT_UNKNOWN_HOLD_AUDIT_v1-current.md and pmp-resident-unknown-hold-audit-v1.json.
 
 GATE 3:
 Current-to-future capability map complete.
@@ -509,7 +554,9 @@ NOT STARTED.
 SAFE CLAIM
 ────────────────────────
 
-The Resident Safe Change Architecture has been started from a direct current-capability inventory, and subtraction protection is now defined at the planning level.
+The Resident Safe Change Architecture is grounded in a direct current-capability inventory.
+Subtraction protection is defined at the planning level.
+Every previously listed UNKNOWN — HOLD file path has been checked and classified with watch.
 
 ────────────────────────
 DO-NOT-CLAIM
@@ -521,20 +568,22 @@ Do not claim:
 2. Resident can independently code now
 3. the outer guardian exists now
 4. candidate isolation exists now
-5. all Resident files are audited
+5. every historical Resident file or repository revision is audited
 6. every existing capability is fully understood
-7. automatic test selection works now
-8. rollback write-back is complete
-9. the architecture changes the frozen app
-10. this draft is promotion authority
+7. the current reasoning/model connection is fully audited
+8. automatic test selection works now
+9. rollback write-back is complete
+10. the architecture changes the frozen app
+11. this draft is promotion authority
+12. the Inventory Eyes manifest residue is already corrected
+13. bm.html is safe to delete or merge
 
 ────────────────────────
 NEXT BEST MOVE
 ────────────────────────
 
-Complete Gate 2:
-Audit every UNKNOWN — HOLD file and classify it as current, support, archive, replacement candidate, or safe deprecation candidate.
+Complete the current integrated Resident reasoning/model connection audit.
 
-Then complete the current-to-future capability map before writing Resident Safe Change implementation code.
+Then build the current-to-future capability map for RC-001 through RC-020 before writing Resident Safe Change implementation code.
 
-END PMP CURRENT — RESIDENT SAFE CHANGE ARCHITECTURE v1-draft
+END PMP CURRENT — RESIDENT SAFE CHANGE ARCHITECTURE v1.1-draft
