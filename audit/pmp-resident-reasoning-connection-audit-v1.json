@@ -1,1 +1,330 @@
-{"type":"PMP_RESIDENT_REASONING_CONNECTION_AUDIT","version":"1.0.0","audited_on":"2026-06-11","repository":"pmpbird/pmp-bridge-shell","audit_state":"PASS_WITH_WATCH","summary":"Current Resident normal Run flow is local rule/template/handoff. No direct external AI model call or autonomous repository-write/promotion authority was verified.","next_authorized_packet":"03 — PMP CURRENT — CURRENT-TO-FUTURE CAPABILITY MAP"}
+{
+  "type": "PMP_RESIDENT_REASONING_CONNECTION_AUDIT",
+  "version": "1.0.0",
+  "audited_on": "2026-06-11",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "audit_state": "PASS_WITH_WATCH",
+  "entry_points": [
+    {
+      "name": "Current PMP Resident drawer",
+      "current_flow_basis": "manifest current_flow and current_active list",
+      "files": ["pmp-app-current.html", "pmp-current-inner.html", "pmp-home-single-v14.html", "pmp-home-single-v6.html"],
+      "entry_surface": "Resident drawer in pmp-home-single-v6.html, loaded through pmp-home-single-v14.html iframe",
+      "screen_or_drawer": "div#resident.drawer",
+      "input_element": "textarea#ask",
+      "run_control": "button onclick=residentRun()",
+      "click_handler": "residentRun()",
+      "request_reading_function": "residentRun reads #ask and #paste",
+      "reply_output_element": "div#residentReply",
+      "warning_output_element": "div#residentWarning",
+      "work_output_element": "pre#residentWork",
+      "evidence_state": "VERIFIED_WITH_WATCH"
+    },
+    {
+      "name": "Deep Resident Intelligence",
+      "file": "resident.html",
+      "input_element": "textarea#askBox",
+      "run_control": "button onclick=askResident()",
+      "request_reading_function": "askResident reads #askBox and #autonomy",
+      "reply_output_element": "div#askOut",
+      "report_output_element": "textarea#reportBox",
+      "evidence_state": "VERIFIED"
+    },
+    {
+      "name": "Safe Writer Resident wrapper",
+      "file": "safe-writer-v14.html",
+      "input_element": "textarea#ask",
+      "run_control": "button onclick=askResident()",
+      "reply_output_element": "div#residentOut",
+      "context_function": "context()",
+      "evidence_state": "VERIFIED"
+    },
+    {
+      "name": "Code Safety Resident wrapper",
+      "file": "code-safety-v13.html",
+      "input_element": "textarea#ask",
+      "run_control": "button onclick=askResident()",
+      "reply_output_element": "div#out",
+      "context_function": "context()",
+      "evidence_state": "VERIFIED"
+    }
+  ],
+  "request_flow": [
+    {"step": 1, "stage": "USER INPUT", "behavior": "User types into #ask in the Resident drawer.", "evidence_state": "VERIFIED_WITH_WATCH"},
+    {"step": 2, "stage": "ENTRY FUNCTION", "behavior": "Run button calls residentRun().", "evidence_state": "VERIFIED_WITH_WATCH"},
+    {"step": 3, "stage": "XRAY PREPATCH", "behavior": "pmp-resident-xray-core.js wraps residentRun, calls buildXRay('resident_run_before_answer'), then delegates to oldRun.", "evidence_state": "VERIFIED_WITH_WATCH"},
+    {"step": 4, "stage": "V14 PATCH", "behavior": "pmp-home-single-v14.html wraps residentRun and intercepts lossless/inventory/vault commands before delegating to old residentRun.", "evidence_state": "VERIFIED_WITH_WATCH"},
+    {"step": 5, "stage": "INPUT COLLECTION", "behavior": "pmp-home-single-v6.html residentRun reads #ask, #paste, and lowercases the request.", "evidence_state": "VERIFIED"},
+    {"step": 6, "stage": "CHAT WRITE", "behavior": "If q is present, addChat('user', q) writes session chat.", "evidence_state": "VERIFIED"},
+    {"step": 7, "stage": "LOCAL RULES", "behavior": "Regex branches select storage, packet, pipeline, learning, lossless, update, privacy-boundary, or handoff behavior.", "evidence_state": "VERIFIED"},
+    {"step": 8, "stage": "EXTERNAL OR LOCAL REASONING", "behavior": "No direct external AI model call found; deeper unmatched requests produce a manual ChatGPT handoff in residentLast/work output.", "evidence_state": "VERIFIED_WITH_WATCH"},
+    {"step": 9, "stage": "REPLY DISPLAY", "behavior": "plain() writes message to #residentReply, JSON to #residentWork, warning to #residentWarning, appends chat, and appends pmp_single_resident_work_v6.", "evidence_state": "VERIFIED"},
+    {"step": 10, "stage": "MEMORY WRITE", "behavior": "Session chat and latest 30 work records are saved; packets, corpus, learning, inventory, X-Ray, and tool summaries use separate keys.", "evidence_state": "VERIFIED_WITH_WATCH"}
+  ],
+  "reply_flow": [
+    "Local branch reply -> plain(message, work, next, warning).",
+    "plain() builds residentLast with type PMP_RESIDENT_REPLY_SINGLE_V6.",
+    "plain() writes plain text to #residentReply and JSON work to #residentWork.",
+    "plain() toggles #residentWarning based on warning presence.",
+    "plain() appends Resident chat and appends latest 30 entries to pmp_single_resident_work_v6.",
+    "resident.html askResident builds a local JSON object and writes it with box()/updateReport().",
+    "Safe Writer and Code Safety wrappers build local JSON context/response objects and can copy handoff JSON."
+  ],
+  "reasoning_sources": [
+    {
+      "source_type": "fixed scripted responses",
+      "present": true,
+      "evidence": "resident.html answer templates; safe-writer/code-safety wrapper answer functions",
+      "evidence_state": "VERIFIED"
+    },
+    {
+      "source_type": "keyword rules",
+      "present": true,
+      "evidence": "residentRun regex branches and classifyGoal regexes",
+      "evidence_state": "VERIFIED"
+    },
+    {
+      "source_type": "decision tree",
+      "present": true,
+      "evidence": "ordered if branches in residentRun/classifyGoal",
+      "evidence_state": "VERIFIED"
+    },
+    {
+      "source_type": "template filling",
+      "present": true,
+      "evidence": "plain(), answer(), response(), repair-request and inventory receipt objects",
+      "evidence_state": "VERIFIED"
+    },
+    {
+      "source_type": "stored-response retrieval",
+      "present": "partial",
+      "evidence": "learnFromPaste stores lessons, but no strong semantic retrieval engine was found in normal Run flow",
+      "evidence_state": "VERIFIED_WITH_WATCH"
+    },
+    {
+      "source_type": "local deterministic reasoning",
+      "present": "limited",
+      "evidence": "packetSummary, getLosslessStatus, scanAppTruth, X-Ray context builder use deterministic checks",
+      "evidence_state": "VERIFIED"
+    },
+    {
+      "source_type": "external AI model",
+      "present": false,
+      "provider": null,
+      "endpoint": null,
+      "request_method": null,
+      "model_name": null,
+      "authentication_method": null,
+      "evidence_state": "NOT_FOUND"
+    },
+    {
+      "source_type": "backend AI service",
+      "present": false,
+      "provider": null,
+      "evidence": "backend() exists but only verified paths are /api and /api/resident-archive; no model call found in audited current files",
+      "evidence_state": "NOT_FOUND_WITH_WATCH"
+    },
+    {
+      "source_type": "manual ChatGPT handoff",
+      "present": true,
+      "evidence": "default residentRun response says deeper thinking requires ChatGPT handoff under Show Work; packetRequest asks user to copy into outside ChatGPT project",
+      "evidence_state": "VERIFIED"
+    }
+  ],
+  "external_connections": [
+    {
+      "connection": "Optional backend",
+      "config_key": "pmp_backend_config_v1",
+      "function": "backend(path,payload)",
+      "methods": ["GET", "POST"],
+      "verified_paths": ["/api", "/api/resident-archive"],
+      "authentication": "unknown; no credential token found in audited client code",
+      "privacy_effect": "Can send archived Resident chat/context if backend is enabled and archiveResidentChat is used.",
+      "failure_behavior": "Throws or reports backend not connected; local mode stays available.",
+      "evidence_state": "VERIFIED_WITH_WATCH"
+    },
+    {
+      "connection": "Static JSON fetches",
+      "functions": ["manifest()", "fetchJson()"],
+      "paths": ["pmp-inventory-eyes-manifest-v1.0.0.json", "pmp-current-map.json", "pmp-lossless-inventory-vault/current.json"],
+      "privacy_effect": "Public-safe app-map/support data only by manifest rule.",
+      "evidence_state": "VERIFIED"
+    },
+    {
+      "connection": "iOS Shortcut handoff",
+      "url_scheme": "shortcuts://run-shortcut",
+      "shortcut_name": "PMP Vault GitHub Writer",
+      "purpose": "Manual/user-mediated vault report writing path.",
+      "direct_resident_repo_write": false,
+      "evidence_state": "VERIFIED"
+    }
+  ],
+  "local_rules": [
+    {"pattern_family": "storage/local storage/memory full/clean/delete old", "action": "checkStorage or cleanStorage", "state": "VERIFIED"},
+    {"pattern_family": "packet request/make packet/get packet", "action": "packetRequest", "state": "VERIFIED"},
+    {"pattern_family": "save packet/paste packet", "action": "savePacket", "state": "VERIFIED"},
+    {"pattern_family": "pipeline/check packet", "action": "pipeline", "state": "VERIFIED"},
+    {"pattern_family": "learn/remember", "action": "learnFromPaste", "state": "VERIFIED"},
+    {"pattern_family": "lossless/quality/improve/better/weak/next move", "action": "getLosslessStatus/plain or v14 residentLosslessCommand", "state": "VERIFIED_WITH_WATCH"},
+    {"pattern_family": "update/latest/newest", "action": "automaticAppUpdate", "state": "VERIFIED"},
+    {"pattern_family": "hidden entrance/secret entrance", "action": "privacy-boundary refusal", "state": "VERIFIED"},
+    {"pattern_family": "unmatched/deeper request", "action": "manual ChatGPT handoff", "state": "VERIFIED"}
+  ],
+  "prompts": [
+    {
+      "name": "outsideProjectPrompt",
+      "file": "pmp-home-single-v6.html",
+      "purpose": "Builds a request for an outside ChatGPT project / transfer packet.",
+      "model_call": false,
+      "user_action_required": "copy/paste",
+      "evidence_state": "VERIFIED_WITH_WATCH"
+    }
+  ],
+  "context_sources": [
+    {"source": "current user message", "status": "present", "load": "automatic", "privacy": "local until handoff/backend/clipboard", "evidence_state": "VERIFIED"},
+    {"source": "previous conversation", "status": "partial", "load": "sessionStorage pmp_single_session_chat_v6 latest 80", "privacy": "session-local", "evidence_state": "VERIFIED"},
+    {"source": "Active Work Thread", "status": "partial", "load": "resident.html pmp_resident_thread_v1; current drawer pmp_single_resident_work_v6", "evidence_state": "VERIFIED_WITH_WATCH"},
+    {"source": "app map/current route", "status": "partial", "load": "manifest/current map/X-Ray/live screen/hash", "evidence_state": "VERIFIED_WITH_WATCH"},
+    {"source": "source file content", "status": "absent for normal reply", "load": "not automatically loaded into residentRun; wrappers read visible frame text only", "evidence_state": "VERIFIED_WITH_WATCH"},
+    {"source": "body laws", "status": "not found in normal Run flow", "load": "not proven automatic", "evidence_state": "NOT_FOUND"},
+    {"source": "manifest", "status": "present", "load": "automatic for Inventory/X-Ray", "evidence_state": "VERIFIED"},
+    {"source": "Bug Memory", "status": "partial", "load": "resident.html can read pmp_bug_memory_v1; manifest says private contents excluded from safe inventory", "evidence_state": "VERIFIED_WITH_WATCH"},
+    {"source": "Code Safety state", "status": "partial", "load": "pmp_code_safety_bank_v1 summary", "evidence_state": "VERIFIED"},
+    {"source": "Resident X-Ray context", "status": "present", "load": "pmp_resident_xray_context_v1", "evidence_state": "VERIFIED"},
+    {"source": "Inventory Eyes context", "status": "present", "load": "pmp_inventory_eyes_latest_v1 and pmp_resident_auto_lossless_inventory_context_v1", "evidence_state": "VERIFIED"},
+    {"source": "localStorage key names", "status": "present", "load": "scanned by storage/X-Ray/Inventory", "evidence_state": "VERIFIED"},
+    {"source": "private Notes contents", "status": "absent", "load": "manifest explicitly excludes Apple Notes/private values", "evidence_state": "VERIFIED_WITH_WATCH"},
+    {"source": "ChatGPT responses", "status": "manual", "load": "paste/learn path only", "evidence_state": "VERIFIED"}
+  ],
+  "storage_records": [
+    {"key": "pmp_single_session_chat_v6", "purpose": "Resident session chat", "writer": "writeChat", "reader": "chat/renderChat", "persistence": "sessionStorage latest 80", "privacy": "conversation text", "migration_status": "unknown"},
+    {"key": "pmp_single_resident_work_v6", "purpose": "Resident work ledger", "writer": "plain", "reader": "read", "persistence": "localStorage latest 30", "privacy": "resident work records", "migration_status": "unknown"},
+    {"key": "pmp_clean_connection_packets_v5", "purpose": "saved packets", "writer": "savePacketFromText", "reader": "selectedPacket", "persistence": "persistent", "privacy": "packet content", "migration_status": "unknown"},
+    {"key": "pmp_corpus_inbox_v1", "purpose": "corpus candidate material", "writer": "sendToCorpus", "reader": "corpusHasSelected/corpus status", "persistence": "persistent", "privacy": "source/user content", "migration_status": "unknown"},
+    {"key": "pmp_backend_config_v1", "purpose": "optional backend URL/enabled flag", "writer": "saveBackend", "reader": "cfg/backend", "persistence": "persistent", "privacy": "configuration", "migration_status": "unknown"},
+    {"key": "pmp_resident_xray_context_v1", "purpose": "safe observable app map", "writer": "pmp-resident-xray-core.js", "reader": "window.pmpResidentXRayRead", "persistence": "overwritten persistent", "privacy": "structure/key names only", "migration_status": "unknown"},
+    {"key": "pmp_resident_xray_history_v1", "purpose": "X-Ray history counts", "writer": "pmp-resident-xray-core.js", "reader": "safeJsonRead", "persistence": "latest 20", "privacy": "counts", "migration_status": "unknown"},
+    {"key": "pmp_resident_xray_rule_v1", "purpose": "X-Ray rule", "writer": "pmp-resident-xray-core.js", "reader": "localStorage", "persistence": "persistent", "privacy": "public-safe rule", "migration_status": "unknown"},
+    {"key": "pmp_inventory_eyes_latest_v1", "purpose": "latest Inventory Eyes", "writer": "runInventory", "reader": "X-Ray/Inventory", "persistence": "persistent", "privacy": "safe inventory", "migration_status": "unknown"},
+    {"key": "pmp_app_lossless_inventory_latest_v1", "purpose": "lossless inventory copy", "writer": "runInventory", "reader": "reportObject", "persistence": "persistent", "privacy": "safe inventory", "migration_status": "unknown"},
+    {"key": "pmp_resident_auto_lossless_inventory_context_v1", "purpose": "Resident inventory summary", "writer": "runInventory", "reader": "Resident/context", "persistence": "persistent", "privacy": "summary", "migration_status": "unknown"},
+    {"key": "pmp_code_safety_bank_v1", "purpose": "safe point bank", "writer": "Code Safety", "reader": "Safe Writer/Code Safety/resident.html", "persistence": "persistent", "privacy": "safety state", "migration_status": "unknown"},
+    {"key": "pmp_auto_update_request_v20", "purpose": "automatic update request", "writer": "automaticAppUpdate", "reader": "Safe Writer Resident", "persistence": "persistent until changed", "privacy": "update request", "migration_status": "unknown"},
+    {"key": "pmp_resident_learning_single_v6", "purpose": "manual learned lessons from paste", "writer": "learnFromPaste", "reader": "not fully proven in routing", "persistence": "latest 50", "privacy": "pasted lesson/source", "migration_status": "unknown"},
+    {"key": "pmp_resident_thread_v1", "purpose": "resident.html Active Work Thread", "writer": "saveThread", "reader": "loadThread", "persistence": "persistent", "privacy": "thread status", "migration_status": "unknown"},
+    {"key": "pmp_resident_report_v1", "purpose": "resident.html latest report", "writer": "updateReport", "reader": "copyReport/reportBox", "persistence": "persistent", "privacy": "report content", "migration_status": "unknown"},
+    {"key": "pmp_bug_memory_v1", "purpose": "resident.html Bug Memory", "writer": "saveBugEntry", "reader": "bugMemory", "persistence": "persistent", "privacy": "bug records", "migration_status": "array upgraded to object if needed"}
+  ],
+  "tool_authority": [
+    {"tool": "Current Resident drawer", "open": true, "read_visible_state": true, "read_stored_state": "partial", "prepare_handoff": true, "copy_request": true, "prefill_field": "partial", "trigger_safe_action": "limited local functions", "modify_file": false, "create_candidate": false, "commit_code": false, "restore_code": false, "promote_code": false, "rollback_code": false, "change_validators": false, "change_permissions": false, "classification": "guidance/preparation/manual handoff"},
+    {"tool": "Deep Resident Intelligence resident.html", "open": true, "read_visible_state": true, "read_stored_state": true, "prepare_handoff": true, "modify_file": false, "commit_code": false, "restore_code": false, "classification": "inspection/report/preparation only"},
+    {"tool": "Safe Writer v14 Resident", "open": true, "read_visible_state": true, "read_stored_state": "partial", "prepare_handoff": true, "modify_file": false, "classification": "read/preparation only"},
+    {"tool": "Code Safety v13 Resident", "open": true, "read_visible_state": true, "read_stored_state": "partial", "prepare_handoff": true, "restore_code": false, "classification": "read/preparation only"},
+    {"tool": "Inventory Eyes / Lossless", "open": true, "read_visible_state": true, "read_stored_state": true, "prepare_handoff": true, "direct_repo_write": false, "classification": "safe scan / manual handoff"},
+    {"tool": "X-Ray", "open": false, "read_visible_state": true, "read_stored_state": true, "modify_file": false, "classification": "hidden context scan only"}
+  ],
+  "failure_behavior": [
+    {"condition": "empty input", "observed_or_inferred_behavior": "residentRun lowercases empty q and reaches default handoff message unless no trigger occurs", "classification": "safe_fallback", "evidence_state": "VERIFIED_WITH_WATCH"},
+    {"condition": "unclear/unmatched request", "behavior": "default says deeper thinking requires ChatGPT handoff under Show Work", "classification": "safe_handoff", "evidence_state": "VERIFIED"},
+    {"condition": "stored context missing", "behavior": "read() fallback objects/arrays used", "classification": "safe_fallback", "evidence_state": "VERIFIED"},
+    {"condition": "stored context malformed", "behavior": "read() catches parse error and returns fallback", "classification": "safe_fallback", "evidence_state": "VERIFIED"},
+    {"condition": "backend unavailable/off", "behavior": "backend() throws or testBackend/archive catches and says outside safe box not connected; local mode remains", "classification": "warning_fallback", "evidence_state": "VERIFIED"},
+    {"condition": "AI service unavailable", "behavior": "no current AI model call found; manual ChatGPT handoff remains user-mediated", "classification": "not_applicable_with_watch", "evidence_state": "NOT_FOUND"},
+    {"condition": "network offline", "behavior": "static fetch/backend/Shortcut may fail; local rules/storage still work", "classification": "partial_offline_safe", "evidence_state": "VERIFIED_WITH_WATCH"},
+    {"condition": "manifest/current map/vault unavailable", "behavior": "X-Ray returns unavailable object or Inventory Eyes fallback manifest", "classification": "safe_fallback_with_watch", "evidence_state": "VERIFIED"},
+    {"condition": "clipboard fails", "behavior": "copy functions report failure or display JSON", "classification": "warning_fallback", "evidence_state": "VERIFIED"},
+    {"condition": "localStorage cleared", "behavior": "persistent records lost and fallbacks used; session/current app still loads", "classification": "watch", "evidence_state": "VERIFIED_WITH_WATCH"},
+    {"condition": "private/hidden entrance request", "behavior": "Resident refuses to expose private entrance details", "classification": "safe_boundary", "evidence_state": "VERIFIED"}
+  ],
+  "privacy_boundaries": {
+    "user_text_leaves_device": "No automatic external AI transmission found. Text can leave through manual clipboard/Shortcut handoff or enabled backend archive.",
+    "app_context_leaves_device": "Vault write packets, Shortcut handoffs, and backend archive may send selected reports/context when invoked. Inventory/X-Ray privacy rules exclude private values.",
+    "source_code_leaves_device": "Normal Resident does not automatically send full source code. Tool frame visible text and reports may enter handoffs.",
+    "bug_memory_leaves_device": "Private Bug Memory contents are not included in safe inventory by manifest rule; resident.html can store/read pmp_bug_memory_v1 locally.",
+    "reports_leave_device": "Copy/Shortcut/backend archive paths can export selected reports.",
+    "remains_local": "localStorage/sessionStorage values unless copied, sent through Shortcut, or backend enabled.",
+    "credentials_entered": "Backend URL field in Launcher backend box; no AI provider credential UI found.",
+    "credentials_stored": "pmp_backend_config_v1 stores backend base_url/enabled flag; no secret token found in audited current client path.",
+    "private_notes_access": "Not proven; manifest says Apple Notes/private values are not captured.",
+    "user_warning_before_transmission": "Manual copy/handoff wording exists; backend archive warning needs later review.",
+    "provider_retention": "Unknown for optional backend/Shortcut/GitHub path; no AI provider found."
+  },
+  "credential_boundaries": [
+    "No OpenAI/API/model credential field found in audited current Resident path.",
+    "Backend URL is stored in pmp_backend_config_v1.",
+    "Manifest privacy rule excludes tokens, passwords, secrets, private localStorage values, private Bug Memory, and Apple Notes contents from safe inventory.",
+    "No secret values were printed in this audit."
+  ],
+  "replaceability": {
+    "Resident_interface": {"status": "partly_replaceable", "notes": "UI exists separately but pmp-home-single-v6 residentRun is coupled to local DOM IDs."},
+    "conversation_memory": {"status": "partly_replaceable", "notes": "session chat and local work ledger are separate keys/functions."},
+    "context_builder": {"status": "partly_replaceable", "notes": "X-Ray, Inventory Eyes, Safe Writer, and Code Safety context functions are distinct but not unified."},
+    "prompt_builder": {"status": "tightly_coupled", "notes": "Manual ChatGPT handoff/prompt is embedded in app code."},
+    "provider_adapter": {"status": "not_present_for_ai", "notes": "backend adapter exists, but not a verified AI provider adapter."},
+    "model_call": {"status": "not_present"},
+    "response_parser": {"status": "not_present_for_ai"},
+    "explanation_layer": {"status": "tightly_coupled", "notes": "plain()/template responses directly write UI."},
+    "tool_layer": {"status": "partly_replaceable", "notes": "Tools are linked/wrapped but authority remains limited."},
+    "safety_layer": {"status": "partial", "notes": "Safe Writer/Code Safety exist but not full outer guardian."},
+    "outer_guardian_layer": {"status": "not_implemented_in_current_reasoning_flow"}
+  },
+  "verified_capabilities": [
+    "Resident can receive normal text through current drawer.",
+    "Resident can route known requests with local regex rules.",
+    "Resident can create local template replies and work JSON.",
+    "Resident can maintain session chat and a persistent work ledger.",
+    "Resident can build manual ChatGPT handoffs.",
+    "Resident can run or trigger Inventory Eyes/Lossless and X-Ray context refreshes where installed.",
+    "Resident wrappers can read visible tool frame text and selected localStorage summaries.",
+    "Resident can copy handoff/report packets to clipboard.",
+    "Resident can preserve privacy boundaries by key-name-only safe scans in Inventory/X-Ray paths."
+  ],
+  "verified_limits": [
+    "No direct external AI model call found in normal Resident Run flow.",
+    "No model provider, model name, model auth, timeout, retry, or response parser found for Resident normal replies.",
+    "No autonomous repository write, commit, promotion, rollback, validator, or permission authority found in Resident reply flow.",
+    "Body laws are not proven automatically read in the normal Resident Run flow.",
+    "Full source code is not automatically loaded into Resident normal replies.",
+    "Default deeper reasoning uses manual ChatGPT handoff.",
+    "Candidate isolation and outer guardian are not implemented by current reasoning evidence.",
+    "Best-in-world, independent coding, and safe promotion claims remain unsupported."
+  ],
+  "unknowns": [
+    "The optional backend implementation remains unverified because worker.js and cloudflare-worker.js are listed in the manifest but not fetchable through repository contents.",
+    "No live iPhone Home Screen runtime test was performed during this audit.",
+    "The exact deployed script inclusion order for X-Ray was not runtime-observed here.",
+    "Some helper/archive files listed in the manifest were not deeply audited because Packet 02 focused on current reasoning flow and starting-point files."
+  ],
+  "blockers": [],
+  "evidence": [
+    {"claim": "Repository available and default branch main", "source": "search_installed_repositories_streaming lines 1-12", "state": "VERIFIED"},
+    {"claim": "Manifest current flow includes pmp-home-single-v14.html and pmp-home-single-v6.html", "source": "pmp-inventory-eyes-manifest-v1.0.0.json lines 13-19", "state": "VERIFIED"},
+    {"claim": "Current active files include v14/v6 and Resident support tools", "source": "manifest current_active lines 77-90", "state": "VERIFIED"},
+    {"claim": "pmp-home-single-v14 loads v6 iframe and defines Inventory/Shortcut context", "source": "pmp-home-single-v14.html lines 16-30 and 47-53", "state": "VERIFIED"},
+    {"claim": "v14 patches residentRun and intercepts lossless commands", "source": "pmp-home-single-v14.html lines 57-64", "state": "VERIFIED"},
+    {"claim": "resident.html UI and askResident() are local template/rule based", "source": "resident.html lines 26-36 and 96-97", "state": "VERIFIED"},
+    {"claim": "resident.html cannot commit or restore", "source": "resident.html lines 17-18", "state": "VERIFIED"},
+    {"claim": "resident.html scans storage and App Truth locally", "source": "resident.html lines 75-100 and continuation lines 3-21", "state": "VERIFIED"},
+    {"claim": "X-Ray writes safe observable app context and key names only", "source": "pmp-resident-xray-core.js lines 152-205", "state": "VERIFIED"},
+    {"claim": "X-Ray patches residentRun before answer", "source": "pmp-resident-xray-core.js lines 220-224", "state": "VERIFIED"},
+    {"claim": "Safe Writer Resident only guides/copies handoff", "source": "safe-writer-v14.html lines 20-48", "state": "VERIFIED"},
+    {"claim": "Code Safety Resident only reads context/copies handoff", "source": "code-safety-v13.html lines 17-26", "state": "VERIFIED"},
+    {"claim": "Manifest privacy excludes private values/tokens/secrets/private Bug Memory/Apple Notes", "source": "pmp-inventory-eyes-manifest-v1.0.0.json lines 6-10 and 155-160", "state": "VERIFIED"},
+    {"claim": "worker.js and cloudflare-worker.js unavailable through repository fetch", "source": "GitHub fetch_file returned 404", "state": "NOT_FOUND_WITH_WATCH"}
+  ],
+  "safe_claim": "The current Resident reasoning connection has been audited for the main current flow. Verified behavior is local guarded rule/template/context handling plus manual ChatGPT handoff, with optional backend/archive support and no verified direct AI model reasoning call or autonomous repository-write/promotion authority.",
+  "do_not_claim": [
+    "Resident Safe Change is implemented.",
+    "Resident can independently code the app.",
+    "Natural-Language AI Bridge is complete.",
+    "The current reasoning engine is good enough for future Safe Change.",
+    "The reasoning engine is replaceable as implemented.",
+    "Resident can directly control every linked tool.",
+    "Resident has repository write authority.",
+    "Resident can safely promote changes.",
+    "Outer guardian is implemented.",
+    "All unknowns are resolved.",
+    "Backend behavior is fully verified."
+  ],
+  "next_authorized_packet": "03 — PMP CURRENT — CURRENT-TO-FUTURE CAPABILITY MAP"
+}
