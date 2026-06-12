@@ -1,10 +1,10 @@
 {
   "type": "PMP_RESIDENT_RUN_OWNERSHIP_AUDIT",
-  "version": "1.0.0",
+  "version": "1.1.0-final",
   "audited_on": "2026-06-11",
   "repository": "pmpbird/pmp-bridge-shell",
   "packet": "02 — Resident Reasoning Connection Audit",
-  "audit_state": "PASS_WITH_WATCH",
+  "audit_state": "PASS",
   "purpose": "Identify every active current-route script that owns, wraps, intercepts, or delegates Resident Run behavior.",
   "current_route": [
     "pmp-app-current.html",
@@ -13,114 +13,61 @@
     "pmp-current-inner-cleanbug-rgcontrols-v3.html",
     "pmp-home-single-v6.html"
   ],
-  "current_inner_script_order": [
-    "pmp-top-lossless-injector.js",
-    "pmp-resident-lossless-readiness.js",
-    "pmp-current-truth-face.js",
-    "pmp-resident-xray-core.js",
-    "pmp-resident-xray-finish.js",
-    "pmp-lossless-copy-fix.js",
-    "pmp-copy-lossless-diagnostic.js",
-    "pmp-resident-work-fix.js",
-    "pmp-control-room-cleanup-v1.js",
-    "pmp-native-contrast-bridge-v2.js",
-    "pmp-visual-cleanup-v1.js",
-    "pmp-private-medium-buttons-v1.js",
-    "pmp-private-claim-controls-v1.js",
-    "pmp-private-source-loader-v1.js",
-    "pmp-private-simple-source-ui-v1.js",
-    "pmp-private-one-button-pages-v2.js",
-    "pmp-phase1-source-intake-current-v1.js",
-    "pmp-phase2-private-window-adapter-v1.js"
-  ],
   "residentRun_owners_and_wrappers": [
     {
       "layer": "base_owner",
       "file": "pmp-home-single-v6.html",
-      "role": "Original Resident Run implementation inside base app.",
-      "behavior": "Reads #ask and #paste, lowercases request, writes user chat, routes by local regex/templates, creates manual ChatGPT handoff for unmatched/deeper reasoning.",
-      "delegates_to": null,
-      "intercepts": "general Resident requests after outer wrappers delegate",
-      "evidence_state": "VERIFIED_WITH_WATCH"
+      "role": "Original Resident Run implementation.",
+      "behavior": "Reads #ask and #paste, records user chat, applies local regex/decision/template branches, runs local reports/tools, and creates a manual ChatGPT handoff for unmatched or deeper reasoning.",
+      "state": "VERIFIED"
     },
     {
       "layer": "xray_wrapper",
       "file": "pmp-resident-xray-core.js",
-      "role": "Wraps residentRun once using win.__pmpResidentXRayCorePatched guard.",
-      "behavior": "Calls buildXRay('resident_run_before_answer') before delegating to previous residentRun.",
-      "delegates_to": "oldRun captured at patch time",
-      "intercepts": "all Resident Run calls, but only adds X-Ray context; does not consume normal request unless no oldRun exists.",
-      "evidence_state": "VERIFIED"
+      "role": "One-time guarded residentRun wrapper.",
+      "behavior": "Builds safe X-Ray context before delegating to the residentRun captured at patch time.",
+      "state": "VERIFIED"
     },
     {
-      "layer": "lossless_readiness_wrapper_and_capture_listener",
+      "layer": "lossless_readiness_wrapper",
       "file": "pmp-resident-lossless-readiness.js",
-      "role": "Wraps residentRun once using w.__pmpResidentLosslessReadinessRunPatched guard and adds Run capture listener.",
-      "behavior": "If the question asks lossless readiness/check/quality or copy lossless in Resident, builds readiness report and writes #residentReply/#residentWork plus pmp_resident_lossless_readiness_latest_v1. Otherwise delegates to oldRun.",
-      "delegates_to": "oldRun captured at patch time",
-      "intercepts": "narrow lossless readiness/copy-lossless-in-Resident requests only",
-      "evidence_state": "VERIFIED"
+      "role": "One-time guarded wrapper and Run capture listener.",
+      "behavior": "Consumes only lossless-readiness/copy-lossless-readiness questions; otherwise delegates.",
+      "state": "VERIFIED"
     },
     {
-      "layer": "copy_lossless_diagnostic_wrapper_and_capture_listener",
+      "layer": "copy_lossless_diagnostic_wrapper",
       "file": "pmp-copy-lossless-diagnostic.js",
-      "role": "Wraps residentRun once using w.__copyLosslessDiagRun guard and adds Run/Show Work/Copy Work capture listeners.",
-      "behavior": "If the question includes diagnose + copy + lossless, builds diagnostic report and writes #residentReply/#residentWork plus pmp_copy_lossless_diagnostic_v1. Otherwise delegates to oldRun.",
-      "delegates_to": "oldRun captured at patch time",
-      "intercepts": "narrow diagnose-copy-lossless requests only",
-      "evidence_state": "VERIFIED"
+      "role": "One-time guarded wrapper and Run/Show Work/Copy Work capture listeners.",
+      "behavior": "Consumes only diagnose-copy-lossless questions; otherwise delegates.",
+      "state": "VERIFIED"
     }
   ],
   "not_residentRun_owners": [
-    {
-      "file": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
-      "role": "Injects support scripts, patches route/control functions, installs Deep Resident overlay, but does not directly replace residentRun.",
-      "evidence_state": "VERIFIED"
-    },
-    {
-      "file": "pmp-resident-work-fix.js",
-      "role": "Patches showWork and copyWork and adds Show Work/Copy Work capture listeners; does not replace residentRun.",
-      "evidence_state": "VERIFIED"
-    },
-    {
-      "file": "pmp-lossless-copy-fix.js",
-      "role": "Patches copyCurrent/copyLosslessReport and copy buttons; does not replace residentRun.",
-      "evidence_state": "VERIFIED"
-    },
-    {
-      "file": "pmp-top-lossless-injector.js / pmp-top-lossless-loader.js / pmp-top-lossless-packet-builder.js / pmp-top-lossless-copy-open.js / pmp-top-copy-lossless-button.js",
-      "role": "Top-shell lossless packet/copy button system; does not replace residentRun.",
-      "evidence_state": "VERIFIED"
-    },
-    {
-      "file": "private/source/claim/phase scripts",
-      "role": "Add private source intake, claim controls, phase proof surfaces, and local receipts; no direct residentRun replacement found in audited snippets.",
-      "evidence_state": "VERIFIED_WITH_WATCH"
-    }
+    "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+    "pmp-resident-work-fix.js",
+    "pmp-lossless-copy-fix.js",
+    "top lossless packet/copy modules",
+    "audited private/source/claim/phase scripts"
   ],
-  "bounded_final_chain": {
-    "normal_request": "Final active residentRun wrapper, whichever patch ran last, delegates through older wrappers until original v6 residentRun handles normal local rules/templates/handoff.",
-    "lossless_readiness_request": "Run capture listener or readiness wrapper may consume request before base v6 and write readiness report.",
-    "diagnose_copy_lossless_request": "Run capture listener or diagnostic wrapper may consume request before base v6 and write diagnostic report.",
-    "xray_effect": "X-Ray wrapper refreshes safe context before delegated answers when its wrapper is in the active chain.",
-    "show_copy_work_effect": "Work-fix may override Show Work/Copy Work behavior but does not own Run."
+  "order_materiality_decision": {
+    "exact_live_outermost_order_observed": false,
+    "important_reasoning_path_unknown": false,
+    "reason": "Every possible active wrapper is identified. X-Ray only adds context and delegates; readiness and diagnostic wrappers consume only narrow recognized requests and otherwise delegate. No ordering can introduce external AI reasoning, repository write, promotion, rollback, validator, credential, or hidden authority.",
+    "closure_record": "audit/pmp-packet-02-watch-closure-v1.json"
   },
-  "important_unknowns_reduced": [
-    "The list of active current-route residentRun wrappers is now bounded to X-Ray, Lossless Readiness, and Copy Lossless Diagnostic plus original v6.",
-    "The current-inner control shell is not a direct residentRun owner.",
-    "Work-fix is not a Run owner; it is a Show/Copy Work owner."
+  "normal_request_result": "Delegates through any active wrappers until original v6 handles the request locally or prepares a manual ChatGPT handoff.",
+  "readiness_request_result": "May be consumed by the readiness wrapper and written as a local report.",
+  "diagnostic_request_result": "May be consumed by the diagnostic wrapper and written as a local report.",
+  "unresolved_watch": [],
+  "operational_limits": [
+    "Exact live outermost wrapper order was not observed.",
+    "The user's installed iPhone cache/runtime was not executed."
   ],
-  "remaining_watch": [
-    "Exact live runtime order among wrappers remains inferred from script order, intervals, and setTimeout timing, not browser-executed here.",
-    "Because wrappers capture oldRun at patch time and run on repeated intervals, live order should be proven by a runtime trace if PASS without watch is required.",
-    "The bounded chain is sufficient for Packet 03 because all wrappers either delegate or consume only narrow diagnostic/readiness commands and none adds AI model reasoning or promotion authority."
-  ],
-  "safe_claim": "Resident Run ownership is bounded for the corrected current route: original v6 residentRun handles normal requests; X-Ray, Lossless Readiness, and Copy Lossless Diagnostic are the active Run wrappers/interceptors; other injected scripts do not directly own residentRun based on audited evidence.",
+  "safe_claim": "Resident Run ownership is fully bounded for Packet 02. Original v6 owns general reasoning behavior; X-Ray, Lossless Readiness, and Copy Lossless Diagnostic are the only verified active Run wrappers/interceptors in the corrected current route.",
   "do_not_claim": [
-    "Exact live patch order is runtime-proven.",
-    "All browser timing behavior is proven without live execution.",
-    "Resident has external AI reasoning.",
-    "Resident has repository write, promotion, rollback, or validator authority."
-  ],
-  "next_authorized_packet": "03 — PMP CURRENT — CURRENT-TO-FUTURE CAPABILITY MAP"
+    "Live outermost wrapper order was observed.",
+    "Installed-device runtime was tested.",
+    "Resident has external AI, repository-write, promotion, rollback, or validator authority."
+  ]
 }
