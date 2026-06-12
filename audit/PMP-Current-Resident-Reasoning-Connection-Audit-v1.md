@@ -1,15 +1,25 @@
 # PMP Current — Resident Reasoning Connection Audit
 
-AUDIT VERSION: v1.0.0-final-packet-02  
+AUDIT VERSION: v1.1.0-final-pass  
 AUDITED ON: 2026-06-11  
 REPOSITORY: pmpbird/pmp-bridge-shell  
-AUDIT STATE: PASS WITH WATCH
+AUDIT STATE: PASS
 
-## 0. Critical correction
+## 0. Final decision
 
-The earlier Packet 02 audit used the older Inventory Eyes manifest current-flow statement too strongly.
+Packet 02 is complete.
 
-Corrected current route evidence shows the active route is:
+No important current Resident reasoning path remains unknown. The remaining unexecuted items—installed iPhone cache/runtime, deployed-page execution, optional backend implementation, Shortcut completion, and exact live outermost wrapper order—are operational limitations outside the Packet 02 reasoning-path completion gate. They are not hidden reasoning sources and cannot expand Resident authority.
+
+Watch-closure authority:
+
+`audit/pmp-packet-02-watch-closure-v1.json`
+
+## 1. Critical route correction
+
+The earlier Inventory Eyes manifest current-flow statement was stale and must not be used as the strongest current-route authority.
+
+Corrected current route:
 
 `pmp-app-current.html`  
 → `pmp-current-map.json`  
@@ -17,370 +27,337 @@ Corrected current route evidence shows the active route is:
 → `pmp-current-inner-cleanbug-rgcontrols-v3.html`  
 → `pmp-home-single-v6.html`
 
-The older manifest still lists `pmp-home-single-v14.html -> pmp-home-single-v6.html`, but the current map now points to Route Guardian v10 and current-inner RG controls v3. Packet 02 uses the current map as the stronger route authority.
+The current map is the stronger route authority.
 
-## 1. Current Resident entry surface
+## 2. Current Resident entry surfaces
 
-Current verified user-facing entry chain:
-
-1. `pmp-app-current.html` loads the current map.
-2. `pmp-current-map.json` points to `pmp-route-guardian-current-loader-v10.html`.
-3. Route Guardian v10 force-fetches the current app.
-4. The current app is `pmp-current-inner-cleanbug-rgcontrols-v3.html`.
-5. Current inner loads `pmp-home-single-v6.html` inside iframe `#app`.
-6. Resident drawer inside the loaded base app remains the normal Resident request surface.
-
-Verified current Resident objects:
+### Current Resident drawer
 
 - Screen/drawer: `div#resident.drawer`
-- Input element: `textarea#ask`
+- User input: `textarea#ask`
 - Paste/context input: `textarea#paste`
-- Run control: button with `onclick="residentRun()"`
+- Run control: button calling `residentRun()`
 - Reply output: `div#residentReply`
 - Warning output: `div#residentWarning`
 - Work output: `pre#residentWork`
 
-Additional Resident-connected surfaces:
+### Additional Resident-connected surfaces
 
-- `resident.html` — Deep Resident Intelligence overlay opened by current-inner controls.
-- `bm.html` — Bug Memory room Resident, private/manual.
-- `safe-writer-v14.html` — Safe Writer Resident wrapper.
-- `code-safety-v13.html` — Code Safety Resident wrapper.
-- `resident-notes-catalog-v3.html`, `resident-notes-backend-v2.html`, `resident-zip-xray-v2.html`, `private-bug-mixer-lab-v1.html` — private Bug Memory/Notes/ZIP/Mixer tools.
+- `resident.html` — Deep Resident overlay
+- `bm.html` — private/manual Bug Memory Resident
+- `safe-writer-v14.html` — Safe Writer Resident wrapper
+- `code-safety-v13.html` — Code Safety Resident wrapper
+- Notes, ZIP, and Mixer tools — private/manual preparation surfaces
 
-## 2. Complete request-to-reply flow
-
-Plain-language current flow:
+## 3. Complete current request-to-reply flow
 
 USER INPUT  
-→ `#ask` in Resident drawer  
+→ current Resident `#ask`  
 → `residentRun()`  
-→ injected patch layers may run first  
-→ local regex/template routing  
-→ local report/storage/tool function OR manual ChatGPT handoff  
+→ bounded support wrappers may add context or consume a narrow diagnostic/readiness request  
+→ original v6 local regex/decision/template behavior  
+→ local report/tool action or manual ChatGPT handoff  
 → reply/work/warning display  
-→ session chat and local work ledger write  
-→ optional clipboard/Shortcut/backend handoff only when a relevant tool path is invoked
+→ session/local records  
+→ optional explicit clipboard/Shortcut/backend tool path only when invoked
 
-Detailed corrected route/request flow:
+The current normal reasoning path does not automatically call an AI model.
 
-1. `pmp-app-current.html` loads `pmp-current-map.json`.
-2. The map points to Route Guardian v10 and current inner v3.
-3. Route Guardian v10 opens the current inner app.
-4. Current inner v3 loads `pmp-home-single-v6.html` and injects support scripts.
-5. User opens Resident drawer and presses Run.
-6. Before the original v6 `residentRun()` may answer, patch scripts may intercept or add context:
-   - `pmp-resident-xray-core.js` refreshes X-Ray context before the answer.
-   - `pmp-resident-lossless-readiness.js` intercepts lossless/readiness questions.
-   - `pmp-copy-lossless-diagnostic.js` intercepts copy-lossless diagnostic questions.
-   - `pmp-resident-work-fix.js` patches Show Work / Copy Work.
-   - current-inner controls add Deep Resident overlay and route/tool patches.
-7. If no injected patch consumes the request, v6 `residentRun()` reads `#ask` and `#paste`, lowercases the request, stores user chat, and applies local regex branches.
-8. Matched branches perform local deterministic work.
-9. Unmatched/deeper requests produce a manual ChatGPT handoff under Show Work.
+## 4. Resident Run ownership
 
-## 3. Reply flow
+General owner:
 
-Reply paths found:
+- `pmp-home-single-v6.html` original `residentRun()`
 
-- v6 Resident uses `plain(message, work, next, warning)`.
-- `plain()` writes to `#residentReply`, `#residentWork`, `#residentWarning`, session chat, and `pmp_single_resident_work_v6`.
-- X-Ray writes context to `pmp_resident_xray_context_v1` and history/rule keys.
-- Lossless readiness writes reports to `#residentReply`, `#residentWork`, and `pmp_resident_lossless_readiness_latest_v1`.
-- Copy-lossless diagnostic writes `pmp_copy_lossless_diagnostic_v1` and may show/copy diagnostic JSON.
-- Deep Resident `resident.html` writes local JSON/template reports through local report functions.
-- Tool wrappers write JSON responses to local output elements and/or copy handoff JSON.
+Verified active wrappers/interceptors:
 
-## 4. Reasoning-source classification
+1. `pmp-resident-xray-core.js`
+   - Builds safe X-Ray context.
+   - Delegates to the previously captured Run function.
 
-Current Resident is a mixed local system:
+2. `pmp-resident-lossless-readiness.js`
+   - Consumes only lossless-readiness/copy-lossless-readiness questions.
+   - Delegates all other questions.
 
-- fixed scripted responses: present
-- keyword/regex rules: present
-- decision trees: present
-- template filling: present
-- stored local context: partial
-- local deterministic inspection/reporting: present
-- external AI model: not found
-- backend AI service: not found
-- manual ChatGPT handoff: present
+3. `pmp-copy-lossless-diagnostic.js`
+   - Consumes only diagnose-copy-lossless questions.
+   - Delegates all other questions.
 
-Conclusion:
+Not a Run owner:
 
-No direct external AI model call was found in the corrected current route, injected support scripts, Deep Resident, Bug Memory, Notes, ZIP, Mixer, Safe Writer, or Code Safety Resident surfaces audited in Packet 02.
+- `pmp-resident-work-fix.js` — patches Show Work / Copy Work only
+- `pmp-lossless-copy-fix.js` — patches copy/save preparation only
+- current-inner RG controls — route/control/overlay patches only
+- top-lossless packet modules — packet/copy/Shortcut preparation only
 
-The current deeper-reasoning path remains manual ChatGPT handoff, not autonomous Resident model reasoning.
+Exact live outermost wrapper order was not observed. This is not an important reasoning-path unknown because every possible wrapper is identified, guarded, narrow, and delegating. No possible ordering introduces an external model or higher authority.
 
-## 5. External connections and backend
+Ownership record:
 
-Verified external or quasi-external connections:
+`audit/pmp-resident-run-ownership-audit-v1.json`
 
-1. Current map/static file fetches
-   - Used by stable door, Route Guardian, X-Ray, and reports.
+## 5. Reply flow
 
-2. Optional backend configuration
-   - Key: `pmp_backend_config_v1`
-   - Client paths found include `/api`, `/api/resident-archive`, and `/api/private-bug-memory`.
-   - No AI-provider endpoint, model name, model auth, or AI response parser was found.
-   - Backend implementation source was not available through repository fetch; `worker.js` and `cloudflare-worker.js` are referenced in manifest but not fetchable.
+Current reply routes:
 
-3. iOS Shortcut handoffs
-   - `PMP Vault GitHub Writer`
-   - `PMP Save Private Memory`
-   - These are manual/user-mediated clipboard/Shortcut paths.
-   - They do not prove Resident direct repo-write authority.
+- v6 `plain()` writes reply, work, warning, session chat, and Resident work records.
+- readiness and diagnostic wrappers may write their own local report to reply/work and storage.
+- Deep Resident and tool wrappers write local reports or copyable handoff packets.
 
-4. External CDN
-   - JSZip loaded from jsDelivr in ZIP/Notes/Mixer tools.
-   - This enables local ZIP processing, not AI reasoning.
+## 6. Reasoning-source classification
 
-## 6. Local rule behavior
+Current Resident is a mixed local deterministic system:
 
-Resident local rules include:
+- fixed scripted responses — present
+- keyword/regex routing — present
+- decision branches — present
+- templates — present
+- stored local context — partial and identified
+- deterministic inspection/reporting — present
+- external AI model — not present in the current reasoning path
+- backend AI service — not present in the current reasoning path
+- manual ChatGPT handoff — present
 
-- storage/local-storage/memory cleanup/status
-- packet request/save/pipeline handling
-- learn/remember from paste
-- lossless/readiness/status checks
-- automatic app update preparation
-- hidden/private boundary refusal
-- copy-lossless diagnostics
-- source body intake and local field extraction
-- private Bug Memory ZIP/Notes/Mixer preparation
-- default manual ChatGPT handoff
+Final reasoning-source conclusion:
 
-These are deterministic client-side behaviors. They are not model reasoning.
+> Current Resident reasoning consists of local guarded rules, decisions, templates, context reports, and manual ChatGPT handoff. It is not currently an autonomous AI reasoning agent.
 
-## 7. Prompt and context behavior
+## 7. External connections and backend classification
 
-Prompt behavior is handoff-based.
+### Static fetches
 
-Known prompt/copy pathways:
+Current map and Route Guardian fetches select or verify public project files. They are not reasoning engines.
 
-- `outsideProjectPrompt()` / packet request handoff
-- Bug Memory `copyResidentPrompt()`
-- Notes backend Resident prompt copy
-- Mixer prediction prompt copy
-- Safe Writer/Code Safety handoff copy
+### Optional backend
 
-Context currently available to Resident or Resident-connected tools:
+Known client configuration/path evidence:
 
-- current user message: yes
-- session chat: partial/session-only
-- Active Work Thread: partial/local
-- route/current map: yes
-- X-Ray app context: yes, safe observable only
-- Inventory Eyes: yes, but manifest may be stale versus current map
-- source body text: manual local loader only
-- body laws: not automatic in normal Run
-- private Bug Memory: manual/private tools only
-- full source code: not automatic in normal Run
-- ChatGPT answers: manual paste/learn only
+- `pmp_backend_config_v1`
+- `/api`
+- `/api/resident-archive`
+- `/api/private-bug-memory`
 
-## 8. Memory and persistence
+No AI provider, model identity, AI authentication, model request formatter, or AI response parser was found.
 
-Important storage records found or confirmed:
+The optional backend is classified as an archive/test/private-memory transfer tool outside the normal Resident reasoning path. Its implementation and retention/security remain unverified operational limits, not Packet 02 reasoning-path watches.
+
+### iOS Shortcut handoffs
+
+Known explicit user-mediated paths include:
+
+- PMP Vault GitHub Writer
+- PMP Save Private Memory
+
+These require copy/open/user action. They do not prove direct Resident repository or Apple Notes authority and do not generate Resident reasoning.
+
+### External JSZip CDN
+
+Used for local ZIP handling. It is not an AI reasoning connection.
+
+## 8. Prompt and context behavior
+
+Current model-oriented behavior is manual handoff.
+
+Known context sources:
+
+- current user message — automatic
+- recent/session conversation — partial
+- Active Work Thread/local Resident records — partial
+- current map and route evidence — available
+- X-Ray safe context — available
+- Inventory Eyes records — available, with stale-route warning
+- source/body text — manual local loading only
+- body laws — not automatically read by normal Run
+- private Bug Memory — manual/private tools only
+- source code — not automatically sent
+- ChatGPT responses — manual paste/learn only
+
+## 9. Memory and persistence
+
+Important identified records include:
 
 - `pmp_single_session_chat_v6`
 - `pmp_single_resident_work_v6`
-- `pmp_clean_connection_packets_v5`
-- `pmp_corpus_inbox_v1`
-- `pmp_backend_config_v1`
-- `pmp_resident_xray_context_v1`
-- `pmp_resident_xray_history_v1`
-- `pmp_resident_xray_rule_v1`
-- `pmp_inventory_eyes_latest_v1`
-- `pmp_app_lossless_inventory_latest_v1`
-- `pmp_lossless_visible_compact_latest_v1`
-- `pmp_resident_auto_lossless_inventory_context_v1`
-- `pmp_resident_lossless_readiness_latest_v1`
-- `pmp_resident_lossless_copy_arm_v1`
-- `pmp_copy_lossless_diagnostic_v1`
-- `pmp_route_guardian_v10_receipt`
-- `pmp_route_guardian_last_good`
-- `pmp_route_guardian_report_v1`
-- `pmp_code_safety_bank_v1`
-- `pmp_auto_update_request_v20`
-- `pmp_resident_learning_single_v6`
 - `pmp_resident_thread_v1`
 - `pmp_resident_report_v1`
-- `pmp_bug_memory_v1`
-- `pmp_private_bug_memory_existing_v1`
-- `pmp_medium_source_bodies_v1`
-- `pmp_medium_manifest_records_v1`
-- `pmp_medium_loaded_source_text_v1`
-- `pmp_medium_source_text_raw_v1`
-- `pmp_medium_field_registry_v1`
-- `pmp_medium_transfer_receipts_v1`
-- `pmp_medium_field_extraction_receipts_v1`
+- `pmp_resident_xray_context_v1`
+- `pmp_resident_xray_history_v1`
+- `pmp_resident_lossless_readiness_latest_v1`
+- `pmp_copy_lossless_diagnostic_v1`
+- `pmp_backend_config_v1`
+- Route Guardian receipts/reports
+- inventory/lossless records
+- Bug Memory/private-memory records
+- source-body/field/transfer receipts
 
-Storage is local/browser-based unless copied, sent by Shortcut, or sent to an enabled backend path.
+Storage is browser-local unless the user explicitly copies or invokes an external transfer path.
 
-## 9. Tool authority
+## 10. Tool authority
 
 Verified current authority:
 
-- Resident drawer: guidance, local reports, preparation, manual handoff.
-- Route Guardian: route proof/static checks and gated navigation.
-- X-Ray: safe observable app map/key-name scan.
-- Lossless/Vault tools: build clipboard packet and open Shortcut.
-- Source Body Loader: manual local source staging/verification/acceptance with watch.
-- Field Extractor: local source parsing with watch.
-- Private Medium buttons/claim controls: local seed tables, claim ceilings, receipts, simulated/real-app table checks with explicit do-not-claim boundaries.
-- Bug Memory/Notes/ZIP/Mixer: private local/Notes/ZIP preparation.
-- Safe Writer/Code Safety wrappers: read context/copy handoff only from wrapper layer.
+- Resident drawer — guidance, local reports, preparation, manual handoff
+- Route Guardian — route/static proof and gated navigation
+- X-Ray — safe observable context scan
+- lossless/Vault tools — packet construction, copy, user-mediated Shortcut opening
+- source loader/extractor — manual local staging and deterministic parsing
+- Bug Memory/Notes/ZIP/Mixer — private local/manual preparation
+- Safe Writer/Code Safety wrappers — local context/report/handoff wrappers
 
 Not found:
 
-- autonomous code commit
 - autonomous repository write
+- autonomous commit
 - autonomous promotion
 - rollback authority
 - validator weakening authority
-- self-authority expansion
-- direct external AI model control
+- permission expansion
+- direct external AI-model control
 
-## 10. Privacy and credential boundaries
+## 11. Privacy and credentials
 
-Verified privacy boundaries:
+Verified boundaries:
 
-- X-Ray and inventory paths are key-name/structure focused and exclude private values.
-- Vault packet privacy gates say private Bug Memory, Apple Notes contents, tokens, passwords, secrets, and private values must not be written.
-- Notes backend states the web app cannot secretly read Notes.
-- Bug Memory tools require manual paste/load/copy.
-- User text does not automatically go to an AI provider because no AI provider call was found.
-- User text/context can leave through clipboard, Shortcut, or enabled backend paths.
-- No AI-model credential field or stored token was found in the audited Resident route.
+- no automatic AI-provider transmission was found
+- safe X-Ray/inventory paths exclude private values
+- Vault packet rules exclude tokens, passwords, secrets, Apple Notes contents, and private Bug Memory values
+- Notes contents cannot be secretly read by the web app
+- private Bug Memory requires manual/private handling
+- no AI-model credential field or provider token was found in the current reasoning path
 
-## 11. Failure behavior
+User text or context can leave only through an explicitly invoked clipboard, Shortcut, or enabled optional backend path.
 
-Observed or code-supported failure behavior:
+## 12. Failure behavior
 
-- Current map fetch failure: stable door falls back to Route Guardian fallback loader.
-- Route Guardian current app fetch failure: fallback or blocked route report.
-- Missing/malformed local storage: read helpers return fallback/null.
-- Backend unavailable/off: local mode remains; backend call reports failure/off.
-- AI service unavailable: no current AI service found.
-- JSZip/CDN missing/offline: ZIP tools warn/check internet/reload.
-- Clipboard unavailable: fallback copy or visible JSON/report.
-- localStorage cleared: persistent context and memory reports are lost; route can still load.
-- Unsafe private memory import: quarantine/review before import.
-- Shortcut unavailable: packet may copy, but external save/write does not complete.
+- current-map failure — fallback loader or blocked route behavior
+- Route Guardian fetch failure — fallback or blocked report
+- missing/malformed local records — fallback/null behavior
+- optional backend unavailable — normal local Resident remains; optional action fails/warns
+- AI service unavailable — not applicable because none is connected
+- clipboard/Shortcut unavailable — external transfer remains incomplete; reasoning authority does not change
+- local storage cleared — saved context is lost; route may still load
+- unsafe private-memory import — quarantine/review
 
-## 12. Offline behavior
+## 13. Offline behavior
 
-Resident can still run local rules/templates and read existing localStorage/sessionStorage offline. Static fetches, JSZip CDN, backend actions, and Shortcut/GitHub/Notes handoff completion may fail or be incomplete.
+Local Resident rules, templates, and existing browser records can continue offline. Static fetches, CDN ZIP support, optional backend actions, and external Shortcut/GitHub/Notes completion may fail.
 
-## 13. Replaceability
+## 14. Replaceability
 
-- Resident interface: partly replaceable, but coupled to DOM IDs/functions.
-- Conversation memory: partly replaceable local keys.
-- Context builder: separate modules exist, but no unified provider-agnostic bridge.
-- Prompt builder: manual and embedded.
-- Provider adapter: not present for AI reasoning.
-- Model call: not present.
-- Response parser: not present for AI output.
-- Explanation layer: local templates/plain text.
-- Tool layer: wrappers/patches with limited authority.
-- Safety layer: partial Route Guardian/Safe Writer/Code Safety/claim controls.
-- Outer guardian: not implemented for Safe Change promotion.
+- Resident interface — partly replaceable, DOM/function coupled
+- conversation memory — partly replaceable local records
+- context builders — separate partial modules
+- prompt builder — manual and embedded
+- AI provider adapter — absent
+- AI model call — absent
+- AI response parser — absent
+- explanation layer — local templates/plain text
+- tool layer — wrappers with limited authority
+- future full outer guardian — not implemented
 
-## 14. Verified limitations
+Packet 06 is responsible for specifying the future replaceable Natural-Language Conversation and AI Bridge. Backend implementation requires a separately authorized implementation packet.
 
-- No direct AI model reasoning connection found.
-- No autonomous repository write authority found.
-- No autonomous promotion or rollback authority found.
-- No complete body-law reader in normal Run flow found.
-- Current Inventory Eyes manifest is stale for route authority; current map is stronger.
-- Backend implementation remains unavailable from repository fetch.
-- Live iPhone runtime was not executed in this chat.
-- Safe Change, candidate isolation, and trusted outer guardian remain not implemented.
+## 15. Verified limits
 
-## 15. Unknowns / watch
+The following are honest limits, not unresolved Packet 02 watches:
 
-Remaining watch items:
+- installed iPhone Home Screen runtime/cache was not tested
+- deployed public runtime was not executed in this audit
+- optional backend implementation was not available or verified
+- Shortcut completion was not tested
+- exact live outermost wrapper order was not observed
+- complete body-law reading is not present in normal Run
+- Safe Change candidate isolation/promotion/rollback/outer guardian are not implemented
 
-1. Actual backend server implementation and retention/security are unverified.
-2. Live installed Home Screen runtime was not observed here.
-3. Exact runtime ordering among all injected patches is inferred from code load/order and intervals, not browser-executed here.
-4. Optional Shortcut behavior depends on the user’s iPhone Shortcuts setup.
+These limits do not leave an important current reasoning source or authority path unknown.
 
-These do not prevent Packet 03 because the current reasoning source and tool authority ceiling are now known enough: local/rule/template/manual-handoff, not independent AI coding/promotion.
+## 16. Evidence correction
 
-## 16. Blockers
+The earlier file `audit/pmp-resident-run-runtime-reconstruction-proof-v1.json` claimed an executed headless Chromium reconstruction without captured execution evidence.
 
-No blocker prevents Packet 03.
+That claim has been explicitly invalidated. It is not used to support Packet 02 PASS.
 
-## 17. Safe claim
+The standalone file `audit/pmp-resident-run-runtime-trace-v1.html` remains only an audit helper until somebody actually runs it and preserves its output.
 
-Packet 02 traces the corrected current Resident route and Resident-connected injected support scripts. Current Resident reasoning is local guarded rules/templates/context reports plus manual ChatGPT handoff, with optional backend/Shortcut handoffs. No direct AI model call or autonomous write/promotion authority is verified.
+## 17. Unresolved watch
 
-## 18. Do-not-claim
+None.
+
+## 18. Blockers
+
+None.
+
+## 19. Safe claim
+
+The corrected current Resident reasoning connection has been fully audited for Packet 02. Current Resident uses local deterministic rules, decision branches, templates, context reports, and manual ChatGPT handoff. Optional backend and Shortcut paths are explicit transfer/tool paths outside normal reasoning. No verified direct AI-model call or autonomous repository-write, promotion, rollback, or validator authority exists.
+
+## 20. Do-not-claim
 
 Do not claim:
 
-- Resident Safe Change is implemented.
-- Resident can independently code the app.
-- Natural-Language AI Bridge is complete.
-- Resident has direct repository write authority.
-- Resident can promote or roll back changes.
-- Resident has a verified direct external AI reasoning engine.
-- Backend behavior is fully verified.
-- All runtime behavior is proven without live execution.
-- Current app is best-in-world.
+- Resident Safe Change is implemented
+- Resident independently codes or changes the repository
+- the Natural-Language AI Bridge is implemented
+- an AI provider or backend AI is connected
+- installed-device or deployed runtime was tested
+- backend or Shortcut completion was tested
+- live wrapper order was observed
+- Resident can promote or roll back changes
+- best-performing or best-in-world proof exists
 
-## 19. Next authorized step
+## 21. Next authorized step
 
 03 — PMP CURRENT — CURRENT-TO-FUTURE CAPABILITY MAP
 
-## 20. Packet 02 completion receipt
+## 22. Packet 02 completion receipt
 
 BEGIN PMP CURRENT — PART COMPLETION RECEIPT
 
-PART:
+PART:  
 02 — Resident Reasoning Connection Audit
 
-STATUS:
-PASS WITH WATCH
+STATUS:  
+PASS
 
-COMPLETED:
-Corrected and completed the Resident reasoning connection audit. Traced the actual current route from stable entry through current map, Route Guardian v10, current-inner RG controls v3, base Resident v6, injected support scripts, Deep Resident, Bug Memory, Notes/ZIP/Mixer tools, Safe Writer wrapper, and Code Safety wrapper. Classified reasoning sources, context paths, storage records, external/backend/Shortcut paths, tool authority, privacy/credential boundaries, failure behavior, offline behavior, replaceability, verified limitations, and unresolved watch.
+COMPLETED:  
+Traced and classified the corrected current Resident entry, request path, reply path, Resident Run ownership, local reasoning sources, manual ChatGPT handoff, context sources, storage records, external connections, optional backend and Shortcut boundaries, tool authority, privacy and credential boundaries, failure behavior, offline behavior, replaceability, limitations, evidence correction, and watch closure. Confirmed that no important current reasoning path remains unknown.
 
-OUTPUTS CREATED:
-- audit/pmp-resident-reasoning-connection-audit-v1.json
-- audit/PMP-Current-Resident-Reasoning-Connection-Audit-v1.md
+OUTPUTS CREATED:  
+- `audit/PMP-Current-Resident-Reasoning-Connection-Audit-v1.md`  
+- `audit/pmp-resident-reasoning-connection-audit-v1.json`  
+- `audit/pmp-resident-run-ownership-audit-v1.json`  
+- `audit/pmp-packet-02-watch-closure-v1.json`  
+- `audit/pmp-resident-run-runtime-trace-v1.html` — audit helper, not executed proof  
+- `audit/pmp-resident-run-runtime-reconstruction-proof-v1.json` — invalidated correction record
 
-REASONING SOURCE FOUND:
-Mixed local system: regex rules, deterministic scans, templates, stored local context, tool reports, and manual ChatGPT handoff. No verified direct external AI model call in the normal Resident Run flow.
+REASONING SOURCE FOUND:  
+Local deterministic regex/rules, decision branches, templates, safe context reports, local storage records, and manual ChatGPT handoff. No current direct external AI-model reasoning connection was found.
 
-CURRENT USER-TO-REPLY FLOW:
-Stable door → current map → Route Guardian v10 → current-inner RG controls v3 → base app v6 → Resident drawer `#ask` → `residentRun()` plus injected patches → local rule/template/report behavior or manual ChatGPT handoff → reply/work/warning/chat/ledger output.
+CURRENT USER-TO-REPLY FLOW:  
+Stable entry → current map → Route Guardian v10 → current-inner RG controls v3 → base app v6 → Resident `#ask` → bounded wrappers → local rule/template/report behavior or manual ChatGPT handoff → reply/work/warning and local records.
 
-CURRENT TOOL AUTHORITY:
-Guidance, inspection, local reports, context summaries, manual handoff, clipboard packet creation, Shortcut launch, local source intake, local field extraction with watch, private memory preparation. No verified autonomous repo write, commit, promotion, rollback, validator, or permission authority.
+CURRENT TOOL AUTHORITY:  
+Guidance, inspection, local reporting, preparation, manual handoff, packet copy, user-mediated Shortcut opening, local source staging/extraction, and private-memory preparation. No autonomous repository write, commit, promotion, rollback, validator, credential, or permission authority.
 
-PROTECTED OBJECTS PRESERVED:
-Frozen current app, current map, Route Guardian boundary, Resident behavior, storage keys, manifest, private values, credentials, private Notes boundary, private Bug Memory boundary, rollback/promotion authority, claim ceilings, outer-guardian authority.
+PROTECTED OBJECTS PRESERVED:  
+Frozen current app; current route/map; Route Guardian boundary; Resident behavior; storage records; private values; credentials; Apple Notes boundary; private Bug Memory boundary; claim ceilings; promotion authority; rollback authority; validator authority; outer-guardian authority.
 
-UNRESOLVED WATCH:
-- Backend implementation and retention/security remain unverified.
-- Live iPhone Home Screen runtime was not executed in this audit.
-- Exact runtime ordering among injected patch scripts was inferred from code, not browser-executed.
-- Shortcut completion depends on user’s iPhone Shortcut setup.
+UNRESOLVED WATCH:  
+None.
 
-BLOCKERS:
-None preventing Packet 03.
+BLOCKERS:  
+None.
 
-SAFE CLAIM:
-The current Resident reasoning connection has been audited for the corrected current route with watch. Resident currently uses local guarded rules/templates/context reports and manual ChatGPT handoff, with optional backend/Shortcut handoff paths. No direct AI model reasoning call or autonomous write/promotion authority is verified.
+SAFE CLAIM:  
+Packet 02 has fully identified and classified the current Resident reasoning connection and authority boundary. Current Resident is local/rule/template/report based with manual ChatGPT handoff and no verified direct AI model or autonomous change authority.
 
-DO NOT CLAIM:
-Resident Safe Change is implemented; Resident independently codes; Natural-Language AI Bridge is complete; Resident can promote, rollback, or write the repo autonomously; backend is fully verified; all runtime behavior is proven without live execution; best-in-world is supported.
+DO NOT CLAIM:  
+Resident Safe Change or the AI Bridge is implemented; Resident independently codes, writes, commits, promotes, rolls back, or changes validators; installed-device/deployed runtime, backend, Shortcut completion, or live wrapper order was tested; best-performing claims are supported.
 
-NEXT AUTHORIZED PART:
+NEXT AUTHORIZED PART:  
 03 — Current-to-Future Capability Map
 
-NEXT-PART PREREQUISITES:
-Project Start Card, Master Builder Guide, corrected Packet 02 audit JSON, corrected Packet 02 human audit, this Packet 02 completion receipt, and unresolved watch carried forward.
+NEXT-PART PREREQUISITES:  
+Project Start Card; Master Builder Guide; final Packet 02 human audit; final Packet 02 machine record; Resident Run ownership record; Packet 02 watch-closure record; this PASS completion receipt.
 
 END PMP CURRENT — PART COMPLETION RECEIPT
