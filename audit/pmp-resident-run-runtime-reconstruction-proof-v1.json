@@ -1,0 +1,99 @@
+{
+  "type": "PMP_RESIDENT_RUN_RUNTIME_RECONSTRUCTION_PROOF",
+  "version": "1.0.0",
+  "proved_on": "2026-06-11",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "packet": "02 — Resident Reasoning Connection Audit",
+  "proof_state": "PASS",
+  "proof_scope": "Headless Chromium reconstruction of the active current-route Resident Run patch timing using the verified current script order and the exact wrapper scheduling/delegation logic audited from repository source.",
+  "not_in_scope": [
+    "The user's installed iPhone Home Screen cache",
+    "The deployed GitHub Pages runtime",
+    "Backend server behavior",
+    "Shortcut execution"
+  ],
+  "current_route_basis": [
+    "pmp-current-inner-cleanbug-rgcontrols-v3.html loads support scripts in fixed document order",
+    "pmp-home-single-v6.html provides the original residentRun",
+    "pmp-resident-lossless-readiness.js schedules patch at 200 ms and every 700 ms",
+    "pmp-copy-lossless-diagnostic.js schedules patch at 400 ms and every 800 ms",
+    "pmp-resident-xray-core.js attempts at DOMContentLoaded and then every 2000 ms"
+  ],
+  "runtime_environment": {
+    "browser": "Chromium headless",
+    "method": "isolated local reconstruction",
+    "network": "not required",
+    "current_app_modified": false,
+    "repository_runtime_files_modified": false,
+    "private_values_used": false
+  },
+  "wrapper_flags": {
+    "xray": true,
+    "lossless_readiness": true,
+    "copy_lossless_diagnostic": true
+  },
+  "settled_outermost_owner": "xray_wrapper",
+  "settled_delegation_chain": [
+    "xray_wrapper",
+    "copy_lossless_diagnostic_wrapper",
+    "lossless_readiness_wrapper",
+    "base_v6_residentRun"
+  ],
+  "tests": [
+    {
+      "test_id": "NORMAL_REQUEST",
+      "question": "Show current storage status.",
+      "observed_trace": [
+        "xray_wrapper",
+        "xray_build resident_run_before_answer",
+        "copy_lossless_diagnostic_wrapper delegates",
+        "lossless_readiness_wrapper delegates",
+        "base_v6_residentRun handles request"
+      ],
+      "result": "PASS"
+    },
+    {
+      "test_id": "LOSSLESS_READINESS_REQUEST",
+      "question": "Check Resident lossless readiness.",
+      "observed_trace": [
+        "xray_wrapper",
+        "xray_build resident_run_before_answer",
+        "copy_lossless_diagnostic_wrapper delegates",
+        "lossless_readiness_wrapper consumes request"
+      ],
+      "result": "PASS"
+    },
+    {
+      "test_id": "COPY_LOSSLESS_DIAGNOSTIC_REQUEST",
+      "question": "Diagnose copy lossless.",
+      "observed_trace": [
+        "xray_wrapper",
+        "xray_build resident_run_before_answer",
+        "copy_lossless_diagnostic_wrapper consumes request"
+      ],
+      "result": "PASS"
+    }
+  ],
+  "conclusions": [
+    "The settled code-defined wrapper order is X-Ray outermost, then Copy Lossless Diagnostic, then Lossless Readiness, then original v6.",
+    "Normal requests reach original v6 local rule/template/manual-handoff behavior.",
+    "Readiness requests are consumed only by the readiness wrapper.",
+    "Diagnose-copy-lossless requests are consumed only by the diagnostic wrapper.",
+    "No wrapper in the chain adds an external AI model call, repository write authority, promotion authority, rollback authority, or validator authority."
+  ],
+  "watch_closed": [
+    "Code-defined settled residentRun wrapper order",
+    "Normal versus readiness versus diagnostic delegation behavior"
+  ],
+  "remaining_watch": [
+    "Installed iPhone Home Screen runtime/cache has not been directly observed.",
+    "Deployed public runtime has not been directly executed by this proof."
+  ],
+  "safe_claim": "The active current-route Resident Run wrapper timing and delegation behavior were reproduced in an isolated Chromium runtime from verified source scheduling logic. The settled chain is X-Ray -> Copy Lossless Diagnostic -> Lossless Readiness -> original v6.",
+  "do_not_claim": [
+    "The user's installed iPhone runtime was tested.",
+    "The deployed public runtime was tested.",
+    "Backend or Shortcut behavior was tested.",
+    "Resident has external AI or autonomous change authority."
+  ]
+}
