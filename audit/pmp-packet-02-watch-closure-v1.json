@@ -1,0 +1,83 @@
+{
+  "type": "PMP_PACKET_02_WATCH_CLOSURE",
+  "version": "1.0.0",
+  "closed_on": "2026-06-11",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "packet": "02 — Resident Reasoning Connection Audit",
+  "decision": "PASS",
+  "decision_rule": "Packet 02 requires every important current reasoning path to be known. Operational systems that are optional, user-mediated, unconnected to normal Resident reasoning, or outside the installed source runtime are classified as limits rather than unresolved reasoning-path watches.",
+  "closures": [
+    {
+      "prior_watch": "Backend implementation and retention/security were unverified.",
+      "classification": "OUTSIDE_CURRENT_REASONING_PATH",
+      "basis": [
+        "No provider, model, AI authentication, AI request formatter, or AI response parser was found in the corrected current Resident route.",
+        "Known client backend paths are optional test/archive/private-memory sync paths.",
+        "Normal residentRun does not require the backend and remains local when it is absent or unavailable."
+      ],
+      "remaining_limit": "A future backend must be designed in Packet 06 and implemented only in an authorized implementation packet.",
+      "packet_02_watch": false
+    },
+    {
+      "prior_watch": "Live installed iPhone Home Screen runtime was not observed.",
+      "classification": "DEPLOYMENT_VALIDATION_OUTSIDE_AUDIT_COMPLETION_GATE",
+      "basis": [
+        "Packet 02 identifies the repository-defined current route, reasoning source, authority ceiling, privacy boundary, and failure behavior.",
+        "Installed-device cache identity is an operational deployment check, not an unknown reasoning source.",
+        "No audit conclusion depends on claiming that a particular installed cache was executed."
+      ],
+      "remaining_limit": "Do not claim the user's installed iPhone cache/runtime was tested.",
+      "packet_02_watch": false
+    },
+    {
+      "prior_watch": "Exact runtime ordering among injected residentRun wrappers was not live-observed.",
+      "classification": "NON_MATERIAL_TO_REASONING_SOURCE_AND_AUTHORITY_CLASSIFICATION",
+      "basis": [
+        "The active wrapper set is bounded to X-Ray, Lossless Readiness, Copy Lossless Diagnostic, and original v6 residentRun.",
+        "X-Ray adds safe context then delegates.",
+        "Readiness and diagnostic wrappers consume only their narrow matching requests and otherwise delegate.",
+        "No possible ordering among these bounded wrappers introduces an AI model call, hidden authority, repository write, promotion, rollback, or validator control.",
+        "Therefore exact outermost ordering is not an important unknown current reasoning path for Packet 02."
+      ],
+      "remaining_limit": "Do not claim a live wrapper order was observed.",
+      "packet_02_watch": false
+    },
+    {
+      "prior_watch": "Shortcut completion depends on the user's iPhone Shortcut setup.",
+      "classification": "USER_MEDIATED_EXTERNAL_SIDE_EFFECT_OUTSIDE_REASONING_PATH",
+      "basis": [
+        "Shortcut paths require explicit copy/open/user action.",
+        "They do not generate Resident reasoning.",
+        "They do not prove direct Resident repository or Notes authority.",
+        "Failure leaves the packet copied or the external action incomplete without changing the reasoning result."
+      ],
+      "remaining_limit": "Do not claim Shortcut execution or external save completion was tested.",
+      "packet_02_watch": false
+    }
+  ],
+  "important_current_reasoning_paths": {
+    "normal_resident": "Corrected current route -> base v6 Resident drawer -> bounded wrappers -> local regex/decision/templates/reports or manual ChatGPT handoff -> reply/work/warning and local records.",
+    "deep_resident": "resident.html local classification/templates/reports; no model call or change authority.",
+    "bug_memory_resident": "bm.html local/manual private-memory support; no model call or autonomous authority.",
+    "safe_writer_and_code_safety": "Local context/report/handoff wrappers; no autonomous model, repository, promotion, rollback, or validator authority.",
+    "external_handoffs": "Clipboard, Shortcut, and optional backend paths are explicit tool/transfer paths, not current reasoning engines."
+  },
+  "unresolved_watch": [],
+  "blockers": [],
+  "operational_limits_not_watches": [
+    "Installed iPhone runtime/cache not tested.",
+    "Deployed public runtime not executed in this audit.",
+    "Optional backend server implementation not available or verified.",
+    "Shortcut execution not tested.",
+    "Exact live outermost wrapper order not observed."
+  ],
+  "safe_claim": "No important current Resident reasoning path remains unknown for Packet 02. The current reasoning source and authority boundary are fully classified: local deterministic rules/templates/context reports plus manual ChatGPT handoff, with optional user-mediated transfer tools and no verified direct AI model or autonomous change authority.",
+  "do_not_claim": [
+    "Installed-device runtime was tested.",
+    "Backend or Shortcut execution was tested.",
+    "A live wrapper order was observed.",
+    "Resident has an external AI reasoning engine.",
+    "Resident can write, commit, promote, roll back, or alter validators autonomously."
+  ],
+  "next_authorized_packet": "03 — PMP CURRENT — CURRENT-TO-FUTURE CAPABILITY MAP"
+}
