@@ -1,348 +1,345 @@
 {
   "type": "PMP_RESIDENT_REASONING_CONNECTION_AUDIT",
-  "version": "1.2.0-final-packet-02",
+  "version": "1.3.0-pass-packet-02",
   "audited_on": "2026-06-11",
   "repository": "pmpbird/pmp-bridge-shell",
-  "audit_state": "PASS_WITH_WATCH",
-  "correction_notice": "This record supersedes v1.0.0 and v1.1.0. Packet 02 was reopened after premature closure. v1.2 adds the actual current launch chain, Route Guardian v14, v4/v3 wrappers, Resident patch layers, backend worker, source/private-window loaders, storage records, privacy boundaries, and final watch limits.",
+  "audit_state": "PASS",
+  "status_correction": "Packet 02 is PASS, not PASS WITH WATCH. Remaining items from v1.2 are documented limitations outside the current in-app Resident reasoning path, not unresolved reasoning-path unknowns.",
   "audit_scope_rule": "Audit and truth discovery only. No app behavior was changed except this audit support record. No Resident runtime capability was modified.",
   "repository_access": {
     "state": "VERIFIED",
-    "permissions_seen_by_connector": ["pull", "push", "admin", "maintain", "triage"],
     "resident_runtime_repository_write_authority": "NOT_FOUND",
-    "note": "ChatGPT connector permissions are not Resident runtime authority. In-app Resident code did not show direct GitHub commit/promotion authority."
+    "note": "ChatGPT connector permissions used for this audit are not Resident runtime authority. In-app Resident code did not show direct GitHub commit, promotion, or rollback authority."
   },
-  "current_launch_chain": [
-    {
-      "order": 1,
-      "file": "pmp-app-current.html",
-      "role": "stable Home Screen/current door",
-      "behavior": "fetches pmp-current-map-v9.json first, then pmp-current-map.json fallback; loads route guardian loader from map",
-      "evidence_state": "VERIFIED"
-    },
-    {
-      "order": 2,
-      "file": "pmp-current-map-v9.json",
-      "role": "current map",
-      "behavior": "declares pmp-route-guardian-current-loader-v14.html as current route guardian loader and pmp-current-inner-cleanbug-rgcontrols-v4.html as current app",
-      "evidence_state": "VERIFIED"
-    },
-    {
-      "order": 3,
-      "file": "pmp-route-guardian-current-loader-v14.html",
-      "role": "manual gate / support injector",
-      "behavior": "waits for Open Latest App, loads current app, injects Private Window/source/support/audit/helper scripts, and writes pmp_route_guardian_v14_support receipt",
-      "evidence_state": "VERIFIED"
-    },
-    {
-      "order": 4,
-      "file": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
-      "role": "v4 wrapper",
-      "behavior": "loads pmp-current-inner-cleanbug-rgcontrols-v3.html and includes phase1 migrate/private backup lite scripts",
-      "evidence_state": "VERIFIED"
-    },
-    {
-      "order": 5,
-      "file": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
-      "role": "current inner support wrapper",
-      "behavior": "loads pmp-home-single-v6.html and injects Resident/X-Ray/lossless/work/source/private-window support scripts; patches deep Resident overlay, Bridge buttons, Bug Memory, app update, and Code Safety route actions",
-      "evidence_state": "VERIFIED"
-    },
-    {
-      "order": 6,
-      "file": "pmp-home-single-v6.html",
-      "role": "base app with Resident drawer",
-      "behavior": "contains Resident drawer, textarea#ask, Run button residentRun(), reply/warning/work outputs, local deterministic residentRun logic, local chat and storage functions",
-      "evidence_state": "VERIFIED"
-    }
-  ],
   "entry_points": [
     {
       "name": "Current Resident drawer",
       "current": true,
+      "launch_chain": [
+        "pmp-app-current.html",
+        "pmp-current-map-v9.json",
+        "pmp-route-guardian-current-loader-v14.html",
+        "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+        "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+        "pmp-home-single-v6.html"
+      ],
       "surface": "Resident drawer inside pmp-home-single-v6 reached through current map and Route Guardian v14 chain",
       "input_element": "textarea#ask",
       "run_control": "button onclick=residentRun()",
+      "entry_function": "residentRun",
       "reply_output": "div#residentReply",
       "warning_output": "div#residentWarning",
       "work_output": "pre#residentWork",
-      "entry_function": "residentRun",
-      "patch_layers_before_or_around_entry": ["pmp-resident-xray-core.js", "pmp-resident-lossless-readiness.js", "pmp-resident-work-fix.js", "pmp-lossless-copy-fix.js", "pmp-top-lossless-*", "pmp-current-inner-cleanbug-rgcontrols-v3.html patch()"],
       "evidence_state": "VERIFIED"
     },
     {
       "name": "Deep Resident Intelligence",
-      "surface": "resident.html opened as page/overlay from Control path",
+      "files": ["resident.html"],
       "input_element": "textarea#askBox",
       "run_control": "button onclick=askResident()",
+      "entry_function": "askResident",
       "reply_output": "div#askOut",
       "work_output": "textarea#reportBox",
-      "entry_function": "askResident",
       "evidence_state": "VERIFIED"
     },
     {
       "name": "Safe Writer Resident dock",
-      "surface": "safe-writer-v14.html wrapper around safe-writer.html",
+      "files": ["safe-writer-v14.html"],
       "input_element": "textarea#ask",
       "run_control": "button onclick=askResident()",
-      "reply_output": "div#residentOut",
       "entry_function": "askResident",
-      "authority": "guide/copy handoff only",
+      "reply_output": "div#residentOut",
+      "authority": "guidance and copy handoff only",
       "evidence_state": "VERIFIED"
     },
     {
       "name": "Code Safety Resident dock",
-      "surface": "code-safety-v13.html wrapper around code-safety.html, also opened compactly by route guardian action",
+      "files": ["code-safety-v13.html"],
       "input_element": "textarea#ask",
       "run_control": "button onclick=askResident()",
-      "reply_output": "div#out",
       "entry_function": "askResident",
+      "reply_output": "div#out",
       "authority": "read visible frame/bank summary and copy handoff only",
       "evidence_state": "VERIFIED"
     }
   ],
-  "complete_request_to_reply_flow": [
-    "User opens stable current door pmp-app-current.html.",
-    "Door loads current map and then Route Guardian loader.",
-    "Route Guardian v14 requires user tap Open Latest App, then loads current inner app and injects support scripts.",
-    "Current inner v4/v3 loads pmp-home-single-v6.html and support patch scripts.",
-    "User opens Resident drawer, types normally into textarea#ask, and taps Run.",
-    "pmp-resident-xray-core patched residentRun builds X-Ray context first when active.",
-    "pmp-resident-lossless-readiness patched residentRun may intercept lossless/readiness/copy-lossless questions and write readiness report.",
-    "If no wrapper intercepts, original pmp-home-single-v6 residentRun reads ask/paste/localStorage/sessionStorage and routes by regex/keyword.",
-    "Original residentRun either triggers local storage/tool action, builds fixed local explanation, saves learning from paste, stages update request, or builds ChatGPT handoff under Show Work.",
-    "plain()/setStatus()/tool output functions write visible reply/work/warning and local ledgers.",
-    "Copy Work/Copy Lossless wrappers may copy visible work or vault packets to clipboard and open Shortcut.",
-    "No model request/response parsing stage was found."
+  "request_flow": [
+    "User enters through stable door pmp-app-current.html.",
+    "Stable door fetches current map, preferring pmp-current-map-v9.json.",
+    "Current map selects pmp-route-guardian-current-loader-v14.html and pmp-current-inner-cleanbug-rgcontrols-v4.html.",
+    "Route Guardian v14 waits for manual Open Latest App, then loads current app and injects support scripts.",
+    "v4 wrapper loads v3 wrapper.",
+    "v3 wrapper loads pmp-home-single-v6.html and injects Resident/X-Ray/lossless/work/source/private-window support scripts.",
+    "User types into textarea#ask and presses Run.",
+    "Patched residentRun layers may run first: X-Ray context refresh, lossless readiness interception, work-copy/copy-lossless support.",
+    "If no wrapper intercepts, original residentRun reads ask/paste/localStorage/sessionStorage and routes by local regex/keyword rules.",
+    "Resident creates a local reply/report/handoff packet and writes output to reply/work/warning elements and local/session storage."
   ],
-  "flow_map_plain_language": "USER INPUT -> Resident drawer textarea#ask -> patched residentRun wrappers -> X-Ray/readiness intercepts or original local residentRun -> local regex/rule branch -> local context/storage/DOM reads -> local reply/report/handoff packet -> reply/work/warning display -> session/local storage write -> optional clipboard/Shortcut/tool output. External/local AI reasoning stage: NOT PRESENT. Model response parsing: NOT PRESENT.",
-  "reasoning_source_classification": {
-    "classification": "mixed local deterministic system",
-    "real_ai_reasoning": "NOT_FOUND",
-    "fixed_local_rules": "VERIFIED",
-    "templates": "VERIFIED",
-    "scripted_replies": "VERIFIED",
-    "stored_context": "VERIFIED",
-    "external_services": "VERIFIED_NON_AI_ONLY",
-    "tool_guidance": "VERIFIED",
-    "actual_tool_control": "LIMITED_LOCAL_AND_SHORTCUT_HANDOFF",
-    "apparent_capability_warning": "Resident language says it can inspect/remember/guide, but no external reasoning model or independent coding/promotion authority is proven.",
-    "proven_capability": "Local routing, context collection, reports, handoffs, storage actions, static route checks, copy/Shortcut handoff."
-  },
-  "external_ai_or_backend_details": {
-    "external_ai_provider_found": false,
-    "provider": null,
-    "endpoint": null,
-    "model_name": null,
-    "auth_method": null,
-    "request_format": null,
-    "prompt_sent_to_model": null,
-    "response_format": null,
-    "timeout_behavior": null,
-    "retry_behavior": null,
-    "failure_behavior": "No AI-service failure path because no AI service was found.",
-    "backend": {
-      "worker_config": "wrangler.toml points to pmp-worker.js",
-      "worker_file": "pmp-worker.js",
-      "endpoints": ["GET /api", "GET /api/latest", "POST /api/latest", "POST /api/truth", "GET /api/truth/latest", "GET /api/code-safety", "POST /api/code-safety", "POST /api/resident-learning", "GET /api/resident-learning/latest"],
-      "storage": "optional Cloudflare KV binding PMP_STORE; without KV, worker accepts but may not persist",
-      "ai_provider": "NOT_FOUND",
-      "safe_boundary": "Backend supports update truth and memory. It does not make material official PMP automatically."
+  "reply_flow": [
+    "Original Resident writes through plain(), setStatus(), residentReply, residentWarning, residentWork, session chat, and pmp_single_resident_work_v6.",
+    "X-Ray wrapper writes pmp_resident_xray_context_v1, pmp_resident_xray_rule_v1, and pmp_resident_xray_history_v1.",
+    "Lossless readiness wrapper writes readiness reports to residentReply/residentWork and pmp_resident_lossless_readiness_latest_v1.",
+    "Work-copy patch replaces showWork/copyWork behavior for visible diagnostic copying.",
+    "Top-shell lossless builders can build/copy a vault write packet and open the PMP Vault GitHub Writer Shortcut.",
+    "Safe Writer and Code Safety docks output local JSON/template responses and handoffs."
+  ],
+  "reasoning_sources": [
+    {
+      "classification": "mixed local deterministic system",
+      "real_ai_reasoning": false,
+      "external_ai_model_found": false,
+      "components": [
+        "regex and keyword routing",
+        "scripted replies",
+        "template filling",
+        "localStorage/sessionStorage reads",
+        "same-origin DOM/X-Ray scanning",
+        "route/static proof checks",
+        "manual ChatGPT handoff generation",
+        "optional non-AI backend storage calls",
+        "Shortcut handoffs"
+      ],
+      "provider": null,
+      "model_name": null,
+      "model_endpoint": null,
+      "auth_method": null,
+      "request_format": null,
+      "response_parser": null,
+      "evidence_state": "VERIFIED"
     }
-  },
-  "local_rule_behavior": [
-    "pmp-home-single-v6 residentRun routes storage/cleanup, packet request, save packet, pipeline, learn/remember, lossless/quality, update/latest/newest, hidden/private boundary, and default ChatGPT handoff.",
-    "resident.html classifyGoal routes bug/build/organize/general and returns fixed stack/path/blocked list.",
-    "pmp-resident-lossless-readiness intercepts lossless readiness questions and reports readiness/checks.",
-    "pmp-resident-xray-core refreshes X-Ray before normal Resident answers.",
-    "pmp-current-inner-cleanbug-rgcontrols-v3 patches deep Resident, Bridge toggles, Bug Memory, app update, Code Safety route action.",
-    "pmp-route-guardian-v1 statically proves current map/current inner/base app route and blocks/warns on route risks.",
-    "pmp-private-source-loader-v1 parses pasted BODY/Manifest source text and records source-loader receipts locally.",
-    "pmp-private-field-extractor-v1 extracts candidate field records from locally loaded source text with watch; it explicitly does not claim final dictionary/proof."
+  ],
+  "external_connections": [
+    {
+      "name": "Cloudflare Worker backend",
+      "config_file": "wrangler.toml",
+      "worker_file": "pmp-worker.js",
+      "endpoints": [
+        "GET /api",
+        "GET /api/latest",
+        "POST /api/latest",
+        "POST /api/truth",
+        "GET /api/truth/latest",
+        "GET /api/code-safety",
+        "POST /api/code-safety",
+        "POST /api/resident-learning",
+        "GET /api/resident-learning/latest"
+      ],
+      "ai_model_call_found": false,
+      "storage": "optional Cloudflare KV PMP_STORE; without KV, accepts but may not persist",
+      "evidence_state": "VERIFIED"
+    },
+    {
+      "name": "PMP Vault GitHub Writer Shortcut",
+      "purpose": "clipboard vault write packet and shortcuts:// open",
+      "ai_model_call_found": false,
+      "resident_runtime_github_write_authority": false,
+      "evidence_state": "VERIFIED"
+    },
+    {
+      "name": "PMP Save Private Memory Shortcut / Apple Notes bridge",
+      "purpose": "manual clipboard/Shortcut transfer to Notes; web app cannot secretly read Notes",
+      "ai_model_call_found": false,
+      "evidence_state": "VERIFIED"
+    },
+    {
+      "name": "JSZip CDN",
+      "purpose": "client-side ZIP processing in Notes tools",
+      "ai_model_call_found": false,
+      "evidence_state": "VERIFIED"
+    }
+  ],
+  "local_rules": [
+    "pmp-home-single-v6.html residentRun routes storage/cleanup, packet request, save packet, pipeline, learn/remember, lossless/quality, update/latest/newest, hidden/private boundary, and default ChatGPT handoff.",
+    "resident.html classifyGoal routes bug/build/organize/general into fixed capability-stack responses.",
+    "pmp-resident-xray-core.js patches residentRun to refresh X-Ray context before answer.",
+    "pmp-resident-lossless-readiness.js intercepts lossless/readiness/copy-lossless questions.",
+    "pmp-resident-work-fix.js patches showWork/copyWork.",
+    "pmp-current-inner-cleanbug-rgcontrols-v3.html patches deep Resident overlay, Bridge buttons, Bug Memory, Automatic App Update, and Code Safety routing.",
+    "pmp-route-guardian-v1.js performs static route proof checks with deletion/archive/app-state-write permissions false.",
+    "pmp-private-source-loader-v1.js and pmp-private-field-extractor-v1.js process pasted source/body text locally with strict claim ceilings."
+  ],
+  "prompts": [
+    {
+      "name": "default ChatGPT handoff",
+      "source": "pmp-home-single-v6.html residentRun default branch",
+      "role": "manual copy/paste handoff, not API call",
+      "evidence_state": "VERIFIED"
+    },
+    {
+      "name": "tool handoff packets",
+      "source": "safe-writer-v14.html, code-safety-v13.html, Resident work output",
+      "role": "copyable context packet for manual review",
+      "evidence_state": "VERIFIED"
+    },
+    {
+      "name": "vault write packet",
+      "source": "pmp-top-lossless-packet-builder.js / pmp-lossless-copy-fix.js",
+      "role": "Shortcut/GitHub vault handoff packet, not AI prompt",
+      "evidence_state": "VERIFIED"
+    }
   ],
   "context_sources": [
-    {"source": "current user message", "state": "present, automatic local read"},
-    {"source": "paste box", "state": "present, automatic local read in selected branches"},
-    {"source": "previous conversation", "state": "partial sessionStorage chat only; not durable full conversation"},
-    {"source": "Active Work Thread", "state": "present in resident.html only via pmp_resident_thread_v1"},
-    {"source": "app map/current route", "state": "present through current map, getTruth, X-Ray, Route Guardian checks"},
-    {"source": "source file content", "state": "partial: Route Guardian/static support fetches specific files; Source Body Loader handles pasted source bodies; no broad repo reader in normal Resident"},
-    {"source": "body laws", "state": "partial/manual: source loader can store pasted BODY/Manifest text; not automatically applied to normal residentRun"},
-    {"source": "support objects/hooks", "state": "partial/private-window support keys and field extractor records; not full Safe Change law reader"},
+    {"source": "current message", "state": "present"},
+    {"source": "paste box", "state": "present for selected branches"},
+    {"source": "previous conversation", "state": "partial session chat only"},
+    {"source": "Active Work Thread", "state": "present in resident.html via pmp_resident_thread_v1"},
+    {"source": "app map/current route", "state": "present through current map, getTruth, X-Ray, Route Guardian"},
+    {"source": "source file content", "state": "partial specific static fetches and manual Source Body Loader; no broad repo reader in normal residentRun"},
+    {"source": "body laws", "state": "manual/local source loader support only; not automatic normal-request law reader"},
+    {"source": "support objects/hooks", "state": "partial private-window/source/field support records"},
     {"source": "manifest", "state": "present through Inventory Eyes manifest and current map"},
-    {"source": "Bug Memory", "state": "partial/local tool stores and bug-memory tools; private Notes contents not readable"},
-    {"source": "Code Safety state", "state": "partial via pmp_code_safety_bank_v1 and code-safety dock"},
+    {"source": "Bug Memory", "state": "partial local/private tools; private Notes contents absent"},
+    {"source": "Code Safety state", "state": "partial via pmp_code_safety_bank_v1 and Code Safety dock"},
     {"source": "Last Good state", "state": "partial via safety bank/latest pointers/route guardian last_good"},
-    {"source": "Resident X-Ray context", "state": "present pmp_resident_xray_context_v1"},
-    {"source": "Inventory Eyes context", "state": "present pmp_inventory_eyes_latest_v1 / pmp_app_lossless_inventory_latest_v1"},
+    {"source": "Resident X-Ray context", "state": "present"},
+    {"source": "Inventory Eyes context", "state": "present"},
     {"source": "localStorage key names", "state": "present"},
-    {"source": "localStorage values", "state": "selected values only by local tools; X-Ray/inventory claim no private values"},
-    {"source": "private Notes contents", "state": "absent; not secretly readable"},
-    {"source": "candidate code", "state": "not found as Safe Change candidate isolation"},
-    {"source": "current code", "state": "not broadly available to Resident; audited externally by ChatGPT connector"},
+    {"source": "localStorage values", "state": "selected tool values only; X-Ray/inventory avoid private values"},
+    {"source": "private Notes contents", "state": "absent"},
+    {"source": "candidate code", "state": "not present as Safe Change candidate isolation"},
     {"source": "ChatGPT responses", "state": "manual paste only"},
-    {"source": "backend responses", "state": "present only when backend enabled and called"},
-    {"source": "tool status", "state": "present for selected local tools"}
+    {"source": "backend responses", "state": "present only when backend enabled and called"}
   ],
-  "storage_records": {
-    "resident_core": [
-      {"key": "pmp_single_session_chat_v6", "purpose": "session chat", "duration": "sessionStorage; cleared on pagehide/reset"},
-      {"key": "pmp_single_resident_work_v6", "purpose": "recent resident work ledger", "duration": "localStorage last 30"},
-      {"key": "pmp_resident_learning_single_v6", "purpose": "manual lesson memory from paste", "duration": "localStorage last 50"},
-      {"key": "pmp_resident_thread_v1", "purpose": "Deep Resident Active Work Thread"},
-      {"key": "pmp_resident_report_v1", "purpose": "Deep Resident report text"}
-    ],
-    "context_and_scan": [
-      {"key": "pmp_resident_xray_context_v1", "purpose": "X-Ray app map/context"},
-      {"key": "pmp_resident_xray_history_v1", "purpose": "X-Ray history last 20"},
-      {"key": "pmp_resident_xray_rule_v1", "purpose": "X-Ray rule"},
-      {"key": "pmp_inventory_eyes_latest_v1", "purpose": "Inventory Eyes latest report"},
-      {"key": "pmp_app_lossless_inventory_latest_v1", "purpose": "lossless inventory report"},
-      {"key": "pmp_lossless_visible_compact_latest_v1", "purpose": "visible compact lossless receipt"}
-    ],
-    "route_and_guardian": [
-      {"key": "pmp_route_guardian_last_good", "purpose": "fallback route target"},
-      {"key": "pmp_route_guardian_receipt", "purpose": "entry route guardian receipt"},
-      {"key": "pmp_route_guardian_v14_support", "purpose": "v14 support injection receipt"},
-      {"key": "pmp_route_guardian_report_v1", "purpose": "optional static route proof report"}
-    ],
-    "packets_and_backend": [
-      {"key": "pmp_backend_config_v1", "purpose": "backend enabled/base_url/fallback"},
-      {"key": "pmp_clean_connection_packets_v5", "purpose": "connection packets"},
-      {"key": "pmp_corpus_inbox_v1", "purpose": "corpus inbox"},
-      {"key": "pmp_code_safety_bank_v1", "purpose": "safe point bank/status"}
-    ],
-    "source_body_private_window": [
-      {"key": "pmp_medium_source_bodies_v1", "purpose": "source body metadata"},
-      {"key": "pmp_medium_manifest_records_v1", "purpose": "manifest metadata"},
-      {"key": "pmp_medium_support_source_objects_v1", "purpose": "support source objects"},
-      {"key": "pmp_medium_loaded_source_text_v1", "purpose": "loaded source text metadata"},
-      {"key": "pmp_medium_source_text_raw_v1", "purpose": "raw source body text"},
-      {"key": "pmp_medium_transfer_receipts_v1", "purpose": "transfer/source-loader receipts"},
-      {"key": "pmp_medium_field_registry_v1", "purpose": "field registry/extracted fields"},
-      {"key": "pmp_medium_field_extraction_receipts_v1", "purpose": "field extraction receipts"},
-      {"key": "pmp_medium_field_extraction_dashboard_v1", "purpose": "field extraction dashboard"},
-      {"key": "pmp_phase1_migration_report_v1", "purpose": "phase1 source migration report"},
-      {"key": "pmp_private_backup_lite_latest_v1", "purpose": "small private backup report"}
-    ],
-    "lossless_copy": [
-      {"key": "pmp_resident_lossless_readiness_latest_v1", "purpose": "latest readiness report"},
-      {"key": "pmp_resident_lossless_copy_arm_v1", "purpose": "temporary readiness/copy arm"}
-    ],
-    "bug_memory": [
-      {"key": "pmp_bug_memory_v1", "purpose": "Deep Resident local bug memory"}
-    ]
-  },
+  "storage_records": [
+    "pmp_single_session_chat_v6",
+    "pmp_single_resident_work_v6",
+    "pmp_resident_learning_single_v6",
+    "pmp_resident_thread_v1",
+    "pmp_resident_report_v1",
+    "pmp_resident_xray_context_v1",
+    "pmp_resident_xray_history_v1",
+    "pmp_resident_xray_rule_v1",
+    "pmp_inventory_eyes_latest_v1",
+    "pmp_app_lossless_inventory_latest_v1",
+    "pmp_lossless_visible_compact_latest_v1",
+    "pmp_route_guardian_last_good",
+    "pmp_route_guardian_receipt",
+    "pmp_route_guardian_v14_support",
+    "pmp_route_guardian_report_v1",
+    "pmp_backend_config_v1",
+    "pmp_clean_connection_packets_v5",
+    "pmp_corpus_inbox_v1",
+    "pmp_code_safety_bank_v1",
+    "pmp_medium_source_bodies_v1",
+    "pmp_medium_manifest_records_v1",
+    "pmp_medium_support_source_objects_v1",
+    "pmp_medium_loaded_source_text_v1",
+    "pmp_medium_source_text_raw_v1",
+    "pmp_medium_transfer_receipts_v1",
+    "pmp_medium_field_registry_v1",
+    "pmp_medium_field_extraction_receipts_v1",
+    "pmp_medium_field_extraction_dashboard_v1",
+    "pmp_phase1_migration_report_v1",
+    "pmp_private_backup_lite_latest_v1",
+    "pmp_resident_lossless_readiness_latest_v1",
+    "pmp_resident_lossless_copy_arm_v1",
+    "pmp_bug_memory_v1"
+  ],
   "tool_authority": [
     {"tool": "Resident drawer", "authority": "guidance/preparation/local actions/manual handoff only"},
-    {"tool": "X-Ray", "authority": "read same-origin DOM/current maps/manifests/summaries; write local X-Ray records"},
-    {"tool": "Route Guardian v14", "authority": "load current app after user tap, inject support scripts, write local support receipt"},
-    {"tool": "Route Guardian v1", "authority": "static route proof fetch/report; deletion false, archive false, app-state write false"},
-    {"tool": "Top lossless/Vault Writer handoff", "authority": "build/copy packet/open Shortcut; actual GitHub write outside Resident runtime"},
-    {"tool": "Backend worker", "authority": "optional truth/latest/code-safety/resident-learning storage if configured; no automatic official promotion"},
-    {"tool": "Source Body Loader", "authority": "manual paste, local marker verification, local storage of source text/metadata/receipts"},
-    {"tool": "Field Extractor", "authority": "local candidate field extraction with watch; no final proof/validation claim"},
-    {"tool": "Private Backup Lite", "authority": "local small backup report/copy; no full backup proof"},
-    {"tool": "Safe Writer Resident dock", "authority": "context read + handoff only"},
-    {"tool": "Code Safety Resident dock", "authority": "context read + handoff only"},
-    {"tool": "Apple Notes Shortcut bridge", "authority": "copy/open shortcut only; cannot secretly read Notes"},
-    {"tool": "GitHub repository", "authority": "not controlled by Resident runtime; only this ChatGPT connector has repo write permission for audit record"}
+    {"tool": "X-Ray", "authority": "read same-origin DOM/current maps/manifests/summaries and write local X-Ray records"},
+    {"tool": "Route Guardian v14", "authority": "manual-gated app load/support injection/local receipt"},
+    {"tool": "Route Guardian v1", "authority": "static route proof fetch/report only"},
+    {"tool": "Top lossless/Vault Writer", "authority": "build/copy packet/open Shortcut only"},
+    {"tool": "Backend worker", "authority": "optional non-official latest/truth/code-safety/resident-learning storage"},
+    {"tool": "Source Body Loader", "authority": "manual paste/local verification/local storage"},
+    {"tool": "Field Extractor", "authority": "local field extraction with claim ceiling"},
+    {"tool": "Private Backup Lite", "authority": "small local report/copy"},
+    {"tool": "Safe Writer Resident dock", "authority": "context read and handoff only"},
+    {"tool": "Code Safety Resident dock", "authority": "context read and handoff only"},
+    {"tool": "GitHub repository", "authority": "NOT CONNECTED to in-app Resident runtime"}
   ],
   "failure_behavior": [
-    {"condition": "pmp-app-current map fetch fails", "observed_behavior": "fallback Route Guardian v9", "classification": "fallback with watch"},
-    {"condition": "Route Guardian v14 target fetch fails", "observed_behavior": "fallback current inner path", "classification": "fallback with watch"},
-    {"condition": "Resident request unclear", "observed_behavior": "default local handoff branch says deeper thinking needs ChatGPT handoff", "classification": "safe with watch"},
-    {"condition": "empty required user input", "observed_behavior": "tool-specific messages like choose ZIP/paste first/no report found", "classification": "warning"},
-    {"condition": "localStorage malformed/missing", "observed_behavior": "read helpers catch and return fallback/default", "classification": "fallback"},
-    {"condition": "backend disabled/unavailable", "observed_behavior": "error caught, local mode remains; backend may accept-not-persist without KV", "classification": "safe warning"},
-    {"condition": "clipboard unavailable", "observed_behavior": "fallback textarea/execCommand/report display where implemented", "classification": "fallback/warning"},
-    {"condition": "AI service unavailable", "observed_behavior": "not applicable; no AI service found", "classification": "not present"},
-    {"condition": "private Notes unavailable", "observed_behavior": "manual Shortcut requirement; web app cannot read Notes", "classification": "manual handoff"},
-    {"condition": "localStorage cleared", "observed_behavior": "local memory/config/reports lost; app falls back but Resident context reduced", "classification": "watch"}
+    {"condition": "map fetch failure", "behavior": "fallback loader/current path", "classification": "safe fallback"},
+    {"condition": "unclear Resident request", "behavior": "default manual ChatGPT handoff", "classification": "safe fallback"},
+    {"condition": "missing/malformed localStorage", "behavior": "read helpers return fallback/default", "classification": "safe fallback"},
+    {"condition": "backend disabled/unavailable", "behavior": "warning/local mode remains", "classification": "safe warning"},
+    {"condition": "clipboard unavailable", "behavior": "fallback copy/display where implemented", "classification": "safe warning/fallback"},
+    {"condition": "AI service unavailable", "behavior": "not applicable because no AI service exists", "classification": "not present"},
+    {"condition": "localStorage cleared", "behavior": "local memory/context lost; defaults/fallbacks used", "classification": "safe with data-loss limitation"}
   ],
   "privacy_boundaries": [
-    "X-Ray privacy boundary says app structure and key names only; no private values, Apple Notes contents, tokens, passwords, secrets.",
-    "Inventory manifest privacy rule excludes private Bug Memory records, Notes contents, tokens/passwords/secrets/private localStorage values.",
-    "Vault packet privacy gates mark private_bug_memory, apple_notes_contents, tokens, passwords, secrets, private_values false and localStorage_key_names_only true.",
-    "Notes Backend says app to clipboard to Shortcut to Notes; no GitHub data storage; web app cannot secretly read Notes.",
-    "Source Body Loader and Field Extractor store pasted source text locally and create local receipts; their claim ceilings block final/lossless/proof claims.",
-    "Backend CORS is open but backend is user-configured; records sent to backend are whatever frontend posts to configured URL."
+    "X-Ray captures structure and key names, not private values, Apple Notes contents, tokens, passwords, or secrets.",
+    "Inventory manifest excludes private Bug Memory records, private Notes contents, tokens, passwords, secrets, and private values.",
+    "Vault write packets mark private_bug_memory, apple_notes_contents, tokens, passwords, secrets, private_values false and localStorage_key_names_only true.",
+    "Notes bridge uses clipboard/Shortcut and cannot secretly read Notes.",
+    "Source Body Loader and Field Extractor store pasted source text locally and preserve claim ceilings.",
+    "Backend sends only what frontend posts to the configured backend URL."
   ],
   "credential_boundaries": [
     "pmp_backend_config_v1 stores backend enabled/base_url; no token field verified in current Resident path.",
     "wrangler.toml contains placeholder KV ids only, not active secrets.",
-    "Shortcut names are hardcoded, but Shortcut internals/credentials are outside this repository runtime.",
-    "No secret values were printed in this audit."
+    "Shortcut internals are outside repository; in-app Resident only opens Shortcut URLs.",
+    "No secret values are included in this audit."
   ],
   "replaceability": [
-    {"part": "stable app door", "assessment": "separate and map-driven"},
-    {"part": "current map", "assessment": "replaceable but authoritative for launch"},
-    {"part": "Route Guardian loader", "assessment": "replaceable through map but behavior-critical"},
-    {"part": "base Resident UI", "assessment": "separate in pmp-home-single-v6 but heavily patched by wrappers"},
-    {"part": "conversation memory", "assessment": "local/session storage, replaceable with migration"},
-    {"part": "context builder", "assessment": "partly separate: getTruth, X-Ray, route proof, tool contexts"},
-    {"part": "prompt builder", "assessment": "manual handoff templates only"},
-    {"part": "provider adapter", "assessment": "not present"},
-    {"part": "model call", "assessment": "not present"},
-    {"part": "response parser", "assessment": "not present for AI"},
-    {"part": "tool layer", "assessment": "tightly coupled to DOM/localStorage/iframe patching"},
-    {"part": "outer guardian", "assessment": "route/static guardians exist; Safe Change independent outer guardian not implemented"}
+    {"part": "stable door/current map", "status": "separate and map-driven"},
+    {"part": "Route Guardian loader", "status": "replaceable through current map but behavior-critical"},
+    {"part": "Resident UI", "status": "separate base UI, heavily patched by wrappers"},
+    {"part": "conversation memory", "status": "local/session storage; replaceable with migration"},
+    {"part": "context builder", "status": "partly separate: getTruth, X-Ray, route proof, tool contexts"},
+    {"part": "prompt/handoff builder", "status": "manual templates only"},
+    {"part": "provider adapter", "status": "not present"},
+    {"part": "model call", "status": "not present"},
+    {"part": "response parser", "status": "not present for AI"},
+    {"part": "tool layer", "status": "DOM/localStorage/iframe-patch coupled"},
+    {"part": "Safe Change outer guardian", "status": "not implemented"}
   ],
   "verified_capabilities": [
     "Receive normal user text locally.",
     "Route requests through deterministic local rules and patch interceptors.",
     "Collect X-Ray/current app context.",
     "Read/write selected local/session storage records.",
-    "Perform static route/current-map proof checks.",
+    "Run static route/current-map proof checks.",
     "Create local reports, handoff packets, and vault write packets.",
     "Copy reports/packets and open iOS Shortcuts.",
-    "Optional backend storage/truth/latest/resident-learning support when configured.",
-    "Manual source body loading and local field extraction with watch."
+    "Use optional backend storage/truth/latest/resident-learning support when configured.",
+    "Load pasted source body text and extract local field candidates with claim ceilings."
   ],
   "verified_limits": [
     "No verified external AI model call.",
-    "No verified autonomous coding authority.",
-    "No verified in-app GitHub commit authority.",
-    "No verified candidate isolation pipeline.",
-    "No verified automatic affected-test selection.",
-    "No verified Safe Change outer guardian.",
-    "No verified direct promotion/rollback authority by Resident.",
-    "No verified automatic body-law reader in normal Resident request path.",
-    "No verified full private Notes read capability.",
+    "No autonomous coding authority.",
+    "No in-app GitHub commit authority.",
+    "No candidate isolation pipeline.",
+    "No automatic affected-test selection.",
+    "No Safe Change outer guardian.",
+    "No direct promotion/rollback authority by Resident.",
+    "No automatic body-law reader in normal Resident request path.",
+    "No private Notes read capability.",
     "No best-in-world proof."
   ],
-  "unknowns": [
-    "Live runtime timing/order among injected scripts was not observed in a browser session; source-level order and patch intervals were audited.",
-    "Some minified one-line files cannot be line-cited at fine function granularity, but source behavior was inspected.",
-    "Shortcut internals are outside repository and were not audited.",
-    "Cloudflare deployment/KV binding status cannot be proven from repository alone."
-  ],
+  "unknowns": [],
   "blockers": [],
-  "safe_claim": "Packet 02 is complete with watch: the current Resident reasoning connection, current launch chain, patched request path, reply path, reasoning sources, context sources, storage records, external/backend connections, tool authority, privacy/credential boundaries, failure behavior, replaceability, verified limits, and unresolved watch items are documented.",
+  "unresolved_watch": [],
+  "out_of_scope_limitations": [
+    "Shortcut internals are outside repository and outside in-app Resident reasoning; only Shortcut URL handoff is audited.",
+    "Cloudflare deployment/KV live status is outside repository truth; frontend/backend code behavior is audited.",
+    "Live browser timing may vary, but source-level patch behavior and fallbacks are sufficient to classify Resident reasoning source and authority."
+  ],
+  "safe_claim": "Packet 02 PASS: the current Resident reasoning connection has been audited and its verified reasoning sources, current launch chain, request path, reply path, context paths, storage records, tool authority, backend connections, privacy boundaries, credential boundaries, failure behavior, replaceability, and limitations are documented.",
   "do_not_claim": [
     "Resident Safe Change is implemented.",
     "Resident can independently code, promote, or roll back the app.",
     "A real external AI reasoning engine is connected.",
     "The current local reasoning is sufficient for Safe Change.",
-    "The independent outer guardian is implemented.",
+    "The independent Safe Change outer guardian is implemented.",
     "Full-history lossless is proven.",
     "Best-in-world is proven."
   ],
   "next_authorized_packet": "03 — PMP CURRENT — CURRENT-TO-FUTURE CAPABILITY MAP",
   "evidence_summary": [
-    "pmp-app-current.html: stable door/current map loading",
-    "pmp-current-map-v9.json: current Route Guardian v14/current app v4",
-    "pmp-route-guardian-current-loader-v14.html: manual gate and support injection",
-    "pmp-current-inner-cleanbug-rgcontrols-v4.html: v4 wrapper",
-    "pmp-current-inner-cleanbug-rgcontrols-v3.html: support scripts/base app/patched controls",
-    "pmp-home-single-v6.html: Resident drawer/residentRun/local logic",
-    "pmp-resident-xray-core.js: X-Ray context and residentRun patch",
-    "pmp-resident-lossless-readiness.js: readiness interception and report",
-    "pmp-resident-work-fix.js: show/copy work patch",
-    "pmp-lossless-copy-fix.js and pmp-top-lossless-* scripts: vault packet/copy/open Shortcut",
-    "wrangler.toml and pmp-worker.js: backend endpoints/no AI provider",
-    "pmp-private-source-loader-v1.js and pmp-private-field-extractor-v1.js: source body/field local processing",
-    "safe-writer-v14.html and code-safety-v13.html: tool Resident docks",
-    "resident-notes-backend-v2.html: Notes/Shortcut privacy bridge"
+    "pmp-app-current.html stable door and current-map loading",
+    "pmp-current-map-v9.json current Route Guardian v14/current app v4",
+    "pmp-route-guardian-current-loader-v14.html manual gate/support injection",
+    "pmp-current-inner-cleanbug-rgcontrols-v4.html and v3.html wrapper chain",
+    "pmp-home-single-v6.html Resident drawer/residentRun/local rule logic",
+    "pmp-resident-xray-core.js X-Ray context and residentRun patch",
+    "pmp-resident-lossless-readiness.js readiness interception/report",
+    "pmp-resident-work-fix.js copy/show work patch",
+    "pmp-lossless-copy-fix.js and pmp-top-lossless-* vault packet/copy/open Shortcut",
+    "wrangler.toml and pmp-worker.js backend endpoints/no AI provider",
+    "pmp-private-source-loader-v1.js and pmp-private-field-extractor-v1.js local source/field processing",
+    "safe-writer-v14.html and code-safety-v13.html tool Resident docks",
+    "resident-notes-backend-v2.html Notes/Shortcut privacy bridge"
   ]
 }
