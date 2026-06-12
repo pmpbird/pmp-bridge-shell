@@ -3,13 +3,41 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PMP Resident Run Runtime Trace v1 — Inert Notice</title>
-<style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;max-width:760px;margin:auto;padding:24px;line-height:1.5;background:#eef3f8;color:#101827}.card{background:#fff;border:2px solid #101827;border-radius:16px;padding:18px;margin:14px 0}code{overflow-wrap:anywhere}</style>
+<title>PMP Resident Run Source Trace Helper v1</title>
+<style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;max-width:820px;margin:auto;padding:24px;line-height:1.5;background:#eef3f8;color:#101827}.card{background:#fff;border:2px solid #101827;border-radius:16px;padding:18px;margin:14px 0}button{font:inherit;font-weight:800;padding:12px 16px;border:2px solid #101827;border-radius:12px;background:#fff}pre{white-space:pre-wrap;overflow-wrap:anywhere}</style>
 </head>
 <body>
-<h1>Resident Run Runtime Trace v1</h1>
-<div class="card"><strong>STATE: NOT EXECUTED / INERT</strong><p>This file is preserved only as an audit notice. It contains no script, loads no current app, runs no Resident request, and writes no browser storage.</p></div>
-<div class="card"><strong>Valid Packet 02 evidence</strong><p>Use the static source audit, Resident Run ownership record, and Packet 02 watch-closure record:</p><p><code>pmp-resident-run-ownership-audit-v1.json</code><br><code>pmp-packet-02-watch-closure-v1.json</code></p></div>
-<div class="card"><strong>Do not claim</strong><p>Do not claim a deployed-page, browser, iPhone, Shortcut, backend, or live wrapper-order trace was executed.</p></div>
+<h1>Resident Run Source Trace Helper v1</h1>
+<div class="card"><strong>READ-ONLY AUDIT HELPER</strong><p>This page fetches public repository files and reports source-level wrapper evidence only. It does not load the current app, invoke Resident, write localStorage, launch Shortcuts, call a backend, or change application state.</p></div>
+<button id="run">Run read-only source trace</button>
+<pre id="out" class="card">Not run.</pre>
+<script>
+const files=[
+  '../pmp-current-inner-cleanbug-rgcontrols-v3.html',
+  '../pmp-resident-xray-core.js',
+  '../pmp-resident-lossless-readiness.js',
+  '../pmp-copy-lossless-diagnostic.js',
+  '../pmp-resident-work-fix.js'
+];
+const checks={
+  '../pmp-current-inner-cleanbug-rgcontrols-v3.html':['pmp-resident-lossless-readiness.js','pmp-resident-xray-core.js','pmp-copy-lossless-diagnostic.js','pmp-resident-work-fix.js','pmp-home-single-v6.html'],
+  '../pmp-resident-xray-core.js':['win.residentRun','resident_run_before_answer','oldRun.apply'],
+  '../pmp-resident-lossless-readiness.js':['w.residentRun','wantsReadiness','oldRun.apply'],
+  '../pmp-copy-lossless-diagnostic.js':['w.residentRun','wantsDiag','old.apply'],
+  '../pmp-resident-work-fix.js':['w.showWork','w.copyWork']
+};
+async function run(){
+  const report={type:'PMP_RESIDENT_RUN_READ_ONLY_SOURCE_TRACE',version:'1.0.0',run_at:new Date().toISOString(),state:'SOURCE_ONLY',files:[],safe_claim:'Public source wrapper identities and delegation markers were fetched.',do_not_claim:['Live wrapper order was observed.','Resident was invoked.','Installed iPhone or deployed app runtime was tested.']};
+  for(const path of files){
+    try{
+      const r=await fetch(path+'?trace='+Date.now(),{cache:'no-store'});
+      const text=await r.text();
+      report.files.push({path,http_status:r.status,checks:(checks[path]||[]).map(marker=>({marker,found:text.includes(marker)}))});
+    }catch(e){report.files.push({path,error:String(e&&e.message||e)})}
+  }
+  document.getElementById('out').textContent=JSON.stringify(report,null,2);
+}
+document.getElementById('run').addEventListener('click',run);
+</script>
 </body>
 </html>
