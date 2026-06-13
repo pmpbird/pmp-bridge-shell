@@ -1,44 +1,56 @@
 {
-  "type": "PMP_PACKET_03_OUTPUT_MANIFEST",
-  "version": "1.0.0",
+  "type": "PMP_PACKET_03_DRAFT_OUTPUT_MANIFEST",
+  "version": "1.1.0-corrected",
   "packet": "03",
-  "status": "PASS WITH WATCH",
-  "completed_on": "2026-06-13",
+  "status": "DRAFT_INCOMPLETE_INVALIDATED_AS_COMPLETION",
+  "corrected_on": "2026-06-13",
   "mapped_capabilities": 20,
-  "required_fields_per_capability": 35,
-  "validation": {
+  "top_level_fields_per_capability": 35,
+  "draft_validation": {
     "all_ids_present": true,
-    "all_required_fields_present": true,
-    "empty_required_fields": 0,
-    "valid_primary_statuses": true,
-    "architecture_blockers": 0,
-    "parts_reassemble_exactly": true
+    "all_top_level_fields_present": true,
+    "empty_top_level_fields": 0,
+    "packet_completion_gate_passed": false,
+    "valid_completion_receipt": false,
+    "next_packet_authorized": false
   },
+  "incomplete_required_work": [
+    "Phase A systematic identity-state verification",
+    "Phase B control-to-handler-to-action-to-protection chain verification",
+    "Phase C actual/intended/partial/simulated/planned/unknown separation",
+    "Phase D action-by-action A0-A9 authority matrix",
+    "Phase E protected-behavior status for each behavior",
+    "Phase G all 16 required upgrade details per changed capability",
+    "Phase H complete migration-scope fields per applicable capability",
+    "Phase I all 20 test categories per capability",
+    "Phase J all 10 rollback fields per planned change",
+    "All 18 cross-capability checks",
+    "Omitted/disproven capability audit",
+    "Explicit implementation holds for serious watch"
+  ],
   "outputs": {
     "human_map": {
       "name": "PMP_Current_Resident_Current_to_Future_Capability_Map_v1.txt",
       "lines": 4990,
       "bytes": 141741,
-      "sha256": "b382763b99e349f96c46499d2b138db7de12cf69fdefc793f94bcbb6b3b7609e"
+      "sha256": "b382763b99e349f96c46499d2b138db7de12cf69fdefc793f94bcbb6b3b7609e",
+      "authority": "draft planning record only"
     },
     "machine_map": {
       "name": "pmp-resident-current-to-future-capability-map-v1.json",
       "bytes": 177200,
-      "sha256": "7f0f3312ebe0e489ce451152bb7ab924c255f0f38d31477faf9f2a268838b113"
+      "sha256": "7f0f3312ebe0e489ce451152bb7ab924c255f0f38d31477faf9f2a268838b113",
+      "authority": "draft planning record only"
     },
-    "completion_receipt": {
-      "name": "Packet_03_Completion_Receipt_PASS_WITH_WATCH.txt",
-      "bytes": 4204,
-      "sha256": "25f4db167d03a877c43113858c459b69a78d8486ef11af24cb16d0f1f50d38a2"
+    "former_completion_receipt": {
+      "path": "audit/PMP-Current-Packet-03-Completion-Receipt-v1.md",
+      "authority": "invalidated correction record; not PASS evidence"
     }
   },
-  "parts": [
-    {"part":1,"lines":"1-998","bytes":29735,"sha256":"697f706d392eb1386857bfb62ccc151f9958c4cdd1f90d79278607178d11ae78"},
-    {"part":2,"lines":"999-1996","bytes":23884,"sha256":"b6dc79800607e9b339e9dc155d3562dadda627a685428cb0b606a3c62e2e37f7"},
-    {"part":3,"lines":"1997-2994","bytes":24466,"sha256":"07af276a21435f7cde5ef6c1a98779ff4c17684d09a9721fd01a41f714b9b330"},
-    {"part":4,"lines":"2995-3992","bytes":23999,"sha256":"f70ae7e21e1f0461a844ccb2456237246e56d8808f62e8cc0f6b36fc41ed18e5"},
-    {"part":5,"lines":"3993-4990","bytes":39657,"sha256":"26dc49eda2cdafc7b096dd4d30b84c7f37ebe476f1503d1392b5572b12a9ce58"}
-  ],
-  "next_authorized_packet": "03.5 — Permanent Project Limitation Discovery, Coverage, and Reopening Gate",
-  "packet_04_authorized": false
+  "correct_project_truth": {
+    "packet_02": "PASS_COMPLETE",
+    "packet_03": "IN_PROGRESS_NOT_COMPLETE",
+    "packet_03_5": "NOT_AUTHORIZED",
+    "packet_04": "NOT_AUTHORIZED"
+  }
 }
