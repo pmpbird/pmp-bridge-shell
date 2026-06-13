@@ -1,0 +1,63 @@
+{
+  "type": "PMP_PACKET_03_FINAL_OUTPUT_MANIFEST",
+  "version": "2.0.0",
+  "packet": "03",
+  "status": "PASS WITH WATCH",
+  "completed_on": "2026-06-13",
+  "repository_snapshot": "5f94f79a99ecca5f2a26892b01c41e9508eb6ab7",
+  "validation": {
+    "capability_count": 20,
+    "rc_ids_exact": true,
+    "top_level_required_fields_per_rc": 35,
+    "phase_a_identity_verification_present": true,
+    "phase_b_control_chain_verification_present": true,
+    "phase_c_behavior_separation_present": true,
+    "phase_d_authority_actions_per_rc": 20,
+    "phase_e_protected_behavior_classification_present": true,
+    "phase_g_upgrade_fields_per_changed_rc": 16,
+    "phase_h_migration_status_plus_required_details_per_rc": 14,
+    "phase_i_test_categories_per_rc": 20,
+    "phase_j_rollback_fields_per_changed_rc": 10,
+    "cross_capability_checks": 18,
+    "capability_set_audit_complete": true,
+    "new_rcs": 0,
+    "disproven_rcs": 0,
+    "implementation_holds_present": true,
+    "blockers": 0,
+    "split_parts_reassemble_exactly": true,
+    "single_completion_receipt": true,
+    "single_packet_end_marker": true
+  },
+  "outputs": {
+    "human_map": {
+      "name": "PMP_Current_Resident_Current_to_Future_Capability_Map_v2_FINAL.txt",
+      "lines": 15545,
+      "bytes": 797568,
+      "sha256": "a0874591b7ddfd56c7e50efc64a6a2bddc2541213ec3691c3cdbf927f24f009e"
+    },
+    "machine_map": {
+      "name": "pmp-resident-current-to-future-capability-map-v2-final.json",
+      "lines": 23790,
+      "bytes": 1274117,
+      "sha256": "f8355376d0fcf0f4b7fc183ebebb1a21e53fce1a3573e6d0f804980f964bb36b"
+    },
+    "completion_gate_audit": {
+      "name": "Packet_03_Completion_Gate_Audit_v2.json",
+      "lines": 336,
+      "bytes": 14824,
+      "sha256": "99d0078a0e469e3f8b8544821578e27ecebf68ec0fda0c7be1fa517feeb1f99c"
+    },
+    "completion_receipt": {
+      "name": "Packet_03_Completion_Receipt_v2_FINAL.txt",
+      "lines": 87,
+      "bytes": 5294,
+      "sha256": "95e1194faefa830778635dca581a50edc81eebfc565300d0089cc855d83ad96f"
+    }
+  },
+  "prior_records": {
+    "audit/PMP-Current-Packet-03-Completion-Receipt-v1.md": "invalidated correction/draft history; not final authority",
+    "audit/pmp-packet-03-output-manifest-v1.json": "draft incomplete history; superseded by v2"
+  },
+  "next_authorized_packet": "03.5 — Permanent Project Limitation Discovery, Coverage, and Reopening Gate",
+  "packet_04_authorized": false
+}
