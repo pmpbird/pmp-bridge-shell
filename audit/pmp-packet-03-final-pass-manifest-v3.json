@@ -1,0 +1,68 @@
+{
+  "type": "PMP_PACKET_03_FINAL_PASS_MANIFEST",
+  "version": "3.0.0",
+  "packet": "03",
+  "status": "PASS",
+  "completed_on": "2026-06-13",
+  "unresolved_watch": "None",
+  "validation": {
+    "capabilities": 20,
+    "rc_ids_exact": true,
+    "top_level_required_fields_per_capability": 35,
+    "authority_actions_per_capability": 20,
+    "upgrade_fields_per_changed_capability": 16,
+    "migration_fields_per_capability": 14,
+    "test_categories_per_capability": 20,
+    "rollback_fields_per_changed_capability": 10,
+    "cross_capability_checks": 18,
+    "all_capability_evidence_states_verified": true,
+    "all_capability_unresolved_watch_none": true,
+    "all_former_watch_items_closed": true,
+    "all_remaining_requirements_have_named_owner_packets": true,
+    "mapping_unknowns": 0,
+    "packet_03_blockers": 0,
+    "split_parts_reassemble_exactly": true,
+    "receipt_status_pass": true
+  },
+  "outputs": {
+    "human_map": {
+      "name": "PMP_Current_Resident_Current_to_Future_Capability_Map_v3_FINAL_PASS.txt",
+      "lines": 18712,
+      "bytes": 877897,
+      "sha256": "50c0940e986444d069a9803a88bbbeb9c55f0a98c70373e2131b95b382105945"
+    },
+    "machine_map": {
+      "name": "pmp-resident-current-to-future-capability-map-v3-final-pass.json",
+      "lines": 24817,
+      "bytes": 1327701,
+      "sha256": "f46fca6404325ea5a3c5c3e871431d218916130d90e2118d4ccd872caad05b86"
+    },
+    "no_watch_closure_audit": {
+      "name": "Packet_03_No_Watch_Closure_Audit_v3.json",
+      "lines": 622,
+      "bytes": 27294,
+      "sha256": "1694df68f780170a211f4cb450c5d628f52cc6731a8e5eb890708e28ae34ffb7"
+    },
+    "completion_receipt": {
+      "name": "Packet_03_Completion_Receipt_v3_PASS.txt",
+      "lines": 74,
+      "bytes": 2416,
+      "sha256": "afa7fe433d0110d222fa0e1ca66c57ab0a413387b9d7c380701cdd8df656c2cc"
+    }
+  },
+  "watch_closure_groups": [
+    "route truth",
+    "storage and schema ownership",
+    "candidate and guardian chain",
+    "private handoff",
+    "backend and provider",
+    "rollback and restore",
+    "prediction calibration"
+  ],
+  "supersedes": [
+    "Packet 03 v1 draft records",
+    "Packet 03 v2 PASS WITH WATCH records"
+  ],
+  "next_authorized_packet": "03.5 — Permanent Project Limitation Discovery, Coverage, and Reopening Gate",
+  "packet_04_authorized": false
+}
