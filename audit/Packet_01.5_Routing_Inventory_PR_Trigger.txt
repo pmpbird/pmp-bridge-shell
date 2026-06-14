@@ -1,0 +1,1 @@
+Trigger the Packet 01.5 blank routing inventory build and independent verification on the dedicated inventory branch.
