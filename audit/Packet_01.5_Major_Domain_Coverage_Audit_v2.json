@@ -1,0 +1,50 @@
+{
+  "packet": "01.5",
+  "audit_version": 2,
+  "date": "2026-06-14",
+  "status": "coverage_audit_complete",
+  "routing": "not_started",
+  "saturation_testing_authorized": false,
+  "formerly_missing_domains": {
+    "count": 9,
+    "all_now_dedicated": true,
+    "domains": [
+      {"name": "Nuclear and radiological systems", "state": "dedicated", "primary_pass": 46},
+      {"name": "Pharmaceutical care and medication systems", "state": "dedicated", "primary_pass": 47},
+      {"name": "Population-scale public health and pandemic systems", "state": "dedicated", "primary_pass": 48},
+      {"name": "Waste and sanitation systems", "state": "dedicated", "primary_pass": 49},
+      {"name": "Aviation systems", "state": "dedicated", "primary_pass": 50},
+      {"name": "Forests, wildfire, wildlife, and terrestrial conservation", "state": "dedicated", "primary_pass": 51},
+      {"name": "Macroeconomic and market-system stability", "state": "dedicated", "primary_pass": 52},
+      {"name": "Detention, incarceration, borders, and asylum systems", "state": "dedicated", "primary_pass": 53},
+      {"name": "Emergency-service command and responder operations", "state": "dedicated", "primary_pass": 54}
+    ]
+  },
+  "formerly_partial_domains": {
+    "resolved_to_dedicated_count": 7,
+    "still_partial_count": 5,
+    "still_partial": [
+      "Energy production, storage, and fuel systems",
+      "Chemical and high-hazard process industries",
+      "Pharmaceutical and medical-product lifecycle",
+      "Natural hazards and disaster-management systems",
+      "Rail systems and mass-freight corridors"
+    ]
+  },
+  "fresh_missing_domains": {
+    "count": 4,
+    "domains": [
+      "Freshwater, watersheds, dams, groundwater, and water-resource governance",
+      "Mental-health, behavioral-health, and addiction-service systems",
+      "Social care, long-term care, aging, and disability-support systems",
+      "Military, defense, weapons lifecycle, and veteran-transition systems"
+    ]
+  },
+  "outstanding_major_families": 9,
+  "decision": "keep_discovery_open",
+  "next_pass": {
+    "number": 55,
+    "domain": "Freshwater, watersheds, dams, groundwater, and water-resource governance",
+    "count_mode": "natural_yield"
+  }
+}
