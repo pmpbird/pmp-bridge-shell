@@ -1,0 +1,1 @@
+Verify the reusable Packet 01.5 scalable applicability gate. No routing, grouping, closure, implementation, or Packet 04 work is authorized by this trigger.
