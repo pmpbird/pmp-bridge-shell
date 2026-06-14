@@ -2,9 +2,9 @@
   "audit_date": "2026-06-14",
   "scope": "Packet 01.5 mechanical discovery integrity only",
   "baseline_count": 122,
-  "files_audited": 60,
-  "actual_provisional_count": 2385,
-  "combined_actual_count": 2507,
+  "files_audited": 61,
+  "actual_provisional_count": 2425,
+  "combined_actual_count": 2547,
   "sum_of_declared_counts_where_present": 1791,
   "count_mismatch_count": 5,
   "duplicate_id_count": 30,
@@ -10283,6 +10283,178 @@
           "title": "Decommissioning removes operating expertise before hazardous systems are made safe"
         }
       ]
+    },
+    {
+      "pass": 61,
+      "path": "audit/Packet_01.5_Discovery_Pass_61_Pharmaceutical_MedicalProduct_Discovery_Formulation_ClinicalDevelopment_ScaleUp_Regulatory_Device_Recall_FieldCorrection_and_EndOfLife_v1.md",
+      "actual_count": 40,
+      "declared_count": null,
+      "count_match": true,
+      "malformed_headings": [],
+      "missing_harm": [],
+      "missing_overlap": [],
+      "records": [
+        {
+          "id": "DRUGDISC-001",
+          "title": "Discovery program optimizes a measurable surrogate rather than the real clinical outcome"
+        },
+        {
+          "id": "DRUGDISC-002",
+          "title": "Preclinical evidence underrepresents human diversity and comorbidity"
+        },
+        {
+          "id": "DRUGDISC-003",
+          "title": "Negative findings disappear while positive findings shape development"
+        },
+        {
+          "id": "DRUGDISC-004",
+          "title": "Intellectual-property strategy delays or narrows safety collaboration"
+        },
+        {
+          "id": "DRUGDISC-005",
+          "title": "Early target choice creates downstream dependence that becomes hard to reverse"
+        },
+        {
+          "id": "FORMUL-001",
+          "title": "Formulation changes exposure while being treated as the same medicine"
+        },
+        {
+          "id": "FORMUL-002",
+          "title": "Excipient risk is assessed as secondary to the active ingredient"
+        },
+        {
+          "id": "FORMUL-003",
+          "title": "Stability testing does not represent real transport and use conditions"
+        },
+        {
+          "id": "FORMUL-004",
+          "title": "Palatability and usability changes adherence differently across populations"
+        },
+        {
+          "id": "CLINDEV-001",
+          "title": "Trial population excludes the people most likely to use the product"
+        },
+        {
+          "id": "CLINDEV-002",
+          "title": "Trial endpoint captures short-term response while missing delayed harm"
+        },
+        {
+          "id": "CLINDEV-003",
+          "title": "Protocol amendments change the question after results begin emerging"
+        },
+        {
+          "id": "CLINDEV-004",
+          "title": "Site quality varies while pooled results assume one trial"
+        },
+        {
+          "id": "CLINDEV-005",
+          "title": "Participant retention strategy conceals treatment burden"
+        },
+        {
+          "id": "CLINDEV-006",
+          "title": "Comparator choice exaggerates apparent benefit"
+        },
+        {
+          "id": "REGAPP-001",
+          "title": "Regulatory dossier integrates evidence generated under incompatible versions"
+        },
+        {
+          "id": "REGAPP-002",
+          "title": "Review clock pressures uncertainty into a binary approval decision"
+        },
+        {
+          "id": "REGAPP-003",
+          "title": "Conditional approval expands use faster than confirmatory evidence arrives"
+        },
+        {
+          "id": "REGAPP-004",
+          "title": "Regulatory reliance imports another authority’s blind spots"
+        },
+        {
+          "id": "SCALEUP-001",
+          "title": "Manufacturing scale-up changes mixing, heat, contamination, and material behavior"
+        },
+        {
+          "id": "SCALEUP-002",
+          "title": "Process validation proves nominal runs but not edge conditions"
+        },
+        {
+          "id": "SCALEUP-003",
+          "title": "Supplier change alters product performance without obvious specification failure"
+        },
+        {
+          "id": "SCALEUP-004",
+          "title": "Batch release data are complete while the physical batch history is not"
+        },
+        {
+          "id": "SCALEUP-005",
+          "title": "Capacity shortage creates pressure to weaken deviation and rejection decisions"
+        },
+        {
+          "id": "MEDDEV-001",
+          "title": "Device performance depends on software, accessories, consumables, and user setup not tested as one system"
+        },
+        {
+          "id": "MEDDEV-002",
+          "title": "Usability testing excludes stressed, fatigued, disabled, or unfamiliar users"
+        },
+        {
+          "id": "MEDDEV-003",
+          "title": "Device alarm burden hides the critical event"
+        },
+        {
+          "id": "MEDDEV-004",
+          "title": "Remote update changes clinical behavior after deployment"
+        },
+        {
+          "id": "MEDDEV-005",
+          "title": "Maintenance history does not follow leased, shared, or transferred equipment"
+        },
+        {
+          "id": "RECALL-001",
+          "title": "Recall scope is defined by shipment records that do not represent current location"
+        },
+        {
+          "id": "RECALL-002",
+          "title": "Recall communication identifies the product but not the immediate clinical consequence"
+        },
+        {
+          "id": "RECALL-003",
+          "title": "Replacement supply is insufficient for the recalled population"
+        },
+        {
+          "id": "RECALL-004",
+          "title": "Recall closure measures returned units rather than residual exposure"
+        },
+        {
+          "id": "FIELDCORR-001",
+          "title": "Field correction depends on local staff recognizing that their configuration is affected"
+        },
+        {
+          "id": "FIELDCORR-002",
+          "title": "Software correction solves one failure while changing another clinical behavior"
+        },
+        {
+          "id": "FIELDCORR-003",
+          "title": "Post-market signal is dismissed because each complaint appears individually explainable"
+        },
+        {
+          "id": "FIELDCORR-004",
+          "title": "Reporting channels favor institutions over patients and caregivers"
+        },
+        {
+          "id": "MEDEND-001",
+          "title": "Product end-of-life removes service before clinical dependence ends"
+        },
+        {
+          "id": "MEDEND-002",
+          "title": "Disposal preserves biological, chemical, radiological, battery, and privacy hazards"
+        },
+        {
+          "id": "MEDEND-003",
+          "title": "Device replacement transfers data and settings incompletely"
+        }
+      ]
     }
   ],
   "duplicate_ids": {
@@ -10389,6 +10561,7 @@
     "CIVIC": 6,
     "CIVPROT": 6,
     "CLEARSET": 4,
+    "CLINDEV": 6,
     "CLOSURE": 5,
     "COAST": 5,
     "COASTCOMM": 4,
@@ -10445,6 +10618,7 @@
     "DISPLACE": 5,
     "DOC": 6,
     "DROUGHT": 4,
+    "DRUGDISC": 5,
     "DUAL": 4,
     "DUE": 6,
     "DUMP": 2,
@@ -10481,6 +10655,7 @@
     "FAMILYCUST": 3,
     "FAT": 6,
     "FEED": 5,
+    "FIELDCORR": 4,
     "FIRE": 6,
     "FIRESVC": 5,
     "FIRM": 6,
@@ -10494,6 +10669,7 @@
     "FORCECUST": 3,
     "FORENSIC": 6,
     "FOREST": 5,
+    "FORMUL": 4,
     "FOSSIL": 5,
     "FRAME": 5,
     "FRAUD": 5,
@@ -10581,6 +10757,8 @@
     "MARTRANS": 5,
     "MATERIAL": 5,
     "MEAS": 6,
+    "MEDDEV": 5,
+    "MEDEND": 3,
     "MEDFAKE": 3,
     "MEDIA": 6,
     "MEDINT": 7,
@@ -10673,6 +10851,7 @@
     "REAL": 4,
     "REBOUND": 5,
     "REC": 3,
+    "RECALL": 4,
     "RECOMMEND": 6,
     "RECONMED": 4,
     "RECORDLAW": 2,
@@ -10683,6 +10862,7 @@
     "REFINERY": 5,
     "REFUND": 4,
     "REG": 10,
+    "REGAPP": 4,
     "REL": 12,
     "RELEASECUST": 3,
     "RELIEF": 4,
@@ -10713,6 +10893,7 @@
     "SANACC": 4,
     "SANCTION": 4,
     "SAT": 6,
+    "SCALEUP": 5,
     "SCHED": 8,
     "SCHEMA": 6,
     "SEABED": 5,
