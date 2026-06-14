@@ -1,0 +1,56 @@
+{
+  "type": "PMP_CURRENT_PROJECT_CONTROL_SPINE_COMPANION_RECORD",
+  "version": "1.0.0-baseline",
+  "created_on": "2026-06-14",
+  "updated_on": "2026-06-14",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "packet_authority": "03.5 preflight carry-forward; Packet 1 defines permanent law",
+  "control_number": 3,
+  "control_name": "Authority Matrix",
+  "purpose": "Separate current, planned, prohibited, delegated, approval, promotion, rollback, and final-claim authority.",
+  "packet_02_carry_forward": [
+    "Resident currently provides guidance, local reports, preparation, and manual handoff only.",
+    "Resident has no autonomous repository write, commit, promotion, rollback, validator weakening, permission expansion, or direct AI-model authority.",
+    "Preparation and user-mediated opening must not be described as completion authority."
+  ],
+  "linked_permanent_limitations": [
+    "RUN-005",
+    "RUN-006",
+    "RUN-007",
+    "RUN-008",
+    "RUN-009",
+    "RUN-010",
+    "RUN-011",
+    "RUN-015",
+    "GOV-014",
+    "AI-002"
+  ],
+  "entries": [
+    {
+      "actor": "Resident drawer",
+      "current_authority": ["guidance", "local deterministic reports", "packet preparation", "manual handoff"],
+      "prohibited_authority": ["autonomous repository write", "commit", "promotion", "rollback", "permission expansion", "final approval"]
+    },
+    {
+      "actor": "Route Guardian v14",
+      "current_authority": ["gated navigation", "route/static report preparation"],
+      "prohibited_authority": ["final source acceptance", "candidate approval", "promotion", "rollback"]
+    },
+    {
+      "actor": "User",
+      "current_authority": ["explicit Shortcut launch", "copy/paste handoff", "approval decisions within later packet laws"],
+      "prohibited_authority": []
+    },
+    {
+      "actor": "Future candidate/AI",
+      "current_authority": [],
+      "prohibited_authority": ["self-approval", "evidence invention", "validator mutation", "guardian mutation", "promotion", "rollback unless separately authorized"]
+    }
+  ],
+  "state": "BASELINE CREATED — CONTINUING RECORD",
+  "append_only_history": [],
+  "reopen_on_contrary_evidence": true,
+  "unresolved_watch": "See open entries and linked limitation records; no item may be silently dropped.",
+  "safe_claim": "The Packet 02 risk family has a named companion record and linked limitation identities.",
+  "do_not_claim": "Creating this record does not implement or close its linked limitations."
+}
