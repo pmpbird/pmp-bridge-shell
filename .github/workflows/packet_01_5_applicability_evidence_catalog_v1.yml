@@ -52,7 +52,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          rm -f audit/Packet_01.5_Applicability_Evidence_Catalog_Workflow_Debug.log
+          git rm -f --ignore-unmatch audit/Packet_01.5_Applicability_Evidence_Catalog_Workflow_Debug.log
           git add \
             audit/Packet_01.5_Applicability_Evidence_Catalog_Independent_Verification_v1.md \
             audit/Packet_01.5_Applicability_Evidence_Catalog_Independent_Verification_v1.json \
