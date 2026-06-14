@@ -2,9 +2,9 @@
   "audit_date": "2026-06-14",
   "scope": "Packet 01.5 mechanical discovery integrity only",
   "baseline_count": 122,
-  "files_audited": 58,
-  "actual_provisional_count": 2305,
-  "combined_actual_count": 2427,
+  "files_audited": 59,
+  "actual_provisional_count": 2345,
+  "combined_actual_count": 2467,
   "sum_of_declared_counts_where_present": 1791,
   "count_mismatch_count": 5,
   "duplicate_id_count": 26,
@@ -9939,6 +9939,178 @@
           "title": "Service records become permanent identity labels in civilian systems"
         }
       ]
+    },
+    {
+      "pass": 59,
+      "path": "audit/Packet_01.5_Discovery_Pass_59_EnergyProduction_Storage_Fuels_Refineries_Pipelines_Hydrogen_Batteries_Renewables_GridForming_and_Decommissioning_v1.md",
+      "actual_count": 40,
+      "declared_count": null,
+      "count_match": true,
+      "malformed_headings": [],
+      "missing_harm": [],
+      "missing_overlap": [],
+      "records": [
+        {
+          "id": "FOSSIL-001",
+          "title": "Reserve and production planning assumes stable extraction conditions"
+        },
+        {
+          "id": "FOSSIL-002",
+          "title": "Upstream methane and leakage are undercounted by intermittent measurement"
+        },
+        {
+          "id": "FOSSIL-003",
+          "title": "Water use and contamination are separated from energy accounting"
+        },
+        {
+          "id": "FOSSIL-004",
+          "title": "Boom-and-bust development leaves communities with stranded infrastructure and debt"
+        },
+        {
+          "id": "FOSSIL-005",
+          "title": "Abandoned wells remain hazardous after responsible operators disappear"
+        },
+        {
+          "id": "REFINERY-001",
+          "title": "Process safety model treats interacting units as separate hazards"
+        },
+        {
+          "id": "REFINERY-002",
+          "title": "Alarm volume hides the initiating condition during an upset"
+        },
+        {
+          "id": "REFINERY-003",
+          "title": "Temporary bypass or degraded mode becomes normalized operation"
+        },
+        {
+          "id": "REFINERY-004",
+          "title": "Flaring protects equipment while transferring harm to nearby communities"
+        },
+        {
+          "id": "REFINERY-005",
+          "title": "Turnaround maintenance compresses high-risk work into a short window"
+        },
+        {
+          "id": "PIPELINE-001",
+          "title": "Pipeline integrity model misses local corrosion and ground movement"
+        },
+        {
+          "id": "PIPELINE-002",
+          "title": "Leak detection threshold favors operational stability over early warning"
+        },
+        {
+          "id": "PIPELINE-003",
+          "title": "Emergency isolation protects one segment while increasing pressure elsewhere"
+        },
+        {
+          "id": "PIPELINE-004",
+          "title": "Ownership and operating responsibility change along the route"
+        },
+        {
+          "id": "PIPELINE-005",
+          "title": "Public and responder maps do not match buried infrastructure reality"
+        },
+        {
+          "id": "TERMINAL-001",
+          "title": "Fuel-terminal inventory records do not reflect tank condition and usable volume"
+        },
+        {
+          "id": "TERMINAL-002",
+          "title": "Port, rail, road, pipeline, and storage disruptions share the same chokepoint"
+        },
+        {
+          "id": "TERMINAL-003",
+          "title": "Vapor, fire, spill, and evacuation zones overlap surrounding communities"
+        },
+        {
+          "id": "TERMINAL-004",
+          "title": "Emergency fuel allocation favors contractual power over critical need"
+        },
+        {
+          "id": "HYDROGEN-001",
+          "title": "Hydrogen safety assumptions are copied from other fuels"
+        },
+        {
+          "id": "HYDROGEN-002",
+          "title": "Material embrittlement advances without visible external damage"
+        },
+        {
+          "id": "HYDROGEN-003",
+          "title": "Production pathway label hides upstream energy and water dependence"
+        },
+        {
+          "id": "HYDROGEN-004",
+          "title": "Rapid infrastructure rollout outpaces responder and inspector competence"
+        },
+        {
+          "id": "BATSTORE-001",
+          "title": "Battery state-of-charge is mistaken for state-of-health"
+        },
+        {
+          "id": "BATSTORE-002",
+          "title": "Thermal runaway propagates beyond the initiating cell or module"
+        },
+        {
+          "id": "BATSTORE-003",
+          "title": "Suppression ends visible flame while hidden heat and reignition remain"
+        },
+        {
+          "id": "BATSTORE-004",
+          "title": "Battery-management software update changes protective behavior"
+        },
+        {
+          "id": "BATSTORE-005",
+          "title": "End-of-life routing loses battery identity and hazard history"
+        },
+        {
+          "id": "RENEW-001",
+          "title": "Renewable-output forecasts hide correlated weather dependence"
+        },
+        {
+          "id": "RENEW-002",
+          "title": "Renewable siting transfers land, habitat, and cultural burden"
+        },
+        {
+          "id": "RENEW-003",
+          "title": "Curtailment and congestion make installed capacity look more usable than it is"
+        },
+        {
+          "id": "RENEW-004",
+          "title": "Distributed generation creates visibility and control gaps"
+        },
+        {
+          "id": "RENEW-005",
+          "title": "Decommissioning plan underestimates composite, foundation, cable, and land-restoration burden"
+        },
+        {
+          "id": "GRIDFORM-001",
+          "title": "Inverter controls interact unexpectedly across vendors and versions"
+        },
+        {
+          "id": "GRIDFORM-002",
+          "title": "Grid-forming capability is credited without proving sustained performance under disturbance"
+        },
+        {
+          "id": "GRIDFORM-003",
+          "title": "Restoration sequence assumes distributed resources reconnect in a compatible order"
+        },
+        {
+          "id": "ENDECOM-001",
+          "title": "Energy-site closure ends production before environmental and infrastructure duties end"
+        },
+        {
+          "id": "ENDECOM-002",
+          "title": "Repurposing old energy infrastructure inherits undocumented damage and contamination"
+        },
+        {
+          "id": "ENERGYGOV-001",
+          "title": "Energy governance separates affordability, reliability, safety, emissions, land, and justice"
+        },
+        {
+          "id": "ENERGYGOV-002",
+          "title": "Transition policy retires old capacity before replacement dependencies are proven"
+        }
+      ]
     }
   ],
   "duplicate_ids": {
@@ -10011,6 +10183,7 @@
     "AVAUTO": 3,
     "BANKSYS": 5,
     "BAT": 6,
+    "BATSTORE": 5,
     "BENEFIT": 6,
     "BHINPT": 5,
     "BHOUT": 5,
@@ -10115,7 +10288,9 @@
     "EMROUTE": 5,
     "EMSAFE": 5,
     "EMSOPS": 5,
+    "ENDECOM": 2,
     "ENERGY": 8,
+    "ENERGYGOV": 2,
     "ENV": 6,
     "ENVRES": 4,
     "ESC": 4,
@@ -10143,6 +10318,7 @@
     "FORCECUST": 3,
     "FORENSIC": 6,
     "FOREST": 5,
+    "FOSSIL": 5,
     "FRAME": 5,
     "FRAUD": 5,
     "FRAUDSCORE": 5,
@@ -10154,6 +10330,7 @@
     "GENOME": 6,
     "GOVREC": 4,
     "GRID": 6,
+    "GRIDFORM": 3,
     "GROUND": 5,
     "GROUNDWATER": 5,
     "GUARD": 11,
@@ -10173,6 +10350,7 @@
     "HOUSING": 6,
     "HUM": 3,
     "HW": 6,
+    "HYDROGEN": 4,
     "IDENT": 4,
     "IMPERSON": 5,
     "INCARC": 5,
@@ -10279,6 +10457,7 @@
     "PHCOMMS": 4,
     "PHSURV": 5,
     "PHY": 5,
+    "PIPELINE": 5,
     "PLAT": 1,
     "PLURAL": 5,
     "PNT": 5,
@@ -10318,6 +10497,7 @@
     "RECUI": 4,
     "RECUR": 6,
     "RECYCLE": 5,
+    "REFINERY": 5,
     "REFUND": 4,
     "REG": 10,
     "REL": 12,
@@ -10326,6 +10506,7 @@
     "RELY": 6,
     "REMOTE": 3,
     "REMSENSE": 5,
+    "RENEW": 5,
     "REOPEN": 3,
     "REP": 5,
     "REPAIR": 4,
@@ -10389,6 +10570,7 @@
     "TEACH": 5,
     "TELECOM": 5,
     "TENANT": 6,
+    "TERMINAL": 4,
     "TERMS": 2,
     "TEST": 22,
     "THERM": 4,
