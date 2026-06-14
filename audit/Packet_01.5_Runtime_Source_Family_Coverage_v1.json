@@ -1,0 +1,16 @@
+{
+  "packet": "01.5",
+  "family": "CURRENT_RUNTIME_SOURCE",
+  "family_records": 20,
+  "decided_records": 8,
+  "remaining_queued_records": 12,
+  "unknown_hold_created": 0,
+  "coverage_complete": true,
+  "decision_states": {
+    "CURRENT DEFECT OR LIMITATION": 6,
+    "ACTIVE CONDITIONAL RISK": 2
+  },
+  "routing_assignments": 0,
+  "grouping_assignments": 0,
+  "source_records_removed_or_closed": 0
+}

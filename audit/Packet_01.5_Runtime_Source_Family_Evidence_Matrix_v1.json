@@ -1,0 +1,319 @@
+{
+  "packet": "01.5",
+  "family": "CURRENT_RUNTIME_SOURCE",
+  "records": 20,
+  "decided": 8,
+  "remaining_queued": 12,
+  "repository_census_sha256": "a47e4696f38c967eec0a527ee134449b19e6afd816822ae4aa1dccd5f2504e9a",
+  "source_hashes": {
+    "pmp-current-map-v9.json": "1f15f09a0203def86d12fe9131dae6fcc426e26cbb23c12e95bd7c6652156994",
+    "pmp-app-current.html": "86f65c9bd973b61425bc55f60bc42db92b6c22b0ba562b57e439b175b639675a",
+    "pmp-route-guardian-current-loader-v14.html": "c1816f2dec353fa8ce5d77a6d12d710f343a389fe799249606235e5480880515",
+    "pmp-current-inner-cleanbug-rgcontrols-v4.html": "c1934899c8d8dbff92a9b1533792fb420d3895b2ffee4ca0550aefecb2c8436d"
+  },
+  "records_matrix": [
+    {
+      "composite_address": "P01.5::B::0028",
+      "original_identifier": "BUILD-010",
+      "claim": "No concurrency/race control exists for simultaneous tasks, candidates, approvals, promotions, or rollback.",
+      "predicate": "NO_CONCURRENCY_CONTROL_IN_CURRENT_RUNTIME",
+      "predicate_passed": true,
+      "predicate_detail": {
+        "absent_markers": [
+          "navigator.locks",
+          "mutex",
+          "semaphore",
+          "compare-and-swap",
+          "compareandswap",
+          "revision guard",
+          "transactional lock"
+        ]
+      },
+      "result": "DECIDED"
+    },
+    {
+      "composite_address": "P01.5::B::0031",
+      "original_identifier": "BUILD-013",
+      "claim": "No code-quality/static type/lint/security baseline is selected for implementation artifacts.",
+      "predicate": "NO_RECOGNIZED_QUALITY_BASELINE_CONFIG",
+      "predicate_passed": true,
+      "predicate_detail": {
+        "recognized_configs_found": []
+      },
+      "result": "DECIDED"
+    },
+    {
+      "composite_address": "P01.5::B::0032",
+      "original_identifier": "BUILD-014",
+      "claim": "No maintainability/deprecation policy limits wrapper accumulation and obsolete-file residue.",
+      "predicate": "NO_DEPRECATION_POLICY_WITH_MULTIPLE_WRAPPERS",
+      "predicate_passed": true,
+      "predicate_detail": {
+        "policy_files": [],
+        "wrapper_count": 27
+      },
+      "result": "DECIDED"
+    },
+    {
+      "composite_address": "P01.5::B::0039",
+      "original_identifier": "DATA-006",
+      "claim": "No migration engine, dry run, backup, validation, or transactional rollback has been built.",
+      "predicate": null,
+      "predicate_passed": false,
+      "predicate_detail": {
+        "reason": "no matching reviewed rule"
+      },
+      "result": "REMAIN_QUEUED"
+    },
+    {
+      "composite_address": "P01.5::B::0044",
+      "original_identifier": "DATA-011",
+      "claim": "No trusted timestamp/order source or monotonic event sequencing is proven for receipts and approvals.",
+      "predicate": "WALL_CLOCK_ONLY_NO_MONOTONIC_SEQUENCE",
+      "predicate_passed": true,
+      "predicate_detail": {
+        "wall_clock_present": true,
+        "absent_markers": [
+          "monotonic",
+          "sequence_number",
+          "sequence-number",
+          "eventsequence",
+          "logical clock",
+          "lamport"
+        ]
+      },
+      "result": "DECIDED"
+    },
+    {
+      "composite_address": "P01.5::B::0045",
+      "original_identifier": "DATA-012",
+      "claim": "Receipt/evidence ledgers are not tamper-evident or append-only in implementation.",
+      "predicate": "NO_TAMPER_EVIDENT_APPEND_ONLY_LEDGER",
+      "predicate_passed": false,
+      "predicate_detail": {
+        "receipt_state_present": true,
+        "absent_markers": [
+          "crypto.subtle.digest",
+          "hash chain",
+          "hash_chain",
+          "append-only",
+          "digital signature",
+          "signed receipt"
+        ]
+      },
+      "result": "REMAIN_QUEUED"
+    },
+    {
+      "composite_address": "P01.5::B::0046",
+      "original_identifier": "DATA-013",
+      "claim": "Data minimization, user consent, retention display, export, and deletion controls are not implemented in the UI.",
+      "predicate": null,
+      "predicate_passed": false,
+      "predicate_detail": {
+        "reason": "no matching reviewed rule"
+      },
+      "result": "REMAIN_QUEUED"
+    },
+    {
+      "composite_address": "P01.5::B::0059",
+      "original_identifier": "GOV-012",
+      "claim": "No full output inventory proves which required human and machine records exist for every packet.",
+      "predicate": null,
+      "predicate_passed": false,
+      "predicate_detail": {
+        "reason": "no matching reviewed rule"
+      },
+      "result": "REMAIN_QUEUED"
+    },
+    {
+      "composite_address": "P01.5::B::0061",
+      "original_identifier": "GOV-014",
+      "claim": "The current freeze covers only the proven current app/source/control path, not every historical or external state.",
+      "predicate": "CURRENT_MAP_EXPLICITLY_LIMITS_FREEZE_CLAIMS",
+      "predicate_passed": true,
+      "predicate_detail": {
+        "map_sha256": "1f15f09a0203def86d12fe9131dae6fcc426e26cbb23c12e95bd7c6652156994"
+      },
+      "result": "DECIDED"
+    },
+    {
+      "composite_address": "P01.5::B::0062",
+      "original_identifier": "GOV-015",
+      "claim": "Current app and audit evidence are not uniformly pinned to branch plus commit SHA plus content digest.",
+      "predicate": "AUDIT_RECEIPTS_NOT_UNIFORMLY_TRIPLE_PINNED",
+      "predicate_passed": true,
+      "predicate_detail": {
+        "audited_files": 325,
+        "incomplete_sample": [
+          "audit/PMP-Current-Active-Work-Card.md",
+          "audit/PMP-Current-Continuation-Protocol-v1.md",
+          "audit/PMP-Current-Master-Status-Ledger.md",
+          "audit/PMP-Current-Packet-03-Completion-Receipt-v1.md",
+          "audit/PMP-Current-Packet-03-Completion-Receipt-v2.md",
+          "audit/PMP-Current-Packet-03-Completion-Receipt-v3.md",
+          "audit/PMP-Current-Packet-03-Completion-Receipt-v4.md",
+          "audit/PMP-Current-Packet-03-Current-Runtime-Proof-v2.md",
+          "audit/PMP-Current-Packet-03.5-Completion-Receipt-v4.md",
+          "audit/PMP-Current-Resident-Reasoning-Connection-Audit-v1.md",
+          "audit/Packet_01.5_Applicability_Batch_001_Independent_Verification_v1.json",
+          "audit/Packet_01.5_Applicability_Batch_001_Independent_Verification_v1.md",
+          "audit/Packet_01.5_Applicability_Batch_002_Independent_Verification_v1.json",
+          "audit/Packet_01.5_Applicability_Batch_002_Independent_Verification_v1.md",
+          "audit/Packet_01.5_Applicability_Batch_002_Selection_Gate_Independent_Verification_v1.json",
+          "audit/Packet_01.5_Applicability_Batch_002_Selection_Gate_Independent_Verification_v1.md",
+          "audit/Packet_01.5_Applicability_Batch_002_Selection_and_Authorization_Gate_v1.md",
+          "audit/Packet_01.5_Applicability_Batch_002_v1.md",
+          "audit/Packet_01.5_Applicability_Batch_003_Selection_Gate_Independent_Verification_v1.json",
+          "audit/Packet_01.5_Applicability_Batch_003_Selection_Gate_Independent_Verification_v1.md"
+        ],
+        "incomplete_count_at_least": 320
+      },
+      "result": "DECIDED"
+    },
+    {
+      "composite_address": "P01.5::B::0077",
+      "original_identifier": "OPS-015",
+      "claim": "The system’s first release scope and minimum viable safe capability are not frozen, increasing risk of building all 30 modules at once.",
+      "predicate": "NO_FROZEN_FIRST_RELEASE_SCOPE",
+      "predicate_passed": false,
+      "predicate_detail": {
+        "frozen_scope_artifacts": [
+          "audit/baseline-source/reconstructed/pmp-current-permanent-limitation-register-v3-final.json"
+        ]
+      },
+      "result": "REMAIN_QUEUED"
+    },
+    {
+      "composite_address": "P01.5::B::0078",
+      "original_identifier": "PLAT-001",
+      "claim": "Installed iPhone Home Screen runtime and cache behavior have not been tested.",
+      "predicate": null,
+      "predicate_passed": false,
+      "predicate_detail": {
+        "reason": "no matching reviewed rule"
+      },
+      "result": "REMAIN_QUEUED"
+    },
+    {
+      "composite_address": "P01.5::B::0081",
+      "original_identifier": "PLAT-004",
+      "claim": "Exact live outermost Resident wrapper order has not been observed.",
+      "predicate": null,
+      "predicate_passed": false,
+      "predicate_detail": {
+        "reason": "no matching reviewed rule"
+      },
+      "result": "REMAIN_QUEUED"
+    },
+    {
+      "composite_address": "P01.5::B::0082",
+      "original_identifier": "PLAT-005",
+      "claim": "Clearing browser storage loses saved Resident context.",
+      "predicate": "CONTEXT_USES_BROWSER_LOCAL_STORAGE",
+      "predicate_passed": true,
+      "predicate_detail": {
+        "local_storage_files": [
+          "pmp-addon-loader-v1.js",
+          "pmp-addon-status-copy-v1.js",
+          "pmp-app-current.html",
+          "pmp-auto-update.html",
+          "pmp-backend-client.js",
+          "pmp-bug-catalog-engine-v1.js",
+          "pmp-clean-current-v23.html",
+          "pmp-clean-current-v24.html",
+          "pmp-clean-current-v25.html",
+          "pmp-clean-v12.html",
+          "pmp-clean-v18-lite.html",
+          "pmp-clean-v19.html",
+          "pmp-clean-v20.html",
+          "pmp-clean-v21.html",
+          "pmp-clean-v22.html",
+          "pmp-clean.html",
+          "pmp-copy-latest-report-v1.js",
+          "pmp-copy-lossless-diagnostic.js",
+          "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+          "pmp-current-inventory-runtime.js",
+          "pmp-exact-addon-router-v1.js",
+          "pmp-fail-closed-simulation-v1.js",
+          "pmp-final-local-set-audit-v1.js",
+          "pmp-home-single-v1.html",
+          "pmp-home-single-v10.html",
+          "pmp-home-single-v12.html",
+          "pmp-home-single-v14.html",
+          "pmp-home-single-v2.html",
+          "pmp-home-single-v3.html",
+          "pmp-home-single-v4.html"
+        ],
+        "count": 112
+      },
+      "result": "DECIDED"
+    },
+    {
+      "composite_address": "P01.5::B::0086",
+      "original_identifier": "PLAT-009",
+      "claim": "Current route includes fallback paths that can load older components without a full mixed-version proof.",
+      "predicate": "STABLE_DOOR_AND_MAP_HAVE_FALLBACK_PATHS",
+      "predicate_passed": true,
+      "predicate_detail": {
+        "door_sha256": "86f65c9bd973b61425bc55f60bc42db92b6c22b0ba562b57e439b175b639675a",
+        "map_sha256": "1f15f09a0203def86d12fe9131dae6fcc426e26cbb23c12e95bd7c6652156994"
+      },
+      "result": "DECIDED"
+    },
+    {
+      "composite_address": "P01.5::B::0093",
+      "original_identifier": "PROOF-001",
+      "claim": "Pre-code test design is architecture only; tests are not generated or executed.",
+      "predicate": null,
+      "predicate_passed": false,
+      "predicate_detail": {
+        "reason": "no matching reviewed rule"
+      },
+      "result": "REMAIN_QUEUED"
+    },
+    {
+      "composite_address": "P01.5::B::0100",
+      "original_identifier": "PROOF-008",
+      "claim": "No mutation testing, fuzzing, property testing, or systematic fault injection is required or executed.",
+      "predicate": null,
+      "predicate_passed": false,
+      "predicate_detail": {
+        "reason": "no matching reviewed rule"
+      },
+      "result": "REMAIN_QUEUED"
+    },
+    {
+      "composite_address": "P01.5::B::0108",
+      "original_identifier": "RUN-001",
+      "claim": "Resident’s normal reasoning path is local deterministic rules/templates, not an AI reasoning engine.",
+      "predicate": null,
+      "predicate_passed": false,
+      "predicate_detail": {
+        "reason": "no matching reviewed rule"
+      },
+      "result": "REMAIN_QUEUED"
+    },
+    {
+      "composite_address": "P01.5::B::0115",
+      "original_identifier": "RUN-008",
+      "claim": "Candidate runtime observer and baseline comparator do not exist.",
+      "predicate": null,
+      "predicate_passed": false,
+      "predicate_detail": {
+        "reason": "no matching reviewed rule"
+      },
+      "result": "REMAIN_QUEUED"
+    },
+    {
+      "composite_address": "P01.5::B::0122",
+      "original_identifier": "RUN-015",
+      "claim": "Permissions/tool-use policy and UI controls are only designed, not enforced.",
+      "predicate": null,
+      "predicate_passed": false,
+      "predicate_detail": {
+        "reason": "no matching reviewed rule"
+      },
+      "result": "REMAIN_QUEUED"
+    }
+  ]
+}

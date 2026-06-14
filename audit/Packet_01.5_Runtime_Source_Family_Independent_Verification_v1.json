@@ -1,0 +1,32 @@
+{
+  "packet": "01.5",
+  "verification": "runtime_source_family_independent",
+  "version": 1,
+  "status": "PASS_RUNTIME_SOURCE_FAMILY_VERIFIED",
+  "watch": "NONE",
+  "blockers": "NONE",
+  "family": "CURRENT_RUNTIME_SOURCE",
+  "family_records": 20,
+  "evidence_supported_decisions": 8,
+  "remaining_queued_records": 12,
+  "unknown_hold_created": 0,
+  "decision_states": {
+    "CURRENT DEFECT OR LIMITATION": 6,
+    "ACTIVE CONDITIONAL RISK": 2
+  },
+  "complete_coverage": true,
+  "source_queue_sha256": "1b28dbfd69e9af4b51ce5cf4eb4e43d4ed4aaea107129b2e11b7b41c9dfd861a",
+  "source_inventory_sha256": "76169a80e07603cea51d769d3d89b32735149c2aef7eb09f893ed94fe5d72477",
+  "manifest_sha256": "2c34b3b1ddedf2561fa2a1791ca2329a42112caffa1bc061b7612c4fcd7788cf",
+  "decision_overlay_sha256": "f7f5e2d346241920c592b30a55f51a77c33a08dc5855640910292ca68f4b1181",
+  "remaining_queue_sha256": "433867bf48d039925d30e632ec68a93b14cfb6cc94c0a9dd1c3c441b0892c2ab",
+  "evidence_matrix_sha256": "b21821c3cfa4a80c5e000735fff2fb10d7f44c6a43007f1105b9decb4f8fcc96",
+  "adversarial_rejection_fixtures_passed": 5,
+  "routing_assignments": 0,
+  "grouping_assignments": 0,
+  "source_records_removed_or_closed": 0,
+  "implementation_authorized": false,
+  "packet_04_authorized": false,
+  "next_authorized_work": "PACKET_01.5_PROCESS_NEXT_RESOLVABLE_EVIDENCE_FAMILY",
+  "stop_before_routing": true
+}
