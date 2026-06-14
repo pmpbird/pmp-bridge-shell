@@ -1,0 +1,45 @@
+{
+  "packet": "01.5",
+  "audit_version": 3,
+  "date": "2026-06-14",
+  "status": "coverage_audit_complete",
+  "routing": "not_started",
+  "discovery_saturation_claimed": false,
+  "cross_domain_saturation_testing_authorized": true,
+  "audit_v2_outstanding_families": {
+    "count": 9,
+    "all_now_dedicated": true,
+    "domains": [
+      {"name": "Freshwater, watersheds, dams, groundwater, and water-resource governance", "state": "dedicated", "primary_pass": 55},
+      {"name": "Mental-health, behavioral-health, and addiction-service systems", "state": "dedicated", "primary_pass": 56},
+      {"name": "Social care, long-term care, aging, and disability-support systems", "state": "dedicated", "primary_pass": 57},
+      {"name": "Military, defense, weapons lifecycle, and veteran-transition systems", "state": "dedicated", "primary_pass": 58},
+      {"name": "Energy production, storage, and fuel systems", "state": "dedicated", "primary_pass": 59},
+      {"name": "Chemical and high-hazard process industries", "state": "dedicated", "primary_pass": 60},
+      {"name": "Pharmaceutical and medical-product lifecycle", "state": "dedicated", "primary_pass": 61},
+      {"name": "Natural hazards and disaster-management systems", "state": "dedicated", "primary_pass": 62},
+      {"name": "Rail systems and mass-freight corridors", "state": "dedicated", "primary_pass": 63}
+    ]
+  },
+  "material_major_root_families_missing": 0,
+  "material_major_root_families_partial": 0,
+  "conditional_sector_reopening_watch": [
+    "Insurance and reinsurance operations",
+    "Childcare, child welfare, foster care, and adoption systems",
+    "Postal, courier, and last-mile delivery systems",
+    "Hospitality, tourism, and large-venue operations"
+  ],
+  "current_count": {
+    "baseline": 122,
+    "provisional": 2502,
+    "combined": 2624,
+    "routing_decisions": 0,
+    "records_closed": 0
+  },
+  "decision": "begin_cross_domain_saturation_discovery",
+  "next_pass": {
+    "number": 64,
+    "domain": "Cross-domain interaction saturation: authority, automation, emergency time pressure, identity, records, infrastructure, vendors, housing, healthcare, transport, environment, markets, warnings, and stewardship",
+    "count_mode": "natural_yield"
+  }
+}
