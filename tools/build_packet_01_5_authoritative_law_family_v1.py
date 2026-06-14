@@ -55,26 +55,30 @@ def evidence(eid: str, reference: str, stable: str, claim: str) -> dict[str, str
     }
 
 
-def remaining_entry(item: dict[str, Any], claim: str, reason: str, support: list[dict[str, Any]], conflicts: list[dict[str, Any]]) -> dict[str, Any]:
+def remaining_entry(item: dict[str, Any], claim: str, reason: str, support: list[dict[str, Any]], disproof: list[dict[str, Any]]) -> dict[str, Any]:
     result = dict(item)
-    if conflicts:
-        paths = ", ".join(sorted({entry["path"] for entry in conflicts}))
-        missing = f"Resolve equal-or-higher-precedence conflict among current authority sources: {paths}."
-        method = "Create a digest-bound authority adjudication showing governing tier, version precedence, and the controlling clause."
+    if support and disproof:
+        paths = ", ".join(sorted({entry["path"] for entry in support + disproof}))
+        missing = f"Resolve same-tier or incomplete authority conflict among current sources: {paths}."
+        method = "Create a digest-bound authority adjudication showing the controlling tier, version, and clause."
     elif support:
         paths = ", ".join(sorted({entry["path"] for entry in support}))
-        missing = f"The current sources {paths} are related but do not directly prove the complete preserved claim under the required threshold."
-        method = "Capture the exact governing clause or a verified completion/status receipt that closes the unsupported part of the claim."
+        missing = f"Current sources {paths} partially support the claim but do not prove its complete scope."
+        method = "Capture the missing governing clause or verified completion/status receipt for the unsupported portion."
+    elif disproof:
+        paths = ", ".join(sorted({entry["path"] for entry in disproof}))
+        missing = f"Current sources {paths} partially disprove the claim but do not close its complete scope."
+        method = "Capture a controlling amendment or adjudication that explicitly resolves every part of the preserved claim."
     elif "private" in claim.lower() or "user’s" in claim.lower() or "user's" in claim.lower():
-        missing = "Capture a privacy-safe authoritative receipt for the user-specific constraint or private dependency without exposing private values."
-        method = "Produce a redacted digest-bound boolean receipt and connect it to the governing packet gate."
+        missing = "Capture a privacy-safe authoritative receipt for the user-specific constraint or private dependency."
+        method = "Produce a redacted digest-bound receipt and connect it to the governing packet rule or gate."
     else:
         missing = "No current authoritative governing clause or verified receipt directly proves or disproves the complete preserved claim."
-        method = "Add or identify the controlling packet law, current status entry, completion receipt, or conflict-resolution record with commit and content digests."
+        method = "Add or identify the controlling packet law, approved decision, current status entry, completion receipt, or conflict-resolution record with commit and content digests."
     result["missing_proof"] = f"{missing} Resolver result: {reason}. Preserved claim: {claim}"
     result["recommended_acquisition_method"] = method
     result["decision_blocked_until"] = "The controlling authority and precedence are captured, hashed, and independently verified against this permanent address."
-    result["reopening_trigger"] = "A new packet law, status ledger, completion receipt, merge commit, content digest, or authority conflict changes the controlling evidence."
+    result["reopening_trigger"] = "A new approved decision, packet law, status ledger, completion receipt, merge commit, digest, or conflict changes the controlling evidence."
     return result
 
 
@@ -99,7 +103,7 @@ def main() -> None:
     main_sha = policy.main_anchor(REPO)
     plan_sha = policy.sha256(PLAN_PATH.read_bytes())
     reviewed = plan["reviewed_predicates"]
-    generic = plan["generic_direct_support"]
+    generic = plan["generic_direct_authority"]
 
     decisions: list[dict[str, Any]] = []
     remaining: list[dict[str, Any]] = []
@@ -112,50 +116,64 @@ def main() -> None:
         need(item["source_envelope_hash"] == source["envelope_hash"], f"queue/source mismatch: {address}")
         rule = next((entry for entry in reviewed if entry["claim_contains"].lower() in claim.lower()), None)
         if rule:
-            passed, support, conflicts, detail = policy.reviewed_predicate(rule["predicate"], claim, sources, tracked)
-            state = rule["state"]
-            confidence = rule["confidence"]
+            outcome, support, disproof, detail = policy.reviewed_predicate(rule["predicate"], claim, sources, tracked)
             predicate = rule["predicate"]
+            if outcome == "SUPPORTED":
+                state, confidence = rule["supported_state"], rule["supported_confidence"]
+            elif outcome == "DISPROVED":
+                state, confidence = rule["disproved_state"], rule["disproved_confidence"]
+            else:
+                state, confidence = None, None
         else:
-            passed, support, conflicts, detail = policy.generic_direct(
+            outcome, support, disproof, detail = policy.generic_direct(
                 claim, sources, generic["minimum_claim_token_coverage"], generic["minimum_distinct_claim_tokens"]
             )
-            state = generic["allowed_state"]
-            confidence = generic["confidence"]
-            predicate = "GENERIC_DIRECT_CURRENT_AUTHORITY_SUPPORT"
+            predicate = "GENERIC_DIRECT_CURRENT_AUTHORITY"
+            if outcome == "SUPPORTED":
+                state, confidence = generic["supported_state"], generic["supported_confidence"]
+            elif outcome == "DISPROVED":
+                state, confidence = generic["disproved_state"], generic["disproved_confidence"]
+            else:
+                state, confidence = None, None
 
+        authority_evidence = support if outcome == "SUPPORTED" else disproof if outcome == "DISPROVED" else []
         matrix.append({
             "composite_address": address,
             "original_identifier": item["original_identifier"],
             "claim": claim,
             "predicate": predicate,
-            "predicate_passed": passed,
-            "state_if_passed": state,
-            "confidence_if_passed": confidence,
+            "outcome": outcome,
+            "state_if_decided": state,
+            "confidence_if_decided": confidence,
             "support": support,
-            "conflicts": conflicts,
+            "disproof": disproof,
             "detail": detail,
-            "result": "DECIDED" if passed else "REMAIN_QUEUED",
+            "result": "DECIDED" if outcome in {"SUPPORTED", "DISPROVED"} else "REMAIN_QUEUED",
         })
 
-        if not passed:
-            remaining.append(remaining_entry(item, claim, detail.get("reason", "insufficient_current_authority"), support, conflicts))
+        if outcome == "UNRESOLVED":
+            remaining.append(remaining_entry(item, claim, detail.get("reason", "insufficient_current_authority"), support, disproof))
             continue
 
         evidence_entries = [
             evidence(f"ALF-SOURCE-{address}", f"{INVENTORY_PATH.relative_to(REPO)}#{address}", source["envelope_hash"], "Preserves the immutable source claim and permanent address."),
             evidence(f"ALF-QUEUE-{address}", f"{QUEUE_PATH.relative_to(REPO)}#{address}", f"sha256:{QUEUE_SHA}#{address}", "Proves membership in the complete authoritative-packet-law evidence family."),
-            evidence(f"ALF-PLAN-{address}", f"{PLAN_PATH.relative_to(REPO)}#{predicate}", f"sha256:{plan_sha}#{predicate}", "Binds the record to the reviewed predicate, precedence rules, state, and confidence."),
-            evidence(f"ALF-CENSUS-{address}", "authoritative repository law census", f"sha256:{census_sha}", "Commits the complete precedence-filtered authority-source census used for this decision."),
-            evidence(f"ALF-MAIN-{address}", "origin/main", f"commit:{main_sha}", "Anchors the authority evaluation to the current main commit."),
+            evidence(f"ALF-PLAN-{address}", f"{PLAN_PATH.relative_to(REPO)}#{predicate}", f"sha256:{plan_sha}#{predicate}", "Binds the record to reviewed precedence, outcome, state, and confidence rules."),
+            evidence(f"ALF-CENSUS-{address}", "authoritative repository law census", f"sha256:{census_sha}", "Commits the complete filtered authority-source census used for this decision."),
+            evidence(f"ALF-MAIN-{address}", "origin/main", f"commit:{main_sha}", "Anchors the authority evaluation to current main."),
         ]
-        for index, match in enumerate(sorted(support, key=lambda entry: (entry["tier"], -entry["version"], entry["path"]))[:8], 1):
+        for index, match in enumerate(sorted(authority_evidence, key=lambda entry: (entry["tier"], -entry["version"], entry["path"]))[:8], 1):
+            verb = "supports" if outcome == "SUPPORTED" else "disproves"
             evidence_entries.append(evidence(
                 f"ALF-AUTH-{index:02d}-{address}", match["path"], f"sha256:{match['sha256']}",
-                f"Tier {match['tier']} current authority directly supports the preserved claim; matched passage coverage={match.get('coverage')}."
+                f"Tier {match['tier']} current authority directly {verb} the preserved claim; matched passage coverage={match.get('coverage')}."
             ))
 
-        reasoning_sources = ", ".join(match["path"] for match in sorted(support, key=lambda entry: (entry["tier"], entry["path"]))[:5])
+        controlling = ", ".join(match["path"] for match in sorted(authority_evidence, key=lambda entry: (entry["tier"], entry["path"]))[:5])
+        if outcome == "SUPPORTED":
+            reasoning = f"Current precedence-filtered governing evidence directly supports the preserved claim. Controlling sources: {controlling}. No equal-precedence disproof blocks the decision."
+        else:
+            reasoning = f"Current higher-precedence governing evidence directly disproves the historical claim, so it is an out-of-scope candidate rather than a current limitation. Controlling sources: {controlling}."
         decision = {
             "composite_address": address,
             "source_inventory_sha256": INVENTORY_SHA,
@@ -164,7 +182,7 @@ def main() -> None:
             "decision_stage": "APPLICABILITY_ONLY",
             "applicability_state": state,
             "applicability_evidence": evidence_entries,
-            "applicability_reasoning_summary": f"Current precedence-filtered governing evidence directly supports the preserved claim at this address. Controlling sources: {reasoning_sources}. No equal-or-higher-precedence contradictory source blocked the decision.",
+            "applicability_reasoning_summary": reasoning,
             "applicability_confidence": confidence,
             "primary_destination": None,
             "secondary_destinations": [],
@@ -178,9 +196,9 @@ def main() -> None:
             "unresolved_dependencies": [],
             "hold_reason": "",
             "reopening_conditions": [
-                "A newer governing packet law or current status record supersedes the cited authority.",
+                "A newer governing packet law or approved decision supersedes the cited authority.",
                 "An equal-or-higher-precedence conflict is introduced or discovered.",
-                "The cited completion receipt, merge commit, or content digest is invalidated or replaced."
+                "The cited receipt, merge commit, authority status, or content digest is invalidated."
             ],
             "decision_version": "Packet-01.5-Authoritative-Law-Family-v1",
             "decision_author": plan["decision_author"],
@@ -190,24 +208,16 @@ def main() -> None:
         decisions.append(decision)
 
     manifest = {
-        "packet": "01.5",
-        "family": "AUTHORITATIVE_PACKET_LAW",
-        "records": len(family),
-        "source_queue_sha256": QUEUE_SHA,
-        "source_inventory_sha256": INVENTORY_SHA,
-        "main_commit_anchor": main_sha,
-        "authority_census_sha256": census_sha,
+        "packet": "01.5", "family": "AUTHORITATIVE_PACKET_LAW", "records": len(family),
+        "source_queue_sha256": QUEUE_SHA, "source_inventory_sha256": INVENTORY_SHA,
+        "main_commit_anchor": main_sha, "authority_census_sha256": census_sha,
         "authority_sources": [
             {key: source[key] for key in ("path", "tier", "family", "version", "active_version", "sha256")}
             for source in sources
         ],
         "record_identities": [
-            {
-                "composite_address": item["composite_address"],
-                "source_record_ordinal": item["source_record_ordinal"],
-                "original_identifier": item["original_identifier"],
-                "source_envelope_hash": item["source_envelope_hash"],
-            }
+            {"composite_address": item["composite_address"], "source_record_ordinal": item["source_record_ordinal"],
+             "original_identifier": item["original_identifier"], "source_envelope_hash": item["source_envelope_hash"]}
             for item in family
         ],
     }
@@ -233,13 +243,13 @@ def main() -> None:
 
 STATUS: BUILT — PENDING INDEPENDENT VERIFICATION
 FAMILY RECORDS: {len(family)}
-EVIDENCE-SUPPORTED DECISIONS: {len(decisions)}
+EVIDENCE-SUPPORTED OR DISPROVED DECISIONS: {len(decisions)}
 REMAINING QUEUED: {len(remaining)}
 UNKNOWN — HOLD CREATED: 0
 ROUTING ASSIGNMENTS: 0
 GROUPING ASSIGNMENTS: 0
 
-The complete authoritative-packet-law family was processed in permanent source order. Decisions require direct current authority after tier and version precedence. Missing authority, private dependency, partial support, and equal-precedence conflict remain queued with exact resolution requirements.
+The complete authoritative-packet-law family was processed in permanent source order. Discovery and routing-batch copies are excluded from authority. Current approved decisions, status, laws, and receipts may support a claim or directly disprove it; unresolved equal-tier conflict and incomplete scope remain queued.
 
 Stop before routing, grouping, closure, implementation, or Packet 04.
 """, encoding="utf-8")
