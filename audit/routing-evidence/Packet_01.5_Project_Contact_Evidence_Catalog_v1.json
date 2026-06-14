@@ -1,0 +1,64 @@
+{
+  "packet": "01.5",
+  "catalog": "project_contact_evidence",
+  "version": 1,
+  "date": "2026-06-14",
+  "status": "BUILT_PENDING_INDEPENDENT_VERIFICATION",
+  "watch": "NONE",
+  "blockers": "NONE_KNOWN",
+  "parent_source": {
+    "filename": "PMP_Current_Resident_Current_to_Future_Capability_Map_v4_FINAL_PASS.md",
+    "sha256": "fd1a51070affa44f790822767b4662f35349bc13d13503877ddb81688c921c39",
+    "map_version": "4.0.0-final-pass"
+  },
+  "preserved_summary_source": {
+    "path": "audit/routing-evidence/Packet_03_Current_Capability_Summary_Source_v1.md",
+    "sha256": "8f995ef4609640a7aefbc7a5d3e9ef9e7c2986ede47ee3e20a36d30c914fa1d2",
+    "current_capabilities": 20
+  },
+  "classification_law": "No envelope may be classified from its discovery-domain name alone. Every decision requires record-specific reasoning that cites one or more catalog evidence entries.",
+  "current_capability_rule": {
+    "evidence_type": "CURRENT_CONTACT",
+    "evidence_state": "VERIFIED",
+    "decision_use": "Supports CURRENT_DEFECT or ACTIVE_CONDITIONAL_RISK only with record-specific contact reasoning."
+  },
+  "current_capabilities": [
+    {"evidence_id":"P03-RC-001","capability_id":"RC-001","name":"Integrated Resident Conversation Drawer","status":"PRESERVE_AND_UPGRADE","domains":["resident_conversation","local_reasoning","manual_handoff","user_interface","session_context"],"owners":["03.5","14","24"]},
+    {"evidence_id":"P03-RC-002","capability_id":"RC-002","name":"Resident Authority Modes","status":"PRESERVE_AND_UPGRADE","domains":["authority_modes","permissions","user_control"],"owners":["04","21"]},
+    {"evidence_id":"P03-RC-003","capability_id":"RC-003","name":"Active Work Thread","status":"PRESERVE_AND_UPGRADE","domains":["active_work","thread_state","continuity"],"owners":["04","20","26"]},
+    {"evidence_id":"P03-RC-004","capability_id":"RC-004","name":"Whole-App Health Snapshot","status":"PRESERVE_AND_UPGRADE","domains":["health_snapshot","observability","status_reporting"],"owners":["14","15","24"]},
+    {"evidence_id":"P03-RC-005","capability_id":"RC-005","name":"App Truth Scanner","status":"PRESERVE_AND_UPGRADE","domains":["truth_scanning","verification","current_state"],"owners":["13","14","15","24"]},
+    {"evidence_id":"P03-RC-006","capability_id":"RC-006","name":"Storage Scanner","status":"PRESERVE_AND_UPGRADE","domains":["storage_scan","local_storage","schema_visibility"],"owners":["04"]},
+    {"evidence_id":"P03-RC-007","capability_id":"RC-007","name":"Bug Memory","status":"PRESERVE_AND_UPGRADE","domains":["bug_memory","issue_history","retention"],"owners":["04","05","17"]},
+    {"evidence_id":"P03-RC-008","capability_id":"RC-008","name":"Repair Request Builder","status":"PRESERVE_AND_UPGRADE","domains":["repair_requests","triage","handoff"],"owners":["07","11","21"]},
+    {"evidence_id":"P03-RC-009","capability_id":"RC-009","name":"Same-Origin Live PMP Mirror","status":"PRESERVE_AND_UPGRADE","domains":["same_origin_mirror","runtime_route","live_app"],"owners":["12","14","24"]},
+    {"evidence_id":"P03-RC-010","capability_id":"RC-010","name":"Hidden Resident X-Ray","status":"PRESERVE_AND_UPGRADE","domains":["xray","hidden_state","diagnostics"],"owners":["03.5","09","14"]},
+    {"evidence_id":"P03-RC-011","capability_id":"RC-011","name":"Inventory Eyes and Lossless Command Bridge","status":"PRESERVE_AND_UPGRADE","domains":["inventory","command_bridge","lossless_handoff"],"owners":["03.5","05","09","24"]},
+    {"evidence_id":"P03-RC-012","capability_id":"RC-012","name":"Private Bug Memory Room","status":"PRESERVE","domains":["private_bug_memory","privacy","storage"],"owners":["04","05","21","24"]},
+    {"evidence_id":"P03-RC-013","capability_id":"RC-013","name":"Bug Memory Pack and Notes Catalog Builder","status":"PRESERVE_AND_UPGRADE","domains":["notes_catalog","packaging","export"],"owners":["04","05","24"]},
+    {"evidence_id":"P03-RC-014","capability_id":"RC-014","name":"Notes Backend Bridge","status":"PRESERVE_AND_UPGRADE","domains":["notes_bridge","private_handoff","storage"],"owners":["04","21","24"]},
+    {"evidence_id":"P03-RC-015","capability_id":"RC-015","name":"Resident ZIP X-Ray","status":"PRESERVE_AND_UPGRADE","domains":["zip_analysis","archive_input","private_files"],"owners":["04","06.5","16","21","24"]},
+    {"evidence_id":"P03-RC-016","capability_id":"RC-016","name":"Bug Mixer Lab","status":"PRESERVE_AND_UPGRADE","domains":["bug_mixer","prediction","calibration","analysis"],"owners":["10","11","17","19","24"]},
+    {"evidence_id":"P03-RC-017","capability_id":"RC-017","name":"Safe Writer Protected Transaction","status":"PRESERVE_AND_UPGRADE","domains":["safe_writer","protected_transaction","change_control"],"owners":["12","13","15","16","21","24"]},
+    {"evidence_id":"P03-RC-018","capability_id":"RC-018","name":"Code Safety Safe-Point Bank","status":"PRESERVE_AND_UPGRADE","domains":["safe_points","rollback","restore","code_safety"],"owners":["04","15","16","24"]},
+    {"evidence_id":"P03-RC-019","capability_id":"RC-019","name":"Resident Context Inside Safe Writer and Code Safety","status":"PRESERVE_AND_UPGRADE","domains":["resident_context","safe_writer_context","code_safety_context"],"owners":["21","22","24"]},
+    {"evidence_id":"P03-RC-020","capability_id":"RC-020","name":"Privacy and Trust-Zone Separation","status":"PRESERVE_AND_UPGRADE","domains":["privacy","trust_zones","credentials","backend_boundary"],"owners":["04","06","06.5","21","24"]}
+  ],
+  "boundary_evidence": [
+    {"evidence_id":"P03-BOUND-CAPABILITY-SET","evidence_type":"ABSENT_CONTACT","name":"Current capability-set boundary","domains":["all_unlisted_domains"],"owners":[],"explanation":"Packet 03 proves no current Resident capability beyond RC-001 through RC-020.","decision_use":"Prevents a discovery-domain name from becoming current project contact without separate evidence."},
+    {"evidence_id":"P03-BOUND-DIRECT-AI","evidence_type":"ABSENT_CONTACT","name":"Direct AI provider/model path","domains":["direct_ai_model_call","ai_provider_adapter","ai_credentials"],"owners":["06","06.5","21","24"],"explanation":"Current reasoning is local and manual-handoff based; no verified direct AI-model call or AI credential path exists.","decision_use":"Direct-provider risks are not current defects unless another current contact path is proven; planned implementation risks may be active conditional risks."},
+    {"evidence_id":"P03-BOUND-AUTONOMOUS-REPOSITORY","evidence_type":"ABSENT_CONTACT","name":"Autonomous repository action","domains":["autonomous_repository_action","autonomous_code_change"],"owners":["12","13","15","16","21","24"],"explanation":"The Resident drawer has no autonomous repository action; it provides guidance, local preparation, manual handoff, and limited local record actions.","decision_use":"Autonomous-action risks remain conditional or dormant until an authorized implementation contact exists."},
+    {"evidence_id":"P03-BOUND-OPTIONAL-BACKEND","evidence_type":"PLANNED_CONTACT","name":"Optional worker/backend path","domains":["backend","provider","remote_storage","external_request"],"owners":["06","06.5","21","24"],"explanation":"The optional worker/backend is not a completed current Resident capability and remains prohibited until its owner packets pass.","decision_use":"Supports active conditional classification for planned backend/provider limitations; it does not prove a current defect by itself."},
+    {"evidence_id":"P03-BOUND-LOCAL-PRIVACY","evidence_type":"CURRENT_CONTACT","name":"Local privacy and explicit handoff boundary","domains":["local_data","privacy","explicit_copy","shortcut_handoff","optional_backend_action"],"owners":["04","06","06.5","21","24"],"explanation":"Requests remain local unless the user explicitly moves data into another tool or enables an optional backend action.","decision_use":"Local storage and privacy risks may be current; external-transfer risks require an explicit or planned handoff path."},
+    {"evidence_id":"P03-BOUND-INSTALLED-RUNTIME","evidence_type":"ABSENT_CONTACT","name":"Observed installed iPhone runtime","domains":["installed_ios_runtime","device_runtime_observation"],"owners":["14","24"],"explanation":"Installed iPhone runtime was not observed in Packet 03.","decision_use":"Device-runtime claims cannot be classified as current defects without later runtime evidence."}
+  ],
+  "boundary_source": {
+    "path": "audit/routing-evidence/Packet_03_Current_Capability_Boundary_Source_v1.md",
+    "parent_source_sha256": "fd1a51070affa44f790822767b4662f35349bc13d13503877ddb81688c921c39"
+  },
+  "counts": {
+    "current_capability_entries": 20,
+    "boundary_entries": 6,
+    "total_entries": 26
+  }
+}
