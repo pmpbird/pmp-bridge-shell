@@ -2,9 +2,9 @@
   "audit_date": "2026-06-14",
   "scope": "Packet 01.5 mechanical discovery integrity only",
   "baseline_count": 122,
-  "files_audited": 66,
-  "actual_provisional_count": 2583,
-  "combined_actual_count": 2705,
+  "files_audited": 67,
+  "actual_provisional_count": 2602,
+  "combined_actual_count": 2724,
   "sum_of_declared_counts_where_present": 1791,
   "count_mismatch_count": 5,
   "duplicate_id_count": 30,
@@ -11147,6 +11147,94 @@
           "title": "Public warning information creates secondary concentration risk"
         }
       ]
+    },
+    {
+      "pass": 67,
+      "path": "audit/Packet_01.5_Discovery_Pass_67_CrossDomain_Saturation_EdgeCases_RareCombinations_Feedback_EvidenceLoss_and_ResidualFailure_v1.md",
+      "actual_count": 19,
+      "declared_count": null,
+      "count_match": true,
+      "malformed_headings": [],
+      "missing_harm": [],
+      "missing_overlap": [],
+      "records": [
+        {
+          "id": "XEDGE-001",
+          "title": "Every fallback is valid alone but impossible to use in the same emergency"
+        },
+        {
+          "id": "XEDGE-002",
+          "title": "Exception handling excludes the person whose condition does not fit any single category"
+        },
+        {
+          "id": "XEDGE-003",
+          "title": "Rare but legitimate activity is treated as corruption because history contains no comparable case"
+        },
+        {
+          "id": "XEDGE-004",
+          "title": "Accessibility accommodation conflicts with security, evacuation, or infection controls"
+        },
+        {
+          "id": "XRARE-001",
+          "title": "Heat, smoke, power loss, and medication dependence combine into an unusable evacuation choice"
+        },
+        {
+          "id": "XRARE-002",
+          "title": "A regional disaster and cyber outage disable both service delivery and proof of eligibility"
+        },
+        {
+          "id": "XRARE-003",
+          "title": "Simultaneous evacuation and family separation create conflicting custody and reunification orders"
+        },
+        {
+          "id": "XRARE-004",
+          "title": "A rare infrastructure failure changes environmental, clinical, and legal conditions at once"
+        },
+        {
+          "id": "XFEED-001",
+          "title": "Warning-driven stockpiling creates the shortage that makes the warning more severe"
+        },
+        {
+          "id": "XFEED-002",
+          "title": "Service denial worsens the data used to justify future denial"
+        },
+        {
+          "id": "XFEED-003",
+          "title": "Outages create maintenance backlog that causes more outages"
+        },
+        {
+          "id": "XFEED-004",
+          "title": "Relocation shrinks the tax base and service capacity, causing further relocation"
+        },
+        {
+          "id": "XEVID-001",
+          "title": "Cleanup and restoration destroy physical evidence before causation is understood"
+        },
+        {
+          "id": "XEVID-002",
+          "title": "Log retention and synchronization fail during the period of greatest investigative value"
+        },
+        {
+          "id": "XEVID-003",
+          "title": "Privacy redaction prevents weak signals from being linked across institutions"
+        },
+        {
+          "id": "XEVID-004",
+          "title": "Vendor update changes the system before the failure can be reproduced"
+        },
+        {
+          "id": "XRESID-001",
+          "title": "Corrected policy leaves old contracts, forms, interfaces, and incentives in force"
+        },
+        {
+          "id": "XRESID-002",
+          "title": "Restored access leaves accumulated penalties, debt, delay, and health damage untouched"
+        },
+        {
+          "id": "XRESID-003",
+          "title": "Successful technical correction creates false confidence that the social system is repaired"
+        }
+      ]
     }
   ],
   "duplicate_ids": {
@@ -11693,14 +11781,19 @@
     "XCOMBO": 4,
     "XCOMMON": 4,
     "XDELAY": 5,
+    "XEDGE": 4,
     "XENV": 4,
+    "XEVID": 4,
+    "XFEED": 4,
     "XIDREC": 4,
     "XINFRA": 4,
     "XINVDEP": 4,
     "XJUR": 4,
     "XMARKET": 4,
     "XOPT": 5,
+    "XRARE": 4,
     "XRECOV": 5,
+    "XRESID": 3,
     "XREV": 4,
     "XSTEW": 4,
     "XWARN": 3
