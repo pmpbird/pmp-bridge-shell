@@ -1,0 +1,58 @@
+{
+  "packet": "01.5",
+  "batch": "P01.5-APP-B002",
+  "version": 1,
+  "date": "2026-06-14",
+  "status": "PLANNED_PENDING_TRANSACTION_AND_INDEPENDENT_VERIFICATION",
+  "parent_inventory": {
+    "path": "audit/routing-inventory/Packet_01.5_Applicability_Inventory_v2_Batch_001.jsonl",
+    "sha256": "f0dd94307c3719e6112da1cfc5a449a669b2628227cb379b78e0855a8985527f",
+    "envelopes": 2750
+  },
+  "child_inventory": {
+    "version": 3,
+    "path": "audit/routing-inventory/Packet_01.5_Applicability_Inventory_v3_Batch_002.jsonl"
+  },
+  "contact_catalog": {
+    "path": "audit/routing-evidence/Packet_01.5_Project_Contact_Evidence_Catalog_v1.json",
+    "verification": "audit/Packet_01.5_Project_Contact_Evidence_Catalog_Independent_Verification_v1.json"
+  },
+  "selection": {
+    "rule": "next ten preserved baseline addresses after accepted Batch 001",
+    "addresses": [
+      "P01.5::B::0011",
+      "P01.5::B::0012",
+      "P01.5::B::0013",
+      "P01.5::B::0014",
+      "P01.5::B::0015",
+      "P01.5::B::0016",
+      "P01.5::B::0017",
+      "P01.5::B::0018",
+      "P01.5::B::0019",
+      "P01.5::B::0020"
+    ],
+    "count": 10
+  },
+  "decisions": [
+    {"address":"P01.5::B::0011","original_identifier":"AI-011","state":"ACTIVE_CONDITIONAL_RISK","source_evidence_type":"PLANNED_CONTACT","catalog_evidence_ids":["P03-BOUND-DIRECT-AI","P03-BOUND-OPTIONAL-BACKEND","P03-BOUND-LOCAL-PRIVACY","P03-RC-020"],"contact_path":"Provider privacy, retention, training, residency, and deletion terms become project-operational when the planned provider/backend path carries Resident data.","rationale":"No direct provider path is currently verified, but the backend/provider implementation is planned. The uncertainty is therefore active conditional rather than a present defect in the local/manual Resident path."},
+    {"address":"P01.5::B::0012","original_identifier":"AI-012","state":"ACTIVE_CONDITIONAL_RISK","source_evidence_type":"PLANNED_CONTACT","catalog_evidence_ids":["P03-BOUND-DIRECT-AI","P03-BOUND-OPTIONAL-BACKEND","P03-BOUND-CAPABILITY-SET"],"contact_path":"The free/no-subscription constraint requires enforcement when provider, backend, quota, or paid-service capability is introduced.","rationale":"The source record proves the project constraint and missing gate. Because the cost-bearing provider path is planned rather than current, the limitation is active conditional."},
+    {"address":"P01.5::B::0013","original_identifier":"AI-013","state":"CURRENT_DEFECT","source_evidence_type":"CURRENT_CONTACT","catalog_evidence_ids":["P03-RC-001","P03-RC-003","P03-RC-011","P03-RC-019"],"contact_path":"Current Resident uses stored context, active work, lossless handoff, and manual ChatGPT packets, so context-size, ordering, omission, and loss detection directly affect current work.","rationale":"The current manual/local reasoning path already packages and transfers context. Missing truncation policy and loss detection can damage present work even without a direct model adapter, so this is a current defect."},
+    {"address":"P01.5::B::0014","original_identifier":"AI-014","state":"ACTIVE_CONDITIONAL_RISK","source_evidence_type":"PLANNED_CONTACT","catalog_evidence_ids":["P03-BOUND-DIRECT-AI","P03-BOUND-OPTIONAL-BACKEND","P03-RC-005","P03-RC-020"],"contact_path":"AI response schema and grounding controls become operational when the planned direct provider response enters Resident truth or action surfaces.","rationale":"Current Resident has no verified direct model response path. The missing validation is active conditional on the planned AI bridge."},
+    {"address":"P01.5::B::0015","original_identifier":"AI-015","state":"ACTIVE_CONDITIONAL_RISK","source_evidence_type":"PLANNED_CONTACT","catalog_evidence_ids":["P03-BOUND-DIRECT-AI","P03-BOUND-AUTONOMOUS-REPOSITORY","P03-BOUND-OPTIONAL-BACKEND","P03-RC-020"],"contact_path":"Technical prompt-injection containment becomes critical when untrusted content can drive a provider, tool, backend, or repository action path.","rationale":"Current Resident retains human-controlled manual handoff and no autonomous repository action. The technical containment gap is active conditional on planned AI/tool authority."},
+    {"address":"P01.5::B::0016","original_identifier":"AI-016","state":"ACTIVE_CONDITIONAL_RISK","source_evidence_type":"PLANNED_CONTACT","catalog_evidence_ids":["P03-BOUND-DIRECT-AI","P03-BOUND-OPTIONAL-BACKEND","P03-RC-016"],"contact_path":"Measured hallucination and calibration thresholds are required when planned AI outputs are evaluated or blended into current analysis and prediction surfaces.","rationale":"A current analysis lab exists, but there is no verified direct AI output. The acceptance-threshold gap is active conditional on the planned model path."},
+    {"address":"P01.5::B::0017","original_identifier":"AI-017","state":"ACTIVE_CONDITIONAL_RISK","source_evidence_type":"PLANNED_CONTACT","catalog_evidence_ids":["P03-BOUND-DIRECT-AI","P03-BOUND-OPTIONAL-BACKEND","P03-RC-016","P03-RC-018"],"contact_path":"Provider/model replacement equivalence and rollback are required after the planned model path is introduced and tied to prediction or safe-point systems.","rationale":"No direct current model exists to replace. The regression risk is active conditional because provider/model implementation is planned."},
+    {"address":"P01.5::B::0018","original_identifier":"AI-018","state":"ACTIVE_CONDITIONAL_RISK","source_evidence_type":"PLANNED_CONTACT","catalog_evidence_ids":["P03-BOUND-OPTIONAL-BACKEND","P03-RC-006","P03-RC-014","P03-RC-020"],"contact_path":"Environment isolation becomes operational when planned backend data, credentials, tests, benchmarks, and production-like bindings are used.","rationale":"Current local storage capabilities exist, but the remote backend/provider environment is not a completed current capability. The separation gap is active conditional."},
+    {"address":"P01.5::B::0019","original_identifier":"BUILD-001","state":"ACTIVE_CONDITIONAL_RISK","source_evidence_type":"PLANNED_CONTACT","catalog_evidence_ids":["P03-BOUND-CAPABILITY-SET","P03-RC-017","P03-RC-018"],"contact_path":"The architecture-to-implementation gap affects the planned safe-change, protected-transaction, rollback, and proof chain rather than a new completed current capability.","rationale":"Packet 03 preserves current capabilities and prohibits remaining implementation until named future packets pass. The gap is active conditional on executing that planned implementation chain."},
+    {"address":"P01.5::B::0020","original_identifier":"BUILD-002","state":"ACTIVE_CONDITIONAL_RISK","source_evidence_type":"PLANNED_CONTACT","catalog_evidence_ids":["P03-BOUND-CAPABILITY-SET","P03-RC-017","P03-RC-018"],"contact_path":"Packet 23's no-code plan becomes an implementation risk when the future module assembly and protected promotion chain begins.","rationale":"The plan itself does not fail a current RC capability. The missing execution authority is an active conditional risk for the planned implementation phase."}
+  ],
+  "routing_fields_rule": "All destination, law, watch-trigger, and semantic-cluster fields remain blank in this batch.",
+  "source_preservation_rule": "All immutable source fields, addresses, source hashes, original wording, accepted Batch 001 classifications, and total envelope count remain unchanged except for the ten selected applicability fields.",
+  "expected_result": {
+    "CURRENT_DEFECT": 1,
+    "ACTIVE_CONDITIONAL_RISK": 19,
+    "DORMANT_FUTURE_RISK": 0,
+    "OUT_OF_SCOPE_CANDIDATE": 0,
+    "UNCLASSIFIED": 2730,
+    "routing_assignments": 0
+  }
+}
