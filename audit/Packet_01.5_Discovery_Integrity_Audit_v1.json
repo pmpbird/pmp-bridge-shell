@@ -2,9 +2,9 @@
   "audit_date": "2026-06-14",
   "scope": "Packet 01.5 mechanical discovery integrity only",
   "baseline_count": 122,
-  "files_audited": 54,
-  "actual_provisional_count": 2150,
-  "combined_actual_count": 2272,
+  "files_audited": 55,
+  "actual_provisional_count": 2189,
+  "combined_actual_count": 2311,
   "sum_of_declared_counts_where_present": 1791,
   "count_mismatch_count": 5,
   "duplicate_id_count": 26,
@@ -9271,6 +9271,174 @@
           "title": "Backup dispatch and station facilities depend on the same regional infrastructure"
         }
       ]
+    },
+    {
+      "pass": 55,
+      "path": "audit/Packet_01.5_Discovery_Pass_55_Freshwater_Watersheds_Dams_Groundwater_Drought_WaterRights_Ecosystems_and_Governance_v1.md",
+      "actual_count": 39,
+      "declared_count": null,
+      "count_match": true,
+      "malformed_headings": [],
+      "missing_harm": [],
+      "missing_overlap": [],
+      "records": [
+        {
+          "id": "WATERSHED-001",
+          "title": "Water planning stops at jurisdictional boundaries"
+        },
+        {
+          "id": "WATERSHED-002",
+          "title": "Upstream protection transfers cost downstream"
+        },
+        {
+          "id": "WATERSHED-003",
+          "title": "Watershed health is inferred from a few monitored locations"
+        },
+        {
+          "id": "WATERSHED-004",
+          "title": "Land-use change alters water behavior faster than models update"
+        },
+        {
+          "id": "WATERSHED-005",
+          "title": "Cumulative withdrawal remains hidden across many individually permitted users"
+        },
+        {
+          "id": "GROUNDWATER-001",
+          "title": "Groundwater is managed as a static stock rather than a slow-flowing system"
+        },
+        {
+          "id": "GROUNDWATER-002",
+          "title": "Pumping causes land subsidence before depletion is fully recognized"
+        },
+        {
+          "id": "GROUNDWATER-003",
+          "title": "Contamination remains trapped or mobile in ways the sampling plan misses"
+        },
+        {
+          "id": "GROUNDWATER-004",
+          "title": "Private-well users fall outside routine safety monitoring"
+        },
+        {
+          "id": "GROUNDWATER-005",
+          "title": "Aquifer recovery target ignores irreversible compaction and salt intrusion"
+        },
+        {
+          "id": "DAM-001",
+          "title": "Dam safety model relies on historical flood and seismic assumptions"
+        },
+        {
+          "id": "DAM-002",
+          "title": "Reservoir operation objectives conflict during the same event"
+        },
+        {
+          "id": "DAM-003",
+          "title": "Controlled release protects the dam while endangering downstream communities"
+        },
+        {
+          "id": "DAM-004",
+          "title": "Instrumentation reports stable conditions while hidden failure progresses"
+        },
+        {
+          "id": "DAM-005",
+          "title": "Emergency action plan assumes warning and evacuation systems survive the failure"
+        },
+        {
+          "id": "RESERVOIR-001",
+          "title": "Sediment accumulation reduces capacity without changing the official storage label"
+        },
+        {
+          "id": "RESERVOIR-002",
+          "title": "Evaporation loss is treated as stable across climate and operating conditions"
+        },
+        {
+          "id": "RESERVOIR-003",
+          "title": "Water-quality stratification creates hidden intake and release risk"
+        },
+        {
+          "id": "RESERVOIR-004",
+          "title": "Reservoir creation displaces communities and cultural landscapes beyond compensation models"
+        },
+        {
+          "id": "FLOODCTRL-001",
+          "title": "Levee protection encourages development inside residual-risk areas"
+        },
+        {
+          "id": "FLOODCTRL-002",
+          "title": "Flood-control project accelerates water toward another community"
+        },
+        {
+          "id": "FLOODCTRL-003",
+          "title": "Flood map is treated as a boundary rather than an uncertain model"
+        },
+        {
+          "id": "FLOODCTRL-004",
+          "title": "Nature-based flood protection is credited without long-term maintenance and land protection"
+        },
+        {
+          "id": "DROUGHT-001",
+          "title": "Drought declaration arrives after households and ecosystems exhaust resilience"
+        },
+        {
+          "id": "DROUGHT-002",
+          "title": "Emergency conservation burdens low-use households more than large users"
+        },
+        {
+          "id": "DROUGHT-003",
+          "title": "Short-term water transfer accelerates long-term rural decline"
+        },
+        {
+          "id": "DROUGHT-004",
+          "title": "Drought response increases groundwater pumping without accounting for delayed consequences"
+        },
+        {
+          "id": "WATERRIGHTS-001",
+          "title": "Legal water entitlement exceeds physically available water"
+        },
+        {
+          "id": "WATERRIGHTS-002",
+          "title": "Seniority rules preserve old uses while blocking essential or adaptive uses"
+        },
+        {
+          "id": "WATERRIGHTS-003",
+          "title": "Informal and indigenous water use is absent from official allocation records"
+        },
+        {
+          "id": "WATERRIGHTS-004",
+          "title": "Water trading separates the right from community and ecological effects"
+        },
+        {
+          "id": "FRESHECO-001",
+          "title": "Environmental flow target uses one minimum number for a dynamic ecosystem"
+        },
+        {
+          "id": "FRESHECO-002",
+          "title": "Fish passage infrastructure serves selected species and life stages only"
+        },
+        {
+          "id": "FRESHECO-003",
+          "title": "Freshwater invasive control harms native species and water users"
+        },
+        {
+          "id": "FRESHECO-004",
+          "title": "Thermal pollution remains within chemical standards while ecosystems fail"
+        },
+        {
+          "id": "WATERGOV-001",
+          "title": "Water authority is fragmented across quantity, quality, ecology, infrastructure, and land use"
+        },
+        {
+          "id": "WATERGOV-002",
+          "title": "Emergency water supply plan depends on the same source or transport corridor"
+        },
+        {
+          "id": "WATERGOV-003",
+          "title": "Public water data are released after decisions and exposures occur"
+        },
+        {
+          "id": "WATERGOV-004",
+          "title": "Long-term stewardship ends when project funding or ownership changes"
+        }
+      ]
     }
   ],
   "duplicate_ids": {
@@ -9393,6 +9561,7 @@
     "CULT": 5,
     "CUSTHEALTH": 4,
     "CUSTTECH": 3,
+    "DAM": 5,
     "DARK": 4,
     "DATA": 6,
     "DEAD": 6,
@@ -9412,6 +9581,7 @@
     "DISPENSE": 5,
     "DISPLACE": 5,
     "DOC": 6,
+    "DROUGHT": 4,
     "DUAL": 4,
     "DUE": 6,
     "DUMP": 2,
@@ -9450,6 +9620,7 @@
     "FISH": 6,
     "FLAG": 7,
     "FLIGHTOPS": 6,
+    "FLOODCTRL": 4,
     "FLOW": 4,
     "FOOD": 6,
     "FOODACCESS": 3,
@@ -9459,6 +9630,7 @@
     "FRAME": 5,
     "FRAUD": 5,
     "FRAUDSCORE": 5,
+    "FRESHECO": 4,
     "FUELMGMT": 5,
     "FUELNUC": 4,
     "FX": 4,
@@ -9467,6 +9639,7 @@
     "GOVREC": 4,
     "GRID": 6,
     "GROUND": 5,
+    "GROUNDWATER": 5,
     "GUARD": 11,
     "HANDOFF": 5,
     "HARASS": 4,
@@ -9640,6 +9813,7 @@
     "REPUT": 4,
     "RESCON": 4,
     "RESCUE": 4,
+    "RESERVOIR": 4,
     "RESPX": 4,
     "RESTORE": 5,
     "RET": 4,
@@ -9715,6 +9889,9 @@
     "WASTELABOR": 2,
     "WASTESTEW": 2,
     "WATER": 4,
+    "WATERGOV": 4,
+    "WATERRIGHTS": 4,
+    "WATERSHED": 5,
     "WATERUTIL": 6,
     "WEB": 3,
     "WILDFIRE": 5,
