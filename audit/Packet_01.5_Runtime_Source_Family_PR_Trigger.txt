@@ -1,0 +1,1 @@
+Process and independently verify the complete CURRENT_RUNTIME_SOURCE evidence-acquisition family. Apply only predicates that pass on current repository evidence; leave all other records queued. No routing, grouping, closure, implementation, or Packet 04 work is authorized.
