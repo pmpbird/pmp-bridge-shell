@@ -1,0 +1,21 @@
+{
+  "packet": "01.5",
+  "verification": "canonical_project_contact_evidence_independent",
+  "version": 1,
+  "status": "PASS",
+  "watch": "NONE",
+  "blockers": "NONE",
+  "catalog_sha256": "97eb5e87eecb5e701c5362d7aba837efcb2a746147cadac575bc36d46b37e547",
+  "source_records": 4,
+  "global_boundary_evidence_records": 4,
+  "capability_contacts": 20,
+  "capability_ids_unique": true,
+  "capability_section_digests_unique": true,
+  "current_source_file_references": 29,
+  "current_storage_key_references": 37,
+  "current_dependency_references": 60,
+  "baseline_cross_check": "PASS",
+  "blank_inventory_cross_check": "PASS",
+  "contact_rules": "PASS",
+  "classification_batch_ready": true
+}
