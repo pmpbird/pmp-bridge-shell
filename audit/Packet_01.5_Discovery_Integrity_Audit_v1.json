@@ -2,12 +2,12 @@
   "audit_date": "2026-06-14",
   "scope": "Packet 01.5 mechanical discovery integrity only",
   "baseline_count": 122,
-  "files_audited": 59,
-  "actual_provisional_count": 2345,
-  "combined_actual_count": 2467,
+  "files_audited": 60,
+  "actual_provisional_count": 2385,
+  "combined_actual_count": 2507,
   "sum_of_declared_counts_where_present": 1791,
   "count_mismatch_count": 5,
-  "duplicate_id_count": 26,
+  "duplicate_id_count": 30,
   "duplicate_exact_heading_count": 0,
   "malformed_heading_count": 0,
   "missing_harm_count": 0,
@@ -10111,6 +10111,178 @@
           "title": "Transition policy retires old capacity before replacement dependencies are proven"
         }
       ]
+    },
+    {
+      "pass": 60,
+      "path": "audit/Packet_01.5_Discovery_Pass_60_Chemical_ProcessSafety_ReactiveChemistry_Pressure_Isolation_MOC_Relief_Shutdown_Contractors_Culture_and_Decommissioning_v1.md",
+      "actual_count": 40,
+      "declared_count": null,
+      "count_match": true,
+      "malformed_headings": [],
+      "missing_harm": [],
+      "missing_overlap": [],
+      "records": [
+        {
+          "id": "PROC-001",
+          "title": "Process safety model separates units that share utilities and material paths"
+        },
+        {
+          "id": "PROC-002",
+          "title": "Production target narrows the operating margin gradually"
+        },
+        {
+          "id": "PROC-003",
+          "title": "Instrument reading is trusted after the process has left the sensor’s valid range"
+        },
+        {
+          "id": "PROC-004",
+          "title": "Process model omits material already accumulated in dead legs, vessels, filters, and drains"
+        },
+        {
+          "id": "PROC-005",
+          "title": "Plant layout forces emergency actions through the hazard area"
+        },
+        {
+          "id": "REACT-001",
+          "title": "Reaction hazard is tested at laboratory scale but not at production scale"
+        },
+        {
+          "id": "REACT-002",
+          "title": "Trace contamination changes chemistry without changing the recipe"
+        },
+        {
+          "id": "REACT-003",
+          "title": "Delayed reaction is mistaken for no reaction"
+        },
+        {
+          "id": "REACT-004",
+          "title": "Incompatible materials share transfer, drainage, or waste systems"
+        },
+        {
+          "id": "REACT-005",
+          "title": "Reaction knowledge remains with a few specialists rather than the operating system"
+        },
+        {
+          "id": "PRESSURE-001",
+          "title": "Pressure protection is sized for one initiating cause at a time"
+        },
+        {
+          "id": "PRESSURE-002",
+          "title": "Vessel condition is inferred from external inspection while internal damage progresses"
+        },
+        {
+          "id": "PRESSURE-003",
+          "title": "Pressure cycling is omitted from life assessment"
+        },
+        {
+          "id": "PRESSURE-004",
+          "title": "Temporary hose, fitting, or portable equipment becomes permanent process infrastructure"
+        },
+        {
+          "id": "ISOLATE-001",
+          "title": "Lockout record does not match actual energy and material pathways"
+        },
+        {
+          "id": "ISOLATE-002",
+          "title": "Closed valve is treated as positive isolation"
+        },
+        {
+          "id": "ISOLATE-003",
+          "title": "Isolation protects maintenance staff while destabilizing the running process"
+        },
+        {
+          "id": "ISOLATE-004",
+          "title": "Restart occurs before temporary blinds, jumpers, bypasses, and tools are reconciled"
+        },
+        {
+          "id": "MOC-001",
+          "title": "Management of change captures hardware but misses software, staffing, procedures, and vendor behavior"
+        },
+        {
+          "id": "MOC-002",
+          "title": "Temporary change escapes re-review because its expiration is not enforced"
+        },
+        {
+          "id": "MOC-003",
+          "title": "Change review studies the modified item but not its interactions"
+        },
+        {
+          "id": "MOC-004",
+          "title": "Organizational change is excluded from process-safety review"
+        },
+        {
+          "id": "MOC-005",
+          "title": "Documentation is updated after field implementation rather than before it"
+        },
+        {
+          "id": "RELIEF-001",
+          "title": "Relief path protects equipment while discharging into an unsafe destination"
+        },
+        {
+          "id": "RELIEF-002",
+          "title": "Shared relief system creates backpressure and interaction between units"
+        },
+        {
+          "id": "RELIEF-003",
+          "title": "Flare or treatment-system availability is assumed rather than proven during the initiating event"
+        },
+        {
+          "id": "RELIEF-004",
+          "title": "Protective discharge remains below reporting thresholds while cumulative exposure grows"
+        },
+        {
+          "id": "SHUTDOWN-001",
+          "title": "Emergency shutdown sequence assumes utilities and instrumentation remain available"
+        },
+        {
+          "id": "SHUTDOWN-002",
+          "title": "Shutdown stabilizes pressure while causing freezing, polymerization, settling, or contamination"
+        },
+        {
+          "id": "SHUTDOWN-003",
+          "title": "Production restart is authorized before abnormal-event causes are understood"
+        },
+        {
+          "id": "SHUTDOWN-004",
+          "title": "Black-start or cold-start procedure does not match aged or modified equipment"
+        },
+        {
+          "id": "PROCWORK-001",
+          "title": "Contractor qualification does not include site-specific process knowledge"
+        },
+        {
+          "id": "PROCWORK-002",
+          "title": "Simultaneous maintenance tasks interact across permits and work groups"
+        },
+        {
+          "id": "PROCWORK-003",
+          "title": "Contractor injury and near-miss data do not enter the owner’s learning system"
+        },
+        {
+          "id": "PROCWORK-004",
+          "title": "Schedule pressure shifts verification from independent check to mutual assumption"
+        },
+        {
+          "id": "PSMCULT-001",
+          "title": "Low incident count is treated as proof of strong process safety"
+        },
+        {
+          "id": "PSMCULT-002",
+          "title": "Reporting bad news is experienced as disloyalty or production obstruction"
+        },
+        {
+          "id": "PSMCULT-003",
+          "title": "Personal-safety success distracts from process-safety degradation"
+        },
+        {
+          "id": "PROCDECOM-001",
+          "title": "Plant closure begins before full hazardous inventory and contamination are known"
+        },
+        {
+          "id": "PROCDECOM-002",
+          "title": "Decommissioning removes operating expertise before hazardous systems are made safe"
+        }
+      ]
     }
   ],
   "duplicate_ids": {
@@ -10139,7 +10311,11 @@
     "GUARD-002": 2,
     "GUARD-003": 2,
     "GUARD-004": 2,
-    "GUARD-005": 2
+    "GUARD-005": 2,
+    "ISOLATE-001": 2,
+    "ISOLATE-002": 2,
+    "ISOLATE-003": 2,
+    "ISOLATE-004": 2
   },
   "duplicate_exact_headings": {},
   "category_prefix_counts": {
@@ -10370,7 +10546,7 @@
     "INVASIVE": 4,
     "INVITE": 5,
     "INVOLT": 5,
-    "ISOLATE": 4,
+    "ISOLATE": 8,
     "JOBSKILL": 4,
     "JUR": 4,
     "KB": 6,
@@ -10423,6 +10599,7 @@
     "MOB": 6,
     "MOBACC": 5,
     "MOBILITY": 5,
+    "MOC": 5,
     "MOD": 6,
     "MONO": 3,
     "MSW": 5,
@@ -10466,13 +10643,18 @@
     "PORT": 7,
     "POST": 4,
     "PRESCRIBE": 6,
+    "PRESSURE": 4,
     "PRICE": 5,
     "PRIV": 4,
     "PRIVGEN": 5,
     "PRIVRIGHT": 5,
+    "PROC": 5,
+    "PROCDECOM": 2,
+    "PROCWORK": 4,
     "PROOFCHAIN": 10,
     "PROTECTAREA": 4,
     "PROV": 7,
+    "PSMCULT": 3,
     "PUB": 6,
     "PUBID": 4,
     "PUBLICDEP": 5,
@@ -10487,6 +10669,7 @@
     "RANK": 7,
     "RATE": 3,
     "RBACK": 4,
+    "REACT": 5,
     "REAL": 4,
     "REBOUND": 5,
     "REC": 3,
@@ -10502,6 +10685,7 @@
     "REG": 10,
     "REL": 12,
     "RELEASECUST": 3,
+    "RELIEF": 4,
     "RELIG": 5,
     "RELY": 6,
     "REMOTE": 3,
@@ -10542,6 +10726,7 @@
     "SHARE": 6,
     "SHELL": 7,
     "SHORTMED": 4,
+    "SHUTDOWN": 4,
     "SIGN": 4,
     "SKILL": 6,
     "SOC": 5,

@@ -8,12 +8,12 @@ This audit counts source records mechanically. It does not deduplicate, route, c
 
 ## Result
 
-- Source files audited: 59
+- Source files audited: 60
 - Preserved baseline: 122
-- Actual provisional headings: 2345
-- Actual combined working total: 2467
+- Actual provisional headings: 2385
+- Actual combined working total: 2507
 - Files with declared-count mismatch: 5
-- Duplicate record IDs: 26
+- Duplicate record IDs: 30
 - Duplicate exact headings: 0
 - Malformed record headings: 0
 - Records missing HARM: 0
@@ -82,6 +82,7 @@ This audit counts source records mechanically. It does not deduplicate, route, c
 | 57 | 40 | — | YES | `audit/Packet_01.5_Discovery_Pass_57_SocialCare_LongTermCare_Aging_DisabilitySupport_HCBS_DirectCare_ElderAbuse_Caregivers_and_Transitions_v1.md` |
 | 58 | 36 | — | YES | `audit/Packet_01.5_Discovery_Pass_58_Military_Defense_Procurement_Command_Escalation_WeaponsLifecycle_Autonomy_ServiceHealth_and_VeteranTransition_v1.md` |
 | 59 | 40 | — | YES | `audit/Packet_01.5_Discovery_Pass_59_EnergyProduction_Storage_Fuels_Refineries_Pipelines_Hydrogen_Batteries_Renewables_GridForming_and_Decommissioning_v1.md` |
+| 60 | 40 | — | YES | `audit/Packet_01.5_Discovery_Pass_60_Chemical_ProcessSafety_ReactiveChemistry_Pressure_Isolation_MOC_Relief_Shutdown_Contractors_Culture_and_Decommissioning_v1.md` |
 
 ## Declared-count mismatches
 
@@ -102,6 +103,10 @@ This audit counts source records mechanically. It does not deduplicate, route, c
 - `GUARD-003` appears 2 times.
 - `GUARD-004` appears 2 times.
 - `GUARD-005` appears 2 times.
+- `ISOLATE-001` appears 2 times.
+- `ISOLATE-002` appears 2 times.
+- `ISOLATE-003` appears 2 times.
+- `ISOLATE-004` appears 2 times.
 - `MAINT-001` appears 2 times.
 - `MAINT-002` appears 2 times.
 - `MAINT-003` appears 2 times.
