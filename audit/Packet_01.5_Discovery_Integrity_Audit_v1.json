@@ -2,9 +2,9 @@
   "audit_date": "2026-06-14",
   "scope": "Packet 01.5 mechanical discovery integrity only",
   "baseline_count": 122,
-  "files_audited": 61,
-  "actual_provisional_count": 2425,
-  "combined_actual_count": 2547,
+  "files_audited": 62,
+  "actual_provisional_count": 2463,
+  "combined_actual_count": 2585,
   "sum_of_declared_counts_where_present": 1791,
   "count_mismatch_count": 5,
   "duplicate_id_count": 30,
@@ -10455,6 +10455,170 @@
           "title": "Device replacement transfers data and settings incompletely"
         }
       ]
+    },
+    {
+      "pass": 62,
+      "path": "audit/Packet_01.5_Discovery_Pass_62_NaturalHazards_Earthquake_Tsunami_Storm_Heat_Volcano_Landslide_Warning_Evacuation_Sheltering_and_Recovery_v1.md",
+      "actual_count": 38,
+      "declared_count": null,
+      "count_match": true,
+      "malformed_headings": [],
+      "missing_harm": [],
+      "missing_overlap": [],
+      "records": [
+        {
+          "id": "EARTH-001",
+          "title": "Earthquake planning relies on mapped fault and shaking assumptions that omit local variation"
+        },
+        {
+          "id": "EARTH-002",
+          "title": "Building survival is mistaken for functional habitability"
+        },
+        {
+          "id": "EARTH-003",
+          "title": "Aftershock risk is treated as a smaller repeat of the first event"
+        },
+        {
+          "id": "EARTH-004",
+          "title": "Lifeline restoration priorities conflict across electricity, water, telecom, transport, and healthcare"
+        },
+        {
+          "id": "TSUNAMI-001",
+          "title": "Warning time is consumed by detection, confirmation, authority, and message approval"
+        },
+        {
+          "id": "TSUNAMI-002",
+          "title": "Evacuation maps assume roads and vertical refuges remain usable after the initiating earthquake"
+        },
+        {
+          "id": "TSUNAMI-003",
+          "title": "All-clear communication occurs before later waves and contaminated return conditions are understood"
+        },
+        {
+          "id": "STORM-001",
+          "title": "Severe-storm forecast precision hides uncertainty in track, intensity, and local impact"
+        },
+        {
+          "id": "STORM-002",
+          "title": "Protective action for one storm hazard increases exposure to another"
+        },
+        {
+          "id": "STORM-003",
+          "title": "Generator deployment solves electricity loss while creating fuel, exhaust, fire, and maintenance hazards"
+        },
+        {
+          "id": "STORM-004",
+          "title": "Debris and access failure delay emergency response after the peak hazard passes"
+        },
+        {
+          "id": "HEAT-001",
+          "title": "Heat-risk thresholds ignore indoor exposure and nighttime recovery failure"
+        },
+        {
+          "id": "HEAT-002",
+          "title": "Cooling-center availability is counted without checking practical access"
+        },
+        {
+          "id": "HEAT-003",
+          "title": "Grid protection curtails power where cooling dependence is highest"
+        },
+        {
+          "id": "HEAT-004",
+          "title": "Worker protection rules fail under piece-rate, informal, and subcontracted labor"
+        },
+        {
+          "id": "VOLCANO-001",
+          "title": "Volcanic hazard zones are treated as stable despite changing vents and pathways"
+        },
+        {
+          "id": "VOLCANO-002",
+          "title": "Ash impact is evaluated mainly as an aviation problem"
+        },
+        {
+          "id": "VOLCANO-003",
+          "title": "Long unrest period exhausts trust and preparedness before eruption"
+        },
+        {
+          "id": "LANDSLIDE-001",
+          "title": "Slope stability is inferred from visible surface condition"
+        },
+        {
+          "id": "LANDSLIDE-002",
+          "title": "Protective drainage redirects water into another unstable slope or community"
+        },
+        {
+          "id": "LANDSLIDE-003",
+          "title": "Closure and evacuation decisions lag because movement is gradual and uncertain"
+        },
+        {
+          "id": "WARNGOV-001",
+          "title": "Multiple agencies issue warnings with different boundaries and urgency"
+        },
+        {
+          "id": "WARNGOV-002",
+          "title": "Warning language assumes literacy, hearing, sight, language, cognition, and device access"
+        },
+        {
+          "id": "WARNGOV-003",
+          "title": "False-alarm cost is weighted more heavily than missed-event harm"
+        },
+        {
+          "id": "WARNGOV-004",
+          "title": "Warning system confirms message delivery but not comprehension or action"
+        },
+        {
+          "id": "MASSEVAC-001",
+          "title": "Evacuation model assumes households leave together with private vehicles"
+        },
+        {
+          "id": "MASSEVAC-002",
+          "title": "Contraflow and route control strand people who need to move toward the hazard area"
+        },
+        {
+          "id": "MASSEVAC-003",
+          "title": "Evacuation order separates people from medicine, equipment, animals, and support networks"
+        },
+        {
+          "id": "MASSEVAC-004",
+          "title": "Return authorization follows infrastructure status but not household-specific safety"
+        },
+        {
+          "id": "SHELTER-001",
+          "title": "Shelter capacity counts floor space rather than usable support capability"
+        },
+        {
+          "id": "SHELTER-002",
+          "title": "Congregate sheltering increases violence, exploitation, and family-separation risk"
+        },
+        {
+          "id": "SHELTER-003",
+          "title": "Shelter registration requirements exclude people without documents or trusted identity"
+        },
+        {
+          "id": "SHELTER-004",
+          "title": "Temporary shelter becomes long-term housing without long-term design"
+        },
+        {
+          "id": "DISREC-001",
+          "title": "Damage assessment favors visible property over lost function and social networks"
+        },
+        {
+          "id": "DISREC-002",
+          "title": "Insurance and aid documentation burden excludes those with the greatest loss"
+        },
+        {
+          "id": "DISREC-003",
+          "title": "Rebuilding restores the pre-disaster vulnerability"
+        },
+        {
+          "id": "DISREC-004",
+          "title": "Buyout and relocation programs preserve financial value but destroy community continuity"
+        },
+        {
+          "id": "DISREC-005",
+          "title": "Recovery governance ends before health, debt, trauma, and service effects stabilize"
+        }
+      ]
     }
   ],
   "duplicate_ids": {
@@ -10616,12 +10780,14 @@
     "DISELIG": 5,
     "DISPENSE": 5,
     "DISPLACE": 5,
+    "DISREC": 5,
     "DOC": 6,
     "DROUGHT": 4,
     "DRUGDISC": 5,
     "DUAL": 4,
     "DUE": 6,
     "DUMP": 2,
+    "EARTH": 4,
     "ECO": 5,
     "ECON": 5,
     "ECONSHOCK": 3,
@@ -10695,6 +10861,7 @@
     "HCAP": 5,
     "HCBS": 5,
     "HEALTH": 6,
+    "HEAT": 4,
     "HERED": 4,
     "HERIT": 5,
     "HIRE": 7,
@@ -10732,6 +10899,7 @@
     "LABOR": 6,
     "LAND": 5,
     "LANDFILL": 4,
+    "LANDSLIDE": 3,
     "LANDSTEWARD": 4,
     "LANG": 6,
     "LAUNCH": 5,
@@ -10755,6 +10923,7 @@
     "MARKETSYS": 5,
     "MARMON": 4,
     "MARTRANS": 5,
+    "MASSEVAC": 4,
     "MATERIAL": 5,
     "MEAS": 6,
     "MEDDEV": 5,
@@ -10906,6 +11075,7 @@
     "SEWAGE": 5,
     "SHARE": 6,
     "SHELL": 7,
+    "SHELTER": 4,
     "SHORTMED": 4,
     "SHUTDOWN": 4,
     "SIGN": 4,
@@ -10919,6 +11089,7 @@
     "STATELESS": 2,
     "STEWARD": 5,
     "STORE": 6,
+    "STORM": 4,
     "STRESS": 5,
     "STRUCT": 6,
     "SUB": 5,
@@ -10950,6 +11121,7 @@
     "TRANSIT": 5,
     "TRIAGE": 9,
     "TRUST": 7,
+    "TSUNAMI": 3,
     "UI": 18,
     "UPDATE": 4,
     "USERPRIV": 4,
@@ -10958,7 +11130,9 @@
     "VER": 8,
     "VETFAM": 5,
     "VIAB": 5,
+    "VOLCANO": 3,
     "VOTE": 4,
+    "WARNGOV": 4,
     "WASTELABOR": 2,
     "WASTESTEW": 2,
     "WATER": 4,
