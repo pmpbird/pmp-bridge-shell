@@ -1,0 +1,45 @@
+{
+  "type": "PMP_PACKET03_CURRENT_RUNTIME_PROOF_ADJUDICATION",
+  "version": "2.0.0",
+  "status": "PASS",
+  "test_id": "P03-1781398601766-454669a3",
+  "tested_on": "2026-06-14",
+  "raw_helper_status": "INCOMPLETE_OR_FAILED",
+  "raw_failure_was_test_oracle_error": true,
+  "checks": {
+    "static": true,
+    "home_screen_runtime": true,
+    "reopen_persistence": true,
+    "live_route": true,
+    "notes_shortcut": true,
+    "backend_classified": true,
+    "canonical_bug_memory_route": true,
+    "restore_limitation_classified": true
+  },
+  "notes_shortcut": {
+    "incorrect_helper_expectation": "arbitrary clipboard marker passthrough",
+    "correct_behavior_contract": "build and save the PMP Bug Catalog into the Apple Note titled PMP Private Bug Memory",
+    "shortcut_opened_at": "2026-06-14T01:17:41.870Z",
+    "observed_note_timestamp": "June 13, 2026 at 6:17 PM",
+    "observed_note_title": "PMP Private Bug Memory",
+    "observed_content_prefix": "PMP Bug Catalog — Plain Brain",
+    "pass": true
+  },
+  "backend": {
+    "class": "NOT_CONFIGURED_OR_DISABLED_IN_CURRENT_BROWSER",
+    "configured": false,
+    "enabled": false,
+    "pass": true
+  },
+  "temporary_proof_route": {
+    "wrapper": "pmp-route-guardian-current-loader-v15-packet03-proof.html",
+    "normal_route_guardian": "pmp-route-guardian-current-loader-v14.html",
+    "normal_route_restored": true,
+    "temporary_wrapper_deleted": true,
+    "temporary_button_removed": true
+  },
+  "unresolved_watch": [],
+  "blockers": [],
+  "next_authorized_packet": "03.5 — Permanent Project Limitation Discovery, Coverage, and Reopening Gate",
+  "packet_04_authorized": false
+}
