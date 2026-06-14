@@ -1,0 +1,138 @@
+{
+  "packet": "01.5",
+  "batch": "P01.5-APP-B003",
+  "version": 1,
+  "date": "2026-06-14",
+  "status": "PLANNED_PENDING_TRANSACTION_AND_INDEPENDENT_VERIFICATION",
+  "parent_inventory": {
+    "path": "audit/routing-inventory/Packet_01.5_Applicability_Inventory_v3_Batch_002.jsonl",
+    "sha256": "e0fdbdc4d9a2c63a57dd88dcf6c7fc7551d060427b693b4e1dc03a3f7368ccb6",
+    "envelopes": 2750
+  },
+  "child_inventory": {
+    "version": 4,
+    "path": "audit/routing-inventory/Packet_01.5_Applicability_Inventory_v4_Batch_003.jsonl"
+  },
+  "contact_catalog": {
+    "path": "audit/routing-evidence/Packet_01.5_Project_Contact_Evidence_Catalog_v1.json",
+    "verification": "audit/Packet_01.5_Project_Contact_Evidence_Catalog_Independent_Verification_v1.json"
+  },
+  "selection": {
+    "rule": "next ten preserved baseline addresses after accepted Batch 002",
+    "addresses": [
+      "P01.5::B::0021",
+      "P01.5::B::0022",
+      "P01.5::B::0023",
+      "P01.5::B::0024",
+      "P01.5::B::0025",
+      "P01.5::B::0026",
+      "P01.5::B::0027",
+      "P01.5::B::0028",
+      "P01.5::B::0029",
+      "P01.5::B::0030"
+    ],
+    "count": 10
+  },
+  "decisions": [
+    {
+      "address": "P01.5::B::0021",
+      "original_identifier": "BUILD-003",
+      "state": "ACTIVE_CONDITIONAL_RISK",
+      "source_evidence_type": "PLANNED_CONTACT",
+      "catalog_evidence_ids": ["P03-BOUND-CAPABILITY-SET", "P03-RC-004", "P03-RC-005", "P03-RC-017", "P03-RC-018"],
+      "contact_path": "Packet 24 integration and acceptance execution becomes operational only after a candidate implementation exists and reaches the current truth, health, Safe Writer, or Code Safety surfaces.",
+      "rationale": "Packet 24 being a runbook rather than executed proof does not itself fail a completed current RC capability. It is an active conditional risk tied to the planned candidate and acceptance chain."
+    },
+    {
+      "address": "P01.5::B::0022",
+      "original_identifier": "BUILD-004",
+      "state": "ACTIVE_CONDITIONAL_RISK",
+      "source_evidence_type": "PLANNED_CONTACT",
+      "catalog_evidence_ids": ["P03-BOUND-CAPABILITY-SET", "P03-BOUND-AUTONOMOUS-REPOSITORY", "P03-RC-017", "P03-RC-018"],
+      "contact_path": "The complete candidate, guardian, promotion, rollback, monitoring, and proof pipeline becomes project-operational when the future safe-change chain is implemented.",
+      "rationale": "Current tools provide bounded direct writing and local safety, not the complete candidate pipeline. The missing authorization is active conditional on the planned implementation phase."
+    },
+    {
+      "address": "P01.5::B::0023",
+      "original_identifier": "BUILD-005",
+      "state": "ACTIVE_CONDITIONAL_RISK",
+      "source_evidence_type": "PLANNED_CONTACT",
+      "catalog_evidence_ids": ["P03-BOUND-CAPABILITY-SET", "P03-RC-005", "P03-RC-008", "P03-RC-017", "P03-RC-018"],
+      "contact_path": "A repair and retest iteration loop is required when future candidates fail current truth scans, repair requests, runtime checks, guardian review, or promotion proof.",
+      "rationale": "The current system can scan and prepare repair requests, but the missing candidate iteration packet becomes operational only when the future candidate workflow begins."
+    },
+    {
+      "address": "P01.5::B::0024",
+      "original_identifier": "BUILD-006",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-011", "P03-RC-017", "P03-RC-018", "P03-RC-020"],
+      "contact_path": "Current repository changes, inventory evidence, Safe Writer commits, Code Safety records, and third-party runtime dependencies already require reproducible build inputs, locked dependencies, and artifact identity.",
+      "rationale": "The project currently creates and changes runnable artifacts without a defined reproducible build and lock recipe. This is a current build-governance defect, not only a future pipeline concern."
+    },
+    {
+      "address": "P01.5::B::0025",
+      "original_identifier": "BUILD-007",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-017", "P03-RC-018", "P03-RC-020"],
+      "contact_path": "Safe Writer currently has direct GitHub write authority when the user supplies a token, while Code Safety is local and no protected branch or required review workflow governs implementation commits.",
+      "rationale": "Repository writes are a current capability. The absence of CI, protected branch, and mandatory review controls directly affects current change safety and is a current defect."
+    },
+    {
+      "address": "P01.5::B::0026",
+      "original_identifier": "BUILD-008",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-013", "P03-RC-015", "P03-RC-017", "P03-RC-020"],
+      "contact_path": "Current Notes and ZIP tools depend on JSZip, Safe Writer depends on the GitHub API, and trust-zone behavior depends on external platforms, yet no complete dependency, lock, SBOM, vulnerability, or license record exists.",
+      "rationale": "Third-party dependencies are already present in active current capabilities. Missing supply-chain inventory and review are therefore a current defect."
+    },
+    {
+      "address": "P01.5::B::0027",
+      "original_identifier": "BUILD-009",
+      "state": "ACTIVE_CONDITIONAL_RISK",
+      "source_evidence_type": "PLANNED_CONTACT",
+      "catalog_evidence_ids": ["P03-BOUND-AUTONOMOUS-REPOSITORY", "P03-BOUND-OPTIONAL-BACKEND", "P03-RC-017", "P03-RC-020"],
+      "contact_path": "Sandbox, resource, and network-egress controls become operational when generated or candidate code is executed by the planned safe-change or backend path.",
+      "rationale": "The current system has no autonomous candidate execution path. The missing containment controls are active conditional on future candidate execution."
+    },
+    {
+      "address": "P01.5::B::0028",
+      "original_identifier": "BUILD-010",
+      "state": "ACTIVE_CONDITIONAL_RISK",
+      "source_evidence_type": "PLANNED_CONTACT",
+      "catalog_evidence_ids": ["P03-BOUND-CAPABILITY-SET", "P03-RC-003", "P03-RC-017", "P03-RC-018"],
+      "contact_path": "Task, candidate, approval, promotion, and rollback races become operational when the planned multi-stage safe-change workflow permits overlapping work or transactions.",
+      "rationale": "Current work-thread and direct transaction surfaces exist, but the specified multi-stage concurrency hazard depends on the future candidate pipeline. It remains active conditional."
+    },
+    {
+      "address": "P01.5::B::0029",
+      "original_identifier": "BUILD-011",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-005", "P03-RC-011", "P03-RC-017", "P03-RC-018", "P03-RC-020"],
+      "contact_path": "Current truth maps, inventory manifests, source code, prompts and rules, schemas, safety records, and tool settings already change independently without one configuration-version identity.",
+      "rationale": "Version and configuration drift already affects current route truth, inventory evidence, writes, and rollback records. The missing unified configuration management is a current defect."
+    },
+    {
+      "address": "P01.5::B::0030",
+      "original_identifier": "BUILD-012",
+      "state": "ACTIVE_CONDITIONAL_RISK",
+      "source_evidence_type": "PLANNED_CONTACT",
+      "catalog_evidence_ids": ["P03-BOUND-CAPABILITY-SET", "P03-RC-017", "P03-RC-018"],
+      "contact_path": "A disabled-by-default feature-flag lifecycle becomes operational when future modules, candidates, or promotion controls can be staged and activated.",
+      "rationale": "The future modular implementation path is not yet active. The missing feature-flag lifecycle is therefore an active conditional risk rather than a failure of a completed current capability."
+    }
+  ],
+  "routing_fields_rule": "All destination, law, watch-trigger, and semantic-cluster fields remain blank in this batch.",
+  "source_preservation_rule": "All immutable source fields, addresses, source hashes, original wording, accepted Batch 001 and Batch 002 classifications, and total envelope count remain unchanged except for the ten selected applicability fields.",
+  "expected_result": {
+    "CURRENT_DEFECT": 5,
+    "ACTIVE_CONDITIONAL_RISK": 25,
+    "DORMANT_FUTURE_RISK": 0,
+    "OUT_OF_SCOPE_CANDIDATE": 0,
+    "UNCLASSIFIED": 2720,
+    "routing_assignments": 0
+  }
+}
