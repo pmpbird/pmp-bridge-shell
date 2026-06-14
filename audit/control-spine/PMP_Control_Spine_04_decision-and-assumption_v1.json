@@ -1,0 +1,30 @@
+{
+  "type": "PMP_CURRENT_PROJECT_CONTROL_SPINE_COMPANION_RECORD",
+  "version": "1.0.0-baseline",
+  "created_on": "2026-06-14",
+  "updated_on": "2026-06-14",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "packet_authority": "03.5 preflight carry-forward; Packet 1 defines permanent law",
+  "control_number": 4,
+  "control_name": "Decision and Assumption Ledger",
+  "purpose": "Keep binding decisions, provisional assumptions, hypotheses, planned behavior, unknowns, and reversals separate.",
+  "packet_02_carry_forward": [
+    "No external AI model is currently connected to normal Resident reasoning.",
+    "Optional backend and Shortcut paths are explicit tools, not normal reasoning authority.",
+    "Future Natural-Language AI Bridge, candidate isolation, guardian, promotion, and rollback are planned, not current."
+  ],
+  "linked_permanent_limitations": ["AI-001", "AI-002", "RUN-001", "RUN-004", "RUN-006", "RUN-009", "RUN-010", "RUN-011", "GOV-010"],
+  "entries": [
+    {"id": "DEC-001", "kind": "DECISION", "statement": "Packet 03 v4 is the current Packet 03 completion authority after actual runtime proof.", "state": "ACTIVE"},
+    {"id": "DEC-002", "kind": "REVERSED DECISION", "statement": "Packet 03 v3 clean PASS was invalid because it relabeled missing evidence.", "state": "SUPERSEDED"},
+    {"id": "ASM-001", "kind": "DISPROVEN ASSUMPTION", "statement": "PMP Save Private Memory passes arbitrary clipboard marker text unchanged.", "state": "DISPROVEN"},
+    {"id": "DEC-003", "kind": "DECISION", "statement": "The configured Shortcut success contract is Bug Catalog creation in the intended Apple Note.", "state": "ACTIVE"},
+    {"id": "ASM-002", "kind": "PLANNED NOT CURRENT", "statement": "Resident Safe Change implementation, AI bridge, candidate isolation, independent guardian, promotion, and automatic rollback exist.", "state": "PROHIBITED CLAIM"}
+  ],
+  "state": "BASELINE CREATED — CONTINUING RECORD",
+  "append_only_history": [],
+  "reopen_on_contrary_evidence": true,
+  "unresolved_watch": "See open entries and linked limitation records; no item may be silently dropped.",
+  "safe_claim": "The Packet 02 risk family has a named companion record and linked limitation identities.",
+  "do_not_claim": "Creating this record does not implement or close its linked limitations."
+}
