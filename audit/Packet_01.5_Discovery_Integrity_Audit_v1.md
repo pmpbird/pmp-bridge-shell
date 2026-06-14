@@ -8,10 +8,10 @@ This audit counts source records mechanically. It does not deduplicate, route, c
 
 ## Result
 
-- Source files audited: 62
+- Source files audited: 63
 - Preserved baseline: 122
-- Actual provisional headings: 2463
-- Actual combined working total: 2585
+- Actual provisional headings: 2502
+- Actual combined working total: 2624
 - Files with declared-count mismatch: 5
 - Duplicate record IDs: 30
 - Duplicate exact headings: 0
@@ -85,6 +85,7 @@ This audit counts source records mechanically. It does not deduplicate, route, c
 | 60 | 40 | — | YES | `audit/Packet_01.5_Discovery_Pass_60_Chemical_ProcessSafety_ReactiveChemistry_Pressure_Isolation_MOC_Relief_Shutdown_Contractors_Culture_and_Decommissioning_v1.md` |
 | 61 | 40 | — | YES | `audit/Packet_01.5_Discovery_Pass_61_Pharmaceutical_MedicalProduct_Discovery_Formulation_ClinicalDevelopment_ScaleUp_Regulatory_Device_Recall_FieldCorrection_and_EndOfLife_v1.md` |
 | 62 | 38 | — | YES | `audit/Packet_01.5_Discovery_Pass_62_NaturalHazards_Earthquake_Tsunami_Storm_Heat_Volcano_Landslide_Warning_Evacuation_Sheltering_and_Recovery_v1.md` |
+| 63 | 39 | — | YES | `audit/Packet_01.5_Discovery_Pass_63_Rail_Signaling_Dispatch_TrainIntegrity_Crossings_Track_RollingStock_HazardousFreight_Passengers_Automation_and_Investigation_v1.md` |
 
 ## Declared-count mismatches
 

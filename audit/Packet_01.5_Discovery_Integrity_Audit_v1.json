@@ -2,9 +2,9 @@
   "audit_date": "2026-06-14",
   "scope": "Packet 01.5 mechanical discovery integrity only",
   "baseline_count": 122,
-  "files_audited": 62,
-  "actual_provisional_count": 2463,
-  "combined_actual_count": 2585,
+  "files_audited": 63,
+  "actual_provisional_count": 2502,
+  "combined_actual_count": 2624,
   "sum_of_declared_counts_where_present": 1791,
   "count_mismatch_count": 5,
   "duplicate_id_count": 30,
@@ -10619,6 +10619,174 @@
           "title": "Recovery governance ends before health, debt, trauma, and service effects stabilize"
         }
       ]
+    },
+    {
+      "pass": 63,
+      "path": "audit/Packet_01.5_Discovery_Pass_63_Rail_Signaling_Dispatch_TrainIntegrity_Crossings_Track_RollingStock_HazardousFreight_Passengers_Automation_and_Investigation_v1.md",
+      "actual_count": 39,
+      "declared_count": null,
+      "count_match": true,
+      "malformed_headings": [],
+      "missing_harm": [],
+      "missing_overlap": [],
+      "records": [
+        {
+          "id": "RAILSIG-001",
+          "title": "Signal indication is trusted after track occupancy data become stale or incomplete"
+        },
+        {
+          "id": "RAILSIG-002",
+          "title": "Fail-safe design creates a dangerous operational workaround under persistent fault"
+        },
+        {
+          "id": "RAILSIG-003",
+          "title": "Interlocking logic is changed without revalidating every route interaction"
+        },
+        {
+          "id": "RAILSIG-004",
+          "title": "Positive-train-control coverage ends at the boundary of a mixed system"
+        },
+        {
+          "id": "RAILSIG-005",
+          "title": "Wayside and onboard systems disagree without a clear authority rule"
+        },
+        {
+          "id": "RAILDISP-001",
+          "title": "Dispatch optimization reduces recovery margin between trains"
+        },
+        {
+          "id": "RAILDISP-002",
+          "title": "Dispatcher workload is measured by train count rather than conflict complexity"
+        },
+        {
+          "id": "RAILDISP-003",
+          "title": "Handoff between dispatch territories loses abnormal context"
+        },
+        {
+          "id": "RAILDISP-004",
+          "title": "Centralized dispatch becomes a common-mode operational dependency"
+        },
+        {
+          "id": "TRAININT-001",
+          "title": "Train length and weight are treated as sufficient measures of handling behavior"
+        },
+        {
+          "id": "TRAININT-002",
+          "title": "Brake continuity test does not reveal degraded performance under real heat and grade"
+        },
+        {
+          "id": "TRAININT-003",
+          "title": "Consist records diverge from the physical train after switching and interchange"
+        },
+        {
+          "id": "TRAININT-004",
+          "title": "Distributed-power communication failure changes train forces without obvious visual indication"
+        },
+        {
+          "id": "TRAININT-005",
+          "title": "Defective car is moved under a temporary condition that becomes extended service"
+        },
+        {
+          "id": "CROSSING-001",
+          "title": "Grade-crossing timing assumes vehicle and pedestrian behavior that does not match the site"
+        },
+        {
+          "id": "CROSSING-002",
+          "title": "Crossing protection operates normally while road congestion traps users on the track"
+        },
+        {
+          "id": "CROSSING-003",
+          "title": "Repeated false activations train the public to ignore protection"
+        },
+        {
+          "id": "CROSSING-004",
+          "title": "Closure or separation project shifts access burden onto nearby communities"
+        },
+        {
+          "id": "TRACK-001",
+          "title": "Track inspection frequency does not match rapidly changing local conditions"
+        },
+        {
+          "id": "TRACK-002",
+          "title": "Automated inspection detects geometry but misses context and causation"
+        },
+        {
+          "id": "TRACK-003",
+          "title": "Temporary speed restriction remains undocumented or inconsistently propagated"
+        },
+        {
+          "id": "TRACK-004",
+          "title": "Maintenance possession protects workers while disrupting adjacent live operations"
+        },
+        {
+          "id": "TRACK-005",
+          "title": "Deferred drainage maintenance becomes a track and slope failure"
+        },
+        {
+          "id": "ROLL-001",
+          "title": "Rolling-stock inspection misses defects hidden by loading or assembly"
+        },
+        {
+          "id": "ROLL-002",
+          "title": "Hot-bearing detection threshold misses rapid failure between detectors"
+        },
+        {
+          "id": "ROLL-003",
+          "title": "Passenger-door control confirms command without confirming safe physical closure"
+        },
+        {
+          "id": "ROLL-004",
+          "title": "Maintenance history is fragmented across owners, lessors, carriers, and repair shops"
+        },
+        {
+          "id": "HAZRAIL-001",
+          "title": "Hazardous-cargo manifest does not match current car order and contents"
+        },
+        {
+          "id": "HAZRAIL-002",
+          "title": "Routing minimizes network cost while concentrating community exposure"
+        },
+        {
+          "id": "HAZRAIL-003",
+          "title": "Emergency braking or derailment control increases release risk for certain cargoes"
+        },
+        {
+          "id": "HAZRAIL-004",
+          "title": "Corridor responders lack current equipment and material-specific readiness"
+        },
+        {
+          "id": "RAILPAX-001",
+          "title": "Platform and train accessibility fail at the transfer between systems"
+        },
+        {
+          "id": "RAILPAX-002",
+          "title": "Emergency evacuation assumes passengers can self-extract to a safe trackside location"
+        },
+        {
+          "id": "RAILPAX-003",
+          "title": "Crowd-management action protects platform capacity while stranding vulnerable travelers"
+        },
+        {
+          "id": "RAILPAX-004",
+          "title": "Service restoration is announced before the whole passenger journey is functional"
+        },
+        {
+          "id": "RAILAUTO-001",
+          "title": "Automated train operation depends on infrastructure state it cannot fully observe"
+        },
+        {
+          "id": "RAILAUTO-002",
+          "title": "Automation hands control to a human after skill and situational awareness have decayed"
+        },
+        {
+          "id": "RAILINV-001",
+          "title": "Accident investigation overweights the final crew action and underweights network conditions"
+        },
+        {
+          "id": "RAILINV-002",
+          "title": "Safety recommendation is closed by rule change without proving field risk reduction"
+        }
+      ]
     }
   ],
   "duplicate_ids": {
@@ -10752,6 +10920,7 @@
     "CRISCONT": 4,
     "CRISIS": 6,
     "CROP": 3,
+    "CROSSING": 4,
     "CRYPTO": 7,
     "CTX": 7,
     "CULT": 5,
@@ -10857,6 +11026,7 @@
     "HARMRED": 3,
     "HAZ": 8,
     "HAZMAT": 5,
+    "HAZRAIL": 4,
     "HAZWASTE": 4,
     "HCAP": 5,
     "HCBS": 5,
@@ -11012,6 +11182,11 @@
     "QUOTA": 6,
     "RADHEALTH": 4,
     "RADWASTE": 5,
+    "RAILAUTO": 2,
+    "RAILDISP": 4,
+    "RAILINV": 2,
+    "RAILPAX": 4,
+    "RAILSIG": 5,
     "RANGE": 4,
     "RANK": 7,
     "RATE": 3,
@@ -11056,6 +11231,7 @@
     "RETR": 10,
     "REVOKE": 4,
     "ROBOT": 6,
+    "ROLL": 4,
     "ROLLOUT": 7,
     "RXFIRE": 4,
     "SACRED": 6,
@@ -11116,7 +11292,9 @@
     "TOOLCHAIN": 4,
     "TRACE": 5,
     "TRACEPROD": 4,
+    "TRACK": 5,
     "TRAIN": 6,
+    "TRAININT": 5,
     "TRANS": 4,
     "TRANSIT": 5,
     "TRIAGE": 9,
