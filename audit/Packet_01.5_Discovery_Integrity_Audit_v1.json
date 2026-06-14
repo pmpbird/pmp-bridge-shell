@@ -2,9 +2,9 @@
   "audit_date": "2026-06-14",
   "scope": "Packet 01.5 mechanical discovery integrity only",
   "baseline_count": 122,
-  "files_audited": 51,
-  "actual_provisional_count": 2031,
-  "combined_actual_count": 2153,
+  "files_audited": 52,
+  "actual_provisional_count": 2069,
+  "combined_actual_count": 2191,
   "sum_of_declared_counts_where_present": 1791,
   "count_mismatch_count": 5,
   "duplicate_id_count": 22,
@@ -8759,6 +8759,170 @@
           "title": "Carbon accounting rewards tree quantity while ignoring ecosystem quality"
         }
       ]
+    },
+    {
+      "pass": 52,
+      "path": "audit/Packet_01.5_Discovery_Pass_52_Macroeconomic_Currency_Banking_Markets_Taxation_SovereignDebt_Liquidity_Clearing_and_ShockTransmission_v1.md",
+      "actual_count": 38,
+      "declared_count": null,
+      "count_match": true,
+      "malformed_headings": [],
+      "missing_harm": [],
+      "missing_overlap": [],
+      "records": [
+        {
+          "id": "MACROECON-001",
+          "title": "Aggregate stability hides concentrated household collapse"
+        },
+        {
+          "id": "MACROECON-002",
+          "title": "Policy transmission is assumed to be uniform across the economy"
+        },
+        {
+          "id": "MACROECON-003",
+          "title": "Revised economic data arrive after irreversible policy decisions"
+        },
+        {
+          "id": "MACROECON-004",
+          "title": "Automatic stabilizers activate too slowly for rapid shocks"
+        },
+        {
+          "id": "MACROECON-005",
+          "title": "Growth metrics reward depletion and fragility"
+        },
+        {
+          "id": "FX-001",
+          "title": "Currency confidence shock becomes self-reinforcing"
+        },
+        {
+          "id": "FX-002",
+          "title": "Foreign-currency debt makes local income insufficient after depreciation"
+        },
+        {
+          "id": "FX-003",
+          "title": "Official exchange rate masks inaccessible real conversion conditions"
+        },
+        {
+          "id": "FX-004",
+          "title": "Cross-border payment dependence creates hidden currency and settlement exposure"
+        },
+        {
+          "id": "BANKSYS-001",
+          "title": "Diversified institutions hold the same correlated assets"
+        },
+        {
+          "id": "BANKSYS-002",
+          "title": "Liquidity distress is mistaken for solvency failure, or the reverse"
+        },
+        {
+          "id": "BANKSYS-003",
+          "title": "Digital deposit flight outruns governance and communication"
+        },
+        {
+          "id": "BANKSYS-004",
+          "title": "Resolution plan assumes functioning buyers and markets during systemic stress"
+        },
+        {
+          "id": "BANKSYS-005",
+          "title": "Nonbank financial exposure remains outside bank-focused oversight"
+        },
+        {
+          "id": "MARKETSYS-001",
+          "title": "Price discovery fails under one-sided order flow"
+        },
+        {
+          "id": "MARKETSYS-002",
+          "title": "Trading halt transfers pressure rather than resolving it"
+        },
+        {
+          "id": "MARKETSYS-003",
+          "title": "Index and benchmark concentration creates feedback loops"
+        },
+        {
+          "id": "MARKETSYS-004",
+          "title": "Restricting short selling reduces information and liquidity"
+        },
+        {
+          "id": "MARKETSYS-005",
+          "title": "Market-data latency creates unequal ability to act"
+        },
+        {
+          "id": "SOVDEBT-001",
+          "title": "Debt service is concentrated in the same refinancing window"
+        },
+        {
+          "id": "SOVDEBT-002",
+          "title": "Debt-sustainability model depends on optimistic growth and interest assumptions"
+        },
+        {
+          "id": "SOVDEBT-003",
+          "title": "Sovereign restructuring is fragmented across creditor classes and jurisdictions"
+        },
+        {
+          "id": "SOVDEBT-004",
+          "title": "Fiscal adjustment protects creditors by weakening essential systems"
+        },
+        {
+          "id": "TAXSYS-001",
+          "title": "Tax complexity rewards those able to buy interpretation and avoidance"
+        },
+        {
+          "id": "TAXSYS-002",
+          "title": "Withholding and remittance timing harms cash-constrained workers and small firms"
+        },
+        {
+          "id": "TAXSYS-003",
+          "title": "Incentive program changes behavior beyond its stated target"
+        },
+        {
+          "id": "TAXSYS-004",
+          "title": "Tax enforcement data use chills lawful participation"
+        },
+        {
+          "id": "LIQUIDITY-001",
+          "title": "Collateral value disappears when everyone needs to sell"
+        },
+        {
+          "id": "LIQUIDITY-002",
+          "title": "Margin calls amplify the price decline that triggered them"
+        },
+        {
+          "id": "LIQUIDITY-003",
+          "title": "Emergency liquidity arrives with stigma or unusable conditions"
+        },
+        {
+          "id": "LIQUIDITY-004",
+          "title": "Liquidity facilities exclude critical intermediaries outside the formal perimeter"
+        },
+        {
+          "id": "CLEARSET-001",
+          "title": "Central counterparty concentration turns protection into a single point of failure"
+        },
+        {
+          "id": "CLEARSET-002",
+          "title": "Settlement failure cascades through dependent obligations"
+        },
+        {
+          "id": "CLEARSET-003",
+          "title": "Legal finality differs across jurisdictions and insolvency regimes"
+        },
+        {
+          "id": "CLEARSET-004",
+          "title": "Operational outage freezes markets that remain economically solvent"
+        },
+        {
+          "id": "ECONSHOCK-001",
+          "title": "Policy action in one country transmits instability through global linkages"
+        },
+        {
+          "id": "ECONSHOCK-002",
+          "title": "Household coping strategy destroys future resilience"
+        },
+        {
+          "id": "ECONSHOCK-003",
+          "title": "Recovery policy raises asset prices before restoring livelihoods"
+        }
+      ]
     }
   ],
   "duplicate_ids": {
@@ -8822,6 +8986,7 @@
     "AUTON": 4,
     "AVAIL": 2,
     "AVAUTO": 3,
+    "BANKSYS": 5,
     "BAT": 6,
     "BENEFIT": 6,
     "BILL": 6,
@@ -8843,6 +9008,7 @@
     "CHILD": 6,
     "CIVIC": 6,
     "CIVPROT": 6,
+    "CLEARSET": 4,
     "CLOSURE": 5,
     "COAST": 5,
     "COASTCOMM": 4,
@@ -8894,6 +9060,7 @@
     "DUMP": 2,
     "ECO": 5,
     "ECON": 5,
+    "ECONSHOCK": 3,
     "ECOREL": 5,
     "EDACCESS": 3,
     "EJ": 5,
@@ -8930,6 +9097,7 @@
     "FRAUDSCORE": 5,
     "FUELMGMT": 5,
     "FUELNUC": 4,
+    "FX": 4,
     "GENEEDIT": 6,
     "GENOME": 6,
     "GOVREC": 4,
@@ -8985,13 +9153,16 @@
     "LIAB": 5,
     "LIC": 8,
     "LIFE": 6,
+    "LIQUIDITY": 4,
     "LOC": 3,
     "LOCK": 5,
     "LOCS": 5,
     "LOGISTICS": 5,
+    "MACROECON": 5,
     "MAINT": 12,
     "MANUF": 6,
     "MARCONT": 5,
+    "MARKETSYS": 5,
     "MARMON": 4,
     "MARTRANS": 5,
     "MATERIAL": 5,
@@ -9125,6 +9296,7 @@
     "SIGN": 4,
     "SKILL": 6,
     "SOC": 5,
+    "SOVDEBT": 4,
     "SPACE": 6,
     "SPACEACCESS": 5,
     "SPOOF": 6,
@@ -9143,6 +9315,7 @@
     "SYNC": 4,
     "TAILING": 6,
     "TAMPER": 3,
+    "TAXSYS": 4,
     "TEACH": 5,
     "TELECOM": 5,
     "TENANT": 6,
