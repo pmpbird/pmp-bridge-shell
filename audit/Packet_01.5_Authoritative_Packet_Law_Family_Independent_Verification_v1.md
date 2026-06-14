@@ -4,8 +4,8 @@ STATUS: PASS — AUTHORITATIVE PACKET LAW FAMILY VERIFIED
 WATCH: NONE
 BLOCKERS: NONE
 FAMILY RECORDS: 25
-SUPPORTED OR DISPROVED DECISIONS: 2
-REMAINING QUEUED: 23
+SUPPORTED OR DISPROVED DECISIONS: 4
+REMAINING QUEUED: 21
 UNKNOWN — HOLD CREATED: 0
 ROUTING ASSIGNMENTS: 0
 GROUPING ASSIGNMENTS: 0
@@ -23,18 +23,20 @@ Discovery artifacts, routing batches, reconstructed baselines, applicability out
 ## Decisions
 
 - `P01.5::B::0002` / `AI-002` — `OUT-OF-SCOPE CANDIDATE` — `DISPROVED`
+- `P01.5::B::0020` / `BUILD-002` — `OUT-OF-SCOPE CANDIDATE` — `DISPROVED`
+- `P01.5::B::0021` / `BUILD-003` — `OUT-OF-SCOPE CANDIDATE` — `DISPROVED`
 - `P01.5::B::0112` / `RUN-005` — `CURRENT DEFECT OR LIMITATION` — `SUPPORTED`
 
 ## Decision-state counts
 
 - CURRENT DEFECT OR LIMITATION: 1
-- OUT-OF-SCOPE CANDIDATE: 1
+- OUT-OF-SCOPE CANDIDATE: 3
 
 Direct current support produces a current applicability decision. Direct higher-precedence disproof produces an `OUT-OF-SCOPE CANDIDATE`, not a current defect.
 
 ## Remaining records
 
-The remaining 23 law-family records retain their permanent addresses and original source order. Each queue entry names the missing controlling authority, incomplete clause, private dependency, or unresolved precedence conflict.
+The remaining 21 law-family records retain their permanent addresses and original source order. Each queue entry names the missing controlling authority, incomplete clause, private dependency, or unresolved precedence conflict.
 
 ## Independent verification
 
