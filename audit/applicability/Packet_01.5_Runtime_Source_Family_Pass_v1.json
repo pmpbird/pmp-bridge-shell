@@ -1,0 +1,91 @@
+{
+  "packet": "01.5",
+  "artifact": "runtime_source_evidence_family_pass",
+  "version": 1,
+  "status": "PROPOSED_PENDING_BUILD_AND_INDEPENDENT_VERIFICATION",
+  "source_queue": "audit/applicability/Packet_01.5_Scalable_Pass_001_Evidence_Queue_v1.jsonl",
+  "source_inventory": "audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.jsonl",
+  "family": "CURRENT_RUNTIME_SOURCE",
+  "expected_family_records": 20,
+  "selection_reason": "OTHER_RECORD_SPECIFIC_PROOF is larger but heterogeneous and not resolvable as one current-evidence family. CURRENT_RUNTIME_SOURCE is the largest coherent family that current repository source can materially resolve.",
+  "current_runtime_evidence": [
+    "pmp-current-map-v9.json",
+    "pmp-app-current.html",
+    "pmp-route-guardian-current-loader-v14.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+    "repository tracked-file census"
+  ],
+  "decision_rules": [
+    {
+      "claim_contains": "No concurrency/race control exists",
+      "state": "CURRENT DEFECT OR LIMITATION",
+      "confidence": 94,
+      "predicate": "NO_CONCURRENCY_CONTROL_IN_CURRENT_RUNTIME"
+    },
+    {
+      "claim_contains": "No code-quality/static type/lint/security baseline",
+      "state": "CURRENT DEFECT OR LIMITATION",
+      "confidence": 98,
+      "predicate": "NO_RECOGNIZED_QUALITY_BASELINE_CONFIG"
+    },
+    {
+      "claim_contains": "No maintainability/deprecation policy",
+      "state": "CURRENT DEFECT OR LIMITATION",
+      "confidence": 97,
+      "predicate": "NO_DEPRECATION_POLICY_WITH_MULTIPLE_WRAPPERS"
+    },
+    {
+      "claim_contains": "No trusted timestamp/order source or monotonic event sequencing",
+      "state": "CURRENT DEFECT OR LIMITATION",
+      "confidence": 97,
+      "predicate": "WALL_CLOCK_ONLY_NO_MONOTONIC_SEQUENCE"
+    },
+    {
+      "claim_contains": "Receipt/evidence ledgers are not tamper-evident or append-only",
+      "state": "CURRENT DEFECT OR LIMITATION",
+      "confidence": 96,
+      "predicate": "NO_TAMPER_EVIDENT_APPEND_ONLY_LEDGER"
+    },
+    {
+      "claim_contains": "The current freeze covers only the proven current app/source/control path",
+      "state": "CURRENT DEFECT OR LIMITATION",
+      "confidence": 99,
+      "predicate": "CURRENT_MAP_EXPLICITLY_LIMITS_FREEZE_CLAIMS"
+    },
+    {
+      "claim_contains": "Current app and audit evidence are not uniformly pinned",
+      "state": "CURRENT DEFECT OR LIMITATION",
+      "confidence": 95,
+      "predicate": "AUDIT_RECEIPTS_NOT_UNIFORMLY_TRIPLE_PINNED"
+    },
+    {
+      "claim_contains": "The system’s first release scope and minimum viable safe capability are not frozen",
+      "state": "CURRENT DEFECT OR LIMITATION",
+      "confidence": 94,
+      "predicate": "NO_FROZEN_FIRST_RELEASE_SCOPE"
+    },
+    {
+      "claim_contains": "Clearing browser storage loses saved Resident context",
+      "state": "ACTIVE CONDITIONAL RISK",
+      "confidence": 99,
+      "predicate": "CONTEXT_USES_BROWSER_LOCAL_STORAGE"
+    },
+    {
+      "claim_contains": "Current route includes fallback paths that can load older components",
+      "state": "ACTIVE CONDITIONAL RISK",
+      "confidence": 99,
+      "predicate": "STABLE_DOOR_AND_MAP_HAVE_FALLBACK_PATHS"
+    }
+  ],
+  "unmatched_policy": "REMAIN_QUEUED_WITH_MORE_SPECIFIC_MISSING_PROOF",
+  "unknown_hold_created": false,
+  "decision_author": "resident-runtime-source-family-classifier-v1",
+  "decision_verifier": "github-actions-independent-runtime-source-family-verifier-v1",
+  "prohibited": [
+    "routing",
+    "grouping",
+    "closure",
+    "implementation",
+    "Packet 04"
+  ]
+}
