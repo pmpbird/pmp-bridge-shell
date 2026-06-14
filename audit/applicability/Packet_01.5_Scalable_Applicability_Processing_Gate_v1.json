@@ -1,0 +1,113 @@
+{
+  "packet": "01.5",
+  "artifact": "scalable_applicability_processing_gate",
+  "version": 1,
+  "status": "PROPOSED_PENDING_INDEPENDENT_VERIFICATION",
+  "supersedes_operating_pattern": "FOUR_RECORD_GATE_CYCLE",
+  "source_inventory": {
+    "path": "audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.jsonl",
+    "records": 2750,
+    "baseline_records": 122,
+    "provisional_records": 2628,
+    "sha256": "76169a80e07603cea51d769d3d89b32735149c2aef7eb09f893ed94fe5d72477",
+    "address_sequence_sha256": "3d808e1ec3f163e4cb2ab7a15767563fe7c43b9920bcecde9abe711226220916"
+  },
+  "window_contract": {
+    "minimum_records": 25,
+    "maximum_records": 500,
+    "selection_rule": "CONTIGUOUS_IMMUTABLE_SOURCE_ORDER",
+    "new_gate_required_per_window": false,
+    "manifest_required_per_window": true,
+    "independent_verification_required_per_window": true,
+    "first_authorized_window": {
+      "pass_id": "SCALABLE-PASS-001",
+      "first_address": "P01.5::B::0001",
+      "last_address": "P01.5::B::0122",
+      "records": 122,
+      "source_set": "BASELINE"
+    }
+  },
+  "decision_eligibility": {
+    "allowed_states": [
+      "CURRENT DEFECT OR LIMITATION",
+      "ACTIVE CONDITIONAL RISK",
+      "DORMANT FUTURE RISK",
+      "OUT-OF-SCOPE CANDIDATE",
+      "UNKNOWN — HOLD"
+    ],
+    "required_record_specific_evidence": true,
+    "required_current_evidence_source_hash": true,
+    "required_reasoning": true,
+    "required_confidence": true,
+    "required_reopening_conditions": true,
+    "required_distinct_author_and_verifier": true,
+    "old_labels_are_not_evidence": true,
+    "old_severity_is_not_evidence": true,
+    "old_owner_suggestions_are_not_evidence": true,
+    "unknown_hold_requires_completed_evidence_attempt": true,
+    "unresolved_without_completed_evidence_attempt": "QUEUE_ONLY_NO_DECISION",
+    "existing_decision_may_be_superseded": true,
+    "supersession_requires_stronger_current_evidence": true,
+    "supersession_must_reference_prior_overlay": true
+  },
+  "evidence_acquisition_queues": {
+    "required_for_every_undecided_record": true,
+    "preserve_permanent_address": true,
+    "preserve_source_order": true,
+    "required_fields": [
+      "composite_address",
+      "source_record_ordinal",
+      "original_identifier",
+      "source_envelope_hash",
+      "queue_id",
+      "evidence_domain",
+      "missing_proof",
+      "recommended_acquisition_method",
+      "decision_blocked_until",
+      "reopening_trigger"
+    ],
+    "allowed_domains": [
+      "CURRENT_RUNTIME_SOURCE",
+      "DEPLOYMENT_AND_LIVE_BEHAVIOR",
+      "AUTHORITATIVE_PACKET_LAW",
+      "DEPENDENCY_OR_PLATFORM_STATE",
+      "PRIVATE_OR_UNCAPTURED_EVIDENCE",
+      "CROSS_SOURCE_CONFLICT",
+      "OTHER_RECORD_SPECIFIC_PROOF"
+    ]
+  },
+  "pass_outputs": {
+    "window_manifest": true,
+    "decision_overlay": true,
+    "evidence_queue": true,
+    "coverage_receipt": true,
+    "independent_verification_receipt": true,
+    "status_update": true,
+    "coverage_rule": "EVERY_WINDOW_ADDRESS_APPEARS_EXACTLY_ONCE_AS_DECIDED_OR_QUEUED"
+  },
+  "prohibited_work": {
+    "routing": true,
+    "primary_destination": true,
+    "secondary_destinations": true,
+    "cross_cutting_laws": true,
+    "semantic_grouping": true,
+    "record_closure": true,
+    "source_inventory_mutation": true,
+    "implementation": true,
+    "packet_04": true
+  },
+  "gate_author": "resident-scalable-applicability-gate-author-v1",
+  "gate_verifier": "github-actions-independent-scalable-applicability-gate-verifier-v1",
+  "authorization_on_pass": {
+    "scalable_processing_authorized": true,
+    "first_pass_authorized": true,
+    "first_pass_id": "SCALABLE-PASS-001",
+    "first_pass_records": 122,
+    "later_windows_require_new_gate": false,
+    "later_windows_require_verified_prior_cursor": true,
+    "routing_authorized": false,
+    "implementation_authorized": false,
+    "packet_04_authorized": false
+  },
+  "stop_boundary": "The gate authorizes applicability processing only. Every pass stops before routing, grouping, closure, implementation, or Packet 04."
+}
