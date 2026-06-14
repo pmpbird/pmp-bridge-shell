@@ -1,0 +1,21 @@
+{
+  "type": "PMP_CURRENT_EXISTING_PACKET_ROLE_AMENDMENT_DECISION",
+  "version": "1.0.0",
+  "decided_on": "2026-06-14",
+  "status": "APPROVED",
+  "basis": "Resolve every Packet 03.5 lifecycle gap without adding unapproved placeholder packets.",
+  "approved_sequence": ["00","01","02","03","03.5","04","05","06","06.5","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26"],
+  "approved_role_expansions": {
+    "01": "Own permanent Project Control Spine law, packet-set identity, active-record precedence, core/shell portability, builder-trace, free-operation, product scope, and external-service boundary rules.",
+    "11": "Own nonfunctional, accessibility, compatibility, supply-chain, license, dependency, and reproducible-build test contracts in addition to pre-code test design.",
+    "17": "Own incident response, disaster recovery, provider loss, safe degradation, post-promotion continuity, and recovery learning in addition to monitoring and Bug Memory learning.",
+    "23": "Own actual Resident Safe Change implementation execution in isolated, reversible slices in addition to the assembly plan.",
+    "24": "Own execution of integration, acceptance, platform, deployment, cache, Shortcut, real-device, internal Resident/guardian, protected benchmark, prediction, competitor, long-run, and independent proof in addition to the runbook.",
+    "25": "Own operating procedures, support, maintenance cadence, expiry watches, incident handoff, and safe-degradation instructions.",
+    "26": "Own the global receipt/output index, final evidence reconciliation, bounded readiness/claim decision, Master Status Ledger, and final closeout."
+  },
+  "authorized_insertions": {"03.5":"Permanent Project Limitation Discovery, Coverage, and Reopening Gate"},
+  "not_authorized": ["03.6","03.7","11.5","17.5","23.5","24.5","24.6","24.7","24.8","24.9","24.10","24.11","24.12"],
+  "next_after_packet_03_5": "04",
+  "packet_04_authorized_after_pass": true
+}
