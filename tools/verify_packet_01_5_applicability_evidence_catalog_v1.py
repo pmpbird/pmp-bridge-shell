@@ -289,7 +289,7 @@ def verify_repository_relationships() -> dict[str, Any]:
     vault = load_json(REPO / "pmp-lossless-inventory-vault/current.json")
     update_status = load_json(REPO / "pmp-current-update-status.json")
     require("private Bug Memory" in manifest["privacy_rule"], "manifest private boundary changed")
-    require("private values" in vault["truth_boundary"], "vault private boundary changed")
+    require("private values" in vault["truth_boundary"].lower(), "vault private boundary changed")
     require(update_status["target_map"] == "pmp-current-map.json", "historical updater target changed")
 
     effective_time = parse_iso(effective["updated_at"])
