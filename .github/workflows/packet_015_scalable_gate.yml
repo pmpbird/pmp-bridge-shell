@@ -6,6 +6,7 @@ on:
       - "audit/applicability/Packet_01.5_Scalable_Applicability_Processing_Gate_v1.json"
       - "audit/Packet_01.5_Scalable_Applicability_Gate_PR_Trigger.txt"
       - "tools/verify_packet_01_5_scalable_applicability_gate_v1.py"
+      - "tools/verify_packet_01_5_scalable_applicability_gate_v2.py"
       - ".github/workflows/packet_015_scalable_gate.yml"
   workflow_dispatch:
 
@@ -19,7 +20,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref || github.ref_name }}
-      - run: python3 tools/verify_packet_01_5_scalable_applicability_gate_v1.py
+      - run: python3 tools/verify_packet_01_5_scalable_applicability_gate_v2.py
       - run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
