@@ -1,0 +1,138 @@
+{
+  "packet": "01.5",
+  "batch": "P01.5-APP-B005",
+  "version": 1,
+  "date": "2026-06-14",
+  "status": "PLANNED_PENDING_TRANSACTION_AND_INDEPENDENT_VERIFICATION",
+  "parent_inventory": {
+    "path": "audit/routing-inventory/Packet_01.5_Applicability_Inventory_v5_Batch_004.jsonl",
+    "sha256": "f2cadb1becd6865959c6af58077b1019ca09d6741a8d841738b0d93b75e91593",
+    "envelopes": 2750
+  },
+  "child_inventory": {
+    "version": 6,
+    "path": "audit/routing-inventory/Packet_01.5_Applicability_Inventory_v6_Batch_005.jsonl"
+  },
+  "contact_catalog": {
+    "path": "audit/routing-evidence/Packet_01.5_Project_Contact_Evidence_Catalog_v1.json",
+    "verification": "audit/Packet_01.5_Project_Contact_Evidence_Catalog_Independent_Verification_v1.json"
+  },
+  "selection": {
+    "rule": "next ten preserved baseline addresses after accepted Batch 004",
+    "addresses": [
+      "P01.5::B::0041",
+      "P01.5::B::0042",
+      "P01.5::B::0043",
+      "P01.5::B::0044",
+      "P01.5::B::0045",
+      "P01.5::B::0046",
+      "P01.5::B::0047",
+      "P01.5::B::0048",
+      "P01.5::B::0049",
+      "P01.5::B::0050"
+    ],
+    "count": 10
+  },
+  "decisions": [
+    {
+      "address": "P01.5::B::0041",
+      "original_identifier": "DATA-008",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-006", "P03-RC-015", "P03-RC-020", "P03-BOUND-LOCAL-PRIVACY"],
+      "contact_path": "Current storage scanning, ZIP intake, private data handling, and trust-zone separation already rely on policy boundaries that are only partially enforced in technical data flows.",
+      "rationale": "The affected privacy and storage paths are active current capabilities. Policy-only trust-zone enforcement is therefore a current defect."
+    },
+    {
+      "address": "P01.5::B::0042",
+      "original_identifier": "DATA-009",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-007", "P03-RC-012", "P03-RC-013", "P03-RC-014", "P03-RC-020"],
+      "contact_path": "Bug Memory, private Notes workspaces, catalog packs, and Notes handoff are verified current capabilities whose completeness and synchronization depend on manual actions.",
+      "rationale": "The manual boundary is already part of current project operation. Missing completeness and synchronization proof is a current defect."
+    },
+    {
+      "address": "P01.5::B::0043",
+      "original_identifier": "DATA-010",
+      "state": "ACTIVE_CONDITIONAL_RISK",
+      "source_evidence_type": "PLANNED_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-003", "P03-RC-007", "P03-RC-014", "P03-RC-017"],
+      "contact_path": "Multi-device and concurrent-edit conflicts become operational when current local, Notes, or GitHub records are edited from overlapping sessions or devices.",
+      "rationale": "The project has current persistence and external handoff surfaces, but no evidence proves overlapping multi-device editing is part of the present baseline. The risk is active conditional on that contact."
+    },
+    {
+      "address": "P01.5::B::0044",
+      "original_identifier": "DATA-011",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-003", "P03-RC-005", "P03-RC-011", "P03-RC-017", "P03-RC-018"],
+      "contact_path": "Current work-thread, truth, inventory, write, and safety records use timestamps, ordering, receipts, or approval-like evidence without one trusted monotonic ordering source.",
+      "rationale": "Ordering and evidence identity already affect current project records. Missing trusted sequencing is a current defect."
+    },
+    {
+      "address": "P01.5::B::0045",
+      "original_identifier": "DATA-012",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-005", "P03-RC-011", "P03-RC-017", "P03-RC-018"],
+      "contact_path": "Current truth reports, inventory records, Safe Writer transactions, and Code Safety evidence are stored without a uniformly tamper-evident append-only ledger implementation.",
+      "rationale": "Evidence and receipt records already govern current safety claims. Missing tamper evidence is a current defect."
+    },
+    {
+      "address": "P01.5::B::0046",
+      "original_identifier": "DATA-013",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-001", "P03-RC-006", "P03-RC-007", "P03-RC-012", "P03-RC-020"],
+      "contact_path": "Current Resident, storage, Bug Memory, and private data surfaces collect and retain user/project information without complete minimization, consent, retention display, export, and deletion controls in the UI.",
+      "rationale": "The data is already present in current capabilities, so the missing user controls are a current defect."
+    },
+    {
+      "address": "P01.5::B::0047",
+      "original_identifier": "DATA-014",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-012", "P03-RC-013", "P03-RC-014", "P03-RC-015", "P03-RC-020"],
+      "contact_path": "Current private Bug Memory, exported packs, Notes transfer, ZIP intake, and optional backend configuration can contain private project data or secrets without encryption-at-rest and backup-secret proof.",
+      "rationale": "Private exports and local records already exist. Missing encryption and secret-handling proof is a current defect."
+    },
+    {
+      "address": "P01.5::B::0048",
+      "original_identifier": "GOV-001",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-BOUND-CAPABILITY-SET", "P03-RC-005", "P03-RC-011"],
+      "contact_path": "Current project truth and inventory governance can still encounter the preserved stale Note 01 packet order that conflicts with the executed packet sequence.",
+      "rationale": "The conflicting governance record remains part of the current project record set and can misdirect work unless precedence is enforced. It is a current defect."
+    },
+    {
+      "address": "P01.5::B::0049",
+      "original_identifier": "GOV-002",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-BOUND-CAPABILITY-SET", "P03-RC-005", "P03-RC-011", "P03-RC-020"],
+      "contact_path": "Current roadmap and truth surfaces must account for Packet 06.5, while the preserved Note 01 record omits it.",
+      "rationale": "The omission conflicts with the current approved sequence and can affect active project decisions. It is a current governance defect."
+    },
+    {
+      "address": "P01.5::B::0050",
+      "original_identifier": "GOV-003",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-BOUND-CAPABILITY-SET", "P03-RC-005", "P03-RC-011"],
+      "contact_path": "Current completion, receipt, and final closure governance requires Packet 26, while the preserved Note 01 record omits it.",
+      "rationale": "The omission can misstate the active project sequence and closure authority. It is a current governance defect."
+    }
+  ],
+  "routing_fields_rule": "All destination, law, watch-trigger, and semantic-cluster fields remain blank in this batch.",
+  "source_preservation_rule": "All immutable source fields, addresses, source hashes, original wording, accepted prior classifications, and total envelope count remain unchanged except for the ten selected applicability fields.",
+  "expected_result": {
+    "CURRENT_DEFECT": 23,
+    "ACTIVE_CONDITIONAL_RISK": 27,
+    "DORMANT_FUTURE_RISK": 0,
+    "OUT_OF_SCOPE_CANDIDATE": 0,
+    "UNCLASSIFIED": 2700,
+    "routing_assignments": 0
+  }
+}
