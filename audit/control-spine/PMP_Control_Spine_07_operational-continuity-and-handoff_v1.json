@@ -1,0 +1,31 @@
+{
+  "type": "PMP_CURRENT_PROJECT_CONTROL_SPINE_COMPANION_RECORD",
+  "version": "1.0.0-baseline",
+  "created_on": "2026-06-14",
+  "updated_on": "2026-06-14",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "packet_authority": "03.5 preflight carry-forward; Packet 1 defines permanent law",
+  "control_number": 7,
+  "control_name": "Operational Continuity and Handoff Register",
+  "purpose": "Record manual and automatic handoffs, acknowledgement, completion evidence, retry, duplication, recovery, offline behavior, and lost-work prevention.",
+  "packet_02_carry_forward": [
+    "Clipboard, Shortcut, Notes, ZIP, GitHub, backend, and ChatGPT handoffs are user-mediated and may remain incomplete.",
+    "Local storage clearing loses saved context.",
+    "Offline behavior depends on static files, CDN, backend, and Shortcuts.",
+    "A handoff opening is not proof of external completion."
+  ],
+  "linked_permanent_limitations": ["PLAT-003", "PLAT-005", "PLAT-007", "OPS-008", "OPS-010", "OPS-012", "PROOF-013", "RUN-002", "DATA-009", "DATA-014"],
+  "entries": [
+    {"handoff": "PMP Save Private Memory Shortcut → Apple Notes", "current_success_contract": "PMP Bug Catalog appears in PMP Private Bug Memory", "observed": "passed once on configured path", "still_open": ["cancel", "missing Shortcut", "duplicate", "stale input", "partial completion", "retry/acknowledgement"]},
+    {"handoff": "clipboard / manual ChatGPT", "current_success_contract": "user visibly copies and pastes correct version", "observed": "manual only", "still_open": ["wrong version", "truncation", "privacy", "context loss", "no acknowledgement"]},
+    {"handoff": "GitHub Vault writer", "current_success_contract": "explicit user action and verifiable repository receipt", "observed": "not proven by Packet 03 runtime test", "still_open": ["write authorization failure", "duplicate write", "wrong branch/path", "partial completion"]},
+    {"handoff": "browser storage continuity", "current_success_contract": "close/reopen preserves current test marker", "observed": "passed", "still_open": ["storage clear", "eviction", "device loss", "private backup/restore"]},
+    {"handoff": "offline operation", "current_success_contract": "declared offline core works; external functions fail visibly", "observed": "not fully proven", "still_open": ["cold cache", "CDN down", "backend down", "Shortcut unavailable"]}
+  ],
+  "state": "BASELINE CREATED — CONTINUING RECORD",
+  "append_only_history": [],
+  "reopen_on_contrary_evidence": true,
+  "unresolved_watch": "See open entries and linked limitation records; no item may be silently dropped.",
+  "safe_claim": "The Packet 02 risk family has a named companion record and linked limitation identities.",
+  "do_not_claim": "Creating this record does not implement or close its linked limitations."
+}
