@@ -8,10 +8,10 @@ This audit counts source records mechanically. It does not deduplicate, route, c
 
 ## Result
 
-- Source files audited: 46
+- Source files audited: 47
 - Preserved baseline: 122
-- Actual provisional headings: 1835
-- Actual combined working total: 1957
+- Actual provisional headings: 1873
+- Actual combined working total: 1995
 - Files with declared-count mismatch: 5
 - Duplicate record IDs: 22
 - Duplicate exact headings: 0
@@ -69,6 +69,7 @@ This audit counts source records mechanically. It does not deduplicate, route, c
 | 44 | 42 | 42 | YES | `audit/Packet_01.5_Discovery_Pass_44_Biotechnology_Genomics_GeneEditing_SyntheticBiology_Privacy_Biosafety_and_Stewardship_v1.md` |
 | 45 | 42 | 42 | YES | `audit/Packet_01.5_Discovery_Pass_45_Oceans_Fisheries_CoastalSystems_MarineTransport_Seabed_Contamination_and_Stewardship_v1.md` |
 | 46 | 32 | — | YES | `audit/Packet_01.5_Discovery_Pass_46_Nuclear_Radiological_Safety_RadiationProtection_Waste_Emergency_and_Decommissioning_v1.md` |
+| 47 | 38 | — | YES | `audit/Packet_01.5_Discovery_Pass_47_PharmaceuticalCare_Prescribing_Dispensing_Reconciliation_Interactions_Shortages_and_Pharmacovigilance_v1.md` |
 
 ## Declared-count mismatches
 

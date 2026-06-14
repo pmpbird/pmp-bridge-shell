@@ -2,9 +2,9 @@
   "audit_date": "2026-06-14",
   "scope": "Packet 01.5 mechanical discovery integrity only",
   "baseline_count": 122,
-  "files_audited": 46,
-  "actual_provisional_count": 1835,
-  "combined_actual_count": 1957,
+  "files_audited": 47,
+  "actual_provisional_count": 1873,
+  "combined_actual_count": 1995,
   "sum_of_declared_counts_where_present": 1791,
   "count_mismatch_count": 5,
   "duplicate_id_count": 22,
@@ -7915,6 +7915,170 @@
           "title": "Site-release criteria ignore future land-use intensity"
         }
       ]
+    },
+    {
+      "pass": 47,
+      "path": "audit/Packet_01.5_Discovery_Pass_47_PharmaceuticalCare_Prescribing_Dispensing_Reconciliation_Interactions_Shortages_and_Pharmacovigilance_v1.md",
+      "actual_count": 38,
+      "declared_count": null,
+      "count_match": true,
+      "malformed_headings": [],
+      "missing_harm": [],
+      "missing_overlap": [],
+      "records": [
+        {
+          "id": "PRESCRIBE-001",
+          "title": "Medication choice is made from an incomplete patient state"
+        },
+        {
+          "id": "PRESCRIBE-002",
+          "title": "Dose is copied forward after the patient or condition changes"
+        },
+        {
+          "id": "PRESCRIBE-003",
+          "title": "Clinical decision support creates false reassurance"
+        },
+        {
+          "id": "PRESCRIBE-004",
+          "title": "Alert fatigue suppresses the one warning that matters"
+        },
+        {
+          "id": "PRESCRIBE-005",
+          "title": "Off-label use is adopted faster than evidence and monitoring mature"
+        },
+        {
+          "id": "PRESCRIBE-006",
+          "title": "Prescribing incentive conflicts with patient need"
+        },
+        {
+          "id": "DISPENSE-001",
+          "title": "Correct medicine is dispensed to the wrong person"
+        },
+        {
+          "id": "DISPENSE-002",
+          "title": "Look-alike or sound-alike products are confused"
+        },
+        {
+          "id": "DISPENSE-003",
+          "title": "Compounding changes concentration or contamination risk"
+        },
+        {
+          "id": "DISPENSE-004",
+          "title": "Counseling does not match the actual formulation"
+        },
+        {
+          "id": "DISPENSE-005",
+          "title": "Delivery preserves custody but not medication condition"
+        },
+        {
+          "id": "RECONMED-001",
+          "title": "Medication list contains prescriptions that the patient no longer takes"
+        },
+        {
+          "id": "RECONMED-002",
+          "title": "Patient-reported use is dismissed when it conflicts with the chart"
+        },
+        {
+          "id": "RECONMED-003",
+          "title": "Care transition drops start, stop, or dose-change instructions"
+        },
+        {
+          "id": "RECONMED-004",
+          "title": "Reconciliation confirms names but misses indication and duration"
+        },
+        {
+          "id": "MEDINTX-001",
+          "title": "Drug interaction is missed because medicines are split across systems"
+        },
+        {
+          "id": "MEDINTX-002",
+          "title": "Food, supplement, alcohol, or substance interaction is omitted"
+        },
+        {
+          "id": "MEDINTX-003",
+          "title": "Interaction severity depends on timing and dose that the system does not model"
+        },
+        {
+          "id": "MEDINTX-004",
+          "title": "Multiple modest risks combine into one severe effect"
+        },
+        {
+          "id": "MEDINTX-005",
+          "title": "Interaction database lags new evidence and new products"
+        },
+        {
+          "id": "ADHERE-001",
+          "title": "Nonadherence is treated as patient refusal rather than system failure"
+        },
+        {
+          "id": "ADHERE-002",
+          "title": "Reminder systems encourage the wrong regimen after a medication change"
+        },
+        {
+          "id": "ADHERE-003",
+          "title": "Simplifying a regimen hides clinically important timing requirements"
+        },
+        {
+          "id": "ADHERE-004",
+          "title": "Side-effect concealment preserves access or avoids blame"
+        },
+        {
+          "id": "SHORTMED-001",
+          "title": "Shortage substitution changes dose, route, monitoring, or risk"
+        },
+        {
+          "id": "SHORTMED-002",
+          "title": "Scarce medication allocation lacks transparent criteria"
+        },
+        {
+          "id": "SHORTMED-003",
+          "title": "Hoarding and stockpiling deepen the shortage"
+        },
+        {
+          "id": "SHORTMED-004",
+          "title": "Shortage communication arrives after clinical plans are committed"
+        },
+        {
+          "id": "MEDFAKE-001",
+          "title": "Counterfeit medicine copies packaging more convincingly than formulation"
+        },
+        {
+          "id": "MEDFAKE-002",
+          "title": "Legitimate supply chain is penetrated through emergency sourcing"
+        },
+        {
+          "id": "MEDFAKE-003",
+          "title": "Online access bypasses clinical and product verification"
+        },
+        {
+          "id": "PHARMVIG-001",
+          "title": "Adverse-event detection depends on voluntary reporting"
+        },
+        {
+          "id": "PHARMVIG-002",
+          "title": "Common background symptoms hide a medication signal"
+        },
+        {
+          "id": "PHARMVIG-003",
+          "title": "Post-market evidence is biased toward well-connected populations"
+        },
+        {
+          "id": "PHARMVIG-004",
+          "title": "Safety warning changes behavior without measuring replacement harm"
+        },
+        {
+          "id": "CONTROLLED-001",
+          "title": "Misuse prevention blocks legitimate pain or addiction treatment"
+        },
+        {
+          "id": "CONTROLLED-002",
+          "title": "Diversion monitoring mistakes unusual need for wrongdoing"
+        },
+        {
+          "id": "CONTROLLED-003",
+          "title": "Abrupt policy or supply change creates withdrawal and illicit-market risk"
+        }
+      ]
     }
   ],
   "duplicate_ids": {
@@ -7946,6 +8110,7 @@
     "ABUSE": 8,
     "ACC": 3,
     "ACCESSLAW": 4,
+    "ADHERE": 4,
     "ADS": 6,
     "ADV": 5,
     "AGENT": 4,
@@ -8003,6 +8168,7 @@
     "CONTAIN": 6,
     "CONTAM": 6,
     "CONTRACT": 5,
+    "CONTROLLED": 3,
     "CORE": 8,
     "CORS": 3,
     "COST": 6,
@@ -8030,6 +8196,7 @@
     "DEST": 8,
     "DEV": 5,
     "DIS": 4,
+    "DISPENSE": 5,
     "DISPLACE": 5,
     "DOC": 6,
     "DUAL": 4,
@@ -8128,8 +8295,10 @@
     "MARTRANS": 5,
     "MATERIAL": 5,
     "MEAS": 6,
+    "MEDFAKE": 3,
     "MEDIA": 6,
     "MEDINT": 7,
+    "MEDINTX": 5,
     "MEDRAD": 4,
     "MEM": 3,
     "MIC": 3,
@@ -8168,6 +8337,7 @@
     "PERMS": 6,
     "PERSIST": 3,
     "PERSUADE": 6,
+    "PHARMVIG": 4,
     "PHY": 5,
     "PLAT": 1,
     "PLURAL": 5,
@@ -8176,6 +8346,7 @@
     "POLICE": 6,
     "PORT": 7,
     "POST": 4,
+    "PRESCRIBE": 6,
     "PRICE": 5,
     "PRIV": 4,
     "PRIVGEN": 5,
@@ -8199,6 +8370,7 @@
     "REBOUND": 5,
     "REC": 3,
     "RECOMMEND": 6,
+    "RECONMED": 4,
     "RECORDLAW": 2,
     "RECOVER": 11,
     "RECUI": 4,
@@ -8236,6 +8408,7 @@
     "SENSE": 8,
     "SHARE": 6,
     "SHELL": 7,
+    "SHORTMED": 4,
     "SIGN": 4,
     "SKILL": 6,
     "SOC": 5,
