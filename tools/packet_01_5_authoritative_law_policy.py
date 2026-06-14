@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import hashlib
-import json
 import re
 import subprocess
 from pathlib import Path
@@ -12,11 +11,15 @@ STOPWORDS = {
     "a","an","and","are","as","at","be","by","for","from","has","have","in","is","it","its","of","on","or","that","the","their","there","this","to","was","were","with"
 }
 NEGATIVE_MARKERS = (" no ", " not ", " cannot ", " can't ", " missing ", " absent ", " unverified ", " without ", " only ")
-POSITIVE_MARKERS = (" implemented ", " authorized ", " enforced ", " executed ", " completed ", " exists ", " provides ", " includes ")
+POSITIVE_MARKERS = (" implemented ", " implementation ", " authorized ", " enforced ", " executed ", " execution ", " completed ", " exists ", " provides ", " includes ", " owns ", " own ")
 EXCLUDED_PREFIXES = (
-    ".github/", "tools/", "audit/applicability/", "audit/routing-inventory/", "audit/baseline-source/"
+    ".github/", "tools/", "audit/applicability/", "audit/routing-inventory/", "audit/routing-batches/", "audit/baseline-source/"
 )
-EXCLUDED_TERMS = ("archive", "historical", "reconstructed", "provisional")
+EXCLUDED_TERMS = (
+    "archive", "historical", "reconstructed", "provisional", "discovery", "working_register", "working-register",
+    "limitation_register", "limitation-register", "applicability_batch", "applicability-batch",
+    "authoritative_packet_law_family", "authoritative-packet-law-family"
+)
 
 
 def sha256(data: bytes) -> str:
@@ -52,16 +55,17 @@ def candidate_tier(path: str) -> int | None:
     if Path(path).suffix.lower() not in {".md", ".json", ".txt"}:
         return None
     base = Path(path).name.lower()
-    governing = any(term in low for term in (
-        "packet", "pmp-current", "status", "receipt", "roadmap", "law", "protocol", "ledger", "active-work", "completion"
-    ))
-    if not governing:
+    if not any(term in low for term in (
+        "packet", "pmp-current", "status", "receipt", "roadmap", "law", "protocol", "ledger", "active-work", "completion", "approved"
+    )):
         return None
     if any(term in base for term in (
-        "routing_status", "routing-status", "master-status-ledger", "active-work-card", "continuation-protocol", "independent_verification"
+        "approved_existing_packet_role_amendment", "approved-existing-packet-role-amendment",
+        "routing_status", "routing-status", "master-status-ledger", "active-work-card",
+        "continuation-protocol", "independent_verification"
     )):
         return 1
-    if any(term in base for term in ("completion-receipt", "packet", "roadmap", "law", "plan", "status")):
+    if any(term in base for term in ("completion-receipt", "packet", "roadmap", "law", "plan", "status", "approved")):
         return 2
     return 3
 
@@ -84,13 +88,12 @@ def authority_sources(repo: Path, files: list[str]) -> tuple[list[dict[str, Any]
             continue
         active = item["version"] == max_versions[item["family"]]
         effective_tier = item["tier"] if active else 3
-        text = path.read_text(encoding="utf-8", errors="replace")
         selected.append({
             **item,
             "tier": effective_tier,
             "active_version": active,
             "sha256": sha256(path.read_bytes()),
-            "text": text,
+            "text": path.read_text(encoding="utf-8", errors="replace"),
         })
     census = "\n".join(f"{x['tier']}|{x['active_version']}|{x['version']}|{x['sha256']}|{x['path']}" for x in selected) + "\n"
     return selected, sha256(census.encode("utf-8"))
@@ -108,9 +111,7 @@ def paragraphs(text: str) -> list[str]:
 
 def coverage(claim: str, passage: str) -> float:
     claim_tokens = tokens(claim)
-    if not claim_tokens:
-        return 0.0
-    return len(claim_tokens & tokens(passage)) / len(claim_tokens)
+    return len(claim_tokens & tokens(passage)) / len(claim_tokens) if claim_tokens else 0.0
 
 
 def is_negative(text: str) -> bool:
@@ -123,9 +124,23 @@ def is_positive(text: str) -> bool:
     return any(marker in padded for marker in POSITIVE_MARKERS) and not is_negative(text)
 
 
+def source_match(sources: list[dict[str, Any]], path_fragment: str, required_terms: tuple[str, ...]) -> list[dict[str, Any]]:
+    matches: list[dict[str, Any]] = []
+    for source in sources:
+        if source["tier"] > 2 or not source["active_version"] or path_fragment.lower() not in source["path"].lower():
+            continue
+        low = source["text"].lower()
+        if all(term.lower() in low for term in required_terms):
+            matches.append({
+                "path": source["path"], "tier": source["tier"], "version": source["version"],
+                "sha256": source["sha256"], "coverage": None, "passage": source["text"][:1600]
+            })
+    return matches
+
+
 def direct_matches(claim: str, sources: list[dict[str, Any]], threshold: float = 0.82) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     support: list[dict[str, Any]] = []
-    conflict: list[dict[str, Any]] = []
+    disproof: list[dict[str, Any]] = []
     claim_negative = is_negative(claim)
     for source in sources:
         if source["tier"] > 2 or not source["active_version"]:
@@ -136,76 +151,61 @@ def direct_matches(claim: str, sources: list[dict[str, Any]], threshold: float =
             score = coverage(claim, passage)
             if score > best_coverage:
                 best_coverage, best_passage = score, passage
-        if best_coverage >= threshold:
-            match = {
-                "path": source["path"], "tier": source["tier"], "version": source["version"],
-                "sha256": source["sha256"], "coverage": round(best_coverage, 4), "passage": best_passage[:1200]
-            }
-            if claim_negative and is_positive(best_passage):
-                conflict.append(match)
-            else:
-                support.append(match)
-        elif claim_negative and best_coverage >= 0.65 and is_positive(best_passage):
-            conflict.append({
-                "path": source["path"], "tier": source["tier"], "version": source["version"],
-                "sha256": source["sha256"], "coverage": round(best_coverage, 4), "passage": best_passage[:1200]
-            })
-    return support, conflict
-
-
-def find_passage(sources: list[dict[str, Any]], groups: list[tuple[str, ...]]) -> list[dict[str, Any]]:
-    matches: list[dict[str, Any]] = []
-    for source in sources:
-        if source["tier"] > 2 or not source["active_version"]:
+        if best_coverage < threshold:
             continue
-        for passage in paragraphs(source["text"]):
-            low = passage.lower()
-            if all(any(term in low for term in group) for group in groups):
-                matches.append({
-                    "path": source["path"], "tier": source["tier"], "version": source["version"],
-                    "sha256": source["sha256"], "coverage": None, "passage": passage[:1200]
-                })
-                break
-    return matches
+        match = {
+            "path": source["path"], "tier": source["tier"], "version": source["version"],
+            "sha256": source["sha256"], "coverage": round(best_coverage, 4), "passage": best_passage[:1200]
+        }
+        if claim_negative and is_positive(best_passage):
+            disproof.append(match)
+        else:
+            support.append(match)
+    return support, disproof
 
 
-def reviewed_predicate(predicate: str, claim: str, sources: list[dict[str, Any]], files: list[str]) -> tuple[bool, list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
-    support: list[dict[str, Any]] = []
-    detail: dict[str, Any] = {}
-    if predicate == "PACKET_06_5_AI_BRIDGE_ONLY_IMPLEMENTATION_SCOPE":
-        support = find_passage(sources, [("packet 06.5", "packet_06.5"), ("ai bridge",), ("implementation",), ("candidate", "promotion")])
-    elif predicate == "FREE_CONSTRAINT_PRESENT_NO_ENFORCEMENT_GATE":
-        constraint = find_passage(sources, [("free",), ("subscription", "paid", "cost")])
-        gates = [path for path in files if re.search(r"(?:free|cost|subscription).*(?:gate|check)|(?:gate|check).*(?:free|cost|subscription)", path, flags=re.I)]
-        support = constraint if constraint and not gates else []
-        detail = {"constraint_sources": [x["path"] for x in constraint], "gate_like_files": gates}
-    elif predicate == "PACKET_23_NO_CODE_ASSEMBLY_NOT_IMPLEMENTATION":
-        support = find_passage(sources, [("packet 23", "packet_23"), ("no-code", "no code"), ("assembly",), ("not implementation", "not an implementation")])
-    elif predicate == "PACKET_24_RUNBOOK_NOT_EXECUTION":
-        support = find_passage(sources, [("packet 24", "packet_24"), ("runbook",), ("not execution", "not integration", "not acceptance", "specification")])
-    elif predicate == "NO_COMPLETE_PIPELINE_IMPLEMENTATION_AUTHORITY":
-        support = find_passage(sources, [("no authorized packet", "not authorized"), ("candidate pipeline", "candidate"), ("promotion",), ("rollback",)])
-    elif predicate == "NO_REPAIR_RETEST_ITERATION_AUTHORITY":
-        support = find_passage(sources, [("repair",), ("retest",), ("packet",), ("no explicit", "not authorized", "missing")])
-    generic_support, conflicts = direct_matches(claim, sources)
-    if not support:
-        support = generic_support
+def resolve_lists(support: list[dict[str, Any]], disproof: list[dict[str, Any]], detail: dict[str, Any] | None = None) -> tuple[str, list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+    detail = dict(detail or {})
+    if not support and not disproof:
+        return "UNRESOLVED", [], [], {**detail, "reason": "no_direct_current_authority"}
+    support_tier = min((item["tier"] for item in support), default=99)
+    disproof_tier = min((item["tier"] for item in disproof), default=99)
+    if support_tier < disproof_tier:
+        return "SUPPORTED", support, disproof, {**detail, "reason": "higher_precedence_support"}
+    if disproof_tier < support_tier:
+        return "DISPROVED", support, disproof, {**detail, "reason": "higher_precedence_disproof"}
+    if support and disproof:
+        return "UNRESOLVED", support, disproof, {**detail, "reason": "same_tier_conflict"}
     if support:
-        best_tier = min(x["tier"] for x in support)
-        equal_or_higher_conflicts = [x for x in conflicts if x["tier"] <= best_tier]
-        if equal_or_higher_conflicts:
-            return False, support, equal_or_higher_conflicts, {**detail, "reason": "equal_or_higher_precedence_conflict"}
-    return bool(support), support, conflicts, detail
+        return "SUPPORTED", support, [], {**detail, "reason": "direct_current_authority_support"}
+    return "DISPROVED", [], disproof, {**detail, "reason": "direct_current_authority_disproof"}
 
 
-def generic_direct(claim: str, sources: list[dict[str, Any]], threshold: float, minimum_tokens: int) -> tuple[bool, list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+def reviewed_predicate(predicate: str, claim: str, sources: list[dict[str, Any]], files: list[str]) -> tuple[str, list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+    support, disproof = direct_matches(claim, sources)
+    amendment = "Packet_03.5_Approved_Existing_Packet_Role_Amendment_v1.json"
+    if predicate == "PACKET_06_5_ONLY_IMPLEMENTATION_CLAIM":
+        disproof += source_match(sources, amendment, ("status\": \"approved", "\"23\"", "actual resident safe change implementation execution"))
+    elif predicate == "PACKET_23_IMPLEMENTATION_ROLE_CLAIM":
+        disproof += source_match(sources, amendment, ("\"23\"", "actual resident safe change implementation execution", "assembly plan"))
+    elif predicate == "PACKET_24_EXECUTION_ROLE_CLAIM":
+        disproof += source_match(sources, amendment, ("\"24\"", "execution of integration", "acceptance", "runbook"))
+    elif predicate == "COMPLETE_PIPELINE_AUTHORITY_CLAIM":
+        direct_disproof = source_match(sources, amendment, ("resolve every packet 03.5 lifecycle gap", "actual resident safe change implementation execution", "execution of integration"))
+        # This amendment may still be incomplete for every named sub-capability; treat it as related, not decisive.
+        detail = {"related_role_amendment": [item["path"] for item in direct_disproof]}
+        return resolve_lists(support, disproof, detail)
+    elif predicate == "FREE_CONSTRAINT_ENFORCEMENT_CLAIM":
+        # Ownership of free-operation rules is not itself proof of an enforcement gate.
+        related = source_match(sources, amendment, ("free-operation", "boundary rules"))
+        return resolve_lists(support, disproof, {"related_free_operation_authority": [item["path"] for item in related]})
+    elif predicate == "REPAIR_RETEST_AUTHORITY_CLAIM":
+        return resolve_lists(support, disproof)
+    return resolve_lists(support, disproof)
+
+
+def generic_direct(claim: str, sources: list[dict[str, Any]], threshold: float, minimum_tokens: int) -> tuple[str, list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
     if len(tokens(claim)) < minimum_tokens:
-        return False, [], [], {"reason": "claim_too_short"}
-    support, conflicts = direct_matches(claim, sources, threshold)
-    if not support:
-        return False, [], conflicts, {"reason": "no_direct_current_authority"}
-    best_tier = min(x["tier"] for x in support)
-    blocking = [x for x in conflicts if x["tier"] <= best_tier]
-    if blocking:
-        return False, support, blocking, {"reason": "equal_or_higher_precedence_conflict"}
-    return True, support, conflicts, {"reason": "direct_current_authority_support"}
+        return "UNRESOLVED", [], [], {"reason": "claim_too_short"}
+    support, disproof = direct_matches(claim, sources, threshold)
+    return resolve_lists(support, disproof)
