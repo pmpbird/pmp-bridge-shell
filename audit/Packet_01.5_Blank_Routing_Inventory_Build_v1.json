@@ -1,0 +1,20 @@
+{
+  "packet": "01.5",
+  "build": "blank_routing_inventory",
+  "version": 1,
+  "status": "PASS",
+  "watch": "NONE",
+  "blockers": "NONE",
+  "baseline_envelopes": 122,
+  "provisional_envelopes": 2628,
+  "combined_envelopes": 2750,
+  "unique_addresses": 2750,
+  "inventory_sha256": "76169a80e07603cea51d769d3d89b32735149c2aef7eb09f893ed94fe5d72477",
+  "gzip_sha256": "651db79bb19c8890cc968448d5ed701897f4bc646f1d1010706de9aa9b869116",
+  "routing_state": "UNROUTED",
+  "applicability_state": "UNCLASSIFIED",
+  "destinations_populated": 0,
+  "semantic_merges": 0,
+  "deleted_records": 0,
+  "closed_records": 0
+}

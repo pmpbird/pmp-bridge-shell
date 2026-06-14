@@ -10,11 +10,10 @@ ROUTING: NOT STARTED
 - Baseline records: 122
 - Unique original identifiers: 122
 - Stable addresses: `P01.5::B::0001` through `P01.5::B::0122`
+- Generated address manifest: `audit/Packet_01.5_Baseline_Address_Manifest_v2.json`
 - Address uniqueness: PASS
 - Reverse reconstruction: PASS
 - Routing state: UNROUTED
 - Destination fields: BLANK
-
-The reconstructed raw JSON matches the exact archive member from `Packet_03.5_v4_FINAL_PASS_COMPLETE.zip` byte for byte. The seven repository transport parts were verified against their declared character counts, SHA-256 values, and Git blob identities before reconstruction.
 
 END PACKET 01.5 — BASELINE SOURCE VERIFICATION v1

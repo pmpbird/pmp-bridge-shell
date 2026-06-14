@@ -3,7 +3,6 @@
   "verification": "baseline_source",
   "version": 1,
   "status": "PASS",
-  "source_archive": "Packet_03.5_v4_FINAL_PASS_COMPLETE.zip",
   "source_filename": "pmp-current-permanent-limitation-register-v3-final.json",
   "source_bytes": 349103,
   "source_sha256": "ac36b36a38d2ad9ab9f73d69679e0ecc0dae4c2f3340fe505f6ed773c56ba5f4",
@@ -11,10 +10,54 @@
   "gzip_sha256": "dd9e5fcb38f8bb3babb846ab057fa5544ed7ee433ae2a8f9cb49249d14d5f34f",
   "base64_characters": 42164,
   "base64_sha256": "ef577586fda95b9be8c22a170fa5a90eb0577bcfc621fe41b40890a029cadc93",
-  "transport_part_count": 7,
-  "transport_parts_verified": true,
+  "transport_parts": [
+    {
+      "part": 1,
+      "path": "audit/baseline-source/pmp-current-permanent-limitation-register-v3-final.part-001.b64",
+      "characters": 6024,
+      "sha256": "772607ee055c932bfe27c4ad26e61fc4c564c133e0dd734c6af3c35a93c38eae"
+    },
+    {
+      "part": 2,
+      "path": "audit/baseline-source/pmp-current-permanent-limitation-register-v3-final.part-002.b64",
+      "characters": 6024,
+      "sha256": "215e27cd6960d4252a5f0081d8ce4baa1b61f6f21070aef69beb41af06e16d36"
+    },
+    {
+      "part": 3,
+      "path": "audit/baseline-source/pmp-current-permanent-limitation-register-v3-final.part-003.b64",
+      "characters": 6024,
+      "sha256": "a96791d57b385a30dd64e6893aef9664ee3cb7ef0da26dafe65b5f747c3bb054"
+    },
+    {
+      "part": 4,
+      "path": "audit/baseline-source/pmp-current-permanent-limitation-register-v3-final.part-004.b64",
+      "characters": 6024,
+      "sha256": "5714b7febdf307fefd76f2cbc2334156bd16817d7cc5b5b8a082feb3ff6d7d8a"
+    },
+    {
+      "part": 5,
+      "path": "audit/baseline-source/pmp-current-permanent-limitation-register-v3-final.part-005.b64",
+      "characters": 6024,
+      "sha256": "645575439c4b9df32e6f31376b8ae6a6d957904a9da84f2a1a4e8701a999cae8"
+    },
+    {
+      "part": 6,
+      "path": "audit/baseline-source/pmp-current-permanent-limitation-register-v3-final.part-006.b64",
+      "characters": 6024,
+      "sha256": "a764624667e2fea83bdba427e0bf7ba095c08444cd3c99c6859cb6b7e59ecfa2"
+    },
+    {
+      "part": 7,
+      "path": "audit/baseline-source/pmp-current-permanent-limitation-register-v3-final.part-007.b64",
+      "characters": 6020,
+      "sha256": "c3c4cb233b011dee2c4a2aff6b0eba54cf6be6fc7fe8f4828c8124157cfec42b"
+    }
+  ],
   "baseline_record_count": 122,
   "baseline_identifier_unique": true,
+  "address_manifest": "audit/Packet_01.5_Baseline_Address_Manifest_v2.json",
+  "address_manifest_sha256": "9a4348cd9be7d4e74f837cb1c085be7e4349cd2d7aaade00829ec132a179df8c",
   "address_first": "P01.5::B::0001",
   "address_last": "P01.5::B::0122",
   "address_count": 122,
