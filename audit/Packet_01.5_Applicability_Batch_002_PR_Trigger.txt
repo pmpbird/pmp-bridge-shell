@@ -1,0 +1,2 @@
+Packet 01.5 Applicability Batch 002 independent verification trigger.
+No routing, grouping, closure, implementation, Packet 04, or Batch 003 decision is authorized by this trigger.
