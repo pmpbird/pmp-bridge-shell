@@ -2,9 +2,9 @@
   "audit_date": "2026-06-14",
   "scope": "Packet 01.5 mechanical discovery integrity only",
   "baseline_count": 122,
-  "files_audited": 50,
-  "actual_provisional_count": 1991,
-  "combined_actual_count": 2113,
+  "files_audited": 51,
+  "actual_provisional_count": 2031,
+  "combined_actual_count": 2153,
   "sum_of_declared_counts_where_present": 1791,
   "count_mismatch_count": 5,
   "duplicate_id_count": 22,
@@ -8587,6 +8587,178 @@
           "title": "Safety recommendation is closed by procedural change without proving risk reduction"
         }
       ]
+    },
+    {
+      "pass": 51,
+      "path": "audit/Packet_01.5_Discovery_Pass_51_Forests_Wildfire_Wildlife_InvasiveSpecies_ProtectedAreas_CommunityLandUse_and_LandscapeStewardship_v1.md",
+      "actual_count": 40,
+      "declared_count": null,
+      "count_match": true,
+      "malformed_headings": [],
+      "missing_harm": [],
+      "missing_overlap": [],
+      "records": [
+        {
+          "id": "FOREST-001",
+          "title": "Forest condition is inferred from canopy appearance alone"
+        },
+        {
+          "id": "FOREST-002",
+          "title": "Timber yield planning ignores slow ecological recovery"
+        },
+        {
+          "id": "FOREST-003",
+          "title": "Road construction fragments habitat beyond the harvested footprint"
+        },
+        {
+          "id": "FOREST-004",
+          "title": "Salvage logging removes structures needed for ecological recovery"
+        },
+        {
+          "id": "FOREST-005",
+          "title": "Plantation uniformity creates common-mode vulnerability"
+        },
+        {
+          "id": "FUELMGMT-001",
+          "title": "Fuel treatment protects one area while shifting fire behavior elsewhere"
+        },
+        {
+          "id": "FUELMGMT-002",
+          "title": "Treatment acres are counted without measuring treatment condition"
+        },
+        {
+          "id": "FUELMGMT-003",
+          "title": "Fuel reduction removes habitat and cultural resources"
+        },
+        {
+          "id": "FUELMGMT-004",
+          "title": "Maintenance funding ends before treatment effectiveness does"
+        },
+        {
+          "id": "FUELMGMT-005",
+          "title": "Community risk ranking follows property value rather than vulnerability"
+        },
+        {
+          "id": "RXFIRE-001",
+          "title": "Prescribed-fire window is based on historical weather behavior"
+        },
+        {
+          "id": "RXFIRE-002",
+          "title": "Smoke impact is treated as temporary and geographically uniform"
+        },
+        {
+          "id": "RXFIRE-003",
+          "title": "Liability pressure suppresses beneficial burning until fuels worsen"
+        },
+        {
+          "id": "RXFIRE-004",
+          "title": "Cultural burning is excluded by institutional fire governance"
+        },
+        {
+          "id": "WILDFIRE-001",
+          "title": "Evacuation warning arrives after smoke and congestion reduce mobility"
+        },
+        {
+          "id": "WILDFIRE-002",
+          "title": "Evacuation zones assume stable fire direction and road availability"
+        },
+        {
+          "id": "WILDFIRE-003",
+          "title": "Structure survival is mistaken for community habitability"
+        },
+        {
+          "id": "WILDFIRE-004",
+          "title": "Smoke exposure continues far beyond the burn perimeter"
+        },
+        {
+          "id": "WILDFIRE-005",
+          "title": "Post-fire rain converts burn damage into flood and debris-flow danger"
+        },
+        {
+          "id": "SUPPRESS-001",
+          "title": "Suppression success preserves fuels that intensify later fires"
+        },
+        {
+          "id": "SUPPRESS-002",
+          "title": "Firefighting resource allocation follows visibility rather than ecological consequence"
+        },
+        {
+          "id": "SUPPRESS-003",
+          "title": "Suppression tactics create secondary environmental damage"
+        },
+        {
+          "id": "SUPPRESS-004",
+          "title": "Responder fatigue and smoke exposure accumulate across incidents"
+        },
+        {
+          "id": "WILDLIFE-001",
+          "title": "Species monitoring misses rare, nocturnal, seasonal, or cryptic animals"
+        },
+        {
+          "id": "WILDLIFE-002",
+          "title": "Habitat protection preserves area while losing connectivity"
+        },
+        {
+          "id": "WILDLIFE-003",
+          "title": "Management favors charismatic species over ecological function"
+        },
+        {
+          "id": "WILDLIFE-004",
+          "title": "Human-wildlife conflict response removes animals without removing the cause"
+        },
+        {
+          "id": "WILDLIFE-005",
+          "title": "Wildlife disease control ignores livestock, pets, and human movement"
+        },
+        {
+          "id": "INVASIVE-001",
+          "title": "Early invasive-species spread remains below detection thresholds"
+        },
+        {
+          "id": "INVASIVE-002",
+          "title": "Control method harms native species and ecosystem processes"
+        },
+        {
+          "id": "INVASIVE-003",
+          "title": "Trade and transport controls focus on listed species only"
+        },
+        {
+          "id": "INVASIVE-004",
+          "title": "Successful removal is followed by reinvasion because the pathway remains open"
+        },
+        {
+          "id": "PROTECTAREA-001",
+          "title": "Protected-area boundary excludes seasonal and climate-shifted habitat"
+        },
+        {
+          "id": "PROTECTAREA-002",
+          "title": "Conservation restriction displaces local communities and stewardship"
+        },
+        {
+          "id": "PROTECTAREA-003",
+          "title": "Tourism revenue makes conservation dependent on continued visitation"
+        },
+        {
+          "id": "PROTECTAREA-004",
+          "title": "Anti-poaching surveillance expands into community surveillance"
+        },
+        {
+          "id": "LANDSTEWARD-001",
+          "title": "Landscape plans stop at ownership boundaries"
+        },
+        {
+          "id": "LANDSTEWARD-002",
+          "title": "Restoration target uses an historical baseline that climate change has invalidated"
+        },
+        {
+          "id": "LANDSTEWARD-003",
+          "title": "Stewardship knowledge is lost when projects and personnel end"
+        },
+        {
+          "id": "LANDSTEWARD-004",
+          "title": "Carbon accounting rewards tree quantity while ignoring ecosystem quality"
+        }
+      ]
     }
   ],
   "duplicate_ids": {
@@ -8752,9 +8924,11 @@
     "FOOD": 6,
     "FOODACCESS": 3,
     "FORENSIC": 6,
+    "FOREST": 5,
     "FRAME": 5,
     "FRAUD": 5,
     "FRAUDSCORE": 5,
+    "FUELMGMT": 5,
     "FUELNUC": 4,
     "GENEEDIT": 6,
     "GENOME": 6,
@@ -8790,6 +8964,7 @@
     "INTENT": 4,
     "INTERACT": 3,
     "INTERRUPT": 5,
+    "INVASIVE": 4,
     "INVITE": 5,
     "ISOLATE": 4,
     "JOBSKILL": 4,
@@ -8801,6 +8976,7 @@
     "LABOR": 6,
     "LAND": 5,
     "LANDFILL": 4,
+    "LANDSTEWARD": 4,
     "LANG": 6,
     "LAUNCH": 5,
     "LEARN": 6,
@@ -8883,6 +9059,7 @@
     "PRIVGEN": 5,
     "PRIVRIGHT": 5,
     "PROOFCHAIN": 10,
+    "PROTECTAREA": 4,
     "PROV": 7,
     "PUB": 6,
     "PUBID": 4,
@@ -8928,6 +9105,7 @@
     "REVOKE": 4,
     "ROBOT": 6,
     "ROLLOUT": 7,
+    "RXFIRE": 4,
     "SACRED": 6,
     "SANACC": 4,
     "SANCTION": 4,
@@ -8959,6 +9137,7 @@
     "SUCC": 5,
     "SUP": 5,
     "SUPPLY": 4,
+    "SUPPRESS": 4,
     "SURV": 6,
     "SYNBIO": 6,
     "SYNC": 4,
@@ -8993,6 +9172,8 @@
     "WATER": 4,
     "WATERUTIL": 6,
     "WEB": 3,
+    "WILDFIRE": 5,
+    "WILDLIFE": 5,
     "WKAUTH": 5,
     "WKEVAL": 6
   }

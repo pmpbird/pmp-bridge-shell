@@ -8,10 +8,10 @@ This audit counts source records mechanically. It does not deduplicate, route, c
 
 ## Result
 
-- Source files audited: 50
+- Source files audited: 51
 - Preserved baseline: 122
-- Actual provisional headings: 1991
-- Actual combined working total: 2113
+- Actual provisional headings: 2031
+- Actual combined working total: 2153
 - Files with declared-count mismatch: 5
 - Duplicate record IDs: 22
 - Duplicate exact headings: 0
@@ -73,6 +73,7 @@ This audit counts source records mechanically. It does not deduplicate, route, c
 | 48 | 39 | — | YES | `audit/Packet_01.5_Discovery_Pass_48_PublicHealth_Pandemics_Surveillance_LaboratoryNetworks_Vaccination_Isolation_Capacity_and_Coordination_v1.md` |
 | 49 | 40 | — | YES | `audit/Packet_01.5_Discovery_Pass_49_Waste_Sanitation_Sewage_Septic_Landfill_Recycling_HazardousMedicalWaste_and_Stewardship_v1.md` |
 | 50 | 39 | — | YES | `audit/Packet_01.5_Discovery_Pass_50_Aviation_AircraftCertification_FlightOperations_Maintenance_Airports_ATC_Crew_Cargo_Automation_and_Investigation_v1.md` |
+| 51 | 40 | — | YES | `audit/Packet_01.5_Discovery_Pass_51_Forests_Wildfire_Wildlife_InvasiveSpecies_ProtectedAreas_CommunityLandUse_and_LandscapeStewardship_v1.md` |
 
 ## Declared-count mismatches
 
