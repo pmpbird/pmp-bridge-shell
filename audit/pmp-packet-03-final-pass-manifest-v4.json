@@ -1,0 +1,59 @@
+{
+  "type": "PMP_PACKET_03_FINAL_PASS_MANIFEST",
+  "version": "4.0.0",
+  "packet": "03",
+  "status": "PASS",
+  "completed_on": "2026-06-14",
+  "unresolved_watch": "None",
+  "blockers": "None",
+  "runtime_proof_test_id": "P03-1781398601766-454669a3",
+  "validation": {
+    "capabilities": 20,
+    "cross_capability_checks": 18,
+    "static_checks_pass": true,
+    "home_screen_runtime_pass": true,
+    "reopen_persistence_pass": true,
+    "live_route_pass": true,
+    "notes_shortcut_intended_behavior_pass": true,
+    "backend_classified": true,
+    "canonical_bug_memory_route_classified": true,
+    "restore_limitation_classified": true,
+    "temporary_proof_button_removed": true,
+    "normal_route_guardian_v14_restored": true
+  },
+  "local_outputs": {
+    "PMP_Current_Resident_Current_to_Future_Capability_Map_v4_FINAL_PASS.txt": {
+      "bytes": 878199,
+      "sha256": "fd1a51070affa44f790822767b4662f35349bc13d13503877ddb81688c921c39"
+    },
+    "pmp-resident-current-to-future-capability-map-v4-final-pass.json": {
+      "bytes": 1337666,
+      "sha256": "7679e71e442e7c65363888521e4030ac83981bb21e1aff20a050aa18bd650317"
+    },
+    "Packet_03_Current_Runtime_Proof_Adjudication_v2.json": {
+      "bytes": 8950,
+      "sha256": "606896cac757c0a4ee7150818755a324d0d7455a25d01eb630828ab2ec5b9c47"
+    },
+    "Packet_03_Completion_Receipt_v4_FINAL_PASS.txt": {
+      "bytes": 1374,
+      "sha256": "156c7543b630f3f051316465496bb5031c6ecc3118ac45b194749cbb2c7cd88c"
+    },
+    "Packet_03_v4_FINAL_PASS_COMPLETE.zip": {
+      "bytes": 2118394,
+      "sha256": "1f1b1d88ecc5e1657fe0124673237c558922a04a98110cb21ad1ac2913f44f29"
+    }
+  },
+  "final_evidence_records": [
+    "audit/PMP-Current-Packet-03-Current-Runtime-Proof-v2.md",
+    "audit/pmp-packet-03-current-runtime-proof-v2.json",
+    "audit/PMP-Current-Packet-03-Completion-Receipt-v4.md",
+    "audit/pmp-packet-03-final-pass-manifest-v4.json"
+  ],
+  "supersedes": [
+    "Packet 03 v1 premature records",
+    "Packet 03 v2 watch-bearing records",
+    "Packet 03 v3 unsupported clean-PASS records"
+  ],
+  "next_authorized_packet": "03.5 — Permanent Project Limitation Discovery, Coverage, and Reopening Gate",
+  "packet_04_authorized": false
+}
