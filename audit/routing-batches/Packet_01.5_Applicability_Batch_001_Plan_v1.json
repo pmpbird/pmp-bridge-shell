@@ -1,0 +1,54 @@
+{
+  "packet": "01.5",
+  "batch": "P01.5-APP-B001",
+  "version": 1,
+  "date": "2026-06-14",
+  "status": "PLANNED_PENDING_TRANSACTION_AND_INDEPENDENT_VERIFICATION",
+  "parent_inventory": {
+    "path": "audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.jsonl",
+    "sha256": "76169a80e07603cea51d769d3d89b32735149c2aef7eb09f893ed94fe5d72477",
+    "envelopes": 2750
+  },
+  "contact_catalog": {
+    "path": "audit/routing-evidence/Packet_01.5_Project_Contact_Evidence_Catalog_v1.json",
+    "verification": "audit/Packet_01.5_Project_Contact_Evidence_Catalog_Independent_Verification_v1.json"
+  },
+  "selection": {
+    "rule": "first ten preserved baseline addresses",
+    "addresses": [
+      "P01.5::B::0001",
+      "P01.5::B::0002",
+      "P01.5::B::0003",
+      "P01.5::B::0004",
+      "P01.5::B::0005",
+      "P01.5::B::0006",
+      "P01.5::B::0007",
+      "P01.5::B::0008",
+      "P01.5::B::0009",
+      "P01.5::B::0010"
+    ],
+    "count": 10
+  },
+  "decisions": [
+    {"address":"P01.5::B::0001","original_identifier":"AI-001","state":"ACTIVE_CONDITIONAL_RISK","catalog_evidence_ids":["P03-BOUND-DIRECT-AI","P03-BOUND-OPTIONAL-BACKEND","P03-RC-001","P03-RC-020"],"contact_path":"A direct provider/model path is absent from current Resident but explicitly planned behind Packets 06, 06.5, 21, and 24.","rationale":"The adapter absence blocks a planned AI bridge, but Packet 03 proves current Resident reasoning is local with manual handoff. The limitation is active and conditional on the planned provider path, not a defect in the presently verified local reasoning path."},
+    {"address":"P01.5::B::0002","original_identifier":"AI-002","state":"ACTIVE_CONDITIONAL_RISK","catalog_evidence_ids":["P03-BOUND-DIRECT-AI","P03-BOUND-OPTIONAL-BACKEND","P03-BOUND-CAPABILITY-SET"],"contact_path":"The limitation governs the planned AI-bridge and safe-change implementation chain rather than a completed current capability.","rationale":"Packet scope separation is a live condition for future implementation. It does not prove failure of a current RC capability, so the record remains active conditional until the implementation chain is exercised and proven."},
+    {"address":"P01.5::B::0003","original_identifier":"AI-003","state":"ACTIVE_CONDITIONAL_RISK","catalog_evidence_ids":["P03-BOUND-DIRECT-AI","P03-BOUND-OPTIONAL-BACKEND","P03-RC-020"],"contact_path":"The missing provider/request/response endpoints belong to the planned optional backend and AI bridge.","rationale":"The endpoints are absent, but the direct provider path is not a completed current Resident capability. The risk becomes operational when the planned backend path is enabled."},
+    {"address":"P01.5::B::0004","original_identifier":"AI-004","state":"ACTIVE_CONDITIONAL_RISK","catalog_evidence_ids":["P03-BOUND-OPTIONAL-BACKEND","P03-BOUND-LOCAL-PRIVACY","P03-RC-020"],"contact_path":"Wildcard cross-origin behavior exists in the worker artifact; exposure depends on enabling or using the optional backend path for sensitive requests.","rationale":"There is a current code artifact and a planned backend contact, but Packet 03 does not prove it as an active completed Resident path. The security harm is therefore active conditional on backend exposure."},
+    {"address":"P01.5::B::0005","original_identifier":"AI-005","state":"ACTIVE_CONDITIONAL_RISK","catalog_evidence_ids":["P03-BOUND-OPTIONAL-BACKEND","P03-BOUND-LOCAL-PRIVACY","P03-RC-020"],"contact_path":"Unauthenticated POST behavior can affect the project only through the optional worker/backend path.","rationale":"The worker artifact creates a credible condition, while the sensitive backend path remains uncompleted and prohibited. This is an active conditional risk rather than a verified current Resident defect."},
+    {"address":"P01.5::B::0006","original_identifier":"AI-006","state":"ACTIVE_CONDITIONAL_RISK","catalog_evidence_ids":["P03-BOUND-OPTIONAL-BACKEND","P03-RC-005","P03-RC-017","P03-RC-020"],"contact_path":"Broad JSON writes could corrupt truth or code-safety records if the optional worker write path is used.","rationale":"Truth, protected transactions, and trust-zone capabilities are current, but the broad remote write contact is conditional on the optional backend path. The risk is active conditional and must remain blocked until guarded endpoints and authority checks pass."},
+    {"address":"P01.5::B::0007","original_identifier":"AI-007","state":"ACTIVE_CONDITIONAL_RISK","catalog_evidence_ids":["P03-BOUND-OPTIONAL-BACKEND","P03-RC-020"],"contact_path":"Request-size, rate, replay, abuse, and idempotency controls become relevant when the optional backend accepts external requests.","rationale":"The control gap is credible in current worker code, but operational harm requires backend exposure. The planned contact path makes it active conditional."},
+    {"address":"P01.5::B::0008","original_identifier":"AI-008","state":"ACTIVE_CONDITIONAL_RISK","catalog_evidence_ids":["P03-BOUND-OPTIONAL-BACKEND","P03-RC-006","P03-RC-014","P03-RC-020"],"contact_path":"Persistence failure can affect storage and Notes/backend bridge behavior if optional worker writes are relied upon.","rationale":"Current local storage and Notes surfaces exist, while remote KV persistence is not a completed current capability. The limitation is active conditional on reliance upon the planned worker persistence path."},
+    {"address":"P01.5::B::0009","original_identifier":"AI-009","state":"ACTIVE_CONDITIONAL_RISK","catalog_evidence_ids":["P03-BOUND-OPTIONAL-BACKEND","P03-BOUND-LOCAL-PRIVACY","P03-RC-012","P03-RC-014","P03-RC-020"],"contact_path":"Retention, deletion, backup, restore, and residency obligations arise if private project data crosses into the optional backend/provider path.","rationale":"Private local capabilities are current, but external data handling is conditional on explicit or planned handoff. The unverified backend lifecycle is therefore active conditional."},
+    {"address":"P01.5::B::0010","original_identifier":"AI-010","state":"ACTIVE_CONDITIONAL_RISK","catalog_evidence_ids":["P03-BOUND-DIRECT-AI","P03-BOUND-OPTIONAL-BACKEND","P03-RC-002","P03-RC-020"],"contact_path":"Credential lifecycle controls are required only when the planned provider/backend path introduces secrets and remote authority.","rationale":"Packet 03 proves there is no current AI credential path. Because provider/backend implementation is planned, the missing credential lifecycle remains an active conditional risk."}
+  ],
+  "routing_fields_rule": "All destination, law, watch-trigger, and semantic-cluster fields remain blank in this batch.",
+  "source_preservation_rule": "All immutable source fields, addresses, source hashes, original wording, and total envelope count remain identical to the parent inventory.",
+  "expected_result": {
+    "ACTIVE_CONDITIONAL_RISK": 10,
+    "UNCLASSIFIED": 2740,
+    "CURRENT_DEFECT": 0,
+    "DORMANT_FUTURE_RISK": 0,
+    "OUT_OF_SCOPE_CANDIDATE": 0,
+    "routing_assignments": 0
+  }
+}
