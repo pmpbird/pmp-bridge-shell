@@ -62,21 +62,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           rm -f audit/Packet_01.5_Blank_Routing_Inventory_Workflow_Debug.log
-          git add -A \
-            audit/Packet_01.5_Blank_Routing_Inventory_Workflow_Debug.log \
-            audit/Packet_01.5_Baseline_Address_Manifest_v1.json \
-            audit/Packet_01.5_Baseline_Address_Manifest_v2.json \
-            audit/baseline-source/reconstructed/pmp-current-permanent-limitation-register-v3-final.json \
-            audit/Packet_01.5_Baseline_Source_Verification_v1.md \
-            audit/Packet_01.5_Baseline_Source_Verification_v1.json \
-            audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.jsonl \
-            audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.jsonl.gz \
-            audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.manifest.json \
-            audit/Packet_01.5_Blank_Routing_Inventory_Build_v1.md \
-            audit/Packet_01.5_Blank_Routing_Inventory_Build_v1.json \
-            audit/Packet_01.5_Blank_Routing_Inventory_Independent_Verification_v1.md \
-            audit/Packet_01.5_Blank_Routing_Inventory_Independent_Verification_v1.json \
-            audit/Packet_01.5_Routing_Inventory_Status_v74.md
+          git add -A audit/
           if git diff --cached --quiet; then
             echo "No verified inventory-output changes."
           else
