@@ -1,0 +1,246 @@
+{
+  "packet": "01.5",
+  "artifact": "applicability_evidence_catalog",
+  "version": 1,
+  "status": "PROPOSED_PENDING_INDEPENDENT_VERIFICATION",
+  "purpose": "Provide a canonical, public-safe evidence boundary for record-specific Packet 01.5 applicability decisions without classifying or routing any source envelope.",
+  "source_inventory_anchor": {
+    "path": "audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.jsonl",
+    "lines": 2750,
+    "sha256": "76169a80e07603cea51d769d3d89b32735149c2aef7eb09f893ed94fe5d72477",
+    "address_sequence_sha256": "3d808e1ec3f163e4cb2ab7a15767563fe7c43b9920bcecde9abe711226220916"
+  },
+  "authorized_use": {
+    "applicability_only": true,
+    "actual_classification_performed_by_catalog": false,
+    "routing_authorized_by_catalog": false,
+    "semantic_grouping_authorized_by_catalog": false,
+    "record_closure_authorized": false,
+    "packet_04_authorized": false,
+    "record_specific_evidence_still_required": true,
+    "catalog_entry_alone_is_not_a_classification": true
+  },
+  "required_applicability_states": [
+    "CURRENT DEFECT OR LIMITATION",
+    "ACTIVE CONDITIONAL RISK",
+    "DORMANT FUTURE RISK",
+    "OUT-OF-SCOPE CANDIDATE",
+    "UNKNOWN — HOLD"
+  ],
+  "decision_rules": {
+    "missing_evidence": "UNKNOWN — HOLD",
+    "conflicting_evidence": "UNKNOWN — HOLD",
+    "stale_evidence_without_current_confirmation": "UNKNOWN — HOLD",
+    "private_evidence_unavailable": "UNKNOWN — HOLD",
+    "external_or_live_state_not_captured": "UNKNOWN — HOLD",
+    "conditional_risk_may_not_be_silently_promoted": true,
+    "discovery_heading_is_not_applicability_evidence": true,
+    "severity_word_is_not_applicability_evidence": true,
+    "provisional_owner_is_not_applicability_evidence": true,
+    "destination_fields_must_remain_blank_during_applicability_only": true
+  },
+  "privacy_boundary": {
+    "public_safe_repository_structure_allowed": true,
+    "public_safe_source_code_allowed": true,
+    "local_storage_key_names_allowed": true,
+    "private_bug_memory_contents_allowed": false,
+    "apple_notes_contents_allowed": false,
+    "tokens_allowed": false,
+    "passwords_allowed": false,
+    "secrets_allowed": false,
+    "private_local_storage_values_allowed": false,
+    "private_values_allowed": false
+  },
+  "authority_tiers": [
+    {
+      "tier": "T1_GOVERNING",
+      "meaning": "Packet law, verified gate, decision contract, and verified current routing status."
+    },
+    {
+      "tier": "T2_EFFECTIVE_RUNTIME_CONTROL",
+      "meaning": "Stable door, map precedence, effective current map, loader, and current-app wrapper."
+    },
+    {
+      "tier": "T3_PUBLIC_SAFE_INVENTORY",
+      "meaning": "Public-safe manifest and normalized vault snapshot; supporting evidence that requires freshness checks."
+    },
+    {
+      "tier": "T4_RECORD_SPECIFIC_INSPECTION",
+      "meaning": "Direct source/runtime/test evidence captured for the individual envelope under review."
+    },
+    {
+      "tier": "T5_UNCAPTURED_OR_PRIVATE",
+      "meaning": "Unavailable, private, external, or live evidence. It cannot support a non-HOLD decision until safely captured."
+    }
+  ],
+  "runtime_resolution": {
+    "stable_door": "pmp-app-current.html",
+    "map_precedence": [
+      "pmp-current-map-v9.json",
+      "pmp-current-map.json"
+    ],
+    "effective_map_when_available": "pmp-current-map-v9.json",
+    "fallback_map": "pmp-current-map.json",
+    "effective_loader": "pmp-route-guardian-current-loader-v14.html",
+    "effective_current_app": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+    "effective_current_app_wraps": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+    "manual_open_required": true,
+    "runtime_claim_limit": "Opening and support injection do not prove source acceptance, hook validation, full transfer, current-clean, frozen, or best-in-world."
+  },
+  "evidence_sources": [
+    {
+      "evidence_id": "AEC-001",
+      "path": "audit/Packet_01.5_Routing_Start_Authorization_Gate_v2.md",
+      "tier": "T1_GOVERNING",
+      "freshness": "CURRENT_VERIFIED_GATE",
+      "supports": ["phase_e_authority", "five_state_vocabulary", "evidence_and_confidence_law", "applicability_destination_separation"],
+      "required_markers": ["Packet 01.5 Phase E — Applicability Classification", "UNKNOWN — HOLD", "At `APPLICABILITY_ONLY`, all destination and routing-proof fields remain blank."],
+      "does_not_support": ["a classification for any individual envelope", "owner routing"]
+    },
+    {
+      "evidence_id": "AEC-002",
+      "path": "audit/Packet_01.5_Routing_Start_Authorization_Independent_Verification_v2.json",
+      "tier": "T1_GOVERNING",
+      "freshness": "CURRENT_VERIFICATION_RECEIPT",
+      "supports": ["routing_start_gate_pass", "zero_classifications", "zero_routing", "inventory_integrity"],
+      "required_json_values": {
+        "status": "PASS_ROUTING_START_AUTHORIZED",
+        "applicability_classifications_completed": 0,
+        "routing_assignments_completed": 0,
+        "packet_04_authorized": false
+      },
+      "does_not_support": ["a classification for any individual envelope"]
+    },
+    {
+      "evidence_id": "AEC-003",
+      "path": "audit/Packet_01.5_Routing_Status_v76.md",
+      "tier": "T1_GOVERNING",
+      "freshness": "CURRENT_ROUTING_STATUS",
+      "supports": ["first_authorized_phase", "zero_work_state", "stop_boundary"],
+      "required_markers": ["FIRST AUTHORIZED NEXT PHASE: APPLICABILITY CLASSIFICATION", "ROUTING ASSIGNMENTS COMPLETED: 0", "APPLICABILITY CLASSIFICATIONS COMPLETED: 0", "Stop here before actual routing."],
+      "does_not_support": ["routing", "record closure", "Packet 04"]
+    },
+    {
+      "evidence_id": "AEC-004",
+      "path": "audit/routing-inventory/Packet_01.5_Routing_Decision_Contract_v2.json",
+      "tier": "T1_GOVERNING",
+      "freshness": "CURRENT_MACHINE_CONTRACT",
+      "supports": ["overlay_schema", "stage_rules", "hold_rules", "privacy_neutral_record_structure"],
+      "required_json_values": {
+        "version": 2,
+        "global_rules.packet_04_authorized": false,
+        "global_rules.unknown_uncertainty_requires_hold": true,
+        "global_rules.applicability_and_destination_separate": true
+      },
+      "does_not_support": ["source mutation", "source closure"]
+    },
+    {
+      "evidence_id": "AEC-005",
+      "path": "pmp-app-current.html",
+      "tier": "T2_EFFECTIVE_RUNTIME_CONTROL",
+      "freshness": "CURRENT_STABLE_DOOR",
+      "supports": ["stable_entry_path", "map_precedence", "fallback_loader_behavior"],
+      "required_markers": ["const MAP_PATHS=['pmp-current-map-v9.json','pmp-current-map.json'];", "const FALLBACK_LOADER='pmp-route-guardian-current-loader-v9.html';"],
+      "does_not_support": ["which map loaded in a specific uncaptured session", "successful current-app runtime behavior"]
+    },
+    {
+      "evidence_id": "AEC-006",
+      "path": "pmp-current-map-v9.json",
+      "tier": "T2_EFFECTIVE_RUNTIME_CONTROL",
+      "freshness": "EFFECTIVE_MAP_WHEN_FETCH_SUCCEEDS",
+      "supports": ["effective_loader_path", "effective_current_app_path", "runtime_claim_limits"],
+      "required_json_values": {
+        "app_version": "PMP-CURRENT-1",
+        "route_guardian_loader.path": "pmp-route-guardian-current-loader-v14.html",
+        "current_app.path": "pmp-current-inner-cleanbug-rgcontrols-v4.html"
+      },
+      "does_not_support": ["hook validation", "app proof", "current-clean", "frozen", "best-in-world"]
+    },
+    {
+      "evidence_id": "AEC-007",
+      "path": "pmp-current-map.json",
+      "tier": "T2_EFFECTIVE_RUNTIME_CONTROL",
+      "freshness": "FALLBACK_MAP_ONLY_WHEN_HIGHER_PRECEDENCE_MAP_FAILS",
+      "supports": ["fallback_map_configuration"],
+      "required_json_values": {
+        "app_version": "PMP-CURRENT-1",
+        "route_guardian_loader.path": "pmp-route-guardian-current-loader-v10.html",
+        "current_app.path": "pmp-current-inner-cleanbug-rgcontrols-v3.html"
+      },
+      "does_not_support": ["effective runtime path while pmp-current-map-v9.json loads successfully"]
+    },
+    {
+      "evidence_id": "AEC-008",
+      "path": "pmp-route-guardian-current-loader-v14.html",
+      "tier": "T2_EFFECTIVE_RUNTIME_CONTROL",
+      "freshness": "CURRENT_EFFECTIVE_LOADER_SOURCE",
+      "supports": ["manual_open_gate", "support_injection_list", "loader_self_declared_claim_limit"],
+      "required_markers": ["Press Open Latest App.", "pmp-current-map-v9.json", "do_not_claim:'Not source acceptance, hook validation, app proof, current-clean, frozen, or best-in-world.'"],
+      "does_not_support": ["successful hook validation", "full transfer proof", "record resolution"]
+    },
+    {
+      "evidence_id": "AEC-009",
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+      "tier": "T2_EFFECTIVE_RUNTIME_CONTROL",
+      "freshness": "CURRENT_EFFECTIVE_APP_WRAPPER_SOURCE",
+      "supports": ["v4_wrapper_exists", "v4_wraps_v3", "migration_and_backup_script_presence"],
+      "required_markers": ["pmp-phase1-migrate-v1.js", "pmp-private-backup-lite-v1.js", "pmp-current-inner-cleanbug-rgcontrols-v3.html"],
+      "does_not_support": ["successful nested runtime execution", "complete behavioral correctness"]
+    },
+    {
+      "evidence_id": "AEC-010",
+      "path": "pmp-inventory-eyes-manifest-v1.0.0.json",
+      "tier": "T3_PUBLIC_SAFE_INVENTORY",
+      "freshness": "SUPPORTING_BASELINE_REVIEW_REQUIRED",
+      "supports": ["known_public_safe_paths", "current_active_labels_at_manifest_time", "archive_future_and_private_boundary_categories", "privacy_boundary"],
+      "required_json_values": {
+        "current_user_facing_version": "PMP Current / PMP-CURRENT-1",
+        "privacy_rule": "Public app paths and public-safe structural files only. No private Bug Memory records, private Notes contents, tokens, passwords, secrets, or private localStorage values."
+      },
+      "does_not_support": ["exact effective runtime path without map and source confirmation", "private contents", "current behavior by itself"]
+    },
+    {
+      "evidence_id": "AEC-011",
+      "path": "pmp-lossless-inventory-vault/current.json",
+      "tier": "T3_PUBLIC_SAFE_INVENTORY",
+      "freshness": "OLDER_NORMALIZED_SNAPSHOT_REVIEW_REQUIRED",
+      "supports": ["latest_normalized_public_safe_inventory_snapshot", "snapshot_active_file_list", "snapshot_truth_boundary"],
+      "required_json_values": {
+        "record_classification.primary_category": "app_inventory",
+        "record_classification.record_status": "accepted_current",
+        "truth_boundary": "This is a compact normalized pointer and summary of the latest full inbox report. Private values are not captured; only key names and app structure are allowed."
+      },
+      "does_not_support": ["current runtime path after newer map changes", "private values", "individual defect applicability by itself"]
+    },
+    {
+      "evidence_id": "AEC-012",
+      "path": "pmp-current-update-status.json",
+      "tier": "T3_PUBLIC_SAFE_INVENTORY",
+      "freshness": "HISTORICAL_UPDATE_STATUS",
+      "supports": ["historical updater result only"],
+      "required_json_values": {
+        "type": "PMP_CURRENT_UPDATE_STATUS",
+        "target_map": "pmp-current-map.json"
+      },
+      "does_not_support": ["overriding newer effective map evidence", "current runtime success"]
+    }
+  ],
+  "catalog_integrity_rules": {
+    "evidence_ids_unique": true,
+    "all_repository_paths_must_exist": true,
+    "required_markers_must_match": true,
+    "required_json_values_must_match": true,
+    "effective_and_fallback_maps_must_remain_distinct": true,
+    "older_inventory_may_not_override_newer_runtime_control": true,
+    "private_boundary_may_not_be_bypassed": true,
+    "catalog_may_not_contain_envelope_classifications": true,
+    "catalog_may_not_contain_destinations": true
+  },
+  "authorization_on_independent_pass": {
+    "next_authorized_work": "PACKET_01.5_PHASE_E_FIRST_CONTROLLED_APPLICABILITY_ONLY_BATCH",
+    "actual_classification_performed": false,
+    "actual_routing_performed": false,
+    "packet_04_authorized": false,
+    "stop_before_first_record_decision": true
+  }
+}
