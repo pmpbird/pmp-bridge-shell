@@ -2,9 +2,9 @@
   "audit_date": "2026-06-14",
   "scope": "Packet 01.5 mechanical discovery integrity only",
   "baseline_count": 122,
-  "files_audited": 45,
-  "actual_provisional_count": 1803,
-  "combined_actual_count": 1925,
+  "files_audited": 46,
+  "actual_provisional_count": 1835,
+  "combined_actual_count": 1957,
   "sum_of_declared_counts_where_present": 1791,
   "count_mismatch_count": 5,
   "duplicate_id_count": 22,
@@ -7775,6 +7775,146 @@
           "title": "Future ocean users cannot consent to irreversible present extraction"
         }
       ]
+    },
+    {
+      "pass": 46,
+      "path": "audit/Packet_01.5_Discovery_Pass_46_Nuclear_Radiological_Safety_RadiationProtection_Waste_Emergency_and_Decommissioning_v1.md",
+      "actual_count": 32,
+      "declared_count": null,
+      "count_match": true,
+      "malformed_headings": [],
+      "missing_harm": [],
+      "missing_overlap": [],
+      "records": [
+        {
+          "id": "NUCSAFE-001",
+          "title": "Safety analysis treats major hazards as independent"
+        },
+        {
+          "id": "NUCSAFE-002",
+          "title": "Safety systems share hidden support dependencies"
+        },
+        {
+          "id": "NUCSAFE-003",
+          "title": "Operating procedures no longer match the current facility state"
+        },
+        {
+          "id": "NUCSAFE-004",
+          "title": "Aging degradation remains below ordinary alarm thresholds"
+        },
+        {
+          "id": "NUCSAFE-005",
+          "title": "Rare-event planning relies too heavily on limited operating history"
+        },
+        {
+          "id": "NUCSAFE-006",
+          "title": "Facility protection transfers risk to surrounding systems"
+        },
+        {
+          "id": "RADHEALTH-001",
+          "title": "Area monitoring is generalized to personal exposure"
+        },
+        {
+          "id": "RADHEALTH-002",
+          "title": "Cumulative exposure is fragmented across employers and sites"
+        },
+        {
+          "id": "RADHEALTH-003",
+          "title": "Internal contamination is overlooked after external exposure ends"
+        },
+        {
+          "id": "RADHEALTH-004",
+          "title": "Regulatory limits are treated as a guarantee of no harm"
+        },
+        {
+          "id": "FUELNUC-001",
+          "title": "Upstream fuel production shifts long-lived burden to remote communities"
+        },
+        {
+          "id": "FUELNUC-002",
+          "title": "Fuel-component defect remains hidden until later service"
+        },
+        {
+          "id": "FUELNUC-003",
+          "title": "Retired fuel retains long-term active-system dependencies"
+        },
+        {
+          "id": "FUELNUC-004",
+          "title": "Transport approval does not represent every real accident condition"
+        },
+        {
+          "id": "MEDRAD-001",
+          "title": "Treatment plan is attached to the wrong patient, site, or version"
+        },
+        {
+          "id": "MEDRAD-002",
+          "title": "Dose reduction degrades diagnostic visibility"
+        },
+        {
+          "id": "MEDRAD-003",
+          "title": "Residual activity affects workers and family after care"
+        },
+        {
+          "id": "MEDRAD-004",
+          "title": "Isotope shortage changes care without transparent prioritization"
+        },
+        {
+          "id": "RADWASTE-001",
+          "title": "Waste classification understates how hazard changes over time"
+        },
+        {
+          "id": "RADWASTE-002",
+          "title": "Repository performance relies on one long-term geological interpretation"
+        },
+        {
+          "id": "RADWASTE-003",
+          "title": "Interim storage becomes permanent without permanent design"
+        },
+        {
+          "id": "RADWASTE-004",
+          "title": "Waste records and physical packages diverge over time"
+        },
+        {
+          "id": "RADWASTE-005",
+          "title": "Present consent cannot represent all future and neighboring communities"
+        },
+        {
+          "id": "NUCEM-001",
+          "title": "Emergency severity is obscured by incomplete information"
+        },
+        {
+          "id": "NUCEM-002",
+          "title": "Evacuation planning assumes critical infrastructure remains available"
+        },
+        {
+          "id": "NUCEM-003",
+          "title": "Different hazards require conflicting protective actions"
+        },
+        {
+          "id": "NUCEM-004",
+          "title": "Protective-action thresholds ignore unequal ability to comply"
+        },
+        {
+          "id": "NUCEM-005",
+          "title": "Contamination-zone boundaries create false certainty"
+        },
+        {
+          "id": "DECOMNUC-001",
+          "title": "Decommissioning discovers undocumented contamination and modification"
+        },
+        {
+          "id": "DECOMNUC-002",
+          "title": "Facility knowledge disappears before dismantling is complete"
+        },
+        {
+          "id": "DECOMNUC-003",
+          "title": "Decontamination creates larger secondary waste streams"
+        },
+        {
+          "id": "DECOMNUC-004",
+          "title": "Site-release criteria ignore future land-use intensity"
+        }
+      ]
     }
   ],
   "duplicate_ids": {
@@ -7879,6 +8019,7 @@
     "DATA": 6,
     "DEAD": 6,
     "DEBRIS": 5,
+    "DECOMNUC": 4,
     "DEL": 3,
     "DELEG": 6,
     "DELIVERY": 5,
@@ -7927,6 +8068,7 @@
     "FRAME": 5,
     "FRAUD": 5,
     "FRAUDSCORE": 5,
+    "FUELNUC": 4,
     "GENEEDIT": 6,
     "GENOME": 6,
     "GOVREC": 4,
@@ -7988,6 +8130,7 @@
     "MEAS": 6,
     "MEDIA": 6,
     "MEDINT": 7,
+    "MEDRAD": 4,
     "MEM": 3,
     "MIC": 3,
     "MIG": 7,
@@ -8006,6 +8149,8 @@
     "NET": 8,
     "NORM": 5,
     "NOTIFY": 4,
+    "NUCEM": 5,
+    "NUCSAFE": 6,
     "NUTRI": 5,
     "OBS": 6,
     "OCCUP": 5,
@@ -8045,6 +8190,8 @@
     "QUALITY": 6,
     "QUEUE": 8,
     "QUOTA": 6,
+    "RADHEALTH": 4,
+    "RADWASTE": 5,
     "RANK": 7,
     "RATE": 3,
     "RBACK": 4,
