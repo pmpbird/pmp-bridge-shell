@@ -2,9 +2,9 @@
   "audit_date": "2026-06-14",
   "scope": "Packet 01.5 mechanical discovery integrity only",
   "baseline_count": 122,
-  "files_audited": 55,
-  "actual_provisional_count": 2189,
-  "combined_actual_count": 2311,
+  "files_audited": 56,
+  "actual_provisional_count": 2229,
+  "combined_actual_count": 2351,
   "sum_of_declared_counts_where_present": 1791,
   "count_mismatch_count": 5,
   "duplicate_id_count": 26,
@@ -9439,6 +9439,178 @@
           "title": "Long-term stewardship ends when project funding or ownership changes"
         }
       ]
+    },
+    {
+      "pass": 56,
+      "path": "audit/Packet_01.5_Discovery_Pass_56_MentalHealth_BehavioralHealth_Addiction_Prevention_Outpatient_Inpatient_Involuntary_Crisis_HarmReduction_and_Recovery_v1.md",
+      "actual_count": 40,
+      "declared_count": null,
+      "count_match": true,
+      "malformed_headings": [],
+      "missing_harm": [],
+      "missing_overlap": [],
+      "records": [
+        {
+          "id": "MHPREV-001",
+          "title": "Prevention resources arrive only after visible crisis rates rise"
+        },
+        {
+          "id": "MHPREV-002",
+          "title": "Population screening labels distress without creating a treatment path"
+        },
+        {
+          "id": "MHPREV-003",
+          "title": "Prevention messaging treats structural distress as individual weakness"
+        },
+        {
+          "id": "MHPREV-004",
+          "title": "Risk prediction concentrates surveillance on already overmonitored groups"
+        },
+        {
+          "id": "BHOUT-001",
+          "title": "Outpatient access exists on paper but not within the clinical need window"
+        },
+        {
+          "id": "BHOUT-002",
+          "title": "Short appointments reduce complex distress to one billable symptom"
+        },
+        {
+          "id": "BHOUT-003",
+          "title": "Provider turnover repeatedly breaks therapeutic trust and history"
+        },
+        {
+          "id": "BHOUT-004",
+          "title": "Telebehavioral care expands reach while losing privacy and environmental context"
+        },
+        {
+          "id": "BHOUT-005",
+          "title": "Improvement metrics reward symptom reduction while missing autonomy and life function"
+        },
+        {
+          "id": "BHINPT-001",
+          "title": "Admission threshold rises as bed capacity shrinks"
+        },
+        {
+          "id": "BHINPT-002",
+          "title": "Inpatient safety rules create isolation, inactivity, and loss of dignity"
+        },
+        {
+          "id": "BHINPT-003",
+          "title": "Discharge is driven by bed demand rather than durable stability"
+        },
+        {
+          "id": "BHINPT-004",
+          "title": "Unit design and staffing mix increase conflict and retraumatization"
+        },
+        {
+          "id": "BHINPT-005",
+          "title": "Medical illness is misattributed to psychiatric diagnosis"
+        },
+        {
+          "id": "INVOLT-001",
+          "title": "Involuntary-treatment criteria are applied differently across clinicians and jurisdictions"
+        },
+        {
+          "id": "INVOLT-002",
+          "title": "Capacity is treated as a stable trait rather than a decision-specific and changing state"
+        },
+        {
+          "id": "INVOLT-003",
+          "title": "Coercive intervention destroys future willingness to seek voluntary care"
+        },
+        {
+          "id": "INVOLT-004",
+          "title": "Least-restrictive alternative is unavailable, making coercion appear necessary"
+        },
+        {
+          "id": "INVOLT-005",
+          "title": "Review process occurs after the coercive harm has already happened"
+        },
+        {
+          "id": "CRISCONT-001",
+          "title": "Crisis service stabilizes the moment but cannot hand off to ongoing care"
+        },
+        {
+          "id": "CRISCONT-002",
+          "title": "Safety plan assumes stable housing, trusted contacts, transport, and communication"
+        },
+        {
+          "id": "CRISCONT-003",
+          "title": "Crisis risk is downgraded when the person becomes quiet or compliant"
+        },
+        {
+          "id": "CRISCONT-004",
+          "title": "Crisis records follow the person as permanent risk labels"
+        },
+        {
+          "id": "ADDICT-001",
+          "title": "Addiction treatment is withheld until abstinence or stability is demonstrated"
+        },
+        {
+          "id": "ADDICT-002",
+          "title": "Treatment success is defined as abstinence while other harm and recovery goals are ignored"
+        },
+        {
+          "id": "ADDICT-003",
+          "title": "Program rules abruptly remove medication or support after relapse"
+        },
+        {
+          "id": "ADDICT-004",
+          "title": "Addiction treatment is separated from pain, trauma, mental health, and physical care"
+        },
+        {
+          "id": "ADDICT-005",
+          "title": "Criminal-legal monitoring substitutes for therapeutic support"
+        },
+        {
+          "id": "WITHDRAW-001",
+          "title": "Withdrawal risk is underestimated because recent use is incomplete or concealed"
+        },
+        {
+          "id": "WITHDRAW-002",
+          "title": "Forced interruption occurs during arrest, hospitalization, transfer, or shortage"
+        },
+        {
+          "id": "WITHDRAW-003",
+          "title": "Tolerance loss after abstinence is not communicated or supported"
+        },
+        {
+          "id": "HARMRED-001",
+          "title": "Harm-reduction access is restricted by location, hours, identity, or political opposition"
+        },
+        {
+          "id": "HARMRED-002",
+          "title": "Drug-checking result is treated as proof that the whole supply is safe"
+        },
+        {
+          "id": "HARMRED-003",
+          "title": "Service data are reused for policing, immigration, benefits, or custody decisions"
+        },
+        {
+          "id": "BHREC-001",
+          "title": "Recovery is treated as a clinical endpoint without housing, income, purpose, and community"
+        },
+        {
+          "id": "BHREC-002",
+          "title": "Peer support is professionalized until lived-experience authority is lost"
+        },
+        {
+          "id": "BHREC-003",
+          "title": "Relapse or recurrence erases prior progress in records and eligibility decisions"
+        },
+        {
+          "id": "BHWORK-001",
+          "title": "Workforce shortage increases caseload while reducing supervision and reflection"
+        },
+        {
+          "id": "BHWORK-002",
+          "title": "Productivity metrics reward contact volume over therapeutic continuity"
+        },
+        {
+          "id": "BHWORK-003",
+          "title": "Staff safety policy relies on security escalation rather than environmental and relational prevention"
+        }
+      ]
     }
   ],
   "duplicate_ids": {
@@ -9474,6 +9646,7 @@
     "ABUSE": 8,
     "ACC": 3,
     "ACCESSLAW": 4,
+    "ADDICT": 5,
     "ADHERE": 4,
     "ADS": 6,
     "ADV": 5,
@@ -9510,6 +9683,10 @@
     "BANKSYS": 5,
     "BAT": 6,
     "BENEFIT": 6,
+    "BHINPT": 5,
+    "BHOUT": 5,
+    "BHREC": 3,
+    "BHWORK": 3,
     "BILL": 6,
     "BIOACCESS": 5,
     "BIOSEC": 5,
@@ -9554,6 +9731,7 @@
     "COURT": 6,
     "COV": 4,
     "CREDIT": 6,
+    "CRISCONT": 4,
     "CRISIS": 6,
     "CROP": 3,
     "CRYPTO": 7,
@@ -9643,6 +9821,7 @@
     "GUARD": 11,
     "HANDOFF": 5,
     "HARASS": 4,
+    "HARMRED": 3,
     "HAZ": 8,
     "HAZMAT": 5,
     "HAZWASTE": 4,
@@ -9673,6 +9852,7 @@
     "INTERRUPT": 5,
     "INVASIVE": 4,
     "INVITE": 5,
+    "INVOLT": 5,
     "ISOLATE": 4,
     "JOBSKILL": 4,
     "JUR": 4,
@@ -9714,6 +9894,7 @@
     "MEDRAD": 4,
     "MEDWASTE": 3,
     "MEM": 3,
+    "MHPREV": 4,
     "MIC": 3,
     "MIG": 7,
     "MIN": 4,
@@ -9896,6 +10077,7 @@
     "WEB": 3,
     "WILDFIRE": 5,
     "WILDLIFE": 5,
+    "WITHDRAW": 3,
     "WKAUTH": 5,
     "WKEVAL": 6
   }
