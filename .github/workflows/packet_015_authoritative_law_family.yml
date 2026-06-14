@@ -8,7 +8,8 @@ on:
       - "tools/build_packet_01_5_authoritative_law_family_v1.py"
       - "tools/packet_01_5_authoritative_law_policy.py"
       - "tools/packet_01_5_authoritative_law_policy_v2.py"
-      - "tools/run_packet_01_5_authoritative_law_family_v2.py"
+      - "tools/packet_01_5_authoritative_law_policy_v3.py"
+      - "tools/run_packet_01_5_authoritative_law_family_v3.py"
       - "tools/verify_packet_01_5_authoritative_law_family_v2.py"
       - "tools/write_packet_01_5_authoritative_law_family_receipts_v1.py"
       - ".github/workflows/packet_015_authoritative_law_family.yml"
@@ -25,10 +26,10 @@ jobs:
         with:
           ref: ${{ github.head_ref || github.ref_name }}
           fetch-depth: 0
-      - run: python3 tools/run_packet_01_5_authoritative_law_family_v2.py build
+      - run: python3 tools/run_packet_01_5_authoritative_law_family_v3.py build
       - name: Run corrected independent verifier
         run: |
-          python3 tools/run_packet_01_5_authoritative_law_family_v2.py verify > audit/Packet_01.5_Authoritative_Packet_Law_Family_Independent_Verification_v1.json 2> audit/Packet_01.5_Authoritative_Packet_Law_Family_Debug.log
+          python3 tools/run_packet_01_5_authoritative_law_family_v3.py verify > audit/Packet_01.5_Authoritative_Packet_Law_Family_Independent_Verification_v1.json 2> audit/Packet_01.5_Authoritative_Packet_Law_Family_Debug.log
       - name: Commit failure diagnostic
         if: failure()
         run: |
