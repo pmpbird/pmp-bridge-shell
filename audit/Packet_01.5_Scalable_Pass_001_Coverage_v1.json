@@ -1,0 +1,29 @@
+{
+  "packet": "01.5",
+  "pass_id": "SCALABLE-PASS-001",
+  "window_records": 122,
+  "decided_records": 6,
+  "queued_records": 116,
+  "unknown_hold_decisions": 0,
+  "coverage_complete": true,
+  "decision_addresses": [
+    "P01.5::B::0003",
+    "P01.5::B::0004",
+    "P01.5::B::0005",
+    "P01.5::B::0006",
+    "P01.5::B::0007",
+    "P01.5::B::0008"
+  ],
+  "queue_domain_counts": {
+    "DEPLOYMENT_AND_LIVE_BEHAVIOR": 16,
+    "AUTHORITATIVE_PACKET_LAW": 25,
+    "DEPENDENCY_OR_PLATFORM_STATE": 14,
+    "PRIVATE_OR_UNCAPTURED_EVIDENCE": 9,
+    "OTHER_RECORD_SPECIFIC_PROOF": 31,
+    "CURRENT_RUNTIME_SOURCE": 20,
+    "CROSS_SOURCE_CONFLICT": 1
+  },
+  "routing_assignments": 0,
+  "grouping_assignments": 0,
+  "source_records_removed_or_closed": 0
+}
