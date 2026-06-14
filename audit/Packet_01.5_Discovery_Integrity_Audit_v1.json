@@ -2,9 +2,9 @@
   "audit_date": "2026-06-14",
   "scope": "Packet 01.5 mechanical discovery integrity only",
   "baseline_count": 122,
-  "files_audited": 64,
-  "actual_provisional_count": 2533,
-  "combined_actual_count": 2655,
+  "files_audited": 65,
+  "actual_provisional_count": 2560,
+  "combined_actual_count": 2682,
   "sum_of_declared_counts_where_present": 1791,
   "count_mismatch_count": 5,
   "duplicate_id_count": 30,
@@ -10923,6 +10923,126 @@
           "title": "Closure metrics count completed actions rather than restored human and ecological function"
         }
       ]
+    },
+    {
+      "pass": 65,
+      "path": "audit/Packet_01.5_Discovery_Pass_65_CrossDomain_Saturation_MultiStageChains_DelayedConsequences_Reversibility_Jurisdiction_HumanAdaptation_and_CommonDependencies_v1.md",
+      "actual_count": 27,
+      "declared_count": null,
+      "count_match": true,
+      "malformed_headings": [],
+      "missing_harm": [],
+      "missing_overlap": [],
+      "records": [
+        {
+          "id": "XCHAIN-001",
+          "title": "One record error triggers a sequence of service failures before correction arrives"
+        },
+        {
+          "id": "XCHAIN-002",
+          "title": "Manual continuity work created during an outage is overwritten when automation returns"
+        },
+        {
+          "id": "XCHAIN-003",
+          "title": "Protective shutdown creates transport, staffing, and care failure downstream"
+        },
+        {
+          "id": "XCHAIN-004",
+          "title": "Emergency relocation breaks identity, address, eligibility, and return rights in sequence"
+        },
+        {
+          "id": "XCHAIN-005",
+          "title": "Deferred maintenance becomes a workaround, then training, then accepted design"
+        },
+        {
+          "id": "XCHAIN-006",
+          "title": "Public warning causes movement into a second unmanaged hazard"
+        },
+        {
+          "id": "XDELAY-001",
+          "title": "Low-level exposure becomes visible only after ownership and records have changed"
+        },
+        {
+          "id": "XDELAY-002",
+          "title": "An automated mistake becomes future training evidence before it is discovered"
+        },
+        {
+          "id": "XDELAY-003",
+          "title": "Short-term stabilization creates a long-term dependency that is not funded"
+        },
+        {
+          "id": "XDELAY-004",
+          "title": "Legal correction arrives after an irreversible practical loss"
+        },
+        {
+          "id": "XDELAY-005",
+          "title": "Recovery financing quietly transfers future control to outside institutions"
+        },
+        {
+          "id": "XREV-001",
+          "title": "Technical rollback cannot reverse decisions already copied into external systems"
+        },
+        {
+          "id": "XREV-002",
+          "title": "Restoring infrastructure does not restore depleted human capacity"
+        },
+        {
+          "id": "XREV-003",
+          "title": "Temporary closure destroys the expertise and supply chain required for reopening"
+        },
+        {
+          "id": "XREV-004",
+          "title": "Reversing an automated decision does not restore trust in the institution"
+        },
+        {
+          "id": "XJUR-001",
+          "title": "A cross-border incident changes legal thresholds while the physical hazard remains continuous"
+        },
+        {
+          "id": "XJUR-002",
+          "title": "Data lawful to collect in one jurisdiction become harmful when reused in another"
+        },
+        {
+          "id": "XJUR-003",
+          "title": "Asset transfer moves hazards into a weaker regulatory regime"
+        },
+        {
+          "id": "XJUR-004",
+          "title": "Mutual-aid authority ends before cleanup and recovery responsibility is assigned"
+        },
+        {
+          "id": "XADAPT-001",
+          "title": "Users build shadow systems around safeguards that are too slow or rigid"
+        },
+        {
+          "id": "XADAPT-002",
+          "title": "People optimize behavior to the metric until the metric stops representing reality"
+        },
+        {
+          "id": "XADAPT-003",
+          "title": "Repeated nuisance alerts create local filtering rules unknown to system designers"
+        },
+        {
+          "id": "XADAPT-004",
+          "title": "Household and frontline compensation hides institutional failure until capacity collapses"
+        },
+        {
+          "id": "XCOMMON-001",
+          "title": "Independent risk decisions rely on the same vendor model or source dataset"
+        },
+        {
+          "id": "XCOMMON-002",
+          "title": "Backup power, telecom, transport, and emergency supply all depend on one fuel corridor"
+        },
+        {
+          "id": "XCOMMON-003",
+          "title": "Multiple safety systems share one clock, identity service, map, or certificate authority"
+        },
+        {
+          "id": "XCOMMON-004",
+          "title": "Recovery organizations compete for the same contractors, housing, equipment, and specialists"
+        }
+      ]
     }
   ],
   "duplicate_ids": {
@@ -11461,12 +11581,18 @@
     "WITHDRAW": 3,
     "WKAUTH": 5,
     "WKEVAL": 6,
+    "XADAPT": 4,
     "XAUTH": 4,
     "XCARE": 4,
+    "XCHAIN": 6,
+    "XCOMMON": 4,
+    "XDELAY": 5,
     "XENV": 4,
     "XIDREC": 4,
     "XINFRA": 4,
+    "XJUR": 4,
     "XMARKET": 4,
+    "XREV": 4,
     "XSTEW": 4,
     "XWARN": 3
   }
