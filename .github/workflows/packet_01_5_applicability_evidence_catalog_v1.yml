@@ -1,0 +1,65 @@
+name: Packet 01.5 applicability evidence catalog v1
+
+on:
+  push:
+    paths:
+      - "audit/Packet_01.5_Applicability_Evidence_Catalog_v1.md"
+      - "audit/applicability/Packet_01.5_Applicability_Evidence_Catalog_v1.json"
+      - "tools/verify_packet_01_5_applicability_evidence_catalog_v1.py"
+      - ".github/workflows/packet_01_5_applicability_evidence_catalog_v1.yml"
+  pull_request:
+    paths:
+      - "audit/Packet_01.5_Applicability_Evidence_Catalog_v1.md"
+      - "audit/applicability/Packet_01.5_Applicability_Evidence_Catalog_v1.json"
+      - "audit/Packet_01.5_Applicability_Evidence_Catalog_PR_Trigger.txt"
+      - "tools/verify_packet_01_5_applicability_evidence_catalog_v1.py"
+      - ".github/workflows/packet_01_5_applicability_evidence_catalog_v1.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  verify-applicability-evidence-catalog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref || github.ref_name }}
+
+      - name: Independently verify applicability evidence catalog
+        run: |
+          set -o pipefail
+          python3 tools/verify_packet_01_5_applicability_evidence_catalog_v1.py 2>&1 | tee audit/Packet_01.5_Applicability_Evidence_Catalog_Workflow_Debug.log
+
+      - name: Commit failure diagnostic
+        if: failure()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit/Packet_01.5_Applicability_Evidence_Catalog_Workflow_Debug.log
+          if git diff --cached --quiet; then
+            echo "No diagnostic changes."
+          else
+            git commit -m "Record Packet 01.5 applicability evidence catalog diagnostic"
+            git push origin "HEAD:${{ github.head_ref || github.ref_name }}"
+          fi
+
+      - name: Commit independent verification outputs
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm -f --ignore-unmatch audit/Packet_01.5_Applicability_Evidence_Catalog_Workflow_Debug.log
+          git add \
+            audit/Packet_01.5_Applicability_Evidence_Catalog_Independent_Verification_v1.md \
+            audit/Packet_01.5_Applicability_Evidence_Catalog_Independent_Verification_v1.json \
+            audit/Packet_01.5_Routing_Status_v77.md
+          if git diff --cached --quiet; then
+            echo "No applicability evidence catalog verification-output changes."
+          else
+            git commit -m "Verify Packet 01.5 applicability evidence catalog v1"
+            git push origin "HEAD:${{ github.head_ref || github.ref_name }}"
+          fi
