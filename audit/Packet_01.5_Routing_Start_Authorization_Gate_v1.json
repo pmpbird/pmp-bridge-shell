@@ -1,0 +1,109 @@
+{
+  "packet": "01.5",
+  "gate": "routing_start_authorization",
+  "version": 1,
+  "date": "2026-06-14",
+  "status": "DEFINED_PENDING_INDEPENDENT_VERIFICATION",
+  "watch": "NONE",
+  "blockers": "NONE_KNOWN",
+  "required_inventory": {
+    "baseline": 122,
+    "provisional": 2628,
+    "combined": 2750,
+    "unique_addresses": 2750,
+    "source_to_envelope_bijection": "PASS",
+    "exact_original_heading_match": "PASS",
+    "exact_original_body_match": "PASS",
+    "source_file_hash_match": "PASS",
+    "source_block_hash_match": "PASS",
+    "envelope_hash_match": "PASS",
+    "gzip_reverse_reconstruction": "PASS"
+  },
+  "required_blank_state": {
+    "applicability_state": "UNCLASSIFIED",
+    "routing_state": "UNROUTED",
+    "primary_destinations_populated": 0,
+    "secondary_destinations_populated": 0,
+    "cross_cutting_laws_populated": 0,
+    "watch_triggers_populated": 0,
+    "semantic_cluster_references_populated": 0,
+    "source_records_removed": 0,
+    "source_records_closed": 0
+  },
+  "immutable_fields": [
+    "composite_address",
+    "source_set",
+    "source_path",
+    "source_pass",
+    "source_file_hash",
+    "source_record_ordinal",
+    "original_identifier",
+    "original_heading",
+    "original_body",
+    "source_block_hash",
+    "harm_text",
+    "overlap_text",
+    "legacy_exception_codes",
+    "normalization_version"
+  ],
+  "applicability_states": [
+    "CURRENT_DEFECT",
+    "ACTIVE_CONDITIONAL_RISK",
+    "DORMANT_FUTURE_RISK",
+    "OUT_OF_SCOPE_CANDIDATE"
+  ],
+  "evidence_types": [
+    "CURRENT_CONTACT",
+    "PLANNED_CONTACT",
+    "ABSENT_CONTACT",
+    "SCOPE_EXCLUSION"
+  ],
+  "required_evidence_fields": [
+    "evidence_id",
+    "evidence_type",
+    "source_reference",
+    "source_hash_or_stable_reference",
+    "contact_path_explanation",
+    "decision_rationale"
+  ],
+  "authorized_sequence": [
+    "PHASE_A_APPLICABILITY_CLASSIFICATION",
+    "PHASE_B_DESTINATION_PREPARATION",
+    "PHASE_C_OWNER_ROUTING_VERIFICATION"
+  ],
+  "batch_transaction": {
+    "maximum_envelopes": 100,
+    "verified_parent_hash_required": true,
+    "versioned_child_inventory_required": true,
+    "parent_preserved": true,
+    "count_equality_required": true,
+    "address_equality_required": true,
+    "immutable_field_equality_required": true,
+    "hash_chain_required": true,
+    "partial_acceptance_prohibited": true,
+    "blank_inventory_is_rollback_point": true
+  },
+  "semantic_comparison": {
+    "references_only": true,
+    "source_envelopes_remain_individual": true,
+    "counts_remain_unchanged": true,
+    "original_wording_remains_unchanged": true,
+    "source_records_remain_preserved": true,
+    "records_remain_open": true,
+    "clusters_are_not_destinations": true
+  },
+  "authorized_on_pass": [
+    "applicability_classification",
+    "evidence_backed_destination_candidate_preparation",
+    "non_loss_semantic_cluster_references",
+    "batch_level_independent_verification"
+  ],
+  "not_authorized_on_pass": [
+    "source_record_combination",
+    "source_record_removal",
+    "individual_record_closure",
+    "packet_04",
+    "blanket_current_defect_classification",
+    "routing_without_applicability_evidence"
+  ]
+}
