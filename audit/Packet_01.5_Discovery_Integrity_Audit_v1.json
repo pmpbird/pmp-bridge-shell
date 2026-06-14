@@ -2,9 +2,9 @@
   "audit_date": "2026-06-14",
   "scope": "Packet 01.5 mechanical discovery integrity only",
   "baseline_count": 122,
-  "files_audited": 47,
-  "actual_provisional_count": 1873,
-  "combined_actual_count": 1995,
+  "files_audited": 48,
+  "actual_provisional_count": 1912,
+  "combined_actual_count": 2034,
   "sum_of_declared_counts_where_present": 1791,
   "count_mismatch_count": 5,
   "duplicate_id_count": 22,
@@ -8079,6 +8079,174 @@
           "title": "Abrupt policy or supply change creates withdrawal and illicit-market risk"
         }
       ]
+    },
+    {
+      "pass": 48,
+      "path": "audit/Packet_01.5_Discovery_Pass_48_PublicHealth_Pandemics_Surveillance_LaboratoryNetworks_Vaccination_Isolation_Capacity_and_Coordination_v1.md",
+      "actual_count": 39,
+      "declared_count": null,
+      "count_match": true,
+      "malformed_headings": [],
+      "missing_harm": [],
+      "missing_overlap": [],
+      "records": [
+        {
+          "id": "PHSURV-001",
+          "title": "Surveillance misses people outside formal care systems"
+        },
+        {
+          "id": "PHSURV-002",
+          "title": "Digital surveillance signal reflects behavior change rather than disease change"
+        },
+        {
+          "id": "PHSURV-003",
+          "title": "Delayed reporting creates a false picture of current conditions"
+        },
+        {
+          "id": "PHSURV-004",
+          "title": "Syndromic surveillance confuses common symptoms with a specific cause"
+        },
+        {
+          "id": "PHSURV-005",
+          "title": "Privacy protection removes the detail needed to detect local clusters"
+        },
+        {
+          "id": "CASEDEF-001",
+          "title": "Case definition changes break trend comparability"
+        },
+        {
+          "id": "CASEDEF-002",
+          "title": "Narrow case definition excludes atypical or early presentations"
+        },
+        {
+          "id": "CASEDEF-003",
+          "title": "Broad probable-case definition overwhelms limited response capacity"
+        },
+        {
+          "id": "CASEDEF-004",
+          "title": "Administrative case status outlives clinical reality"
+        },
+        {
+          "id": "LABNET-001",
+          "title": "Laboratory capacity is concentrated in a few geographic or institutional hubs"
+        },
+        {
+          "id": "LABNET-002",
+          "title": "Test performance changes with specimen collection and transport"
+        },
+        {
+          "id": "LABNET-003",
+          "title": "Laboratory network produces results that cannot be compared directly"
+        },
+        {
+          "id": "LABNET-004",
+          "title": "Testing surge consumes supplies needed for other essential diagnoses"
+        },
+        {
+          "id": "VAXSYS-001",
+          "title": "Vaccine-effectiveness estimate is biased by who receives and reports vaccination"
+        },
+        {
+          "id": "VAXSYS-002",
+          "title": "Cold-chain compliance is inferred from endpoint temperature"
+        },
+        {
+          "id": "VAXSYS-003",
+          "title": "Dose and product records fragment across jurisdictions and providers"
+        },
+        {
+          "id": "VAXSYS-004",
+          "title": "Mandate design ignores unequal ability to comply"
+        },
+        {
+          "id": "VAXSYS-005",
+          "title": "Adverse-event communication amplifies either fear or dismissal"
+        },
+        {
+          "id": "ISOLATE-001",
+          "title": "Isolation policy assumes people have safe private space"
+        },
+        {
+          "id": "ISOLATE-002",
+          "title": "Quarantine duration is detached from actual exposure and infectious period"
+        },
+        {
+          "id": "ISOLATE-003",
+          "title": "Isolation support fails before compliance does"
+        },
+        {
+          "id": "ISOLATE-004",
+          "title": "Enforcement deters testing and contact disclosure"
+        },
+        {
+          "id": "PHCOMMS-001",
+          "title": "Guidance changes without explaining what evidence changed"
+        },
+        {
+          "id": "PHCOMMS-002",
+          "title": "One message is issued to populations with different risks and constraints"
+        },
+        {
+          "id": "PHCOMMS-003",
+          "title": "Uncertainty language is either erased or exaggerated"
+        },
+        {
+          "id": "PHCOMMS-004",
+          "title": "Information correction spreads more slowly than the original claim"
+        },
+        {
+          "id": "HCAP-001",
+          "title": "Bed count is mistaken for usable clinical capacity"
+        },
+        {
+          "id": "HCAP-002",
+          "title": "Surge staffing transfers exhaustion and risk across regions"
+        },
+        {
+          "id": "HCAP-003",
+          "title": "Infection-control expansion reduces access to other essential care"
+        },
+        {
+          "id": "HCAP-004",
+          "title": "Crisis standards of care activate without transparent public governance"
+        },
+        {
+          "id": "HCAP-005",
+          "title": "Healthcare worker illness creates nonlinear capacity collapse"
+        },
+        {
+          "id": "PHALLOC-001",
+          "title": "Scarce protective equipment is allocated by purchasing power rather than exposure"
+        },
+        {
+          "id": "PHALLOC-002",
+          "title": "Central allocation ignores last-mile delivery and local usability"
+        },
+        {
+          "id": "PHALLOC-003",
+          "title": "Stockpile quantity hides expiration, condition, and deployment limits"
+        },
+        {
+          "id": "PHALLOC-004",
+          "title": "Allocation rule does not account for compounding disadvantage"
+        },
+        {
+          "id": "PHBORDER-001",
+          "title": "Jurisdictions use incompatible case, test, and reporting standards"
+        },
+        {
+          "id": "PHBORDER-002",
+          "title": "Border restriction redirects movement into less visible routes"
+        },
+        {
+          "id": "PHBORDER-003",
+          "title": "National stockpiling undermines global containment"
+        },
+        {
+          "id": "PHBORDER-004",
+          "title": "Cross-border coordination depends on political trust during the crisis"
+        }
+      ]
     }
   ],
   "duplicate_ids": {
@@ -8148,6 +8316,7 @@
     "CARBON": 5,
     "CARE": 6,
     "CASCADE": 5,
+    "CASEDEF": 4,
     "CHANGE": 8,
     "CHEAT": 5,
     "CHILD": 6,
@@ -8246,6 +8415,7 @@
     "HARASS": 4,
     "HAZ": 8,
     "HAZMAT": 5,
+    "HCAP": 5,
     "HEALTH": 6,
     "HERED": 4,
     "HERIT": 5,
@@ -8269,11 +8439,13 @@
     "INTERACT": 3,
     "INTERRUPT": 5,
     "INVITE": 5,
+    "ISOLATE": 4,
     "JOBSKILL": 4,
     "JUR": 4,
     "KB": 6,
     "LAB": 6,
     "LABEL": 5,
+    "LABNET": 4,
     "LABOR": 6,
     "LAND": 5,
     "LANG": 6,
@@ -8337,7 +8509,11 @@
     "PERMS": 6,
     "PERSIST": 3,
     "PERSUADE": 6,
+    "PHALLOC": 4,
     "PHARMVIG": 4,
+    "PHBORDER": 4,
+    "PHCOMMS": 4,
+    "PHSURV": 5,
     "PHY": 5,
     "PLAT": 1,
     "PLURAL": 5,
@@ -8448,6 +8624,7 @@
     "UI": 18,
     "UPDATE": 4,
     "USERPRIV": 4,
+    "VAXSYS": 5,
     "VEH": 6,
     "VER": 8,
     "VIAB": 5,
