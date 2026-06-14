@@ -1,0 +1,138 @@
+{
+  "packet": "01.5",
+  "batch": "P01.5-APP-B007",
+  "version": 1,
+  "date": "2026-06-14",
+  "status": "PLANNED_PENDING_TRANSACTION_AND_INDEPENDENT_VERIFICATION",
+  "parent_inventory": {
+    "path": "audit/routing-inventory/Packet_01.5_Applicability_Inventory_v7_Batch_006.jsonl",
+    "sha256": "cd908fe111c0c0c5767c923e6042c6a75f34d99a33e49d1069355847817f78b3",
+    "envelopes": 2750
+  },
+  "child_inventory": {
+    "version": 8,
+    "path": "audit/routing-inventory/Packet_01.5_Applicability_Inventory_v8_Batch_007.jsonl"
+  },
+  "contact_catalog": {
+    "path": "audit/routing-evidence/Packet_01.5_Project_Contact_Evidence_Catalog_v1.json",
+    "verification": "audit/Packet_01.5_Project_Contact_Evidence_Catalog_Independent_Verification_v1.json"
+  },
+  "selection": {
+    "rule": "next ten preserved baseline addresses after accepted Batch 006",
+    "addresses": [
+      "P01.5::B::0061",
+      "P01.5::B::0062",
+      "P01.5::B::0063",
+      "P01.5::B::0064",
+      "P01.5::B::0065",
+      "P01.5::B::0066",
+      "P01.5::B::0067",
+      "P01.5::B::0068",
+      "P01.5::B::0069",
+      "P01.5::B::0070"
+    ],
+    "count": 10
+  },
+  "decisions": [
+    {
+      "address": "P01.5::B::0061",
+      "original_identifier": "GOV-014",
+      "state": "ACTIVE_CONDITIONAL_RISK",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-BOUND-CAPABILITY-SET", "P03-BOUND-INSTALLED-RUNTIME", "P03-RC-005", "P03-RC-011"],
+      "contact_path": "The current freeze, truth, and inventory records govern only the proven current app, source, and control path; broader historical, external, and installed-runtime claims create contact only when the project attempts to extend that freeze beyond its verified boundary.",
+      "rationale": "The freeze boundary is current and verified, but harm depends on making a broader claim than the evidence supports. The limitation is therefore an active conditional risk rather than a blanket current defect."
+    },
+    {
+      "address": "P01.5::B::0062",
+      "original_identifier": "GOV-015",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-005", "P03-RC-009", "P03-RC-011", "P03-RC-017", "P03-RC-018"],
+      "contact_path": "Current truth, route, inventory, write, and safety evidence already depends on repository files and generated records whose branch, commit, and content-digest identities are not uniformly pinned together.",
+      "rationale": "The affected evidence is already used to establish present project truth and safe change. Inconsistent identity pinning is a current governance and proof defect."
+    },
+    {
+      "address": "P01.5::B::0063",
+      "original_identifier": "OPS-001",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-012", "P03-RC-015", "P03-RC-017", "P03-RC-018", "P03-RC-020"],
+      "contact_path": "Current private-memory, ZIP intake, GitHub-write, rollback, credential, and trust-zone capabilities already expose the project to credential leakage, data exposure, unsafe imports, and bad writes without one incident-response plan.",
+      "rationale": "The incident classes already touch active capabilities. Missing detection, containment, recovery, evidence preservation, and authority procedures are a current operational defect."
+    },
+    {
+      "address": "P01.5::B::0064",
+      "original_identifier": "OPS-002",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-004", "P03-RC-005", "P03-RC-017", "P03-RC-018"],
+      "contact_path": "Whole-App Health, App Truth, Safe Writer, and Code Safety are active current capabilities, but no defined alert-delivery path, duty owner, acknowledgement rule, or escalation mechanism turns detected failure into accountable response.",
+      "rationale": "Observation without delivery and operator responsibility can leave current failures unnoticed or unresolved. This is a current operations defect."
+    },
+    {
+      "address": "P01.5::B::0065",
+      "original_identifier": "OPS-003",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-013", "P03-RC-015", "P03-RC-017", "P03-RC-020"],
+      "contact_path": "Current Notes, ZIP, Safe Writer, browser, iPhone, GitHub, CDN, and platform-dependent capabilities already require dependency, provider, and compatibility maintenance.",
+      "rationale": "The maintenance burden exists now. Missing support windows, update ownership, compatibility criteria, and end-of-support handling are current operational defects."
+    },
+    {
+      "address": "P01.5::B::0066",
+      "original_identifier": "OPS-004",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-013", "P03-RC-014", "P03-RC-015", "P03-RC-017", "P03-RC-020"],
+      "contact_path": "Current capabilities already rely on GitHub, Apple Notes and Shortcuts, browser APIs, JSZip delivery, and trust-zone handling, yet their governing terms, licenses, privacy conditions, and change obligations have no completed review record.",
+      "rationale": "These external services and libraries are already in the current path. Missing legal, license, and policy review is a current governance defect."
+    },
+    {
+      "address": "P01.5::B::0067",
+      "original_identifier": "OPS-005",
+      "state": "ACTIVE_CONDITIONAL_RISK",
+      "source_evidence_type": "PLANNED_CONTACT",
+      "catalog_evidence_ids": ["P03-BOUND-OPTIONAL-BACKEND", "P03-RC-009", "P03-RC-020"],
+      "contact_path": "Public, private, authenticated, rate-limited, or locally restricted deployment requirements become operational when the optional backend or a wider hosted app surface is enabled.",
+      "rationale": "Current evidence does not prove a completed public backend service. The unresolved deployment model is an active conditional risk tied to a planned or optional exposure path."
+    },
+    {
+      "address": "P01.5::B::0068",
+      "original_identifier": "OPS-006",
+      "state": "ACTIVE_CONDITIONAL_RISK",
+      "source_evidence_type": "PLANNED_CONTACT",
+      "catalog_evidence_ids": ["P03-BOUND-DIRECT-AI", "P03-BOUND-OPTIONAL-BACKEND", "P03-BOUND-LOCAL-PRIVACY", "P03-RC-020"],
+      "contact_path": "A data-classification rule for source and project context becomes operational when the planned provider or optional backend path can receive information that is presently local or manually handed off.",
+      "rationale": "The direct provider path is not a completed current capability, but it is planned. The unresolved sendability boundary is therefore an active conditional risk."
+    },
+    {
+      "address": "P01.5::B::0069",
+      "original_identifier": "OPS-007",
+      "state": "ACTIVE_CONDITIONAL_RISK",
+      "source_evidence_type": "PLANNED_CONTACT",
+      "catalog_evidence_ids": ["P03-BOUND-DIRECT-AI", "P03-BOUND-AUTONOMOUS-REPOSITORY", "P03-RC-002", "P03-RC-017"],
+      "contact_path": "Maximum automation authority and mandatory approval rules become operational when planned AI, tool, backend, or repository-action capabilities can act beyond current guidance and user-controlled Safe Writer transactions.",
+      "rationale": "Current authority remains bounded and human controlled. The missing automation ceiling is an active conditional risk for the approved future authority path."
+    },
+    {
+      "address": "P01.5::B::0070",
+      "original_identifier": "OPS-008",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-012", "P03-RC-014", "P03-RC-017", "P03-RC-018", "P03-RC-020"],
+      "contact_path": "Current work depends on GitHub access, user-supplied credentials, Apple Notes and Shortcuts, private records, external platforms, and local recovery artifacts without one verified loss-of-account, loss-of-secret, provider-outage, or Notes-loss recovery decision.",
+      "rationale": "These dependencies and loss modes already touch active capabilities. Missing recovery ownership and fallback decisions are a current operational defect."
+    }
+  ],
+  "routing_fields_rule": "All destination, law, watch-trigger, and semantic-cluster fields remain blank in this batch.",
+  "source_preservation_rule": "All immutable source fields, addresses, source hashes, original wording, accepted prior classifications, and total envelope count remain unchanged except for the ten selected applicability fields.",
+  "expected_result": {
+    "CURRENT_DEFECT": 33,
+    "ACTIVE_CONDITIONAL_RISK": 32,
+    "DORMANT_FUTURE_RISK": 5,
+    "OUT_OF_SCOPE_CANDIDATE": 0,
+    "UNCLASSIFIED": 2680,
+    "routing_assignments": 0
+  }
+}
