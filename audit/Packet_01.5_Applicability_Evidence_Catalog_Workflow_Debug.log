@@ -1,0 +1,3 @@
+PASS — independently verified all 2750 blank routing envelopes
+PASS — corrected Packet 01.5 routing-start gate v2 independently verified
+FAIL: vault private boundary changed
