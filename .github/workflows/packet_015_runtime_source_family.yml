@@ -1,0 +1,42 @@
+name: Packet 015 runtime source family
+
+on:
+  pull_request:
+    paths:
+      - "audit/applicability/Packet_01.5_Runtime_Source_Family_Pass_v1.json"
+      - "audit/Packet_01.5_Runtime_Source_Family_PR_Trigger.txt"
+      - "tools/build_packet_01_5_runtime_source_family_v1.py"
+      - "tools/packet_01_5_runtime_source_family_policy.py"
+      - "tools/verify_packet_01_5_runtime_source_family_v1.py"
+      - "tools/write_packet_01_5_runtime_source_family_receipts_v1.py"
+      - ".github/workflows/packet_015_runtime_source_family.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+          fetch-depth: 0
+      - run: python3 tools/build_packet_01_5_runtime_source_family_v1.py
+      - run: python3 tools/verify_packet_01_5_runtime_source_family_v1.py > audit/Packet_01.5_Runtime_Source_Family_Independent_Verification_v1.json
+      - run: python3 tools/write_packet_01_5_runtime_source_family_receipts_v1.py
+      - name: Commit verified outputs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit/applicability/Packet_01.5_Runtime_Source_Family_Manifest_v1.json
+          git add audit/applicability/Packet_01.5_Runtime_Source_Family_Decisions_v1.jsonl
+          git add audit/applicability/Packet_01.5_Runtime_Source_Family_Remaining_Queue_v1.jsonl
+          git add audit/Packet_01.5_Runtime_Source_Family_Evidence_Matrix_v1.json
+          git add audit/Packet_01.5_Runtime_Source_Family_Coverage_v1.json
+          git add audit/Packet_01.5_Runtime_Source_Family_v1.md
+          git add audit/Packet_01.5_Runtime_Source_Family_Independent_Verification_v1.json
+          git add audit/Packet_01.5_Runtime_Source_Family_Independent_Verification_v1.md
+          git add audit/Packet_01.5_Routing_Status_v84.md
+          git diff --cached --quiet || (git commit -m "Verify current runtime source evidence family" && git push origin "HEAD:${{ github.head_ref || github.ref_name }}")
