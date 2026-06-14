@@ -1,0 +1,40 @@
+name: Packet 01.5 routing-start authorization gate
+
+on:
+  push:
+    paths:
+      - "audit/Packet_01.5_Routing_Start_Authorization_Gate_v1.md"
+      - "audit/Packet_01.5_Routing_Start_Authorization_Gate_v1.json"
+      - "tools/verify_packet_01_5_routing_start_gate.py"
+      - ".github/workflows/packet_01_5_routing_start_gate.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  verify-and-authorize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify routing-start gate
+        run: python3 tools/verify_packet_01_5_routing_start_gate.py
+
+      - name: Commit verification outputs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            audit/Packet_01.5_Routing_Start_Authorization_Independent_Verification_v1.md \
+            audit/Packet_01.5_Routing_Start_Authorization_Independent_Verification_v1.json \
+            audit/Packet_01.5_Routing_Status_v75.md
+          if git diff --cached --quiet; then
+            echo "No routing-start verification-output changes."
+          else
+            git commit -m "Verify and authorize Packet 01.5 routing start"
+            git push
+          fi
