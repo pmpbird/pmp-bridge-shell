@@ -1,0 +1,100 @@
+{
+  "packet": "01.5",
+  "artifact": "authoritative_packet_law_evidence_family_pass",
+  "version": 1,
+  "status": "PROPOSED_PENDING_BUILD_AND_INDEPENDENT_VERIFICATION",
+  "source_queue": {
+    "path": "audit/applicability/Packet_01.5_Scalable_Pass_001_Evidence_Queue_v1.jsonl",
+    "sha256": "1b28dbfd69e9af4b51ce5cf4eb4e43d4ed4aaea107129b2e11b7b41c9dfd861a"
+  },
+  "source_inventory": {
+    "path": "audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.jsonl",
+    "sha256": "76169a80e07603cea51d769d3d89b32735149c2aef7eb09f893ed94fe5d72477"
+  },
+  "family": "AUTHORITATIVE_PACKET_LAW",
+  "expected_family_records": 25,
+  "authority_precedence": [
+    {
+      "tier": 1,
+      "name": "CURRENT_STATUS_AND_INDEPENDENT_RECEIPTS",
+      "scope": "Latest current status ledgers, master status, active-work card, continuation protocol, and independently verified receipts merged into main."
+    },
+    {
+      "tier": 2,
+      "name": "CURRENT_GOVERNING_PACKET_RECORDS",
+      "scope": "Current packet laws, packet records, roadmaps, completion receipts, and governing plans outside historical, reconstructed, provisional, applicability, and routing-inventory paths."
+    },
+    {
+      "tier": 3,
+      "name": "OLDER_VERSION_CORROBORATION_ONLY",
+      "scope": "Older versions may corroborate but may not override a newer record in the same normalized document family."
+    }
+  ],
+  "conflict_rules": {
+    "higher_tier_overrides_lower_tier": true,
+    "newer_version_overrides_older_same_family": true,
+    "same_tier_unresolved_conflict": "REMAIN_QUEUED",
+    "missing_current_authority": "REMAIN_QUEUED",
+    "private_dependency": "REMAIN_QUEUED",
+    "direct_support_required": true,
+    "content_digest_required": true,
+    "main_commit_anchor_required": true
+  },
+  "reviewed_predicates": [
+    {
+      "claim_contains": "Packet 06.5 is the only implementation packet",
+      "predicate": "PACKET_06_5_AI_BRIDGE_ONLY_IMPLEMENTATION_SCOPE",
+      "state": "CURRENT DEFECT OR LIMITATION",
+      "confidence": 97
+    },
+    {
+      "claim_contains": "free/no-subscription constraint is not enforced by a packet gate",
+      "predicate": "FREE_CONSTRAINT_PRESENT_NO_ENFORCEMENT_GATE",
+      "state": "CURRENT DEFECT OR LIMITATION",
+      "confidence": 94
+    },
+    {
+      "claim_contains": "Packet 23 is a no-code assembly plan",
+      "predicate": "PACKET_23_NO_CODE_ASSEMBLY_NOT_IMPLEMENTATION",
+      "state": "CURRENT DEFECT OR LIMITATION",
+      "confidence": 98
+    },
+    {
+      "claim_contains": "Packet 24 is a runbook specification",
+      "predicate": "PACKET_24_RUNBOOK_NOT_EXECUTION",
+      "state": "CURRENT DEFECT OR LIMITATION",
+      "confidence": 98
+    },
+    {
+      "claim_contains": "There is no authorized packet to build the complete candidate pipeline",
+      "predicate": "NO_COMPLETE_PIPELINE_IMPLEMENTATION_AUTHORITY",
+      "state": "CURRENT DEFECT OR LIMITATION",
+      "confidence": 93
+    },
+    {
+      "claim_contains": "No explicit repair/retest iteration packet",
+      "predicate": "NO_REPAIR_RETEST_ITERATION_AUTHORITY",
+      "state": "CURRENT DEFECT OR LIMITATION",
+      "confidence": 93
+    }
+  ],
+  "generic_direct_support": {
+    "enabled": true,
+    "minimum_claim_token_coverage": 0.82,
+    "minimum_distinct_claim_tokens": 6,
+    "allowed_state": "CURRENT DEFECT OR LIMITATION",
+    "confidence": 92,
+    "requires_no_equal_or_higher_precedence_conflict": true
+  },
+  "unmatched_policy": "REMAIN_QUEUED_WITH_EXACT_MISSING_AUTHORITY_OR_CONFLICT_PROOF",
+  "unknown_hold_created": false,
+  "decision_author": "resident-authoritative-law-family-classifier-v1",
+  "decision_verifier": "github-actions-independent-authoritative-law-family-verifier-v1",
+  "prohibited": [
+    "routing",
+    "grouping",
+    "closure",
+    "implementation",
+    "Packet 04"
+  ]
+}
