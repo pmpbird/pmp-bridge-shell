@@ -1,0 +1,32 @@
+{
+  "type": "PMP_PACKET_03_5_FINAL_PASS_MANIFEST",
+  "version": "4.0.0",
+  "packet": "03.5",
+  "status": "PASS",
+  "completed_on": "2026-06-14",
+  "baseline_limitations": 122,
+  "unassigned_limitations": 0,
+  "roadmap_gaps": 0,
+  "unresolved_watch": "None at lifecycle-coverage gate",
+  "blockers": "None",
+  "next_authorized_packet": "04 — Protected Storage and Migration Map",
+  "packet_04_authorized": true,
+  "local_full_package": {
+    "filename": "Packet_03.5_v4_FINAL_PASS_COMPLETE.zip",
+    "human_register": "Note_03.5_PMP_Current_Permanent_Limitation_Discovery_Coverage_and_Reopening_Gate_v4_FINAL_PASS.md",
+    "machine_register": "pmp-current-permanent-limitation-register-v3-final.json",
+    "human_register_sha256": "e606cfa4c216221f1d1ffaeec5056011aa7c699f9c8865ce4a9ab593b7d1730a",
+    "machine_register_sha256": "e95b117fac57cac4bb0b2f942a307808d7893301809c0a21c29a3ece15f94bbe"
+  },
+  "repository_records": [
+    "audit/Packet_01_Additive_Amendment_Control_Spine_and_Existing_Packet_Roles_v1.md",
+    "audit/Packet_03.5_Approved_Existing_Packet_Role_Amendment_v1.json",
+    "audit/Packet_03.5_Lifecycle_Coverage_Audit_v1.json",
+    "audit/Packet_03.5_Second_Breaker_Audit_v1.json",
+    "audit/Packet_03.5_Lifecycle_Owner_Summary_v1.md",
+    "audit/PMP-Current-Packet-03.5-Completion-Receipt-v4.md",
+    "audit/Packet_03.5_v4_FINAL_PASS_MANIFEST.json"
+  ],
+  "safe_claim": "All 122 baseline limitations have complete approved lifecycle paths using the existing roadmap, with no unauthorized placeholder packet.",
+  "do_not_claim": "This manifest does not prove that any limitation is fixed, implemented, tested, or closed."
+}
