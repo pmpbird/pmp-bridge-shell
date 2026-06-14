@@ -1,0 +1,74 @@
+{
+  "packet": "01.5",
+  "artifact": "applicability_batch_plan",
+  "version": 1,
+  "batch_id": "PACKET-01.5-APPLICABILITY-BATCH-002",
+  "status": "PROPOSED_PENDING_BUILD_AND_INDEPENDENT_VERIFICATION",
+  "selection_manifest": {
+    "path": "audit/applicability/Packet_01.5_Applicability_Batch_002_Selection_v1.json",
+    "sha256": "33eebaeec7987c85d843b244a8e1fab5102c3f07117526e6feb05bf5cfe39ed0"
+  },
+  "selection_gate_receipt": {
+    "path": "audit/Packet_01.5_Applicability_Batch_002_Selection_Gate_Independent_Verification_v1.json",
+    "required_status": "PASS_BATCH_002_SELECTION_GATE_AUTHORIZED",
+    "required_watch": "NONE",
+    "required_blockers": "NONE"
+  },
+  "source_inventory": {
+    "path": "audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.jsonl",
+    "sha256": "76169a80e07603cea51d769d3d89b32735149c2aef7eb09f893ed94fe5d72477",
+    "address_sequence_sha256": "3d808e1ec3f163e4cb2ab7a15767563fe7c43b9920bcecde9abe711226220916"
+  },
+  "evidence_catalog": "audit/applicability/Packet_01.5_Applicability_Evidence_Catalog_v1.json",
+  "decision_contract": "audit/routing-inventory/Packet_01.5_Routing_Decision_Contract_v2.json",
+  "decision_author": "resident-applicability-classifier-v1",
+  "decision_verifier": "github-actions-independent-applicability-verifier-v1",
+  "selected_addresses": [
+    "P01.5::B::0005",
+    "P01.5::B::0006",
+    "P01.5::B::0007",
+    "P01.5::B::0008"
+  ],
+  "expected_original_identifiers": [
+    "AI-005",
+    "AI-006",
+    "AI-007",
+    "AI-008"
+  ],
+  "decision_policy": {
+    "decision_stage": "HOLD",
+    "applicability_state": "UNKNOWN — HOLD",
+    "applicability_confidence": 98,
+    "catalog_evidence_ids": [
+      "AEC-001",
+      "AEC-003",
+      "AEC-004",
+      "AEC-010",
+      "AEC-011",
+      "AEC-012"
+    ],
+    "reasoning_rule": "Preserve the exact historical claim from the immutable source envelope. The verified Batch 002 selection authorizes review of the address but makes no applicability judgment. No direct current T4 source, runtime, packet-law, deployment, or test receipt tied to this exact claim is present in the verified evidence layer. Historical labels, severity, and owner suggestions may not be promoted into current truth. Therefore the record remains UNKNOWN — HOLD.",
+    "hold_reason_rule": "Current direct T4 evidence is insufficient to determine whether the exact historical claim is true now.",
+    "unresolved_dependencies": [
+      "Capture current direct source, runtime, authoritative packet-law, deployment, or test evidence that specifically proves or disproves the exact historical claim.",
+      "Independently verify the captured evidence against the current effective app, worker, provider, platform, and packet state before changing the HOLD decision."
+    ],
+    "reopening_conditions": [
+      "A current direct proof or disproof tied to this permanent address becomes available.",
+      "The effective app, worker, provider, model, dependency, platform, deployment, or authoritative packet law changes.",
+      "Contradictory evidence appears or an earlier receipt becomes stale, invalid, or incomplete."
+    ]
+  },
+  "prohibited_outputs": {
+    "primary_destination": true,
+    "secondary_destinations": true,
+    "cross_cutting_laws": true,
+    "semantic_clusters": true,
+    "routing_evidence": true,
+    "routing_confidence": true,
+    "record_closure": true,
+    "implementation": true,
+    "packet_04_authority": true
+  },
+  "stop_boundary": "Stop after independent verification of Batch 002 decisions. Do not route, group, close, implement, begin Packet 04, or begin Batch 003 decisions in the same task."
+}
