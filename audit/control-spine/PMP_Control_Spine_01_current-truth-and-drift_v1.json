@@ -1,0 +1,78 @@
+{
+  "type": "PMP_CURRENT_PROJECT_CONTROL_SPINE_COMPANION_RECORD",
+  "version": "1.0.0-baseline",
+  "created_on": "2026-06-14",
+  "updated_on": "2026-06-14",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "packet_authority": "03.5 preflight carry-forward; Packet 1 defines permanent law",
+  "control_number": 1,
+  "control_name": "Current Truth and Drift Register",
+  "purpose": "Record the active current fact, competing records, precedence basis, drift, supersession, and revalidation trigger.",
+  "packet_02_carry_forward": [
+    "Stale route statements must not override the current map and executed runtime evidence.",
+    "Apple Notes, repository files, commits, File Library copies, and status ledger can conflict.",
+    "Packet status, route identity, wrapper identity, and active versions must not drift silently."
+  ],
+  "linked_permanent_limitations": [
+    "GOV-004",
+    "GOV-005",
+    "GOV-006",
+    "GOV-007",
+    "GOV-008",
+    "GOV-009",
+    "GOV-010",
+    "GOV-011",
+    "GOV-012",
+    "GOV-015",
+    "PLAT-002",
+    "PLAT-008"
+  ],
+  "entries": [
+    {
+      "id": "TRUTH-001",
+      "subject": "Packet 03 status",
+      "active_truth": "PASS — COMPLETE under v4 receipt and runtime proof",
+      "evidence": [
+        "Packet_03_Completion_Receipt_v4_FINAL_PASS.txt",
+        "Packet_03_Current_Runtime_Proof_Adjudication_v2.json"
+      ],
+      "state": "ACTIVE"
+    },
+    {
+      "id": "TRUTH-002",
+      "subject": "Current route",
+      "active_truth": "pmp-app-current.html → pmp-current-map-v9.json → pmp-route-guardian-current-loader-v14.html → pmp-current-inner-cleanbug-rgcontrols-v4.html → pmp-current-inner-cleanbug-rgcontrols-v3.html → pmp-home-single-v6.html",
+      "evidence": [
+        "Packet 03 runtime proof test P03-1781398601766-454669a3",
+        "pmp-current-map-v9.json"
+      ],
+      "state": "ACTIVE"
+    },
+    {
+      "id": "TRUTH-003",
+      "subject": "Temporary Packet 03 proof route",
+      "active_truth": "Removed; temporary wrapper deleted; v14 restored",
+      "evidence": [
+        "Packet 03 v4 receipt",
+        "current map restore commit 7dafed6ed4f152796a4e426261f78a47c1e93df7"
+      ],
+      "state": "SUPERSEDED"
+    },
+    {
+      "id": "TRUTH-004",
+      "subject": "Packet 02 default-branch route text",
+      "active_truth": "Known stale record; retained as correction evidence and may not override current route",
+      "evidence": [
+        "audit/PMP-Current-Resident-Reasoning-Connection-Audit-v1.md",
+        "GOV-008"
+      ],
+      "state": "DRIFT_OPEN"
+    }
+  ],
+  "state": "BASELINE CREATED — CONTINUING RECORD",
+  "append_only_history": [],
+  "reopen_on_contrary_evidence": true,
+  "unresolved_watch": "See open entries and linked limitation records; no item may be silently dropped.",
+  "safe_claim": "The Packet 02 risk family has a named companion record and linked limitation identities.",
+  "do_not_claim": "Creating this record does not implement or close its linked limitations."
+}
