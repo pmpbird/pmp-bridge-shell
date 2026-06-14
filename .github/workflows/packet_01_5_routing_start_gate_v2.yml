@@ -1,0 +1,67 @@
+name: Packet 01.5 routing-start authorization gate v2
+
+on:
+  push:
+    paths:
+      - "audit/Packet_01.5_Routing_Start_Authorization_v1_Reconciliation_v1.md"
+      - "audit/Packet_01.5_Routing_Start_Authorization_Gate_v2.md"
+      - "audit/routing-inventory/Packet_01.5_Routing_Decision_Contract_v2.json"
+      - "tools/verify_packet_01_5_routing_start_gate_v2.py"
+      - ".github/workflows/packet_01_5_routing_start_gate_v2.yml"
+  pull_request:
+    paths:
+      - "audit/Packet_01.5_Routing_Start_Authorization_v1_Reconciliation_v1.md"
+      - "audit/Packet_01.5_Routing_Start_Authorization_Gate_v2.md"
+      - "audit/routing-inventory/Packet_01.5_Routing_Decision_Contract_v2.json"
+      - "audit/Packet_01.5_Routing_Start_Gate_v2_PR_Trigger.txt"
+      - "tools/verify_packet_01_5_routing_start_gate_v2.py"
+      - ".github/workflows/packet_01_5_routing_start_gate_v2.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  verify-and-authorize-v2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref || github.ref_name }}
+
+      - name: Independently verify corrected routing-start gate
+        run: |
+          set -o pipefail
+          python3 tools/verify_packet_01_5_routing_start_gate_v2.py 2>&1 | tee audit/Packet_01.5_Routing_Start_Gate_v2_Workflow_Debug.log
+
+      - name: Commit failure diagnostic
+        if: failure()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit/Packet_01.5_Routing_Start_Gate_v2_Workflow_Debug.log
+          if git diff --cached --quiet; then
+            echo "No diagnostic changes."
+          else
+            git commit -m "Record Packet 01.5 routing-start v2 diagnostic"
+            git push origin "HEAD:${{ github.head_ref || github.ref_name }}"
+          fi
+
+      - name: Commit independent verification outputs
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -f audit/Packet_01.5_Routing_Start_Gate_v2_Workflow_Debug.log
+          git add \
+            audit/Packet_01.5_Routing_Start_Authorization_Independent_Verification_v2.md \
+            audit/Packet_01.5_Routing_Start_Authorization_Independent_Verification_v2.json \
+            audit/Packet_01.5_Routing_Status_v76.md
+          if git diff --cached --quiet; then
+            echo "No routing-start v2 verification-output changes."
+          else
+            git commit -m "Verify and authorize Packet 01.5 routing start under v2"
+            git push origin "HEAD:${{ github.head_ref || github.ref_name }}"
+          fi
