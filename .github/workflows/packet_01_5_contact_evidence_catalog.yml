@@ -1,0 +1,39 @@
+name: Packet 01.5 project-contact evidence catalog
+
+on:
+  push:
+    paths:
+      - "audit/Packet_01.5_Canonical_Project_Contact_Evidence_Catalog_v1.json"
+      - "tools/verify_packet_01_5_contact_evidence_catalog.py"
+      - ".github/workflows/packet_01_5_contact_evidence_catalog.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  verify-catalog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify canonical project-contact evidence catalog
+        run: python3 tools/verify_packet_01_5_contact_evidence_catalog.py
+
+      - name: Commit verification outputs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            audit/Packet_01.5_Canonical_Project_Contact_Evidence_Independent_Verification_v1.md \
+            audit/Packet_01.5_Canonical_Project_Contact_Evidence_Independent_Verification_v1.json \
+            audit/Packet_01.5_Applicability_Status_v76.md
+          if git diff --cached --quiet; then
+            echo "No contact-evidence verification-output changes."
+          else
+            git commit -m "Verify Packet 01.5 project-contact evidence catalog"
+            git push
+          fi
