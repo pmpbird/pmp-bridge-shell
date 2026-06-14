@@ -1,0 +1,61 @@
+{
+  "packet": "01.5",
+  "verification": "routing_preparation_gate_independent_verification",
+  "version": 1,
+  "date": "2026-06-14",
+  "status": "fail_routing_remains_blocked",
+  "gate_design": "pass",
+  "provisional_source_proof": "pass",
+  "baseline_source_proof": "fail",
+  "routing_started": false,
+  "semantic_deduplication_started": false,
+  "individual_records_closed": 0,
+  "verified_provisional": {
+    "source_files": 69,
+    "records": 2628,
+    "malformed_headings": 0,
+    "missing_harm": 0,
+    "duplicate_exact_headings": 0,
+    "duplicate_unqualified_identifiers": 30,
+    "legacy_missing_overlap": 10,
+    "legacy_exception_code": "LEGACY-P01-NO-OVERLAP"
+  },
+  "baseline": {
+    "required_source": "pmp-current-permanent-limitation-register-v3-final.json",
+    "certified_count": 122,
+    "artifact_available_to_verifier": false,
+    "source_hash_available": false,
+    "ordered_record_enumeration_proven": false,
+    "stable_address_manifest_proven": false,
+    "reverse_reconstruction_proven": false
+  },
+  "combined_inventory": {
+    "certified_count": 2750,
+    "full_bijection_proven": false
+  },
+  "blocking_reason": "The exact 122-record baseline artifact is not present in the protected repository evidence set, so its individual records cannot be hashed, addressed, or reverse-reconstructed.",
+  "unlock_requirements": [
+    "add_exact_v3_final_baseline_artifact_without_rewriting",
+    "record_cryptographic_hash_and_source_path",
+    "mechanically_confirm_122_ordered_records",
+    "generate_addresses_P01.5_B_0001_through_0122",
+    "prove_reverse_reconstruction",
+    "prove_combined_bijection_122_plus_2628_equals_2750",
+    "verify_routing_fields_blank",
+    "run_independent_verification_v2"
+  ],
+  "permitted_work": [
+    "preserve_gate_design",
+    "import_missing_baseline_artifact",
+    "build_mechanical_inventory_and_verification_tooling",
+    "prepare_blank_schemas_and_templates"
+  ],
+  "prohibited_work": [
+    "assign_owners",
+    "classify_individual_applicability",
+    "semantic_merge",
+    "delete_records",
+    "close_records",
+    "begin_packet_04"
+  ]
+}
