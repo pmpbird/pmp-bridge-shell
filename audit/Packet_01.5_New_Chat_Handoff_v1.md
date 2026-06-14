@@ -5,8 +5,17 @@ WATCH: NONE
 BLOCKERS: NONE
 REPOSITORY: `pmpbird/pmp-bridge-shell`
 AUTHORITATIVE BRANCH: `main`
-AUTHORITATIVE MERGE COMMIT: `4e66aa31903e08548d4c6430578f9916c4b4a7fc`
-AUTHORITATIVE PULL REQUEST: `#2 — Generate and verify Packet 01.5 blank routing inventory`
+AUTHORITATIVE INVENTORY PULL REQUEST: `#2 — Generate and verify Packet 01.5 blank routing inventory`
+
+## Correction
+
+A formal Packet 01.5 did not exist when the first handoff was written. That was an error in the transfer instructions.
+
+The formal work packet now exists at:
+
+`audit/Packet_01.5_Problems_Limitations_and_Routing_Register_v1.md`
+
+Use that file as Packet 01.5 in the new chat.
 
 ## Receiver instruction
 
@@ -27,6 +36,7 @@ The repository records are authoritative. Chat text is navigation only.
 9. One blank routing inventory containing 2,750 envelopes was built.
 10. Independent verification passed.
 11. Pull request #2 was merged into `main`.
+12. The formal Packet 01.5 work packet was created.
 
 ## Current verified truth
 
@@ -48,13 +58,14 @@ The repository records are authoritative. Chat text is navigation only.
 
 ## Authoritative files to read first
 
-1. `audit/Packet_01.5_Routing_Inventory_Status_v74.md`
-2. `audit/Packet_01.5_Blank_Routing_Inventory_Build_v1.md`
-3. `audit/Packet_01.5_Blank_Routing_Inventory_Independent_Verification_v1.md`
-4. `audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.manifest.json`
-5. `audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.jsonl`
-6. `audit/Packet_01.5_Baseline_Source_Verification_v1.md`
-7. `audit/Packet_01.5_Baseline_Address_Manifest_v2.json`
+1. `audit/Packet_01.5_Problems_Limitations_and_Routing_Register_v1.md`
+2. `audit/Packet_01.5_Routing_Inventory_Status_v74.md`
+3. `audit/Packet_01.5_Blank_Routing_Inventory_Build_v1.md`
+4. `audit/Packet_01.5_Blank_Routing_Inventory_Independent_Verification_v1.md`
+5. `audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.manifest.json`
+6. `audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.jsonl`
+7. `audit/Packet_01.5_Baseline_Source_Verification_v1.md`
+8. `audit/Packet_01.5_Baseline_Address_Manifest_v2.json`
 
 ## Work that has not started
 
@@ -117,11 +128,18 @@ These states must remain distinct from routing destinations.
 6. Do not begin Packet 04 from this handoff.
 7. Stop at a real blocker rather than guessing.
 
-## New-chat opening message
+## New-chat transfer set
 
-Paste the project’s Packet 0, Packet 1, Packet 1.5, and this handoff into the new chat, then send:
+Provide the new chat with:
 
-> Continue Packet 01.5 from the authoritative repository state. Read `audit/Packet_01.5_New_Chat_Handoff_v1.md` and the listed verification records. Do not repeat discovery or rebuild the blank inventory. The exact next action is to create and independently verify the Packet 01.5 Routing-Start Authorization Gate. Stop before actual routing unless that separate gate passes.
+1. Packet 0
+2. Packet 1
+3. `audit/Packet_01.5_Problems_Limitations_and_Routing_Register_v1.md`
+4. `audit/Packet_01.5_New_Chat_Handoff_v1.md`
+
+Then send:
+
+> Continue Packet 01.5 from the authoritative repository state. Read `audit/Packet_01.5_Problems_Limitations_and_Routing_Register_v1.md`, `audit/Packet_01.5_New_Chat_Handoff_v1.md`, and every authoritative verification file listed in the handoff. Do not repeat discovery or rebuild the blank inventory. The exact next action is to create and independently verify the Packet 01.5 Routing-Start Authorization Gate. Stop before actual routing unless that separate gate passes.
 
 ## Transfer receipt
 
@@ -131,10 +149,10 @@ TRANSFER STATUS:
 PASS
 
 AUTHORITATIVE STATE:
-Merged repository state at commit `4e66aa31903e08548d4c6430578f9916c4b4a7fc`
+Current `main` branch, including the merged verified inventory and formal Packet 01.5 work packet
 
 COMPLETED:
-Discovery closure-readiness, baseline recovery, source verification, blank 2,750-envelope inventory construction, and independent inventory verification
+Discovery closure-readiness, baseline recovery, source verification, blank 2,750-envelope inventory construction, independent inventory verification, and formal Packet 01.5 creation
 
 CURRENT WATCH:
 None
@@ -143,7 +161,7 @@ CURRENT BLOCKERS:
 None
 
 SAFE CLAIM:
-The complete 2,750-record source set is preserved exactly once in a verified blank routing inventory and is ready for a separately authorized routing-start gate.
+The complete 2,750-record source set is preserved exactly once in a verified blank routing inventory, and a formal Packet 01.5 now governs the remaining work.
 
 DO NOT CLAIM:
 Applicability classification, routing, semantic merging, record closure, or Packet 04 work has begun.
