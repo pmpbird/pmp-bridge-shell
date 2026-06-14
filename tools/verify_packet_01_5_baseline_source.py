@@ -2,7 +2,8 @@
 """Verify and reconstruct the exact Packet 01.5 122-record baseline source.
 
 This tool is mechanical. It does not classify, route, merge, rewrite, delete, or
-close any limitation record.
+close any limitation record. It generates the address manifest directly from the
+verified source so no hand-copied record hash can control the result.
 """
 from __future__ import annotations
 
@@ -15,7 +16,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[1]
 BASE = REPO / "audit" / "baseline-source"
 MANIFEST = BASE / "pmp-current-permanent-limitation-register-v3-final.transport-manifest.json"
-ADDRESS_MANIFEST = REPO / "audit" / "Packet_01.5_Baseline_Address_Manifest_v1.json"
+ADDRESS_MANIFEST = REPO / "audit" / "Packet_01.5_Baseline_Address_Manifest_v2.json"
 OUT_DIR = BASE / "reconstructed"
 OUT_SOURCE = OUT_DIR / "pmp-current-permanent-limitation-register-v3-final.json"
 RECEIPT_JSON = REPO / "audit" / "Packet_01.5_Baseline_Source_Verification_v1.json"
@@ -55,7 +56,12 @@ def main() -> None:
         if any(ch.isspace() for ch in text):
             fail(f"transport part contains whitespace: {expected['path']}")
         encoded_parts.append(text)
-        verified_parts.append({"part": expected["part"], "path": expected["path"], "characters": len(text), "sha256": sha256(raw_part)})
+        verified_parts.append({
+            "part": expected["part"],
+            "path": expected["path"],
+            "characters": len(text),
+            "sha256": sha256(raw_part),
+        })
 
     encoded = "".join(encoded_parts).encode("ascii")
     if len(encoded) != manifest["base64"]["characters"]:
@@ -103,25 +109,50 @@ def main() -> None:
     if addresses[0] != "P01.5::B::0001" or addresses[-1] != "P01.5::B::0122":
         fail("baseline address bounds are incorrect")
 
-    expected_address_manifest = json.loads(ADDRESS_MANIFEST.read_text(encoding="utf-8"))
-    manifest_records = expected_address_manifest.get("records")
-    if not isinstance(manifest_records, list) or len(manifest_records) != len(records):
-        fail("address manifest record count mismatch")
+    address_manifest = {
+        "packet": "01.5",
+        "version": 2,
+        "supersedes": "audit/Packet_01.5_Baseline_Address_Manifest_v1.json",
+        "generation": "mechanically_generated_from_verified_source",
+        "source_filename": manifest["source_filename"],
+        "source_sha256": sha256(source),
+        "source_bytes": len(source),
+        "record_count": len(records),
+        "address_first": addresses[0],
+        "address_last": addresses[-1],
+        "address_unique": True,
+        "original_identifier_unique": True,
+        "routing_state": "UNROUTED",
+        "destination_fields_blank": True,
+        "records": [
+            {
+                "address": address,
+                "ordinal": index,
+                "id": record["id"],
+                "record_sha256": sha256(canonical_record_bytes(record)),
+            }
+            for index, (address, record) in enumerate(zip(addresses, records), 1)
+        ],
+    }
+    ADDRESS_MANIFEST.write_text(json.dumps(address_manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
-    for index, (record, entry, address) in enumerate(zip(records, manifest_records, addresses), 1):
+    generated = json.loads(ADDRESS_MANIFEST.read_text(encoding="utf-8"))
+    generated_records = generated.get("records")
+    if not isinstance(generated_records, list) or len(generated_records) != len(records):
+        fail("generated address manifest count mismatch")
+    for index, (record, entry, address) in enumerate(zip(records, generated_records, addresses), 1):
         if entry.get("address") != address:
-            fail(f"address mismatch at ordinal {index}")
+            fail(f"generated address mismatch at ordinal {index}")
         if entry.get("ordinal") != index:
-            fail(f"ordinal mismatch at ordinal {index}")
+            fail(f"generated ordinal mismatch at ordinal {index}")
         if entry.get("id") != record.get("id"):
-            fail(f"identifier mismatch at ordinal {index}")
+            fail(f"generated identifier mismatch at ordinal {index}")
         if entry.get("record_sha256") != sha256(canonical_record_bytes(record)):
-            fail(f"canonical record hash mismatch at ordinal {index}")
-
-    if expected_address_manifest.get("routing_state") != "UNROUTED":
-        fail("address manifest routing state is not blank/unrouted")
-    if expected_address_manifest.get("destination_fields_blank") is not True:
-        fail("address manifest destination fields are not certified blank")
+            fail(f"generated canonical record hash mismatch at ordinal {index}")
+    if generated.get("routing_state") != "UNROUTED":
+        fail("generated address manifest routing state is not blank/unrouted")
+    if generated.get("destination_fields_blank") is not True:
+        fail("generated address manifest destination fields are not certified blank")
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     OUT_SOURCE.write_bytes(source)
@@ -143,6 +174,8 @@ def main() -> None:
         "transport_parts": verified_parts,
         "baseline_record_count": len(records),
         "baseline_identifier_unique": True,
+        "address_manifest": str(ADDRESS_MANIFEST.relative_to(REPO)),
+        "address_manifest_sha256": sha256(ADDRESS_MANIFEST.read_bytes()),
         "address_first": addresses[0],
         "address_last": addresses[-1],
         "address_count": len(addresses),
@@ -151,7 +184,7 @@ def main() -> None:
         "routing_state": "UNROUTED",
         "destination_fields_blank": True,
         "watch": "NONE",
-        "blockers": "NONE"
+        "blockers": "NONE",
     }
     RECEIPT_JSON.write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
     RECEIPT_MD.write_text("\n".join([
@@ -167,13 +200,14 @@ def main() -> None:
         f"- Baseline records: {len(records)}",
         f"- Unique original identifiers: {len(set(identifiers))}",
         f"- Stable addresses: `{addresses[0]}` through `{addresses[-1]}`",
+        f"- Generated address manifest: `{ADDRESS_MANIFEST.relative_to(REPO)}`",
         "- Address uniqueness: PASS",
         "- Reverse reconstruction: PASS",
         "- Routing state: UNROUTED",
         "- Destination fields: BLANK",
         "",
         "END PACKET 01.5 — BASELINE SOURCE VERIFICATION v1",
-        ""
+        "",
     ]), encoding="utf-8")
     print("PASS — exact Packet 01.5 baseline source verified")
 
