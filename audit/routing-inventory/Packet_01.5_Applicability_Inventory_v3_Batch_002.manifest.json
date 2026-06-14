@@ -1,0 +1,55 @@
+{
+  "packet": "01.5",
+  "inventory": "applicability_inventory",
+  "version": 3,
+  "batch": "P01.5-APP-B002",
+  "build_date": "2026-06-14",
+  "status": "BUILT_PENDING_INDEPENDENT_VERIFICATION",
+  "watch": "NONE",
+  "blockers": "NONE",
+  "parent": {
+    "path": "audit/routing-inventory/Packet_01.5_Applicability_Inventory_v2_Batch_001.jsonl",
+    "sha256": "f0dd94307c3719e6112da1cfc5a449a669b2628227cb379b78e0855a8985527f",
+    "envelopes": 2750
+  },
+  "child": {
+    "path": "audit/routing-inventory/Packet_01.5_Applicability_Inventory_v3_Batch_002.jsonl",
+    "bytes": 3982885,
+    "sha256": "e0fdbdc4d9a2c63a57dd88dcf6c7fc7551d060427b693b4e1dc03a3f7368ccb6",
+    "envelopes": 2750
+  },
+  "gzip": {
+    "path": "audit/routing-inventory/Packet_01.5_Applicability_Inventory_v3_Batch_002.jsonl.gz",
+    "bytes": 685131,
+    "sha256": "40ecd6e7847b50089ff514f965a35781e240f4ce78bb83bf35de1e4721ff81da",
+    "mtime": 0
+  },
+  "address_sequence_sha256": "3d808e1ec3f163e4cb2ab7a15767563fe7c43b9920bcecde9abe711226220916",
+  "changed_envelopes": 10,
+  "unchanged_envelopes": 2740,
+  "state_counts": {
+    "ACTIVE_CONDITIONAL_RISK": 19,
+    "CURRENT_DEFECT": 1,
+    "UNCLASSIFIED": 2730
+  },
+  "routing_assignments": 0,
+  "immutable_fields": [
+    "composite_address",
+    "source_set",
+    "source_path",
+    "source_pass",
+    "source_file_hash",
+    "source_record_ordinal",
+    "original_identifier",
+    "original_heading",
+    "original_body",
+    "source_block_hash",
+    "harm_text",
+    "overlap_text",
+    "legacy_exception_codes",
+    "normalization_version"
+  ],
+  "catalog_sha256": "532ef05c652b089d7e668a0ebe00ba79b8fac5ec040fdc1deb5ff41e7472411c",
+  "source_count_delta": 0,
+  "record_completion_count": 0
+}

@@ -1,0 +1,31 @@
+{
+  "packet": "01.5",
+  "verification": "applicability_batch_independent",
+  "version": 1,
+  "verification_date": "2026-06-14",
+  "status": "PASS_ACCEPTED",
+  "watch": "NONE",
+  "blockers": "NONE",
+  "batch": "P01.5-APP-B002",
+  "parent_inventory_sha256": "f0dd94307c3719e6112da1cfc5a449a669b2628227cb379b78e0855a8985527f",
+  "child_inventory_sha256": "e0fdbdc4d9a2c63a57dd88dcf6c7fc7551d060427b693b4e1dc03a3f7368ccb6",
+  "combined_envelopes": 2750,
+  "unique_addresses": 2750,
+  "changed_envelopes": 10,
+  "classified_envelopes_total": 20,
+  "state_counts": {
+    "ACTIVE_CONDITIONAL_RISK": 19,
+    "CURRENT_DEFECT": 1,
+    "UNCLASSIFIED": 2730
+  },
+  "immutable_field_match": "PASS",
+  "address_sequence_match": "PASS",
+  "evidence_schema_match": "PASS",
+  "catalog_reference_match": "PASS",
+  "routing_fields_blank": "PASS",
+  "gzip_reverse_reconstruction": "PASS",
+  "routing_assignments": 0,
+  "source_count_delta": 0,
+  "record_completion_count": 0,
+  "next_batch_ready": true
+}
