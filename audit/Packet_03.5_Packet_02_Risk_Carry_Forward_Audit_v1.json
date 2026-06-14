@@ -1,0 +1,47 @@
+{
+  "type": "PMP_PACKET_03_5_PACKET_02_RISK_CARRY_FORWARD_AUDIT",
+  "version": "1.0.0",
+  "created_on": "2026-06-14",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "packet_03_5_status": "IN_PROGRESS_CARRY_FORWARD_LOCKED_NOT_COMPLETE",
+  "packet_03_prerequisite": "PASS v4 with current runtime proof",
+  "baseline_limitations_preserved": 122,
+  "all_seven_control_families_carried": true,
+  "control_records": [
+    {"number": 1, "name": "Current Truth and Drift Register", "path": "audit/control-spine/PMP_Control_Spine_01_current-truth-and-drift_v1.json"},
+    {"number": 2, "name": "Evidence Validity Ledger", "path": "audit/control-spine/PMP_Control_Spine_02_evidence-validity_v1.json"},
+    {"number": 3, "name": "Authority Matrix", "path": "audit/control-spine/PMP_Control_Spine_03_authority-matrix_v1.json"},
+    {"number": 4, "name": "Decision and Assumption Ledger", "path": "audit/control-spine/PMP_Control_Spine_04_decision-and-assumption_v1.json"},
+    {"number": 5, "name": "Dependency and Provider Register", "path": "audit/control-spine/PMP_Control_Spine_05_dependency-and-provider_v1.json"},
+    {"number": 6, "name": "Runtime Ownership and Fallback Map", "path": "audit/control-spine/PMP_Control_Spine_06_runtime-ownership-and-fallback_v1.json"},
+    {"number": 7, "name": "Operational Continuity and Handoff Register", "path": "audit/control-spine/PMP_Control_Spine_07_operational-continuity-and-handoff_v1.json"}
+  ],
+  "concrete_packet_02_limits_confirmed_present": {
+    "source_precedence_conflict": "GOV-009",
+    "stale_route_evidence": "GOV-008",
+    "storage_clear_loss": "PLAT-005",
+    "shortcut_failure_paths": "PLAT-003",
+    "offline_dependency_failure": "PLAT-007",
+    "body_laws_not_automatic": "RUN-004",
+    "candidate_isolation_absent": "RUN-006",
+    "outer_guardian_absent": "RUN-009",
+    "promotion_absent": "RUN-010",
+    "automatic_rollback_absent": "RUN-011",
+    "long_run_validation_gap": "PROOF-006",
+    "provider_and_claim_drift": "PROOF-012"
+  },
+  "packet_03_evidence_integrated": [
+    "iPhone standalone runtime passed",
+    "close and reopen persistence passed",
+    "live route observed",
+    "configured Shortcut Bug Catalog save observed",
+    "backend disabled or not configured classified",
+    "temporary proof route removed"
+  ],
+  "uncovered_control_family_count": 0,
+  "uncovered_named_packet_02_problem_count": 0,
+  "packet_03_5_completion_status": "NOT_COMPLETE_FULL_LIMITATION_LIFECYCLE_AND_ROADMAP_GAP_GATE_STILL_REQUIRED",
+  "packet_04_authorized": false,
+  "safe_claim": "Every Packet 02 risk family and each named concrete later-project problem is explicitly carried into Packet 03.5 through a companion record and permanent limitation identity.",
+  "do_not_claim": "This audit does not resolve, implement, test, or close the later limitations."
+}
