@@ -1,0 +1,53 @@
+{
+  "packet": "01.5",
+  "audit": "cross_domain_saturation_closure_readiness",
+  "version": 1,
+  "date": "2026-06-14",
+  "status": "pass",
+  "decision": "broad_discovery_saturated_at_exercised_major_root_and_cross_domain_scope",
+  "automatic_discovery_passes": "stop",
+  "discovery_reopening": "event_triggered",
+  "routing_preparation": "authorized",
+  "routing_started": false,
+  "individual_records_closed": 0,
+  "semantic_deduplication_started": false,
+  "major_domain_coverage": {
+    "material_missing": 0,
+    "material_partial": 0,
+    "audit_source": "Packet_01.5_Major_Domain_Coverage_Audit_v3"
+  },
+  "cross_domain_yield": [
+    {"pass": 64, "records": 31, "duplicate_pressure": "high", "slowdown": "moderate"},
+    {"pass": 65, "records": 27, "duplicate_pressure": "very_high", "slowdown": "high"},
+    {"pass": 66, "records": 23, "duplicate_pressure": "very_high", "slowdown": "high"},
+    {"pass": 67, "records": 19, "duplicate_pressure": "extreme", "slowdown": "very_high"},
+    {"pass": 68, "records": 15, "duplicate_pressure": "extreme", "slowdown": "very_high"},
+    {"pass": 69, "records": 11, "duplicate_pressure": "extreme", "slowdown": "near_exhaustion"}
+  ],
+  "strictly_declining_yield": true,
+  "receiver_style_new_major_root_family_found": false,
+  "remaining_discoveries_classification": "residual_and_category_escape_interactions",
+  "applicability_states_required": [
+    "current_defect",
+    "active_conditional_risk",
+    "dormant_future_risk",
+    "out_of_scope_candidate"
+  ],
+  "activation_rule": "candidate_requires_demonstrated_current_or_planned_project_contact_path",
+  "reopening_triggers": [
+    "new_current_or_planned_capability_enters_watched_sector",
+    "routing_candidate_cannot_fit_established_root_family_without_distortion",
+    "runtime_evidence_exposes_materially_new_failure_mechanism",
+    "platform_legal_operational_or_ownership_change_creates_new_contact_path",
+    "breaker_or_proof_run_shows_material_family_incompleteness",
+    "candidate_survives_receiver_style_full_register_comparison_as_distinct_high_value_structure"
+  ],
+  "certified_count": {
+    "baseline": 122,
+    "provisional": 2628,
+    "combined": 2750,
+    "routing_decisions": 0,
+    "records_closed": 0
+  },
+  "next_required_action": "create_and_verify_packet_01_5_routing_preparation_gate"
+}
