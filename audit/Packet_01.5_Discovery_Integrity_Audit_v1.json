@@ -2,9 +2,9 @@
   "audit_date": "2026-06-14",
   "scope": "Packet 01.5 mechanical discovery integrity only",
   "baseline_count": 122,
-  "files_audited": 52,
-  "actual_provisional_count": 2069,
-  "combined_actual_count": 2191,
+  "files_audited": 53,
+  "actual_provisional_count": 2110,
+  "combined_actual_count": 2232,
   "sum_of_declared_counts_where_present": 1791,
   "count_mismatch_count": 5,
   "duplicate_id_count": 22,
@@ -8923,6 +8923,182 @@
           "title": "Recovery policy raises asset prices before restoring livelihoods"
         }
       ]
+    },
+    {
+      "pass": 53,
+      "path": "audit/Packet_01.5_Discovery_Pass_53_Detention_Incarceration_Borders_Asylum_Custody_LegalAccess_Healthcare_Family_Force_Release_and_Statelessness_v1.md",
+      "actual_count": 41,
+      "declared_count": null,
+      "count_match": true,
+      "malformed_headings": [],
+      "missing_harm": [],
+      "missing_overlap": [],
+      "records": [
+        {
+          "id": "BORDER-001",
+          "title": "Border risk screening mistakes missing records for dangerous intent"
+        },
+        {
+          "id": "BORDER-002",
+          "title": "Restriction redirects movement into more dangerous and less visible routes"
+        },
+        {
+          "id": "BORDER-003",
+          "title": "Automated name matching merges distinct people"
+        },
+        {
+          "id": "BORDER-004",
+          "title": "Entry decisions depend on information supplied by unsafe authorities"
+        },
+        {
+          "id": "ASYLUM-001",
+          "title": "Credibility judgment punishes trauma-related inconsistency"
+        },
+        {
+          "id": "ASYLUM-002",
+          "title": "Fast processing removes the time needed to obtain evidence and counsel"
+        },
+        {
+          "id": "ASYLUM-003",
+          "title": "Country-condition evidence is generalized across regions and identities"
+        },
+        {
+          "id": "ASYLUM-004",
+          "title": "Safe-third-country assumption ignores individual exposure in transit"
+        },
+        {
+          "id": "ASYLUM-005",
+          "title": "Protection status ends before return becomes genuinely safe"
+        },
+        {
+          "id": "DETAIN-001",
+          "title": "Detention is used because community alternatives are unavailable or underfunded"
+        },
+        {
+          "id": "DETAIN-002",
+          "title": "Facility population exceeds safe staffing and infrastructure capacity"
+        },
+        {
+          "id": "DETAIN-003",
+          "title": "Administrative detention has no reliable end condition"
+        },
+        {
+          "id": "DETAIN-004",
+          "title": "Facility transfer breaks legal, medical, and family continuity"
+        },
+        {
+          "id": "DETAIN-005",
+          "title": "Complaint systems depend on the same authority being challenged"
+        },
+        {
+          "id": "INCARC-001",
+          "title": "Classification system overstates risk from incomplete or biased history"
+        },
+        {
+          "id": "INCARC-002",
+          "title": "Protective custody becomes isolating punishment"
+        },
+        {
+          "id": "INCARC-003",
+          "title": "Sentence length no longer matches actual confinement burden"
+        },
+        {
+          "id": "INCARC-004",
+          "title": "Prison labor protection is weaker than ordinary workplace protection"
+        },
+        {
+          "id": "INCARC-005",
+          "title": "Lockdown preserves control while degrading health, education, and release readiness"
+        },
+        {
+          "id": "LEGALCUST-001",
+          "title": "Access to counsel exists formally but not practically"
+        },
+        {
+          "id": "LEGALCUST-002",
+          "title": "Interpretation compresses legally important distinctions"
+        },
+        {
+          "id": "LEGALCUST-003",
+          "title": "Evidence disclosure arrives too late for effective challenge"
+        },
+        {
+          "id": "LEGALCUST-004",
+          "title": "Remote hearing hides coercion and communication failure"
+        },
+        {
+          "id": "CUSTHEALTH-001",
+          "title": "Intake screening misses illness concealed by fear or language barriers"
+        },
+        {
+          "id": "CUSTHEALTH-002",
+          "title": "Healthcare decisions are subordinated to security staffing and movement rules"
+        },
+        {
+          "id": "CUSTHEALTH-003",
+          "title": "Medication continuity fails during arrest, transfer, court, or release"
+        },
+        {
+          "id": "CUSTHEALTH-004",
+          "title": "Mental-health crisis is treated as noncompliance or security threat"
+        },
+        {
+          "id": "FAMILYCUST-001",
+          "title": "Family separation records fail to preserve reliable reunification paths"
+        },
+        {
+          "id": "FAMILYCUST-002",
+          "title": "Contact policy makes family support dependent on money and distance"
+        },
+        {
+          "id": "FAMILYCUST-003",
+          "title": "Child welfare and custody systems issue conflicting family decisions"
+        },
+        {
+          "id": "FORCECUST-001",
+          "title": "Behavior interpreted as resistance may be fear, disability, or medical distress"
+        },
+        {
+          "id": "FORCECUST-002",
+          "title": "Use-of-force review relies on records produced by involved personnel"
+        },
+        {
+          "id": "FORCECUST-003",
+          "title": "Restraint intended for control creates respiratory or medical danger"
+        },
+        {
+          "id": "RELEASECUST-001",
+          "title": "Release occurs without identity documents, medication, housing, or transport"
+        },
+        {
+          "id": "RELEASECUST-002",
+          "title": "Supervision conditions conflict with work, care, disability, and transport reality"
+        },
+        {
+          "id": "RELEASECUST-003",
+          "title": "Record correction and expungement do not propagate to downstream systems"
+        },
+        {
+          "id": "STATELESS-001",
+          "title": "Lack of recognized nationality blocks every identity-dependent service"
+        },
+        {
+          "id": "STATELESS-002",
+          "title": "Deportation order cannot be executed but continues justifying detention"
+        },
+        {
+          "id": "CUSTTECH-001",
+          "title": "Risk score is reused beyond the context in which it was built"
+        },
+        {
+          "id": "CUSTTECH-002",
+          "title": "Electronic monitoring transfers custody into the home and family"
+        },
+        {
+          "id": "CUSTTECH-003",
+          "title": "Custodial system outage removes liberty-protecting as well as security functions"
+        }
+      ]
     }
   ],
   "duplicate_ids": {
@@ -8974,6 +9150,7 @@
     "ARCH": 6,
     "ARCHIVE": 5,
     "ASSESS": 7,
+    "ASYLUM": 5,
     "ATC": 5,
     "ATTN": 5,
     "ATTR": 3,
@@ -8994,6 +9171,7 @@
     "BIOSEC": 5,
     "BKP": 3,
     "BLDACC": 5,
+    "BORDER": 4,
     "BOUND": 4,
     "BUILDCHAIN": 5,
     "BUILDINT": 10,
@@ -9037,6 +9215,8 @@
     "CRYPTO": 7,
     "CTX": 7,
     "CULT": 5,
+    "CUSTHEALTH": 4,
+    "CUSTTECH": 3,
     "DARK": 4,
     "DATA": 6,
     "DEAD": 6,
@@ -9050,6 +9230,7 @@
     "DEPR": 5,
     "DESIGN": 6,
     "DEST": 8,
+    "DETAIN": 5,
     "DEV": 5,
     "DIS": 4,
     "DISPENSE": 5,
@@ -9080,6 +9261,7 @@
     "EXPORT": 3,
     "EXTRACT": 6,
     "FAMILY": 6,
+    "FAMILYCUST": 3,
     "FAT": 6,
     "FEED": 5,
     "FIRE": 6,
@@ -9090,6 +9272,7 @@
     "FLOW": 4,
     "FOOD": 6,
     "FOODACCESS": 3,
+    "FORCECUST": 3,
     "FORENSIC": 6,
     "FOREST": 5,
     "FRAME": 5,
@@ -9120,6 +9303,7 @@
     "HW": 6,
     "IDENT": 4,
     "IMPERSON": 5,
+    "INCARC": 5,
     "INCDET": 7,
     "INCENT": 3,
     "INCSEV": 4,
@@ -9149,6 +9333,7 @@
     "LAUNCH": 5,
     "LEARN": 6,
     "LEGAL": 1,
+    "LEGALCUST": 4,
     "LEND": 5,
     "LIAB": 5,
     "LIC": 8,
@@ -9258,6 +9443,7 @@
     "REFUND": 4,
     "REG": 10,
     "REL": 12,
+    "RELEASECUST": 3,
     "RELIG": 5,
     "RELY": 6,
     "REMOTE": 3,
@@ -9301,6 +9487,7 @@
     "SPACEACCESS": 5,
     "SPOOF": 6,
     "STATE": 6,
+    "STATELESS": 2,
     "STEWARD": 5,
     "STORE": 6,
     "STRESS": 5,
