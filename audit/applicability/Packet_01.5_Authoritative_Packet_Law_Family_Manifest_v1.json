@@ -5,7 +5,7 @@
   "source_queue_sha256": "1b28dbfd69e9af4b51ce5cf4eb4e43d4ed4aaea107129b2e11b7b41c9dfd861a",
   "source_inventory_sha256": "76169a80e07603cea51d769d3d89b32735149c2aef7eb09f893ed94fe5d72477",
   "main_commit_anchor": "72ce5485559612afe2fb2f4a006d7e72c6b2116b",
-  "authority_census_sha256": "428c0dddbfa25b7218cff400ae017ac43cbe55294a33bd4e2a2e965ab3b2949f",
+  "authority_census_sha256": "f0a2133dbaf6f5b775b1f471abddd1144c5dcdde52239711dae79a9500e8661d",
   "authority_sources": [
     {
       "path": "audit/PMP-Current-Active-Work-Card.md",
@@ -653,7 +653,7 @@
       "family": "audit/packet_01.5_routing_status-v#.md",
       "version": 85,
       "active_version": true,
-      "sha256": "f2864c04a9af89cebf485ffaff5fd9500179221b05dd7f40b2405154f30a2ab8"
+      "sha256": "053a19bfbfda9da51fe44c2636752535764780e44f919fa50c5c3a856290c745"
     },
     {
       "path": "audit/Packet_01.5_Runtime_Source_Family_Coverage_v1.json",

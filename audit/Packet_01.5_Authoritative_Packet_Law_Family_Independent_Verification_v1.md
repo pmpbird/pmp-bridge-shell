@@ -40,7 +40,7 @@ The remaining 23 law-family records retain their permanent addresses and origina
 
 - complete 25-record family coverage: PASS
 - current main commit anchor: `72ce5485559612afe2fb2f4a006d7e72c6b2116b`
-- authority census digest: `428c0dddbfa25b7218cff400ae017ac43cbe55294a33bd4e2a2e965ab3b2949f`
+- authority census digest: `f0a2133dbaf6f5b775b1f471abddd1144c5dcdde52239711dae79a9500e8661d`
 - forbidden copied/discovery authority excluded: PASS
 - tier and version precedence recomputed: PASS
 - support and disproof predicates independently rerun: PASS

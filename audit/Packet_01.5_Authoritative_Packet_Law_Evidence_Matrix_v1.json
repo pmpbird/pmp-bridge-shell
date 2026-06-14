@@ -5,7 +5,7 @@
   "decided": 2,
   "remaining_queued": 23,
   "main_commit_anchor": "72ce5485559612afe2fb2f4a006d7e72c6b2116b",
-  "authority_census_sha256": "428c0dddbfa25b7218cff400ae017ac43cbe55294a33bd4e2a2e965ab3b2949f",
+  "authority_census_sha256": "f0a2133dbaf6f5b775b1f471abddd1144c5dcdde52239711dae79a9500e8661d",
   "records_matrix": [
     {
       "composite_address": "P01.5::B::0002",
