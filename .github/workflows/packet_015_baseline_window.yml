@@ -1,0 +1,91 @@
+name: Packet 015 baseline window
+
+on:
+  pull_request:
+    paths:
+      - "audit/applicability/Packet_01.5_Scalable_Pass_001_Plan_v1.json"
+      - "audit/Packet_01.5_Baseline_Window_PR_Trigger.txt"
+      - "tools/build_packet_01_5_scalable_pass_001_v1.py"
+      - "tools/packet_01_5_scalable_pass_001_policy.py"
+      - "tools/packet_01_5_pass_001_decision_validator.py"
+      - "tools/packet_01_5_pass_001_queue_validator.py"
+      - "tools/packet_01_5_pass_001_mutation_tests.py"
+      - "tools/packet_01_5_scalable_pass_001_receipts.py"
+      - ".github/workflows/packet_015_baseline_window.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+      - run: python3 tools/build_packet_01_5_scalable_pass_001_v1.py
+      - name: Independently verify pass
+        run: |
+          python3 - <<'PY'
+          import json,sys
+          from pathlib import Path
+          sys.path.insert(0,'tools')
+          import packet_01_5_scalable_pass_001_policy as p
+          import packet_01_5_pass_001_decision_validator as dv
+          import packet_01_5_pass_001_queue_validator as qv
+          from packet_01_5_pass_001_mutation_tests import run as mutations
+          from packet_01_5_scalable_pass_001_receipts import write_receipts
+          R=Path('.');A=R/'audit';P=A/'applicability'
+          def obj(x): return json.loads(x.read_text())
+          def rows(x): return [json.loads(v) for v in x.read_text().splitlines()]
+          gate=obj(A/'Packet_01.5_Scalable_Applicability_Gate_Independent_Verification_v1.json')
+          assert gate['status']=='PASS_SCALABLE_APPLICABILITY_PROCESSING_AUTHORIZED'
+          assert gate['mass_unknown_hold_prohibited'] and not gate['routing_authorized']
+          I=A/'routing-inventory'/'Packet_01.5_Blank_Routing_Inventory_v1.jsonl';raw=I.read_bytes()
+          assert p.sha256(raw)==p.INV_SHA
+          records=[json.loads(v) for v in raw.splitlines()];assert len(records)==2750
+          assert all(x['envelope_hash']==p.envelope_hash(x) for x in records)
+          assert all(x['applicability_state']=='UNCLASSIFIED' and x['routing_state']=='UNROUTED' for x in records)
+          addresses=[x['composite_address'] for x in records]
+          assert p.sha256(('\n'.join(addresses)+'\n').encode())==p.ADDR_SHA
+          window=records[:122];waddrs=addresses[:122]
+          assert waddrs[0]=='P01.5::B::0001' and waddrs[-1]=='P01.5::B::0122'
+          assert all(x['source_set']=='BASELINE' for x in window)
+          worker=R/'pmp-worker.js';wrangler=R/'wrangler.toml'
+          p.verify_current_sources(worker.read_text(),wrangler.read_text())
+          wh,gh=p.sha256(worker.read_bytes()),p.sha256(wrangler.read_bytes())
+          contract=obj(A/'routing-inventory'/'Packet_01.5_Routing_Decision_Contract_v2.json')
+          required=set(contract['overlay_required_fields']);source={x['composite_address']:x for x in window}
+          D=P/'Packet_01.5_Scalable_Pass_001_Decisions_v1.jsonl';Q=P/'Packet_01.5_Scalable_Pass_001_Evidence_Queue_v1.jsonl'
+          decisions,queues=rows(D),rows(Q)
+          assert [x['composite_address'] for x in decisions]==list(p.EXPECTED)
+          for x in decisions: dv.validate(x,source[x['composite_address']],required,wh,gh)
+          qaddrs=[x for x in waddrs if x not in p.EXPECTED]
+          assert [x['composite_address'] for x in queues]==qaddrs
+          for x in queues: qv.validate(x,source[x['composite_address']])
+          ds={x['composite_address'] for x in decisions};qs={x['composite_address'] for x in queues}
+          assert not ds&qs and ds|qs==set(waddrs)
+          C=A/'Packet_01.5_Scalable_Pass_001_Coverage_v1.json';coverage=obj(C)
+          assert coverage['decided_records']==6 and coverage['queued_records']==116
+          assert coverage['unknown_hold_decisions']==0 and coverage['coverage_complete']
+          assert coverage['routing_assignments']==0 and coverage['grouping_assignments']==0
+          tests=mutations(decisions[0],source[decisions[0]['composite_address']],queues[0],source[queues[0]['composite_address']],required,wh,gh)
+          assert I.read_bytes()==raw
+          W=P/'Packet_01.5_Scalable_Pass_001_Window_v1.json'
+          result={'packet':'01.5','verification':'scalable_pass_001_independent','version':1,'status':'PASS_SCALABLE_PASS_001_VERIFIED','watch':'NONE','blockers':'NONE','pass_id':'SCALABLE-PASS-001','window_records':122,'evidence_supported_decisions':6,'evidence_queue_entries':116,'unknown_hold_decisions_created':0,'superseded_prior_hold_decisions':6,'complete_decided_or_queued_coverage':True,'decision_overlay_sha256':p.sha256(D.read_bytes()),'evidence_queue_sha256':p.sha256(Q.read_bytes()),'window_manifest_sha256':p.sha256(W.read_bytes()),'coverage_receipt_sha256':p.sha256(C.read_bytes()),'source_inventory_sha256':p.sha256(raw),'worker_source_sha256':wh,'wrangler_source_sha256':gh,'adversarial_rejection_fixtures_passed':tests,'source_inventory_unchanged':True,'routing_assignments':0,'semantic_grouping_assignments':0,'source_records_removed_or_closed':0,'implementation_authorized':False,'packet_04_authorized':False,'next_authorized_work':'PACKET_01.5_EVIDENCE_ACQUISITION_FROM_SCALABLE_PASS_001_QUEUES','later_windows_require_new_gate':False}
+          write_receipts(R,result)
+          PY
+      - name: Commit verified outputs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit/applicability/Packet_01.5_Scalable_Pass_001_Window_v1.json
+          git add audit/applicability/Packet_01.5_Scalable_Pass_001_Decisions_v1.jsonl
+          git add audit/applicability/Packet_01.5_Scalable_Pass_001_Evidence_Queue_v1.jsonl
+          git add audit/Packet_01.5_Scalable_Pass_001_Coverage_v1.json
+          git add audit/Packet_01.5_Scalable_Pass_001_v1.md
+          git add audit/Packet_01.5_Scalable_Pass_001_Independent_Verification_v1.json
+          git add audit/Packet_01.5_Scalable_Pass_001_Independent_Verification_v1.md
+          git add audit/Packet_01.5_Routing_Status_v83.md
+          git diff --cached --quiet || (git commit -m "Verify scalable baseline applicability pass" && git push origin "HEAD:${{ github.head_ref || github.ref_name }}")
