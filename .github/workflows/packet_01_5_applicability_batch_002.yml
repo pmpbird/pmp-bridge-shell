@@ -1,0 +1,48 @@
+name: Packet 01.5 applicability Batch 002
+
+on:
+  push:
+    paths:
+      - "audit/routing-batches/Packet_01.5_Applicability_Batch_002_Plan_v1.json"
+      - "tools/apply_packet_01_5_applicability_batch.py"
+      - "tools/verify_packet_01_5_applicability_batch.py"
+      - ".github/workflows/packet_01_5_applicability_batch_002.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply Batch 002 transaction
+        run: python3 tools/apply_packet_01_5_applicability_batch.py --plan audit/routing-batches/Packet_01.5_Applicability_Batch_002_Plan_v1.json
+
+      - name: Independently verify Batch 002
+        run: python3 tools/verify_packet_01_5_applicability_batch.py --plan audit/routing-batches/Packet_01.5_Applicability_Batch_002_Plan_v1.json
+
+      - name: Commit accepted Batch 002 outputs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            audit/routing-inventory/Packet_01.5_Applicability_Inventory_v3_Batch_002.jsonl \
+            audit/routing-inventory/Packet_01.5_Applicability_Inventory_v3_Batch_002.jsonl.gz \
+            audit/routing-inventory/Packet_01.5_Applicability_Inventory_v3_Batch_002.manifest.json \
+            audit/routing-batches/Packet_01.5_Applicability_Batch_002_Build_v1.md \
+            audit/routing-batches/Packet_01.5_Applicability_Batch_002_Build_v1.json \
+            audit/routing-batches/Packet_01.5_Applicability_Batch_002_Independent_Verification_v1.md \
+            audit/routing-batches/Packet_01.5_Applicability_Batch_002_Independent_Verification_v1.json \
+            audit/Packet_01.5_Applicability_Classification_Status_v78.md
+          if git diff --cached --quiet; then
+            echo "No Batch 002 output changes."
+          else
+            git commit -m "Apply and verify Packet 01.5 Applicability Batch 002"
+            git push
+          fi
