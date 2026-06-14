@@ -1,0 +1,32 @@
+{
+  "type": "PMP_CURRENT_PROJECT_CONTROL_SPINE_COMPANION_RECORD",
+  "version": "1.0.0-baseline",
+  "created_on": "2026-06-14",
+  "updated_on": "2026-06-14",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "packet_authority": "03.5 preflight carry-forward; Packet 1 defines permanent law",
+  "control_number": 6,
+  "control_name": "Runtime Ownership and Fallback Map",
+  "purpose": "Record the effective runtime chain, owners, wrappers, initialization order, fallback, cache behavior, persistence boundary, and failure result.",
+  "packet_02_carry_forward": [
+    "Exact outer wrapper order had not been observed during Packet 02.",
+    "Route/map/loader/app records can drift or fall back.",
+    "Cache, deployed runtime, iPhone behavior, and service-worker status require real-device proof."
+  ],
+  "linked_permanent_limitations": ["BUILD-005", "BUILD-009", "BUILD-014", "PLAT-001", "PLAT-002", "PLAT-004", "PLAT-008", "RUN-002", "RUN-003", "RUN-006", "RUN-008"],
+  "entries": [
+    {"layer": 1, "owner": "stable door", "path": "pmp-app-current.html", "fallback": "pmp-route-guardian-current-loader-v9.html if maps fail"},
+    {"layer": 2, "owner": "current map", "path": "pmp-current-map-v9.json", "fallback": "pmp-current-map.json"},
+    {"layer": 3, "owner": "Route Guardian", "path": "pmp-route-guardian-current-loader-v14.html", "fallback": "blocked/report or app fallback according to current files"},
+    {"layer": 4, "owner": "migration wrapper", "path": "pmp-current-inner-cleanbug-rgcontrols-v4.html", "fallback": "current-inner v3 load"},
+    {"layer": 5, "owner": "current-inner controls", "path": "pmp-current-inner-cleanbug-rgcontrols-v3.html", "fallback": "base v6 remains underlying app"},
+    {"layer": 6, "owner": "base app", "path": "pmp-home-single-v6.html", "fallback": "local deterministic behavior"},
+    {"runtime_evidence": "Observed on iPhone Home Screen under test P03-1781398601766-454669a3", "cache_api": "read/write passed", "service_worker_controlled": false, "local_storage_persistence": "full close/reopen passed", "continuing_limits": ["cold-cache/offline/update invalidation not fully proven", "storage clearing/eviction remains destructive"]}
+  ],
+  "state": "BASELINE CREATED — CONTINUING RECORD",
+  "append_only_history": [],
+  "reopen_on_contrary_evidence": true,
+  "unresolved_watch": "See open entries and linked limitation records; no item may be silently dropped.",
+  "safe_claim": "The Packet 02 risk family has a named companion record and linked limitation identities.",
+  "do_not_claim": "Creating this record does not implement or close its linked limitations."
+}
