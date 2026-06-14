@@ -1,0 +1,67 @@
+name: Packet 01.5 applicability Batch 001 v1
+
+on:
+  push:
+    paths:
+      - "audit/applicability/Packet_01.5_Applicability_Batch_001_Plan_v1.json"
+      - "tools/build_packet_01_5_applicability_batch_001_v1.py"
+      - "tools/verify_packet_01_5_applicability_batch_001_v1.py"
+      - ".github/workflows/packet_01_5_applicability_batch_001_v1.yml"
+  pull_request:
+    paths:
+      - "audit/applicability/Packet_01.5_Applicability_Batch_001_Plan_v1.json"
+      - "audit/Packet_01.5_Applicability_Batch_001_PR_Trigger.txt"
+      - "tools/build_packet_01_5_applicability_batch_001_v1.py"
+      - "tools/verify_packet_01_5_applicability_batch_001_v1.py"
+      - ".github/workflows/packet_01_5_applicability_batch_001_v1.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  verify-applicability-batch-001:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref || github.ref_name }}
+
+      - name: Build and independently verify Batch 001
+        run: |
+          set -o pipefail
+          python3 tools/verify_packet_01_5_applicability_batch_001_v1.py 2>&1 | tee audit/Packet_01.5_Applicability_Batch_001_Workflow_Debug.log
+
+      - name: Commit failure diagnostic
+        if: failure()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit/Packet_01.5_Applicability_Batch_001_Workflow_Debug.log
+          if git diff --cached --quiet; then
+            echo "No diagnostic changes."
+          else
+            git commit -m "Record Packet 01.5 applicability Batch 001 diagnostic"
+            git push origin "HEAD:${{ github.head_ref || github.ref_name }}"
+          fi
+
+      - name: Commit verified Batch 001 outputs
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm -f --ignore-unmatch audit/Packet_01.5_Applicability_Batch_001_Workflow_Debug.log
+          git add \
+            audit/applicability/Packet_01.5_Applicability_Decisions_Batch_001_v1.jsonl \
+            audit/Packet_01.5_First_Controlled_Applicability_Batch_001_v1.md \
+            audit/Packet_01.5_Applicability_Batch_001_Independent_Verification_v1.json \
+            audit/Packet_01.5_Applicability_Batch_001_Independent_Verification_v1.md \
+            audit/Packet_01.5_Routing_Status_v78.md
+          if git diff --cached --quiet; then
+            echo "No Batch 001 verification-output changes."
+          else
+            git commit -m "Verify Packet 01.5 applicability Batch 001 v1"
+            git push origin "HEAD:${{ github.head_ref || github.ref_name }}"
+          fi
