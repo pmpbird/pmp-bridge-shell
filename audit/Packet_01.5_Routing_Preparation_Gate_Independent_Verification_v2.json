@@ -1,0 +1,70 @@
+{
+  "packet": "01.5",
+  "verification": "routing_preparation_gate_independent_verification",
+  "version": 2,
+  "date": "2026-06-14",
+  "status": "PASS_ROUTING_PREPARATION_GATE_OPEN",
+  "watch": "NONE",
+  "blockers": "NONE",
+  "gate_design": "PASS",
+  "provisional_source_proof": "PASS",
+  "baseline_source_proof": "PASS",
+  "combined_bijection": "PASS",
+  "blank_routing_proof": "PASS",
+  "routing_started": false,
+  "semantic_deduplication_started": false,
+  "individual_applicability_classifications": 0,
+  "individual_records_closed": 0,
+  "baseline": {
+    "source_archive": "Packet_03.5_v4_FINAL_PASS_COMPLETE.zip",
+    "source_filename": "pmp-current-permanent-limitation-register-v3-final.json",
+    "source_bytes": 349103,
+    "source_sha256": "ac36b36a38d2ad9ab9f73d69679e0ecc0dae4c2f3340fe505f6ed773c56ba5f4",
+    "record_count": 122,
+    "identifier_unique": true,
+    "address_first": "P01.5::B::0001",
+    "address_last": "P01.5::B::0122",
+    "address_unique": true,
+    "reverse_reconstruction": "PASS"
+  },
+  "provisional": {
+    "source_file_count": 69,
+    "record_count": 2628,
+    "malformed_headings": 0,
+    "missing_harm": 0,
+    "duplicate_exact_headings": 0,
+    "address_pattern": "P01.5::P<pass_3>::<record_identifier>",
+    "source_proof": "PASS"
+  },
+  "combined": {
+    "record_count": 2750,
+    "count_equation": "122 + 2628 = 2750",
+    "namespace_disjoint": true,
+    "source_to_envelope_bijection": true,
+    "deleted_source_records": 0,
+    "closed_source_records": 0
+  },
+  "routing_fields": {
+    "routing_state": "UNROUTED",
+    "primary_destinations_populated": 0,
+    "secondary_destinations_populated": 0,
+    "cross_cutting_law_assignments_populated": 0
+  },
+  "applicability_states_required": [
+    "CURRENT_DEFECT",
+    "ACTIVE_CONDITIONAL_RISK",
+    "DORMANT_FUTURE_RISK",
+    "OUT_OF_SCOPE_CANDIDATE"
+  ],
+  "authorized_next_work": [
+    "construct_lossless_routing_inventory",
+    "prepare_applicability_classification_workflow"
+  ],
+  "still_not_authorized": [
+    "owner_assignment",
+    "semantic_merge",
+    "record_deletion",
+    "individual_record_closure",
+    "packet_04"
+  ]
+}
