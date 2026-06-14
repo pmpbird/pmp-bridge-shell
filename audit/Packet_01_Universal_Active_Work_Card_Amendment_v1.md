@@ -14,6 +14,19 @@ Packet 01 now has two zones:
 
 The card is packet-neutral and must work at Packet 04, Packet 20, or any later authorized packet.
 
+## Current-state precedence
+
+Any old printed `CURRENT AUTHORIZED NEXT PACKET` text inside the original Packet 01 body is historical baseline text.
+
+For current work, use this order:
+
+1. Master Status Ledger
+2. current Universal Active Work Card
+3. previous completion receipt
+4. current packet note
+
+The Active Work Card may update current status and next action, but it may not weaken Packet 01 laws or override a valid completion receipt.
+
 ## New-chat startup set
 
 Paste, in order:
