@@ -2,9 +2,9 @@
   "audit_date": "2026-06-14",
   "scope": "Packet 01.5 mechanical discovery integrity only",
   "baseline_count": 122,
-  "files_audited": 49,
-  "actual_provisional_count": 1952,
-  "combined_actual_count": 2074,
+  "files_audited": 50,
+  "actual_provisional_count": 1991,
+  "combined_actual_count": 2113,
   "sum_of_declared_counts_where_present": 1791,
   "count_mismatch_count": 5,
   "duplicate_id_count": 22,
@@ -8419,6 +8419,174 @@
           "title": "Disaster reopens closed waste sites and disperses buried material"
         }
       ]
+    },
+    {
+      "pass": 50,
+      "path": "audit/Packet_01.5_Discovery_Pass_50_Aviation_AircraftCertification_FlightOperations_Maintenance_Airports_ATC_Crew_Cargo_Automation_and_Investigation_v1.md",
+      "actual_count": 39,
+      "declared_count": null,
+      "count_match": true,
+      "malformed_headings": [],
+      "missing_harm": [],
+      "missing_overlap": [],
+      "records": [
+        {
+          "id": "AIRCERT-001",
+          "title": "Certification evidence represents the tested configuration, not every field configuration"
+        },
+        {
+          "id": "AIRCERT-002",
+          "title": "Compliance demonstration misses interacting rare failures"
+        },
+        {
+          "id": "AIRCERT-003",
+          "title": "Safety assumption depends on pilot recognition within an unrealistic time window"
+        },
+        {
+          "id": "AIRCERT-004",
+          "title": "Software update changes certified behavior without equivalent operational revalidation"
+        },
+        {
+          "id": "AIRCERT-005",
+          "title": "Economic pressure narrows the scope of redesign after a safety finding"
+        },
+        {
+          "id": "FLIGHTOPS-001",
+          "title": "Dispatch legality is mistaken for operational safety"
+        },
+        {
+          "id": "FLIGHTOPS-002",
+          "title": "Fuel planning assumes alternates and routing remain available"
+        },
+        {
+          "id": "FLIGHTOPS-003",
+          "title": "Performance calculation uses incorrect aircraft or runway state"
+        },
+        {
+          "id": "FLIGHTOPS-004",
+          "title": "Operational pressure normalizes unstable approach or continuation bias"
+        },
+        {
+          "id": "FLIGHTOPS-005",
+          "title": "Weather product hides uncertainty and local variation"
+        },
+        {
+          "id": "FLIGHTOPS-006",
+          "title": "Diversion solves the airborne problem while creating a ground crisis"
+        },
+        {
+          "id": "AIRMAINT-001",
+          "title": "Maintenance sign-off proves task completion but not restored system behavior"
+        },
+        {
+          "id": "AIRMAINT-002",
+          "title": "Repeated deferral turns a temporary condition into the operating norm"
+        },
+        {
+          "id": "AIRMAINT-003",
+          "title": "Troubleshooting replaces the failed component without finding the common cause"
+        },
+        {
+          "id": "AIRMAINT-004",
+          "title": "Maintenance records fragment across owners, operators, and jurisdictions"
+        },
+        {
+          "id": "AIRMAINT-005",
+          "title": "Parts authenticity and service history cannot be independently verified"
+        },
+        {
+          "id": "AIRPORT-001",
+          "title": "Runway condition report does not represent the whole runway or current moment"
+        },
+        {
+          "id": "AIRPORT-002",
+          "title": "Wildlife management displaces rather than removes collision risk"
+        },
+        {
+          "id": "AIRPORT-003",
+          "title": "Ground vehicles and aircraft share ambiguous movement authority"
+        },
+        {
+          "id": "AIRPORT-004",
+          "title": "Security screening blocks accessibility or emergency movement"
+        },
+        {
+          "id": "AIRPORT-005",
+          "title": "Airport capacity metric ignores gates, baggage, customs, transport, and staff"
+        },
+        {
+          "id": "ATC-001",
+          "title": "Controller display creates a coherent picture from incomplete surveillance"
+        },
+        {
+          "id": "ATC-002",
+          "title": "Traffic-flow optimization reduces recovery space"
+        },
+        {
+          "id": "ATC-003",
+          "title": "Handoff between sectors loses intent or abnormal context"
+        },
+        {
+          "id": "ATC-004",
+          "title": "Communication failure produces conflicting assumptions between pilot and controller"
+        },
+        {
+          "id": "ATC-005",
+          "title": "Contingency staffing preserves positions without preserving expertise distribution"
+        },
+        {
+          "id": "AIRCREW-001",
+          "title": "Duty-time compliance does not capture cumulative fatigue"
+        },
+        {
+          "id": "AIRCREW-002",
+          "title": "Automation proficiency grows while manual recovery skill decays"
+        },
+        {
+          "id": "AIRCREW-003",
+          "title": "Cockpit authority discourages challenge and cross-check"
+        },
+        {
+          "id": "AIRCREW-004",
+          "title": "Training scenario teaches the expected failure script"
+        },
+        {
+          "id": "AIRPAX-001",
+          "title": "Evacuation assumptions fail when passengers retrieve belongings or cannot move quickly"
+        },
+        {
+          "id": "AIRPAX-002",
+          "title": "Passenger data and watchlist errors produce high-impact exclusion"
+        },
+        {
+          "id": "AIRCARGO-001",
+          "title": "Dangerous goods are undeclared, misclassified, or packed incompatibly"
+        },
+        {
+          "id": "AIRCARGO-002",
+          "title": "Cargo restraint and weight data diverge from the actual load"
+        },
+        {
+          "id": "AVAUTO-001",
+          "title": "Automation mode is not understood by the crew at the moment of action"
+        },
+        {
+          "id": "AVAUTO-002",
+          "title": "Automation hands control back only after the situation is difficult to recover"
+        },
+        {
+          "id": "AVAUTO-003",
+          "title": "Connected aircraft system expands remote dependency and attack surface"
+        },
+        {
+          "id": "AIRINV-001",
+          "title": "Accident evidence is interpreted before organizational pressure is separated from technical cause"
+        },
+        {
+          "id": "AIRINV-002",
+          "title": "Safety recommendation is closed by procedural change without proving risk reduction"
+        }
+      ]
     }
   ],
   "duplicate_ids": {
@@ -8456,6 +8624,13 @@
     "AGENT": 4,
     "AID": 6,
     "AIH": 6,
+    "AIRCARGO": 2,
+    "AIRCERT": 5,
+    "AIRCREW": 4,
+    "AIRINV": 2,
+    "AIRMAINT": 5,
+    "AIRPAX": 2,
+    "AIRPORT": 5,
     "ALLERGEN": 5,
     "ALLOC": 5,
     "ANIMAL": 4,
@@ -8463,6 +8638,7 @@
     "ARCH": 6,
     "ARCHIVE": 5,
     "ASSESS": 7,
+    "ATC": 5,
     "ATTN": 5,
     "ATTR": 3,
     "AUD": 5,
@@ -8473,6 +8649,7 @@
     "AUTO": 5,
     "AUTON": 4,
     "AVAIL": 2,
+    "AVAUTO": 3,
     "BAT": 6,
     "BENEFIT": 6,
     "BILL": 6,
@@ -8570,6 +8747,7 @@
     "FIRM": 6,
     "FISH": 6,
     "FLAG": 7,
+    "FLIGHTOPS": 6,
     "FLOW": 4,
     "FOOD": 6,
     "FOODACCESS": 3,
