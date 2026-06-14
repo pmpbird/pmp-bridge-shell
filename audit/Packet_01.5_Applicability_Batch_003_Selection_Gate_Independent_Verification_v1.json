@@ -1,0 +1,69 @@
+{
+  "packet": "01.5",
+  "verification": "batch_003_selection_authorization_gate_independent",
+  "version": 1,
+  "status": "PASS_BATCH_003_SELECTION_GATE_AUTHORIZED",
+  "watch": "NONE",
+  "blockers": "NONE",
+  "batch_id": "PACKET-01.5-APPLICABILITY-BATCH-003",
+  "selection_method": "EXACT_NEXT_CONTIGUOUS_SOURCE_ORDER_AFTER_VERIFIED_PRIOR_BATCH",
+  "batch_size": 4,
+  "selected_addresses": [
+    "P01.5::B::0009",
+    "P01.5::B::0010",
+    "P01.5::B::0011",
+    "P01.5::B::0012"
+  ],
+  "selected_records": [
+    {
+      "composite_address": "P01.5::B::0009",
+      "original_identifier": "AI-009",
+      "envelope_hash": "41655e7abacecca533714e016da258e93537b01003ddcdddfddc883824448200",
+      "source_block_hash": "bee22cc8961adf414fb47fbc3e44069d267f46f25368d2536ebdd9a8c6f50b05"
+    },
+    {
+      "composite_address": "P01.5::B::0010",
+      "original_identifier": "AI-010",
+      "envelope_hash": "46f7288e6a7287e2200b8bf606e00f9a40f9ff4d2b88318c6d138b50cd617a88",
+      "source_block_hash": "3d300a1bced8612382638cd6596a94e7f13907837bc86d97034c1866423de1dc"
+    },
+    {
+      "composite_address": "P01.5::B::0011",
+      "original_identifier": "AI-011",
+      "envelope_hash": "28ad6c57f9fba2d95c90180c26665e64f74d6f761cb6e39aff6a478d444baa8c",
+      "source_block_hash": "8215808372e90feeccad60c1046084534ff6987da10f391fee6268f4e9b02d80"
+    },
+    {
+      "composite_address": "P01.5::B::0012",
+      "original_identifier": "AI-012",
+      "envelope_hash": "265871cdba3600afd57dc0a3fedade71e80b9e29d9736ff7772280e0fa8db7ed",
+      "source_block_hash": "4ab2bf174984f86b7012eb92c62e73c19d4ed6fdd4fa8bfc1c76166efedfb0c3"
+    }
+  ],
+  "source_inventory_sha256": "76169a80e07603cea51d769d3d89b32735149c2aef7eb09f893ed94fe5d72477",
+  "address_sequence_sha256": "3d808e1ec3f163e4cb2ab7a15767563fe7c43b9920bcecde9abe711226220916",
+  "selection_manifest_path": "audit/applicability/Packet_01.5_Applicability_Batch_003_Selection_v1.json",
+  "selection_manifest_sha256": "9500e3425db4065e78c9e62e15b6993ccb3b18754fcd5a42f8cb64b330f36505",
+  "batch_001_overlay_sha256": "2de246b718e99bae35f18eb2108e5df24e7bcaf240104e17595dcfc6311bba96",
+  "batch_002_overlay_sha256": "8d629e824d29ab4549e2132a6401c10049d7a3c1476b66dfd52c2dc8849d1000",
+  "every_source_envelope_hash_recomputed": true,
+  "source_inventory_unchanged": true,
+  "source_applicability_fields_remain_blank": true,
+  "source_routing_fields_remain_blank": true,
+  "selection_content_neutral": true,
+  "selection_overlap_count": 0,
+  "positive_selection_fixture_passed": 1,
+  "adversarial_rejection_fixtures_passed": 20,
+  "cumulative_applicability_classifications_completed": 8,
+  "batch_003_applicability_decisions_completed": 0,
+  "routing_assignments_completed": 0,
+  "semantic_grouping_assignments_completed": 0,
+  "source_records_removed": 0,
+  "source_records_closed": 0,
+  "batch_003_applicability_decisions_authorized": true,
+  "implementation_authorized": false,
+  "packet_04_authorized": false,
+  "next_authorized_work": "PACKET_01.5_PHASE_E_BATCH_003_APPLICABILITY_ONLY_DECISIONS",
+  "stop_before_batch_003_decisions": true,
+  "stop_before_routing": true
+}

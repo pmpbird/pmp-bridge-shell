@@ -1,0 +1,70 @@
+{
+  "packet": "01.5",
+  "artifact": "applicability_batch_selection_authorization_gate",
+  "version": 1,
+  "batch_id": "PACKET-01.5-APPLICABILITY-BATCH-003",
+  "status": "PROPOSED_PENDING_INDEPENDENT_VERIFICATION",
+  "source_inventory": {
+    "path": "audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.jsonl",
+    "records": 2750,
+    "sha256": "76169a80e07603cea51d769d3d89b32735149c2aef7eb09f893ed94fe5d72477",
+    "address_sequence_sha256": "3d808e1ec3f163e4cb2ab7a15767563fe7c43b9920bcecde9abe711226220916"
+  },
+  "prior_batch": {
+    "batch_id": "PACKET-01.5-APPLICABILITY-BATCH-002",
+    "verification_receipt": "audit/Packet_01.5_Applicability_Batch_002_Independent_Verification_v1.json",
+    "decision_overlay": "audit/applicability/Packet_01.5_Applicability_Decisions_Batch_002_v1.jsonl",
+    "required_status": "PASS_BATCH_002_APPLICABILITY_VERIFIED",
+    "required_watch": "NONE",
+    "required_blockers": "NONE",
+    "required_addresses": [
+      "P01.5::B::0005",
+      "P01.5::B::0006",
+      "P01.5::B::0007",
+      "P01.5::B::0008"
+    ],
+    "required_decision_count": 4,
+    "required_overlay_sha256": "8d629e824d29ab4549e2132a6401c10049d7a3c1476b66dfd52c2dc8849d1000",
+    "required_cumulative_classifications": 8
+  },
+  "selection": {
+    "method": "EXACT_NEXT_CONTIGUOUS_SOURCE_ORDER_AFTER_VERIFIED_PRIOR_BATCH",
+    "batch_size": 4,
+    "first_address": "P01.5::B::0009",
+    "last_address": "P01.5::B::0012",
+    "expected_addresses": [
+      "P01.5::B::0009",
+      "P01.5::B::0010",
+      "P01.5::B::0011",
+      "P01.5::B::0012"
+    ],
+    "content_neutral": true,
+    "old_labels_not_selection_evidence": true,
+    "headings_not_selection_evidence": true,
+    "severity_not_selection_evidence": true,
+    "owner_suggestions_not_selection_evidence": true,
+    "batch_size_expansion_authorized": false,
+    "allowed_manifest_record_fields": [
+      "composite_address",
+      "source_set",
+      "source_record_ordinal",
+      "original_identifier",
+      "envelope_hash",
+      "source_block_hash"
+    ]
+  },
+  "gate_author": "resident-batch-selection-gate-author-v1",
+  "gate_verifier": "github-actions-independent-batch-selection-verifier-v1",
+  "authorization_on_pass": {
+    "next_authorized_work": "PACKET_01.5_PHASE_E_BATCH_003_APPLICABILITY_ONLY_DECISIONS",
+    "batch_003_selection_authorized": true,
+    "batch_003_applicability_decisions_authorized": true,
+    "actual_batch_003_applicability_decisions_performed": false,
+    "actual_routing_performed": false,
+    "actual_grouping_performed": false,
+    "actual_closure_performed": false,
+    "implementation_authorized": false,
+    "packet_04_authorized": false
+  },
+  "stop_boundary": "Stop after independent verification of this gate. Do not create Batch 003 applicability decisions, route, group, close, implement, or begin Packet 04 in the same task."
+}
