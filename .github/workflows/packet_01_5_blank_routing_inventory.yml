@@ -6,6 +6,12 @@ on:
       - "tools/build_packet_01_5_blank_routing_inventory.py"
       - "tools/verify_packet_01_5_blank_routing_inventory.py"
       - ".github/workflows/packet_01_5_blank_routing_inventory.yml"
+  pull_request:
+    paths:
+      - "audit/Packet_01.5_Routing_Inventory_PR_Trigger.txt"
+      - "tools/build_packet_01_5_blank_routing_inventory.py"
+      - "tools/verify_packet_01_5_blank_routing_inventory.py"
+      - ".github/workflows/packet_01_5_blank_routing_inventory.yml"
   workflow_dispatch:
 
 permissions:
@@ -15,10 +21,11 @@ jobs:
   build-and-verify:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
+      - name: Check out repository branch
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.head_ref || github.ref_name }}
 
       - name: Verify exact baseline source
         run: python3 tools/verify_packet_01_5_baseline_source.py
@@ -29,7 +36,7 @@ jobs:
       - name: Independently verify all envelopes
         run: python3 tools/verify_packet_01_5_blank_routing_inventory.py
 
-      - name: Commit verified inventory outputs
+      - name: Commit verified inventory outputs to current branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -49,5 +56,5 @@ jobs:
             echo "No verified inventory-output changes."
           else
             git commit -m "Generate and verify Packet 01.5 blank routing inventory"
-            git push
+            git push origin "HEAD:${{ github.head_ref || github.ref_name }}"
           fi
