@@ -1,0 +1,47 @@
+{
+  "packet": "01.5",
+  "verification": "first_controlled_applicability_batch_001_independent",
+  "version": 1,
+  "status": "PASS_BATCH_001_APPLICABILITY_VERIFIED",
+  "watch": "NONE",
+  "blockers": "NONE",
+  "batch_id": "PACKET-01.5-APPLICABILITY-BATCH-001",
+  "batch_addresses": [
+    "P01.5::B::0001",
+    "P01.5::B::0002",
+    "P01.5::B::0003",
+    "P01.5::B::0004"
+  ],
+  "batch_decisions": 4,
+  "applicability_counts": {
+    "CURRENT DEFECT OR LIMITATION": 0,
+    "ACTIVE CONDITIONAL RISK": 0,
+    "DORMANT FUTURE RISK": 0,
+    "OUT-OF-SCOPE CANDIDATE": 0,
+    "UNKNOWN — HOLD": 4
+  },
+  "hold_records": [
+    "P01.5::B::0001",
+    "P01.5::B::0002",
+    "P01.5::B::0003",
+    "P01.5::B::0004"
+  ],
+  "source_inventory_sha256": "76169a80e07603cea51d769d3d89b32735149c2aef7eb09f893ed94fe5d72477",
+  "address_sequence_sha256": "3d808e1ec3f163e4cb2ab7a15767563fe7c43b9920bcecde9abe711226220916",
+  "decision_overlay_path": "audit/applicability/Packet_01.5_Applicability_Decisions_Batch_001_v1.jsonl",
+  "decision_overlay_sha256": "2de246b718e99bae35f18eb2108e5df24e7bcaf240104e17595dcfc6311bba96",
+  "source_inventory_unchanged": true,
+  "source_inventory_records": 2750,
+  "source_applicability_fields_remain_blank": true,
+  "source_routing_fields_remain_blank": true,
+  "routing_assignments_completed": 0,
+  "semantic_grouping_assignments_completed": 0,
+  "source_records_removed": 0,
+  "source_records_closed": 0,
+  "packet_04_authorized": false,
+  "positive_decisions_verified": 4,
+  "adversarial_rejection_fixtures_passed": 18,
+  "next_authorized_work": "PACKET_01.5_PHASE_E_BATCH_002_SELECTION_AND_AUTHORIZATION_GATE",
+  "batch_002_applicability_decisions_authorized": false,
+  "stop_before_routing": true
+}
