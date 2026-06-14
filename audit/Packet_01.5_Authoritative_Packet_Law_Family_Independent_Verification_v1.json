@@ -1,0 +1,33 @@
+{
+  "packet": "01.5",
+  "verification": "authoritative_packet_law_family_independent",
+  "version": 1,
+  "status": "PASS_AUTHORITATIVE_PACKET_LAW_FAMILY_VERIFIED",
+  "watch": "NONE",
+  "blockers": "NONE",
+  "family": "AUTHORITATIVE_PACKET_LAW",
+  "family_records": 25,
+  "evidence_supported_decisions": 15,
+  "remaining_queued_records": 10,
+  "unknown_hold_created": 0,
+  "decision_states": {
+    "CURRENT DEFECT OR LIMITATION": 15
+  },
+  "complete_coverage": true,
+  "main_commit_anchor": "72ce5485559612afe2fb2f4a006d7e72c6b2116b",
+  "authority_census_sha256": "4b2c3a69247ac7c77f302669686af2b9b716767cf02cd22684165044af57d7e1",
+  "source_queue_sha256": "1b28dbfd69e9af4b51ce5cf4eb4e43d4ed4aaea107129b2e11b7b41c9dfd861a",
+  "source_inventory_sha256": "76169a80e07603cea51d769d3d89b32735149c2aef7eb09f893ed94fe5d72477",
+  "manifest_sha256": "0e9a7e52939b894ce422ef58bc16c2007a8315ba9d1ac33bd18cdf09279bf533",
+  "decision_overlay_sha256": "ff0e2df558f1f142d429d6695c8a68b450450dfd96a28abd7b0fd08c0ae78221",
+  "remaining_queue_sha256": "a31a41868a61dede341cea9877863d2c07a9098d0f1358c452c8a6eb77b5dc1f",
+  "evidence_matrix_sha256": "e1ff4b7615bff606f698839afdf9cc8a75a01d587daae975d55e48a6db6a4901",
+  "adversarial_rejection_fixtures_passed": 6,
+  "routing_assignments": 0,
+  "grouping_assignments": 0,
+  "source_records_removed_or_closed": 0,
+  "implementation_authorized": false,
+  "packet_04_authorized": false,
+  "next_authorized_work": "PACKET_01.5_PROCESS_NEXT_RESOLVABLE_EVIDENCE_FAMILY",
+  "stop_before_routing": true
+}
