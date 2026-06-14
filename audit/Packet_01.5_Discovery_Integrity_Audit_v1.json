@@ -2,9 +2,9 @@
   "audit_date": "2026-06-14",
   "scope": "Packet 01.5 mechanical discovery integrity only",
   "baseline_count": 122,
-  "files_audited": 57,
-  "actual_provisional_count": 2269,
-  "combined_actual_count": 2391,
+  "files_audited": 58,
+  "actual_provisional_count": 2305,
+  "combined_actual_count": 2427,
   "sum_of_declared_counts_where_present": 1791,
   "count_mismatch_count": 5,
   "duplicate_id_count": 26,
@@ -9783,6 +9783,162 @@
           "title": "Service platform treats proxy access as equivalent to the person’s consent"
         }
       ]
+    },
+    {
+      "pass": 58,
+      "path": "audit/Packet_01.5_Discovery_Pass_58_Military_Defense_Procurement_Command_Escalation_WeaponsLifecycle_Autonomy_ServiceHealth_and_VeteranTransition_v1.md",
+      "actual_count": 36,
+      "declared_count": null,
+      "count_match": true,
+      "malformed_headings": [],
+      "missing_harm": [],
+      "missing_overlap": [],
+      "records": [
+        {
+          "id": "DEFPROC-001",
+          "title": "Procurement specification freezes outdated threat and operating assumptions"
+        },
+        {
+          "id": "DEFPROC-002",
+          "title": "Contractor layers obscure who owns safety and failure correction"
+        },
+        {
+          "id": "DEFPROC-003",
+          "title": "Urgent acquisition bypasses interoperability and sustainment checks"
+        },
+        {
+          "id": "DEFPROC-004",
+          "title": "Acquisition decision hides full lifecycle cost and dependency"
+        },
+        {
+          "id": "DEFPROC-005",
+          "title": "Classification blocks independent testing and defect learning"
+        },
+        {
+          "id": "DEFCMD-001",
+          "title": "Command authority is ambiguous across joint, allied, and civilian structures"
+        },
+        {
+          "id": "DEFCMD-002",
+          "title": "Command continuity assumes communications and identity systems remain trustworthy"
+        },
+        {
+          "id": "DEFCMD-003",
+          "title": "Situation reports compress uncertainty into categorical status"
+        },
+        {
+          "id": "DEFCMD-004",
+          "title": "Hierarchy suppresses challenge to unsafe or unlawful interpretation"
+        },
+        {
+          "id": "DEFCMD-005",
+          "title": "Political, military, humanitarian, and civilian-protection objectives conflict"
+        },
+        {
+          "id": "ESCALATE-001",
+          "title": "Ambiguous action is interpreted as deliberate hostility"
+        },
+        {
+          "id": "ESCALATE-002",
+          "title": "Reversible action appears irreversible to another actor"
+        },
+        {
+          "id": "ESCALATE-003",
+          "title": "Automation compresses decision time below human verification capacity"
+        },
+        {
+          "id": "ESCALATE-004",
+          "title": "De-escalation channels fail when trust is lowest"
+        },
+        {
+          "id": "WEAPCARE-001",
+          "title": "Storage condition drifts between inspections"
+        },
+        {
+          "id": "WEAPCARE-002",
+          "title": "Transport handoff loses custody and hazard context"
+        },
+        {
+          "id": "WEAPCARE-003",
+          "title": "Parts cannibalization creates undocumented system configuration"
+        },
+        {
+          "id": "WEAPCARE-004",
+          "title": "Software or data update changes field behavior without equivalent revalidation"
+        },
+        {
+          "id": "WEAPCARE-005",
+          "title": "Decommissioning leaves hazardous material, sensitive data, or reusable components behind"
+        },
+        {
+          "id": "RANGE-001",
+          "title": "Training-range boundary does not contain noise, contamination, fire, or ecological effects"
+        },
+        {
+          "id": "RANGE-002",
+          "title": "Unexploded-hazard records are incomplete or lose precision over time"
+        },
+        {
+          "id": "RANGE-003",
+          "title": "Training realism externalizes risk to nearby communities and infrastructure"
+        },
+        {
+          "id": "RANGE-004",
+          "title": "Range closure ends funding before stewardship obligations end"
+        },
+        {
+          "id": "AUTDEF-001",
+          "title": "Classification confidence hides uncertainty about people, objects, and context"
+        },
+        {
+          "id": "AUTDEF-002",
+          "title": "Human oversight occurs too late or under too much workload to be meaningful"
+        },
+        {
+          "id": "AUTDEF-003",
+          "title": "Model training reflects prior conflicts rather than the current environment"
+        },
+        {
+          "id": "AUTDEF-004",
+          "title": "Dual-use integration blurs civilian and military dependencies"
+        },
+        {
+          "id": "SERVHLTH-001",
+          "title": "Exposure records fragment across deployments, units, employers, and agencies"
+        },
+        {
+          "id": "SERVHLTH-002",
+          "title": "Moral injury is framed only as individual resilience failure"
+        },
+        {
+          "id": "SERVHLTH-003",
+          "title": "Seeking care is perceived to threaten career, clearance, role, or unit trust"
+        },
+        {
+          "id": "SERVHLTH-004",
+          "title": "Family and caregiving strain remains outside readiness metrics"
+        },
+        {
+          "id": "VETFAM-001",
+          "title": "Separation transition breaks medication, therapy, records, and identity continuity"
+        },
+        {
+          "id": "VETFAM-002",
+          "title": "Benefits decisions demand proof that operational conditions made difficult to preserve"
+        },
+        {
+          "id": "VETFAM-003",
+          "title": "Military skills and authority do not translate cleanly into civilian employment"
+        },
+        {
+          "id": "VETFAM-004",
+          "title": "Family members carry care and administrative burden without formal recognition"
+        },
+        {
+          "id": "VETFAM-005",
+          "title": "Service records become permanent identity labels in civilian systems"
+        }
+      ]
     }
   ],
   "duplicate_ids": {
@@ -9844,6 +10000,7 @@
     "ATTN": 5,
     "ATTR": 3,
     "AUD": 5,
+    "AUTDEF": 4,
     "AUTH": 8,
     "AUTHENT": 6,
     "AUTHN": 6,
@@ -9920,6 +10077,8 @@
     "DEAD": 6,
     "DEBRIS": 5,
     "DECOMNUC": 4,
+    "DEFCMD": 5,
+    "DEFPROC": 5,
     "DEL": 3,
     "DELEG": 6,
     "DELIVERY": 5,
@@ -9960,6 +10119,7 @@
     "ENV": 6,
     "ENVRES": 4,
     "ESC": 4,
+    "ESCALATE": 4,
     "ESSENTIAL": 4,
     "EVAL": 4,
     "EWASTE": 6,
@@ -10144,6 +10304,7 @@
     "QUOTA": 6,
     "RADHEALTH": 4,
     "RADWASTE": 5,
+    "RANGE": 4,
     "RANK": 7,
     "RATE": 3,
     "RBACK": 4,
@@ -10195,6 +10356,7 @@
     "SEM": 5,
     "SENSE": 8,
     "SEPTIC": 4,
+    "SERVHLTH": 4,
     "SEWAGE": 5,
     "SHARE": 6,
     "SHELL": 7,
@@ -10246,6 +10408,7 @@
     "VAXSYS": 5,
     "VEH": 6,
     "VER": 8,
+    "VETFAM": 5,
     "VIAB": 5,
     "VOTE": 4,
     "WASTELABOR": 2,
@@ -10255,6 +10418,7 @@
     "WATERRIGHTS": 4,
     "WATERSHED": 5,
     "WATERUTIL": 6,
+    "WEAPCARE": 5,
     "WEB": 3,
     "WILDFIRE": 5,
     "WILDLIFE": 5,

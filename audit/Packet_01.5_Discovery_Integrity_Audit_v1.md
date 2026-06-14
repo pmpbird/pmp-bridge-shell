@@ -8,10 +8,10 @@ This audit counts source records mechanically. It does not deduplicate, route, c
 
 ## Result
 
-- Source files audited: 57
+- Source files audited: 58
 - Preserved baseline: 122
-- Actual provisional headings: 2269
-- Actual combined working total: 2391
+- Actual provisional headings: 2305
+- Actual combined working total: 2427
 - Files with declared-count mismatch: 5
 - Duplicate record IDs: 26
 - Duplicate exact headings: 0
@@ -80,6 +80,7 @@ This audit counts source records mechanically. It does not deduplicate, route, c
 | 55 | 39 | — | YES | `audit/Packet_01.5_Discovery_Pass_55_Freshwater_Watersheds_Dams_Groundwater_Drought_WaterRights_Ecosystems_and_Governance_v1.md` |
 | 56 | 40 | — | YES | `audit/Packet_01.5_Discovery_Pass_56_MentalHealth_BehavioralHealth_Addiction_Prevention_Outpatient_Inpatient_Involuntary_Crisis_HarmReduction_and_Recovery_v1.md` |
 | 57 | 40 | — | YES | `audit/Packet_01.5_Discovery_Pass_57_SocialCare_LongTermCare_Aging_DisabilitySupport_HCBS_DirectCare_ElderAbuse_Caregivers_and_Transitions_v1.md` |
+| 58 | 36 | — | YES | `audit/Packet_01.5_Discovery_Pass_58_Military_Defense_Procurement_Command_Escalation_WeaponsLifecycle_Autonomy_ServiceHealth_and_VeteranTransition_v1.md` |
 
 ## Declared-count mismatches
 
