@@ -1,0 +1,41 @@
+name: Packet 01.5 Batch 002 gate v1
+
+on:
+  push:
+    paths:
+      - "audit/Packet_01.5_Applicability_Batch_002_Selection_and_Authorization_Gate_v1.md"
+      - "audit/applicability/Packet_01.5_Applicability_Batch_002_Selection_Gate_v1.json"
+      - "tools/verify_packet_01_5_applicability_batch_002_selection_gate_v1.py"
+      - ".github/workflows/packet_01_5_batch_002_gate_v1.yml"
+  pull_request:
+    paths:
+      - "audit/Packet_01.5_Applicability_Batch_002_Selection_and_Authorization_Gate_v1.md"
+      - "audit/applicability/Packet_01.5_Applicability_Batch_002_Selection_Gate_v1.json"
+      - "audit/Packet_01.5_Batch_002_Gate_PR_Trigger.txt"
+      - "tools/verify_packet_01_5_applicability_batch_002_selection_gate_v1.py"
+      - ".github/workflows/packet_01_5_batch_002_gate_v1.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref || github.ref_name }}
+      - run: python3 tools/verify_packet_01_5_applicability_batch_002_selection_gate_v1.py
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit/applicability/Packet_01.5_Applicability_Batch_002_Selection_v1.json
+          git add audit/Packet_01.5_Applicability_Batch_002_Selection_Gate_Independent_Verification_v1.json
+          git add audit/Packet_01.5_Applicability_Batch_002_Selection_Gate_Independent_Verification_v1.md
+          git add audit/Packet_01.5_Routing_Status_v79.md
+          if ! git diff --cached --quiet; then
+            git commit -m "Verify Packet 01.5 Batch 002 selection gate v1"
+            git push origin "HEAD:${{ github.head_ref || github.ref_name }}"
+          fi
