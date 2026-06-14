@@ -1,0 +1,108 @@
+{
+  "packet": "01.5",
+  "artifact": "applicability_batch_plan",
+  "version": 1,
+  "batch_id": "PACKET-01.5-APPLICABILITY-BATCH-001",
+  "status": "PROPOSED_PENDING_BUILD_AND_INDEPENDENT_VERIFICATION",
+  "selection_rule": "The first four permanent addresses in the immutable routing inventory, in exact source order.",
+  "source_inventory": {
+    "path": "audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.jsonl",
+    "sha256": "76169a80e07603cea51d769d3d89b32735149c2aef7eb09f893ed94fe5d72477",
+    "address_sequence_sha256": "3d808e1ec3f163e4cb2ab7a15767563fe7c43b9920bcecde9abe711226220916"
+  },
+  "evidence_catalog": "audit/applicability/Packet_01.5_Applicability_Evidence_Catalog_v1.json",
+  "decision_contract": "audit/routing-inventory/Packet_01.5_Routing_Decision_Contract_v2.json",
+  "decision_author": "resident-applicability-classifier-v1",
+  "decision_verifier": "github-actions-independent-applicability-verifier-v1",
+  "records": [
+    {
+      "composite_address": "P01.5::B::0001",
+      "expected_original_identifier": "AI-001",
+      "decision_stage": "HOLD",
+      "applicability_state": "UNKNOWN — HOLD",
+      "applicability_confidence": 98,
+      "catalog_evidence_ids": ["AEC-001", "AEC-003", "AEC-004", "AEC-006", "AEC-008", "AEC-009"],
+      "applicability_reasoning_summary": "The permanent record preserves a historical claim that the AI provider adapter, model call, and response parser are absent. The verified current catalog identifies the effective app path but explicitly does not prove complete nested behavior, support injection behavior, provider-call behavior, or schema-valid response handling. No direct current source trace or runtime provider-call test is captured for this address, so the historical label may not be promoted into a current defect classification.",
+      "hold_reason": "Current T4 source and runtime evidence is insufficient to establish whether the provider adapter, model call, and response parser are absent or present across the effective v4/v3 app chain and injected support scripts.",
+      "unresolved_dependencies": [
+        "Capture a complete current source trace of the effective v4/v3 app chain and injected support scripts for provider, model-call, and response-parser behavior.",
+        "Run a guarded provider-call test that records request path, response schema validation, authority boundary, and failure behavior."
+      ],
+      "reopening_conditions": [
+        "A current source trace proves the relevant components are present or absent.",
+        "A guarded provider-call and schema-validation receipt becomes available.",
+        "The effective app, loader, provider, model, or injected support set changes."
+      ]
+    },
+    {
+      "composite_address": "P01.5::B::0002",
+      "expected_original_identifier": "AI-002",
+      "decision_stage": "HOLD",
+      "applicability_state": "UNKNOWN — HOLD",
+      "applicability_confidence": 97,
+      "catalog_evidence_ids": ["AEC-001", "AEC-003", "AEC-004"],
+      "applicability_reasoning_summary": "The permanent record preserves a historical structural claim about Packet 06.5 and the absence of a general implementation packet. The current repository applicability catalog does not contain a separately hashed, independently verified excerpt of the presently authoritative Packet 06.5 and Packet 23.5 scope laws. The old severity and state fields are not applicability evidence. The claim therefore remains unresolved rather than being silently promoted.",
+      "hold_reason": "The current authoritative packet-scope evidence needed to prove the exact implementation boundary is not yet captured inside the independently verifiable repository evidence layer.",
+      "unresolved_dependencies": [
+        "Capture exact authoritative Packet 06.5 allowed/prohibited-work text with a stable digest.",
+        "Capture exact authoritative Packet 23.5 implementation authority and dependency text with a stable digest.",
+        "Independently compare those laws against the preserved AI-002 claim."
+      ],
+      "reopening_conditions": [
+        "A digest-bound Packet 06.5 and Packet 23.5 scope comparison is added and independently verified.",
+        "The authoritative roadmap or implementation-packet sequence changes."
+      ]
+    },
+    {
+      "composite_address": "P01.5::B::0003",
+      "expected_original_identifier": "AI-003",
+      "decision_stage": "HOLD",
+      "applicability_state": "UNKNOWN — HOLD",
+      "applicability_confidence": 98,
+      "catalog_evidence_ids": ["AEC-001", "AEC-003", "AEC-004", "AEC-010", "AEC-011", "AEC-012"],
+      "applicability_reasoning_summary": "The permanent record preserves a historical claim about endpoints in the current worker. The verified catalog classifies the available inventory and updater records as supporting or historical evidence that cannot override newer runtime-control evidence. It does not identify and hash the worker artifact currently serving backend requests, and no live endpoint enumeration receipt is captured. The claim cannot be confirmed as current.",
+      "hold_reason": "The current serving worker artifact and a current endpoint-enumeration proof are not captured in the verified evidence catalog.",
+      "unresolved_dependencies": [
+        "Identify and hash the worker artifact currently serving PMP backend requests.",
+        "Enumerate current request and response endpoints from source and a live safe probe.",
+        "Record whether guarded AI provider endpoints and their schemas exist."
+      ],
+      "reopening_conditions": [
+        "A current worker source artifact and endpoint inventory are captured.",
+        "A safe live endpoint probe receipt is captured.",
+        "The deployed worker route or backend implementation changes."
+      ]
+    },
+    {
+      "composite_address": "P01.5::B::0004",
+      "expected_original_identifier": "AI-004",
+      "decision_stage": "HOLD",
+      "applicability_state": "UNKNOWN — HOLD",
+      "applicability_confidence": 98,
+      "catalog_evidence_ids": ["AEC-001", "AEC-003", "AEC-004", "AEC-010", "AEC-011", "AEC-012"],
+      "applicability_reasoning_summary": "The permanent record preserves a historical wildcard-CORS claim naming pmp-worker.js. The verified current catalog does not establish that this named file is the currently serving worker, and no current response-header or origin-rejection receipt is captured. A historical filename and severity word cannot establish current applicability.",
+      "hold_reason": "The current serving worker identity and its effective CORS behavior are not independently captured or proven.",
+      "unresolved_dependencies": [
+        "Identify and hash the currently serving worker artifact.",
+        "Capture current Access-Control-Allow-Origin behavior for allowed and unauthorized origins.",
+        "Capture an origin-rejection test and deployment-route receipt."
+      ],
+      "reopening_conditions": [
+        "A current worker identity and CORS source trace are captured.",
+        "Allowed-origin and unauthorized-origin test receipts are captured.",
+        "The worker deployment, route, or CORS policy changes."
+      ]
+    }
+  ],
+  "prohibited_outputs": {
+    "primary_destination": true,
+    "secondary_destinations": true,
+    "cross_cutting_laws": true,
+    "semantic_clusters": true,
+    "routing_evidence": true,
+    "routing_confidence": true,
+    "record_closure": true,
+    "packet_04_authority": true
+  },
+  "stop_boundary": "Stop after independent verification of Batch 001. Do not route, group, close, implement, or begin another applicability batch in the same task."
+}
