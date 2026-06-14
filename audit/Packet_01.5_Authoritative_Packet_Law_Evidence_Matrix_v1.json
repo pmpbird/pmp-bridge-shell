@@ -2,298 +2,222 @@
   "packet": "01.5",
   "family": "AUTHORITATIVE_PACKET_LAW",
   "records": 25,
-  "decided": 15,
-  "remaining_queued": 10,
+  "decided": 2,
+  "remaining_queued": 23,
   "main_commit_anchor": "72ce5485559612afe2fb2f4a006d7e72c6b2116b",
-  "authority_census_sha256": "4b2c3a69247ac7c77f302669686af2b9b716767cf02cd22684165044af57d7e1",
+  "authority_census_sha256": "428c0dddbfa25b7218cff400ae017ac43cbe55294a33bd4e2a2e965ab3b2949f",
   "records_matrix": [
     {
       "composite_address": "P01.5::B::0002",
       "original_identifier": "AI-002",
       "claim": "Packet 06.5 is the only implementation packet and is limited to the AI bridge; it cannot implement candidate coding or promotion.",
-      "predicate": "PACKET_06_5_AI_BRIDGE_ONLY_IMPLEMENTATION_SCOPE",
-      "predicate_passed": false,
-      "state_if_passed": "CURRENT DEFECT OR LIMITATION",
-      "confidence_if_passed": 97,
+      "predicate": "PACKET_06_5_ONLY_IMPLEMENTATION_CLAIM",
+      "outcome": "DISPROVED",
+      "state_if_decided": "OUT-OF-SCOPE CANDIDATE",
+      "confidence_if_decided": 99,
       "support": [],
-      "conflicts": [],
-      "detail": {},
-      "result": "REMAIN_QUEUED"
+      "disproof": [
+        {
+          "path": "audit/Packet_03.5_Approved_Existing_Packet_Role_Amendment_v1.json",
+          "tier": 1,
+          "version": 1,
+          "sha256": "708073f9b1b1e7ca98ea6d1a07a23af0d9841b8de7dc1a3957403dfcf3bd8f73",
+          "coverage": null,
+          "passage": "{\n  \"type\": \"PMP_CURRENT_EXISTING_PACKET_ROLE_AMENDMENT_DECISION\",\n  \"version\": \"1.0.0\",\n  \"decided_on\": \"2026-06-14\",\n  \"status\": \"APPROVED\",\n  \"basis\": \"Resolve every Packet 03.5 lifecycle gap without adding unapproved placeholder packets.\",\n  \"approved_sequence\": [\"00\",\"01\",\"02\",\"03\",\"03.5\",\"04\",\"05\",\"06\",\"06.5\",\"07\",\"08\",\"09\",\"10\",\"11\",\"12\",\"13\",\"14\",\"15\",\"16\",\"17\",\"18\",\"19\",\"20\",\"21\",\"22\",\"23\",\"24\",\"25\",\"26\"],\n  \"approved_role_expansions\": {\n    \"01\": \"Own permanent Project Control Spine law, packet-set identity, active-record precedence, core/shell portability, builder-trace, free-operation, product scope, and external-service boundary rules.\",\n    \"11\": \"Own nonfunctional, accessibility, compatibility, supply-chain, license, dependency, and reproducible-build test contracts in addition to pre-code test design.\",\n    \"17\": \"Own incident response, disaster recovery, provider loss, safe degradation, post-promotion continuity, and recovery learning in addition to monitoring and Bug Memory learning.\",\n    \"23\": \"Own actual Resident Safe Change implementation execution in isolated, reversible slices in addition to the assembly plan.\",\n    \"24\": \"Own execution of integration, acceptance, platform, deployment, cache, Shortcut, real-device, internal Resident/guardian, protected benchmark, prediction, competitor, long-run, and independent proof in addition to the runbook.\",\n    \"25\": \"Own operating procedures, support, maintenance cadence, expiry watches, incident handoff, and safe-degradation instructions.\",\n    \"26\": \"Own the global receipt/output index, final evidence recon"
+        }
+      ],
+      "detail": {
+        "reason": "higher_precedence_disproof"
+      },
+      "result": "DECIDED"
     },
     {
       "composite_address": "P01.5::B::0012",
       "original_identifier": "AI-012",
       "claim": "The user’s free/no-subscription constraint is not enforced by a packet gate.",
-      "predicate": "FREE_CONSTRAINT_PRESENT_NO_ENFORCEMENT_GATE",
-      "predicate_passed": true,
-      "state_if_passed": "CURRENT DEFECT OR LIMITATION",
-      "confidence_if_passed": 94,
-      "support": [
-        {
-          "path": "audit/Packet_01.5_Discovery_Integrity_Audit_v1.json",
-          "tier": 2,
-          "version": 1,
-          "sha256": "4cce533d2002bfaf50ba2a5a81c872a7efc33039fe37ceb22d4c9422b27e0321",
-          "coverage": 0.8889,
-          "passage": "{ \"audit_date\": \"2026-06-14\", \"scope\": \"Packet 01.5 mechanical discovery integrity only\", \"baseline_count\": 122, \"files_audited\": 69, \"actual_provisional_count\": 2628, \"combined_actual_count\": 2750, \"sum_of_declared_counts_where_present\": 1791, \"count_mismatch_count\": 5, \"duplicate_id_count\": 30, \"duplicate_exact_heading_count\": 0, \"malformed_heading_count\": 0, \"missing_harm_count\": 0, \"missing_overlap_count\": 10, \"passes\": [ { \"pass\": 1, \"path\": \"audit/Packet_01.5_Discovery_Working_Register_v1.md\", \"actual_count\": 10, \"declared_count\": 10, \"count_match\": true, \"malformed_headings\": [], \"missing_harm\": [], \"missing_overlap\": [ \"REG-001\", \"REG-002\", \"REG-003\", \"REG-004\", \"REG-005\", \"REG-006\", \"REG-007\", \"REG-008\", \"REG-009\", \"REG-010\" ], \"records\": [ { \"id\": \"REG-001\", \"title\": \"Register size and context truncation\" }, { \"id\": \"REG-002\", \"title\": \"Partial copy or paste without detection\" }, { \"id\": \"REG-003\", \"title\": \"Stale Packet 01.5 version\" }, { \"id\": \"REG-004\", \"title\": \"Packet identity and alias mismatch\" }, { \"id\": \"REG-005\", \"title\": \"Human-language search misses\" }, { \"id\": \"REG-006\", \"title\": \"No packet-specific obligation index\" }, { \"id\": \"REG-007\", \"title\": \"Conflictin"
-        }
-      ],
-      "conflicts": [],
+      "predicate": "FREE_CONSTRAINT_ENFORCEMENT_CLAIM",
+      "outcome": "UNRESOLVED",
+      "state_if_decided": null,
+      "confidence_if_decided": null,
+      "support": [],
+      "disproof": [],
       "detail": {
-        "constraint_sources": [
-          "audit/Packet_01.5_Discovery_Integrity_Audit_v1.json",
-          "audit/Packet_01.5_Discovery_Pass_06_Economic_LockIn_Social_Physical_and_Viability_v1.md",
-          "audit/Packet_01.5_Discovery_Pass_24_Financial_Billing_Quotas_Subscriptions_Fraud_and_EconomicDenial_v1.md",
-          "audit/routing-batches/Packet_01.5_Applicability_Batch_002_Plan_v1.json"
+        "related_free_operation_authority": [
+          "audit/Packet_03.5_Approved_Existing_Packet_Role_Amendment_v1.json"
         ],
-        "gate_like_files": [
-          "pmp-phase8a3-history-unavailable-current-only-freeze-gate-v1.js"
-        ]
+        "reason": "no_direct_current_authority"
       },
-      "result": "DECIDED"
+      "result": "REMAIN_QUEUED"
     },
     {
       "composite_address": "P01.5::B::0020",
       "original_identifier": "BUILD-002",
       "claim": "Packet 23 is a no-code assembly plan, not an implementation packet.",
-      "predicate": "PACKET_23_NO_CODE_ASSEMBLY_NOT_IMPLEMENTATION",
-      "predicate_passed": true,
-      "state_if_passed": "CURRENT DEFECT OR LIMITATION",
-      "confidence_if_passed": 98,
+      "predicate": "PACKET_23_IMPLEMENTATION_ROLE_CLAIM",
+      "outcome": "UNRESOLVED",
+      "state_if_decided": null,
+      "confidence_if_decided": null,
       "support": [
         {
-          "path": "audit/Packet_01.5_Discovery_Integrity_Audit_v1.json",
-          "tier": 2,
-          "version": 1,
-          "sha256": "4cce533d2002bfaf50ba2a5a81c872a7efc33039fe37ceb22d4c9422b27e0321",
-          "coverage": 1.0,
-          "passage": "{ \"audit_date\": \"2026-06-14\", \"scope\": \"Packet 01.5 mechanical discovery integrity only\", \"baseline_count\": 122, \"files_audited\": 69, \"actual_provisional_count\": 2628, \"combined_actual_count\": 2750, \"sum_of_declared_counts_where_present\": 1791, \"count_mismatch_count\": 5, \"duplicate_id_count\": 30, \"duplicate_exact_heading_count\": 0, \"malformed_heading_count\": 0, \"missing_harm_count\": 0, \"missing_overlap_count\": 10, \"passes\": [ { \"pass\": 1, \"path\": \"audit/Packet_01.5_Discovery_Working_Register_v1.md\", \"actual_count\": 10, \"declared_count\": 10, \"count_match\": true, \"malformed_headings\": [], \"missing_harm\": [], \"missing_overlap\": [ \"REG-001\", \"REG-002\", \"REG-003\", \"REG-004\", \"REG-005\", \"REG-006\", \"REG-007\", \"REG-008\", \"REG-009\", \"REG-010\" ], \"records\": [ { \"id\": \"REG-001\", \"title\": \"Register size and context truncation\" }, { \"id\": \"REG-002\", \"title\": \"Partial copy or paste without detection\" }, { \"id\": \"REG-003\", \"title\": \"Stale Packet 01.5 version\" }, { \"id\": \"REG-004\", \"title\": \"Packet identity and alias mismatch\" }, { \"id\": \"REG-005\", \"title\": \"Human-language search misses\" }, { \"id\": \"REG-006\", \"title\": \"No packet-specific obligation index\" }, { \"id\": \"REG-007\", \"title\": \"Conflictin"
-        },
-        {
           "path": "audit/Packet_03.5_Approved_Existing_Packet_Role_Amendment_v1.json",
-          "tier": 2,
+          "tier": 1,
           "version": 1,
           "sha256": "708073f9b1b1e7ca98ea6d1a07a23af0d9841b8de7dc1a3957403dfcf3bd8f73",
           "coverage": 0.875,
           "passage": "{ \"type\": \"PMP_CURRENT_EXISTING_PACKET_ROLE_AMENDMENT_DECISION\", \"version\": \"1.0.0\", \"decided_on\": \"2026-06-14\", \"status\": \"APPROVED\", \"basis\": \"Resolve every Packet 03.5 lifecycle gap without adding unapproved placeholder packets.\", \"approved_sequence\": [\"00\",\"01\",\"02\",\"03\",\"03.5\",\"04\",\"05\",\"06\",\"06.5\",\"07\",\"08\",\"09\",\"10\",\"11\",\"12\",\"13\",\"14\",\"15\",\"16\",\"17\",\"18\",\"19\",\"20\",\"21\",\"22\",\"23\",\"24\",\"25\",\"26\"], \"approved_role_expansions\": { \"01\": \"Own permanent Project Control Spine law, packet-set identity, active-record precedence, core/shell portability, builder-trace, free-operation, product scope, and external-service boundary rules.\", \"11\": \"Own nonfunctional, accessibility, compatibility, supply-chain, license, dependency, and reproducible-build test contracts in addition to pre-code test design.\", \"17\": \"Own incident response, disaster recovery, provider loss, safe degradation, post-promotion continuity, and recovery learning in addition to monitoring and Bug Memory learning.\", \"23\": \"Own actual Resident Safe Change implementation execution in isolated, reversible slices in addition to the assembly plan.\", \"24\": \"Own execution of integration, acceptance, platform, deployment, cache"
-        },
-        {
-          "path": "audit/routing-batches/Packet_01.5_Applicability_Batch_002_Plan_v1.json",
-          "tier": 2,
-          "version": 1,
-          "sha256": "dc7a8eb03c22c0a81f87bfa71e5f3e100750b732927b7957e2dbdaa38bb13b4f",
-          "coverage": 1.0,
-          "passage": "The gap is active conditional on executing that planned implementation chain.\"}, {\"address\":\"P01.5::B::0020\",\"original_identifier\":\"BUILD-002\",\"state\":\"ACTIVE_CONDITIONAL_RISK\",\"source_evidence_type\":\"PLANNED_CONTACT\",\"catalog_evidence_ids\":[\"P03-BOUND-CAPABILITY-SET\",\"P03-RC-017\",\"P03-RC-018\"],\"contact_path\":\"Packet 23's no-code plan becomes an implementation risk when the future module assembly and protected promotion chain begins.\",\"rationale\":\"The plan itself does not fail a current RC capability."
         }
       ],
-      "conflicts": [],
-      "detail": {},
-      "result": "DECIDED"
+      "disproof": [
+        {
+          "path": "audit/Packet_03.5_Approved_Existing_Packet_Role_Amendment_v1.json",
+          "tier": 1,
+          "version": 1,
+          "sha256": "708073f9b1b1e7ca98ea6d1a07a23af0d9841b8de7dc1a3957403dfcf3bd8f73",
+          "coverage": null,
+          "passage": "{\n  \"type\": \"PMP_CURRENT_EXISTING_PACKET_ROLE_AMENDMENT_DECISION\",\n  \"version\": \"1.0.0\",\n  \"decided_on\": \"2026-06-14\",\n  \"status\": \"APPROVED\",\n  \"basis\": \"Resolve every Packet 03.5 lifecycle gap without adding unapproved placeholder packets.\",\n  \"approved_sequence\": [\"00\",\"01\",\"02\",\"03\",\"03.5\",\"04\",\"05\",\"06\",\"06.5\",\"07\",\"08\",\"09\",\"10\",\"11\",\"12\",\"13\",\"14\",\"15\",\"16\",\"17\",\"18\",\"19\",\"20\",\"21\",\"22\",\"23\",\"24\",\"25\",\"26\"],\n  \"approved_role_expansions\": {\n    \"01\": \"Own permanent Project Control Spine law, packet-set identity, active-record precedence, core/shell portability, builder-trace, free-operation, product scope, and external-service boundary rules.\",\n    \"11\": \"Own nonfunctional, accessibility, compatibility, supply-chain, license, dependency, and reproducible-build test contracts in addition to pre-code test design.\",\n    \"17\": \"Own incident response, disaster recovery, provider loss, safe degradation, post-promotion continuity, and recovery learning in addition to monitoring and Bug Memory learning.\",\n    \"23\": \"Own actual Resident Safe Change implementation execution in isolated, reversible slices in addition to the assembly plan.\",\n    \"24\": \"Own execution of integration, acceptance, platform, deployment, cache, Shortcut, real-device, internal Resident/guardian, protected benchmark, prediction, competitor, long-run, and independent proof in addition to the runbook.\",\n    \"25\": \"Own operating procedures, support, maintenance cadence, expiry watches, incident handoff, and safe-degradation instructions.\",\n    \"26\": \"Own the global receipt/output index, final evidence recon"
+        }
+      ],
+      "detail": {
+        "reason": "same_tier_conflict"
+      },
+      "result": "REMAIN_QUEUED"
     },
     {
       "composite_address": "P01.5::B::0021",
       "original_identifier": "BUILD-003",
       "claim": "Packet 24 is a runbook specification, not execution of integration or acceptance.",
-      "predicate": "PACKET_24_RUNBOOK_NOT_EXECUTION",
-      "predicate_passed": true,
-      "state_if_passed": "CURRENT DEFECT OR LIMITATION",
-      "confidence_if_passed": 98,
+      "predicate": "PACKET_24_EXECUTION_ROLE_CLAIM",
+      "outcome": "UNRESOLVED",
+      "state_if_decided": null,
+      "confidence_if_decided": null,
       "support": [
         {
-          "path": "audit/Packet_01.5_Discovery_Integrity_Audit_v1.json",
-          "tier": 2,
-          "version": 1,
-          "sha256": "4cce533d2002bfaf50ba2a5a81c872a7efc33039fe37ceb22d4c9422b27e0321",
-          "coverage": 0.875,
-          "passage": "{ \"audit_date\": \"2026-06-14\", \"scope\": \"Packet 01.5 mechanical discovery integrity only\", \"baseline_count\": 122, \"files_audited\": 69, \"actual_provisional_count\": 2628, \"combined_actual_count\": 2750, \"sum_of_declared_counts_where_present\": 1791, \"count_mismatch_count\": 5, \"duplicate_id_count\": 30, \"duplicate_exact_heading_count\": 0, \"malformed_heading_count\": 0, \"missing_harm_count\": 0, \"missing_overlap_count\": 10, \"passes\": [ { \"pass\": 1, \"path\": \"audit/Packet_01.5_Discovery_Working_Register_v1.md\", \"actual_count\": 10, \"declared_count\": 10, \"count_match\": true, \"malformed_headings\": [], \"missing_harm\": [], \"missing_overlap\": [ \"REG-001\", \"REG-002\", \"REG-003\", \"REG-004\", \"REG-005\", \"REG-006\", \"REG-007\", \"REG-008\", \"REG-009\", \"REG-010\" ], \"records\": [ { \"id\": \"REG-001\", \"title\": \"Register size and context truncation\" }, { \"id\": \"REG-002\", \"title\": \"Partial copy or paste without detection\" }, { \"id\": \"REG-003\", \"title\": \"Stale Packet 01.5 version\" }, { \"id\": \"REG-004\", \"title\": \"Packet identity and alias mismatch\" }, { \"id\": \"REG-005\", \"title\": \"Human-language search misses\" }, { \"id\": \"REG-006\", \"title\": \"No packet-specific obligation index\" }, { \"id\": \"REG-007\", \"title\": \"Conflictin"
-        },
-        {
           "path": "audit/Packet_03.5_Approved_Existing_Packet_Role_Amendment_v1.json",
-          "tier": 2,
+          "tier": 1,
           "version": 1,
           "sha256": "708073f9b1b1e7ca98ea6d1a07a23af0d9841b8de7dc1a3957403dfcf3bd8f73",
           "coverage": 0.875,
           "passage": "{ \"type\": \"PMP_CURRENT_EXISTING_PACKET_ROLE_AMENDMENT_DECISION\", \"version\": \"1.0.0\", \"decided_on\": \"2026-06-14\", \"status\": \"APPROVED\", \"basis\": \"Resolve every Packet 03.5 lifecycle gap without adding unapproved placeholder packets.\", \"approved_sequence\": [\"00\",\"01\",\"02\",\"03\",\"03.5\",\"04\",\"05\",\"06\",\"06.5\",\"07\",\"08\",\"09\",\"10\",\"11\",\"12\",\"13\",\"14\",\"15\",\"16\",\"17\",\"18\",\"19\",\"20\",\"21\",\"22\",\"23\",\"24\",\"25\",\"26\"], \"approved_role_expansions\": { \"01\": \"Own permanent Project Control Spine law, packet-set identity, active-record precedence, core/shell portability, builder-trace, free-operation, product scope, and external-service boundary rules.\", \"11\": \"Own nonfunctional, accessibility, compatibility, supply-chain, license, dependency, and reproducible-build test contracts in addition to pre-code test design.\", \"17\": \"Own incident response, disaster recovery, provider loss, safe degradation, post-promotion continuity, and recovery learning in addition to monitoring and Bug Memory learning.\", \"23\": \"Own actual Resident Safe Change implementation execution in isolated, reversible slices in addition to the assembly plan.\", \"24\": \"Own execution of integration, acceptance, platform, deployment, cache"
-        },
-        {
-          "path": "audit/routing-batches/Packet_01.5_Applicability_Batch_003_Plan_v1.json",
-          "tier": 2,
-          "version": 1,
-          "sha256": "6dbd90c24d0118d4121a6ea2962d7e1d0168001f1c041bc617a3cf56de19fdd3",
-          "coverage": 0.875,
-          "passage": "{ \"packet\": \"01.5\", \"batch\": \"P01.5-APP-B003\", \"version\": 1, \"date\": \"2026-06-14\", \"status\": \"PLANNED_PENDING_TRANSACTION_AND_INDEPENDENT_VERIFICATION\", \"parent_inventory\": { \"path\": \"audit/routing-inventory/Packet_01.5_Applicability_Inventory_v3_Batch_002.jsonl\", \"sha256\": \"e0fdbdc4d9a2c63a57dd88dcf6c7fc7551d060427b693b4e1dc03a3f7368ccb6\", \"envelopes\": 2750 }, \"child_inventory\": { \"version\": 4, \"path\": \"audit/routing-inventory/Packet_01.5_Applicability_Inventory_v4_Batch_003.jsonl\" }, \"contact_catalog\": { \"path\": \"audit/routing-evidence/Packet_01.5_Project_Contact_Evidence_Catalog_v1.json\", \"verification\": \"audit/Packet_01.5_Project_Contact_Evidence_Catalog_Independent_Verification_v1.json\" }, \"selection\": { \"rule\": \"next ten preserved baseline addresses after accepted Batch 002\", \"addresses\": [ \"P01.5::B::0021\", \"P01.5::B::0022\", \"P01.5::B::0023\", \"P01.5::B::0024\", \"P01.5::B::0025\", \"P01.5::B::0026\", \"P01.5::B::0027\", \"P01.5::B::0028\", \"P01.5::B::0029\", \"P01.5::B::0030\" ], \"count\": 10 }, \"decisions\": [ { \"address\": \"P01.5::B::0021\", \"original_identifier\": \"BUILD-003\", \"state\": \"ACTIVE_CONDITIONAL_RISK\", \"source_evidence_type\": \"PLANNED_CONTACT\", \"catalog_evidence_ids\": [\"P03-BOUN"
         }
       ],
-      "conflicts": [],
-      "detail": {},
-      "result": "DECIDED"
+      "disproof": [
+        {
+          "path": "audit/Packet_03.5_Approved_Existing_Packet_Role_Amendment_v1.json",
+          "tier": 1,
+          "version": 1,
+          "sha256": "708073f9b1b1e7ca98ea6d1a07a23af0d9841b8de7dc1a3957403dfcf3bd8f73",
+          "coverage": null,
+          "passage": "{\n  \"type\": \"PMP_CURRENT_EXISTING_PACKET_ROLE_AMENDMENT_DECISION\",\n  \"version\": \"1.0.0\",\n  \"decided_on\": \"2026-06-14\",\n  \"status\": \"APPROVED\",\n  \"basis\": \"Resolve every Packet 03.5 lifecycle gap without adding unapproved placeholder packets.\",\n  \"approved_sequence\": [\"00\",\"01\",\"02\",\"03\",\"03.5\",\"04\",\"05\",\"06\",\"06.5\",\"07\",\"08\",\"09\",\"10\",\"11\",\"12\",\"13\",\"14\",\"15\",\"16\",\"17\",\"18\",\"19\",\"20\",\"21\",\"22\",\"23\",\"24\",\"25\",\"26\"],\n  \"approved_role_expansions\": {\n    \"01\": \"Own permanent Project Control Spine law, packet-set identity, active-record precedence, core/shell portability, builder-trace, free-operation, product scope, and external-service boundary rules.\",\n    \"11\": \"Own nonfunctional, accessibility, compatibility, supply-chain, license, dependency, and reproducible-build test contracts in addition to pre-code test design.\",\n    \"17\": \"Own incident response, disaster recovery, provider loss, safe degradation, post-promotion continuity, and recovery learning in addition to monitoring and Bug Memory learning.\",\n    \"23\": \"Own actual Resident Safe Change implementation execution in isolated, reversible slices in addition to the assembly plan.\",\n    \"24\": \"Own execution of integration, acceptance, platform, deployment, cache, Shortcut, real-device, internal Resident/guardian, protected benchmark, prediction, competitor, long-run, and independent proof in addition to the runbook.\",\n    \"25\": \"Own operating procedures, support, maintenance cadence, expiry watches, incident handoff, and safe-degradation instructions.\",\n    \"26\": \"Own the global receipt/output index, final evidence recon"
+        }
+      ],
+      "detail": {
+        "reason": "same_tier_conflict"
+      },
+      "result": "REMAIN_QUEUED"
     },
     {
       "composite_address": "P01.5::B::0022",
       "original_identifier": "BUILD-004",
       "claim": "There is no authorized packet to build the complete candidate pipeline, guardian, promotion, rollback, monitoring, autonomy, permissions, and UI.",
-      "predicate": "NO_COMPLETE_PIPELINE_IMPLEMENTATION_AUTHORITY",
-      "predicate_passed": true,
-      "state_if_passed": "CURRENT DEFECT OR LIMITATION",
-      "confidence_if_passed": 93,
-      "support": [
-        {
-          "path": "audit/Packet_01.5_Discovery_Integrity_Audit_v1.json",
-          "tier": 2,
-          "version": 1,
-          "sha256": "4cce533d2002bfaf50ba2a5a81c872a7efc33039fe37ceb22d4c9422b27e0321",
-          "coverage": 0.9286,
-          "passage": "{ \"audit_date\": \"2026-06-14\", \"scope\": \"Packet 01.5 mechanical discovery integrity only\", \"baseline_count\": 122, \"files_audited\": 69, \"actual_provisional_count\": 2628, \"combined_actual_count\": 2750, \"sum_of_declared_counts_where_present\": 1791, \"count_mismatch_count\": 5, \"duplicate_id_count\": 30, \"duplicate_exact_heading_count\": 0, \"malformed_heading_count\": 0, \"missing_harm_count\": 0, \"missing_overlap_count\": 10, \"passes\": [ { \"pass\": 1, \"path\": \"audit/Packet_01.5_Discovery_Working_Register_v1.md\", \"actual_count\": 10, \"declared_count\": 10, \"count_match\": true, \"malformed_headings\": [], \"missing_harm\": [], \"missing_overlap\": [ \"REG-001\", \"REG-002\", \"REG-003\", \"REG-004\", \"REG-005\", \"REG-006\", \"REG-007\", \"REG-008\", \"REG-009\", \"REG-010\" ], \"records\": [ { \"id\": \"REG-001\", \"title\": \"Register size and context truncation\" }, { \"id\": \"REG-002\", \"title\": \"Partial copy or paste without detection\" }, { \"id\": \"REG-003\", \"title\": \"Stale Packet 01.5 version\" }, { \"id\": \"REG-004\", \"title\": \"Packet identity and alias mismatch\" }, { \"id\": \"REG-005\", \"title\": \"Human-language search misses\" }, { \"id\": \"REG-006\", \"title\": \"No packet-specific obligation index\" }, { \"id\": \"REG-007\", \"title\": \"Conflictin"
-        }
-      ],
-      "conflicts": [],
-      "detail": {},
-      "result": "DECIDED"
+      "predicate": "COMPLETE_PIPELINE_AUTHORITY_CLAIM",
+      "outcome": "UNRESOLVED",
+      "state_if_decided": null,
+      "confidence_if_decided": null,
+      "support": [],
+      "disproof": [],
+      "detail": {
+        "related_role_amendment": [
+          "audit/Packet_03.5_Approved_Existing_Packet_Role_Amendment_v1.json"
+        ],
+        "reason": "no_direct_current_authority"
+      },
+      "result": "REMAIN_QUEUED"
     },
     {
       "composite_address": "P01.5::B::0023",
       "original_identifier": "BUILD-005",
       "claim": "No explicit repair/retest iteration packet governs candidate failures between inspection/runtime/guardian review.",
-      "predicate": "NO_REPAIR_RETEST_ITERATION_AUTHORITY",
-      "predicate_passed": true,
-      "state_if_passed": "CURRENT DEFECT OR LIMITATION",
-      "confidence_if_passed": 93,
-      "support": [
-        {
-          "path": "audit/routing-batches/Packet_01.5_Applicability_Batch_003_Plan_v1.json",
-          "tier": 2,
-          "version": 1,
-          "sha256": "6dbd90c24d0118d4121a6ea2962d7e1d0168001f1c041bc617a3cf56de19fdd3",
-          "coverage": null,
-          "passage": "The missing authorization is active conditional on the planned implementation phase.\" }, { \"address\": \"P01.5::B::0023\", \"original_identifier\": \"BUILD-005\", \"state\": \"ACTIVE_CONDITIONAL_RISK\", \"source_evidence_type\": \"PLANNED_CONTACT\", \"catalog_evidence_ids\": [\"P03-BOUND-CAPABILITY-SET\", \"P03-RC-005\", \"P03-RC-008\", \"P03-RC-017\", \"P03-RC-018\"], \"contact_path\": \"A repair and retest iteration loop is required when future candidates fail current truth scans, repair requests, runtime checks, guardian review, or promotion proof.\", \"rationale\": \"The current system can scan and prepare repair requests, but the missing candidate iteration packet becomes operational only when the future candidate workflow begins.\" }, { \"address\": \"P01.5::B::0024\", \"original_identifier\": \"BUILD-006\", \"state\": \"CURRENT_DEFECT\", \"source_evidence_type\": \"CURRENT_CONTACT\", \"catalog_evidence_ids\": [\"P03-RC-011\", \"P03-RC-017\", \"P03-RC-018\", \"P03-RC-020\"], \"contact_path\": \"Current repository changes, inventory evidence, Safe Writer commits, Code Safety records, and third-party runtime dependencies already require reproducible build inputs, locked dependencies, and artifact identity.\", \"rationale\": \"The project curren"
-        }
-      ],
-      "conflicts": [],
-      "detail": {},
-      "result": "DECIDED"
+      "predicate": "REPAIR_RETEST_AUTHORITY_CLAIM",
+      "outcome": "UNRESOLVED",
+      "state_if_decided": null,
+      "confidence_if_decided": null,
+      "support": [],
+      "disproof": [],
+      "detail": {
+        "reason": "no_direct_current_authority"
+      },
+      "result": "REMAIN_QUEUED"
     },
     {
       "composite_address": "P01.5::B::0033",
       "original_identifier": "BUILD-015",
       "claim": "Builder independence and core/shell portability are not explicit acceptance gates in the current packet sequence.",
-      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY_SUPPORT",
-      "predicate_passed": true,
-      "state_if_passed": "CURRENT DEFECT OR LIMITATION",
-      "confidence_if_passed": 92,
-      "support": [
-        {
-          "path": "audit/Packet_01.5_Discovery_Integrity_Audit_v1.json",
-          "tier": 2,
-          "version": 1,
-          "sha256": "4cce533d2002bfaf50ba2a5a81c872a7efc33039fe37ceb22d4c9422b27e0321",
-          "coverage": 1.0,
-          "passage": "{ \"audit_date\": \"2026-06-14\", \"scope\": \"Packet 01.5 mechanical discovery integrity only\", \"baseline_count\": 122, \"files_audited\": 69, \"actual_provisional_count\": 2628, \"combined_actual_count\": 2750, \"sum_of_declared_counts_where_present\": 1791, \"count_mismatch_count\": 5, \"duplicate_id_count\": 30, \"duplicate_exact_heading_count\": 0, \"malformed_heading_count\": 0, \"missing_harm_count\": 0, \"missing_overlap_count\": 10, \"passes\": [ { \"pass\": 1, \"path\": \"audit/Packet_01.5_Discovery_Working_Register_v1.md\", \"actual_count\": 10, \"declared_count\": 10, \"count_match\": true, \"malformed_headings\": [], \"missing_harm\": [], \"missing_overlap\": [ \"REG-001\", \"REG-002\", \"REG-003\", \"REG-004\", \"REG-005\", \"REG-006\", \"REG-007\", \"REG-008\", \"REG-009\", \"REG-010\" ], \"records\": [ { \"id\": \"REG-001\", \"title\": \"Register size and context truncation\" }, { \"id\": \"REG-002\", \"title\": \"Partial copy or paste without detection\" }, { \"id\": \"REG-003\", \"title\": \"Stale Packet 01.5 version\" }, { \"id\": \"REG-004\", \"title\": \"Packet identity and alias mismatch\" }, { \"id\": \"REG-005\", \"title\": \"Human-language search misses\" }, { \"id\": \"REG-006\", \"title\": \"No packet-specific obligation index\" }, { \"id\": \"REG-007\", \"title\": \"Conflictin"
-        },
-        {
-          "path": "audit/routing-batches/Packet_01.5_Applicability_Batch_004_Plan_v1.json",
-          "tier": 2,
-          "version": 1,
-          "sha256": "95201a7fff92cd13b4ef4c521657c053d2374af3f21164bcf4e7e06db53adcff",
-          "coverage": 0.9167,
-          "passage": "Missing maintainability and deprecation controls are therefore a current defect.\" }, { \"address\": \"P01.5::B::0033\", \"original_identifier\": \"BUILD-015\", \"state\": \"CURRENT_DEFECT\", \"source_evidence_type\": \"CURRENT_CONTACT\", \"catalog_evidence_ids\": [\"P03-BOUND-CAPABILITY-SET\", \"P03-RC-001\", \"P03-RC-017\", \"P03-RC-018\"], \"contact_path\": \"Current Resident, Safe Writer, and Code Safety capabilities exist, but the project cannot safely proceed until builder independence, core/shell separation, portability, and product boundaries become explicit acceptance gates.\", \"rationale\": \"These are governing non-negotiable project boundaries for the current build sequence, not a remote domain."
-        }
-      ],
-      "conflicts": [],
+      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY",
+      "outcome": "UNRESOLVED",
+      "state_if_decided": null,
+      "confidence_if_decided": null,
+      "support": [],
+      "disproof": [],
       "detail": {
-        "reason": "direct_current_authority_support"
+        "reason": "no_direct_current_authority"
       },
-      "result": "DECIDED"
+      "result": "REMAIN_QUEUED"
     },
     {
       "composite_address": "P01.5::B::0034",
       "original_identifier": "DATA-001",
       "claim": "Packet 04 has not yet completed the authoritative storage/key/schema/owner map.",
-      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY_SUPPORT",
-      "predicate_passed": true,
-      "state_if_passed": "CURRENT DEFECT OR LIMITATION",
-      "confidence_if_passed": 92,
-      "support": [
-        {
-          "path": "audit/Packet_01.5_Discovery_Integrity_Audit_v1.json",
-          "tier": 2,
-          "version": 1,
-          "sha256": "4cce533d2002bfaf50ba2a5a81c872a7efc33039fe37ceb22d4c9422b27e0321",
-          "coverage": 0.9091,
-          "passage": "{ \"audit_date\": \"2026-06-14\", \"scope\": \"Packet 01.5 mechanical discovery integrity only\", \"baseline_count\": 122, \"files_audited\": 69, \"actual_provisional_count\": 2628, \"combined_actual_count\": 2750, \"sum_of_declared_counts_where_present\": 1791, \"count_mismatch_count\": 5, \"duplicate_id_count\": 30, \"duplicate_exact_heading_count\": 0, \"malformed_heading_count\": 0, \"missing_harm_count\": 0, \"missing_overlap_count\": 10, \"passes\": [ { \"pass\": 1, \"path\": \"audit/Packet_01.5_Discovery_Working_Register_v1.md\", \"actual_count\": 10, \"declared_count\": 10, \"count_match\": true, \"malformed_headings\": [], \"missing_harm\": [], \"missing_overlap\": [ \"REG-001\", \"REG-002\", \"REG-003\", \"REG-004\", \"REG-005\", \"REG-006\", \"REG-007\", \"REG-008\", \"REG-009\", \"REG-010\" ], \"records\": [ { \"id\": \"REG-001\", \"title\": \"Register size and context truncation\" }, { \"id\": \"REG-002\", \"title\": \"Partial copy or paste without detection\" }, { \"id\": \"REG-003\", \"title\": \"Stale Packet 01.5 version\" }, { \"id\": \"REG-004\", \"title\": \"Packet identity and alias mismatch\" }, { \"id\": \"REG-005\", \"title\": \"Human-language search misses\" }, { \"id\": \"REG-006\", \"title\": \"No packet-specific obligation index\" }, { \"id\": \"REG-007\", \"title\": \"Conflictin"
-        }
-      ],
-      "conflicts": [],
+      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY",
+      "outcome": "UNRESOLVED",
+      "state_if_decided": null,
+      "confidence_if_decided": null,
+      "support": [],
+      "disproof": [],
       "detail": {
-        "reason": "direct_current_authority_support"
+        "reason": "no_direct_current_authority"
       },
-      "result": "DECIDED"
+      "result": "REMAIN_QUEUED"
     },
     {
       "composite_address": "P01.5::B::0035",
       "original_identifier": "DATA-002",
       "claim": "Exact Resident authority-mode schema is unresolved.",
-      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY_SUPPORT",
-      "predicate_passed": true,
-      "state_if_passed": "CURRENT DEFECT OR LIMITATION",
-      "confidence_if_passed": 92,
-      "support": [
-        {
-          "path": "audit/Packet_01.5_Discovery_Integrity_Audit_v1.json",
-          "tier": 2,
-          "version": 1,
-          "sha256": "4cce533d2002bfaf50ba2a5a81c872a7efc33039fe37ceb22d4c9422b27e0321",
-          "coverage": 1.0,
-          "passage": "{ \"audit_date\": \"2026-06-14\", \"scope\": \"Packet 01.5 mechanical discovery integrity only\", \"baseline_count\": 122, \"files_audited\": 69, \"actual_provisional_count\": 2628, \"combined_actual_count\": 2750, \"sum_of_declared_counts_where_present\": 1791, \"count_mismatch_count\": 5, \"duplicate_id_count\": 30, \"duplicate_exact_heading_count\": 0, \"malformed_heading_count\": 0, \"missing_harm_count\": 0, \"missing_overlap_count\": 10, \"passes\": [ { \"pass\": 1, \"path\": \"audit/Packet_01.5_Discovery_Working_Register_v1.md\", \"actual_count\": 10, \"declared_count\": 10, \"count_match\": true, \"malformed_headings\": [], \"missing_harm\": [], \"missing_overlap\": [ \"REG-001\", \"REG-002\", \"REG-003\", \"REG-004\", \"REG-005\", \"REG-006\", \"REG-007\", \"REG-008\", \"REG-009\", \"REG-010\" ], \"records\": [ { \"id\": \"REG-001\", \"title\": \"Register size and context truncation\" }, { \"id\": \"REG-002\", \"title\": \"Partial copy or paste without detection\" }, { \"id\": \"REG-003\", \"title\": \"Stale Packet 01.5 version\" }, { \"id\": \"REG-004\", \"title\": \"Packet identity and alias mismatch\" }, { \"id\": \"REG-005\", \"title\": \"Human-language search misses\" }, { \"id\": \"REG-006\", \"title\": \"No packet-specific obligation index\" }, { \"id\": \"REG-007\", \"title\": \"Conflictin"
-        },
-        {
-          "path": "audit/routing-batches/Packet_01.5_Applicability_Batch_004_Plan_v1.json",
-          "tier": 2,
-          "version": 1,
-          "sha256": "95201a7fff92cd13b4ef4c521657c053d2374af3f21164bcf4e7e06db53adcff",
-          "coverage": 0.8333,
-          "passage": "The missing authoritative storage map is a current defect.\" }, { \"address\": \"P01.5::B::0035\", \"original_identifier\": \"DATA-002\", \"state\": \"CURRENT_DEFECT\", \"source_evidence_type\": \"CURRENT_CONTACT\", \"catalog_evidence_ids\": [\"P03-RC-002\", \"P03-RC-020\"], \"contact_path\": \"Resident Authority Modes is a verified current capability with a current local record, but its exact schema, compatibility, and migration identity remain unresolved.\", \"rationale\": \"The affected record exists and is used now."
-        }
-      ],
-      "conflicts": [],
+      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY",
+      "outcome": "UNRESOLVED",
+      "state_if_decided": null,
+      "confidence_if_decided": null,
+      "support": [],
+      "disproof": [],
       "detail": {
-        "reason": "direct_current_authority_support"
+        "reason": "no_direct_current_authority"
       },
-      "result": "DECIDED"
+      "result": "REMAIN_QUEUED"
     },
     {
       "composite_address": "P01.5::B::0048",
       "original_identifier": "GOV-001",
       "claim": "Note 01’s Work Packet order is stale and does not match the actual Notes 17–26.",
-      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY_SUPPORT",
-      "predicate_passed": true,
-      "state_if_passed": "CURRENT DEFECT OR LIMITATION",
-      "confidence_if_passed": 92,
-      "support": [
-        {
-          "path": "audit/Packet_01.5_Discovery_Integrity_Audit_v1.json",
-          "tier": 2,
-          "version": 1,
-          "sha256": "4cce533d2002bfaf50ba2a5a81c872a7efc33039fe37ceb22d4c9422b27e0321",
-          "coverage": 0.8462,
-          "passage": "{ \"audit_date\": \"2026-06-14\", \"scope\": \"Packet 01.5 mechanical discovery integrity only\", \"baseline_count\": 122, \"files_audited\": 69, \"actual_provisional_count\": 2628, \"combined_actual_count\": 2750, \"sum_of_declared_counts_where_present\": 1791, \"count_mismatch_count\": 5, \"duplicate_id_count\": 30, \"duplicate_exact_heading_count\": 0, \"malformed_heading_count\": 0, \"missing_harm_count\": 0, \"missing_overlap_count\": 10, \"passes\": [ { \"pass\": 1, \"path\": \"audit/Packet_01.5_Discovery_Working_Register_v1.md\", \"actual_count\": 10, \"declared_count\": 10, \"count_match\": true, \"malformed_headings\": [], \"missing_harm\": [], \"missing_overlap\": [ \"REG-001\", \"REG-002\", \"REG-003\", \"REG-004\", \"REG-005\", \"REG-006\", \"REG-007\", \"REG-008\", \"REG-009\", \"REG-010\" ], \"records\": [ { \"id\": \"REG-001\", \"title\": \"Register size and context truncation\" }, { \"id\": \"REG-002\", \"title\": \"Partial copy or paste without detection\" }, { \"id\": \"REG-003\", \"title\": \"Stale Packet 01.5 version\" }, { \"id\": \"REG-004\", \"title\": \"Packet identity and alias mismatch\" }, { \"id\": \"REG-005\", \"title\": \"Human-language search misses\" }, { \"id\": \"REG-006\", \"title\": \"No packet-specific obligation index\" }, { \"id\": \"REG-007\", \"title\": \"Conflictin"
-        }
-      ],
-      "conflicts": [],
+      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY",
+      "outcome": "UNRESOLVED",
+      "state_if_decided": null,
+      "confidence_if_decided": null,
+      "support": [],
+      "disproof": [],
       "detail": {
-        "reason": "direct_current_authority_support"
+        "reason": "no_direct_current_authority"
       },
-      "result": "DECIDED"
+      "result": "REMAIN_QUEUED"
     },
     {
       "composite_address": "P01.5::B::0049",
       "original_identifier": "GOV-002",
       "claim": "Note 01 omits Packet 06.5.",
-      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY_SUPPORT",
-      "predicate_passed": false,
-      "state_if_passed": "CURRENT DEFECT OR LIMITATION",
-      "confidence_if_passed": 92,
+      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY",
+      "outcome": "UNRESOLVED",
+      "state_if_decided": null,
+      "confidence_if_decided": null,
       "support": [],
-      "conflicts": [],
+      "disproof": [],
       "detail": {
         "reason": "claim_too_short"
       },
@@ -303,12 +227,12 @@
       "composite_address": "P01.5::B::0050",
       "original_identifier": "GOV-003",
       "claim": "Note 01 omits Packet 26.",
-      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY_SUPPORT",
-      "predicate_passed": false,
-      "state_if_passed": "CURRENT DEFECT OR LIMITATION",
-      "confidence_if_passed": 92,
+      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY",
+      "outcome": "UNRESOLVED",
+      "state_if_decided": null,
+      "confidence_if_decided": null,
       "support": [],
-      "conflicts": [],
+      "disproof": [],
       "detail": {
         "reason": "claim_too_short"
       },
@@ -318,12 +242,12 @@
       "composite_address": "P01.5::B::0052",
       "original_identifier": "GOV-005",
       "claim": "Note 01 still authorizes Packet 02 as next even though Packet 02 and Packet 03 completion evidence exists.",
-      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY_SUPPORT",
-      "predicate_passed": false,
-      "state_if_passed": "CURRENT DEFECT OR LIMITATION",
-      "confidence_if_passed": 92,
+      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY",
+      "outcome": "UNRESOLVED",
+      "state_if_decided": null,
+      "confidence_if_decided": null,
       "support": [],
-      "conflicts": [],
+      "disproof": [],
       "detail": {
         "reason": "no_direct_current_authority"
       },
@@ -333,12 +257,12 @@
       "composite_address": "P01.5::B::0054",
       "original_identifier": "GOV-007",
       "claim": "The repository Master Status Ledger says Packet 03 is not started, but a Packet 03 PASS map exists.",
-      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY_SUPPORT",
-      "predicate_passed": false,
-      "state_if_passed": "CURRENT DEFECT OR LIMITATION",
-      "confidence_if_passed": 92,
+      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY",
+      "outcome": "UNRESOLVED",
+      "state_if_decided": null,
+      "confidence_if_decided": null,
       "support": [],
-      "conflicts": [],
+      "disproof": [],
       "detail": {
         "reason": "no_direct_current_authority"
       },
@@ -348,12 +272,12 @@
       "composite_address": "P01.5::B::0055",
       "original_identifier": "GOV-008",
       "claim": "Default-branch Packet 02 human and JSON records are v1.1 with an obsolete v10/v3 route, while the finalizing commit and current map use v14/v4/v3.",
-      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY_SUPPORT",
-      "predicate_passed": false,
-      "state_if_passed": "CURRENT DEFECT OR LIMITATION",
-      "confidence_if_passed": 92,
+      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY",
+      "outcome": "UNRESOLVED",
+      "state_if_decided": null,
+      "confidence_if_decided": null,
       "support": [],
-      "conflicts": [],
+      "disproof": [],
       "detail": {
         "reason": "no_direct_current_authority"
       },
@@ -363,12 +287,12 @@
       "composite_address": "P01.5::B::0057",
       "original_identifier": "GOV-010",
       "claim": "Printed packet templates can be mistaken for completed work.",
-      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY_SUPPORT",
-      "predicate_passed": false,
-      "state_if_passed": "CURRENT DEFECT OR LIMITATION",
-      "confidence_if_passed": 92,
+      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY",
+      "outcome": "UNRESOLVED",
+      "state_if_decided": null,
+      "confidence_if_decided": null,
       "support": [],
-      "conflicts": [],
+      "disproof": [],
       "detail": {
         "reason": "no_direct_current_authority"
       },
@@ -378,12 +302,12 @@
       "composite_address": "P01.5::B::0069",
       "original_identifier": "OPS-007",
       "claim": "No product decision defines maximum acceptable automation authority and which actions always require user approval.",
-      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY_SUPPORT",
-      "predicate_passed": false,
-      "state_if_passed": "CURRENT DEFECT OR LIMITATION",
-      "confidence_if_passed": 92,
+      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY",
+      "outcome": "UNRESOLVED",
+      "state_if_decided": null,
+      "confidence_if_decided": null,
       "support": [],
-      "conflicts": [],
+      "disproof": [],
       "detail": {
         "reason": "no_direct_current_authority"
       },
@@ -393,12 +317,12 @@
       "composite_address": "P01.5::B::0073",
       "original_identifier": "OPS-011",
       "claim": "No emergency-stop mechanism is implemented despite Packet 23 module M30.",
-      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY_SUPPORT",
-      "predicate_passed": false,
-      "state_if_passed": "CURRENT DEFECT OR LIMITATION",
-      "confidence_if_passed": 92,
+      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY",
+      "outcome": "UNRESOLVED",
+      "state_if_decided": null,
+      "confidence_if_decided": null,
       "support": [],
-      "conflicts": [],
+      "disproof": [],
       "detail": {
         "reason": "no_direct_current_authority"
       },
@@ -408,132 +332,87 @@
       "composite_address": "P01.5::B::0094",
       "original_identifier": "PROOF-002",
       "claim": "No dedicated internal Resident and guardian proof-execution packet exists in the actual sequence.",
-      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY_SUPPORT",
-      "predicate_passed": true,
-      "state_if_passed": "CURRENT DEFECT OR LIMITATION",
-      "confidence_if_passed": 92,
-      "support": [
-        {
-          "path": "audit/Packet_01.5_Discovery_Integrity_Audit_v1.json",
-          "tier": 2,
-          "version": 1,
-          "sha256": "4cce533d2002bfaf50ba2a5a81c872a7efc33039fe37ceb22d4c9422b27e0321",
-          "coverage": 0.9091,
-          "passage": "{ \"audit_date\": \"2026-06-14\", \"scope\": \"Packet 01.5 mechanical discovery integrity only\", \"baseline_count\": 122, \"files_audited\": 69, \"actual_provisional_count\": 2628, \"combined_actual_count\": 2750, \"sum_of_declared_counts_where_present\": 1791, \"count_mismatch_count\": 5, \"duplicate_id_count\": 30, \"duplicate_exact_heading_count\": 0, \"malformed_heading_count\": 0, \"missing_harm_count\": 0, \"missing_overlap_count\": 10, \"passes\": [ { \"pass\": 1, \"path\": \"audit/Packet_01.5_Discovery_Working_Register_v1.md\", \"actual_count\": 10, \"declared_count\": 10, \"count_match\": true, \"malformed_headings\": [], \"missing_harm\": [], \"missing_overlap\": [ \"REG-001\", \"REG-002\", \"REG-003\", \"REG-004\", \"REG-005\", \"REG-006\", \"REG-007\", \"REG-008\", \"REG-009\", \"REG-010\" ], \"records\": [ { \"id\": \"REG-001\", \"title\": \"Register size and context truncation\" }, { \"id\": \"REG-002\", \"title\": \"Partial copy or paste without detection\" }, { \"id\": \"REG-003\", \"title\": \"Stale Packet 01.5 version\" }, { \"id\": \"REG-004\", \"title\": \"Packet identity and alias mismatch\" }, { \"id\": \"REG-005\", \"title\": \"Human-language search misses\" }, { \"id\": \"REG-006\", \"title\": \"No packet-specific obligation index\" }, { \"id\": \"REG-007\", \"title\": \"Conflictin"
-        }
-      ],
-      "conflicts": [],
+      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY",
+      "outcome": "UNRESOLVED",
+      "state_if_decided": null,
+      "confidence_if_decided": null,
+      "support": [],
+      "disproof": [],
       "detail": {
-        "reason": "direct_current_authority_support"
+        "reason": "no_direct_current_authority"
       },
-      "result": "DECIDED"
+      "result": "REMAIN_QUEUED"
     },
     {
       "composite_address": "P01.5::B::0095",
       "original_identifier": "PROOF-003",
       "claim": "No actual hidden benchmark construction and custody execution packet exists.",
-      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY_SUPPORT",
-      "predicate_passed": true,
-      "state_if_passed": "CURRENT DEFECT OR LIMITATION",
-      "confidence_if_passed": 92,
-      "support": [
-        {
-          "path": "audit/Packet_01.5_Discovery_Integrity_Audit_v1.json",
-          "tier": 2,
-          "version": 1,
-          "sha256": "4cce533d2002bfaf50ba2a5a81c872a7efc33039fe37ceb22d4c9422b27e0321",
-          "coverage": 1.0,
-          "passage": "{ \"audit_date\": \"2026-06-14\", \"scope\": \"Packet 01.5 mechanical discovery integrity only\", \"baseline_count\": 122, \"files_audited\": 69, \"actual_provisional_count\": 2628, \"combined_actual_count\": 2750, \"sum_of_declared_counts_where_present\": 1791, \"count_mismatch_count\": 5, \"duplicate_id_count\": 30, \"duplicate_exact_heading_count\": 0, \"malformed_heading_count\": 0, \"missing_harm_count\": 0, \"missing_overlap_count\": 10, \"passes\": [ { \"pass\": 1, \"path\": \"audit/Packet_01.5_Discovery_Working_Register_v1.md\", \"actual_count\": 10, \"declared_count\": 10, \"count_match\": true, \"malformed_headings\": [], \"missing_harm\": [], \"missing_overlap\": [ \"REG-001\", \"REG-002\", \"REG-003\", \"REG-004\", \"REG-005\", \"REG-006\", \"REG-007\", \"REG-008\", \"REG-009\", \"REG-010\" ], \"records\": [ { \"id\": \"REG-001\", \"title\": \"Register size and context truncation\" }, { \"id\": \"REG-002\", \"title\": \"Partial copy or paste without detection\" }, { \"id\": \"REG-003\", \"title\": \"Stale Packet 01.5 version\" }, { \"id\": \"REG-004\", \"title\": \"Packet identity and alias mismatch\" }, { \"id\": \"REG-005\", \"title\": \"Human-language search misses\" }, { \"id\": \"REG-006\", \"title\": \"No packet-specific obligation index\" }, { \"id\": \"REG-007\", \"title\": \"Conflictin"
-        }
-      ],
-      "conflicts": [],
+      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY",
+      "outcome": "UNRESOLVED",
+      "state_if_decided": null,
+      "confidence_if_decided": null,
+      "support": [],
+      "disproof": [],
       "detail": {
-        "reason": "direct_current_authority_support"
+        "reason": "no_direct_current_authority"
       },
-      "result": "DECIDED"
+      "result": "REMAIN_QUEUED"
     },
     {
       "composite_address": "P01.5::B::0096",
       "original_identifier": "PROOF-004",
       "claim": "No prediction/prevention trial execution packet exists.",
-      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY_SUPPORT",
-      "predicate_passed": true,
-      "state_if_passed": "CURRENT DEFECT OR LIMITATION",
-      "confidence_if_passed": 92,
-      "support": [
-        {
-          "path": "audit/Packet_01.5_Discovery_Integrity_Audit_v1.json",
-          "tier": 2,
-          "version": 1,
-          "sha256": "4cce533d2002bfaf50ba2a5a81c872a7efc33039fe37ceb22d4c9422b27e0321",
-          "coverage": 1.0,
-          "passage": "{ \"audit_date\": \"2026-06-14\", \"scope\": \"Packet 01.5 mechanical discovery integrity only\", \"baseline_count\": 122, \"files_audited\": 69, \"actual_provisional_count\": 2628, \"combined_actual_count\": 2750, \"sum_of_declared_counts_where_present\": 1791, \"count_mismatch_count\": 5, \"duplicate_id_count\": 30, \"duplicate_exact_heading_count\": 0, \"malformed_heading_count\": 0, \"missing_harm_count\": 0, \"missing_overlap_count\": 10, \"passes\": [ { \"pass\": 1, \"path\": \"audit/Packet_01.5_Discovery_Working_Register_v1.md\", \"actual_count\": 10, \"declared_count\": 10, \"count_match\": true, \"malformed_headings\": [], \"missing_harm\": [], \"missing_overlap\": [ \"REG-001\", \"REG-002\", \"REG-003\", \"REG-004\", \"REG-005\", \"REG-006\", \"REG-007\", \"REG-008\", \"REG-009\", \"REG-010\" ], \"records\": [ { \"id\": \"REG-001\", \"title\": \"Register size and context truncation\" }, { \"id\": \"REG-002\", \"title\": \"Partial copy or paste without detection\" }, { \"id\": \"REG-003\", \"title\": \"Stale Packet 01.5 version\" }, { \"id\": \"REG-004\", \"title\": \"Packet identity and alias mismatch\" }, { \"id\": \"REG-005\", \"title\": \"Human-language search misses\" }, { \"id\": \"REG-006\", \"title\": \"No packet-specific obligation index\" }, { \"id\": \"REG-007\", \"title\": \"Conflictin"
-        }
-      ],
-      "conflicts": [],
+      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY",
+      "outcome": "UNRESOLVED",
+      "state_if_decided": null,
+      "confidence_if_decided": null,
+      "support": [],
+      "disproof": [],
       "detail": {
-        "reason": "direct_current_authority_support"
+        "reason": "no_direct_current_authority"
       },
-      "result": "DECIDED"
+      "result": "REMAIN_QUEUED"
     },
     {
       "composite_address": "P01.5::B::0097",
       "original_identifier": "PROOF-005",
       "claim": "No competitor comparison execution packet exists.",
-      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY_SUPPORT",
-      "predicate_passed": true,
-      "state_if_passed": "CURRENT DEFECT OR LIMITATION",
-      "confidence_if_passed": 92,
-      "support": [
-        {
-          "path": "audit/Packet_01.5_Discovery_Integrity_Audit_v1.json",
-          "tier": 2,
-          "version": 1,
-          "sha256": "4cce533d2002bfaf50ba2a5a81c872a7efc33039fe37ceb22d4c9422b27e0321",
-          "coverage": 0.8333,
-          "passage": "{ \"audit_date\": \"2026-06-14\", \"scope\": \"Packet 01.5 mechanical discovery integrity only\", \"baseline_count\": 122, \"files_audited\": 69, \"actual_provisional_count\": 2628, \"combined_actual_count\": 2750, \"sum_of_declared_counts_where_present\": 1791, \"count_mismatch_count\": 5, \"duplicate_id_count\": 30, \"duplicate_exact_heading_count\": 0, \"malformed_heading_count\": 0, \"missing_harm_count\": 0, \"missing_overlap_count\": 10, \"passes\": [ { \"pass\": 1, \"path\": \"audit/Packet_01.5_Discovery_Working_Register_v1.md\", \"actual_count\": 10, \"declared_count\": 10, \"count_match\": true, \"malformed_headings\": [], \"missing_harm\": [], \"missing_overlap\": [ \"REG-001\", \"REG-002\", \"REG-003\", \"REG-004\", \"REG-005\", \"REG-006\", \"REG-007\", \"REG-008\", \"REG-009\", \"REG-010\" ], \"records\": [ { \"id\": \"REG-001\", \"title\": \"Register size and context truncation\" }, { \"id\": \"REG-002\", \"title\": \"Partial copy or paste without detection\" }, { \"id\": \"REG-003\", \"title\": \"Stale Packet 01.5 version\" }, { \"id\": \"REG-004\", \"title\": \"Packet identity and alias mismatch\" }, { \"id\": \"REG-005\", \"title\": \"Human-language search misses\" }, { \"id\": \"REG-006\", \"title\": \"No packet-specific obligation index\" }, { \"id\": \"REG-007\", \"title\": \"Conflictin"
-        }
-      ],
-      "conflicts": [],
+      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY",
+      "outcome": "UNRESOLVED",
+      "state_if_decided": null,
+      "confidence_if_decided": null,
+      "support": [],
+      "disproof": [],
       "detail": {
-        "reason": "direct_current_authority_support"
+        "reason": "no_direct_current_authority"
       },
-      "result": "DECIDED"
+      "result": "REMAIN_QUEUED"
     },
     {
       "composite_address": "P01.5::B::0098",
       "original_identifier": "PROOF-006",
       "claim": "No long-run and independent validation execution packet exists.",
-      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY_SUPPORT",
-      "predicate_passed": true,
-      "state_if_passed": "CURRENT DEFECT OR LIMITATION",
-      "confidence_if_passed": 92,
-      "support": [
-        {
-          "path": "audit/Packet_01.5_Discovery_Integrity_Audit_v1.json",
-          "tier": 2,
-          "version": 1,
-          "sha256": "4cce533d2002bfaf50ba2a5a81c872a7efc33039fe37ceb22d4c9422b27e0321",
-          "coverage": 1.0,
-          "passage": "{ \"audit_date\": \"2026-06-14\", \"scope\": \"Packet 01.5 mechanical discovery integrity only\", \"baseline_count\": 122, \"files_audited\": 69, \"actual_provisional_count\": 2628, \"combined_actual_count\": 2750, \"sum_of_declared_counts_where_present\": 1791, \"count_mismatch_count\": 5, \"duplicate_id_count\": 30, \"duplicate_exact_heading_count\": 0, \"malformed_heading_count\": 0, \"missing_harm_count\": 0, \"missing_overlap_count\": 10, \"passes\": [ { \"pass\": 1, \"path\": \"audit/Packet_01.5_Discovery_Working_Register_v1.md\", \"actual_count\": 10, \"declared_count\": 10, \"count_match\": true, \"malformed_headings\": [], \"missing_harm\": [], \"missing_overlap\": [ \"REG-001\", \"REG-002\", \"REG-003\", \"REG-004\", \"REG-005\", \"REG-006\", \"REG-007\", \"REG-008\", \"REG-009\", \"REG-010\" ], \"records\": [ { \"id\": \"REG-001\", \"title\": \"Register size and context truncation\" }, { \"id\": \"REG-002\", \"title\": \"Partial copy or paste without detection\" }, { \"id\": \"REG-003\", \"title\": \"Stale Packet 01.5 version\" }, { \"id\": \"REG-004\", \"title\": \"Packet identity and alias mismatch\" }, { \"id\": \"REG-005\", \"title\": \"Human-language search misses\" }, { \"id\": \"REG-006\", \"title\": \"No packet-specific obligation index\" }, { \"id\": \"REG-007\", \"title\": \"Conflictin"
-        }
-      ],
-      "conflicts": [],
+      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY",
+      "outcome": "UNRESOLVED",
+      "state_if_decided": null,
+      "confidence_if_decided": null,
+      "support": [],
+      "disproof": [],
       "detail": {
-        "reason": "direct_current_authority_support"
+        "reason": "no_direct_current_authority"
       },
-      "result": "DECIDED"
+      "result": "REMAIN_QUEUED"
     },
     {
       "composite_address": "P01.5::B::0099",
       "original_identifier": "PROOF-007",
       "claim": "No final evidence-based best-performing/readiness decision packet exists.",
-      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY_SUPPORT",
-      "predicate_passed": false,
-      "state_if_passed": "CURRENT DEFECT OR LIMITATION",
-      "confidence_if_passed": 92,
+      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY",
+      "outcome": "UNRESOLVED",
+      "state_if_decided": null,
+      "confidence_if_decided": null,
       "support": [],
-      "conflicts": [],
+      "disproof": [],
       "detail": {
         "reason": "no_direct_current_authority"
       },
@@ -543,19 +422,11 @@
       "composite_address": "P01.5::B::0112",
       "original_identifier": "RUN-005",
       "claim": "Resident has no autonomous repository write or commit authority.",
-      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY_SUPPORT",
-      "predicate_passed": true,
-      "state_if_passed": "CURRENT DEFECT OR LIMITATION",
-      "confidence_if_passed": 92,
+      "predicate": "GENERIC_DIRECT_CURRENT_AUTHORITY",
+      "outcome": "SUPPORTED",
+      "state_if_decided": "CURRENT DEFECT OR LIMITATION",
+      "confidence_if_decided": 92,
       "support": [
-        {
-          "path": "audit/Packet_01.5_Discovery_Integrity_Audit_v1.json",
-          "tier": 2,
-          "version": 1,
-          "sha256": "4cce533d2002bfaf50ba2a5a81c872a7efc33039fe37ceb22d4c9422b27e0321",
-          "coverage": 0.8571,
-          "passage": "{ \"audit_date\": \"2026-06-14\", \"scope\": \"Packet 01.5 mechanical discovery integrity only\", \"baseline_count\": 122, \"files_audited\": 69, \"actual_provisional_count\": 2628, \"combined_actual_count\": 2750, \"sum_of_declared_counts_where_present\": 1791, \"count_mismatch_count\": 5, \"duplicate_id_count\": 30, \"duplicate_exact_heading_count\": 0, \"malformed_heading_count\": 0, \"missing_harm_count\": 0, \"missing_overlap_count\": 10, \"passes\": [ { \"pass\": 1, \"path\": \"audit/Packet_01.5_Discovery_Working_Register_v1.md\", \"actual_count\": 10, \"declared_count\": 10, \"count_match\": true, \"malformed_headings\": [], \"missing_harm\": [], \"missing_overlap\": [ \"REG-001\", \"REG-002\", \"REG-003\", \"REG-004\", \"REG-005\", \"REG-006\", \"REG-007\", \"REG-008\", \"REG-009\", \"REG-010\" ], \"records\": [ { \"id\": \"REG-001\", \"title\": \"Register size and context truncation\" }, { \"id\": \"REG-002\", \"title\": \"Partial copy or paste without detection\" }, { \"id\": \"REG-003\", \"title\": \"Stale Packet 01.5 version\" }, { \"id\": \"REG-004\", \"title\": \"Packet identity and alias mismatch\" }, { \"id\": \"REG-005\", \"title\": \"Human-language search misses\" }, { \"id\": \"REG-006\", \"title\": \"No packet-specific obligation index\" }, { \"id\": \"REG-007\", \"title\": \"Conflictin"
-        },
         {
           "path": "audit/pmp-packet-02-watch-closure-v1.json",
           "tier": 2,
@@ -565,9 +436,9 @@
           "passage": "Operational systems that are optional, user-mediated, unconnected to normal Resident reasoning, or outside the installed source runtime are classified as limits rather than unresolved reasoning-path watches.\", \"closures\": [ { \"prior_watch\": \"Backend implementation and retention/security were unverified.\", \"classification\": \"OUTSIDE_CURRENT_REASONING_PATH\", \"basis\": [ \"No provider, model, AI authentication, AI request formatter, or AI response parser was found in the corrected current Resident route.\", \"Known client backend paths are optional test/archive/private-memory sync paths.\", \"Normal residentRun does not require the backend and remains local when it is absent or unavailable.\" ], \"remaining_limit\": \"A future backend must be designed in Packet 06 and implemented only in an authorized implementation packet.\", \"packet_02_watch\": false }, { \"prior_watch\": \"Live installed iPhone Home Screen runtime was not observed.\", \"classification\": \"DEPLOYMENT_VALIDATION_OUTSIDE_AUDIT_COMPLETION_GATE\", \"basis\": [ \"Packet 02 identifies the repository-defined current route, reasoning source, authority ceiling, privacy boundary, and failure behavior.\", \"Installed-device cache identity is an opera"
         }
       ],
-      "conflicts": [],
+      "disproof": [],
       "detail": {
-        "reason": "direct_current_authority_support"
+        "reason": "higher_precedence_support"
       },
       "result": "DECIDED"
     }

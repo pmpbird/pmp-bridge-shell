@@ -1,11 +1,11 @@
-# Packet 01.5 — Authoritative Packet Law Family Independent Verification v1
+# Packet 01.5 — Authoritative Packet Law Family Independent Verification v2
 
 STATUS: PASS — AUTHORITATIVE PACKET LAW FAMILY VERIFIED
 WATCH: NONE
 BLOCKERS: NONE
 FAMILY RECORDS: 25
-EVIDENCE-SUPPORTED DECISIONS: 15
-REMAINING QUEUED: 10
+SUPPORTED OR DISPROVED DECISIONS: 2
+REMAINING QUEUED: 23
 UNKNOWN — HOLD CREATED: 0
 ROUTING ASSIGNMENTS: 0
 GROUPING ASSIGNMENTS: 0
@@ -14,46 +14,37 @@ PACKET 04 AUTHORIZED: NO
 
 ## Authority precedence
 
-1. Latest current status ledgers and independently verified receipts
+1. Current approved decisions, latest status ledgers, and independently verified receipts
 2. Current governing packet laws, packet records, roadmaps, and completion receipts
 3. Older versions as corroboration only
 
-Within a normalized document family, the latest version controls. Equal-or-higher-precedence conflicts remain queued.
+Discovery artifacts, routing batches, reconstructed baselines, applicability outputs, and copied limitation statements are excluded from authority. Within a normalized document family, the latest version controls. Equal-tier conflicts remain queued.
 
 ## Decisions
 
-- `P01.5::B::0012` / `AI-012` — `CURRENT DEFECT OR LIMITATION`
-- `P01.5::B::0020` / `BUILD-002` — `CURRENT DEFECT OR LIMITATION`
-- `P01.5::B::0021` / `BUILD-003` — `CURRENT DEFECT OR LIMITATION`
-- `P01.5::B::0022` / `BUILD-004` — `CURRENT DEFECT OR LIMITATION`
-- `P01.5::B::0023` / `BUILD-005` — `CURRENT DEFECT OR LIMITATION`
-- `P01.5::B::0033` / `BUILD-015` — `CURRENT DEFECT OR LIMITATION`
-- `P01.5::B::0034` / `DATA-001` — `CURRENT DEFECT OR LIMITATION`
-- `P01.5::B::0035` / `DATA-002` — `CURRENT DEFECT OR LIMITATION`
-- `P01.5::B::0048` / `GOV-001` — `CURRENT DEFECT OR LIMITATION`
-- `P01.5::B::0094` / `PROOF-002` — `CURRENT DEFECT OR LIMITATION`
-- `P01.5::B::0095` / `PROOF-003` — `CURRENT DEFECT OR LIMITATION`
-- `P01.5::B::0096` / `PROOF-004` — `CURRENT DEFECT OR LIMITATION`
-- `P01.5::B::0097` / `PROOF-005` — `CURRENT DEFECT OR LIMITATION`
-- `P01.5::B::0098` / `PROOF-006` — `CURRENT DEFECT OR LIMITATION`
-- `P01.5::B::0112` / `RUN-005` — `CURRENT DEFECT OR LIMITATION`
+- `P01.5::B::0002` / `AI-002` — `OUT-OF-SCOPE CANDIDATE` — `DISPROVED`
+- `P01.5::B::0112` / `RUN-005` — `CURRENT DEFECT OR LIMITATION` — `SUPPORTED`
 
 ## Decision-state counts
 
-- CURRENT DEFECT OR LIMITATION: 15
+- CURRENT DEFECT OR LIMITATION: 1
+- OUT-OF-SCOPE CANDIDATE: 1
+
+Direct current support produces a current applicability decision. Direct higher-precedence disproof produces an `OUT-OF-SCOPE CANDIDATE`, not a current defect.
 
 ## Remaining records
 
-The remaining 10 law-family records retain their permanent addresses and original source order. Each queue entry names the missing controlling authority, incomplete clause, private dependency, or precedence conflict that must be resolved.
+The remaining 23 law-family records retain their permanent addresses and original source order. Each queue entry names the missing controlling authority, incomplete clause, private dependency, or unresolved precedence conflict.
 
 ## Independent verification
 
 - complete 25-record family coverage: PASS
 - current main commit anchor: `72ce5485559612afe2fb2f4a006d7e72c6b2116b`
-- authority census digest: `4b2c3a69247ac7c77f302669686af2b9b716767cf02cd22684165044af57d7e1`
+- authority census digest: `428c0dddbfa25b7218cff400ae017ac43cbe55294a33bd4e2a2e965ab3b2949f`
+- forbidden copied/discovery authority excluded: PASS
 - tier and version precedence recomputed: PASS
-- direct-support predicates independently rerun: PASS
-- equal-or-higher-precedence conflicts blocked: PASS
+- support and disproof predicates independently rerun: PASS
+- equal-tier conflicts blocked: PASS
 - content digests for controlling sources: PASS
 - unsupported automatic HOLD decisions: none
 - routing and grouping leakage: none
