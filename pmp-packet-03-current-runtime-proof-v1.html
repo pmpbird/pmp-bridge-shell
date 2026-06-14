@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PMP P03 Proof">
+<meta name="theme-color" content="#f3ded4">
+<title>PMP Packet 03 Current Runtime Proof</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3ded4;color:#07101c;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.wrap{max-width:920px;margin:auto;padding:calc(16px + env(safe-area-inset-top)) 14px calc(40px + env(safe-area-inset-bottom))}.card{background:#fff;border:3px solid #07101c;border-radius:24px;padding:16px;margin:0 0 14px;box-shadow:0 8px 18px #0002}h1,h2{margin:0 0 10px}.sub{font-weight:800;line-height:1.35}.btn{width:100%;border:2px solid #07101c;border-radius:16px;background:#acd1fb;color:#07101c;padding:14px;margin:6px 0;font:inherit;font-weight:950}.dark{background:#172234;color:#eef4fb}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.note,.warn,.bad{border:2px solid #07101c;border-radius:16px;padding:12px;white-space:pre-wrap;overflow-wrap:anywhere;font-family:ui-monospace,Menlo,monospace;font-size:12px}.note{background:#e8fff0}.warn{background:#fff1cb}.bad{background:#ffe0e0}input,textarea{width:100%;border:2px solid #07101c;border-radius:14px;padding:11px;font:inherit;margin-top:7px}textarea{min-height:180px;font-family:ui-monospace,Menlo,monospace;font-size:12px}iframe{width:100%;height:70vh;border:3px solid #07101c;border-radius:18px;background:#fff}.pill{display:inline-block;border:2px solid #07101c;border-radius:999px;padding:5px 9px;margin:3px;font-size:12px;font-weight:900}.hidden{display:none!important}@media(max-width:700px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body><div class="wrap">
+<section class="card"><h1>Packet 03 Current Runtime Proof</h1><p class="sub">This helper does not change the PMP app. It records current route, runtime, persistence, Notes handoff, backend classification, and restore truth. A clean result requires the iPhone Home Screen reopen test and exact Notes marker confirmation.</p><div id="summary" class="warn">No proof run yet.</div></section>
+<section class="card"><h2>1. Static current-source checks</h2><button class="btn" onclick="runStaticChecks()">Run Source Checks</button><div id="staticOut" class="note">Not run.</div></section>
+<section class="card"><h2>2. iPhone runtime and storage</h2><div class="grid"><button class="btn" onclick="runEnvironmentChecks()">Run Runtime Checks</button><button class="btn dark" onclick="startPersistenceTest()">Start Reopen Test</button></div><button class="btn" onclick="verifyPersistenceTest()">Verify After Full Close + Reopen</button><div class="warn">For the reopen proof: open this page from a Home Screen icon, tap Start Reopen Test, fully close it, reopen the same icon, then tap Verify.</div><div id="runtimeOut" class="note">Not run.</div></section>
+<section class="card"><h2>3. Live current route chain</h2><div class="grid"><button class="btn" onclick="loadCurrentApp()">Load Current App Below</button><button class="btn dark" onclick="captureRouteChain()">Capture Live Frame Chain</button></div><div class="warn">After loading, press <b>Open Latest App</b> inside Route Guardian. Wait for Control Room, then press Capture Live Frame Chain.</div><iframe id="currentFrame" title="PMP current runtime proof frame"></iframe><div id="routeOut" class="note">Not captured.</div></section>
+<section class="card"><h2>4. Shortcut → Apple Notes proof</h2><div id="markerBox" class="note"></div><div class="grid"><button class="btn" onclick="copyNotesMarker()">Copy Unique Marker</button><button class="btn dark" onclick="openNotesShortcut()">Run PMP Save Private Memory Shortcut</button></div><p class="sub">Open the target Apple Note, copy the exact marker that was appended, return here, and paste it below.</p><input id="notesConfirm" placeholder="Paste the marker back from Apple Notes"><button class="btn" onclick="verifyNotesMarker()">Verify Exact Notes Marker</button><div id="notesOut" class="note">Not verified.</div></section>
+<section class="card"><h2>5. Optional backend classification</h2><button class="btn" onclick="testConfiguredBackend()">Classify Current Browser Backend</button><div id="backendOut" class="note">Not tested.</div></section>
+<section class="card"><h2>6. Final evidence report</h2><div class="grid"><button class="btn" onclick="buildReport()">Build Final Report</button><button class="btn dark" onclick="copyReport()">Copy Report</button></div><button class="btn" onclick="downloadReport()">Download Report JSON</button><textarea id="reportBox" readonly placeholder="Final report appears here"></textarea></section>
+</div>
+<script>
+const VERSION='1.0.0';
+const STATE_KEY='pmp_packet03_runtime_proof_v1';
+const PERSIST_KEY='pmp_packet03_runtime_persistence_v1';
+const BACKEND_KEY='pmp_backend_config_v1';
+const EXPECTED_CHAIN=['pmp-app-current.html','pmp-route-guardian-current-loader-v14.html','pmp-current-inner-cleanbug-rgcontrols-v4.html','pmp-current-inner-cleanbug-rgcontrols-v3.html','pmp-home-single-v6.html'];
+const FILES=['pmp-app-current.html','pmp-current-map-v9.json','pmp-current-map.json','pmp-route-guardian-current-loader-v14.html','pmp-current-inner-cleanbug-rgcontrols-v4.html','pmp-current-inner-cleanbug-rgcontrols-v3.html','pmp-home-single-v6.html','bug-memory-current-clean-v1.html','resident-notes-backend-v2.html','code-safety.html','pmp-worker.js','wrangler.toml'];
+let state=read(STATE_KEY,{type:'PMP_PACKET03_CURRENT_RUNTIME_PROOF',version:VERSION,test_id:'P03-'+Date.now()+'-'+Math.random().toString(16).slice(2,10),created_at:new Date().toISOString(),static_checks:null,runtime:null,persistence:null,route:null,notes:null,backend:null,final:null});
+function $(id){return document.getElementById(id)}
+function read(k,f){try{let v=localStorage.getItem(k);return v?JSON.parse(v):f}catch(e){return f}}
+function save(){state.updated_at=new Date().toISOString();localStorage.setItem(STATE_KEY,JSON.stringify(state));renderSummary()}
+function safeErr(e){return String(e&&e.message||e||'unknown error')}
+async function sha256(t){let b=new TextEncoder().encode(t),h=await crypto.subtle.digest('SHA-256',b);return Array.from(new Uint8Array(h)).map(x=>x.toString(16).padStart(2,'0')).join('')}
+async function fetchText(path){let r=await fetch(path+'?p03proof='+Date.now(),{cache:'no-store'});let t=await r.text();return{path,status:r.status,ok:r.ok,text:t,sha256:await sha256(t),bytes:t.length}}
+function publicFileRecord(x){return{path:x.path,status:x.status,ok:x.ok,sha256:x.sha256,bytes:x.bytes}}
+async function runStaticChecks(){
+ $('staticOut').textContent='Running...'; let got={},records=[];
+ for(const p of FILES){try{let x=await fetchText(p);got[p]=x.text;records.push(publicFileRecord(x))}catch(e){records.push({path:p,ok:false,error:safeErr(e)})}}
+ let map=null;try{map=JSON.parse(got['pmp-current-map-v9.json']||'null')}catch(e){}
+ const stable=got['pmp-app-current.html']||'',rg=got['pmp-route-guardian-current-loader-v14.html']||'',v4=got['pmp-current-inner-cleanbug-rgcontrols-v4.html']||'',v3=got['pmp-current-inner-cleanbug-rgcontrols-v3.html']||'',codeSafety=got['code-safety.html']||'',worker=got['pmp-worker.js']||'',wrangler=got['wrangler.toml']||'';
+ const checks={
+  stable_map_precedence:/MAP_PATHS=\['pmp-current-map-v9\.json','pmp-current-map\.json'\]/.test(stable),
+  map_selects_rg14:!!(map&&map.route_guardian_loader&&map.route_guardian_loader.path==='pmp-route-guardian-current-loader-v14.html'),
+  map_selects_v4:!!(map&&map.current_app&&map.current_app.path==='pmp-current-inner-cleanbug-rgcontrols-v4.html'),
+  rg14_requires_manual_open:/Open Latest App/.test(rg)&&/openLatest/.test(rg),
+  v4_loads_v3:/pmp-current-inner-cleanbug-rgcontrols-v3\.html/.test(v4),
+  v3_loads_base_v6:/pmp-home-single-v6\.html/.test(v3),
+  canonical_bug_memory_route:/bug-memory-current-clean-v1\.html/.test(v3)&&/function goBug/.test(v3),
+  restore_writeback_not_connected:/Restore write-back is not connected yet/.test(codeSafety),
+  backend_source_has_wildcard_cors:/Access-Control-Allow-Origin[^\n]*\*/.test(worker),
+  backend_source_has_no_auth_check:!/(authorization|bearer|api[_-]?key|token)/i.test(worker),
+  backend_kv_binding_commented:/# \[\[kv_namespaces\]\]/.test(wrangler)&&/# binding = "PMP_STORE"/.test(wrangler)
+ };
+ let pass=Object.values(checks).every(Boolean)&&records.every(r=>r.ok);
+ state.static_checks={at:new Date().toISOString(),pass,checks,files:records,classification:{route:'statically resolved',bug_memory:'canonical live route resolves to bug-memory-current-clean-v1.html',restore:'not implemented; restore packet/preview only',backend_source:'code exists but has wildcard CORS, no authentication check, and repository KV binding is commented out'}};save();$('staticOut').textContent=JSON.stringify(state.static_checks,null,2)
+}
+async function runEnvironmentChecks(){
+ let ls=false,ss=false,cache={supported:'caches' in window,pass:false};
+ try{localStorage.setItem('p03_runtime_probe','ok');ls=localStorage.getItem('p03_runtime_probe')==='ok';localStorage.removeItem('p03_runtime_probe')}catch(e){}
+ try{sessionStorage.setItem('p03_runtime_probe','ok');ss=sessionStorage.getItem('p03_runtime_probe')==='ok';sessionStorage.removeItem('p03_runtime_probe')}catch(e){}
+ if(cache.supported){try{let c=await caches.open('p03-runtime-proof-v1');let req=new Request(location.pathname+'?cacheprobe=1');await c.put(req,new Response('p03-ok'));let m=await c.match(req);cache.pass=!!m&&await m.text()==='p03-ok';await c.delete(req)}catch(e){cache.error=safeErr(e)}}
+ let standalone=!!navigator.standalone||matchMedia('(display-mode: standalone)').matches;
+ state.runtime={at:new Date().toISOString(),pass:standalone&&ls,standalone,navigator_standalone:!!navigator.standalone,display_mode_standalone:matchMedia('(display-mode: standalone)').matches,online:navigator.onLine,user_agent:navigator.userAgent,platform:navigator.platform||'',local_storage_read_write:ls,session_storage_read_write:ss,cache_api:cache,service_worker_controlled:!!(navigator.serviceWorker&&navigator.serviceWorker.controller)};save();$('runtimeOut').textContent=JSON.stringify(state.runtime,null,2)
+}
+function startPersistenceTest(){let marker='P03-PERSIST-'+state.test_id+'-'+Date.now();let rec={marker,started_at:new Date().toISOString(),verified:false,start_standalone:!!navigator.standalone||matchMedia('(display-mode: standalone)').matches};localStorage.setItem(PERSIST_KEY,JSON.stringify(rec));state.persistence=rec;save();$('runtimeOut').textContent=JSON.stringify({status:'STARTED',instruction:'Fully close this Home Screen app, reopen the same icon, then tap Verify.',record:rec},null,2)}
+function verifyPersistenceTest(){let rec=read(PERSIST_KEY,null);let standalone=!!navigator.standalone||matchMedia('(display-mode: standalone)').matches;let pass=!!(rec&&rec.marker&&rec.started_at&&rec.start_standalone&&standalone);state.persistence={...(rec||{}),verified_at:new Date().toISOString(),verified:pass,reopen_standalone:standalone,pass};save();$('runtimeOut').textContent=JSON.stringify(state.persistence,null,2)}
+function loadCurrentApp(){let f=$('currentFrame');f.src='pmp-app-current.html?p03live='+Date.now()+'#control';$('routeOut').textContent='Loaded. Press Open Latest App inside Route Guardian, wait for Control Room, then capture.'}
+function frameChain(frame,depth=0,out=[]){if(depth>8)return out;try{let w=frame.contentWindow,d=frame.contentDocument;out.push({depth,url:w.location.href,title:d&&d.title||'',ready_state:d&&d.readyState||''});let nested=d&&d.querySelector&&d.querySelector('iframe');if(nested)frameChain(nested,depth+1,out)}catch(e){out.push({depth,error:safeErr(e)})}return out}
+function captureRouteChain(){let chain=frameChain($('currentFrame'));let paths=chain.filter(x=>x.url).map(x=>{try{return new URL(x.url).pathname.split('/').pop()}catch(e){return''}});let pass=EXPECTED_CHAIN.every(p=>paths.includes(p));state.route={at:new Date().toISOString(),pass,expected:EXPECTED_CHAIN,observed_paths:paths,chain};save();$('routeOut').textContent=JSON.stringify(state.route,null,2)}
+function ensureMarker(){if(!state.notes||!state.notes.marker){let at=new Date().toISOString();state.notes={marker_created_at:at,marker:'PMP-PACKET03-NOTES-PROOF::'+state.test_id+'::'+at,verified:false};save()}$('markerBox').textContent=state.notes.marker}
+async function copyNotesMarker(){ensureMarker();try{await navigator.clipboard.writeText(state.notes.marker);state.notes.copied_at=new Date().toISOString();save();$('notesOut').textContent='Marker copied.'}catch(e){$('notesOut').textContent='Copy failed: '+safeErr(e)}}
+function openNotesShortcut(){ensureMarker();state.notes.shortcut_opened_at=new Date().toISOString();save();location.href='shortcuts://run-shortcut?name='+encodeURIComponent('PMP Save Private Memory')+'&input=clipboard'}
+function verifyNotesMarker(){ensureMarker();let pasted=$('notesConfirm').value.trim();let pass=pasted===state.notes.marker;state.notes={...state.notes,verified:pass,verified_at:new Date().toISOString(),confirmation_method:'user copied the exact appended marker back from Apple Notes',pasted_hash_only:pass?null:'mismatch'};save();$('notesOut').textContent=JSON.stringify({pass,expected:state.notes.marker,pasted},null,2)}
+function backendConfig(){try{return JSON.parse(localStorage.getItem(BACKEND_KEY)||'null')}catch(e){return null}}
+async function testConfiguredBackend(){let c=backendConfig();if(!c||!c.enabled||!c.base_url){state.backend={at:new Date().toISOString(),pass:true,class:'NOT_CONFIGURED_OR_DISABLED_IN_CURRENT_BROWSER',configured:!!(c&&c.base_url),enabled:!!(c&&c.enabled)};save();$('backendOut').textContent=JSON.stringify(state.backend,null,2);return}
+ let base=String(c.base_url).replace(/\/$/,'');let originHash=await sha256(base);let result={at:new Date().toISOString(),configured:true,enabled:true,base_url_sha256:originHash};
+ try{let r=await fetch(base+'/api',{cache:'no-store'});let body=await r.json().catch(()=>null);result.http_status=r.status;result.reachable=r.ok;result.backend_type=body&&body.type||null;result.storage_bound=body&&body.storage_bound;result.pass=!!r.ok;result.class=r.ok?'CONFIGURED_AND_REACHABLE':'CONFIGURED_BUT_NOT_HEALTHY'}catch(e){result.pass=false;result.reachable=false;result.class='CONFIGURED_BUT_UNREACHABLE';result.error=safeErr(e)}
+ state.backend=result;save();$('backendOut').textContent=JSON.stringify(result,null,2)
+}
+function buildReport(){let required={static:!!(state.static_checks&&state.static_checks.pass),home_screen_runtime:!!(state.runtime&&state.runtime.pass),reopen_persistence:!!(state.persistence&&state.persistence.pass),live_route:!!(state.route&&state.route.pass),notes_shortcut:!!(state.notes&&state.notes.verified),backend_classified:!!(state.backend&&state.backend.pass)};let pass=Object.values(required).every(Boolean);state.final={type:'PMP_PACKET03_CURRENT_RUNTIME_PROOF_RECEIPT',version:VERSION,built_at:new Date().toISOString(),test_id:state.test_id,status:pass?'PASS':'INCOMPLETE_OR_FAILED',required,static_checks:state.static_checks,runtime:state.runtime,persistence:state.persistence,route:state.route,notes:state.notes,backend:state.backend,safe_claim:pass?'Current iPhone Home Screen route, storage persistence, exact Notes Shortcut handoff, configured-backend state, canonical Bug Memory route, and restore limitation were observed or classified for this test run.':'The runtime proof is not complete; failed or missing required checks remain.',do_not_claim:'This receipt does not implement Resident Safe Change, prove future AI/candidate/guardian/promotion systems, or authorize Packet 04.'};save();$('reportBox').value=JSON.stringify(state.final,null,2);renderSummary();return state.final}
+async function copyReport(){let r=buildReport(),t=JSON.stringify(r,null,2);try{await navigator.clipboard.writeText(t);$('summary').textContent='Final report copied. Status: '+r.status}catch(e){$('summary').textContent='Copy failed; use Download Report.'}}
+function downloadReport(){let r=buildReport(),b=new Blob([JSON.stringify(r,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='PMP_Packet_03_Current_Runtime_Proof_'+state.test_id+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+function renderSummary(){ensureMarker();let f=state.final;let status=f&&f.status||'NOT COMPLETE';$('summary').textContent='Test ID: '+state.test_id+'\nStatus: '+status+'\nRequired: source checks, Home Screen runtime, close/reopen persistence, live route chain, exact Notes marker, backend classification.'}
+ensureMarker();renderSummary();
+</script></body></html>
