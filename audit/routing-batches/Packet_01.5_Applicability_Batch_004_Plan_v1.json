@@ -1,0 +1,138 @@
+{
+  "packet": "01.5",
+  "batch": "P01.5-APP-B004",
+  "version": 1,
+  "date": "2026-06-14",
+  "status": "PLANNED_PENDING_TRANSACTION_AND_INDEPENDENT_VERIFICATION",
+  "parent_inventory": {
+    "path": "audit/routing-inventory/Packet_01.5_Applicability_Inventory_v4_Batch_003.jsonl",
+    "sha256": "6da22d34cd2925af3c5372ec8c69dd7ee55836bd5e5ac2e661b6fce8e6951d18",
+    "envelopes": 2750
+  },
+  "child_inventory": {
+    "version": 5,
+    "path": "audit/routing-inventory/Packet_01.5_Applicability_Inventory_v5_Batch_004.jsonl"
+  },
+  "contact_catalog": {
+    "path": "audit/routing-evidence/Packet_01.5_Project_Contact_Evidence_Catalog_v1.json",
+    "verification": "audit/Packet_01.5_Project_Contact_Evidence_Catalog_Independent_Verification_v1.json"
+  },
+  "selection": {
+    "rule": "next ten preserved baseline addresses after accepted Batch 003",
+    "addresses": [
+      "P01.5::B::0031",
+      "P01.5::B::0032",
+      "P01.5::B::0033",
+      "P01.5::B::0034",
+      "P01.5::B::0035",
+      "P01.5::B::0036",
+      "P01.5::B::0037",
+      "P01.5::B::0038",
+      "P01.5::B::0039",
+      "P01.5::B::0040"
+    ],
+    "count": 10
+  },
+  "decisions": [
+    {
+      "address": "P01.5::B::0031",
+      "original_identifier": "BUILD-013",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-011", "P03-RC-017", "P03-RC-018", "P03-RC-020"],
+      "contact_path": "Current source inventory, direct GitHub writing, local safety records, and external dependencies already produce implementation artifacts without a selected static-quality and security baseline.",
+      "rationale": "The project currently changes and preserves code. Missing type, lint, quality, and security baselines directly affect present implementation safety and are a current defect."
+    },
+    {
+      "address": "P01.5::B::0032",
+      "original_identifier": "BUILD-014",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-001", "P03-RC-009", "P03-RC-010", "P03-RC-017"],
+      "contact_path": "The active route already contains layered current-inner wrappers, fallback paths, and tool wrappers, while Safe Writer can add further changes.",
+      "rationale": "Wrapper accumulation and obsolete-file residue already exist in the current route and repository. Missing maintainability and deprecation controls are therefore a current defect."
+    },
+    {
+      "address": "P01.5::B::0033",
+      "original_identifier": "BUILD-015",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-BOUND-CAPABILITY-SET", "P03-RC-001", "P03-RC-017", "P03-RC-018"],
+      "contact_path": "Current Resident, Safe Writer, and Code Safety capabilities exist, but the project cannot safely proceed until builder independence, core/shell separation, portability, and product boundaries become explicit acceptance gates.",
+      "rationale": "These are governing non-negotiable project boundaries for the current build sequence, not a remote domain. Their unproven acceptance contract is a current structural defect."
+    },
+    {
+      "address": "P01.5::B::0034",
+      "original_identifier": "DATA-001",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-002", "P03-RC-003", "P03-RC-006", "P03-RC-007", "P03-RC-018"],
+      "contact_path": "Current authority modes, work-thread records, storage scanning, Bug Memory, and Code Safety all rely on active storage keys whose complete authoritative schema and ownership map is not yet established.",
+      "rationale": "Packet 04 is not complete, but current capabilities already depend on storage. The missing authoritative storage map is a current defect."
+    },
+    {
+      "address": "P01.5::B::0035",
+      "original_identifier": "DATA-002",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-002", "P03-RC-020"],
+      "contact_path": "Resident Authority Modes is a verified current capability with a current local record, but its exact schema, compatibility, and migration identity remain unresolved.",
+      "rationale": "The affected record exists and is used now. The unresolved schema is therefore a current defect."
+    },
+    {
+      "address": "P01.5::B::0036",
+      "original_identifier": "DATA-003",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-003", "P03-RC-020"],
+      "contact_path": "Active Work Thread is a verified current persistent work-state capability whose exact schema, migration, and compatibility rules remain unresolved.",
+      "rationale": "The thread record is active current state. Missing schema and migration ownership are current defects."
+    },
+    {
+      "address": "P01.5::B::0037",
+      "original_identifier": "DATA-004",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-017", "P03-RC-018", "P03-RC-020"],
+      "contact_path": "Safe Writer and Code Safety currently use Last Good, safe-point, emergency, and freeze-related records, but their exact schemas and ownership are unresolved.",
+      "rationale": "These records protect current write and recovery behavior. Unresolved schema and ownership are current defects."
+    },
+    {
+      "address": "P01.5::B::0038",
+      "original_identifier": "DATA-005",
+      "state": "ACTIVE_CONDITIONAL_RISK",
+      "source_evidence_type": "PLANNED_CONTACT",
+      "catalog_evidence_ids": ["P03-BOUND-CAPABILITY-SET", "P03-RC-006", "P03-RC-017", "P03-RC-018"],
+      "contact_path": "Current storage is active, while separate candidate storage becomes operational only when the future candidate and promotion pipeline is implemented.",
+      "rationale": "The missing current-versus-candidate namespace separation is credible now, but its candidate-side harm depends on a planned pipeline that is not yet a completed capability. It remains active conditional."
+    },
+    {
+      "address": "P01.5::B::0039",
+      "original_identifier": "DATA-006",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-003", "P03-RC-006", "P03-RC-007", "P03-RC-015", "P03-RC-018"],
+      "contact_path": "Current thread, Bug Memory, ZIP import, local storage, and Code Safety records can change format or be imported without a proven dry run, backup, validation, migration transaction, or rollback engine.",
+      "rationale": "Schema and data movement already occur in current capabilities. Missing transactional migration and rollback are current defects."
+    },
+    {
+      "address": "P01.5::B::0040",
+      "original_identifier": "DATA-007",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-006", "P03-RC-007", "P03-RC-015", "P03-RC-018"],
+      "contact_path": "Current scanners, Bug Memory, ZIP import, and Code Safety records can encounter unknown fields, duplicates, old versions, and archive/current overlap.",
+      "rationale": "The current data and import surfaces already face compatibility and preservation hazards. Missing enforcement is a current defect."
+    }
+  ],
+  "routing_fields_rule": "All destination, law, watch-trigger, and semantic-cluster fields remain blank in this batch.",
+  "source_preservation_rule": "All immutable source fields, addresses, source hashes, original wording, accepted prior classifications, and total envelope count remain unchanged except for the ten selected applicability fields.",
+  "expected_result": {
+    "CURRENT_DEFECT": 14,
+    "ACTIVE_CONDITIONAL_RISK": 26,
+    "DORMANT_FUTURE_RISK": 0,
+    "OUT_OF_SCOPE_CANDIDATE": 0,
+    "UNCLASSIFIED": 2710,
+    "routing_assignments": 0
+  }
+}
