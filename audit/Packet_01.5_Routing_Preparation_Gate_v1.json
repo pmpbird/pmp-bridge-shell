@@ -1,0 +1,116 @@
+{
+  "packet": "01.5",
+  "gate": "routing_preparation",
+  "version": 1,
+  "date": "2026-06-14",
+  "status": "designed_pending_independent_verification",
+  "routing_assignments_allowed": false,
+  "semantic_deduplication_started": false,
+  "individual_record_closure_started": false,
+  "protected_source_sets": {
+    "baseline": {
+      "required_source": "pmp-current-permanent-limitation-register-v3-final.json",
+      "required_count": 122,
+      "source_hash_required": true,
+      "address_pattern": "P01.5::B::<ordinal_4>"
+    },
+    "provisional": {
+      "working_register": "audit/Packet_01.5_Discovery_Working_Register_v1.md",
+      "pass_glob": "audit/Packet_01.5_Discovery_Pass_*.md",
+      "required_source_file_count": 69,
+      "required_record_count": 2628,
+      "address_pattern": "P01.5::P<pass_3>::<record_identifier>"
+    },
+    "required_combined_count": 2750
+  },
+  "required_envelope_fields": [
+    "composite_address",
+    "source_set",
+    "source_path",
+    "source_file_hash",
+    "source_record_ordinal",
+    "original_identifier",
+    "original_heading",
+    "original_body",
+    "source_block_hash",
+    "harm_text",
+    "overlap_text",
+    "legacy_exception_codes",
+    "applicability_state",
+    "applicability_evidence",
+    "routing_state",
+    "primary_destination",
+    "secondary_destinations",
+    "cross_cutting_laws",
+    "watch_triggers",
+    "semantic_cluster_ids",
+    "normalization_version"
+  ],
+  "entry_defaults": {
+    "routing_state": "UNROUTED",
+    "destination_fields_blank": true,
+    "original_wording_immutable": true
+  },
+  "applicability_states": [
+    "CURRENT_DEFECT",
+    "ACTIVE_CONDITIONAL_RISK",
+    "DORMANT_FUTURE_RISK",
+    "OUT_OF_SCOPE_CANDIDATE"
+  ],
+  "activation_rule": "A current or planned project contact path must be demonstrated before a discovered candidate becomes an active requirement.",
+  "destination_classes": [
+    "PRIMARY_OWNER_PACKET",
+    "SECONDARY_OWNER_PACKET",
+    "CROSS_CUTTING_LAW",
+    "CONTINUING_WATCH",
+    "NO_CURRENT_PROJECT_CONTACT",
+    "OUT_OF_SCOPE_HOLD",
+    "DISCOVERY_REOPENING_TRIGGER"
+  ],
+  "legacy_structural_exceptions": [
+    {
+      "pass": 1,
+      "record_ids": [
+        "REG-001",
+        "REG-002",
+        "REG-003",
+        "REG-004",
+        "REG-005",
+        "REG-006",
+        "REG-007",
+        "REG-008",
+        "REG-009",
+        "REG-010"
+      ],
+      "exception_code": "LEGACY-P01-NO-OVERLAP"
+    }
+  ],
+  "historical_declared_count_corrections": [
+    {"pass": 4, "actual": 32, "historical_declared": 29},
+    {"pass": 6, "actual": 36, "historical_declared": 35},
+    {"pass": 9, "actual": 44, "historical_declared": 42},
+    {"pass": 13, "actual": 44, "historical_declared": 43},
+    {"pass": 34, "actual": 47, "historical_declared": 42}
+  ],
+  "lossless_normalization_checks": [
+    "source_to_envelope_bijection",
+    "reverse_reconstruction",
+    "source_block_hash_equality",
+    "count_equality_2750",
+    "composite_address_uniqueness",
+    "no_destructive_merge",
+    "exception_preservation",
+    "blank_routing_fields"
+  ],
+  "gate_result_values": [
+    "PASS_ROUTING_PREPARATION_GATE_OPEN",
+    "FAIL_ROUTING_REMAINS_BLOCKED"
+  ],
+  "current_gate_state": {
+    "design_complete": true,
+    "provisional_mechanical_proof_available": true,
+    "baseline_source_artifact_proof_required": true,
+    "independent_verification_required": true,
+    "routing_assignments_blocked": true
+  }
+}
