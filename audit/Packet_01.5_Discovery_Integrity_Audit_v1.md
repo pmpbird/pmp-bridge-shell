@@ -8,12 +8,12 @@ This audit counts source records mechanically. It does not deduplicate, route, c
 
 ## Result
 
-- Source files audited: 53
+- Source files audited: 54
 - Preserved baseline: 122
-- Actual provisional headings: 2110
-- Actual combined working total: 2232
+- Actual provisional headings: 2150
+- Actual combined working total: 2272
 - Files with declared-count mismatch: 5
-- Duplicate record IDs: 22
+- Duplicate record IDs: 26
 - Duplicate exact headings: 0
 - Malformed record headings: 0
 - Records missing HARM: 0
@@ -76,6 +76,7 @@ This audit counts source records mechanically. It does not deduplicate, route, c
 | 51 | 40 | — | YES | `audit/Packet_01.5_Discovery_Pass_51_Forests_Wildfire_Wildlife_InvasiveSpecies_ProtectedAreas_CommunityLandUse_and_LandscapeStewardship_v1.md` |
 | 52 | 38 | — | YES | `audit/Packet_01.5_Discovery_Pass_52_Macroeconomic_Currency_Banking_Markets_Taxation_SovereignDebt_Liquidity_Clearing_and_ShockTransmission_v1.md` |
 | 53 | 41 | — | YES | `audit/Packet_01.5_Discovery_Pass_53_Detention_Incarceration_Borders_Asylum_Custody_LegalAccess_Healthcare_Family_Force_Release_and_Statelessness_v1.md` |
+| 54 | 40 | — | YES | `audit/Packet_01.5_Discovery_Pass_54_EmergencyServices_Dispatch_Fire_EMS_Rescue_IncidentCommand_Triage_MutualAid_Communication_and_Continuity_v1.md` |
 
 ## Declared-count mismatches
 
@@ -113,6 +114,10 @@ This audit counts source records mechanically. It does not deduplicate, route, c
 - `REPRO-003` appears 3 times.
 - `REPRO-004` appears 3 times.
 - `REPRO-005` appears 3 times.
+- `TRIAGE-001` appears 2 times.
+- `TRIAGE-002` appears 2 times.
+- `TRIAGE-003` appears 2 times.
+- `TRIAGE-004` appears 2 times.
 
 ## Governing interpretation
 

@@ -2,12 +2,12 @@
   "audit_date": "2026-06-14",
   "scope": "Packet 01.5 mechanical discovery integrity only",
   "baseline_count": 122,
-  "files_audited": 53,
-  "actual_provisional_count": 2110,
-  "combined_actual_count": 2232,
+  "files_audited": 54,
+  "actual_provisional_count": 2150,
+  "combined_actual_count": 2272,
   "sum_of_declared_counts_where_present": 1791,
   "count_mismatch_count": 5,
-  "duplicate_id_count": 22,
+  "duplicate_id_count": 26,
   "duplicate_exact_heading_count": 0,
   "malformed_heading_count": 0,
   "missing_harm_count": 0,
@@ -9099,6 +9099,178 @@
           "title": "Custodial system outage removes liberty-protecting as well as security functions"
         }
       ]
+    },
+    {
+      "pass": 54,
+      "path": "audit/Packet_01.5_Discovery_Pass_54_EmergencyServices_Dispatch_Fire_EMS_Rescue_IncidentCommand_Triage_MutualAid_Communication_and_Continuity_v1.md",
+      "actual_count": 40,
+      "declared_count": null,
+      "count_match": true,
+      "malformed_headings": [],
+      "missing_harm": [],
+      "missing_overlap": [],
+      "records": [
+        {
+          "id": "EMDISP-001",
+          "title": "Call classification misses the real emergency because the caller cannot describe it clearly"
+        },
+        {
+          "id": "EMDISP-002",
+          "title": "Dispatch protocol treats unusual emergencies as routine categories"
+        },
+        {
+          "id": "EMDISP-003",
+          "title": "Location data appear precise while identifying the wrong access point"
+        },
+        {
+          "id": "EMDISP-004",
+          "title": "Automated resource recommendation ignores current crew capability"
+        },
+        {
+          "id": "EMDISP-005",
+          "title": "High call volume hides low-frequency catastrophic events"
+        },
+        {
+          "id": "FIRESVC-001",
+          "title": "Fireground strategy assumes building information is current"
+        },
+        {
+          "id": "FIRESVC-002",
+          "title": "Suppression water supply fails under the same event driving demand"
+        },
+        {
+          "id": "FIRESVC-003",
+          "title": "Ventilation action changes fire behavior faster than crews can coordinate"
+        },
+        {
+          "id": "FIRESVC-004",
+          "title": "Accountability records presence but not exact location or condition"
+        },
+        {
+          "id": "FIRESVC-005",
+          "title": "Property protection competes with life safety and firefighter survival"
+        },
+        {
+          "id": "EMSOPS-001",
+          "title": "Protocol-based treatment ignores a condition outside the expected pathway"
+        },
+        {
+          "id": "EMSOPS-002",
+          "title": "Hospital destination decision uses nominal capability rather than current capacity"
+        },
+        {
+          "id": "EMSOPS-003",
+          "title": "Handoff compresses the patient’s changing condition into a short summary"
+        },
+        {
+          "id": "EMSOPS-004",
+          "title": "Ambulance turnaround time hides incomplete restoration between calls"
+        },
+        {
+          "id": "EMSOPS-005",
+          "title": "Behavioral crisis response is framed primarily as control and transport"
+        },
+        {
+          "id": "RESCUE-001",
+          "title": "Rescue plan does not account for the rescuer becoming an additional victim"
+        },
+        {
+          "id": "RESCUE-002",
+          "title": "Technical rescue equipment is present but incompatible with the scene"
+        },
+        {
+          "id": "RESCUE-003",
+          "title": "Search coverage is counted without accounting for detection probability"
+        },
+        {
+          "id": "RESCUE-004",
+          "title": "Rescue priority favors visible victims over hidden or inaccessible victims"
+        },
+        {
+          "id": "INCCMD-001",
+          "title": "Incident command structure exists on paper but authority remains ambiguous"
+        },
+        {
+          "id": "INCCMD-002",
+          "title": "Command span is preserved numerically while information load becomes unmanageable"
+        },
+        {
+          "id": "INCCMD-003",
+          "title": "Incident objectives lag behind changing conditions"
+        },
+        {
+          "id": "INCCMD-004",
+          "title": "Unified command conceals unresolved conflicts rather than resolving them"
+        },
+        {
+          "id": "INCCMD-005",
+          "title": "Demobilization begins before hidden hazards and service gaps are understood"
+        },
+        {
+          "id": "TRIAGE-001",
+          "title": "Triage category is treated as stable after conditions change"
+        },
+        {
+          "id": "TRIAGE-002",
+          "title": "Triage favors patients who can communicate and move visibly"
+        },
+        {
+          "id": "TRIAGE-003",
+          "title": "Scarcity standard is activated without shared ethical authority"
+        },
+        {
+          "id": "TRIAGE-004",
+          "title": "Repeated triage consumes staff and delays treatment when information systems fail"
+        },
+        {
+          "id": "RESPX-001",
+          "title": "Responder exposure records omit cumulative multi-incident burden"
+        },
+        {
+          "id": "RESPX-002",
+          "title": "Protective equipment creates heat, communication, vision, and mobility penalties"
+        },
+        {
+          "id": "RESPX-003",
+          "title": "Psychological injury is recognized only after performance collapses"
+        },
+        {
+          "id": "RESPX-004",
+          "title": "Decontamination protects the station while transferring contamination elsewhere"
+        },
+        {
+          "id": "MUTUAL-001",
+          "title": "Mutual-aid agreement counts resources without confirming deployment readiness"
+        },
+        {
+          "id": "MUTUAL-002",
+          "title": "Donor jurisdiction weakens its own protection by sending aid"
+        },
+        {
+          "id": "MUTUAL-003",
+          "title": "Incoming teams cannot interpret local geography, hazards, procedures, or authority"
+        },
+        {
+          "id": "MUTUAL-004",
+          "title": "Reimbursement and liability disputes delay requested assistance"
+        },
+        {
+          "id": "EMCOMMS-001",
+          "title": "Interoperable radio channel exists but becomes unusable under shared demand"
+        },
+        {
+          "id": "EMCOMMS-002",
+          "title": "Plain-language policy does not eliminate agency-specific meaning"
+        },
+        {
+          "id": "EMCONT-001",
+          "title": "Emergency-service continuity plan assumes responders can report to work"
+        },
+        {
+          "id": "EMCONT-002",
+          "title": "Backup dispatch and station facilities depend on the same regional infrastructure"
+        }
+      ]
     }
   ],
   "duplicate_ids": {
@@ -9119,6 +9291,10 @@
     "RECOVER-003": 2,
     "RECOVER-004": 2,
     "RECOVER-005": 2,
+    "TRIAGE-001": 2,
+    "TRIAGE-002": 2,
+    "TRIAGE-003": 2,
+    "TRIAGE-004": 2,
     "GUARD-001": 2,
     "GUARD-002": 2,
     "GUARD-003": 2,
@@ -9246,10 +9422,14 @@
     "EDACCESS": 3,
     "EJ": 5,
     "EMBED": 6,
+    "EMCOMMS": 2,
+    "EMCONT": 2,
+    "EMDISP": 5,
     "EMERG": 3,
     "EMPREC": 3,
     "EMROUTE": 5,
     "EMSAFE": 5,
+    "EMSOPS": 5,
     "ENERGY": 8,
     "ENV": 6,
     "ENVRES": 4,
@@ -9265,6 +9445,7 @@
     "FAT": 6,
     "FEED": 5,
     "FIRE": 6,
+    "FIRESVC": 5,
     "FIRM": 6,
     "FISH": 6,
     "FLAG": 7,
@@ -9304,6 +9485,7 @@
     "IDENT": 4,
     "IMPERSON": 5,
     "INCARC": 5,
+    "INCCMD": 5,
     "INCDET": 7,
     "INCENT": 3,
     "INCSEV": 4,
@@ -9373,6 +9555,7 @@
     "MONO": 3,
     "MSW": 5,
     "MUT": 2,
+    "MUTUAL": 4,
     "NAV": 6,
     "NET": 8,
     "NORM": 5,
@@ -9456,6 +9639,8 @@
     "REPRO": 16,
     "REPUT": 4,
     "RESCON": 4,
+    "RESCUE": 4,
+    "RESPX": 4,
     "RESTORE": 5,
     "RET": 4,
     "RETR": 10,
@@ -9517,7 +9702,7 @@
     "TRAIN": 6,
     "TRANS": 4,
     "TRANSIT": 5,
-    "TRIAGE": 5,
+    "TRIAGE": 9,
     "TRUST": 7,
     "UI": 18,
     "UPDATE": 4,
