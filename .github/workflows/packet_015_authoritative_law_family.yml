@@ -7,7 +7,7 @@ on:
       - "audit/Packet_01.5_Authoritative_Packet_Law_Family_PR_Trigger.txt"
       - "tools/build_packet_01_5_authoritative_law_family_v1.py"
       - "tools/packet_01_5_authoritative_law_policy.py"
-      - "tools/verify_packet_01_5_authoritative_law_family_v1.py"
+      - "tools/verify_packet_01_5_authoritative_law_family_v2.py"
       - "tools/write_packet_01_5_authoritative_law_family_receipts_v1.py"
       - ".github/workflows/packet_015_authoritative_law_family.yml"
   workflow_dispatch:
@@ -24,7 +24,7 @@ jobs:
           ref: ${{ github.head_ref || github.ref_name }}
           fetch-depth: 0
       - run: python3 tools/build_packet_01_5_authoritative_law_family_v1.py
-      - run: python3 tools/verify_packet_01_5_authoritative_law_family_v1.py > audit/Packet_01.5_Authoritative_Packet_Law_Family_Independent_Verification_v1.json
+      - run: python3 tools/verify_packet_01_5_authoritative_law_family_v2.py > audit/Packet_01.5_Authoritative_Packet_Law_Family_Independent_Verification_v1.json
       - run: python3 tools/write_packet_01_5_authoritative_law_family_receipts_v1.py
       - name: Commit verified outputs
         run: |
@@ -39,4 +39,4 @@ jobs:
           git add audit/Packet_01.5_Authoritative_Packet_Law_Family_Independent_Verification_v1.json
           git add audit/Packet_01.5_Authoritative_Packet_Law_Family_Independent_Verification_v1.md
           git add audit/Packet_01.5_Routing_Status_v85.md
-          git diff --cached --quiet || (git commit -m "Verify authoritative packet-law evidence family" && git push origin "HEAD:${{ github.head_ref || github.ref_name }}")
+          git diff --cached --quiet || (git commit -m "Verify corrected authoritative packet-law evidence family" && git push origin "HEAD:${{ github.head_ref || github.ref_name }}")
