@@ -1,0 +1,22 @@
+{
+  "packet": "01.5",
+  "batch": "P01.5-APP-B008",
+  "version": 1,
+  "status": "PASS",
+  "watch": "NONE",
+  "blockers": "NONE",
+  "parent_inventory_sha256": "eb15ee665d484ea68a4294606e223cfac758a0fb807e5477e2141adc5f79d611",
+  "child_inventory_sha256": "628875ac288a85b95131588678d7ae9c692ab2c53654409f1cd6b2e85c116e87",
+  "combined_envelopes": 2750,
+  "changed_envelopes": 10,
+  "unchanged_envelopes": 2740,
+  "state_counts": {
+    "ACTIVE_CONDITIONAL_RISK": 35,
+    "CURRENT_DEFECT": 39,
+    "DORMANT_FUTURE_RISK": 6,
+    "UNCLASSIFIED": 2670
+  },
+  "routing_assignments": 0,
+  "source_count_delta": 0,
+  "record_completion_count": 0
+}
