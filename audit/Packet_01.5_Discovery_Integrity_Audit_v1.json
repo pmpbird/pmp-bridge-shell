@@ -2,9 +2,9 @@
   "audit_date": "2026-06-14",
   "scope": "Packet 01.5 mechanical discovery integrity only",
   "baseline_count": 122,
-  "files_audited": 48,
-  "actual_provisional_count": 1912,
-  "combined_actual_count": 2034,
+  "files_audited": 49,
+  "actual_provisional_count": 1952,
+  "combined_actual_count": 2074,
   "sum_of_declared_counts_where_present": 1791,
   "count_mismatch_count": 5,
   "duplicate_id_count": 22,
@@ -8247,6 +8247,178 @@
           "title": "Cross-border coordination depends on political trust during the crisis"
         }
       ]
+    },
+    {
+      "pass": 49,
+      "path": "audit/Packet_01.5_Discovery_Pass_49_Waste_Sanitation_Sewage_Septic_Landfill_Recycling_HazardousMedicalWaste_and_Stewardship_v1.md",
+      "actual_count": 40,
+      "declared_count": null,
+      "count_match": true,
+      "malformed_headings": [],
+      "missing_harm": [],
+      "missing_overlap": [],
+      "records": [
+        {
+          "id": "SANACC-001",
+          "title": "Sanitation access is counted without checking whether it is safe to use"
+        },
+        {
+          "id": "SANACC-002",
+          "title": "Accessible sanitation fails at one link in the route"
+        },
+        {
+          "id": "SANACC-003",
+          "title": "Shared sanitation increases danger for women, children, and marginalized users"
+        },
+        {
+          "id": "SANACC-004",
+          "title": "Handwashing guidance assumes continuous water, soap, drainage, and time"
+        },
+        {
+          "id": "SEWAGE-001",
+          "title": "Sewer capacity is designed for historical rainfall and occupancy"
+        },
+        {
+          "id": "SEWAGE-002",
+          "title": "Treatment bypass protects the plant by contaminating receiving waters"
+        },
+        {
+          "id": "SEWAGE-003",
+          "title": "Sewer leakage contaminates water and soil before visible failure"
+        },
+        {
+          "id": "SEWAGE-004",
+          "title": "Wastewater monitoring at the plant hides neighborhood-level exposure"
+        },
+        {
+          "id": "SEWAGE-005",
+          "title": "Industrial discharge disrupts biological treatment without immediate detection"
+        },
+        {
+          "id": "SEPTIC-001",
+          "title": "Septic suitability is inferred from outdated soil and groundwater conditions"
+        },
+        {
+          "id": "SEPTIC-002",
+          "title": "Septic failure remains invisible until contamination or backup becomes severe"
+        },
+        {
+          "id": "SEPTIC-003",
+          "title": "Dense clusters of individual systems create a collective groundwater load"
+        },
+        {
+          "id": "SEPTIC-004",
+          "title": "Flooding turns septic and sewer systems into indoor exposure routes"
+        },
+        {
+          "id": "MSW-001",
+          "title": "Collection coverage metrics hide chronically missed households"
+        },
+        {
+          "id": "MSW-002",
+          "title": "Mixed waste changes hazard after collection"
+        },
+        {
+          "id": "MSW-003",
+          "title": "Battery and electronic waste ignite inside collection and sorting systems"
+        },
+        {
+          "id": "MSW-004",
+          "title": "Collection interruption rapidly becomes a public-health emergency"
+        },
+        {
+          "id": "MSW-005",
+          "title": "Tonnage-based contracts reward disposal rather than prevention"
+        },
+        {
+          "id": "LANDFILL-001",
+          "title": "Liner and leachate systems are assumed to outlast the waste hazard"
+        },
+        {
+          "id": "LANDFILL-002",
+          "title": "Methane monitoring misses migration outside expected zones"
+        },
+        {
+          "id": "LANDFILL-003",
+          "title": "Settlement damages the systems needed to contain and monitor the site"
+        },
+        {
+          "id": "LANDFILL-004",
+          "title": "Closed-landfill redevelopment ignores future exposure pathways"
+        },
+        {
+          "id": "RECYCLE-001",
+          "title": "Recyclability claim assumes collection and processing infrastructure that does not exist locally"
+        },
+        {
+          "id": "RECYCLE-002",
+          "title": "Contaminated recycling is exported as a secondary commodity"
+        },
+        {
+          "id": "RECYCLE-003",
+          "title": "Recycling-market collapse creates unsafe stockpiles"
+        },
+        {
+          "id": "RECYCLE-004",
+          "title": "Sorting automation systematically rejects unfamiliar or damaged items"
+        },
+        {
+          "id": "RECYCLE-005",
+          "title": "Recycled-content target increases contamination or quality failure"
+        },
+        {
+          "id": "HAZWASTE-001",
+          "title": "Hazardous waste is misclassified to reduce cost and oversight"
+        },
+        {
+          "id": "HAZWASTE-002",
+          "title": "Generator-to-disposal traceability proves paperwork but not physical identity"
+        },
+        {
+          "id": "HAZWASTE-003",
+          "title": "Treatment removes one hazard while creating another"
+        },
+        {
+          "id": "HAZWASTE-004",
+          "title": "Emergency storage becomes indefinite storage"
+        },
+        {
+          "id": "MEDWASTE-001",
+          "title": "Medical waste categories fail when hazards are combined"
+        },
+        {
+          "id": "MEDWASTE-002",
+          "title": "Home healthcare creates hazardous waste outside regulated collection systems"
+        },
+        {
+          "id": "MEDWASTE-003",
+          "title": "Treatment records certify the cycle but not the whole load"
+        },
+        {
+          "id": "WASTELABOR-001",
+          "title": "Informal waste workers are absent from official safety systems"
+        },
+        {
+          "id": "WASTELABOR-002",
+          "title": "Automation shifts workers toward the most hazardous residual tasks"
+        },
+        {
+          "id": "DUMP-001",
+          "title": "Illegal dumping follows weak enforcement and low political visibility"
+        },
+        {
+          "id": "DUMP-002",
+          "title": "Cleanup moves dumped waste without resolving source and recurrence"
+        },
+        {
+          "id": "WASTESTEW-001",
+          "title": "Disposal liability ends before the material hazard ends"
+        },
+        {
+          "id": "WASTESTEW-002",
+          "title": "Disaster reopens closed waste sites and disperses buried material"
+        }
+      ]
     }
   ],
   "duplicate_ids": {
@@ -8370,6 +8542,7 @@
     "DOC": 6,
     "DUAL": 4,
     "DUE": 6,
+    "DUMP": 2,
     "ECO": 5,
     "ECON": 5,
     "ECOREL": 5,
@@ -8415,6 +8588,7 @@
     "HARASS": 4,
     "HAZ": 8,
     "HAZMAT": 5,
+    "HAZWASTE": 4,
     "HCAP": 5,
     "HEALTH": 6,
     "HERED": 4,
@@ -8448,6 +8622,7 @@
     "LABNET": 4,
     "LABOR": 6,
     "LAND": 5,
+    "LANDFILL": 4,
     "LANG": 6,
     "LAUNCH": 5,
     "LEARN": 6,
@@ -8472,6 +8647,7 @@
     "MEDINT": 7,
     "MEDINTX": 5,
     "MEDRAD": 4,
+    "MEDWASTE": 3,
     "MEM": 3,
     "MIC": 3,
     "MIG": 7,
@@ -8485,6 +8661,7 @@
     "MOBILITY": 5,
     "MOD": 6,
     "MONO": 3,
+    "MSW": 5,
     "MUT": 2,
     "NAV": 6,
     "NET": 8,
@@ -8551,6 +8728,7 @@
     "RECOVER": 11,
     "RECUI": 4,
     "RECUR": 6,
+    "RECYCLE": 5,
     "REFUND": 4,
     "REG": 10,
     "REL": 12,
@@ -8573,6 +8751,7 @@
     "ROBOT": 6,
     "ROLLOUT": 7,
     "SACRED": 6,
+    "SANACC": 4,
     "SANCTION": 4,
     "SAT": 6,
     "SCHED": 8,
@@ -8582,6 +8761,8 @@
     "SELF": 5,
     "SEM": 5,
     "SENSE": 8,
+    "SEPTIC": 4,
+    "SEWAGE": 5,
     "SHARE": 6,
     "SHELL": 7,
     "SHORTMED": 4,
@@ -8629,6 +8810,8 @@
     "VER": 8,
     "VIAB": 5,
     "VOTE": 4,
+    "WASTELABOR": 2,
+    "WASTESTEW": 2,
     "WATER": 4,
     "WATERUTIL": 6,
     "WEB": 3,
