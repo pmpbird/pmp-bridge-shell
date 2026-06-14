@@ -1,0 +1,138 @@
+{
+  "packet": "01.5",
+  "batch": "P01.5-APP-B006",
+  "version": 1,
+  "date": "2026-06-14",
+  "status": "PLANNED_PENDING_TRANSACTION_AND_INDEPENDENT_VERIFICATION",
+  "parent_inventory": {
+    "path": "audit/routing-inventory/Packet_01.5_Applicability_Inventory_v6_Batch_005.jsonl",
+    "sha256": "bc96395e5d8472085fb0560a37a5df49a59468022236d0e7d9d3b67f7f55edc2",
+    "envelopes": 2750
+  },
+  "child_inventory": {
+    "version": 7,
+    "path": "audit/routing-inventory/Packet_01.5_Applicability_Inventory_v7_Batch_006.jsonl"
+  },
+  "contact_catalog": {
+    "path": "audit/routing-evidence/Packet_01.5_Project_Contact_Evidence_Catalog_v1.json",
+    "verification": "audit/Packet_01.5_Project_Contact_Evidence_Catalog_Independent_Verification_v1.json"
+  },
+  "selection": {
+    "rule": "next ten preserved baseline addresses after accepted Batch 005",
+    "addresses": [
+      "P01.5::B::0051",
+      "P01.5::B::0052",
+      "P01.5::B::0053",
+      "P01.5::B::0054",
+      "P01.5::B::0055",
+      "P01.5::B::0056",
+      "P01.5::B::0057",
+      "P01.5::B::0058",
+      "P01.5::B::0059",
+      "P01.5::B::0060"
+    ],
+    "count": 10
+  },
+  "decisions": [
+    {
+      "address": "P01.5::B::0051",
+      "original_identifier": "GOV-004",
+      "state": "DORMANT_FUTURE_RISK",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-BOUND-CAPABILITY-SET", "P03-RC-005", "P03-RC-011"],
+      "contact_path": "The former note-count identity conflict touched current truth and inventory governance, but Packet 01 Additive Amendment v1 now defines 00 through 26 as stable identifiers rather than an authoritative count.",
+      "rationale": "The governing amendment with SHA-256 4e0a01dac50872889c201e238c94401ffe6c0d9d0a4718f870813858e4acb17b resolves the active counting rule. The preserved conflict remains reopenable if stale count language regains authority, so it is dormant rather than deleted."
+    },
+    {
+      "address": "P01.5::B::0052",
+      "original_identifier": "GOV-005",
+      "state": "DORMANT_FUTURE_RISK",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-BOUND-CAPABILITY-SET", "P03-RC-005", "P03-RC-011"],
+      "contact_path": "The stale Note 01 next-packet direction formerly conflicted with current project truth, but the approved current sequence now records Packet 03 complete and Packet 03.7 next.",
+      "rationale": "The current governing amendment resolves the active sequence conflict. The stale historical record remains preserved and may reopen if precedence fails, so the risk is dormant."
+    },
+    {
+      "address": "P01.5::B::0053",
+      "original_identifier": "GOV-006",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-005", "P03-RC-011", "P03-RC-012", "P03-RC-014"],
+      "contact_path": "Apple Notes and private Notes handoff are current project surfaces, while preserved templates for completed packets still present stale NOT STARTED status or omit completion receipts.",
+      "rationale": "The stale external templates remain available in an active current medium and can misstate completed work. This is a current governance defect."
+    },
+    {
+      "address": "P01.5::B::0054",
+      "original_identifier": "GOV-007",
+      "state": "DORMANT_FUTURE_RISK",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-005", "P03-RC-011"],
+      "contact_path": "The Master Status Ledger and Packet 03 completion evidence formerly conflicted, but the source record itself states that the current conflict was resolved while history was preserved.",
+      "rationale": "Because the live conflict is resolved, it is not a current defect. The preserved history can reopen if stale ledger authority returns, so the risk is dormant."
+    },
+    {
+      "address": "P01.5::B::0055",
+      "original_identifier": "GOV-008",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-005", "P03-RC-009", "P03-RC-011"],
+      "contact_path": "Current truth, route, and inventory surfaces depend on default-branch records, while preserved Packet 02 records and the finalizing commit disagree about route versions and evidence identity.",
+      "rationale": "The source drift affects active repository truth and route evidence. Without a resolved active pointer, it remains a current defect."
+    },
+    {
+      "address": "P01.5::B::0056",
+      "original_identifier": "GOV-009",
+      "state": "DORMANT_FUTURE_RISK",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-005", "P03-RC-011", "P03-RC-020"],
+      "contact_path": "Authority formerly lacked a rule across Notes, repository files, commits, receipts, templates, and generated records, but Packet 01 Additive Amendment v1 now defines record-class-specific ACTIVE pointers and evidence precedence.",
+      "rationale": "The approved precedence law resolves the active rule gap. The risk remains preserved and reopenable if ACTIVE pointers are missing or contradicted, so it is dormant."
+    },
+    {
+      "address": "P01.5::B::0057",
+      "original_identifier": "GOV-010",
+      "state": "DORMANT_FUTURE_RISK",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-005", "P03-RC-011"],
+      "contact_path": "Printed templates formerly could be treated as completed work, but the current governing amendment explicitly separates templates from executed evidence, manifests, receipts, and ledger updates.",
+      "rationale": "The current law resolves the active interpretation. The historical misuse risk remains dormant and can reopen if completion proof is bypassed."
+    },
+    {
+      "address": "P01.5::B::0058",
+      "original_identifier": "GOV-011",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-011", "P03-RC-017", "P03-RC-018"],
+      "contact_path": "Current inventory, write, and safety evidence generates packet receipts and hashes, but no completed global receipt index with stable immutable identities is yet proven.",
+      "rationale": "Receipt authority is already used by current project work. The missing global index is a current governance defect."
+    },
+    {
+      "address": "P01.5::B::0059",
+      "original_identifier": "GOV-012",
+      "state": "CURRENT_DEFECT",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-RC-005", "P03-RC-011"],
+      "contact_path": "Current truth and inventory capabilities depend on knowing which human, machine, evidence, and receipt outputs exist for each packet, but no complete output inventory is proven.",
+      "rationale": "The missing output inventory directly affects present project status claims and is a current defect."
+    },
+    {
+      "address": "P01.5::B::0060",
+      "original_identifier": "GOV-013",
+      "state": "ACTIVE_CONDITIONAL_RISK",
+      "source_evidence_type": "CURRENT_CONTACT",
+      "catalog_evidence_ids": ["P03-BOUND-CAPABILITY-SET", "P03-RC-005", "P03-RC-011"],
+      "contact_path": "Unavailable old raw history limits current truth and lossless-inventory claims whenever the project attempts to describe complete historical coverage or dependency lineage.",
+      "rationale": "The missing history cannot be repaired by current evidence and does not make ordinary current operation defective. It is an active claim-boundary risk that applies when full-history claims are made."
+    }
+  ],
+  "routing_fields_rule": "All destination, law, watch-trigger, and semantic-cluster fields remain blank in this batch.",
+  "source_preservation_rule": "All immutable source fields, addresses, source hashes, original wording, accepted prior classifications, and total envelope count remain unchanged except for the ten selected applicability fields.",
+  "expected_result": {
+    "CURRENT_DEFECT": 27,
+    "ACTIVE_CONDITIONAL_RISK": 28,
+    "DORMANT_FUTURE_RISK": 5,
+    "OUT_OF_SCOPE_CANDIDATE": 0,
+    "UNCLASSIFIED": 2690,
+    "routing_assignments": 0
+  }
+}
