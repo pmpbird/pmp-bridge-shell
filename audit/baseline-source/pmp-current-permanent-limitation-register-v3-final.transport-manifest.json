@@ -1,0 +1,36 @@
+{
+  "packet": "01.5",
+  "version": 1,
+  "source_archive": "Packet_03.5_v4_FINAL_PASS_COMPLETE.zip",
+  "archive_member": "pmp-current-permanent-limitation-register-v3-final.json",
+  "source_filename": "pmp-current-permanent-limitation-register-v3-final.json",
+  "source_bytes": 349103,
+  "source_sha256": "ac36b36a38d2ad9ab9f73d69679e0ecc0dae4c2f3340fe505f6ed773c56ba5f4",
+  "source_record_array": "limitations",
+  "source_record_count": 122,
+  "gzip": {
+    "deterministic_mtime": 0,
+    "bytes": 31622,
+    "sha256": "dd9e5fcb38f8bb3babb846ab057fa5544ed7ee433ae2a8f9cb49249d14d5f34f"
+  },
+  "base64": {
+    "characters": 42164,
+    "sha256": "ef577586fda95b9be8c22a170fa5a90eb0577bcfc621fe41b40890a029cadc93",
+    "concatenation_order": [1, 2, 3, 4, 5, 6, 7]
+  },
+  "parts": [
+    {"part":1,"path":"audit/baseline-source/pmp-current-permanent-limitation-register-v3-final.part-001.b64","characters":6024,"sha256":"772607ee055c932bfe27c4ad26e61fc4c564c133e0dd734c6af3c35a93c38eae","git_blob_sha":"f7c03b391a48ab03bb366f69745f6056b3f5afc7"},
+    {"part":2,"path":"audit/baseline-source/pmp-current-permanent-limitation-register-v3-final.part-002.b64","characters":6024,"sha256":"215e27cd6960d4252a5f0081d8ce4baa1b61f6f21070aef69beb41af06e16d36","git_blob_sha":"36c7af636be7babc56d64c05e4c5976c3a4bcc29"},
+    {"part":3,"path":"audit/baseline-source/pmp-current-permanent-limitation-register-v3-final.part-003.b64","characters":6024,"sha256":"a96791d57b385a30dd64e6893aef9664ee3cb7ef0da26dafe65b5f747c3bb054","git_blob_sha":"74a0b6e222fbd504419fac3efbdf5282abdbe9d5"},
+    {"part":4,"path":"audit/baseline-source/pmp-current-permanent-limitation-register-v3-final.part-004.b64","characters":6024,"sha256":"5714b7febdf307fefd76f2cbc2334156bd16817d7cc5b5b8a082feb3ff6d7d8a","git_blob_sha":"cf156ccd7f555d54bce4c74ef7bd0d3e698c958b"},
+    {"part":5,"path":"audit/baseline-source/pmp-current-permanent-limitation-register-v3-final.part-005.b64","characters":6024,"sha256":"645575439c4b9df32e6f31376b8ae6a6d957904a9da84f2a1a4e8701a999cae8","git_blob_sha":"26e096b0fd49a79c265e6e8cc5433abda3ff5706"},
+    {"part":6,"path":"audit/baseline-source/pmp-current-permanent-limitation-register-v3-final.part-006.b64","characters":6024,"sha256":"a764624667e2fea83bdba427e0bf7ba095c08444cd3c99c6859cb6b7e59ecfa2","git_blob_sha":"190b0b7e372955f36639fa9baf2fba72ead75c17"},
+    {"part":7,"path":"audit/baseline-source/pmp-current-permanent-limitation-register-v3-final.part-007.b64","characters":6020,"sha256":"c3c4cb233b011dee2c4a2aff6b0eba54cf6be6fc7fe8f4828c8124157cfec42b","git_blob_sha":"15c253115fcbf065ac01326b5b0b6df11a4a6d8d"}
+  ],
+  "reconstruction": {
+    "algorithm": "concatenate parts in numeric order; verify base64 hash; strict base64 decode; verify gzip hash; gzip decompress; verify raw source hash; parse JSON; verify limitations count and IDs",
+    "output_path": "audit/baseline-source/reconstructed/pmp-current-permanent-limitation-register-v3-final.json"
+  },
+  "watch": "NONE",
+  "blockers": "NONE"
+}
