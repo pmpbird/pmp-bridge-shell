@@ -2,9 +2,9 @@
   "audit_date": "2026-06-14",
   "scope": "Packet 01.5 mechanical discovery integrity only",
   "baseline_count": 122,
-  "files_audited": 63,
-  "actual_provisional_count": 2502,
-  "combined_actual_count": 2624,
+  "files_audited": 64,
+  "actual_provisional_count": 2533,
+  "combined_actual_count": 2655,
   "sum_of_declared_counts_where_present": 1791,
   "count_mismatch_count": 5,
   "duplicate_id_count": 30,
@@ -10787,6 +10787,142 @@
           "title": "Safety recommendation is closed by rule change without proving field risk reduction"
         }
       ]
+    },
+    {
+      "pass": 64,
+      "path": "audit/Packet_01.5_Discovery_Pass_64_CrossDomain_Saturation_Authority_Automation_Identity_Infrastructure_Care_Environment_Markets_Warnings_and_Stewardship_v1.md",
+      "actual_count": 31,
+      "declared_count": null,
+      "count_match": true,
+      "malformed_headings": [],
+      "missing_harm": [],
+      "missing_overlap": [],
+      "records": [
+        {
+          "id": "XAUTH-001",
+          "title": "Automated emergency action executes before authority conflict is resolved"
+        },
+        {
+          "id": "XAUTH-002",
+          "title": "Human approval becomes ceremonial when delay itself carries liability"
+        },
+        {
+          "id": "XAUTH-003",
+          "title": "Emergency delegation survives after the emergency ends"
+        },
+        {
+          "id": "XAUTH-004",
+          "title": "Accountability follows formal authority while real control sits with vendors and infrastructure operators"
+        },
+        {
+          "id": "XIDREC-001",
+          "title": "Identity mismatch blocks emergency care, shelter, transport, and benefits at the same time"
+        },
+        {
+          "id": "XIDREC-002",
+          "title": "Correcting the source record does not reverse downstream legal and operational decisions"
+        },
+        {
+          "id": "XIDREC-003",
+          "title": "Emergency identity simplification merges people who require different treatment"
+        },
+        {
+          "id": "XIDREC-004",
+          "title": "Privacy protection removes context needed to prevent immediate harm"
+        },
+        {
+          "id": "XINFRA-001",
+          "title": "Software recovery restores service against a physically degraded system"
+        },
+        {
+          "id": "XINFRA-002",
+          "title": "Physical redundancy shares one vendor, credential, update path, or cloud dependency"
+        },
+        {
+          "id": "XINFRA-003",
+          "title": "Remote vendor intervention changes a safety-critical system during emergency response"
+        },
+        {
+          "id": "XINFRA-004",
+          "title": "Infrastructure ownership changes without transferring latent-condition knowledge"
+        },
+        {
+          "id": "XCARE-001",
+          "title": "Hospital discharge, housing eligibility, transport availability, and benefit authorization fail in sequence"
+        },
+        {
+          "id": "XCARE-002",
+          "title": "Crisis classification changes legal status, housing access, employment, and future care simultaneously"
+        },
+        {
+          "id": "XCARE-003",
+          "title": "Medication continuity depends on identity, refrigeration, transport, payment, and housing stability together"
+        },
+        {
+          "id": "XCARE-004",
+          "title": "Caregiver failure is treated as a household problem until public systems face a crisis"
+        },
+        {
+          "id": "XENV-001",
+          "title": "Energy transition reduces emissions while increasing water, land, mineral, and community displacement pressure"
+        },
+        {
+          "id": "XENV-002",
+          "title": "Disaster protection preserves infrastructure by sacrificing ecosystems that previously reduced hazard"
+        },
+        {
+          "id": "XENV-003",
+          "title": "Contamination response shifts material from air or water into an unmanaged waste stream"
+        },
+        {
+          "id": "XENV-004",
+          "title": "Community relocation solves physical exposure while destroying livelihood, culture, care, and political power"
+        },
+        {
+          "id": "XMARKET-001",
+          "title": "Safety barrier maintenance is deferred because its benefit is invisible until failure"
+        },
+        {
+          "id": "XMARKET-002",
+          "title": "Scarcity pricing redirects essential capacity away from emergency need"
+        },
+        {
+          "id": "XMARKET-003",
+          "title": "Insurance, finance, and regulatory models share the same underestimated hazard assumptions"
+        },
+        {
+          "id": "XMARKET-004",
+          "title": "Ownership transfer externalizes deferred maintenance and stewardship obligations"
+        },
+        {
+          "id": "XWARN-001",
+          "title": "Public warning recommends an action that inaccessible transport and shelter systems cannot support"
+        },
+        {
+          "id": "XWARN-002",
+          "title": "Different risk models issue contradictory warnings to the same population"
+        },
+        {
+          "id": "XWARN-003",
+          "title": "Warning reaches devices while power, network, language, cognition, and trust fail together"
+        },
+        {
+          "id": "XSTEW-001",
+          "title": "Recovery funding restores visible service but not monitoring and long-term care obligations"
+        },
+        {
+          "id": "XSTEW-002",
+          "title": "Temporary emergency infrastructure becomes permanent without permanent governance"
+        },
+        {
+          "id": "XSTEW-003",
+          "title": "Long-term obligation remains while the responsible institution dissolves or changes mission"
+        },
+        {
+          "id": "XSTEW-004",
+          "title": "Closure metrics count completed actions rather than restored human and ecological function"
+        }
+      ]
     }
   ],
   "duplicate_ids": {
@@ -11324,6 +11460,14 @@
     "WILDLIFE": 5,
     "WITHDRAW": 3,
     "WKAUTH": 5,
-    "WKEVAL": 6
+    "WKEVAL": 6,
+    "XAUTH": 4,
+    "XCARE": 4,
+    "XENV": 4,
+    "XIDREC": 4,
+    "XINFRA": 4,
+    "XMARKET": 4,
+    "XSTEW": 4,
+    "XWARN": 3
   }
 }
