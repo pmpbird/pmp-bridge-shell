@@ -1,0 +1,25 @@
+{
+  "type": "PMP_CURRENT_PROJECT_CONTROL_SPINE_COMPANION_RECORD",
+  "version": "1.0.0-baseline",
+  "created_on": "2026-06-14",
+  "control_number": 5,
+  "control_name": "Dependency and Provider Register",
+  "purpose": "Track external dependencies, current use, data boundaries, availability, retention, replacement, and later proof ownership.",
+  "packet_02_carry_forward": [
+    "The optional backend was not verified during Packet 02.",
+    "Shortcuts, Apple Notes, GitHub, hosted files, browser/iOS, ZIP support, and manual ChatGPT handoff are dependencies.",
+    "No external AI provider is connected to normal current Resident reasoning."
+  ],
+  "linked_permanent_limitations": ["AI-003", "AI-009", "AI-010", "AI-011", "AI-017", "BUILD-008", "OPS-003", "OPS-004", "OPS-006", "OPS-008", "OPS-012", "PROOF-012", "PLAT-007"],
+  "entries": [
+    {"dependency": "optional backend", "current_state": "disabled or not configured in the tested browser", "open_risks": ["access control", "persistence", "retention", "availability"], "owner_packets": ["06.5", "21", "24.7"]},
+    {"dependency": "Apple Shortcuts and Apple Notes", "current_state": "configured Bug Catalog save path observed", "open_risks": ["cancel", "missing Shortcut", "duplicate run", "partial completion"], "owner_packets": ["21", "24.6"]},
+    {"dependency": "GitHub and hosted project files", "current_state": "current public route and repository evidence host", "open_risks": ["version drift", "deployment delay", "cache delay", "availability"], "owner_packets": ["03.5", "11.5", "17.5", "24.6"]},
+    {"dependency": "external ZIP support", "current_state": "used by local ZIP tools", "open_risks": ["offline failure", "version integrity"], "owner_packets": ["11.5", "24.6"]},
+    {"dependency": "manual ChatGPT handoff", "current_state": "copy and paste only", "open_risks": ["context loss", "wrong version", "privacy boundary"], "owner_packets": ["06", "21", "24.7"]}
+  ],
+  "state": "BASELINE CREATED — CONTINUING RECORD",
+  "reopen_on_contrary_evidence": true,
+  "safe_claim": "The Packet 02 dependency and provider risk family has a named companion record and linked limitation identities.",
+  "do_not_claim": "This record does not implement or close its linked limitations."
+}
