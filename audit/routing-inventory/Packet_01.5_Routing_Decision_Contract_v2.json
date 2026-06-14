@@ -1,0 +1,156 @@
+{
+  "packet": "01.5",
+  "contract": "routing_decision_overlay",
+  "version": 2,
+  "status": "PROPOSED_PENDING_INDEPENDENT_VERIFICATION",
+  "source_anchor": {
+    "path": "audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.jsonl",
+    "bytes": 3898954,
+    "lines": 2750,
+    "sha256": "76169a80e07603cea51d769d3d89b32735149c2aef7eb09f893ed94fe5d72477",
+    "address_sequence_sha256": "3d808e1ec3f163e4cb2ab7a15767563fe7c43b9920bcecde9abe711226220916",
+    "address_first": "P01.5::B::0001",
+    "address_last": "P01.5::P069::XRES-003",
+    "baseline_envelopes": 122,
+    "provisional_envelopes": 2628
+  },
+  "architecture": {
+    "source_inventory_immutable": true,
+    "decision_overlay_separate": true,
+    "source_wording_copied_as_replacement": false,
+    "source_envelope_deletion_allowed": false,
+    "source_envelope_closure_allowed": false,
+    "cluster_summary_can_replace_source": false
+  },
+  "immutable_source_fields": [
+    "composite_address",
+    "source_set",
+    "source_path",
+    "source_pass",
+    "source_file_hash",
+    "source_record_ordinal",
+    "original_identifier",
+    "original_heading",
+    "original_body",
+    "source_block_hash",
+    "harm_text",
+    "overlap_text",
+    "legacy_exception_codes",
+    "normalization_version",
+    "envelope_hash"
+  ],
+  "applicability_states": [
+    "CURRENT DEFECT OR LIMITATION",
+    "ACTIVE CONDITIONAL RISK",
+    "DORMANT FUTURE RISK",
+    "OUT-OF-SCOPE CANDIDATE",
+    "UNKNOWN — HOLD"
+  ],
+  "decision_stages": [
+    "APPLICABILITY_ONLY",
+    "ROUTED",
+    "HOLD"
+  ],
+  "confidence": {
+    "type": "integer",
+    "minimum": 0,
+    "maximum": 100,
+    "applicability_required": true,
+    "routing_required_when_routed": true
+  },
+  "evidence_entry_required_fields": [
+    "evidence_id",
+    "source_reference",
+    "source_hash_or_stable_reference",
+    "claim_supported"
+  ],
+  "overlay_required_fields": [
+    "composite_address",
+    "source_inventory_sha256",
+    "source_envelope_hash",
+    "source_block_hash",
+    "decision_stage",
+    "applicability_state",
+    "applicability_evidence",
+    "applicability_reasoning_summary",
+    "applicability_confidence",
+    "primary_destination",
+    "secondary_destinations",
+    "cross_cutting_laws",
+    "semantic_cluster_ids",
+    "routing_evidence",
+    "routing_rationale",
+    "routing_confidence",
+    "expected_receiving_work",
+    "expected_completion_evidence",
+    "unresolved_dependencies",
+    "hold_reason",
+    "reopening_conditions",
+    "decision_version",
+    "decision_author",
+    "routing_decision_verifier",
+    "closure_state"
+  ],
+  "stage_rules": {
+    "APPLICABILITY_ONLY": {
+      "destination_fields_blank": true,
+      "routing_evidence_blank": true,
+      "routing_confidence_null": true,
+      "hold_reason_blank": true
+    },
+    "ROUTED": {
+      "unknown_hold_forbidden": true,
+      "primary_destination_required": true,
+      "secondary_destinations_allowed": true,
+      "cross_cutting_laws_allowed": true,
+      "routing_evidence_required": true,
+      "routing_rationale_required": true,
+      "routing_confidence_required": true,
+      "expected_receiving_work_required": true,
+      "expected_completion_evidence_required": true,
+      "distinct_author_and_verifier_required": true
+    },
+    "HOLD": {
+      "primary_destination_blank": true,
+      "secondary_destinations_blank": true,
+      "routing_evidence_blank": true,
+      "routing_confidence_null": true,
+      "hold_reason_required": true,
+      "unresolved_dependency_required": true
+    }
+  },
+  "global_rules": {
+    "applicability_and_destination_separate": true,
+    "no_default_applicability": true,
+    "conditional_risk_not_automatically_current_defect": true,
+    "unknown_uncertainty_requires_hold": true,
+    "primary_and_secondary_can_coexist": true,
+    "duplicate_destinations_forbidden": true,
+    "semantic_grouping_reference_only": true,
+    "semantic_grouping_reversible_by_address": true,
+    "record_closure_during_routing_forbidden": true,
+    "closure_state_required_value": "OPEN",
+    "routing_does_not_prove_resolution": true,
+    "routing_does_not_authorize_implementation": true,
+    "packet_04_authorized": false,
+    "reopening_conditions_required": true,
+    "decision_author_and_verifier_distinct": true
+  },
+  "independent_verification": {
+    "recompute_inventory_sha256": true,
+    "recompute_address_sequence_sha256": true,
+    "recompute_every_envelope_hash": true,
+    "verify_exact_address_bounds": true,
+    "verify_all_blank_states": true,
+    "rerun_source_to_envelope_verifier": true,
+    "positive_policy_fixtures_required": true,
+    "adversarial_rejection_fixtures_required": true,
+    "verify_inventory_unchanged_after_tests": true
+  },
+  "authorization_on_pass": {
+    "next_authorized_work": "PACKET_01.5_PHASE_E_APPLICABILITY_CLASSIFICATION",
+    "actual_classification_performed": false,
+    "actual_routing_performed": false,
+    "packet_04_authorized": false
+  }
+}
