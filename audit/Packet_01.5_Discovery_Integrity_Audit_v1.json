@@ -2,9 +2,9 @@
   "audit_date": "2026-06-14",
   "scope": "Packet 01.5 mechanical discovery integrity only",
   "baseline_count": 122,
-  "files_audited": 68,
-  "actual_provisional_count": 2617,
-  "combined_actual_count": 2739,
+  "files_audited": 69,
+  "actual_provisional_count": 2628,
+  "combined_actual_count": 2750,
   "sum_of_declared_counts_where_present": 1791,
   "count_mismatch_count": 5,
   "duplicate_id_count": 30,
@@ -11307,6 +11307,62 @@
           "title": "A complete record is mistaken for a complete reality"
         }
       ]
+    },
+    {
+      "pass": 69,
+      "path": "audit/Packet_01.5_Discovery_Pass_69_ReceiverStyle_Inversion_OutcomesBackward_CategoryEscape_HighValueResiduals_v1.md",
+      "actual_count": 11,
+      "declared_count": null,
+      "count_match": true,
+      "malformed_headings": [],
+      "missing_harm": [],
+      "missing_overlap": [],
+      "records": [
+        {
+          "id": "XOUT-001",
+          "title": "Harm exists without a single reportable incident"
+        },
+        {
+          "id": "XOUT-002",
+          "title": "Every source record is correct while the combined conclusion is false"
+        },
+        {
+          "id": "XOUT-003",
+          "title": "Service success is caused by the highest-need population disappearing from the denominator"
+        },
+        {
+          "id": "XOUT-004",
+          "title": "A correct remedy creates a new category of unprotected person or asset"
+        },
+        {
+          "id": "XCAT-001",
+          "title": "The harmed party is not a user, customer, resident, worker, or owner in any governing system"
+        },
+        {
+          "id": "XCAT-002",
+          "title": "Evidence standards are mutually incompatible across systems"
+        },
+        {
+          "id": "XCAT-003",
+          "title": "Informal success prevents formal capacity from ever being built"
+        },
+        {
+          "id": "XCAT-004",
+          "title": "A protected object changes identity during the protection process"
+        },
+        {
+          "id": "XRES-001",
+          "title": "Correction requires reconstructing an original state that was never fully recorded"
+        },
+        {
+          "id": "XRES-002",
+          "title": "A system becomes safer by pushing risky activity into an unobserved channel"
+        },
+        {
+          "id": "XRES-003",
+          "title": "Institutions learn to produce evidence of control rather than control itself"
+        }
+      ]
     }
   ],
   "duplicate_ids": {
@@ -11849,6 +11905,7 @@
     "XAUTH": 4,
     "XBOUND": 5,
     "XCARE": 4,
+    "XCAT": 4,
     "XCHAIN": 6,
     "XCOMBO": 4,
     "XCOMMON": 4,
@@ -11864,8 +11921,10 @@
     "XMARKET": 4,
     "XNEG": 15,
     "XOPT": 5,
+    "XOUT": 4,
     "XRARE": 4,
     "XRECOV": 5,
+    "XRES": 3,
     "XRESID": 3,
     "XREV": 4,
     "XSTEW": 4,
