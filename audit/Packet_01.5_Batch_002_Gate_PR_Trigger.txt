@@ -1,0 +1,2 @@
+Packet 01.5 Batch 002 selection-gate verification trigger.
+No Batch 002 decision or routing action is authorized by this trigger.
