@@ -28,30 +28,41 @@ jobs:
           ref: ${{ github.head_ref || github.ref_name }}
 
       - name: Verify exact baseline source
-        run: python3 tools/verify_packet_01_5_baseline_source.py
+        run: |
+          set -o pipefail
+          python3 tools/verify_packet_01_5_baseline_source.py 2>&1 | tee audit/Packet_01.5_Blank_Routing_Inventory_Workflow_Debug.log
+          cp audit/Packet_01.5_Baseline_Address_Manifest_v2.json audit/Packet_01.5_Baseline_Address_Manifest_v1.json
 
       - name: Build blank routing inventory
-        run: python3 tools/build_packet_01_5_blank_routing_inventory.py
+        run: |
+          set -o pipefail
+          python3 tools/build_packet_01_5_blank_routing_inventory.py 2>&1 | tee -a audit/Packet_01.5_Blank_Routing_Inventory_Workflow_Debug.log
 
       - name: Independently verify all envelopes
-        run: python3 tools/verify_packet_01_5_blank_routing_inventory.py
+        run: |
+          set -o pipefail
+          python3 tools/verify_packet_01_5_blank_routing_inventory.py 2>&1 | tee -a audit/Packet_01.5_Blank_Routing_Inventory_Workflow_Debug.log
 
-      - name: Commit verified inventory outputs to current branch
+      - name: Commit failure diagnostic
+        if: failure()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add \
-            audit/baseline-source/reconstructed/pmp-current-permanent-limitation-register-v3-final.json \
-            audit/Packet_01.5_Baseline_Source_Verification_v1.md \
-            audit/Packet_01.5_Baseline_Source_Verification_v1.json \
-            audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.jsonl \
-            audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.jsonl.gz \
-            audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.manifest.json \
-            audit/Packet_01.5_Blank_Routing_Inventory_Build_v1.md \
-            audit/Packet_01.5_Blank_Routing_Inventory_Build_v1.json \
-            audit/Packet_01.5_Blank_Routing_Inventory_Independent_Verification_v1.md \
-            audit/Packet_01.5_Blank_Routing_Inventory_Independent_Verification_v1.json \
-            audit/Packet_01.5_Routing_Inventory_Status_v74.md
+          git add audit/Packet_01.5_Blank_Routing_Inventory_Workflow_Debug.log
+          if git diff --cached --quiet; then
+            echo "No diagnostic changes."
+          else
+            git commit -m "Record Packet 01.5 inventory workflow diagnostic"
+            git push origin "HEAD:${{ github.head_ref || github.ref_name }}"
+          fi
+
+      - name: Commit verified inventory outputs to current branch
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -f audit/Packet_01.5_Blank_Routing_Inventory_Workflow_Debug.log
+          git add -A audit/
           if git diff --cached --quiet; then
             echo "No verified inventory-output changes."
           else

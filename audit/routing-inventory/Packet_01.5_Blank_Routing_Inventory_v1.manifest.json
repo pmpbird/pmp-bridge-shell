@@ -1,0 +1,559 @@
+{
+  "packet": "01.5",
+  "inventory": "blank_routing_inventory",
+  "version": 1,
+  "build_date": "2026-06-14",
+  "normalization_version": "1.0.0",
+  "status": "BUILT_PENDING_INDEPENDENT_VERIFICATION",
+  "watch": "NONE",
+  "blockers": "NONE",
+  "counts": {
+    "baseline": 122,
+    "provisional": 2628,
+    "combined": 2750,
+    "source_files_provisional": 69
+  },
+  "address_first": "P01.5::B::0001",
+  "address_last": "P01.5::P069::XRES-003",
+  "address_unique": true,
+  "address_sequence_sha256": "3d808e1ec3f163e4cb2ab7a15767563fe7c43b9920bcecde9abe711226220916",
+  "inventory_jsonl": {
+    "path": "audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.jsonl",
+    "bytes": 3898954,
+    "sha256": "76169a80e07603cea51d769d3d89b32735149c2aef7eb09f893ed94fe5d72477",
+    "lines": 2750
+  },
+  "inventory_gzip": {
+    "path": "audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.jsonl.gz",
+    "bytes": 678399,
+    "sha256": "651db79bb19c8890cc968448d5ed701897f4bc646f1d1010706de9aa9b869116",
+    "mtime": 0
+  },
+  "provisional_source_manifest": [
+    {
+      "pass": 1,
+      "path": "audit/Packet_01.5_Discovery_Working_Register_v1.md",
+      "source_file_hash": "edcb6a56f0a87531f38cba214cb1c3db99d708d5d7741fb1dcf6d9c8c099276e",
+      "record_count": 10
+    },
+    {
+      "pass": 2,
+      "path": "audit/Packet_01.5_Discovery_Pass_02_Security_Privacy_and_Human_Risk_v1.md",
+      "source_file_hash": "8506f61d266208458cb79ca97cbce3f8b3baa715f992c40035ef72013727410b",
+      "record_count": 20
+    },
+    {
+      "pass": 3,
+      "path": "audit/Packet_01.5_Discovery_Pass_03_Reliability_Recovery_and_Platform_v1.md",
+      "source_file_hash": "55c2ddb82b56bb6d2ad3a9f531aa5d4c06ba7d12587b63db6a33ab8a25914102",
+      "record_count": 21
+    },
+    {
+      "pass": 4,
+      "path": "audit/Packet_01.5_Discovery_Pass_04_Performance_Observability_Accessibility_and_Metrics_v1.md",
+      "source_file_hash": "dea3d33cc02124c99bf95698010667c948cda094fabc3bba86e016232aa5d764",
+      "record_count": 32
+    },
+    {
+      "pass": 5,
+      "path": "audit/Packet_01.5_Discovery_Pass_05_Governance_Audit_Retention_and_Succession_v1.md",
+      "source_file_hash": "fd14c3e585bc88006628b1310905f64c9f26814c402d8ea30926ae7d8b8acb0f",
+      "record_count": 33
+    },
+    {
+      "pass": 6,
+      "path": "audit/Packet_01.5_Discovery_Pass_06_Economic_LockIn_Social_Physical_and_Viability_v1.md",
+      "source_file_hash": "9cc99251d797d8f481e977b2bd1bbc77c74919fda3c0e741a54a807b2babd094",
+      "record_count": 36
+    },
+    {
+      "pass": 7,
+      "path": "audit/Packet_01.5_Discovery_Pass_07_Model_Context_Automation_and_SelfImprovement_v1.md",
+      "source_file_hash": "3e2668a4617ca39d1abfae4dd73478d8f9b3432172a8b14946b49dcb7ea31369",
+      "record_count": 40
+    },
+    {
+      "pass": 8,
+      "path": "audit/Packet_01.5_Discovery_Pass_08_Data_Schema_Migration_Crypto_Sync_and_Privacy_v1.md",
+      "source_file_hash": "ad00cae91aa1f90d9b81cb0e0f7528623e8aaf62a30e07bc8120015b9749252b",
+      "record_count": 44
+    },
+    {
+      "pass": 9,
+      "path": "audit/Packet_01.5_Discovery_Pass_09_Testing_Oracles_Flakiness_and_ProofChain_v1.md",
+      "source_file_hash": "a0a9d59a179315c41f18e3e55b3204b2ffa76d9cf9152f1c01125de16f80108e",
+      "record_count": 44
+    },
+    {
+      "pass": 10,
+      "path": "audit/Packet_01.5_Discovery_Pass_10_Build_Reproducibility_Release_and_SupplyChain_v1.md",
+      "source_file_hash": "4c55b8a3e1db80d2550250808511d57865d3a49f5a108383694002b7b5b39f40",
+      "record_count": 43
+    },
+    {
+      "pass": 11,
+      "path": "audit/Packet_01.5_Discovery_Pass_11_Interface_DestructiveActions_Interruptions_and_HumanRecovery_v1.md",
+      "source_file_hash": "6c23b795d9d0ccd639793bd8dd51b4c840eb5a759c387bd51e7ec25de39f39ef",
+      "record_count": 44
+    },
+    {
+      "pass": 12,
+      "path": "audit/Packet_01.5_Discovery_Pass_12_Network_API_Authentication_Authorization_and_CrossOrigin_v1.md",
+      "source_file_hash": "6557901b23d587b9f339ee04f803bb1dd203897012e611a2dc02f885d4337678",
+      "record_count": 43
+    },
+    {
+      "pass": 13,
+      "path": "audit/Packet_01.5_Discovery_Pass_13_Incident_Detection_Containment_Forensics_and_Recovery_v1.md",
+      "source_file_hash": "8df7bdf1569daaa3b5ca099f5ec303a84d2fe22c69bc1b21e9625e1e9daea0c3",
+      "record_count": 44
+    },
+    {
+      "pass": 14,
+      "path": "audit/Packet_01.5_Discovery_Pass_14_Support_Triage_Documentation_Handoff_and_Misuse_v1.md",
+      "source_file_hash": "b6a1055052dfd59dad60d86a17336c6c5ebdd7b15a73adfeb9684acc1fed26d0",
+      "record_count": 42
+    },
+    {
+      "pass": 15,
+      "path": "audit/Packet_01.5_Discovery_Pass_15_Architecture_Core_Shell_Portability_and_Coupling_v1.md",
+      "source_file_hash": "ca05f138460cb0cf874f66ee25f56b82bb42175f3561b0f40a13b09550a0450f",
+      "record_count": 42
+    },
+    {
+      "pass": 16,
+      "path": "audit/Packet_01.5_Discovery_Pass_16_Search_Retrieval_Indexing_and_KnowledgeBase_v1.md",
+      "source_file_hash": "14869b341ba3d17613a7e984697c9d4e88e10f4db5ed2221aeeec34125a756c5",
+      "record_count": 42
+    },
+    {
+      "pass": 17,
+      "path": "audit/Packet_01.5_Discovery_Pass_17_Time_Scheduling_Queues_Deadlines_and_Expiry_v1.md",
+      "source_file_hash": "a9ba9b2944f18c0bbb9273c48746aaa65e8d59f42a7d3478f0bf03644cc96a2e",
+      "record_count": 42
+    },
+    {
+      "pass": 18,
+      "path": "audit/Packet_01.5_Discovery_Pass_18_Change_Version_Rollout_FeatureFlags_Deprecation_and_Rollback_v1.md",
+      "source_file_hash": "75f6c6ba885907a45cc9ab00c38f05b34f43d0babfa2790465d96326ba5bb48e",
+      "record_count": 42
+    },
+    {
+      "pass": 19,
+      "path": "audit/Packet_01.5_Discovery_Pass_19_Legal_Licensing_Consent_Jurisdiction_and_Terms_v1.md",
+      "source_file_hash": "232414dd2f9ea49808c90e8dc6b7c2c77d4514a45fb33f56477be71508ba3e5b",
+      "record_count": 42
+    },
+    {
+      "pass": 20,
+      "path": "audit/Packet_01.5_Discovery_Pass_20_Human_Cognition_Fatigue_Trust_Training_and_Stress_v1.md",
+      "source_file_hash": "98fb1230499ef289ec6f77b73dd6fe18aebd5034aa680bc4d5ec9c5bb661c375",
+      "record_count": 42
+    },
+    {
+      "pass": 21,
+      "path": "audit/Packet_01.5_Discovery_Pass_21_Sensors_Permissions_Calibration_Spoofing_and_PhysicalReality_v1.md",
+      "source_file_hash": "fe11195f200527696eb69b3f4c76906615dbe1d72e315f64468b2d4a39347d5c",
+      "record_count": 42
+    },
+    {
+      "pass": 22,
+      "path": "audit/Packet_01.5_Discovery_Pass_22_Hardware_Battery_Thermal_Storage_Firmware_and_Tampering_v1.md",
+      "source_file_hash": "4c2bba97f1b11ce8b8245808aad6c4a98906f955f7fcf7d1e8f8d11b1773ca2a",
+      "record_count": 42
+    },
+    {
+      "pass": 23,
+      "path": "audit/Packet_01.5_Discovery_Pass_23_Collaboration_TenantSeparation_Sharing_Delegation_and_Revocation_v1.md",
+      "source_file_hash": "e7e7dfcf8990fe918fae54b605e21d151ea572f7afc5f7619928023a21c170ea",
+      "record_count": 42
+    },
+    {
+      "pass": 24,
+      "path": "audit/Packet_01.5_Discovery_Pass_24_Financial_Billing_Quotas_Subscriptions_Fraud_and_EconomicDenial_v1.md",
+      "source_file_hash": "9802d2b2b7074042bac1a405969bc539d28b0125efdc90acc7c2ccc8809adbf1",
+      "record_count": 42
+    },
+    {
+      "pass": 25,
+      "path": "audit/Packet_01.5_Discovery_Pass_25_Environmental_Energy_Water_EWaste_and_Resilience_v1.md",
+      "source_file_hash": "5a0d122864e2acfb3e03eb4d9c52b919df340d7b660ae92081862e6cff146d05",
+      "record_count": 42
+    },
+    {
+      "pass": 26,
+      "path": "audit/Packet_01.5_Discovery_Pass_26_PublicCommunication_Misinformation_Authenticity_Moderation_and_Reputation_v1.md",
+      "source_file_hash": "5a03c49992cff91bd42e558713fa1822629a234170a8071e141ab6b9e79e4f99",
+      "record_count": 42
+    },
+    {
+      "pass": 27,
+      "path": "audit/Packet_01.5_Discovery_Pass_27_Health_PersonalSafety_EmergencyReliance_Crisis_and_HazardousEnvironments_v1.md",
+      "source_file_hash": "f000b1d1b2327c2e5b5a90a6e6412b6b0065fa74fa1cb7d591e38ef403b0378a",
+      "record_count": 42
+    },
+    {
+      "pass": 28,
+      "path": "audit/Packet_01.5_Discovery_Pass_28_Education_Assessment_Cheating_Development_Feedback_and_SkillDependency_v1.md",
+      "source_file_hash": "325906bfaede2d42d963927902021a3b906be9a47854517fe573662a7804be8a",
+      "record_count": 42
+    },
+    {
+      "pass": 29,
+      "path": "audit/Packet_01.5_Discovery_Pass_29_Employment_Hiring_Surveillance_Authority_Contractors_and_JobSkill_v1.md",
+      "source_file_hash": "18a460f596849b569a5ecff6e897bbcb0c2c0c34b11cec6bb52d1cb794dac078",
+      "record_count": 42
+    },
+    {
+      "pass": 30,
+      "path": "audit/Packet_01.5_Discovery_Pass_30_Civic_DueProcess_Benefits_Policing_Courts_Voting_and_PublicRecords_v1.md",
+      "source_file_hash": "5f467bca5070e892f051e38ce581be194cd0268f9f88e70922421fb743be52d4",
+      "record_count": 42
+    },
+    {
+      "pass": 31,
+      "path": "audit/Packet_01.5_Discovery_Pass_31_Housing_Credit_Insurance_Lending_Pricing_FraudScoring_and_EssentialAccess_v1.md",
+      "source_file_hash": "cb654c4fa075e0df7c8fbe6e81fb43d450d2870a0e86b83c9bb593959f7bdb53",
+      "record_count": 42
+    },
+    {
+      "pass": 32,
+      "path": "audit/Packet_01.5_Discovery_Pass_32_Family_DomesticAbuse_Guardianship_Caregiving_ChildWelfare_and_ReproductiveAutonomy_v1.md",
+      "source_file_hash": "46bfbfeb38b7384b5dd021d4fcbeaef23a3b9c755dc9fe684c992efbe9e86a3f",
+      "record_count": 42
+    },
+    {
+      "pass": 33,
+      "path": "audit/Packet_01.5_Discovery_Pass_33_Transportation_Mobility_Navigation_Vehicles_EmergencyRouting_Delivery_and_Logistics_v1.md",
+      "source_file_hash": "54209ec14185afa00a6d123fbf5234beeaeeb6b7340e00c6fa11777aca6aaf51",
+      "record_count": 42
+    },
+    {
+      "pass": 34,
+      "path": "audit/Packet_01.5_Discovery_Pass_34_Food_Agriculture_Nutrition_Allergens_Contamination_ColdChain_and_Traceability_v1.md",
+      "source_file_hash": "20693e26548de995f441664e2600e75a914fede5b4fdbc66c75ce610c522d5cb",
+      "record_count": 47
+    },
+    {
+      "pass": 35,
+      "path": "audit/Packet_01.5_Discovery_Pass_35_ScientificResearch_ExperimentalDesign_LaboratorySafety_Reproducibility_PeerReview_and_DualUse_v1.md",
+      "source_file_hash": "65e5454f743e05d96634410e8c27e10750079824e951f717742fd09d5e07a5b9",
+      "record_count": 42
+    },
+    {
+      "pass": 36,
+      "path": "audit/Packet_01.5_Discovery_Pass_36_CriticalInfrastructure_Utilities_OperationalTechnology_CascadingFailure_and_Recovery_v1.md",
+      "source_file_hash": "46326fc373634e1418325512a993c7f220c958778c93958ebbadf490ca3a8579",
+      "record_count": 42
+    },
+    {
+      "pass": 37,
+      "path": "audit/Packet_01.5_Discovery_Pass_37_Media_Advertising_Persuasion_Recommenders_Attention_PoliticalInfluence_and_DarkPatterns_v1.md",
+      "source_file_hash": "5bb1ad111b74110f1c5fe9db3fc9d15b0edec75e2ee14c0f5bcab8ee5c919e4f",
+      "record_count": 42
+    },
+    {
+      "pass": 38,
+      "path": "audit/Packet_01.5_Discovery_Pass_38_Culture_Religion_Language_Heritage_Representation_Pluralism_and_SacredKnowledge_v1.md",
+      "source_file_hash": "7cba025039d84a7868ef8d1e4e0dd7b9ea94c8258a4622bebe90c38eda08b2e1",
+      "record_count": 42
+    },
+    {
+      "pass": 39,
+      "path": "audit/Packet_01.5_Discovery_Pass_39_Conflict_HumanitarianResponse_Displacement_Sanctions_CivilianProtection_and_PostConflictRecovery_v1.md",
+      "source_file_hash": "bca00df32cf4d63dde443b95fa11addf93de02fc4c5a88fae2bca329dd70469a",
+      "record_count": 42
+    },
+    {
+      "pass": 40,
+      "path": "audit/Packet_01.5_Discovery_Pass_40_Space_Satellites_RemoteSensing_Launch_Debris_PNT_GroundSegment_and_Access_v1.md",
+      "source_file_hash": "b0a8de0a2236e8984246e96e634e65d90c2232b4cd4febf3cc726c6d834e4097",
+      "record_count": 42
+    },
+    {
+      "pass": 41,
+      "path": "audit/Packet_01.5_Discovery_Pass_41_Manufacturing_Robotics_MachineGuarding_Quality_Counterfeit_Maintenance_and_ProductLiability_v1.md",
+      "source_file_hash": "114498289a7554388da9dd9a1bcc5b20743997062c82c0f598e37fbdfff5b21b",
+      "record_count": 42
+    },
+    {
+      "pass": 42,
+      "path": "audit/Packet_01.5_Discovery_Pass_42_Construction_StructuralSafety_FireProtection_Codes_Inspection_Occupancy_Accessibility_and_Resilience_v1.md",
+      "source_file_hash": "5a08d20114082a84f3143b752f54e0cd6126057ed7112436c2659192fd04d7fc",
+      "record_count": 42
+    },
+    {
+      "pass": 43,
+      "path": "audit/Packet_01.5_Discovery_Pass_43_Mining_Extraction_Tailings_HazardousMaterials_LandRights_Remediation_and_Stewardship_v1.md",
+      "source_file_hash": "300f26a7f4dfa2bdfa4bade1180a08a8d36c738fbab5ceea106f0af22bbeec21",
+      "record_count": 42
+    },
+    {
+      "pass": 44,
+      "path": "audit/Packet_01.5_Discovery_Pass_44_Biotechnology_Genomics_GeneEditing_SyntheticBiology_Privacy_Biosafety_and_Stewardship_v1.md",
+      "source_file_hash": "266508ac02427272274a4ad8be5c9ea6d603e9057758538f6b19372ab306881a",
+      "record_count": 42
+    },
+    {
+      "pass": 45,
+      "path": "audit/Packet_01.5_Discovery_Pass_45_Oceans_Fisheries_CoastalSystems_MarineTransport_Seabed_Contamination_and_Stewardship_v1.md",
+      "source_file_hash": "1267471fdaa1de1865953f4e2bdb20a3371bb611a4e4bc373fbd5f6a587c6860",
+      "record_count": 42
+    },
+    {
+      "pass": 46,
+      "path": "audit/Packet_01.5_Discovery_Pass_46_Nuclear_Radiological_Safety_RadiationProtection_Waste_Emergency_and_Decommissioning_v1.md",
+      "source_file_hash": "64ca1662a961deffd26e93be947f299906bbe2a31e1e01514008bd70a94c4fe2",
+      "record_count": 32
+    },
+    {
+      "pass": 47,
+      "path": "audit/Packet_01.5_Discovery_Pass_47_PharmaceuticalCare_Prescribing_Dispensing_Reconciliation_Interactions_Shortages_and_Pharmacovigilance_v1.md",
+      "source_file_hash": "a720467bdfdbc61a9b3f4d113d0285a7c921dbe830c4657e16409cfe2bb24b05",
+      "record_count": 38
+    },
+    {
+      "pass": 48,
+      "path": "audit/Packet_01.5_Discovery_Pass_48_PublicHealth_Pandemics_Surveillance_LaboratoryNetworks_Vaccination_Isolation_Capacity_and_Coordination_v1.md",
+      "source_file_hash": "3aa4f2ca383dd808ab59f3f1bfaf0e0f6cae44f7131f5bdc79388ebec0cadb0c",
+      "record_count": 39
+    },
+    {
+      "pass": 49,
+      "path": "audit/Packet_01.5_Discovery_Pass_49_Waste_Sanitation_Sewage_Septic_Landfill_Recycling_HazardousMedicalWaste_and_Stewardship_v1.md",
+      "source_file_hash": "ce1a798d23b955d402b2e8ba973f2b136ce085f0f615e5a0984abb14fe3a0ffa",
+      "record_count": 40
+    },
+    {
+      "pass": 50,
+      "path": "audit/Packet_01.5_Discovery_Pass_50_Aviation_AircraftCertification_FlightOperations_Maintenance_Airports_ATC_Crew_Cargo_Automation_and_Investigation_v1.md",
+      "source_file_hash": "991293c64fa02aa8f1619c332592d1380d982fb6b91a06650975e7cd45f0d37d",
+      "record_count": 39
+    },
+    {
+      "pass": 51,
+      "path": "audit/Packet_01.5_Discovery_Pass_51_Forests_Wildfire_Wildlife_InvasiveSpecies_ProtectedAreas_CommunityLandUse_and_LandscapeStewardship_v1.md",
+      "source_file_hash": "e92487e4e253259e9ef25a921d3b44a72261e9cf396f254aff0ca97bfa18cfcb",
+      "record_count": 40
+    },
+    {
+      "pass": 52,
+      "path": "audit/Packet_01.5_Discovery_Pass_52_Macroeconomic_Currency_Banking_Markets_Taxation_SovereignDebt_Liquidity_Clearing_and_ShockTransmission_v1.md",
+      "source_file_hash": "5ce59daa9fe17ed7658be84ccb570f93246d80ae925fe02abab8191a882231e1",
+      "record_count": 38
+    },
+    {
+      "pass": 53,
+      "path": "audit/Packet_01.5_Discovery_Pass_53_Detention_Incarceration_Borders_Asylum_Custody_LegalAccess_Healthcare_Family_Force_Release_and_Statelessness_v1.md",
+      "source_file_hash": "ab44a31565a7dd0795913032af5aecdfaf4395a15f948626bbd6e36c86748e94",
+      "record_count": 41
+    },
+    {
+      "pass": 54,
+      "path": "audit/Packet_01.5_Discovery_Pass_54_EmergencyServices_Dispatch_Fire_EMS_Rescue_IncidentCommand_Triage_MutualAid_Communication_and_Continuity_v1.md",
+      "source_file_hash": "de2e20b0465ca7c2ce45ee00bb15bff653e4b407f5f4765ce146e06464defc32",
+      "record_count": 40
+    },
+    {
+      "pass": 55,
+      "path": "audit/Packet_01.5_Discovery_Pass_55_Freshwater_Watersheds_Dams_Groundwater_Drought_WaterRights_Ecosystems_and_Governance_v1.md",
+      "source_file_hash": "c5699761226c24f4b110b18ce6fc7ae2ea0418fbc3f51f19dcea55e38d3f827d",
+      "record_count": 39
+    },
+    {
+      "pass": 56,
+      "path": "audit/Packet_01.5_Discovery_Pass_56_MentalHealth_BehavioralHealth_Addiction_Prevention_Outpatient_Inpatient_Involuntary_Crisis_HarmReduction_and_Recovery_v1.md",
+      "source_file_hash": "23bdbdcad60ff9c83ef0e1be4657b30aa156b5dfd266b1ff1cba2537a77805dc",
+      "record_count": 40
+    },
+    {
+      "pass": 57,
+      "path": "audit/Packet_01.5_Discovery_Pass_57_SocialCare_LongTermCare_Aging_DisabilitySupport_HCBS_DirectCare_ElderAbuse_Caregivers_and_Transitions_v1.md",
+      "source_file_hash": "eb78118539e95298dd29d88d4ec10a545208db63925f8d4e4aa0ab921d6ae8a5",
+      "record_count": 40
+    },
+    {
+      "pass": 58,
+      "path": "audit/Packet_01.5_Discovery_Pass_58_Military_Defense_Procurement_Command_Escalation_WeaponsLifecycle_Autonomy_ServiceHealth_and_VeteranTransition_v1.md",
+      "source_file_hash": "6b26011dcd9028be1c7f0b035b75188062b90a86b231849b5e09f6ad54aa703b",
+      "record_count": 36
+    },
+    {
+      "pass": 59,
+      "path": "audit/Packet_01.5_Discovery_Pass_59_EnergyProduction_Storage_Fuels_Refineries_Pipelines_Hydrogen_Batteries_Renewables_GridForming_and_Decommissioning_v1.md",
+      "source_file_hash": "d46fe060a7c35fd234935f498f8e14538efb9a9983e446e80dc55bbdeafff2b8",
+      "record_count": 40
+    },
+    {
+      "pass": 60,
+      "path": "audit/Packet_01.5_Discovery_Pass_60_Chemical_ProcessSafety_ReactiveChemistry_Pressure_Isolation_MOC_Relief_Shutdown_Contractors_Culture_and_Decommissioning_v1.md",
+      "source_file_hash": "feac3b668b7ed97a4f2d8d59019d8d8bf2d1d626a89c2dc7c4ef9ec03343b90e",
+      "record_count": 40
+    },
+    {
+      "pass": 61,
+      "path": "audit/Packet_01.5_Discovery_Pass_61_Pharmaceutical_MedicalProduct_Discovery_Formulation_ClinicalDevelopment_ScaleUp_Regulatory_Device_Recall_FieldCorrection_and_EndOfLife_v1.md",
+      "source_file_hash": "fd5e6081d384121d9eb0e4e6f4049b7cf3c605c8ab53635c0f6e20f8fc8bb5cf",
+      "record_count": 40
+    },
+    {
+      "pass": 62,
+      "path": "audit/Packet_01.5_Discovery_Pass_62_NaturalHazards_Earthquake_Tsunami_Storm_Heat_Volcano_Landslide_Warning_Evacuation_Sheltering_and_Recovery_v1.md",
+      "source_file_hash": "e5f4261e726facd7e666aa6252fc289b2b619e62586c85baf93297e7e3265ddc",
+      "record_count": 38
+    },
+    {
+      "pass": 63,
+      "path": "audit/Packet_01.5_Discovery_Pass_63_Rail_Signaling_Dispatch_TrainIntegrity_Crossings_Track_RollingStock_HazardousFreight_Passengers_Automation_and_Investigation_v1.md",
+      "source_file_hash": "b89dcc9f14940d1c46624c23bd4564672b9ebae0612829eeea8ce7e2e46de3db",
+      "record_count": 39
+    },
+    {
+      "pass": 64,
+      "path": "audit/Packet_01.5_Discovery_Pass_64_CrossDomain_Saturation_Authority_Automation_Identity_Infrastructure_Care_Environment_Markets_Warnings_and_Stewardship_v1.md",
+      "source_file_hash": "754442fc1ab1a9dbc5cdbaf551af6a2941f18d4ae956f9212a05450aa688ad9f",
+      "record_count": 31
+    },
+    {
+      "pass": 65,
+      "path": "audit/Packet_01.5_Discovery_Pass_65_CrossDomain_Saturation_MultiStageChains_DelayedConsequences_Reversibility_Jurisdiction_HumanAdaptation_and_CommonDependencies_v1.md",
+      "source_file_hash": "e3ded9673868371384812de95a577cf39b8438c850e4cad522261863669ebc89",
+      "record_count": 27
+    },
+    {
+      "pass": 66,
+      "path": "audit/Packet_01.5_Discovery_Pass_66_CrossDomain_Saturation_ConflictingOptimization_RecoveryCorruption_DependencyInversion_SilentBoundaries_and_ControlInteractions_v1.md",
+      "source_file_hash": "5cb11beae10d80853f75e18655dcf893baf7b8bee70dc60347c19af3ddbb8c3c",
+      "record_count": 23
+    },
+    {
+      "pass": 67,
+      "path": "audit/Packet_01.5_Discovery_Pass_67_CrossDomain_Saturation_EdgeCases_RareCombinations_Feedback_EvidenceLoss_and_ResidualFailure_v1.md",
+      "source_file_hash": "a1f0044f6cc4b8a6286b14028881c7eebb5ea02f6d42daf647792ec0f9e5bb3b",
+      "record_count": 19
+    },
+    {
+      "pass": 68,
+      "path": "audit/Packet_01.5_Discovery_Pass_68_CrossDomain_Saturation_NegativeSpace_MissingAssumptions_Counterexamples_UnownedTransitions_and_UncapturedInteractions_v1.md",
+      "source_file_hash": "97160cc56f11f191b129c2e5f98e343b3e9ec582b8d7682d26d8dccf13246738",
+      "record_count": 15
+    },
+    {
+      "pass": 69,
+      "path": "audit/Packet_01.5_Discovery_Pass_69_ReceiverStyle_Inversion_OutcomesBackward_CategoryEscape_HighValueResiduals_v1.md",
+      "source_file_hash": "66856a6f83de4af28f28eed6e96b0b77bb1de3c8d2aa1106e245fc463c8d3d87",
+      "record_count": 11
+    }
+  ],
+  "per_pass_counts": {
+    "1": 10,
+    "2": 20,
+    "3": 21,
+    "4": 32,
+    "5": 33,
+    "6": 36,
+    "7": 40,
+    "8": 44,
+    "9": 44,
+    "10": 43,
+    "11": 44,
+    "12": 43,
+    "13": 44,
+    "14": 42,
+    "15": 42,
+    "16": 42,
+    "17": 42,
+    "18": 42,
+    "19": 42,
+    "20": 42,
+    "21": 42,
+    "22": 42,
+    "23": 42,
+    "24": 42,
+    "25": 42,
+    "26": 42,
+    "27": 42,
+    "28": 42,
+    "29": 42,
+    "30": 42,
+    "31": 42,
+    "32": 42,
+    "33": 42,
+    "34": 47,
+    "35": 42,
+    "36": 42,
+    "37": 42,
+    "38": 42,
+    "39": 42,
+    "40": 42,
+    "41": 42,
+    "42": 42,
+    "43": 42,
+    "44": 42,
+    "45": 42,
+    "46": 32,
+    "47": 38,
+    "48": 39,
+    "49": 40,
+    "50": 39,
+    "51": 40,
+    "52": 38,
+    "53": 41,
+    "54": 40,
+    "55": 39,
+    "56": 40,
+    "57": 40,
+    "58": 36,
+    "59": 40,
+    "60": 40,
+    "61": 40,
+    "62": 38,
+    "63": 39,
+    "64": 31,
+    "65": 27,
+    "66": 23,
+    "67": 19,
+    "68": 15,
+    "69": 11
+  },
+  "required_fields": [
+    "composite_address",
+    "source_set",
+    "source_path",
+    "source_file_hash",
+    "source_record_ordinal",
+    "original_identifier",
+    "original_heading",
+    "original_body",
+    "source_block_hash",
+    "harm_text",
+    "overlap_text",
+    "legacy_exception_codes",
+    "applicability_state",
+    "applicability_evidence",
+    "routing_state",
+    "primary_destination",
+    "secondary_destinations",
+    "cross_cutting_laws",
+    "watch_triggers",
+    "semantic_cluster_ids",
+    "normalization_version",
+    "envelope_hash"
+  ],
+  "blank_state": {
+    "applicability_state": "UNCLASSIFIED",
+    "routing_state": "UNROUTED",
+    "primary_destination": null,
+    "destination_lists_empty": true,
+    "semantic_clusters_empty": true
+  },
+  "source_preservation": {
+    "exact_original_heading": true,
+    "exact_original_body": true,
+    "source_file_hash": true,
+    "source_block_hash": true,
+    "envelope_hash": true,
+    "deleted_records": 0,
+    "closed_records": 0
+  }
+}
