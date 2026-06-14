@@ -2,9 +2,9 @@
   "audit_date": "2026-06-14",
   "scope": "Packet 01.5 mechanical discovery integrity only",
   "baseline_count": 122,
-  "files_audited": 56,
-  "actual_provisional_count": 2229,
-  "combined_actual_count": 2351,
+  "files_audited": 57,
+  "actual_provisional_count": 2269,
+  "combined_actual_count": 2391,
   "sum_of_declared_counts_where_present": 1791,
   "count_mismatch_count": 5,
   "duplicate_id_count": 26,
@@ -9611,6 +9611,178 @@
           "title": "Staff safety policy relies on security escalation rather than environmental and relational prevention"
         }
       ]
+    },
+    {
+      "pass": 57,
+      "path": "audit/Packet_01.5_Discovery_Pass_57_SocialCare_LongTermCare_Aging_DisabilitySupport_HCBS_DirectCare_ElderAbuse_Caregivers_and_Transitions_v1.md",
+      "actual_count": 40,
+      "declared_count": null,
+      "count_match": true,
+      "malformed_headings": [],
+      "missing_harm": [],
+      "missing_overlap": [],
+      "records": [
+        {
+          "id": "HCBS-001",
+          "title": "Home support exists on paper but not at the required time"
+        },
+        {
+          "id": "HCBS-002",
+          "title": "Service plans assume a stable home environment"
+        },
+        {
+          "id": "HCBS-003",
+          "title": "Fragmented providers leave no one responsible for the whole daily routine"
+        },
+        {
+          "id": "HCBS-004",
+          "title": "Consumer choice is nominal when only one provider is available"
+        },
+        {
+          "id": "HCBS-005",
+          "title": "Remote monitoring is substituted for human support beyond its capability"
+        },
+        {
+          "id": "LTCARE-001",
+          "title": "Facility staffing ratios count bodies rather than usable capability"
+        },
+        {
+          "id": "LTCARE-002",
+          "title": "Congregate infection control protects the facility by restricting residents indefinitely"
+        },
+        {
+          "id": "LTCARE-003",
+          "title": "Resident decline is normalized as aging rather than investigated"
+        },
+        {
+          "id": "LTCARE-004",
+          "title": "Facility closure transfers residents faster than continuity can be preserved"
+        },
+        {
+          "id": "LTCARE-005",
+          "title": "Quality rating hides selective admission and discharge practices"
+        },
+        {
+          "id": "DIRECTCARE-001",
+          "title": "Direct-care worker turnover destroys person-specific knowledge"
+        },
+        {
+          "id": "DIRECTCARE-002",
+          "title": "Low wages and unstable hours create hidden care instability"
+        },
+        {
+          "id": "DIRECTCARE-003",
+          "title": "Time-per-task scheduling makes relational and safety work invisible"
+        },
+        {
+          "id": "DIRECTCARE-004",
+          "title": "Worker safety policy frames the supported person as the hazard"
+        },
+        {
+          "id": "DIRECTCARE-005",
+          "title": "Training is generic while support needs are highly individual"
+        },
+        {
+          "id": "ELDER-001",
+          "title": "Abuse detection depends on the person reporting through the suspected caregiver"
+        },
+        {
+          "id": "ELDER-002",
+          "title": "Financial exploitation appears as ordinary authorized activity"
+        },
+        {
+          "id": "ELDER-003",
+          "title": "Protective intervention removes autonomy more broadly than necessary"
+        },
+        {
+          "id": "ELDER-004",
+          "title": "Neglect is hidden by fragmented responsibility"
+        },
+        {
+          "id": "DISELIG-001",
+          "title": "Eligibility assessment measures deficits in an artificial setting"
+        },
+        {
+          "id": "DISELIG-002",
+          "title": "Improvement caused by support is used to remove the support"
+        },
+        {
+          "id": "DISELIG-003",
+          "title": "Recertification repeatedly forces proof of permanent conditions"
+        },
+        {
+          "id": "DISELIG-004",
+          "title": "Category boundaries exclude people with interacting moderate impairments"
+        },
+        {
+          "id": "DISELIG-005",
+          "title": "Automated eligibility tools reproduce unequal documentation quality"
+        },
+        {
+          "id": "CAREGIVER-001",
+          "title": "Unpaid caregiving capacity is treated as limitless infrastructure"
+        },
+        {
+          "id": "CAREGIVER-002",
+          "title": "Respite eligibility arrives only after crisis-level burden"
+        },
+        {
+          "id": "CAREGIVER-003",
+          "title": "Family caregiver is expected to perform clinical tasks without equivalent training or protection"
+        },
+        {
+          "id": "CAREGIVER-004",
+          "title": "Caregiver monitoring becomes surveillance of the supported person"
+        },
+        {
+          "id": "CAREGIVER-005",
+          "title": "Conflict between caregivers is interpreted as unreliability rather than a governance failure"
+        },
+        {
+          "id": "SUPDEC-001",
+          "title": "Supported decision-making is offered only after capacity has already been denied"
+        },
+        {
+          "id": "SUPDEC-002",
+          "title": "Supporter influence becomes invisible coercion"
+        },
+        {
+          "id": "SUPDEC-003",
+          "title": "Substitute decision-maker prioritizes risk avoidance over the person’s values"
+        },
+        {
+          "id": "SUPDEC-004",
+          "title": "Decision authority is unclear across healthcare, finance, housing, and services"
+        },
+        {
+          "id": "CARETRANS-001",
+          "title": "Hospital discharge assumes home support starts immediately"
+        },
+        {
+          "id": "CARETRANS-002",
+          "title": "Transition to long-term care loses the person’s routines and communication methods"
+        },
+        {
+          "id": "CARETRANS-003",
+          "title": "Service eligibility changes when a person crosses age or program boundaries"
+        },
+        {
+          "id": "CARETRANS-004",
+          "title": "Emergency placement becomes permanent because community support cannot restart"
+        },
+        {
+          "id": "CARETRANS-005",
+          "title": "Transition records transfer diagnoses but not practical support knowledge"
+        },
+        {
+          "id": "CARETECH-001",
+          "title": "Assistive technology failure removes multiple forms of independence at once"
+        },
+        {
+          "id": "CARETECH-002",
+          "title": "Service platform treats proxy access as equivalent to the person’s consent"
+        }
+      ]
     }
   ],
   "duplicate_ids": {
@@ -9700,6 +9872,9 @@
     "CAM": 4,
     "CARBON": 5,
     "CARE": 6,
+    "CAREGIVER": 5,
+    "CARETECH": 2,
+    "CARETRANS": 5,
     "CASCADE": 5,
     "CASEDEF": 4,
     "CHANGE": 8,
@@ -9755,7 +9930,9 @@
     "DEST": 8,
     "DETAIN": 5,
     "DEV": 5,
+    "DIRECTCARE": 5,
     "DIS": 4,
+    "DISELIG": 5,
     "DISPENSE": 5,
     "DISPLACE": 5,
     "DOC": 6,
@@ -9769,6 +9946,7 @@
     "ECOREL": 5,
     "EDACCESS": 3,
     "EJ": 5,
+    "ELDER": 4,
     "EMBED": 6,
     "EMCOMMS": 2,
     "EMCONT": 2,
@@ -9826,6 +10004,7 @@
     "HAZMAT": 5,
     "HAZWASTE": 4,
     "HCAP": 5,
+    "HCBS": 5,
     "HEALTH": 6,
     "HERED": 4,
     "HERIT": 5,
@@ -9878,6 +10057,7 @@
     "LOCK": 5,
     "LOCS": 5,
     "LOGISTICS": 5,
+    "LTCARE": 5,
     "MACROECON": 5,
     "MAINT": 12,
     "MANUF": 6,
@@ -10035,6 +10215,7 @@
     "SUB": 5,
     "SUCC": 5,
     "SUP": 5,
+    "SUPDEC": 4,
     "SUPPLY": 4,
     "SUPPRESS": 4,
     "SURV": 6,
