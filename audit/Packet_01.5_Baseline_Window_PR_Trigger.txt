@@ -1,0 +1,1 @@
+Verify SCALABLE-PASS-001 across the complete 122-record baseline window. Classify only evidence-supported records and queue unresolved records without creating HOLD decisions.
