@@ -8,10 +8,10 @@ This audit counts source records mechanically. It does not deduplicate, route, c
 
 ## Result
 
-- Source files audited: 67
+- Source files audited: 68
 - Preserved baseline: 122
-- Actual provisional headings: 2602
-- Actual combined working total: 2724
+- Actual provisional headings: 2617
+- Actual combined working total: 2739
 - Files with declared-count mismatch: 5
 - Duplicate record IDs: 30
 - Duplicate exact headings: 0
@@ -90,6 +90,7 @@ This audit counts source records mechanically. It does not deduplicate, route, c
 | 65 | 27 | — | YES | `audit/Packet_01.5_Discovery_Pass_65_CrossDomain_Saturation_MultiStageChains_DelayedConsequences_Reversibility_Jurisdiction_HumanAdaptation_and_CommonDependencies_v1.md` |
 | 66 | 23 | — | YES | `audit/Packet_01.5_Discovery_Pass_66_CrossDomain_Saturation_ConflictingOptimization_RecoveryCorruption_DependencyInversion_SilentBoundaries_and_ControlInteractions_v1.md` |
 | 67 | 19 | — | YES | `audit/Packet_01.5_Discovery_Pass_67_CrossDomain_Saturation_EdgeCases_RareCombinations_Feedback_EvidenceLoss_and_ResidualFailure_v1.md` |
+| 68 | 15 | — | YES | `audit/Packet_01.5_Discovery_Pass_68_CrossDomain_Saturation_NegativeSpace_MissingAssumptions_Counterexamples_UnownedTransitions_and_UncapturedInteractions_v1.md` |
 
 ## Declared-count mismatches
 

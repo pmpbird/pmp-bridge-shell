@@ -2,9 +2,9 @@
   "audit_date": "2026-06-14",
   "scope": "Packet 01.5 mechanical discovery integrity only",
   "baseline_count": 122,
-  "files_audited": 67,
-  "actual_provisional_count": 2602,
-  "combined_actual_count": 2724,
+  "files_audited": 68,
+  "actual_provisional_count": 2617,
+  "combined_actual_count": 2739,
   "sum_of_declared_counts_where_present": 1791,
   "count_mismatch_count": 5,
   "duplicate_id_count": 30,
@@ -11235,6 +11235,78 @@
           "title": "Successful technical correction creates false confidence that the social system is repaired"
         }
       ]
+    },
+    {
+      "pass": 68,
+      "path": "audit/Packet_01.5_Discovery_Pass_68_CrossDomain_Saturation_NegativeSpace_MissingAssumptions_Counterexamples_UnownedTransitions_and_UncapturedInteractions_v1.md",
+      "actual_count": 15,
+      "declared_count": null,
+      "count_match": true,
+      "malformed_headings": [],
+      "missing_harm": [],
+      "missing_overlap": [],
+      "records": [
+        {
+          "id": "XNEG-001",
+          "title": "Absence of a reported problem is treated as proof that the problem does not exist"
+        },
+        {
+          "id": "XNEG-002",
+          "title": "A system assumes every important object has an owner"
+        },
+        {
+          "id": "XNEG-003",
+          "title": "A process assumes every transition has a defined receiving state"
+        },
+        {
+          "id": "XNEG-004",
+          "title": "A decision assumes the unavailable option remains a real alternative"
+        },
+        {
+          "id": "XNEG-005",
+          "title": "System design assumes every affected person is represented in the decision process"
+        },
+        {
+          "id": "XNEG-006",
+          "title": "Counterexample cases are removed as data-quality problems"
+        },
+        {
+          "id": "XNEG-007",
+          "title": "A control assumes failure will be visible at the point where it begins"
+        },
+        {
+          "id": "XNEG-008",
+          "title": "A service assumes substitution preserves the original function"
+        },
+        {
+          "id": "XNEG-009",
+          "title": "A remedy assumes the harmed person can participate in the correction process"
+        },
+        {
+          "id": "XNEG-010",
+          "title": "A system boundary excludes the external condition that determines success"
+        },
+        {
+          "id": "XNEG-011",
+          "title": "A safety case assumes future operators will interpret ambiguity as intended"
+        },
+        {
+          "id": "XNEG-012",
+          "title": "A temporary absence is interpreted as permanent disappearance"
+        },
+        {
+          "id": "XNEG-013",
+          "title": "A permanent change is treated as temporary because the original state remains administratively preferred"
+        },
+        {
+          "id": "XNEG-014",
+          "title": "Success criteria omit who absorbed the cost of success"
+        },
+        {
+          "id": "XNEG-015",
+          "title": "A complete record is mistaken for a complete reality"
+        }
+      ]
     }
   ],
   "duplicate_ids": {
@@ -11790,6 +11862,7 @@
     "XINVDEP": 4,
     "XJUR": 4,
     "XMARKET": 4,
+    "XNEG": 15,
     "XOPT": 5,
     "XRARE": 4,
     "XRECOV": 5,
