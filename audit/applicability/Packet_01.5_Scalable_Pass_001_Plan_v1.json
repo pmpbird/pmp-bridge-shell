@@ -1,0 +1,82 @@
+{
+  "packet": "01.5",
+  "artifact": "scalable_applicability_pass_plan",
+  "version": 1,
+  "pass_id": "SCALABLE-PASS-001",
+  "status": "PROPOSED_PENDING_BUILD_AND_INDEPENDENT_VERIFICATION",
+  "gate_receipt": "audit/Packet_01.5_Scalable_Applicability_Gate_Independent_Verification_v1.json",
+  "source_inventory": {
+    "path": "audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.jsonl",
+    "sha256": "76169a80e07603cea51d769d3d89b32735149c2aef7eb09f893ed94fe5d72477",
+    "address_sequence_sha256": "3d808e1ec3f163e4cb2ab7a15767563fe7c43b9920bcecde9abe711226220916"
+  },
+  "window": {
+    "first_address": "P01.5::B::0001",
+    "last_address": "P01.5::B::0122",
+    "records": 122,
+    "source_set": "BASELINE"
+  },
+  "current_evidence_sources": [
+    "pmp-worker.js",
+    "wrangler.toml"
+  ],
+  "evidence_supported_decisions": [
+    {
+      "composite_address": "P01.5::B::0003",
+      "original_identifier": "AI-003",
+      "state": "CURRENT DEFECT OR LIMITATION",
+      "confidence": 99,
+      "rule_id": "WORKER_AI_ENDPOINTS_ABSENT",
+      "supersedes": "audit/applicability/Packet_01.5_Applicability_Decisions_Batch_001_v1.jsonl"
+    },
+    {
+      "composite_address": "P01.5::B::0004",
+      "original_identifier": "AI-004",
+      "state": "ACTIVE CONDITIONAL RISK",
+      "confidence": 99,
+      "rule_id": "WORKER_WILDCARD_CORS",
+      "supersedes": "audit/applicability/Packet_01.5_Applicability_Decisions_Batch_001_v1.jsonl"
+    },
+    {
+      "composite_address": "P01.5::B::0005",
+      "original_identifier": "AI-005",
+      "state": "ACTIVE CONDITIONAL RISK",
+      "confidence": 98,
+      "rule_id": "WORKER_POST_AUTH_ABSENT",
+      "supersedes": "audit/applicability/Packet_01.5_Applicability_Decisions_Batch_002_v1.jsonl"
+    },
+    {
+      "composite_address": "P01.5::B::0006",
+      "original_identifier": "AI-006",
+      "state": "ACTIVE CONDITIONAL RISK",
+      "confidence": 99,
+      "rule_id": "WORKER_ARBITRARY_JSON_OVERWRITE",
+      "supersedes": "audit/applicability/Packet_01.5_Applicability_Decisions_Batch_002_v1.jsonl"
+    },
+    {
+      "composite_address": "P01.5::B::0007",
+      "original_identifier": "AI-007",
+      "state": "ACTIVE CONDITIONAL RISK",
+      "confidence": 96,
+      "rule_id": "WORKER_ABUSE_CONTROLS_ABSENT",
+      "supersedes": "audit/applicability/Packet_01.5_Applicability_Decisions_Batch_002_v1.jsonl"
+    },
+    {
+      "composite_address": "P01.5::B::0008",
+      "original_identifier": "AI-008",
+      "state": "CURRENT DEFECT OR LIMITATION",
+      "confidence": 99,
+      "rule_id": "WORKER_KV_BINDING_ABSENT_ACCEPTS_WRITES",
+      "supersedes": "audit/applicability/Packet_01.5_Applicability_Decisions_Batch_002_v1.jsonl"
+    }
+  ],
+  "undecided_policy": {
+    "output": "EVIDENCE_ACQUISITION_QUEUE_ONLY",
+    "unknown_hold_forbidden_without_completed_evidence_attempt": true,
+    "preserve_source_order": true,
+    "one_queue_entry_per_undecided_address": true
+  },
+  "decision_author": "resident-scalable-applicability-classifier-v1",
+  "decision_verifier": "github-actions-independent-scalable-pass-verifier-v1",
+  "stop_boundary": "Stop after pass verification. Do not route, group, close, implement, or begin Packet 04."
+}
