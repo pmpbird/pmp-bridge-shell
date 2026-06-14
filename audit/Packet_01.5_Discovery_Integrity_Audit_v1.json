@@ -2,9 +2,9 @@
   "audit_date": "2026-06-14",
   "scope": "Packet 01.5 mechanical discovery integrity only",
   "baseline_count": 122,
-  "files_audited": 65,
-  "actual_provisional_count": 2560,
-  "combined_actual_count": 2682,
+  "files_audited": 66,
+  "actual_provisional_count": 2583,
+  "combined_actual_count": 2705,
   "sum_of_declared_counts_where_present": 1791,
   "count_mismatch_count": 5,
   "duplicate_id_count": 30,
@@ -11043,6 +11043,110 @@
           "title": "Recovery organizations compete for the same contractors, housing, equipment, and specialists"
         }
       ]
+    },
+    {
+      "pass": 66,
+      "path": "audit/Packet_01.5_Discovery_Pass_66_CrossDomain_Saturation_ConflictingOptimization_RecoveryCorruption_DependencyInversion_SilentBoundaries_and_ControlInteractions_v1.md",
+      "actual_count": 23,
+      "declared_count": null,
+      "count_match": true,
+      "malformed_headings": [],
+      "missing_harm": [],
+      "missing_overlap": [],
+      "records": [
+        {
+          "id": "XOPT-001",
+          "title": "Local safety optimization consumes resources needed for system-wide recovery"
+        },
+        {
+          "id": "XOPT-002",
+          "title": "Equal-treatment rules conflict with unequal urgency and dependency"
+        },
+        {
+          "id": "XOPT-003",
+          "title": "High utilization removes the slack needed to absorb uncertainty"
+        },
+        {
+          "id": "XOPT-004",
+          "title": "Efficiency targets shift burden into invisible maintenance and human compensation"
+        },
+        {
+          "id": "XOPT-005",
+          "title": "Data minimization improves privacy while weakening correction and accountability"
+        },
+        {
+          "id": "XRECOV-001",
+          "title": "Backup restores corrupted assumptions along with the data"
+        },
+        {
+          "id": "XRECOV-002",
+          "title": "Recovery prioritizes services that are easiest to measure rather than hardest to replace"
+        },
+        {
+          "id": "XRECOV-003",
+          "title": "Emergency workaround becomes the new source of truth during reconciliation"
+        },
+        {
+          "id": "XRECOV-004",
+          "title": "Compensation and closure incentives reward documented settlement over real restoration"
+        },
+        {
+          "id": "XRECOV-005",
+          "title": "Restoration triggers a synchronized demand surge that overwhelms dependent systems"
+        },
+        {
+          "id": "XINVDEP-001",
+          "title": "Backup access depends on the primary identity or credential service"
+        },
+        {
+          "id": "XINVDEP-002",
+          "title": "A public service depends on a vendor that depends on the same public infrastructure"
+        },
+        {
+          "id": "XINVDEP-003",
+          "title": "Low-technology fallback depends on skills removed by automation"
+        },
+        {
+          "id": "XINVDEP-004",
+          "title": "Essential users are treated as controllable inputs to infrastructure stability"
+        },
+        {
+          "id": "XBOUND-001",
+          "title": "Time boundaries silently disagree across systems"
+        },
+        {
+          "id": "XBOUND-002",
+          "title": "Unit or schema conversion succeeds syntactically while changing meaning"
+        },
+        {
+          "id": "XBOUND-003",
+          "title": "Legal or eligibility status changes without triggering dependent systems"
+        },
+        {
+          "id": "XBOUND-004",
+          "title": "Handoff transfers current state but loses the trend showing approaching failure"
+        },
+        {
+          "id": "XBOUND-005",
+          "title": "Emergency conditions move data beyond the model’s validity boundary without visible failure"
+        },
+        {
+          "id": "XCOMBO-001",
+          "title": "Safety controls interact to block essential service"
+        },
+        {
+          "id": "XCOMBO-002",
+          "title": "Multiple valid compliance controls combine into complete exclusion"
+        },
+        {
+          "id": "XCOMBO-003",
+          "title": "Disaster conditions make legitimate behavior resemble fraud or abuse"
+        },
+        {
+          "id": "XCOMBO-004",
+          "title": "Public warning information creates secondary concentration risk"
+        }
+      ]
     }
   ],
   "duplicate_ids": {
@@ -11583,15 +11687,20 @@
     "WKEVAL": 6,
     "XADAPT": 4,
     "XAUTH": 4,
+    "XBOUND": 5,
     "XCARE": 4,
     "XCHAIN": 6,
+    "XCOMBO": 4,
     "XCOMMON": 4,
     "XDELAY": 5,
     "XENV": 4,
     "XIDREC": 4,
     "XINFRA": 4,
+    "XINVDEP": 4,
     "XJUR": 4,
     "XMARKET": 4,
+    "XOPT": 5,
+    "XRECOV": 5,
     "XREV": 4,
     "XSTEW": 4,
     "XWARN": 3
