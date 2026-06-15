@@ -46,7 +46,7 @@ The remaining 3 records preserve permanent addresses and source order. They requ
 - complete 16-record family coverage: PASS
 - current main commit anchor: `5e4052b604217d12959abe450ca0951a5fc927d4`
 - authoritative proof-corpus digest: `92e8383fbd2ce3acf8aca7f5260500d76319cd2487ff49988f4edd99cc3e3343`
-- runtime/configuration corpus digest: `c1d5395256ee90847d214b21af01151945df3df4baac23dc90c4825f4efccdee`
+- runtime/configuration corpus digest: `0f1dbbbe56de4cd72a21e64675fd3a9fa9fc907de2addbbb5ebfecd5d5b25441`
 - every reviewed predicate independently rerun: PASS
 - generated family outputs excluded from evidence: PASS
 - unsupported automatic HOLD decisions: none
