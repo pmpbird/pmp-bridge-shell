@@ -1,0 +1,15 @@
+{
+  "packet": "01.5",
+  "family": "DEPENDENCY_OR_PLATFORM_STATE",
+  "family_records": 14,
+  "decided_records": 4,
+  "remaining_queued_records": 10,
+  "unknown_hold_created": 0,
+  "coverage_complete": true,
+  "decision_states": {
+    "CURRENT DEFECT OR LIMITATION": 4
+  },
+  "routing_assignments": 0,
+  "grouping_assignments": 0,
+  "source_records_removed_or_closed": 0
+}

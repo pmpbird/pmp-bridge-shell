@@ -1,0 +1,97 @@
+{
+  "packet": "01.5",
+  "family": "DEPENDENCY_OR_PLATFORM_STATE",
+  "records": 14,
+  "source_queue_sha256": "1b28dbfd69e9af4b51ce5cf4eb4e43d4ed4aaea107129b2e11b7b41c9dfd861a",
+  "source_inventory_sha256": "76169a80e07603cea51d769d3d89b32735149c2aef7eb09f893ed94fe5d72477",
+  "main_commit_anchor": "76ffbbe65f0eb5996fb23c0126f29dbe3b4c74c1",
+  "authoritative_corpus_sha256": "b32a3dd71c61a1712e675c9361e29419863562ab6d0b977d9355d4de7e391337",
+  "file_census_sha256": "ea2bd2e511a1ab5a16e0c02cef948ad0e81dad8c21302019106ef8c7dcc9842c",
+  "runtime_corpus_sha256": "0f1dbbbe56de4cd72a21e64675fd3a9fa9fc907de2addbbb5ebfecd5d5b25441",
+  "identities": [
+    {
+      "composite_address": "P01.5::B::0011",
+      "source_record_ordinal": 11,
+      "original_identifier": "AI-011",
+      "source_envelope_hash": "28ad6c57f9fba2d95c90180c26665e64f74d6f761cb6e39aff6a478d444baa8c"
+    },
+    {
+      "composite_address": "P01.5::B::0017",
+      "source_record_ordinal": 17,
+      "original_identifier": "AI-017",
+      "source_envelope_hash": "fadb63aa956e95d0f933d6f730292e0ecb18368c650a9745232c5c5d03dba0e0"
+    },
+    {
+      "composite_address": "P01.5::B::0024",
+      "source_record_ordinal": 24,
+      "original_identifier": "BUILD-006",
+      "source_envelope_hash": "2e69a957d39ceab201349f9e28fc3b42956cba9e26f1444584effc9b2acd9afc"
+    },
+    {
+      "composite_address": "P01.5::B::0026",
+      "source_record_ordinal": 26,
+      "original_identifier": "BUILD-008",
+      "source_envelope_hash": "fd9615d03cf84e45d7e5b0f17a5fc415fb8d40875f3bd16351f12123aaff78d5"
+    },
+    {
+      "composite_address": "P01.5::B::0029",
+      "source_record_ordinal": 29,
+      "original_identifier": "BUILD-011",
+      "source_envelope_hash": "18592d5826667e18c757463d72782cd982278f8314b48a14ecc4511abd04278e"
+    },
+    {
+      "composite_address": "P01.5::B::0065",
+      "source_record_ordinal": 65,
+      "original_identifier": "OPS-003",
+      "source_envelope_hash": "9b36965a677599145a185d4e070e8859933082760150bd5be95f367484414375"
+    },
+    {
+      "composite_address": "P01.5::B::0066",
+      "source_record_ordinal": 66,
+      "original_identifier": "OPS-004",
+      "source_envelope_hash": "c5f4956bb32bbe0bd71b949a732741dedc83d474d33361beb287840f703e7d37"
+    },
+    {
+      "composite_address": "P01.5::B::0068",
+      "source_record_ordinal": 68,
+      "original_identifier": "OPS-006",
+      "source_envelope_hash": "d7545897d0b43eff88d58f28069e4a6a7e0f49b019fd3d7ee59c5ef6ee66622e"
+    },
+    {
+      "composite_address": "P01.5::B::0070",
+      "source_record_ordinal": 70,
+      "original_identifier": "OPS-008",
+      "source_envelope_hash": "f08ef52d56059a20c4d31ad92c4906b807316919336bb0e374b06d35c3b7b9a6"
+    },
+    {
+      "composite_address": "P01.5::B::0083",
+      "source_record_ordinal": 83,
+      "original_identifier": "PLAT-006",
+      "source_envelope_hash": "e69ae7b87f7dbb10d778d4700aa90674b9105e8363fd158598899cd998fa25b0"
+    },
+    {
+      "composite_address": "P01.5::B::0087",
+      "source_record_ordinal": 87,
+      "original_identifier": "PLAT-010",
+      "source_envelope_hash": "e8c0d6eb3c4942d0d15c18dda9c3ecec002e060b5ff430cc1ad7262c49007951"
+    },
+    {
+      "composite_address": "P01.5::B::0088",
+      "source_record_ordinal": 88,
+      "original_identifier": "PLAT-011",
+      "source_envelope_hash": "b77e48d95b8d8069a77a17163499dc01bbbba3498bd38c009d4388e07ba92519"
+    },
+    {
+      "composite_address": "P01.5::B::0104",
+      "source_record_ordinal": 104,
+      "original_identifier": "PROOF-012",
+      "source_envelope_hash": "e493bef1b2cd30816084c741e4c333210cd662579cdbe18a057ec8f6cd6b207a"
+    },
+    {
+      "composite_address": "P01.5::B::0120",
+      "source_record_ordinal": 120,
+      "original_identifier": "RUN-013",
+      "source_envelope_hash": "eca7755f83652c26b2215c1ec3db809d4c3b194498190243c658750b40d2b16d"
+    }
+  ]
+}
