@@ -1,0 +1,87 @@
+{
+  "packet": "01.5",
+  "family": "CURRENT_RUNTIME_SOURCE",
+  "status": "PASS — CORRECTED CURRENT RUNTIME SOURCE FAMILY INDEPENDENTLY VERIFIED",
+  "authoritative_main": "9f71336fb28068db705a495e8fb5107dbfcbd440",
+  "verification_branch": "packet015-runtime-corrected-v1",
+  "verification_input_commit": "22ff3b3133f0c4ea00299085f1a7910ab3db243d",
+  "workflow_run_id": 27561733105,
+  "verification_job_id": 81475217728,
+  "receipt_job_id": 81475576880,
+  "source_queue_sha256": "1b28dbfd69e9af4b51ce5cf4eb4e43d4ed4aaea107129b2e11b7b41c9dfd861a",
+  "source_inventory_sha256": "76169a80e07603cea51d769d3d89b32735149c2aef7eb09f893ed94fe5d72477",
+  "source_inventory_records": 2750,
+  "family_records": 20,
+  "decided_records": 2,
+  "remaining_queued_records": 18,
+  "unknown_hold_created": 0,
+  "decisions": [
+    "P01.5::B::0039",
+    "P01.5::B::0062"
+  ],
+  "route_content_sha256": {
+    "pmp-app-current.html": "86f65c9bd973b61425bc55f60bc42db92b6c22b0ba562b57e439b175b639675a",
+    "pmp-current-inner-cleanbug-rgcontrols-v3.html": "f37a1aa55e9fe0f89f2a56cf04ca91bd444bdbc84043147549039b1c2a172330",
+    "pmp-current-inner-cleanbug-rgcontrols-v4.html": "c1934899c8d8dbff92a9b1533792fb420d3895b2ffee4ca0550aefecb2c8436d",
+    "pmp-current-map-v9.json": "1f15f09a0203def86d12fe9131dae6fcc426e26cbb23c12e95bd7c6652156994",
+    "pmp-home-single-v6.html": "ceeff001b76284578b3a4283d5dd0885e72a4e176f71b48090a88e7747ba9eb4",
+    "pmp-phase1-migrate-v1.js": "e91874eef40d98bd209d3b231145fd37bd651b7b8ea089dc051dedb68215ac0a",
+    "pmp-private-backup-lite-v1.js": "90d7dc3e3862baa19e7c98c16a7f81f53c489afcf0927c7c1ad585e01f434bdf",
+    "pmp-route-guardian-current-loader-v14.html": "c1816f2dec353fa8ce5d77a6d12d710f343a389fe799249606235e5480880515"
+  },
+  "effective_precedence_edges": [
+    {
+      "from": "pmp-app-current.html",
+      "to": "pmp-current-map-v9.json",
+      "kind": "primary-first-success-map"
+    },
+    {
+      "from": "pmp-app-current.html",
+      "to": "pmp-current-map.json",
+      "kind": "secondary-map-fallback"
+    },
+    {
+      "from": "pmp-current-map-v9.json",
+      "to": "pmp-route-guardian-current-loader-v14.html",
+      "kind": "selected-current-loader"
+    },
+    {
+      "from": "pmp-route-guardian-current-loader-v14.html",
+      "to": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+      "kind": "manual-open-current-app"
+    },
+    {
+      "from": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+      "to": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "kind": "nested-wrapper"
+    },
+    {
+      "from": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "to": "pmp-home-single-v6.html",
+      "kind": "nested-inner-application"
+    },
+    {
+      "from": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+      "to": "pmp-phase1-migrate-v1.js",
+      "kind": "direct-script"
+    },
+    {
+      "from": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+      "to": "pmp-private-backup-lite-v1.js",
+      "kind": "direct-script"
+    }
+  ],
+  "adversarial_rejection_fixtures_passed": [
+    "reject_reordered_or_missing_family_address",
+    "reject_extra_keyword_absence_decision",
+    "reject_incomplete_queue_entry",
+    "reject_duplicate_or_uncovered_address"
+  ],
+  "prior_packet_01_5_outputs_used_as_runtime_evidence": false,
+  "routing_assignments": 0,
+  "destination_assignments": 0,
+  "grouping_assignments": 0,
+  "source_records_removed_or_closed": 0,
+  "implementation_changes": 0,
+  "packet_04_work": 0
+}
