@@ -9,6 +9,7 @@ on:
       - "audit/applicability/Packet_01.5_Cross_Source_Conflict_Remaining_Queue_v1.jsonl"
       - "audit/Packet_01.5_Cross_Source_Conflict_Coverage_v1.json"
       - "audit/Packet_01.5_Cross_Source_Conflict_Status_v1.md"
+      - "audit/Packet_01.5_Cross_Source_Conflict_Independent_Verification_v1.json"
       - ".github/workflows/packet_015_cross_source_conflict_discovery.yml"
   workflow_dispatch:
 
@@ -16,47 +17,11 @@ permissions:
   contents: read
 
 jobs:
-  verify-and-capture:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Capture exact DATA-010 overlay
-        run: |
-          python3 - <<'PY'
-          import json
-          path='audit/routing-inventory/Packet_01.5_Applicability_Inventory_v9_Batch_008.jsonl'
-          with open(path,encoding='utf-8') as f:
-              record=next(json.loads(line) for line in f if json.loads(line).get('composite_address')=='P01.5::B::0043')
-          out={
-              'applicability_state':record['applicability_state'],
-              'applicability_batch_id':record['applicability_batch_id'],
-              'applicability_decision_hash':record['applicability_decision_hash'],
-              'evidence':record['applicability_evidence'],
-          }
-          with open('data010_overlay.json','w',encoding='utf-8') as f: json.dump(out,f,indent=2)
-          print(json.dumps(out,indent=2))
-          PY
-      - name: Run verifier and capture exact output
-        id: verify
-        shell: bash
-        run: |
-          set +e
-          python3 tools/verify_packet_01_5_cross_source_conflict_v1.py --write-receipt > verification.log 2>&1
-          code=$?
-          cat verification.log
-          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
-          exit 0
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: packet-015-cross-source-conflict-diagnostic
-          path: |
-            verification.log
-            data010_overlay.json
-            audit/Packet_01.5_Cross_Source_Conflict_Independent_Verification_v1.json
-          if-no-files-found: warn
-      - name: Preserve verifier result
-        shell: bash
-        run: exit "${{ steps.verify.outputs.exit_code }}"
+      - name: Independently verify complete conflict family
+        run: python3 tools/verify_packet_01_5_cross_source_conflict_v1.py
