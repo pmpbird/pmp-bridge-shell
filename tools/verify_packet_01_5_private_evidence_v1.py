@@ -85,8 +85,8 @@ def main():
  b=copy.deepcopy(m); b['family_count']=8; reject(lambda: (_ for _ in ()).throw(AssertionError()) if b['family_count']!=9 else None); n+=1
  b=copy.deepcopy(d); b[0]['applicability_state']='OTHER'; reject(lambda: (_ for _ in ()).throw(AssertionError()) if b[0]['applicability_state']!=ST[b[0]['composite_address']] else None); n+=1
  b=copy.deepcopy(q); b[0].pop('smallest_test_and_receipt'); reject(lambda: (_ for _ in ()).throw(AssertionError()) if not req<=set(b[0]) else None); n+=1
- reject(lambda: (_ for _ in ()).throw(AssertionError()) if DEC+QUE==ADDR else None); n+=1
- reject(lambda: (_ for _ in ()).throw(AssertionError()) if len(DEC)+len(QUE)!=9 else None); n+=1
+ bad_set=set((DEC+QUE)[:-1]); reject(lambda: (_ for _ in ()).throw(AssertionError()) if bad_set!=set(ADDR) else None); n+=1
+ reject(lambda: (_ for _ in ()).throw(AssertionError()) if len(DEC)+len(QUE[:-1])!=9 else None); n+=1
  rec={'packet':'01.5','verification':'private_or_uncaptured_evidence_family_independent','version':1,'status':'PASS_PRIVATE_EVIDENCE_FAMILY_VERIFIED','authoritative_anchor':A,'family':F,'family_records':9,'family_addresses_in_source_order':ADDR,'decisions_created':3,'remaining_exact_queues':6,'unknown_hold_created':0,'source_queue_sha256':SHA[QS],'source_inventory_sha256':SHA[IV],'source_inventory_count':2750,'current_applicability_sha256':SHA[CV],'matrix_sha256':h(M.read_bytes()),'decisions_sha256':h(D.read_bytes()),'remaining_queue_sha256':h(Q.read_bytes()),'coverage_sha256':h(C.read_bytes()),'status_sha256':h(S.read_bytes()),'adversarial_rejection_fixtures_passed':n,'complete_decided_or_queued_coverage':True,'privacy_safe_receipts_only':True,'raw_private_values_read':False,'raw_private_values_written':False,'source_inventory_unchanged':True,'routing_assignments':0,'destination_assignments':0,'grouping_assignments':0,'source_records_removed_or_closed':0,'implementation_actions':0,'packet_04_actions':0}
  if a.write_receipt:P.write_text(json.dumps(rec,indent=2)+'\n')
  else: assert json.loads(P.read_text())==rec
