@@ -1,1 +1,2 @@
-Process and independently verify the complete DEPENDENCY_OR_PLATFORM_STATE family. Preserve permanent addresses and source order. Separate repository-provable state from external provider, account, device, cloud, and platform state. Create no automatic UNKNOWN — HOLD decisions and stop before routing, grouping, closure, implementation, or Packet 04.
+Dependency and platform family verification trigger.
+Final clean-head verification.
