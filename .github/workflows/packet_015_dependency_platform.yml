@@ -1,0 +1,33 @@
+name: Packet 015 dependency platform family
+
+on:
+  pull_request:
+    paths:
+      - "audit/Packet_01.5_Dependency_Platform_PR_Trigger.txt"
+      - "audit/applicability/Packet_01.5_Dependency_Platform_Family_Pass_v1.json"
+      - "tools/dep_platform_common.py"
+      - "tools/dep_platform_common_v2.py"
+      - "tools/dep_platform_rules.py"
+      - "tools/build_packet_01_5_dependency_platform_v1.py"
+      - "tools/build_packet_01_5_dependency_platform_v2.py"
+      - "tools/refine_dep_platform_queues.py"
+      - "tools/verify_packet_01_5_dependency_platform_v1.py"
+      - "tools/verify_packet_01_5_dependency_platform_v2.py"
+      - "tools/write_packet_01_5_dependency_platform_receipts_v1.py"
+      - "tools/commit_dep_platform_outputs.sh"
+      - ".github/workflows/packet_015_dependency_platform.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+          fetch-depth: 0
+      - run: python3 tools/build_packet_01_5_dependency_platform_v2.py
+      - run: python3 tools/verify_packet_01_5_dependency_platform_v2.py > audit/Packet_01.5_Dependency_Platform_Independent_Verification_v1.json
+      - run: python3 tools/write_packet_01_5_dependency_platform_receipts_v1.py
