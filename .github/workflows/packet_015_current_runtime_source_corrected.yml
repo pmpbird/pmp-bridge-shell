@@ -1,0 +1,31 @@
+name: Packet 015 corrected current runtime source
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    outputs:
+      receipt: ${{ steps.verify.outputs.receipt }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: packet015-runtime-corrected-v1
+          fetch-depth: 20
+      - id: verify
+        shell: bash
+        run: |
+          output="$(python3 tools/run_packet_01_5_runtime_source_corrected_v2.py)"
+          printf '%s\n' "$output"
+          encoded="$(printf '%s' "$output" | base64 -w0)"
+          echo "receipt=$encoded" >> "$GITHUB_OUTPUT"
+  receipt:
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          RECEIPT: ${{ needs.verify.outputs.receipt }}
+        run: printf '%s' "$RECEIPT" | base64 -d
