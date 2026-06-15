@@ -9,7 +9,8 @@ on:
       - "tools/packet_01_5_other_specific_policy.py"
       - "tools/packet_01_5_other_specific_policy_v2.py"
       - "tools/packet_01_5_other_specific_policy_v3.py"
-      - "tools/run_packet_01_5_other_specific_family_v3.py"
+      - "tools/packet_01_5_other_specific_policy_v4.py"
+      - "tools/run_packet_01_5_other_specific_family_v4.py"
       - "tools/verify_packet_01_5_other_specific_family_v1.py"
       - "tools/write_packet_01_5_other_specific_family_receipts_v1.py"
       - ".github/workflows/packet_015_other_specific_family.yml"
@@ -26,10 +27,10 @@ jobs:
         with:
           ref: ${{ github.head_ref || github.ref_name }}
           fetch-depth: 0
-      - run: python3 tools/run_packet_01_5_other_specific_family_v3.py build
+      - run: python3 tools/run_packet_01_5_other_specific_family_v4.py build
       - name: Run independent verifier
         run: |
-          python3 tools/run_packet_01_5_other_specific_family_v3.py verify > audit/Packet_01.5_Other_Record_Specific_Family_Independent_Verification_v1.json 2> audit/Packet_01.5_Other_Record_Specific_Family_Debug.log
+          python3 tools/run_packet_01_5_other_specific_family_v4.py verify > audit/Packet_01.5_Other_Record_Specific_Family_Independent_Verification_v1.json 2> audit/Packet_01.5_Other_Record_Specific_Family_Debug.log
       - name: Commit failure diagnostic
         if: failure()
         run: |
@@ -52,4 +53,4 @@ jobs:
           git add audit/Packet_01.5_Other_Record_Specific_Family_Independent_Verification_v1.json
           git add audit/Packet_01.5_Other_Record_Specific_Family_Independent_Verification_v1.md
           git add audit/Packet_01.5_Routing_Status_v87.md
-          git diff --cached --quiet || (git commit -m "Verify self-reference-safe other record-specific evidence family" && git push origin "HEAD:${{ github.head_ref || github.ref_name }}")
+          git diff --cached --quiet || (git commit -m "Verify current-authority-only other record-specific evidence family" && git push origin "HEAD:${{ github.head_ref || github.ref_name }}")
