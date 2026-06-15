@@ -14,10 +14,11 @@ on:
       - "tools/verify_packet_01_5_runtime_source_v1.py"
       - "tools/write_packet_01_5_runtime_source_receipts_v1.py"
       - "tools/commit_runtime_source_outputs.sh"
+      - "tools/commit_runtime_source_diagnostic.sh"
       - ".github/workflows/packet_015_current_runtime_source.yml"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   verify:
@@ -25,7 +26,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ github.head_ref || github.ref_name }}
           fetch-depth: 0
-      - run: python3 tools/build_packet_01_5_runtime_source_v1.py
+      - name: Build runtime family
+        run: python3 tools/build_packet_01_5_runtime_source_v1.py 2> audit/Packet_01.5_Current_Runtime_Source_Debug.log
+      - name: Commit failure diagnostic
+        if: failure()
+        run: bash tools/commit_runtime_source_diagnostic.sh
       - run: python3 tools/verify_packet_01_5_runtime_source_v1.py > audit/Packet_01.5_Current_Runtime_Source_Independent_Verification_v1.json
       - run: python3 tools/write_packet_01_5_runtime_source_receipts_v1.py
