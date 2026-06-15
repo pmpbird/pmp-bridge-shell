@@ -1,0 +1,27 @@
+{
+  "packet": "01.5",
+  "family": "CURRENT_RUNTIME_SOURCE",
+  "authoritative_main": "9f71336fb28068db705a495e8fb5107dbfcbd440",
+  "family_records": 20,
+  "decided_records": 2,
+  "remaining_queued_records": 18,
+  "unknown_hold_created": 0,
+  "coverage_complete": true,
+  "decision_states": {
+    "CURRENT DEFECT OR LIMITATION": 1,
+    "OUT-OF-SCOPE CANDIDATE": 1
+  },
+  "routing_assignments": 0,
+  "destination_assignments": 0,
+  "grouping_assignments": 0,
+  "source_records_removed_or_closed": 0,
+  "implementation_changes": 0,
+  "packet_04_work": 0,
+  "prior_packet_01_5_outputs_used_as_runtime_evidence": false,
+  "supersedes_untrusted_branch_partition": {
+    "branch": "packet015-runtime-review",
+    "claimed_decided": 11,
+    "claimed_queued": 9,
+    "reason": "The prior verifier reused the generator evaluator and the prior graph promoted generic filename literals into runtime reachability."
+  }
+}
