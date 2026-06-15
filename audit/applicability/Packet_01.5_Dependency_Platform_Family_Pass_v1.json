@@ -1,0 +1,74 @@
+{
+  "packet": "01.5",
+  "artifact": "dependency_or_platform_state_family_pass",
+  "version": 1,
+  "status": "PROPOSED_PENDING_BUILD_AND_INDEPENDENT_VERIFICATION",
+  "family": "DEPENDENCY_OR_PLATFORM_STATE",
+  "expected_family_records": 14,
+  "source_queue": {
+    "path": "audit/applicability/Packet_01.5_Scalable_Pass_001_Evidence_Queue_v1.jsonl",
+    "sha256": "1b28dbfd69e9af4b51ce5cf4eb4e43d4ed4aaea107129b2e11b7b41c9dfd861a"
+  },
+  "source_inventory": {
+    "path": "audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.jsonl",
+    "sha256": "76169a80e07603cea51d769d3d89b32735149c2aef7eb09f893ed94fe5d72477"
+  },
+  "repository_decision_identifiers": [
+    "BUILD-006",
+    "BUILD-008",
+    "BUILD-011",
+    "OPS-003",
+    "OPS-004",
+    "OPS-006",
+    "OPS-008",
+    "PLAT-010"
+  ],
+  "external_evidence_identifiers": [
+    "AI-011",
+    "AI-017",
+    "PLAT-006",
+    "PLAT-011",
+    "PROOF-012",
+    "RUN-013"
+  ],
+  "evidence_boundary": {
+    "allowed_repository_evidence": [
+      "complete tracked-file name census",
+      "current dependency manifests and lock records",
+      "current source and configuration",
+      "current effective runtime route",
+      "current governing records and approved decisions",
+      "verified receipts and status ledgers",
+      "current main commit and content digests"
+    ],
+    "external_only_evidence": [
+      "provider account settings and contracts",
+      "model versions and replacement candidates",
+      "live Cloudflare bindings and account state",
+      "GitHub account recovery and protection state",
+      "Apple Notes and Shortcuts private state",
+      "physical iOS and Safari device behavior",
+      "current competitor and provider freshness"
+    ],
+    "excluded_as_proof": [
+      "source inventory claims",
+      "discovery and routing-batch copies",
+      "historical or superseded records",
+      "drafts and plans without verified completion",
+      "dependency names without a manifest or lock",
+      "role ownership without an approved maintenance policy",
+      "partial semantic similarity"
+    ]
+  },
+  "decision_author": "resident-dependency-platform-family-classifier-v1",
+  "decision_verifier": "github-actions-independent-dependency-platform-verifier-v1",
+  "unknown_hold_created": false,
+  "prohibited": [
+    "routing",
+    "destinations",
+    "grouping",
+    "closure",
+    "implementation",
+    "Packet 04"
+  ]
+}
