@@ -1,0 +1,1347 @@
+{
+  "packet": "01.5",
+  "family": "AUTHORITATIVE_PACKET_LAW",
+  "records": 25,
+  "source_queue_sha256": "1b28dbfd69e9af4b51ce5cf4eb4e43d4ed4aaea107129b2e11b7b41c9dfd861a",
+  "source_inventory_sha256": "76169a80e07603cea51d769d3d89b32735149c2aef7eb09f893ed94fe5d72477",
+  "main_commit_anchor": "72ce5485559612afe2fb2f4a006d7e72c6b2116b",
+  "authority_census_sha256": "f02d05f4129fe65fd428df1def929ffa44ce61011d9c8407478ca73924ed9a85",
+  "authority_sources": [
+    {
+      "path": "audit/PMP-Current-Active-Work-Card.md",
+      "tier": 1,
+      "family": "audit/pmp-current-active-work-card.md",
+      "version": 0,
+      "active_version": true,
+      "sha256": "d30f535ce18cab0e36106fd6faf5296bc3783603613a0162fc03e1ee522d82bb"
+    },
+    {
+      "path": "audit/PMP-Current-Continuation-Protocol-v1.md",
+      "tier": 1,
+      "family": "audit/pmp-current-continuation-protocol-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "beeb31df04796fec66ef9dbfb04571aa4443b5aeb06ca4ad1cbaa29ec59e12f1"
+    },
+    {
+      "path": "audit/PMP-Current-Master-Status-Ledger.md",
+      "tier": 1,
+      "family": "audit/pmp-current-master-status-ledger.md",
+      "version": 0,
+      "active_version": true,
+      "sha256": "1e858cbe2e31540a4091db0484d06e60a2e5e3dc499a86ca4540f52ab12d4196"
+    },
+    {
+      "path": "audit/PMP-Current-Packet-03-Completion-Receipt-v1.md",
+      "tier": 3,
+      "family": "audit/pmp-current-packet-03-completion-receipt-v#.md",
+      "version": 1,
+      "active_version": false,
+      "sha256": "9cd2bbd048df266b0bf9c3c72a9818d19f050ea91e8f3c13ecf54a854b9e144b"
+    },
+    {
+      "path": "audit/PMP-Current-Packet-03-Completion-Receipt-v2.md",
+      "tier": 3,
+      "family": "audit/pmp-current-packet-03-completion-receipt-v#.md",
+      "version": 2,
+      "active_version": false,
+      "sha256": "6939e8698ecec74c09a03e51b5749cd2355717100e7310724ee7452f6d8bfae9"
+    },
+    {
+      "path": "audit/PMP-Current-Packet-03-Completion-Receipt-v3.md",
+      "tier": 3,
+      "family": "audit/pmp-current-packet-03-completion-receipt-v#.md",
+      "version": 3,
+      "active_version": false,
+      "sha256": "8f68596f6ee7c7c34e1ac7da0f53f5737ea12a14c4254f1dda0f65d664efc6e5"
+    },
+    {
+      "path": "audit/PMP-Current-Packet-03-Completion-Receipt-v4.md",
+      "tier": 2,
+      "family": "audit/pmp-current-packet-03-completion-receipt-v#.md",
+      "version": 4,
+      "active_version": true,
+      "sha256": "7e05f6a00cc2d6f3eaefca97efc4a214eb18a34e71968e93f16b44e5792ce2ef"
+    },
+    {
+      "path": "audit/PMP-Current-Packet-03-Current-Runtime-Proof-v2.md",
+      "tier": 2,
+      "family": "audit/pmp-current-packet-03-current-runtime-proof-v#.md",
+      "version": 2,
+      "active_version": true,
+      "sha256": "c8bb7a564b8d6f70d0fcc14cd97c3f8679bb67bd20b3b4a1e3f33f725576628e"
+    },
+    {
+      "path": "audit/PMP-Current-Packet-03.5-Completion-Receipt-v4.md",
+      "tier": 2,
+      "family": "audit/pmp-current-packet-03.5-completion-receipt-v#.md",
+      "version": 4,
+      "active_version": true,
+      "sha256": "6c32f37101662a27580e58a725bf859c7a4ed407163b9f4c23a9975e09533e11"
+    },
+    {
+      "path": "audit/PMP-Current-Resident-Reasoning-Connection-Audit-v1.md",
+      "tier": 3,
+      "family": "audit/pmp-current-resident-reasoning-connection-audit-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "22cc351549548ec172a10cfcb2393c85ae5c4b63d58be4cfaad98e3debc3a396"
+    },
+    {
+      "path": "audit/Packet_01.5_Applicability_Classification_Status_v76.md",
+      "tier": 3,
+      "family": "audit/packet_01.5_applicability_classification_status-v#.md",
+      "version": 76,
+      "active_version": false,
+      "sha256": "f4d645c721bd079dab2d42030b3cdc91ba43b2f8f8171013d58809f46703d942"
+    },
+    {
+      "path": "audit/Packet_01.5_Applicability_Classification_Status_v77.md",
+      "tier": 3,
+      "family": "audit/packet_01.5_applicability_classification_status-v#.md",
+      "version": 77,
+      "active_version": false,
+      "sha256": "f3a184dcf49e63b7b873b246efd0f05f6043b4b4c8e9ec69879dcba1eebbf580"
+    },
+    {
+      "path": "audit/Packet_01.5_Applicability_Classification_Status_v78.md",
+      "tier": 3,
+      "family": "audit/packet_01.5_applicability_classification_status-v#.md",
+      "version": 78,
+      "active_version": false,
+      "sha256": "63228785c01e13d71e3c5850c4fd157610cb9fe7e713b2f197694a89e866fab5"
+    },
+    {
+      "path": "audit/Packet_01.5_Applicability_Classification_Status_v79.md",
+      "tier": 3,
+      "family": "audit/packet_01.5_applicability_classification_status-v#.md",
+      "version": 79,
+      "active_version": false,
+      "sha256": "9ace2788c031569a7247585889aa0c37301992dbdc4357d50f02eca9a4395fd8"
+    },
+    {
+      "path": "audit/Packet_01.5_Applicability_Classification_Status_v80.md",
+      "tier": 3,
+      "family": "audit/packet_01.5_applicability_classification_status-v#.md",
+      "version": 80,
+      "active_version": false,
+      "sha256": "df7c8eb89fb86712656fa3d67ffe980fd99cb826cb17e5eb4524351783301dcb"
+    },
+    {
+      "path": "audit/Packet_01.5_Applicability_Classification_Status_v81.md",
+      "tier": 3,
+      "family": "audit/packet_01.5_applicability_classification_status-v#.md",
+      "version": 81,
+      "active_version": false,
+      "sha256": "da70d3e54e6ae7a96fd23cade4fdf398e6a318bab613c0761beac0890af4313a"
+    },
+    {
+      "path": "audit/Packet_01.5_Applicability_Classification_Status_v82.md",
+      "tier": 3,
+      "family": "audit/packet_01.5_applicability_classification_status-v#.md",
+      "version": 82,
+      "active_version": false,
+      "sha256": "817bbf9c802c9ec512a0a173179d64dee821951e9ad6b3c8a120bb5cb73f98d2"
+    },
+    {
+      "path": "audit/Packet_01.5_Applicability_Classification_Status_v83.md",
+      "tier": 3,
+      "family": "audit/packet_01.5_applicability_classification_status-v#.md",
+      "version": 83,
+      "active_version": false,
+      "sha256": "cda600abece424fc43b3147255effdbdf2e2626e347c6b352e933e56c7073e80"
+    },
+    {
+      "path": "audit/Packet_01.5_Applicability_Classification_Status_v84.md",
+      "tier": 2,
+      "family": "audit/packet_01.5_applicability_classification_status-v#.md",
+      "version": 84,
+      "active_version": true,
+      "sha256": "991f64e9c243a752862a386ef89e20ea8f703f3d81859060b786b30207c02a0d"
+    },
+    {
+      "path": "audit/Packet_01.5_Applicability_Evidence_Catalog_Independent_Verification_v1.json",
+      "tier": 1,
+      "family": "audit/packet_01.5_applicability_evidence_catalog_independent_verification-v#.json",
+      "version": 1,
+      "active_version": true,
+      "sha256": "1ba235e3fdef7846346e081809e618dd5eaf7899ddec82afdad82776c2498d6e"
+    },
+    {
+      "path": "audit/Packet_01.5_Applicability_Evidence_Catalog_Independent_Verification_v1.md",
+      "tier": 1,
+      "family": "audit/packet_01.5_applicability_evidence_catalog_independent_verification-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "98f962ff91e0583a4ae08ee3181be1db5ce2fbc89757df0536074975eef2d4c6"
+    },
+    {
+      "path": "audit/Packet_01.5_Applicability_Evidence_Catalog_PR_Trigger.txt",
+      "tier": 2,
+      "family": "audit/packet_01.5_applicability_evidence_catalog_pr_trigger.txt",
+      "version": 0,
+      "active_version": true,
+      "sha256": "3a598663f5795bcea10b4a143736beef970225ec2f93437e03ec043a80f93137"
+    },
+    {
+      "path": "audit/Packet_01.5_Applicability_Evidence_Catalog_v1.md",
+      "tier": 2,
+      "family": "audit/packet_01.5_applicability_evidence_catalog-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "fa6f49250b604c22da250522ce003a180c79eb3ce85f953aaa10af505b785faa"
+    },
+    {
+      "path": "audit/Packet_01.5_Applicability_Status_v76.md",
+      "tier": 2,
+      "family": "audit/packet_01.5_applicability_status-v#.md",
+      "version": 76,
+      "active_version": true,
+      "sha256": "af703d8b07954b3512341a81dba459b73f9ab4b121e453dcd8521735131ae7b9"
+    },
+    {
+      "path": "audit/Packet_01.5_Baseline_Address_Manifest_v1.json",
+      "tier": 3,
+      "family": "audit/packet_01.5_baseline_address_manifest-v#.json",
+      "version": 1,
+      "active_version": false,
+      "sha256": "9a4348cd9be7d4e74f837cb1c085be7e4349cd2d7aaade00829ec132a179df8c"
+    },
+    {
+      "path": "audit/Packet_01.5_Baseline_Address_Manifest_v2.json",
+      "tier": 2,
+      "family": "audit/packet_01.5_baseline_address_manifest-v#.json",
+      "version": 2,
+      "active_version": true,
+      "sha256": "9a4348cd9be7d4e74f837cb1c085be7e4349cd2d7aaade00829ec132a179df8c"
+    },
+    {
+      "path": "audit/Packet_01.5_Baseline_Source_Verification_v1.json",
+      "tier": 2,
+      "family": "audit/packet_01.5_baseline_source_verification-v#.json",
+      "version": 1,
+      "active_version": true,
+      "sha256": "20410fd82a3a3fdcc5b4dcca50040148f1587de23f91851272ed1fbd8e9de6da"
+    },
+    {
+      "path": "audit/Packet_01.5_Baseline_Source_Verification_v1.md",
+      "tier": 2,
+      "family": "audit/packet_01.5_baseline_source_verification-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "8f40c712685133d812463201718bc3eac4f8327ac2eb22c9c5050d9b667f8167"
+    },
+    {
+      "path": "audit/Packet_01.5_Baseline_Window_PR_Trigger.txt",
+      "tier": 2,
+      "family": "audit/packet_01.5_baseline_window_pr_trigger.txt",
+      "version": 0,
+      "active_version": true,
+      "sha256": "956e6e33f390e3eba24436325985890396dff3ba88c8ea26a89c19041c264ce5"
+    },
+    {
+      "path": "audit/Packet_01.5_Batch_002_Gate_PR_Trigger.txt",
+      "tier": 2,
+      "family": "audit/packet_01.5_batch_002_gate_pr_trigger.txt",
+      "version": 0,
+      "active_version": true,
+      "sha256": "a3b6c0835e8c41da3948680800ca4fe35c354aaf060b6604e407cec3aaf03422"
+    },
+    {
+      "path": "audit/Packet_01.5_Batch_003_Gate_PR_Trigger.txt",
+      "tier": 2,
+      "family": "audit/packet_01.5_batch_003_gate_pr_trigger.txt",
+      "version": 0,
+      "active_version": true,
+      "sha256": "4caea7e471c9c712400792b6a5bb44685b754e17bfbc3666682d6cf8f8ce5968"
+    },
+    {
+      "path": "audit/Packet_01.5_Blank_Routing_Inventory_Build_v1.json",
+      "tier": 2,
+      "family": "audit/packet_01.5_blank_routing_inventory_build-v#.json",
+      "version": 1,
+      "active_version": true,
+      "sha256": "67179f43f0cb45899e739e2c8c70ac568ac065d1cfcf96458eb89b6a3d33ded7"
+    },
+    {
+      "path": "audit/Packet_01.5_Blank_Routing_Inventory_Build_v1.md",
+      "tier": 2,
+      "family": "audit/packet_01.5_blank_routing_inventory_build-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "060f6184776a61ec7568eaae8d93a7227a721ae25df634d77645925f61aa0656"
+    },
+    {
+      "path": "audit/Packet_01.5_Blank_Routing_Inventory_Independent_Verification_v1.json",
+      "tier": 1,
+      "family": "audit/packet_01.5_blank_routing_inventory_independent_verification-v#.json",
+      "version": 1,
+      "active_version": true,
+      "sha256": "ed6db1351abaee68d8597bdaf1451382f0d1ff72a92ee4b663f33657e0215ee1"
+    },
+    {
+      "path": "audit/Packet_01.5_Blank_Routing_Inventory_Independent_Verification_v1.md",
+      "tier": 1,
+      "family": "audit/packet_01.5_blank_routing_inventory_independent_verification-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "216c315e7446b13ef2fcb1e8e578001a33578494f56a1d3da92129ab67de7fd3"
+    },
+    {
+      "path": "audit/Packet_01.5_Canonical_Project_Contact_Evidence_Catalog_v1.json",
+      "tier": 2,
+      "family": "audit/packet_01.5_canonical_project_contact_evidence_catalog-v#.json",
+      "version": 1,
+      "active_version": true,
+      "sha256": "97eb5e87eecb5e701c5362d7aba837efcb2a746147cadac575bc36d46b37e547"
+    },
+    {
+      "path": "audit/Packet_01.5_Canonical_Project_Contact_Evidence_Independent_Verification_v1.json",
+      "tier": 1,
+      "family": "audit/packet_01.5_canonical_project_contact_evidence_independent_verification-v#.json",
+      "version": 1,
+      "active_version": true,
+      "sha256": "a84bc837e45b82e89efbef2c394f6cdd1711590a2d77e1a501bcb67b5a3855e0"
+    },
+    {
+      "path": "audit/Packet_01.5_Canonical_Project_Contact_Evidence_Independent_Verification_v1.md",
+      "tier": 1,
+      "family": "audit/packet_01.5_canonical_project_contact_evidence_independent_verification-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "984b1c8d78f108bfe4b18f53654966fa1e598776c24dae134c1df6f9189e27e4"
+    },
+    {
+      "path": "audit/Packet_01.5_Combined_Address_Bijection_Proof_v1.md",
+      "tier": 2,
+      "family": "audit/packet_01.5_combined_address_bijection_proof-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "db8f6eb443af300abc2f1a3338846e03e4a62dd714221f4fe05d5d4bab0029e8"
+    },
+    {
+      "path": "audit/Packet_01.5_CrossDomain_Saturation_Closure_Readiness_Audit_v1.json",
+      "tier": 2,
+      "family": "audit/packet_01.5_crossdomain_saturation_closure_readiness_audit-v#.json",
+      "version": 1,
+      "active_version": true,
+      "sha256": "b2c60b92fb4845f9bcf53236b394cfa44196c2c5261ef8cc6dbdd9fc482cb472"
+    },
+    {
+      "path": "audit/Packet_01.5_CrossDomain_Saturation_Closure_Readiness_Audit_v1.md",
+      "tier": 2,
+      "family": "audit/packet_01.5_crossdomain_saturation_closure_readiness_audit-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "6976e737e0819f734fa15833299af762346c3f4f9129d8242b60a89797dbfe11"
+    },
+    {
+      "path": "audit/Packet_01.5_Major_Domain_Coverage_Audit_v1.md",
+      "tier": 3,
+      "family": "audit/packet_01.5_major_domain_coverage_audit-v#.md",
+      "version": 1,
+      "active_version": false,
+      "sha256": "0b7c2aef1d0462de8c271474850caf2a65e011048663082da9faf6d6f0b11233"
+    },
+    {
+      "path": "audit/Packet_01.5_Major_Domain_Coverage_Audit_v2.json",
+      "tier": 3,
+      "family": "audit/packet_01.5_major_domain_coverage_audit-v#.json",
+      "version": 2,
+      "active_version": false,
+      "sha256": "416a1d00a883edbab35291feeb98a2576eb6e9853c34b4619c6617eb5715a3b3"
+    },
+    {
+      "path": "audit/Packet_01.5_Major_Domain_Coverage_Audit_v2.md",
+      "tier": 3,
+      "family": "audit/packet_01.5_major_domain_coverage_audit-v#.md",
+      "version": 2,
+      "active_version": false,
+      "sha256": "2b9c345a951b89e24f162dad0071a766a8160a802b856eaeb2dabeb77dc74f54"
+    },
+    {
+      "path": "audit/Packet_01.5_Major_Domain_Coverage_Audit_v3.json",
+      "tier": 2,
+      "family": "audit/packet_01.5_major_domain_coverage_audit-v#.json",
+      "version": 3,
+      "active_version": true,
+      "sha256": "3570da66ac4c51bf6decd61afeb37eb8b35ddb061dc180ae9157bd712c97cefb"
+    },
+    {
+      "path": "audit/Packet_01.5_Major_Domain_Coverage_Audit_v3.md",
+      "tier": 2,
+      "family": "audit/packet_01.5_major_domain_coverage_audit-v#.md",
+      "version": 3,
+      "active_version": true,
+      "sha256": "f5e0ecefe3221a0dcc34fb8e23c9236ade4fcd8afba4705ddda6172106b0e25b"
+    },
+    {
+      "path": "audit/Packet_01.5_New_Chat_Handoff_v1.md",
+      "tier": 2,
+      "family": "audit/packet_01.5_new_chat_handoff-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "d98c3ba56efa8a42d22abb298f22f2b1f7f00ea71427eb95b2c6315087c8bc0f"
+    },
+    {
+      "path": "audit/Packet_01.5_Problems_Limitations_and_Routing_Register_v1.md",
+      "tier": 2,
+      "family": "audit/packet_01.5_problems_limitations_and_routing_register-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "fcd7ef7f60f8dbc14a818be3d9bd5e0e60c1801ac62604c6e9b71cdec4e9d3b1"
+    },
+    {
+      "path": "audit/Packet_01.5_Project_Contact_Evidence_Catalog_Independent_Verification_v1.json",
+      "tier": 1,
+      "family": "audit/packet_01.5_project_contact_evidence_catalog_independent_verification-v#.json",
+      "version": 1,
+      "active_version": true,
+      "sha256": "888494351c0a086029b1334d77e88e72bca64d114d692d26622eb66c06987a8f"
+    },
+    {
+      "path": "audit/Packet_01.5_Project_Contact_Evidence_Catalog_Independent_Verification_v1.md",
+      "tier": 1,
+      "family": "audit/packet_01.5_project_contact_evidence_catalog_independent_verification-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "26e89f5134699076a94169ac26a3ae64611b4c487f7bcd99834063dfacbcda05"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Inventory_PR_Trigger.txt",
+      "tier": 2,
+      "family": "audit/packet_01.5_routing_inventory_pr_trigger.txt",
+      "version": 0,
+      "active_version": true,
+      "sha256": "f9b35c3adcecaadbee1c00ffa3c0fe49de7d47c6d4720a25aae5c52077361610"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Inventory_Status_v74.md",
+      "tier": 2,
+      "family": "audit/packet_01.5_routing_inventory_status-v#.md",
+      "version": 74,
+      "active_version": true,
+      "sha256": "f669c63b5811c410712dfb392b629ac23c95bb597c0cfea35779981e928abb6c"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Preparation_Gate_Baseline_Source_Addendum_v1.md",
+      "tier": 2,
+      "family": "audit/packet_01.5_routing_preparation_gate_baseline_source_addendum-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "aca3099415752d08b9692b7bdc954cf20ad6df52fdfd74c9ef4546f68ee4ac6a"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Preparation_Gate_Independent_Verification_v1.json",
+      "tier": 3,
+      "family": "audit/packet_01.5_routing_preparation_gate_independent_verification-v#.json",
+      "version": 1,
+      "active_version": false,
+      "sha256": "252b6ba48a55efbeaf561b56500e00a6a380b0eb18f6fa656782c137e2aab5d0"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Preparation_Gate_Independent_Verification_v1.md",
+      "tier": 3,
+      "family": "audit/packet_01.5_routing_preparation_gate_independent_verification-v#.md",
+      "version": 1,
+      "active_version": false,
+      "sha256": "27e70dfebf9d93090bf2bcae30b890b03e0262ddfbf01f0e9125574e5d090dc1"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Preparation_Gate_Independent_Verification_v2.json",
+      "tier": 1,
+      "family": "audit/packet_01.5_routing_preparation_gate_independent_verification-v#.json",
+      "version": 2,
+      "active_version": true,
+      "sha256": "17901ef28ff1fb7a97d2f120e4585b5785745d87a4e6c43c5c0ab4dd4e0e0925"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Preparation_Gate_Independent_Verification_v2.md",
+      "tier": 1,
+      "family": "audit/packet_01.5_routing_preparation_gate_independent_verification-v#.md",
+      "version": 2,
+      "active_version": true,
+      "sha256": "a19f28811dc140cca71463814e51d4b611ac92c346a186d59ba68e7fce659dbd"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Preparation_Gate_v1.json",
+      "tier": 2,
+      "family": "audit/packet_01.5_routing_preparation_gate-v#.json",
+      "version": 1,
+      "active_version": true,
+      "sha256": "f982f91ac357695f108b24b084b251f3fcff50e1350dd5006ad9793d23802e00"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Preparation_Gate_v1.md",
+      "tier": 2,
+      "family": "audit/packet_01.5_routing_preparation_gate-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "5cda27670c15d0b73d24d16a6e08d3d0ff1d9834a57b062d609cddee41a24aa1"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Preparation_Status_v72.md",
+      "tier": 3,
+      "family": "audit/packet_01.5_routing_preparation_status-v#.md",
+      "version": 72,
+      "active_version": false,
+      "sha256": "ca9f2abd4f0cc9cd33d1e2ed34cbae4dee4acf6ff7fbcdf55188c6eb2c414164"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Preparation_Status_v73.md",
+      "tier": 2,
+      "family": "audit/packet_01.5_routing_preparation_status-v#.md",
+      "version": 73,
+      "active_version": true,
+      "sha256": "46d8bfbf2537eddda96cdce5c8bcdfac69d68a3c3baf2614228819f6e0957b0a"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Start_Authorization_Gate_v1.json",
+      "tier": 2,
+      "family": "audit/packet_01.5_routing_start_authorization_gate-v#.json",
+      "version": 1,
+      "active_version": true,
+      "sha256": "7fa721a73495545780935271900b71e511fe5bed855e15f300b61cfc156d9ac1"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Start_Authorization_Gate_v1.md",
+      "tier": 3,
+      "family": "audit/packet_01.5_routing_start_authorization_gate-v#.md",
+      "version": 1,
+      "active_version": false,
+      "sha256": "50238b13f420676b13c2b64a63bdaf4c663fd3920520d34621162ae3f8fca8ee"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Start_Authorization_Gate_v2.md",
+      "tier": 2,
+      "family": "audit/packet_01.5_routing_start_authorization_gate-v#.md",
+      "version": 2,
+      "active_version": true,
+      "sha256": "b6c5bfd0744a1e43c0cef58f160e687f334824cf794791f430c5d7879880ce03"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Start_Authorization_Independent_Verification_v1.json",
+      "tier": 3,
+      "family": "audit/packet_01.5_routing_start_authorization_independent_verification-v#.json",
+      "version": 1,
+      "active_version": false,
+      "sha256": "5cfb8c3b77b5c1e078148899a707f10608a795cbf72d82831ac077709f8e826b"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Start_Authorization_Independent_Verification_v1.md",
+      "tier": 3,
+      "family": "audit/packet_01.5_routing_start_authorization_independent_verification-v#.md",
+      "version": 1,
+      "active_version": false,
+      "sha256": "e8e9049d7ca5d4a1951c67ac8fe43e116b9ab09caf0af7b67172ff284bab2fea"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Start_Authorization_Independent_Verification_v2.json",
+      "tier": 1,
+      "family": "audit/packet_01.5_routing_start_authorization_independent_verification-v#.json",
+      "version": 2,
+      "active_version": true,
+      "sha256": "8600600a7663c53af9ee61c588536f5cde3a0620a0e57f1d649dcefb32fb3b3b"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Start_Authorization_Independent_Verification_v2.md",
+      "tier": 1,
+      "family": "audit/packet_01.5_routing_start_authorization_independent_verification-v#.md",
+      "version": 2,
+      "active_version": true,
+      "sha256": "95aa7829527fb0c5f59584b9286707ea5e97e5e7469689adf2f9eaac9aef40a9"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Start_Authorization_v1_Reconciliation_v1.md",
+      "tier": 2,
+      "family": "audit/packet_01.5_routing_start_authorization-v#_reconciliation-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "f73cebe5ff9222e02d21a809e1859957cc5d013aa661d89654f4678b4170cd1f"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Start_Gate_v2_PR_Trigger.txt",
+      "tier": 2,
+      "family": "audit/packet_01.5_routing_start_gate-v#_pr_trigger.txt",
+      "version": 2,
+      "active_version": true,
+      "sha256": "aba2d046262e9680b3f723322fac0daa2c3b92c2c2bf42a4d3d8c832c42719df"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Status_v75.md",
+      "tier": 3,
+      "family": "audit/packet_01.5_routing_status-v#.md",
+      "version": 75,
+      "active_version": false,
+      "sha256": "3a4574a422e2826078ef8f8fa849fabcb9e74c0757e04a29dfff8f714d18618a"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Status_v76.md",
+      "tier": 3,
+      "family": "audit/packet_01.5_routing_status-v#.md",
+      "version": 76,
+      "active_version": false,
+      "sha256": "d79c2ec17f8c6a7500847aa0ca43171b634cfb6813c213e11916038fe34746e9"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Status_v77.md",
+      "tier": 3,
+      "family": "audit/packet_01.5_routing_status-v#.md",
+      "version": 77,
+      "active_version": false,
+      "sha256": "1229dd5e49a3bc0fe0bfb61c9cce99b537244cbd658bfd756c07fc2238de46cc"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Status_v78.md",
+      "tier": 3,
+      "family": "audit/packet_01.5_routing_status-v#.md",
+      "version": 78,
+      "active_version": false,
+      "sha256": "a7ca471558cdac9c4d35de13ec45745ebfa7a1581fd2004c734e9ad6e7967198"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Status_v79.md",
+      "tier": 3,
+      "family": "audit/packet_01.5_routing_status-v#.md",
+      "version": 79,
+      "active_version": false,
+      "sha256": "042da66e769e22af1759027ae082a5df229e4b8adeb8df95f1a163a66f055447"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Status_v80.md",
+      "tier": 3,
+      "family": "audit/packet_01.5_routing_status-v#.md",
+      "version": 80,
+      "active_version": false,
+      "sha256": "47d6fefcb3f8c29f8cf260d0022f12b08fa38ff579f665c174d260d970a500fc"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Status_v81.md",
+      "tier": 3,
+      "family": "audit/packet_01.5_routing_status-v#.md",
+      "version": 81,
+      "active_version": false,
+      "sha256": "7e0f89aca63b0630e369cd0464730c981fcd0c4af7b3231e655fffd6f778aee2"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Status_v82.md",
+      "tier": 3,
+      "family": "audit/packet_01.5_routing_status-v#.md",
+      "version": 82,
+      "active_version": false,
+      "sha256": "b2028286f1a216ba30b2207c1d35daeb0a9bbd3aa05b886b800c78064f6f5eb0"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Status_v83.md",
+      "tier": 3,
+      "family": "audit/packet_01.5_routing_status-v#.md",
+      "version": 83,
+      "active_version": false,
+      "sha256": "031dcbb6eaad578a2e59ceb88308d62f15ff819e803b1743374cd79d7ebdd42e"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Status_v84.md",
+      "tier": 3,
+      "family": "audit/packet_01.5_routing_status-v#.md",
+      "version": 84,
+      "active_version": false,
+      "sha256": "4700900b532b0d307a81af036ee09720c9e83f47b11255278afa10105e140ebb"
+    },
+    {
+      "path": "audit/Packet_01.5_Routing_Status_v85.md",
+      "tier": 1,
+      "family": "audit/packet_01.5_routing_status-v#.md",
+      "version": 85,
+      "active_version": true,
+      "sha256": "59e12f9f9fdcf656004889f6c15613feee4a1636868b9a2de614a883ee61ddd2"
+    },
+    {
+      "path": "audit/Packet_01.5_Runtime_Source_Family_Coverage_v1.json",
+      "tier": 2,
+      "family": "audit/packet_01.5_runtime_source_family_coverage-v#.json",
+      "version": 1,
+      "active_version": true,
+      "sha256": "f9868b92dac7b20a0724489bac96c282389ea2861464eedecaa534c28b1a84be"
+    },
+    {
+      "path": "audit/Packet_01.5_Runtime_Source_Family_Evidence_Matrix_v1.json",
+      "tier": 2,
+      "family": "audit/packet_01.5_runtime_source_family_evidence_matrix-v#.json",
+      "version": 1,
+      "active_version": true,
+      "sha256": "b21821c3cfa4a80c5e000735fff2fb10d7f44c6a43007f1105b9decb4f8fcc96"
+    },
+    {
+      "path": "audit/Packet_01.5_Runtime_Source_Family_Independent_Verification_v1.json",
+      "tier": 1,
+      "family": "audit/packet_01.5_runtime_source_family_independent_verification-v#.json",
+      "version": 1,
+      "active_version": true,
+      "sha256": "80a8a052cc30d9c4ad04b07f3a9dfb20ab188182d3475e0bbe613ae3497b90db"
+    },
+    {
+      "path": "audit/Packet_01.5_Runtime_Source_Family_Independent_Verification_v1.md",
+      "tier": 1,
+      "family": "audit/packet_01.5_runtime_source_family_independent_verification-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "7d569b90675d677b274b06db2c2330155f24f7c3fa6ca8b543555259257f397d"
+    },
+    {
+      "path": "audit/Packet_01.5_Runtime_Source_Family_PR_Trigger.txt",
+      "tier": 2,
+      "family": "audit/packet_01.5_runtime_source_family_pr_trigger.txt",
+      "version": 0,
+      "active_version": true,
+      "sha256": "0589f07fd9215476eb31c4a9e13840dada9273bbede473c2e546e0196929c5ab"
+    },
+    {
+      "path": "audit/Packet_01.5_Runtime_Source_Family_v1.md",
+      "tier": 2,
+      "family": "audit/packet_01.5_runtime_source_family-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "6076fed1eb06549341973b0269e801f8147847c35de0dda267b31ae3e564e281"
+    },
+    {
+      "path": "audit/Packet_01.5_Scalable_Applicability_Gate_Independent_Verification_v1.json",
+      "tier": 1,
+      "family": "audit/packet_01.5_scalable_applicability_gate_independent_verification-v#.json",
+      "version": 1,
+      "active_version": true,
+      "sha256": "9a09f6190e106f7f218a6124bded6446a865f1d95afc506e87464a5f6fdd19ed"
+    },
+    {
+      "path": "audit/Packet_01.5_Scalable_Applicability_Gate_Independent_Verification_v1.md",
+      "tier": 1,
+      "family": "audit/packet_01.5_scalable_applicability_gate_independent_verification-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "649fdc52a4ff293ae477ef9f696ca5fe719a51c641c8b1638caa15280dfa500b"
+    },
+    {
+      "path": "audit/Packet_01.5_Scalable_Applicability_Gate_PR_Trigger.txt",
+      "tier": 2,
+      "family": "audit/packet_01.5_scalable_applicability_gate_pr_trigger.txt",
+      "version": 0,
+      "active_version": true,
+      "sha256": "dca0b13bba77ed87e24f4fb5f20a0c890e07a85f63c6e7ba0d9b0451bef90e04"
+    },
+    {
+      "path": "audit/Packet_01.5_Scalable_Applicability_Processing_Gate_v1.md",
+      "tier": 2,
+      "family": "audit/packet_01.5_scalable_applicability_processing_gate-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "78939bb98acc2866c7a4a1a75e8bc324a29609c4e3a3aebf0c655b79f694ca94"
+    },
+    {
+      "path": "audit/Packet_01.5_Scalable_Pass_001_Coverage_v1.json",
+      "tier": 2,
+      "family": "audit/packet_01.5_scalable_pass_001_coverage-v#.json",
+      "version": 1,
+      "active_version": true,
+      "sha256": "5652c5eba532e3bc2a85888acd1d87204b4a6b9d6f71592360b1e2e3219f3abe"
+    },
+    {
+      "path": "audit/Packet_01.5_Scalable_Pass_001_Independent_Verification_v1.json",
+      "tier": 1,
+      "family": "audit/packet_01.5_scalable_pass_001_independent_verification-v#.json",
+      "version": 1,
+      "active_version": true,
+      "sha256": "02be9d173120ed24aaa31d0b3771cd2e2b10047ef0bddc691659660481393d78"
+    },
+    {
+      "path": "audit/Packet_01.5_Scalable_Pass_001_Independent_Verification_v1.md",
+      "tier": 1,
+      "family": "audit/packet_01.5_scalable_pass_001_independent_verification-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "18b671d281b4627f55704d053b73ac6011fb1df23ed66ddb2909ff746ecf8798"
+    },
+    {
+      "path": "audit/Packet_01.5_Scalable_Pass_001_v1.md",
+      "tier": 2,
+      "family": "audit/packet_01.5_scalable_pass_001-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "250bd005b8044c441a9e196db2df1bbe7757d96358fcc011ec3c850eb7c13fb3"
+    },
+    {
+      "path": "audit/Packet_01_Additive_Amendment_Control_Spine_and_Existing_Packet_Roles_v1.md",
+      "tier": 2,
+      "family": "audit/packet_01_additive_amendment_control_spine_and_existing_packet_roles-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "3d5189ea1d64df792d921d176528928b343dd317986ff4223a28aca89a42210f"
+    },
+    {
+      "path": "audit/Packet_01_Universal_Active_Work_Card_Amendment_v1.md",
+      "tier": 2,
+      "family": "audit/packet_01_universal_active_work_card_amendment-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "fdf4d9a7d3dfc16c126f9a7fe5a8463011a0e87b95cd3e761363e6e5df05074d"
+    },
+    {
+      "path": "audit/Packet_03.5_Approved_Existing_Packet_Role_Amendment_v1.json",
+      "tier": 1,
+      "family": "audit/packet_03.5_approved_existing_packet_role_amendment-v#.json",
+      "version": 1,
+      "active_version": true,
+      "sha256": "708073f9b1b1e7ca98ea6d1a07a23af0d9841b8de7dc1a3957403dfcf3bd8f73"
+    },
+    {
+      "path": "audit/Packet_03.5_Lifecycle_Coverage_Audit_v1.json",
+      "tier": 2,
+      "family": "audit/packet_03.5_lifecycle_coverage_audit-v#.json",
+      "version": 1,
+      "active_version": true,
+      "sha256": "78b3d9bd6e98e164a57ebe8fdd15880e7f53a1b00831fad4c6261c6d80e5c0d6"
+    },
+    {
+      "path": "audit/Packet_03.5_Lifecycle_Owner_Summary_v1.md",
+      "tier": 2,
+      "family": "audit/packet_03.5_lifecycle_owner_summary-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "c7b45dd7ebc3e076d48a5f69664eef99fbd1b1a06c8e05d7eca97fefe20fd9e0"
+    },
+    {
+      "path": "audit/Packet_03.5_Packet_02_Risk_Carry_Forward_Audit_v1.json",
+      "tier": 2,
+      "family": "audit/packet_03.5_packet_02_risk_carry_forward_audit-v#.json",
+      "version": 1,
+      "active_version": true,
+      "sha256": "62304dd84019dd74defacc5e5abb9eea9202e6a5db767e6d8e174220951bb3cc"
+    },
+    {
+      "path": "audit/Packet_03.5_Packet_02_Risk_Carry_Forward_Lock_v1.md",
+      "tier": 2,
+      "family": "audit/packet_03.5_packet_02_risk_carry_forward_lock-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "1f54931df16597ed94ececab021d53ff44c8e383f614b80f75ca4faf719ba65d"
+    },
+    {
+      "path": "audit/Packet_03.5_Second_Breaker_Audit_v1.json",
+      "tier": 2,
+      "family": "audit/packet_03.5_second_breaker_audit-v#.json",
+      "version": 1,
+      "active_version": true,
+      "sha256": "3a9cf96e375e6de474f580d68772f44c2ebbd4a7bb266e73e415891587bdb9bb"
+    },
+    {
+      "path": "audit/Packet_03.5_v4_FINAL_PASS_MANIFEST.json",
+      "tier": 2,
+      "family": "audit/packet_03.5-v#_final_pass_manifest.json",
+      "version": 4,
+      "active_version": true,
+      "sha256": "9424a5ddf7673deca31de22d2aa872379d70b7add53ebd7602fe067aee7a4a0e"
+    },
+    {
+      "path": "audit/pmp-packet-02-watch-closure-v1.json",
+      "tier": 2,
+      "family": "audit/pmp-packet-02-watch-closure-v#.json",
+      "version": 1,
+      "active_version": true,
+      "sha256": "453bea36bbb59c07ab27b6c1e62cee887a07a66403261fe3654e643592f8ef2c"
+    },
+    {
+      "path": "audit/pmp-packet-03-current-runtime-proof-v2.json",
+      "tier": 2,
+      "family": "audit/pmp-packet-03-current-runtime-proof-v#.json",
+      "version": 2,
+      "active_version": true,
+      "sha256": "294a82bd32b905327493be72299aefd3f8d566a9e4f93b3b087c814553b6146b"
+    },
+    {
+      "path": "audit/pmp-packet-03-final-output-manifest-v2.json",
+      "tier": 2,
+      "family": "audit/pmp-packet-03-final-output-manifest-v#.json",
+      "version": 2,
+      "active_version": true,
+      "sha256": "77da814233db8bc7aeae20375df5089755e908a49a15efe1f7e0a979d3ee5eca"
+    },
+    {
+      "path": "audit/pmp-packet-03-final-pass-manifest-v3.json",
+      "tier": 3,
+      "family": "audit/pmp-packet-03-final-pass-manifest-v#.json",
+      "version": 3,
+      "active_version": false,
+      "sha256": "658034599738d8200ca008a78658026249946f4a88885dbbe6c444390528e7ee"
+    },
+    {
+      "path": "audit/pmp-packet-03-final-pass-manifest-v4.json",
+      "tier": 2,
+      "family": "audit/pmp-packet-03-final-pass-manifest-v#.json",
+      "version": 4,
+      "active_version": true,
+      "sha256": "fadbd5565dc5665c12f345f965bfe05c523700628408d5a730aa7b38e3107672"
+    },
+    {
+      "path": "audit/pmp-packet-03-output-manifest-v1.json",
+      "tier": 2,
+      "family": "audit/pmp-packet-03-output-manifest-v#.json",
+      "version": 1,
+      "active_version": true,
+      "sha256": "93a3b455d54f519a1638a1708e20cbed41dbd95e5b96160cb2ebe3bba2be06d9"
+    },
+    {
+      "path": "audit/routing-evidence/Packet_01.5_Project_Contact_Evidence_Catalog_v1.json",
+      "tier": 2,
+      "family": "audit/routing-evidence/packet_01.5_project_contact_evidence_catalog-v#.json",
+      "version": 1,
+      "active_version": true,
+      "sha256": "532ef05c652b089d7e668a0ebe00ba79b8fac5ec040fdc1deb5ff41e7472411c"
+    },
+    {
+      "path": "audit/routing-evidence/Packet_03_Current_Capability_Boundary_Source_v1.md",
+      "tier": 2,
+      "family": "audit/routing-evidence/packet_03_current_capability_boundary_source-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "72bf3340fefd08dbe39eb131688e245a4c8ba3d457b56a62f25961f895c8ca14"
+    },
+    {
+      "path": "audit/routing-evidence/Packet_03_Current_Capability_Summary_Source_v1.md",
+      "tier": 2,
+      "family": "audit/routing-evidence/packet_03_current_capability_summary_source-v#.md",
+      "version": 1,
+      "active_version": true,
+      "sha256": "8f995ef4609640a7aefbc7a5d3e9ef9e7c2986ede47ee3e20a36d30c914fa1d2"
+    },
+    {
+      "path": "control-pack/pmp-control-pack-acceptance-receipts-v1.json",
+      "tier": 3,
+      "family": "control-pack/pmp-control-pack-acceptance-receipts-v#.json",
+      "version": 1,
+      "active_version": true,
+      "sha256": "990dd76c03fe0ed6284e4c7b87accb1d9d24f654b0721b8a6f32e0867d712b12"
+    },
+    {
+      "path": "control-pack/pmp-current-app-test-battery-v3.json",
+      "tier": 3,
+      "family": "control-pack/pmp-current-app-test-battery-v#.json",
+      "version": 3,
+      "active_version": true,
+      "sha256": "d74d3719cdbd935298962d6b612c16244052f3d0ca58932e3c8acf6a580ad568"
+    },
+    {
+      "path": "control-pack/pmp-file-trust-ledger-v2.json",
+      "tier": 3,
+      "family": "control-pack/pmp-file-trust-ledger-v#.json",
+      "version": 2,
+      "active_version": true,
+      "sha256": "c6fe09035265b88d94fa9a2b2a5c52f899cbe01c2ce036907bcbf3448d9ac6fb"
+    },
+    {
+      "path": "control-pack/pmp-remodel-extraction-ledger-v6.md",
+      "tier": 3,
+      "family": "control-pack/pmp-remodel-extraction-ledger-v#.md",
+      "version": 6,
+      "active_version": true,
+      "sha256": "4fcef779a0893cfc02567623b2979e7e14d0b8a62cdd47c34ee4570a1cda30d3"
+    },
+    {
+      "path": "control-pack/receipts/pmp-control-room-route-guardian-cleanup-pass-2026-05-13.md",
+      "tier": 3,
+      "family": "control-pack/receipts/pmp-control-room-route-guardian-cleanup-pass-2026-05-13.md",
+      "version": 0,
+      "active_version": true,
+      "sha256": "9286af8cbed44248d3c8e560eb27cfbb64caf3621a10cb0a70f96b0254329578"
+    },
+    {
+      "path": "control-pack/receipts/pmp-final-installed-stable-pass-2026-05-13.md",
+      "tier": 3,
+      "family": "control-pack/receipts/pmp-final-installed-stable-pass-2026-05-13.md",
+      "version": 0,
+      "active_version": true,
+      "sha256": "4c79e70ba2901719d2c5156e888043a59b549b39db4281aa7ce7f1c7fb3e5305"
+    },
+    {
+      "path": "control-pack/receipts/pmp-first-run-checklist-receipt-2026-05-12.json",
+      "tier": 3,
+      "family": "control-pack/receipts/pmp-first-run-checklist-receipt-2026-05-12.json",
+      "version": 0,
+      "active_version": true,
+      "sha256": "9420e318e2583e12d56bb69dbf2e9cfd2f2882ea2a183a332d484d3bec01790e"
+    },
+    {
+      "path": "control-pack/receipts/pmp-real-entry-test-blocked-by-cache-2026-05-12.json",
+      "tier": 3,
+      "family": "control-pack/receipts/pmp-real-entry-test-blocked-by-cache-2026-05-12.json",
+      "version": 0,
+      "active_version": true,
+      "sha256": "a2b175c011df7b873674b943a8884aaa7d824548333d1c9579e32ad5ccaffa99"
+    },
+    {
+      "path": "control-pack/receipts/pmp-route-guardian-boot-test-pass-ui-fix-needed-2026-05-12.json",
+      "tier": 3,
+      "family": "control-pack/receipts/pmp-route-guardian-boot-test-pass-ui-fix-needed-2026-05-12.json",
+      "version": 0,
+      "active_version": true,
+      "sha256": "e29d1697bf6ee898a98922ec91b34292f1c47b2aa9bb003605073bd137150f08"
+    },
+    {
+      "path": "control-pack/receipts/pmp-route-guardian-candidate-blocked-by-cache-2026-05-12.json",
+      "tier": 3,
+      "family": "control-pack/receipts/pmp-route-guardian-candidate-blocked-by-cache-2026-05-12.json",
+      "version": 0,
+      "active_version": true,
+      "sha256": "6636df8509a847d145be1012e41057124daf8b94af8e0ae1e7bd3bcc565c8b37"
+    },
+    {
+      "path": "control-pack/receipts/pmp-route-guardian-control-routing-image-pass-2026-05-12.md",
+      "tier": 3,
+      "family": "control-pack/receipts/pmp-route-guardian-control-routing-image-pass-2026-05-12.md",
+      "version": 0,
+      "active_version": true,
+      "sha256": "ac3c652fcc87a0944021b77e14ece691201b4214325170d6a8412c8ffa8251a2"
+    },
+    {
+      "path": "control-pack/receipts/pmp-route-guardian-health-summary-pass-2026-05-15.md",
+      "tier": 3,
+      "family": "control-pack/receipts/pmp-route-guardian-health-summary-pass-2026-05-15.md",
+      "version": 0,
+      "active_version": true,
+      "sha256": "b45e617d34433572a990c7b1fa646bce8ca915d0b357f4f2452390380bfc24f7"
+    },
+    {
+      "path": "control-pack/receipts/pmp-route-guardian-lkg-block-test-pass-2026-05-15.md",
+      "tier": 3,
+      "family": "control-pack/receipts/pmp-route-guardian-lkg-block-test-pass-2026-05-15.md",
+      "version": 0,
+      "active_version": true,
+      "sha256": "0de5a435b17e979fc254a5f36a389f9c5740ac507d4b02b5d934ca509bc9518e"
+    },
+    {
+      "path": "control-pack/receipts/pmp-route-guardian-one-button-json-pass-2026-05-12.json",
+      "tier": 3,
+      "family": "control-pack/receipts/pmp-route-guardian-one-button-json-pass-2026-05-12.json",
+      "version": 0,
+      "active_version": true,
+      "sha256": "79bf9d3e27d52660cd4bd3936fec8ebc2ef0503e612f61106caa5ca06b447fe5"
+    },
+    {
+      "path": "control-pack/receipts/pmp-route-guardian-one-button-test-pass-2026-05-12.json",
+      "tier": 3,
+      "family": "control-pack/receipts/pmp-route-guardian-one-button-test-pass-2026-05-12.json",
+      "version": 0,
+      "active_version": true,
+      "sha256": "5df9c7cdad45bb2ca0e23793455cc9b06374b99f550b51a599a66595a32cc842"
+    },
+    {
+      "path": "control-pack/receipts/pmp-route-guardian-real-entry-pass-2026-05-12.md",
+      "tier": 3,
+      "family": "control-pack/receipts/pmp-route-guardian-real-entry-pass-2026-05-12.md",
+      "version": 0,
+      "active_version": true,
+      "sha256": "e107ffb933c73f926edb739d85c0b0aa7e3c5d1f105e0aefabc16bb016014acd"
+    },
+    {
+      "path": "control-pack/receipts/pmp-route-guardian-repo-index-v1-pass-2026-05-13.md",
+      "tier": 3,
+      "family": "control-pack/receipts/pmp-route-guardian-repo-index-v#-pass-2026-05-13.md",
+      "version": 1,
+      "active_version": false,
+      "sha256": "1454b3b418e4ee5c61cbfa9647a6ee6f3785bdd7590cab606031bbd7ffefd3ad"
+    },
+    {
+      "path": "control-pack/receipts/pmp-route-guardian-repo-index-v102-pass-2026-05-13.md",
+      "tier": 3,
+      "family": "control-pack/receipts/pmp-route-guardian-repo-index-v#-pass-2026-05-13.md",
+      "version": 102,
+      "active_version": false,
+      "sha256": "0ad23118338eb9793c103ce28b5c57b71f92c5f953982c1e0b18f41c1858fe18"
+    },
+    {
+      "path": "control-pack/receipts/pmp-route-guardian-repo-index-v103-pass-2026-05-13.md",
+      "tier": 3,
+      "family": "control-pack/receipts/pmp-route-guardian-repo-index-v#-pass-2026-05-13.md",
+      "version": 103,
+      "active_version": false,
+      "sha256": "f040537082760a58eb1d6085d411ec3da4b5ab7a393e8ccd2aeb2c521eb76a83"
+    },
+    {
+      "path": "control-pack/receipts/pmp-route-guardian-repo-index-v104-pass-2026-05-13.md",
+      "tier": 3,
+      "family": "control-pack/receipts/pmp-route-guardian-repo-index-v#-pass-2026-05-13.md",
+      "version": 104,
+      "active_version": true,
+      "sha256": "19ad9371ba303b1d5b4c9b6e2cca7fe3272eb1a9b180c5668fad9632396ba248"
+    },
+    {
+      "path": "control-pack/receipts/pmp-route-guardian-repo-index-v105-pass-2026-05-14.md",
+      "tier": 3,
+      "family": "control-pack/receipts/pmp-route-guardian-repo-index-v#-pass-2026-05-14.md",
+      "version": 105,
+      "active_version": false,
+      "sha256": "042c776d36c770d9408e35406cf058fcf1a3a69de7531b7ba9613bdaa1b7efe2"
+    },
+    {
+      "path": "control-pack/receipts/pmp-route-guardian-repo-index-v106-pass-2026-05-14.md",
+      "tier": 3,
+      "family": "control-pack/receipts/pmp-route-guardian-repo-index-v#-pass-2026-05-14.md",
+      "version": 106,
+      "active_version": false,
+      "sha256": "2cd8dae8e7b7c09eec46faee28e0b88e35b5b9959e83e2fcccbb6f77191e1dfd"
+    },
+    {
+      "path": "control-pack/receipts/pmp-route-guardian-repo-index-v107-pass-2026-05-14.md",
+      "tier": 3,
+      "family": "control-pack/receipts/pmp-route-guardian-repo-index-v#-pass-2026-05-14.md",
+      "version": 107,
+      "active_version": true,
+      "sha256": "7b8edfc51173099e45b2dd56f29b154828fb399560c1ee0e9af02f26018f2ca8"
+    },
+    {
+      "path": "control-pack/receipts/pmp-route-guardian-test-receipt-2026-05-12.json",
+      "tier": 3,
+      "family": "control-pack/receipts/pmp-route-guardian-test-receipt-2026-05-12.json",
+      "version": 0,
+      "active_version": true,
+      "sha256": "1a77749ab196d375668a8cd52ac69f73478f45d0b8afb2066320872643805f01"
+    },
+    {
+      "path": "control-pack/receipts/pmp-route-guardian-user-test-pass-2026-05-12.json",
+      "tier": 3,
+      "family": "control-pack/receipts/pmp-route-guardian-user-test-pass-2026-05-12.json",
+      "version": 0,
+      "active_version": true,
+      "sha256": "0a4b41c5ad2810446a8c939843829a56c3285a6c11fd6f28db3a08634eee2675"
+    },
+    {
+      "path": "control-pack/receipts/pmp-route-guardian-working-confirmed-2026-05-12.json",
+      "tier": 3,
+      "family": "control-pack/receipts/pmp-route-guardian-working-confirmed-2026-05-12.json",
+      "version": 0,
+      "active_version": true,
+      "sha256": "9aa73b99292db4f95869669b0ee4c7c793fb2f2cccf71c346039bd4abdffe307"
+    },
+    {
+      "path": "control-pack/receipts/pmp-route-guardian-world-entry-test-pass-2026-05-12.json",
+      "tier": 3,
+      "family": "control-pack/receipts/pmp-route-guardian-world-entry-test-pass-2026-05-12.json",
+      "version": 0,
+      "active_version": true,
+      "sha256": "8c4d3a7ae8d805a8ac8a8584df96006b59f7ee950b5d66c71c87ada131b2d929"
+    },
+    {
+      "path": "pmp-current-map-v1.0.0.json",
+      "tier": 3,
+      "family": "pmp-current-map-v#.0.0.json",
+      "version": 1,
+      "active_version": true,
+      "sha256": "da0eff63dc04c651b189876639126102bc8152ef412f6758be6404e2e655f146"
+    },
+    {
+      "path": "pmp-current-map-v9.json",
+      "tier": 3,
+      "family": "pmp-current-map-v#.json",
+      "version": 9,
+      "active_version": true,
+      "sha256": "1f15f09a0203def86d12fe9131dae6fcc426e26cbb23c12e95bd7c6652156994"
+    },
+    {
+      "path": "pmp-current-map.json",
+      "tier": 3,
+      "family": "pmp-current-map.json",
+      "version": 0,
+      "active_version": true,
+      "sha256": "9a3835dd1b50d7273206da4404020ac601504824e7307e209d2a6fa8f12ac905"
+    },
+    {
+      "path": "pmp-current-update-ledger.json",
+      "tier": 3,
+      "family": "pmp-current-update-ledger.json",
+      "version": 0,
+      "active_version": true,
+      "sha256": "0a4a13bbbdd44438891f05077d93c2f24a00e059b270aa0242d6b1fdae1343e5"
+    },
+    {
+      "path": "pmp-current-update-status.json",
+      "tier": 2,
+      "family": "pmp-current-update-status.json",
+      "version": 0,
+      "active_version": true,
+      "sha256": "a55c3140d1d170f9e32df31177cc25dfe238eab2e24e2758384591edb9d2c118"
+    },
+    {
+      "path": "pmp-lossless-inventory-vault/inbox-intake-status.json",
+      "tier": 2,
+      "family": "pmp-lossless-inventory-vault/inbox-intake-status.json",
+      "version": 0,
+      "active_version": true,
+      "sha256": "d5c820fdf278df6d03fc7fb228924475ae7a2daefbeb9e09ef6204f360e34fbb"
+    },
+    {
+      "path": "pmp-lossless-inventory-vault/record-ledger.json",
+      "tier": 3,
+      "family": "pmp-lossless-inventory-vault/record-ledger.json",
+      "version": 0,
+      "active_version": true,
+      "sha256": "44d0cb8a27821ed3296a7794d323a7d70c50e311f6d5313230d576580886b421"
+    },
+    {
+      "path": "pmp-lossless-inventory-vault/rejected-ledger.json",
+      "tier": 3,
+      "family": "pmp-lossless-inventory-vault/rejected-ledger.json",
+      "version": 0,
+      "active_version": true,
+      "sha256": "1c2751035bf662c2e0e93be57495d2c72162aca730682f6ef37e63263852f173"
+    }
+  ],
+  "record_identities": [
+    {
+      "composite_address": "P01.5::B::0002",
+      "source_record_ordinal": 2,
+      "original_identifier": "AI-002",
+      "source_envelope_hash": "4b3a7ccbf5bb3561e4c644265afb0693fb9ab79af67f33874e8b0815f78ed0aa"
+    },
+    {
+      "composite_address": "P01.5::B::0012",
+      "source_record_ordinal": 12,
+      "original_identifier": "AI-012",
+      "source_envelope_hash": "265871cdba3600afd57dc0a3fedade71e80b9e29d9736ff7772280e0fa8db7ed"
+    },
+    {
+      "composite_address": "P01.5::B::0020",
+      "source_record_ordinal": 20,
+      "original_identifier": "BUILD-002",
+      "source_envelope_hash": "13d310c6bfb16405b8ab7286daa71e6fa00abe1dce340bb431e898ca2a5a4e3c"
+    },
+    {
+      "composite_address": "P01.5::B::0021",
+      "source_record_ordinal": 21,
+      "original_identifier": "BUILD-003",
+      "source_envelope_hash": "43137d69f0f67dfac42f03efd33842537fdcb9bb28b789fa645d84fcd9a2c357"
+    },
+    {
+      "composite_address": "P01.5::B::0022",
+      "source_record_ordinal": 22,
+      "original_identifier": "BUILD-004",
+      "source_envelope_hash": "03ad097e15297bc1a704bf7651edfba64f6f56af66c246e32c3103478b811b3e"
+    },
+    {
+      "composite_address": "P01.5::B::0023",
+      "source_record_ordinal": 23,
+      "original_identifier": "BUILD-005",
+      "source_envelope_hash": "551d96817d91526a7dcbdcaf05253b8ec6f3c1dfb7839af7c3585f8b20a52442"
+    },
+    {
+      "composite_address": "P01.5::B::0033",
+      "source_record_ordinal": 33,
+      "original_identifier": "BUILD-015",
+      "source_envelope_hash": "2dccaaf6dc22e6f82e498d9e35758569a9828286d66d970f197ac3cd24b60bbe"
+    },
+    {
+      "composite_address": "P01.5::B::0034",
+      "source_record_ordinal": 34,
+      "original_identifier": "DATA-001",
+      "source_envelope_hash": "998c5aa8c7d01aeb9650200cd78a8d1fa8bd414d64701d860d3bd05ecfa5d6b2"
+    },
+    {
+      "composite_address": "P01.5::B::0035",
+      "source_record_ordinal": 35,
+      "original_identifier": "DATA-002",
+      "source_envelope_hash": "589d06e3be93a192fe3d6705886c81df3bd3e47ee0b2aa8557ff1f8d8834f03d"
+    },
+    {
+      "composite_address": "P01.5::B::0048",
+      "source_record_ordinal": 48,
+      "original_identifier": "GOV-001",
+      "source_envelope_hash": "432ec822bb4fd001fe128879a94be15b22c930a54e45a3b839307bd8779cd668"
+    },
+    {
+      "composite_address": "P01.5::B::0049",
+      "source_record_ordinal": 49,
+      "original_identifier": "GOV-002",
+      "source_envelope_hash": "a2d62ca0bbe3ee899e96dd2dea03e126773ea4f0f3ab310f64978e8d1f83b175"
+    },
+    {
+      "composite_address": "P01.5::B::0050",
+      "source_record_ordinal": 50,
+      "original_identifier": "GOV-003",
+      "source_envelope_hash": "cf7f1c305f530640ded87a7dacce38e10b38167c37eb84ba6e5f4f1a581393ef"
+    },
+    {
+      "composite_address": "P01.5::B::0052",
+      "source_record_ordinal": 52,
+      "original_identifier": "GOV-005",
+      "source_envelope_hash": "091d1eb8f39cfa84c464864811356d2fcebaea3763fd2a643c48270e40a23fb9"
+    },
+    {
+      "composite_address": "P01.5::B::0054",
+      "source_record_ordinal": 54,
+      "original_identifier": "GOV-007",
+      "source_envelope_hash": "d6d1ea6119e9a22a0a0780b162f1ac4e6b7bd803cdcb641d4bc8d5dff2f20ede"
+    },
+    {
+      "composite_address": "P01.5::B::0055",
+      "source_record_ordinal": 55,
+      "original_identifier": "GOV-008",
+      "source_envelope_hash": "219772793783edd3cae2f45107d4f0e9fc51d7c77756a674d734f1cbc1ccf941"
+    },
+    {
+      "composite_address": "P01.5::B::0057",
+      "source_record_ordinal": 57,
+      "original_identifier": "GOV-010",
+      "source_envelope_hash": "73c6e60324cfa16ae877c4b44a424be57ae3d6bb85544b55613bc85421849dfc"
+    },
+    {
+      "composite_address": "P01.5::B::0069",
+      "source_record_ordinal": 69,
+      "original_identifier": "OPS-007",
+      "source_envelope_hash": "f7a1005203e3c1d0fad72d73c8fe883b362dd46acd6b9000da2cc4f6a571adb3"
+    },
+    {
+      "composite_address": "P01.5::B::0073",
+      "source_record_ordinal": 73,
+      "original_identifier": "OPS-011",
+      "source_envelope_hash": "7fa6788ec17141d4d918745c251aba1cc58d86378a6d778aad82e8d4440871d1"
+    },
+    {
+      "composite_address": "P01.5::B::0094",
+      "source_record_ordinal": 94,
+      "original_identifier": "PROOF-002",
+      "source_envelope_hash": "b404633dfc367eb12ac2f5e685815badf975c5ee1b6458919910112146ebdb08"
+    },
+    {
+      "composite_address": "P01.5::B::0095",
+      "source_record_ordinal": 95,
+      "original_identifier": "PROOF-003",
+      "source_envelope_hash": "1c19e8c503cd9b1067a7b53b4e1c927f8536f6df82f854a7a61730acbb57cf5a"
+    },
+    {
+      "composite_address": "P01.5::B::0096",
+      "source_record_ordinal": 96,
+      "original_identifier": "PROOF-004",
+      "source_envelope_hash": "18aba559db3b9718fdb1e613bf610f6bb5376503ce239b5fe0e19c34d751e082"
+    },
+    {
+      "composite_address": "P01.5::B::0097",
+      "source_record_ordinal": 97,
+      "original_identifier": "PROOF-005",
+      "source_envelope_hash": "001692b2838db75885fd0a38945862e67c7378ee46ba06b0c4ad513df41fbf21"
+    },
+    {
+      "composite_address": "P01.5::B::0098",
+      "source_record_ordinal": 98,
+      "original_identifier": "PROOF-006",
+      "source_envelope_hash": "e4c0c6f50330f891897e310fdc98b7aeba18f9ddb70b3fb93bae50c741192e81"
+    },
+    {
+      "composite_address": "P01.5::B::0099",
+      "source_record_ordinal": 99,
+      "original_identifier": "PROOF-007",
+      "source_envelope_hash": "fec3ebcda667ae414f11415efb83eaa1820a1b6babc89b3f2a125caed048135d"
+    },
+    {
+      "composite_address": "P01.5::B::0112",
+      "source_record_ordinal": 112,
+      "original_identifier": "RUN-005",
+      "source_envelope_hash": "daafefdb24728c5e75ea197ab8ca283879b367456715236a6240e6961470032b"
+    }
+  ]
+}

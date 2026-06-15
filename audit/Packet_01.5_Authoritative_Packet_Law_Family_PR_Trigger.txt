@@ -1,0 +1,1 @@
+Process and independently verify the complete AUTHORITATIVE_PACKET_LAW evidence-acquisition family. Apply decisions only from precedence-filtered current governing evidence with commit and content digests. Leave missing, conflicting, stale, or private authority queued. No routing, grouping, closure, implementation, or Packet 04 work is authorized.
