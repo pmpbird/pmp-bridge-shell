@@ -22,6 +22,22 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Capture exact DATA-010 overlay
+        run: |
+          python3 - <<'PY'
+          import json
+          path='audit/routing-inventory/Packet_01.5_Applicability_Inventory_v9_Batch_008.jsonl'
+          with open(path,encoding='utf-8') as f:
+              record=next(json.loads(line) for line in f if json.loads(line).get('composite_address')=='P01.5::B::0043')
+          out={
+              'applicability_state':record['applicability_state'],
+              'applicability_batch_id':record['applicability_batch_id'],
+              'applicability_decision_hash':record['applicability_decision_hash'],
+              'evidence':record['applicability_evidence'],
+          }
+          with open('data010_overlay.json','w',encoding='utf-8') as f: json.dump(out,f,indent=2)
+          print(json.dumps(out,indent=2))
+          PY
       - name: Run verifier and capture exact output
         id: verify
         shell: bash
@@ -38,6 +54,7 @@ jobs:
           name: packet-015-cross-source-conflict-diagnostic
           path: |
             verification.log
+            data010_overlay.json
             audit/Packet_01.5_Cross_Source_Conflict_Independent_Verification_v1.json
           if-no-files-found: warn
       - name: Preserve verifier result
