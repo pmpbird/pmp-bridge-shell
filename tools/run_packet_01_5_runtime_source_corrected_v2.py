@@ -16,26 +16,21 @@ if __name__ == "__main__":
     with contextlib.redirect_stdout(captured):
         verifier.main()
     result = json.loads(captured.getvalue())
-    receipt = {
-        "status": result["status"],
-        "authoritative_main": result["authoritative_main"],
-        "source_queue_sha256": result["source_queue_sha256"],
-        "source_inventory_sha256": result["source_inventory_sha256"],
-        "source_inventory_records": result["source_inventory_records"],
-        "family_records": result["family_records"],
-        "decided_records": result["decided_records"],
-        "remaining_queued_records": result["remaining_queued_records"],
-        "unknown_hold_created": result["unknown_hold_created"],
-        "decisions": result["decisions"],
-        "route_content_sha256": result["route_content_sha256"],
-        "effective_precedence_edges": result["effective_precedence_edges"],
-        "prior_packet_01_5_outputs_used_as_runtime_evidence": result["prior_packet_01_5_outputs_used_as_runtime_evidence"],
-        "routing_assignments": result["routing_assignments"],
-        "destination_assignments": result["destination_assignments"],
-        "grouping_assignments": result["grouping_assignments"],
-        "source_records_removed_or_closed": result["source_records_removed_or_closed"],
-        "implementation_changes": result["implementation_changes"],
-        "packet_04_work": result["packet_04_work"],
-        "adversarial_rejection_fixtures_passed": result["adversarial_rejection_fixtures_passed"],
-    }
-    print(json.dumps(receipt, sort_keys=True, separators=(",", ":")))
+    print(f"STATUS={result['status']}")
+    print(f"MAIN={result['authoritative_main']}")
+    print(f"SOURCE_QUEUE_SHA256={result['source_queue_sha256']}")
+    print(f"SOURCE_INVENTORY_SHA256={result['source_inventory_sha256']} RECORDS={result['source_inventory_records']}")
+    print(f"FAMILY={result['family_records']} DECIDED={result['decided_records']} QUEUED={result['remaining_queued_records']} UNKNOWN_HOLD={result['unknown_hold_created']}")
+    print("DECISIONS=" + ",".join(result["decisions"]))
+    for path, digest in sorted(result["route_content_sha256"].items()):
+        print(f"ROUTE_SHA256 {path} {digest}")
+    print("BOUNDARIES=" + json.dumps({
+        "prior_outputs_as_evidence": result["prior_packet_01_5_outputs_used_as_runtime_evidence"],
+        "routing": result["routing_assignments"],
+        "destinations": result["destination_assignments"],
+        "grouping": result["grouping_assignments"],
+        "closed": result["source_records_removed_or_closed"],
+        "implementation": result["implementation_changes"],
+        "packet_04": result["packet_04_work"],
+    }, sort_keys=True, separators=(",", ":")))
+    print("ADVERSARIAL=" + ",".join(result["adversarial_rejection_fixtures_passed"]))
