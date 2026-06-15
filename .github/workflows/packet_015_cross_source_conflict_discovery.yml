@@ -1,0 +1,28 @@
+name: Packet 015 cross source conflict discovery
+
+on:
+  pull_request:
+    paths:
+      - "tools/inspect_packet_01_5_cross_source_conflict_v1.py"
+      - ".github/workflows/packet_015_cross_source_conflict_discovery.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Build digest-bound conflict source census
+        run: |
+          python3 tools/inspect_packet_01_5_cross_source_conflict_v1.py \
+            --output audit/Packet_01.5_Cross_Source_Conflict_Discovery_v1.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: packet-015-cross-source-conflict-discovery
+          path: audit/Packet_01.5_Cross_Source_Conflict_Discovery_v1.json
+          if-no-files-found: error
