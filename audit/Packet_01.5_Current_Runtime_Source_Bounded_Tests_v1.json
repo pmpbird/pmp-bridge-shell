@@ -1,0 +1,122 @@
+{
+  "packet": "01.5",
+  "family": "CURRENT_RUNTIME_SOURCE",
+  "main_commit": "9f71336fb28068db705a495e8fb5107dbfcbd440",
+  "graph_sha256": "5c09c0403e8fb48b752fccebd8dcacc3834aa692649e28ac0276f79735d3176c",
+  "tests": [
+    {
+      "test": "primary_map_first_success",
+      "pass": true,
+      "detail": [
+        "pmp-current-map-v9.json",
+        "pmp-current-map.json"
+      ]
+    },
+    {
+      "test": "loader_and_current_app_resolved",
+      "pass": true,
+      "detail": [
+        "pmp-route-guardian-current-loader-v14.html",
+        "pmp-current-inner-cleanbug-rgcontrols-v4.html"
+      ]
+    },
+    {
+      "test": "nested_chain_contains_v4_v3_home",
+      "pass": true,
+      "detail": [
+        "pmp-addon-loader-v1.js",
+        "pmp-addon-status-copy-v1.js",
+        "pmp-app-current.html",
+        "pmp-bug-memory-route-fix.js",
+        "pmp-control-room-cleanup-v1.js",
+        "pmp-copy-latest-report-v1.js",
+        "pmp-copy-lossless-diagnostic.js",
+        "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+        "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+        "pmp-current-inner.html",
+        "pmp-current-map-v9.json",
+        "pmp-current-truth-face.js",
+        "pmp-exact-addon-router-v1.js",
+        "pmp-fail-closed-simulation-v1.js",
+        "pmp-final-local-set-audit-v1.js",
+        "pmp-home-single-v12.html",
+        "pmp-home-single-v14.html",
+        "pmp-home-single-v6.html",
+        "pmp-lossless-copy-fix.js",
+        "pmp-manifest-alignment-save-v1.js",
+        "pmp-manifest-detail-check-v1.js",
+        "pmp-native-contrast-bridge-v2.js",
+        "pmp-phase1-hook-wiring-v1.js",
+        "pmp-phase1-migrate-v1.js",
+        "pmp-phase1-old-panel-suppress-v1.js",
+        "pmp-phase1-private-window-single-v1.js",
+        "pmp-phase1-source-intake-current-v1.js",
+        "pmp-phase1-source-router-v1.js",
+        "pmp-phase10-current-only-freeze-decision-v1.js",
+        "pmp-phase2-private-window-adapter-v1.js",
+        "pmp-phase2-runtime-verification-v1.js",
+        "pmp-phase3-hook-readiness-v1.js",
+        "pmp-phase3-hook-validation-execution-v1.js",
+        "pmp-phase4-real-app-proof-execution-v1.js",
+        "pmp-phase4-real-app-proof-readiness-v1.js",
+        "pmp-phase5-current-clean-decision-v1.js",
+        "pmp-phase5-current-clean-readiness-v1.js",
+        "pmp-phase6-freeze-readiness-v1.js",
+        "pmp-phase7-full-transfer-proof-execution-v1.js",
+        "pmp-phase7-full-transfer-proof-readiness-v1.js",
+        "pmp-phase8-full-history-lossless-readiness-v1.js",
+        "pmp-phase8a-history-archive-builder-v1.js",
+        "pmp-phase8a2-raw-old-history-intake-v1.js",
+        "pmp-phase8a3-history-unavailable-current-only-freeze-gate-v1.js",
+        "pmp-phase9-current-only-freeze-readiness-v1.js",
+        "pmp-plan-slot-fix-v1.js",
+        "pmp-plan-slot-swap-repair-v1.js",
+        "pmp-private-backup-lite-v1.js",
+        "pmp-private-claim-controls-v1.js",
+        "pmp-private-field-extractor-v1.js",
+        "pmp-private-medium-buttons-v1.js",
+        "pmp-private-one-button-pages-v2.js",
+        "pmp-private-simple-source-ui-v1.js",
+        "pmp-private-source-loader-v1.js",
+        "pmp-purge-archived-duplicates-v1.js",
+        "pmp-resident-lossless-readiness.js",
+        "pmp-resident-work-fix.js",
+        "pmp-resident-xray-core.js",
+        "pmp-resident-xray-finish.js",
+        "pmp-route-guardian-current-loader-v14.html",
+        "pmp-shared-theme-v1.js",
+        "pmp-source-record-cleanup-v1.js",
+        "pmp-support-intake-guard-v1.js",
+        "pmp-top-copy-lossless-button.js",
+        "pmp-top-lossless-copy-open.js",
+        "pmp-top-lossless-injector.js",
+        "pmp-top-lossless-loader.js",
+        "pmp-top-lossless-packet-builder.js",
+        "pmp-visual-cleanup-v1.js"
+      ]
+    },
+    {
+      "test": "fallbacks_separated",
+      "pass": true,
+      "detail": [
+        "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+        "pmp-current-map.json",
+        "pmp-route-guardian-current-loader-v9.html"
+      ]
+    },
+    {
+      "test": "worker_and_config_bound",
+      "pass": true,
+      "detail": [
+        "pmp-worker.js",
+        "wrangler.toml"
+      ]
+    },
+    {
+      "test": "packet_processing_outputs_excluded",
+      "pass": true,
+      "detail": "runtime graph only"
+    }
+  ],
+  "status": "PASS"
+}

@@ -1,0 +1,1336 @@
+{
+  "main_commit": "9f71336fb28068db705a495e8fb5107dbfcbd440",
+  "public_entry": "pmp-app-current.html",
+  "map_precedence": [
+    "pmp-current-map-v9.json",
+    "pmp-current-map.json"
+  ],
+  "primary_map": "pmp-current-map-v9.json",
+  "current_loader": "pmp-route-guardian-current-loader-v14.html",
+  "current_app": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+  "entry_fallback_loader": "pmp-route-guardian-current-loader-v9.html",
+  "fallback_app": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+  "nodes": [
+    {
+      "path": "bm.html",
+      "sha256": "914cc397892714ccd6632a0e0d8f9147b4b9921e36512af1c6dbf94742dc7043",
+      "roles": [
+        "manual-action-reachable"
+      ]
+    },
+    {
+      "path": "bug-memory-current-clean-v1.html",
+      "sha256": "85d61df2dae4787616e3878fbdbdfe1f3cfe435e4024912dfdd0e6a1f3ae6b42",
+      "roles": [
+        "manual-action-reachable"
+      ]
+    },
+    {
+      "path": "code-safety-v13.html",
+      "sha256": "1159ed26b62c86e416375cd092b9aa52b188955f668af5f0df8165e538f6b2a6",
+      "roles": [
+        "manual-action-reachable"
+      ]
+    },
+    {
+      "path": "index.html",
+      "sha256": "8e8f386171970426157e622e38bf8c6e45416e2d848bcc7cf0abee483cd4bad9",
+      "roles": [
+        "manual-action-reachable"
+      ]
+    },
+    {
+      "path": "pmp-addon-loader-v1.js",
+      "sha256": "a20a5144089f0c1002b3573e05db00b62d9d8fcb74155bf6883f222c72b70170",
+      "roles": [
+        "runtime-injection-after-open"
+      ]
+    },
+    {
+      "path": "pmp-addon-status-copy-v1.js",
+      "sha256": "593d0356bd471148ee3d5d59c14caa86054dcf9d7891f2100daf280bbf7c25e2",
+      "roles": [
+        "runtime-injection-after-open"
+      ]
+    },
+    {
+      "path": "pmp-app-current.html",
+      "sha256": "86f65c9bd973b61425bc55f60bc42db92b6c22b0ba562b57e439b175b639675a",
+      "roles": [
+        "public-entry",
+        "literal-runtime-reference"
+      ]
+    },
+    {
+      "path": "pmp-bug-memory-route-fix.js",
+      "sha256": "dc6ed9b4308751356cac906d859e48bf24d3dac806296e09af914c5504713abb",
+      "roles": [
+        "automatic-script"
+      ]
+    },
+    {
+      "path": "pmp-clean-v21.html",
+      "sha256": "ecc3510b4503b3aa75019138f11f11bd8d300679b675f0a9a2aff57319c0c139",
+      "roles": [
+        "manual-action-reachable"
+      ]
+    },
+    {
+      "path": "pmp-control-room-cleanup-v1.js",
+      "sha256": "d5b4eef278b1062d2a833e2ccead49b59bb9cae9b4641eb1db5d4fdf756c6a6d",
+      "roles": [
+        "automatic-script"
+      ]
+    },
+    {
+      "path": "pmp-copy-latest-report-v1.js",
+      "sha256": "621103e36c771e160551aec860bc2f731d77a2a4db32e60d9b0bc41e1bb5e360",
+      "roles": [
+        "runtime-injection-after-open"
+      ]
+    },
+    {
+      "path": "pmp-copy-lossless-diagnostic.js",
+      "sha256": "b58b7a82849f37657d1c6ff10e6cfe0a9088d22c20ec5dc02d3eaa60569132a1",
+      "roles": [
+        "automatic-script"
+      ]
+    },
+    {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "sha256": "f37a1aa55e9fe0f89f2a56cf04ca91bd444bdbc84043147549039b1c2a172330",
+      "roles": [
+        "automatic-nested-wrapper"
+      ]
+    },
+    {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+      "sha256": "c1934899c8d8dbff92a9b1533792fb420d3895b2ffee4ca0550aefecb2c8436d",
+      "roles": [
+        "current-app-wrapper",
+        "fallback-app",
+        "literal-runtime-reference"
+      ]
+    },
+    {
+      "path": "pmp-current-inner.html",
+      "sha256": "d9b6b39a8623b4795d35170630bb442e9b272129d53ed65defea3ee0f857989d",
+      "roles": [
+        "literal-runtime-reference"
+      ]
+    },
+    {
+      "path": "pmp-current-map-v9.json",
+      "sha256": "1f15f09a0203def86d12fe9131dae6fcc426e26cbb23c12e95bd7c6652156994",
+      "roles": [
+        "primary-map"
+      ]
+    },
+    {
+      "path": "pmp-current-map.json",
+      "sha256": "9a3835dd1b50d7273206da4404020ac601504824e7307e209d2a6fa8f12ac905",
+      "roles": [
+        "fallback-map"
+      ]
+    },
+    {
+      "path": "pmp-current-truth-face.js",
+      "sha256": "23d8470152fa7781b1e8e209cb8fe39c5a5cc19737c9f5d0a79ba06d459f0646",
+      "roles": [
+        "automatic-script"
+      ]
+    },
+    {
+      "path": "pmp-exact-addon-router-v1.js",
+      "sha256": "30e9b6ce4e2e9996ea06058227ffd32ec966657e132544d4e33fa3251b577cf8",
+      "roles": [
+        "runtime-injection-after-open"
+      ]
+    },
+    {
+      "path": "pmp-fail-closed-simulation-v1.js",
+      "sha256": "2a228f0137546b090694cd074a5d8cbd3971b5bc25447750d53f3fba69875521",
+      "roles": [
+        "literal-runtime-reference"
+      ]
+    },
+    {
+      "path": "pmp-final-local-set-audit-v1.js",
+      "sha256": "14f7907ede2271e762198cd9621ce1039d522771db24fa87bb6c275c6a73f1d7",
+      "roles": [
+        "runtime-injection-after-open"
+      ]
+    },
+    {
+      "path": "pmp-home-single-v10.html",
+      "sha256": "50ac0db05c07edc18bcc7dfe5d28c88c890dce03465dbb89090da22241c02121",
+      "roles": [
+        "manual-action-reachable"
+      ]
+    },
+    {
+      "path": "pmp-home-single-v12.html",
+      "sha256": "4617563a0a85d9442ce5beee819dced9c546be7038d17cb65d3ee1f3e205fdf4",
+      "roles": [
+        "literal-runtime-reference",
+        "manual-action-reachable"
+      ]
+    },
+    {
+      "path": "pmp-home-single-v14.html",
+      "sha256": "4a9b81834a619c418c129b370d820fa1bca19f2c3b0b3806fcce18456ee9009f",
+      "roles": [
+        "literal-runtime-reference",
+        "manual-action-reachable"
+      ]
+    },
+    {
+      "path": "pmp-home-single-v6.html",
+      "sha256": "ceeff001b76284578b3a4283d5dd0885e72a4e176f71b48090a88e7747ba9eb4",
+      "roles": [
+        "automatic-inner-application",
+        "literal-runtime-reference",
+        "manual-action-reachable"
+      ]
+    },
+    {
+      "path": "pmp-lossless-copy-fix.js",
+      "sha256": "bff2b9947ed35aadbaf58e8fff184392af04b509062bbeb9a2f59ad82df47162",
+      "roles": [
+        "automatic-script"
+      ]
+    },
+    {
+      "path": "pmp-manifest-alignment-save-v1.js",
+      "sha256": "27dcb9e8afd2b8a1e10a7b3ceedcf9bb8f42eefa826274e413061e89e2892370",
+      "roles": [
+        "runtime-injection-after-open"
+      ]
+    },
+    {
+      "path": "pmp-manifest-detail-check-v1.js",
+      "sha256": "3ddf3807f545099cd839cf7b95b1b23437e9c6e46b3f9ae181d01d6622356d65",
+      "roles": [
+        "runtime-injection-after-open"
+      ]
+    },
+    {
+      "path": "pmp-native-contrast-bridge-v2.js",
+      "sha256": "4f1bc1291b39dec0e65aba33ce67352e6f609a95d67a2b496330c429d709d6d4",
+      "roles": [
+        "automatic-script"
+      ]
+    },
+    {
+      "path": "pmp-phase1-hook-wiring-v1.js",
+      "sha256": "df51dfc92b67925d3e2a2ddeb5a3eff49af3e586c0bb01a51308a25c44a465d7",
+      "roles": [
+        "runtime-injection-after-open"
+      ]
+    },
+    {
+      "path": "pmp-phase1-migrate-v1.js",
+      "sha256": "e91874eef40d98bd209d3b231145fd37bd651b7b8ea089dc051dedb68215ac0a",
+      "roles": [
+        "automatic-script",
+        "runtime-injection-after-open"
+      ]
+    },
+    {
+      "path": "pmp-phase1-old-panel-suppress-v1.js",
+      "sha256": "7e86a41b02e5e617b44b6227684fc38b1601c9a5e0e0946a35fc9ec5a6acd3a7",
+      "roles": [
+        "runtime-injection-after-open"
+      ]
+    },
+    {
+      "path": "pmp-phase1-private-window-single-v1.js",
+      "sha256": "205427b4eca2fc2ef50663d44ccb499e12009e2c6b96c26e2646102a27de0adf",
+      "roles": [
+        "runtime-injection-after-open",
+        "literal-runtime-reference"
+      ]
+    },
+    {
+      "path": "pmp-phase1-source-intake-current-v1.js",
+      "sha256": "d5b67083e91de33f98028a2440beea59b728d138c1b96acf45bad0d3c4040735",
+      "roles": [
+        "automatic-script"
+      ]
+    },
+    {
+      "path": "pmp-phase1-source-router-v1.js",
+      "sha256": "7e80e7a28f4571525aa32889efd424a8fa0dd3b8c469b439f2b5c33607f37c67",
+      "roles": [
+        "runtime-injection-after-open"
+      ]
+    },
+    {
+      "path": "pmp-phase10-current-only-freeze-decision-v1.js",
+      "sha256": "0392a7fc4be07d43a5b90a53a0e72b315640363f4a9308d66d0700c5e6dbe21b",
+      "roles": [
+        "literal-runtime-reference"
+      ]
+    },
+    {
+      "path": "pmp-phase2-private-window-adapter-v1.js",
+      "sha256": "bc94ff6caab117cf74b394c22b76cabcffb79c1d4bbd8af74a05ae47933a233b",
+      "roles": [
+        "automatic-script"
+      ]
+    },
+    {
+      "path": "pmp-phase2-runtime-verification-v1.js",
+      "sha256": "42a1cec8bb68e9e7ab14b56a6d8ca21e4c866729b3f587a8b11f79c165599a73",
+      "roles": [
+        "literal-runtime-reference"
+      ]
+    },
+    {
+      "path": "pmp-phase3-hook-readiness-v1.js",
+      "sha256": "dc2902222e550400d11396b49c96b05842cef3be41a2cf946be0e40971a27744",
+      "roles": [
+        "literal-runtime-reference"
+      ]
+    },
+    {
+      "path": "pmp-phase3-hook-validation-execution-v1.js",
+      "sha256": "067e70205d0c90cd5e01c9ce79fdeaa83d7bb15b8256aab7514ee2caa9df7ca9",
+      "roles": [
+        "literal-runtime-reference"
+      ]
+    },
+    {
+      "path": "pmp-phase4-real-app-proof-execution-v1.js",
+      "sha256": "8fbb47613c2e619fdee5a38727758d63ba8ee58a94e4243dafa8b13a79cf9df0",
+      "roles": [
+        "literal-runtime-reference"
+      ]
+    },
+    {
+      "path": "pmp-phase4-real-app-proof-readiness-v1.js",
+      "sha256": "5245a66cacc54f5f685a2015922782e38595f3314cd80552c3dca546836adea9",
+      "roles": [
+        "literal-runtime-reference"
+      ]
+    },
+    {
+      "path": "pmp-phase5-current-clean-decision-v1.js",
+      "sha256": "c291a7567652d43b9a9868e1ffb17d82ade61516ec775b9f6991032f53d2f8f2",
+      "roles": [
+        "literal-runtime-reference"
+      ]
+    },
+    {
+      "path": "pmp-phase5-current-clean-readiness-v1.js",
+      "sha256": "b5aba5dbce7f8ca98bef4c1d5725196cbc572446244f0c39a1f285440c7647ad",
+      "roles": [
+        "literal-runtime-reference"
+      ]
+    },
+    {
+      "path": "pmp-phase6-freeze-readiness-v1.js",
+      "sha256": "43acf907fea9c8d2812682d9432d70c46fc71bc1efd0c7ec512e1960742f86c0",
+      "roles": [
+        "literal-runtime-reference"
+      ]
+    },
+    {
+      "path": "pmp-phase7-full-transfer-proof-execution-v1.js",
+      "sha256": "4e3e03532cb1893e44bfe9e19b1753f944606198b9617472145d23c02bc76828",
+      "roles": [
+        "literal-runtime-reference"
+      ]
+    },
+    {
+      "path": "pmp-phase7-full-transfer-proof-readiness-v1.js",
+      "sha256": "27f58b3e4cb6da2ee933d5707d15258d707907f4f368f16a8442d29aa4344f3b",
+      "roles": [
+        "literal-runtime-reference"
+      ]
+    },
+    {
+      "path": "pmp-phase8-full-history-lossless-readiness-v1.js",
+      "sha256": "e85f7ed36fb7e30793705b36808c234de8e2acafe5cd2928809208a799e031ce",
+      "roles": [
+        "literal-runtime-reference"
+      ]
+    },
+    {
+      "path": "pmp-phase8a-history-archive-builder-v1.js",
+      "sha256": "3b9d73e221f3a363aeecc4968281fb0703aa6d066ca1595ca9ee31894fa2c225",
+      "roles": [
+        "literal-runtime-reference"
+      ]
+    },
+    {
+      "path": "pmp-phase8a2-raw-old-history-intake-v1.js",
+      "sha256": "7f51840460e8cd256117037217807c2f4fd6ae1f802bb7118929095ceebd0624",
+      "roles": [
+        "literal-runtime-reference"
+      ]
+    },
+    {
+      "path": "pmp-phase8a3-history-unavailable-current-only-freeze-gate-v1.js",
+      "sha256": "9ade055a44d5604e37ac4c6f831df66e0e8d92af265097e3e350047e23642c8d",
+      "roles": [
+        "literal-runtime-reference"
+      ]
+    },
+    {
+      "path": "pmp-phase9-current-only-freeze-readiness-v1.js",
+      "sha256": "4a3e8028a6ae0d5180f400553dc331c8fbe3e2c5b5acc14f78cdb072d360c200",
+      "roles": [
+        "literal-runtime-reference"
+      ]
+    },
+    {
+      "path": "pmp-plan-slot-fix-v1.js",
+      "sha256": "f9ff1544c83e4ad02cff6abb20b249845f4ab490192a6e4b307876a16652534f",
+      "roles": [
+        "runtime-injection-after-open"
+      ]
+    },
+    {
+      "path": "pmp-plan-slot-swap-repair-v1.js",
+      "sha256": "99e3c594a4c2d5d04b9a4c904e8eeef8a36fd2da499e5b76371eb64a4a000652",
+      "roles": [
+        "runtime-injection-after-open"
+      ]
+    },
+    {
+      "path": "pmp-private-backup-lite-v1.js",
+      "sha256": "90d7dc3e3862baa19e7c98c16a7f81f53c489afcf0927c7c1ad585e01f434bdf",
+      "roles": [
+        "automatic-script",
+        "runtime-injection-after-open"
+      ]
+    },
+    {
+      "path": "pmp-private-claim-controls-v1.js",
+      "sha256": "157e709702e6c3b068bc0e9805e87047f8252ac50f70fffa76c150c0acd70a0d",
+      "roles": [
+        "automatic-script"
+      ]
+    },
+    {
+      "path": "pmp-private-field-extractor-v1.js",
+      "sha256": "5fbed93eaabe9e466e042bb6a06ef720265965f1a31dbdc65c8fad7f473b5a2d",
+      "roles": [
+        "literal-runtime-reference"
+      ]
+    },
+    {
+      "path": "pmp-private-medium-buttons-v1.js",
+      "sha256": "6d87c7390fb9d9c91362655f15e287cabcc307d3925bdd54751959a95438aa6a",
+      "roles": [
+        "automatic-script"
+      ]
+    },
+    {
+      "path": "pmp-private-one-button-pages-v2.js",
+      "sha256": "89ebacf6a593b08ea456b27725c814086b7427631f28fe6ba396203dd89960b9",
+      "roles": [
+        "automatic-script"
+      ]
+    },
+    {
+      "path": "pmp-private-simple-source-ui-v1.js",
+      "sha256": "0b248685cf0ecdefcf0b5c97494f259f7594ad3a5bc75f7b59aa1e15ead6bf66",
+      "roles": [
+        "automatic-script"
+      ]
+    },
+    {
+      "path": "pmp-private-source-loader-v1.js",
+      "sha256": "60caf8d441ca03db8550af03984734f047c7e46b2596b6fe5ae3dedef146f9c4",
+      "roles": [
+        "automatic-script"
+      ]
+    },
+    {
+      "path": "pmp-purge-archived-duplicates-v1.js",
+      "sha256": "09b514eb361558634bd91976963a75e2ffb4a06bc14024ac65e6e242a914cd79",
+      "roles": [
+        "runtime-injection-after-open"
+      ]
+    },
+    {
+      "path": "pmp-resident-lossless-readiness.js",
+      "sha256": "834c4449f22ff43380422e5ba1b0f1a6d33c652dd34530d261102baf018690b4",
+      "roles": [
+        "automatic-script"
+      ]
+    },
+    {
+      "path": "pmp-resident-work-fix.js",
+      "sha256": "ae389cf19c6a64113e6e3ce691b603871cc865b74eb0b99f118ea54b9d91ccc9",
+      "roles": [
+        "automatic-script"
+      ]
+    },
+    {
+      "path": "pmp-resident-xray-core.js",
+      "sha256": "27ec76b08abe90d2acd910ce9a5541b99194925549ccfd0d57652fca439ddcf4",
+      "roles": [
+        "automatic-script"
+      ]
+    },
+    {
+      "path": "pmp-resident-xray-finish.js",
+      "sha256": "31213e3ca5f90748844d11c0754556891070ecd170e325c8404632bcb19585d0",
+      "roles": [
+        "automatic-script"
+      ]
+    },
+    {
+      "path": "pmp-route-guardian-action-v2.html",
+      "sha256": "cebc38e4eeebd52b079ade82c930d4aacb5e37b8a361c769095c07a12f4edd5d",
+      "roles": [
+        "manual-action-reachable"
+      ]
+    },
+    {
+      "path": "pmp-route-guardian-current-loader-v14.html",
+      "sha256": "c1816f2dec353fa8ce5d77a6d12d710f343a389fe799249606235e5480880515",
+      "roles": [
+        "current-route-guardian"
+      ]
+    },
+    {
+      "path": "pmp-route-guardian-current-loader-v9.html",
+      "sha256": "21ba5ab55bd4112dd491658434b2bace29d02c2dd8261c7af93b7cd40e01633c",
+      "roles": [
+        "fallback-loader"
+      ]
+    },
+    {
+      "path": "pmp-shared-theme-v1.js",
+      "sha256": "59545635c3f8c96f03c458fedb339d6aabfe4b0a7a98e6ce9e205f678f161092",
+      "roles": [
+        "literal-runtime-reference"
+      ]
+    },
+    {
+      "path": "pmp-source-record-cleanup-v1.js",
+      "sha256": "11e6b8dbcab28f3ca46ba2112c18a1cb3e9b66d8aa63a7533c322a44626a6fde",
+      "roles": [
+        "runtime-injection-after-open"
+      ]
+    },
+    {
+      "path": "pmp-support-intake-guard-v1.js",
+      "sha256": "157afe50203aa4176202e7215b918778d0b88d145b6f0642386e218f51d8b5fe",
+      "roles": [
+        "runtime-injection-after-open"
+      ]
+    },
+    {
+      "path": "pmp-top-copy-lossless-button.js",
+      "sha256": "073e6fa6c182ce556bb500ab6e909ad0966ac64d112e2f252b24ae983a2bc0d3",
+      "roles": [
+        "literal-runtime-reference"
+      ]
+    },
+    {
+      "path": "pmp-top-lossless-copy-open.js",
+      "sha256": "c4b9bafc845c339992bdd7f9ce795e7cb8c0d1275a8413bf3e19c96d7df8875f",
+      "roles": [
+        "literal-runtime-reference"
+      ]
+    },
+    {
+      "path": "pmp-top-lossless-injector.js",
+      "sha256": "a9d1f688c329566792e5863e1a02da2769df1d07fd8fbc2251868df8f33b10cd",
+      "roles": [
+        "automatic-script"
+      ]
+    },
+    {
+      "path": "pmp-top-lossless-loader.js",
+      "sha256": "d23220f38faf7417c7364148d028f4f7646d3799a44b85a29d8fa5d4e0d26c37",
+      "roles": [
+        "literal-runtime-reference"
+      ]
+    },
+    {
+      "path": "pmp-top-lossless-packet-builder.js",
+      "sha256": "ddbeb46430915aeaf13dc1d9a81e1ca356fc4d7256ef7a2ae7ce07d4a2c40555",
+      "roles": [
+        "literal-runtime-reference"
+      ]
+    },
+    {
+      "path": "pmp-visual-cleanup-v1.js",
+      "sha256": "41e7bf08a883bfacc4f7e92e0d372130c0f9562c2ab4620ed3f0f505104e2426",
+      "roles": [
+        "automatic-script"
+      ]
+    },
+    {
+      "path": "pmp-worker.js",
+      "sha256": "c1eac2d2afd2ccc7b12e20d7cf821ec76f44e1347e865f596f7253ce1f93ef78",
+      "roles": [
+        "worker-or-platform-config"
+      ]
+    },
+    {
+      "path": "private-bug-memory-hub-v9.html",
+      "sha256": "3a62506d8b35eb2502e2d7af5787796be024b4dc284446d5604800d315bab5cb",
+      "roles": [
+        "manual-action-reachable"
+      ]
+    },
+    {
+      "path": "private-bug-mixer-lab-v1.html",
+      "sha256": "198c16d637d0a54d45b1ba12b4a3afb171abfd1364962d988ae266c5d6f5cc7c",
+      "roles": [
+        "manual-action-reachable"
+      ]
+    },
+    {
+      "path": "resident-notes-backend-v2.html",
+      "sha256": "bd96a74b7e364c0d7b4eba8428cf9728d1afcadefbff6468137f09b56339b4b0",
+      "roles": [
+        "manual-action-reachable"
+      ]
+    },
+    {
+      "path": "resident-notes-catalog-v3.html",
+      "sha256": "9bc9f4ac308d2f0748bca46b499db6e02f71db44e3a0156db41a47dcae84265d",
+      "roles": [
+        "manual-action-reachable"
+      ]
+    },
+    {
+      "path": "resident-zip-xray-v2.html",
+      "sha256": "293f6e135c8713775534d98c4ee2fc69e9e2638b6f9068792f840259461a87c1",
+      "roles": [
+        "manual-action-reachable"
+      ]
+    },
+    {
+      "path": "resident.html",
+      "sha256": "62fb7af2509d3cb04f11e80d951dddee7a89f96016793e586dd4a75c0f252f5d",
+      "roles": [
+        "manual-action-reachable"
+      ]
+    },
+    {
+      "path": "safe-writer-v14.html",
+      "sha256": "55d5c3a6cea5cb914658b64c50e1979c3e95486f44498747de38561ad1947ed7",
+      "roles": [
+        "manual-action-reachable"
+      ]
+    },
+    {
+      "path": "wrangler.toml",
+      "sha256": "4df29626774262a81f201b460c21b29df2acb03e88579237f128a922a3ca1330",
+      "roles": [
+        "worker-or-platform-config"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "platform",
+      "target": "pmp-worker.js",
+      "kind": "worker-or-platform-config"
+    },
+    {
+      "source": "platform",
+      "target": "wrangler.toml",
+      "kind": "worker-or-platform-config"
+    },
+    {
+      "source": "pmp-app-current.html",
+      "target": "pmp-current-map-v9.json",
+      "kind": "primary-map-first-success"
+    },
+    {
+      "source": "pmp-app-current.html",
+      "target": "pmp-current-map.json",
+      "kind": "fallback-only-after-primary-map-failure"
+    },
+    {
+      "source": "pmp-app-current.html",
+      "target": "pmp-route-guardian-current-loader-v9.html",
+      "kind": "fallback-only-after-map-failure"
+    },
+    {
+      "source": "pmp-bug-memory-route-fix.js",
+      "target": "bm.html",
+      "kind": "manual-action-reachable"
+    },
+    {
+      "source": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "target": "bug-memory-current-clean-v1.html",
+      "kind": "manual-action-reachable"
+    },
+    {
+      "source": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "target": "pmp-control-room-cleanup-v1.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "target": "pmp-copy-lossless-diagnostic.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "target": "pmp-current-truth-face.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "target": "pmp-home-single-v6.html",
+      "kind": "automatic-inner-application"
+    },
+    {
+      "source": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "target": "pmp-lossless-copy-fix.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "target": "pmp-native-contrast-bridge-v2.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "target": "pmp-phase1-source-intake-current-v1.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "target": "pmp-phase2-private-window-adapter-v1.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "target": "pmp-private-claim-controls-v1.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "target": "pmp-private-medium-buttons-v1.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "target": "pmp-private-one-button-pages-v2.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "target": "pmp-private-simple-source-ui-v1.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "target": "pmp-private-source-loader-v1.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "target": "pmp-resident-lossless-readiness.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "target": "pmp-resident-work-fix.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "target": "pmp-resident-xray-core.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "target": "pmp-resident-xray-finish.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "target": "pmp-route-guardian-action-v2.html",
+      "kind": "manual-action-reachable"
+    },
+    {
+      "source": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "target": "pmp-top-lossless-injector.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "target": "pmp-visual-cleanup-v1.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "target": "resident.html",
+      "kind": "manual-action-reachable"
+    },
+    {
+      "source": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+      "target": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "kind": "automatic-nested-wrapper"
+    },
+    {
+      "source": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+      "target": "pmp-phase1-migrate-v1.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+      "target": "pmp-private-backup-lite-v1.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner.html",
+      "target": "pmp-bug-memory-route-fix.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner.html",
+      "target": "pmp-copy-lossless-diagnostic.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner.html",
+      "target": "pmp-current-truth-face.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner.html",
+      "target": "pmp-home-single-v14.html",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-current-inner.html",
+      "target": "pmp-lossless-copy-fix.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner.html",
+      "target": "pmp-resident-lossless-readiness.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner.html",
+      "target": "pmp-resident-work-fix.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner.html",
+      "target": "pmp-resident-xray-core.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner.html",
+      "target": "pmp-resident-xray-finish.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-inner.html",
+      "target": "pmp-top-lossless-injector.js",
+      "kind": "automatic-script"
+    },
+    {
+      "source": "pmp-current-map-v9.json",
+      "target": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+      "kind": "fallback-only-app"
+    },
+    {
+      "source": "pmp-current-map-v9.json",
+      "target": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+      "kind": "map-current-app"
+    },
+    {
+      "source": "pmp-current-map-v9.json",
+      "target": "pmp-route-guardian-current-loader-v14.html",
+      "kind": "map-current-loader"
+    },
+    {
+      "source": "pmp-current-truth-face.js",
+      "target": "pmp-app-current.html",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-current-truth-face.js",
+      "target": "pmp-current-inner.html",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-current-truth-face.js",
+      "target": "pmp-home-single-v6.html",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-home-single-v12.html",
+      "target": "bm.html",
+      "kind": "manual-action-reachable"
+    },
+    {
+      "source": "pmp-home-single-v12.html",
+      "target": "index.html",
+      "kind": "manual-action-reachable"
+    },
+    {
+      "source": "pmp-home-single-v12.html",
+      "target": "pmp-home-single-v10.html",
+      "kind": "manual-action-reachable"
+    },
+    {
+      "source": "pmp-home-single-v12.html",
+      "target": "pmp-home-single-v12.html",
+      "kind": "manual-action-reachable"
+    },
+    {
+      "source": "pmp-home-single-v12.html",
+      "target": "pmp-shared-theme-v1.js",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-home-single-v12.html",
+      "target": "private-bug-memory-hub-v9.html",
+      "kind": "manual-action-reachable"
+    },
+    {
+      "source": "pmp-home-single-v12.html",
+      "target": "private-bug-mixer-lab-v1.html",
+      "kind": "manual-action-reachable"
+    },
+    {
+      "source": "pmp-home-single-v12.html",
+      "target": "resident-notes-backend-v2.html",
+      "kind": "manual-action-reachable"
+    },
+    {
+      "source": "pmp-home-single-v12.html",
+      "target": "resident-notes-catalog-v3.html",
+      "kind": "manual-action-reachable"
+    },
+    {
+      "source": "pmp-home-single-v12.html",
+      "target": "resident-zip-xray-v2.html",
+      "kind": "manual-action-reachable"
+    },
+    {
+      "source": "pmp-home-single-v14.html",
+      "target": "bm.html",
+      "kind": "manual-action-reachable"
+    },
+    {
+      "source": "pmp-home-single-v14.html",
+      "target": "index.html",
+      "kind": "manual-action-reachable"
+    },
+    {
+      "source": "pmp-home-single-v14.html",
+      "target": "pmp-home-single-v14.html",
+      "kind": "manual-action-reachable"
+    },
+    {
+      "source": "pmp-home-single-v14.html",
+      "target": "pmp-home-single-v6.html",
+      "kind": "manual-action-reachable"
+    },
+    {
+      "source": "pmp-home-single-v14.html",
+      "target": "pmp-shared-theme-v1.js",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-home-single-v14.html",
+      "target": "private-bug-memory-hub-v9.html",
+      "kind": "manual-action-reachable"
+    },
+    {
+      "source": "pmp-home-single-v14.html",
+      "target": "private-bug-mixer-lab-v1.html",
+      "kind": "manual-action-reachable"
+    },
+    {
+      "source": "pmp-home-single-v14.html",
+      "target": "resident-notes-backend-v2.html",
+      "kind": "manual-action-reachable"
+    },
+    {
+      "source": "pmp-home-single-v14.html",
+      "target": "resident-notes-catalog-v3.html",
+      "kind": "manual-action-reachable"
+    },
+    {
+      "source": "pmp-home-single-v14.html",
+      "target": "resident-zip-xray-v2.html",
+      "kind": "manual-action-reachable"
+    },
+    {
+      "source": "pmp-home-single-v6.html",
+      "target": "code-safety-v13.html",
+      "kind": "manual-action-reachable"
+    },
+    {
+      "source": "pmp-home-single-v6.html",
+      "target": "pmp-clean-v21.html",
+      "kind": "manual-action-reachable"
+    },
+    {
+      "source": "pmp-home-single-v6.html",
+      "target": "pmp-home-single-v6.html",
+      "kind": "manual-action-reachable"
+    },
+    {
+      "source": "pmp-home-single-v6.html",
+      "target": "resident.html",
+      "kind": "manual-action-reachable"
+    },
+    {
+      "source": "pmp-home-single-v6.html",
+      "target": "safe-writer-v14.html",
+      "kind": "manual-action-reachable"
+    },
+    {
+      "source": "pmp-phase1-source-intake-current-v1.js",
+      "target": "pmp-phase1-private-window-single-v1.js",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-phase10-current-only-freeze-decision-v1.js",
+      "target": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-phase2-private-window-adapter-v1.js",
+      "target": "pmp-fail-closed-simulation-v1.js",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-phase2-private-window-adapter-v1.js",
+      "target": "pmp-phase10-current-only-freeze-decision-v1.js",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-phase2-private-window-adapter-v1.js",
+      "target": "pmp-phase2-runtime-verification-v1.js",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-phase2-private-window-adapter-v1.js",
+      "target": "pmp-phase3-hook-readiness-v1.js",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-phase2-private-window-adapter-v1.js",
+      "target": "pmp-phase3-hook-validation-execution-v1.js",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-phase2-private-window-adapter-v1.js",
+      "target": "pmp-phase4-real-app-proof-execution-v1.js",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-phase2-private-window-adapter-v1.js",
+      "target": "pmp-phase4-real-app-proof-readiness-v1.js",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-phase2-private-window-adapter-v1.js",
+      "target": "pmp-phase5-current-clean-decision-v1.js",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-phase2-private-window-adapter-v1.js",
+      "target": "pmp-phase5-current-clean-readiness-v1.js",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-phase2-private-window-adapter-v1.js",
+      "target": "pmp-phase6-freeze-readiness-v1.js",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-phase2-private-window-adapter-v1.js",
+      "target": "pmp-phase7-full-transfer-proof-execution-v1.js",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-phase2-private-window-adapter-v1.js",
+      "target": "pmp-phase7-full-transfer-proof-readiness-v1.js",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-phase2-private-window-adapter-v1.js",
+      "target": "pmp-phase8-full-history-lossless-readiness-v1.js",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-phase2-private-window-adapter-v1.js",
+      "target": "pmp-phase8a-history-archive-builder-v1.js",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-phase2-private-window-adapter-v1.js",
+      "target": "pmp-phase8a2-raw-old-history-intake-v1.js",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-phase2-private-window-adapter-v1.js",
+      "target": "pmp-phase8a3-history-unavailable-current-only-freeze-gate-v1.js",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-phase2-private-window-adapter-v1.js",
+      "target": "pmp-phase9-current-only-freeze-readiness-v1.js",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-phase5-current-clean-decision-v1.js",
+      "target": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-phase5-current-clean-readiness-v1.js",
+      "target": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-phase9-current-only-freeze-readiness-v1.js",
+      "target": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-private-source-loader-v1.js",
+      "target": "pmp-private-field-extractor-v1.js",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-route-guardian-current-loader-v14.html",
+      "target": "pmp-addon-loader-v1.js",
+      "kind": "runtime-injection-after-open"
+    },
+    {
+      "source": "pmp-route-guardian-current-loader-v14.html",
+      "target": "pmp-addon-status-copy-v1.js",
+      "kind": "runtime-injection-after-open"
+    },
+    {
+      "source": "pmp-route-guardian-current-loader-v14.html",
+      "target": "pmp-copy-latest-report-v1.js",
+      "kind": "runtime-injection-after-open"
+    },
+    {
+      "source": "pmp-route-guardian-current-loader-v14.html",
+      "target": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-route-guardian-current-loader-v14.html",
+      "target": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+      "kind": "manual-open-latest"
+    },
+    {
+      "source": "pmp-route-guardian-current-loader-v14.html",
+      "target": "pmp-exact-addon-router-v1.js",
+      "kind": "runtime-injection-after-open"
+    },
+    {
+      "source": "pmp-route-guardian-current-loader-v14.html",
+      "target": "pmp-final-local-set-audit-v1.js",
+      "kind": "runtime-injection-after-open"
+    },
+    {
+      "source": "pmp-route-guardian-current-loader-v14.html",
+      "target": "pmp-manifest-alignment-save-v1.js",
+      "kind": "runtime-injection-after-open"
+    },
+    {
+      "source": "pmp-route-guardian-current-loader-v14.html",
+      "target": "pmp-manifest-detail-check-v1.js",
+      "kind": "runtime-injection-after-open"
+    },
+    {
+      "source": "pmp-route-guardian-current-loader-v14.html",
+      "target": "pmp-phase1-hook-wiring-v1.js",
+      "kind": "runtime-injection-after-open"
+    },
+    {
+      "source": "pmp-route-guardian-current-loader-v14.html",
+      "target": "pmp-phase1-migrate-v1.js",
+      "kind": "runtime-injection-after-open"
+    },
+    {
+      "source": "pmp-route-guardian-current-loader-v14.html",
+      "target": "pmp-phase1-old-panel-suppress-v1.js",
+      "kind": "runtime-injection-after-open"
+    },
+    {
+      "source": "pmp-route-guardian-current-loader-v14.html",
+      "target": "pmp-phase1-private-window-single-v1.js",
+      "kind": "runtime-injection-after-open"
+    },
+    {
+      "source": "pmp-route-guardian-current-loader-v14.html",
+      "target": "pmp-phase1-source-router-v1.js",
+      "kind": "runtime-injection-after-open"
+    },
+    {
+      "source": "pmp-route-guardian-current-loader-v14.html",
+      "target": "pmp-plan-slot-fix-v1.js",
+      "kind": "runtime-injection-after-open"
+    },
+    {
+      "source": "pmp-route-guardian-current-loader-v14.html",
+      "target": "pmp-plan-slot-swap-repair-v1.js",
+      "kind": "runtime-injection-after-open"
+    },
+    {
+      "source": "pmp-route-guardian-current-loader-v14.html",
+      "target": "pmp-private-backup-lite-v1.js",
+      "kind": "runtime-injection-after-open"
+    },
+    {
+      "source": "pmp-route-guardian-current-loader-v14.html",
+      "target": "pmp-purge-archived-duplicates-v1.js",
+      "kind": "runtime-injection-after-open"
+    },
+    {
+      "source": "pmp-route-guardian-current-loader-v14.html",
+      "target": "pmp-source-record-cleanup-v1.js",
+      "kind": "runtime-injection-after-open"
+    },
+    {
+      "source": "pmp-route-guardian-current-loader-v14.html",
+      "target": "pmp-support-intake-guard-v1.js",
+      "kind": "runtime-injection-after-open"
+    },
+    {
+      "source": "pmp-shared-theme-v1.js",
+      "target": "pmp-home-single-v12.html",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-top-lossless-injector.js",
+      "target": "pmp-top-lossless-loader.js",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-top-lossless-loader.js",
+      "target": "pmp-top-copy-lossless-button.js",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-top-lossless-loader.js",
+      "target": "pmp-top-lossless-copy-open.js",
+      "kind": "literal-runtime-reference"
+    },
+    {
+      "source": "pmp-top-lossless-loader.js",
+      "target": "pmp-top-lossless-packet-builder.js",
+      "kind": "literal-runtime-reference"
+    }
+  ],
+  "primary_paths": [
+    "pmp-addon-loader-v1.js",
+    "pmp-addon-status-copy-v1.js",
+    "pmp-app-current.html",
+    "pmp-bug-memory-route-fix.js",
+    "pmp-control-room-cleanup-v1.js",
+    "pmp-copy-latest-report-v1.js",
+    "pmp-copy-lossless-diagnostic.js",
+    "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+    "pmp-current-inner.html",
+    "pmp-current-map-v9.json",
+    "pmp-current-truth-face.js",
+    "pmp-exact-addon-router-v1.js",
+    "pmp-fail-closed-simulation-v1.js",
+    "pmp-final-local-set-audit-v1.js",
+    "pmp-home-single-v12.html",
+    "pmp-home-single-v14.html",
+    "pmp-home-single-v6.html",
+    "pmp-lossless-copy-fix.js",
+    "pmp-manifest-alignment-save-v1.js",
+    "pmp-manifest-detail-check-v1.js",
+    "pmp-native-contrast-bridge-v2.js",
+    "pmp-phase1-hook-wiring-v1.js",
+    "pmp-phase1-migrate-v1.js",
+    "pmp-phase1-old-panel-suppress-v1.js",
+    "pmp-phase1-private-window-single-v1.js",
+    "pmp-phase1-source-intake-current-v1.js",
+    "pmp-phase1-source-router-v1.js",
+    "pmp-phase10-current-only-freeze-decision-v1.js",
+    "pmp-phase2-private-window-adapter-v1.js",
+    "pmp-phase2-runtime-verification-v1.js",
+    "pmp-phase3-hook-readiness-v1.js",
+    "pmp-phase3-hook-validation-execution-v1.js",
+    "pmp-phase4-real-app-proof-execution-v1.js",
+    "pmp-phase4-real-app-proof-readiness-v1.js",
+    "pmp-phase5-current-clean-decision-v1.js",
+    "pmp-phase5-current-clean-readiness-v1.js",
+    "pmp-phase6-freeze-readiness-v1.js",
+    "pmp-phase7-full-transfer-proof-execution-v1.js",
+    "pmp-phase7-full-transfer-proof-readiness-v1.js",
+    "pmp-phase8-full-history-lossless-readiness-v1.js",
+    "pmp-phase8a-history-archive-builder-v1.js",
+    "pmp-phase8a2-raw-old-history-intake-v1.js",
+    "pmp-phase8a3-history-unavailable-current-only-freeze-gate-v1.js",
+    "pmp-phase9-current-only-freeze-readiness-v1.js",
+    "pmp-plan-slot-fix-v1.js",
+    "pmp-plan-slot-swap-repair-v1.js",
+    "pmp-private-backup-lite-v1.js",
+    "pmp-private-claim-controls-v1.js",
+    "pmp-private-field-extractor-v1.js",
+    "pmp-private-medium-buttons-v1.js",
+    "pmp-private-one-button-pages-v2.js",
+    "pmp-private-simple-source-ui-v1.js",
+    "pmp-private-source-loader-v1.js",
+    "pmp-purge-archived-duplicates-v1.js",
+    "pmp-resident-lossless-readiness.js",
+    "pmp-resident-work-fix.js",
+    "pmp-resident-xray-core.js",
+    "pmp-resident-xray-finish.js",
+    "pmp-route-guardian-current-loader-v14.html",
+    "pmp-shared-theme-v1.js",
+    "pmp-source-record-cleanup-v1.js",
+    "pmp-support-intake-guard-v1.js",
+    "pmp-top-copy-lossless-button.js",
+    "pmp-top-lossless-copy-open.js",
+    "pmp-top-lossless-injector.js",
+    "pmp-top-lossless-loader.js",
+    "pmp-top-lossless-packet-builder.js",
+    "pmp-visual-cleanup-v1.js"
+  ],
+  "fallback_paths": [
+    "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+    "pmp-current-map.json",
+    "pmp-route-guardian-current-loader-v9.html"
+  ],
+  "manual_action_paths": [
+    "bm.html",
+    "bug-memory-current-clean-v1.html",
+    "code-safety-v13.html",
+    "index.html",
+    "pmp-clean-v21.html",
+    "pmp-home-single-v10.html",
+    "pmp-home-single-v12.html",
+    "pmp-home-single-v14.html",
+    "pmp-home-single-v6.html",
+    "pmp-route-guardian-action-v2.html",
+    "private-bug-memory-hub-v9.html",
+    "private-bug-mixer-lab-v1.html",
+    "resident-notes-backend-v2.html",
+    "resident-notes-catalog-v3.html",
+    "resident-zip-xray-v2.html",
+    "resident.html",
+    "safe-writer-v14.html"
+  ],
+  "platform_paths": [
+    "pmp-worker.js",
+    "wrangler.toml"
+  ],
+  "graph_sha256": "5c09c0403e8fb48b752fccebd8dcacc3834aa692649e28ac0276f79735d3176c"
+}
