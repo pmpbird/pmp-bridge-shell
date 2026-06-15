@@ -1,1 +1,0 @@
-Run the read-only digest-bound discovery pass for the complete CROSS_SOURCE_CONFLICT evidence family. No routing, destinations, grouping, closure, implementation, or Packet 04 work is authorized.

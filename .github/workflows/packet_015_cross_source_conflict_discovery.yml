@@ -1,9 +1,14 @@
-name: Packet 015 cross source conflict discovery
+name: Packet 015 cross source conflict verification
 
 on:
   pull_request:
     paths:
-      - "tools/packet_01_5_cross_source_targeted_metadata.py"
+      - "tools/verify_packet_01_5_cross_source_conflict_v1.py"
+      - "audit/Packet_01.5_Cross_Source_Conflict_Source_Matrix_v1.json"
+      - "audit/applicability/Packet_01.5_Cross_Source_Conflict_Decisions_v1.jsonl"
+      - "audit/applicability/Packet_01.5_Cross_Source_Conflict_Remaining_Queue_v1.jsonl"
+      - "audit/Packet_01.5_Cross_Source_Conflict_Coverage_v1.json"
+      - "audit/Packet_01.5_Cross_Source_Conflict_Status_v1.md"
       - ".github/workflows/packet_015_cross_source_conflict_discovery.yml"
   workflow_dispatch:
 
@@ -11,15 +16,16 @@ permissions:
   contents: read
 
 jobs:
-  discover:
+  verify-and-write-receipt:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - run: python3 tools/packet_01_5_cross_source_targeted_metadata.py
+      - name: Independently verify and write receipt
+        run: python3 tools/verify_packet_01_5_cross_source_conflict_v1.py --write-receipt
       - uses: actions/upload-artifact@v4
         with:
-          name: packet-015-cross-source-conflict-targeted-metadata
-          path: audit/Packet_01.5_Cross_Source_Conflict_Targeted_Metadata_v1.json
+          name: packet-015-cross-source-conflict-independent-receipt
+          path: audit/Packet_01.5_Cross_Source_Conflict_Independent_Verification_v1.json
           if-no-files-found: error

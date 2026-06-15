@@ -1,0 +1,235 @@
+{
+  "packet": "01.5",
+  "family": "CROSS_SOURCE_CONFLICT",
+  "version": 1,
+  "authoritative_anchor": "32eb61ff9376a769a23292f4de06c3fdc08236f0",
+  "family_count": 1,
+  "family_addresses_in_source_order": [
+    "P01.5::B::0043"
+  ],
+  "source_queue_sha256": "1b28dbfd69e9af4b51ce5cf4eb4e43d4ed4aaea107129b2e11b7b41c9dfd861a",
+  "source_inventory_sha256": "76169a80e07603cea51d769d3d89b32735149c2aef7eb09f893ed94fe5d72477",
+  "source_inventory_count": 2750,
+  "record": {
+    "composite_address": "P01.5::B::0043",
+    "source_record_ordinal": 43,
+    "original_identifier": "DATA-010",
+    "claim": "No multi-device or concurrent-edit conflict policy exists.",
+    "source_envelope_hash": "40b009a20fb71788f6535b641ac14e0420b42111d98886d4d9e89650808efe77",
+    "source_block_hash": "4ce0aa35fc364bb45afcfef1a933e6a3639cb1dbd06fd518cd1d59a5dd380486",
+    "current_applicability_state": "ACTIVE_CONDITIONAL_RISK",
+    "current_applicability_batch_id": "P01.5-APP-B005",
+    "current_applicability_decision_hash": "c16ea8d565c50fe1a599be420b50b8fd169f0c4cb287af700c06a9fe31271d81"
+  },
+  "sources": [
+    {
+      "path": "audit/applicability/Packet_01.5_Scalable_Pass_001_Evidence_Queue_v1.jsonl",
+      "identity": "immutable scalable evidence queue",
+      "declared_date": "2026-06-14",
+      "declared_version": "SCALABLE-PASS-001 queue",
+      "content_sha256": "1b28dbfd69e9af4b51ce5cf4eb4e43d4ed4aaea107129b2e11b7b41c9dfd861a",
+      "git_blob_sha": "5f486dd70eae8b1cb1940ef167f6c147e1c00d46",
+      "last_change_commit": "7328b6bcd6fcd57e7f2329afbc32bf4e237ef566",
+      "last_change_date": "2026-06-14T23:09:25Z",
+      "last_change_subject": "Verify scalable baseline applicability pass",
+      "authority_level": 100,
+      "authority_role": "family membership and preserved queue identity",
+      "scope": "Packet 01.5 evidence-family membership"
+    },
+    {
+      "path": "audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.jsonl",
+      "identity": "immutable 2,750-record source inventory",
+      "declared_date": "2026-06-14",
+      "declared_version": "normalization 1.0.0; DATA-010 record 3.0.0-final-lifecycle-map",
+      "content_sha256": "76169a80e07603cea51d769d3d89b32735149c2aef7eb09f893ed94fe5d72477",
+      "git_blob_sha": "acf12d12158feccb78cc0b428cc983806456dca3",
+      "last_change_commit": "4eede380b155d956b0197a0f82a4c5127d9b5bfd",
+      "last_change_date": "2026-06-14T19:18:49Z",
+      "last_change_subject": "Generate and verify Packet 01.5 blank routing inventory",
+      "authority_level": 100,
+      "authority_role": "permanent address, source ordinal, identifier, and original claim",
+      "scope": "immutable Packet 01.5 source identities"
+    },
+    {
+      "path": "audit/routing-inventory/Packet_01.5_Applicability_Inventory_v9_Batch_008.jsonl",
+      "identity": "latest merged applicability inventory",
+      "declared_date": "2026-06-14",
+      "declared_version": "9 / P01.5-APP-B008",
+      "content_sha256": "628875ac288a85b95131588678d7ae9c692ab2c53654409f1cd6b2e85c116e87",
+      "git_blob_sha": "686ae68981571de8adb23164e24b595369c2b4e6",
+      "last_change_commit": "250c6b03c8c9886af0435395606ae9f37ce1524b",
+      "last_change_date": "2026-06-14T20:15:08Z",
+      "last_change_subject": "Apply and verify Packet 01.5 Applicability Batch 008",
+      "authority_level": 95,
+      "authority_role": "current applicability state and contact evidence",
+      "scope": "applicability only; does not create synchronization policy"
+    },
+    {
+      "path": "audit/routing-batches/Packet_01.5_Applicability_Batch_005_Independent_Verification_v1.json",
+      "identity": "independent verification of DATA-010 applicability batch",
+      "declared_date": "2026-06-14",
+      "declared_version": "1",
+      "content_sha256": "ea97eb6abaee1722ee5f0de30413cd3df295b7f1971383f1ce20f3dcfa36f622",
+      "git_blob_sha": "9cae9bc98affa0d7d23941d53e3b9cf1fcb81440",
+      "last_change_commit": "377b7d4f71e94578fd972c9235abdda850957f9d",
+      "last_change_date": "2026-06-14T20:05:32Z",
+      "last_change_subject": "Apply and verify Packet 01.5 Applicability Batch 005",
+      "authority_level": 94,
+      "authority_role": "acceptance of the applicability overlay",
+      "scope": "batch integrity and applicability acceptance"
+    },
+    {
+      "path": "audit/routing-batches/Packet_01.5_Applicability_Batch_005_Plan_v1.json",
+      "identity": "DATA-010 applicability adjudication plan",
+      "declared_date": "2026-06-14",
+      "declared_version": "1",
+      "content_sha256": "fdbf20e35572ac35ff548427eac52227bd8595d37f2e9697f91fb781f67b2036",
+      "git_blob_sha": "cf67dcb3e0af76ab1243c1af2460b52102419bdd",
+      "last_change_commit": "d531d3f5c86c156b52eaf9fa5c74740a5429ce07",
+      "last_change_date": "2026-06-14T13:05:06-07:00",
+      "last_change_subject": "Plan Packet 01.5 Applicability Batch 005",
+      "authority_level": 90,
+      "authority_role": "record-specific applicability rationale",
+      "scope": "conditional contact and risk classification"
+    },
+    {
+      "path": "control-pack/pmp-control-pack-conflict-resolver-v1.json",
+      "identity": "active control-pack cleanup conflict resolver",
+      "declared_date": "2026-05-12",
+      "declared_version": "1.0",
+      "content_sha256": "9b22c3ac2f40eef7f58875c37def50ca190920ce79c1c65df1d7bfda9abcabc6",
+      "git_blob_sha": "fc49d78211fcc73acc973880c3f9e1d2fcd929f4",
+      "last_change_commit": "53bfaaa5a0c97e30b6fe90cea99fe53a53171d34",
+      "last_change_date": "2026-05-12T20:46:32-07:00",
+      "last_change_subject": "Add PMP cleanup control pack v10",
+      "authority_level": 85,
+      "authority_role": "cleanup/remodel conflict precedence",
+      "scope": "current app cleanup/remodel and delete safety; not multi-device edit synchronization"
+    },
+    {
+      "path": "audit/routing-evidence/Packet_03_Current_Capability_Summary_Source_v1.md",
+      "identity": "Packet 03 current capability summary",
+      "declared_date": "2026-06-14",
+      "declared_version": "4.0.0-final-pass",
+      "content_sha256": "8f995ef4609640a7aefbc7a5d3e9ef9e7c2986ede47ee3e20a36d30c914fa1d2",
+      "git_blob_sha": "3f1002e119f21c22a828fb976a158d4af4fa2219",
+      "last_change_commit": "e34923c41ea3cf2d00acc16f5eb8c11812a6e806",
+      "last_change_date": "2026-06-14T12:35:40-07:00",
+      "last_change_subject": "Preserve Packet 03 current-capability summary source for Packet 01.5 classification evidence",
+      "authority_level": 80,
+      "authority_role": "current contact surfaces and downstream ownership",
+      "scope": "capability presence and owner assignment; not completed conflict policy"
+    },
+    {
+      "path": "audit/control-spine/PMP_Control_Spine_03_authority-matrix_v1.json",
+      "identity": "current authority matrix companion record",
+      "declared_date": "2026-06-14",
+      "declared_version": "1.0.0-baseline",
+      "content_sha256": "809404f2383d52b4e938486c060759842e1e459796c18418756c027add631b7b",
+      "git_blob_sha": "a182e747c8b2778672d9a3d99d0d6b802dea4ada",
+      "last_change_commit": "4677907d6d6ad5131b3f0d69ae5463a45f411b64",
+      "last_change_date": "2026-06-13T18:40:39-07:00",
+      "last_change_subject": "Add Packet 03.5 authority companion record",
+      "authority_level": 78,
+      "authority_role": "separation of present, planned, and prohibited authority",
+      "scope": "authority boundaries; expressly does not implement or close linked limitations"
+    },
+    {
+      "path": "audit/baseline-source/reconstructed/pmp-current-permanent-limitation-register-v3-final.json",
+      "identity": "reconstructed permanent limitation register",
+      "declared_date": "2026-06-14",
+      "declared_version": "3.0.0-final-lifecycle-map",
+      "content_sha256": "ac36b36a38d2ad9ab9f73d69679e0ecc0dae4c2f3340fe505f6ed773c56ba5f4",
+      "git_blob_sha": "1aaa8bb346b957852de21c2d5e60e3b3be8650e1",
+      "last_change_commit": "4eede380b155d956b0197a0f82a4c5127d9b5bfd",
+      "last_change_date": "2026-06-14T19:18:49Z",
+      "last_change_subject": "Generate and verify Packet 01.5 blank routing inventory",
+      "authority_level": 70,
+      "authority_role": "preserved DATA-010 wording and original lifecycle metadata",
+      "scope": "original limitation identity; later applicability records control applicability only"
+    },
+    {
+      "path": "audit/Packet_01.5_Discovery_Pass_03_Reliability_Recovery_and_Platform_v1.md",
+      "identity": "reliability and recovery discovery pass",
+      "declared_date": "2026-06-14",
+      "declared_version": "Discovery Pass 03",
+      "content_sha256": "55c2ddb82b56bb6d2ad3a9f531aa5d4c06ba7d12587b63db6a33ab8a25914102",
+      "git_blob_sha": "77b0e49f27c5c26dbe8b006c4a874b096013caea",
+      "last_change_commit": "5cff2460a40b42ef59749c5e7b495a8c078bcc79",
+      "last_change_date": "2026-06-13T20:31:58-07:00",
+      "last_change_subject": "Add Packet 01.5 reliability recovery and platform discovery pass",
+      "authority_level": 55,
+      "authority_role": "risk discovery corroboration",
+      "scope": "risk evidence only; not governing policy"
+    }
+  ],
+  "conflict_pairs": [
+    {
+      "pair_id": "CSC-0043-01",
+      "left_source": "audit/baseline-source/reconstructed/pmp-current-permanent-limitation-register-v3-final.json",
+      "right_source": "control-pack/pmp-control-pack-conflict-resolver-v1.json",
+      "apparent_conflict": "The baseline says no multi-device/concurrent-edit policy exists while the control pack declares an active conflict resolver.",
+      "resolution": "NO_SAME_SCOPE_CONFLICT",
+      "reason": "The resolver is expressly for cleanup/remodel, current-route safety, and deletion decisions. It does not govern simultaneous edits to one logical record across devices, sessions, Notes, backend, or GitHub.",
+      "effective_precedence": "Each source controls its own scope; the cleanup resolver cannot disprove DATA-010."
+    },
+    {
+      "pair_id": "CSC-0043-02",
+      "left_source": "audit/baseline-source/reconstructed/pmp-current-permanent-limitation-register-v3-final.json",
+      "right_source": "audit/routing-inventory/Packet_01.5_Applicability_Inventory_v9_Batch_008.jsonl",
+      "apparent_conflict": "The baseline records an unconditional limitation while the later verified overlay classifies current applicability as ACTIVE_CONDITIONAL_RISK.",
+      "resolution": "ROLE_SPECIFIC_PRECEDENCE",
+      "reason": "The immutable inventory controls claim identity and wording; the later verified overlay controls present applicability/contact. Applicability classification does not prove or disprove policy existence.",
+      "effective_precedence": "Latest verified applicability inventory controls applicability state; immutable inventory controls permanent address, ordinal, identifier, and claim."
+    },
+    {
+      "pair_id": "CSC-0043-03",
+      "left_source": "audit/baseline-source/reconstructed/pmp-current-permanent-limitation-register-v3-final.json",
+      "right_source": "audit/routing-evidence/Packet_03_Current_Capability_Summary_Source_v1.md",
+      "apparent_conflict": "Packet 03 assigns storage and continuity ownership while DATA-010 says the policy is missing.",
+      "resolution": "NO_COMPLETION_CONFLICT",
+      "reason": "A downstream owner assignment and verified contact surface are design/roadmap facts, not a completed current synchronization policy or execution receipt.",
+      "effective_precedence": "Packet 03 controls capability and owner assignment; it does not supersede the unresolved policy-existence question."
+    }
+  ],
+  "effective_precedence": [
+    {
+      "order": 1,
+      "role": "permanent source identity",
+      "controlling_source": "audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.jsonl",
+      "rule": "Permanent address, original ordinal, identifier, and claim wording cannot be replaced by later evidence artifacts."
+    },
+    {
+      "order": 2,
+      "role": "current applicability state",
+      "controlling_source": "audit/routing-inventory/Packet_01.5_Applicability_Inventory_v9_Batch_008.jsonl",
+      "rule": "The latest independently accepted applicability overlay controls current contact classification for DATA-010."
+    },
+    {
+      "order": 3,
+      "role": "domain-specific conflict handling",
+      "controlling_source": "control-pack/pmp-control-pack-conflict-resolver-v1.json",
+      "rule": "The resolver controls cleanup/remodel conflicts only; scope cannot be broadened into multi-device edit synchronization."
+    },
+    {
+      "order": 4,
+      "role": "capability and downstream ownership",
+      "controlling_source": "audit/routing-evidence/Packet_03_Current_Capability_Summary_Source_v1.md",
+      "rule": "Capability presence and owner assignment establish contact and future responsibility, not completed policy."
+    },
+    {
+      "order": 5,
+      "role": "risk corroboration",
+      "controlling_source": "audit/Packet_01.5_Discovery_Pass_03_Reliability_Recovery_and_Platform_v1.md",
+      "rule": "Discovery evidence may corroborate risk but cannot create governing policy or close the claim."
+    }
+  ],
+  "adjudication": {
+    "conflict_resolution": "COMPLETE",
+    "claim_resolution": "UNRESOLVED",
+    "result": "REMAIN_QUEUED",
+    "reason": "All apparent source conflicts are resolved by role or scope, but no current digest-bound governing source directly proves a multi-device/concurrent-edit synchronization policy, and the available public evidence is not a complete proof that no such policy exists in every private or external system.",
+    "decision_created": false,
+    "unknown_hold_created": false
+  }
+}
