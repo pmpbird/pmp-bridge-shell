@@ -1,10 +1,15 @@
-name: Packet 015 private evidence census
+name: Packet 015 private evidence verification
 
 on:
   pull_request:
     paths:
-      - "tools/inspect_packet_01_5_private_evidence_v1.py"
-      - "tools/inspect_packet_01_5_private_authority_v1.py"
+      - "tools/verify_packet_01_5_private_evidence_v1.py"
+      - "audit/Packet_01.5_Private_Evidence_Matrix_v1.json"
+      - "audit/applicability/Packet_01.5_Private_Evidence_Family_Decisions_v1.jsonl"
+      - "audit/applicability/Packet_01.5_Private_Evidence_Family_Remaining_Queue_v1.jsonl"
+      - "audit/Packet_01.5_Private_Evidence_Family_Coverage_v1.json"
+      - "audit/Packet_01.5_Private_Evidence_Family_Status_v1.md"
+      - "audit/Packet_01.5_Private_Evidence_Family_Independent_Verification_v1.json"
       - ".github/workflows/packet_015_private_evidence_census.yml"
   workflow_dispatch:
 
@@ -12,20 +17,16 @@ permissions:
   contents: read
 
 jobs:
-  census:
+  verify-and-write-receipt:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Build privacy-safe family census
-        run: python3 tools/inspect_packet_01_5_private_evidence_v1.py
-      - name: Locate public governing authority without exposing private values
-        run: python3 tools/inspect_packet_01_5_private_authority_v1.py
+      - name: Independently verify complete family and write receipt
+        run: python3 tools/verify_packet_01_5_private_evidence_v1.py --write-receipt
       - uses: actions/upload-artifact@v4
         with:
-          name: packet-015-private-evidence-census
-          path: |
-            audit/Packet_01.5_Private_Evidence_Census_v1.json
-            audit/Packet_01.5_Private_Evidence_Authority_Locator_v1.json
+          name: packet-015-private-evidence-independent-receipt
+          path: audit/Packet_01.5_Private_Evidence_Family_Independent_Verification_v1.json
           if-no-files-found: error
