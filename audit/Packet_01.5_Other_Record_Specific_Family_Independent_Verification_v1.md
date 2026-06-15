@@ -4,8 +4,8 @@ STATUS: PASS — OTHER RECORD-SPECIFIC FAMILY VERIFIED
 WATCH: NONE
 BLOCKERS: NONE
 FAMILY RECORDS: 31
-SUPPORTED OR DISPROVED DECISIONS: 5
-REMAINING QUEUED: 26
+SUPPORTED OR DISPROVED DECISIONS: 7
+REMAINING QUEUED: 24
 UNKNOWN — HOLD CREATED: 0
 ROUTING ASSIGNMENTS: 0
 GROUPING ASSIGNMENTS: 0
@@ -16,14 +16,15 @@ PACKET 04 AUTHORIZED: NO
 
 - `P01.5::B::0016` / `AI-016` — `CURRENT DEFECT OR LIMITATION` — `SUPPORTED`
 - `P01.5::B::0030` / `BUILD-012` — `CURRENT DEFECT OR LIMITATION` — `SUPPORTED`
-- `P01.5::B::0036` / `DATA-003` — `OUT-OF-SCOPE CANDIDATE` — `DISPROVED`
+- `P01.5::B::0036` / `DATA-003` — `CURRENT DEFECT OR LIMITATION` — `SUPPORTED`
+- `P01.5::B::0037` / `DATA-004` — `CURRENT DEFECT OR LIMITATION` — `SUPPORTED`
 - `P01.5::B::0058` / `GOV-011` — `CURRENT DEFECT OR LIMITATION` — `SUPPORTED`
 - `P01.5::B::0060` / `GOV-013` — `CURRENT DEFECT OR LIMITATION` — `SUPPORTED`
+- `P01.5::B::0076` / `OPS-014` — `CURRENT DEFECT OR LIMITATION` — `SUPPORTED`
 
 ## Decision-state counts
 
-- CURRENT DEFECT OR LIMITATION: 4
-- OUT-OF-SCOPE CANDIDATE: 1
+- CURRENT DEFECT OR LIMITATION: 7
 
 ## Evidence discipline
 
@@ -31,13 +32,13 @@ The family is heterogeneous. Every decision comes from a named claim-specific th
 
 ## Remaining records
 
-The remaining 26 records preserve permanent addresses and source order. Their queue entries identify either the missing predicate, the incomplete proof components, or the current files that must be resolved.
+The remaining 24 records preserve permanent addresses and source order. Their queue entries identify either the missing predicate, the incomplete proof components, or the current files that must be resolved.
 
 ## Independent verification
 
 - complete 31-record family coverage: PASS
 - current main commit anchor: `65a889a66b9a83836fff3174e3494c5c8814e41c`
-- filtered current-corpus digest: `73db8ef03be3a8a3f61e8ea44b9875b03082487c0805c0887fc0368f74d53124`
+- filtered current-corpus digest: `0e89201762818fe1653070606123778d9f5bfe6b2e449a87cea96607521914d2`
 - effective-runtime corpus digest: `0f1dbbbe56de4cd72a21e64675fd3a9fa9fc907de2addbbb5ebfecd5d5b25441`
 - every reviewed predicate independently rerun: PASS
 - all partial evidence kept queued: PASS
