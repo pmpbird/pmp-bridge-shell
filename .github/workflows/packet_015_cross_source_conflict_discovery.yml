@@ -3,7 +3,6 @@ name: Packet 015 cross source conflict discovery
 on:
   pull_request:
     paths:
-      - "tools/inspect_packet_01_5_cross_source_conflict_v1.py"
       - "tools/inspect_packet_01_5_cross_source_conflict_v2.py"
       - ".github/workflows/packet_015_cross_source_conflict_discovery.yml"
   workflow_dispatch:
@@ -18,12 +17,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Build expanded digest-bound conflict source census
+      - name: Capture targeted metadata
         run: |
-          python3 tools/inspect_packet_01_5_cross_source_conflict_v2.py \
-            --output audit/Packet_01.5_Cross_Source_Conflict_Discovery_v2.json
+          python3 tools/inspect_packet_01_5_cross_source_conflict_v2.py
       - uses: actions/upload-artifact@v4
         with:
-          name: packet-015-cross-source-conflict-discovery-v2
-          path: audit/Packet_01.5_Cross_Source_Conflict_Discovery_v2.json
+          name: packet-015-cross-source-conflict-targeted-metadata
+          path: audit/Packet_01.5_Cross_Source_Conflict_Targeted_Metadata_v1.json
           if-no-files-found: error
