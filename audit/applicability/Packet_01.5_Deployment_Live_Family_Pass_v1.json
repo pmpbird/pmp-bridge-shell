@@ -1,0 +1,54 @@
+{
+  "packet": "01.5",
+  "artifact": "deployment_live_behavior_evidence_family_pass",
+  "version": 1,
+  "status": "PROPOSED_PENDING_BUILD_AND_INDEPENDENT_VERIFICATION",
+  "source_queue": {
+    "path": "audit/applicability/Packet_01.5_Scalable_Pass_001_Evidence_Queue_v1.jsonl",
+    "sha256": "1b28dbfd69e9af4b51ce5cf4eb4e43d4ed4aaea107129b2e11b7b41c9dfd861a"
+  },
+  "source_inventory": {
+    "path": "audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.jsonl",
+    "sha256": "76169a80e07603cea51d769d3d89b32735149c2aef7eb09f893ed94fe5d72477"
+  },
+  "family": "DEPLOYMENT_AND_LIVE_BEHAVIOR",
+  "expected_family_records": 16,
+  "evidence_scope": {
+    "allowed": [
+      "current tracked runtime source",
+      "current tracked configuration",
+      "current authoritative plans and completion receipts",
+      "current main commit",
+      "complete tracked-file census"
+    ],
+    "not_sufficient": [
+      "historical or discovery copies",
+      "source inventory claims themselves",
+      "untracked cloud or device settings",
+      "assumed live behavior",
+      "role ownership without implementation proof"
+    ]
+  },
+  "reviewed_predicates": [
+    {"claim_contains":"AI provider adapter, model call, and response parser are absent","predicate":"NO_AI_PROVIDER_PIPELINE","state":"CURRENT DEFECT OR LIMITATION","confidence":99},
+    {"claim_contains":"Backend retention, deletion, backup, restore, and regional/data-residency behavior are unverified","predicate":"NO_BACKEND_DATA_LIFECYCLE_PROOF","state":"CURRENT DEFECT OR LIMITATION","confidence":96},
+    {"claim_contains":"Credential creation, secret storage, rotation, revocation, compromise response, and least privilege are not implemented","predicate":"NO_CREDENTIAL_LIFECYCLE_IMPLEMENTATION","state":"CURRENT DEFECT OR LIMITATION","confidence":96},
+    {"claim_contains":"AI response schema validation and semantic grounding are not implemented","predicate":"NO_AI_RESPONSE_VALIDATION_PIPELINE","state":"CURRENT DEFECT OR LIMITATION","confidence":99},
+    {"claim_contains":"Generated or candidate code has no implemented sandbox, resource cap, or network egress restriction","predicate":"NO_CANDIDATE_SANDBOX_OR_EGRESS_CONTROLS","state":"CURRENT DEFECT OR LIMITATION","confidence":95},
+    {"claim_contains":"No encryption-at-rest or backup-secret handling proof exists","predicate":"NO_ENCRYPTION_BACKUP_SECRET_PROOF","state":"CURRENT DEFECT OR LIMITATION","confidence":95},
+    {"claim_contains":"No incident-response plan exists","predicate":"NO_INCIDENT_RESPONSE_PLAN","state":"CURRENT DEFECT OR LIMITATION","confidence":96},
+    {"claim_contains":"has not decided whether any deployed endpoint/app is public, private-by-obscurity, authenticated, or local-only","predicate":"NO_EXPOSURE_MODE_DECISION","state":"CURRENT DEFECT OR LIMITATION","confidence":94},
+    {"claim_contains":"No user-data deletion/export completeness proof covers all local, backend, Notes, logs, receipts, and caches","predicate":"NO_COMPREHENSIVE_DELETION_EXPORT_PROOF","state":"CURRENT DEFECT OR LIMITATION","confidence":95},
+    {"claim_contains":"No safe degradation plan defines what remains usable","predicate":"NO_SAFE_DEGRADATION_PLAN","state":"CURRENT DEFECT OR LIMITATION","confidence":95},
+    {"claim_contains":"The deployed public runtime was not executed in the completed audit","predicate":"NO_LIVE_DEPLOYED_RUNTIME_AUDIT_RECEIPT","state":"CURRENT DEFECT OR LIMITATION","confidence":96},
+    {"claim_contains":"Offline behavior depends on static fetches, CDN JSZip, backend, and Shortcuts","predicate":"OFFLINE_EXTERNAL_DEPENDENCY_RISK","state":"ACTIVE CONDITIONAL RISK","confidence":98},
+    {"claim_contains":"PWA/service-worker/cache invalidation lifecycle is not explicitly governed or proven","predicate":"NO_PWA_CACHE_LIFECYCLE_PROOF","state":"CURRENT DEFECT OR LIMITATION","confidence":96},
+    {"claim_contains":"No disaster-recovery procedure covers loss of device, browser data, GitHub access, backend, and Notes together","predicate":"NO_COMPREHENSIVE_DISASTER_RECOVERY_PROCEDURE","state":"CURRENT DEFECT OR LIMITATION","confidence":95},
+    {"claim_contains":"No deployment canary/staged rollout or post-deploy rollback drill is authorized","predicate":"NO_CANARY_STAGED_ROLLOUT_OR_ROLLBACK_DRILL","state":"CURRENT DEFECT OR LIMITATION","confidence":95}
+  ],
+  "unmatched_policy": "REMAIN_QUEUED_WITH_EXACT_EXTERNAL_OR_LIVE_PROOF",
+  "unknown_hold_created": false,
+  "decision_author": "resident-deployment-live-family-classifier-v1",
+  "decision_verifier": "github-actions-independent-deployment-live-family-verifier-v1",
+  "prohibited": ["routing","grouping","closure","implementation","Packet 04"]
+}
