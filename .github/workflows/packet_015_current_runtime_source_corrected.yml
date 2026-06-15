@@ -1,6 +1,6 @@
 name: Packet 015 corrected current runtime source
 
-on: [push]
+on: [push, pull_request]
 
 permissions:
   contents: read
