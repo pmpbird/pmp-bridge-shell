@@ -12,12 +12,17 @@ on:
       - "tools/write_packet_01_5_dependency_platform_receipts_v1.py"
       - ".github/workflows/packet_015_dependency_platform.yml"
 
+permissions:
+  contents: write
+
 jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ github.head_ref || github.ref_name }}
           fetch-depth: 0
       - run: python3 tools/build_packet_01_5_dependency_platform_v1.py
-      - run: python3 tools/verify_packet_01_5_dependency_platform_v1.py
+      - run: python3 tools/verify_packet_01_5_dependency_platform_v1.py > audit/Packet_01.5_Dependency_Platform_Independent_Verification_v1.json
+      - run: python3 tools/write_packet_01_5_dependency_platform_receipts_v1.py
