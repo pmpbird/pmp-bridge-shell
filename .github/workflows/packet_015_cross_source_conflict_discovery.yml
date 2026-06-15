@@ -16,16 +16,30 @@ permissions:
   contents: read
 
 jobs:
-  verify-and-write-receipt:
+  verify-and-capture:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Independently verify and write receipt
-        run: python3 tools/verify_packet_01_5_cross_source_conflict_v1.py --write-receipt
+      - name: Run verifier and capture exact output
+        id: verify
+        shell: bash
+        run: |
+          set +e
+          python3 tools/verify_packet_01_5_cross_source_conflict_v1.py --write-receipt > verification.log 2>&1
+          code=$?
+          cat verification.log
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          exit 0
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: packet-015-cross-source-conflict-independent-receipt
-          path: audit/Packet_01.5_Cross_Source_Conflict_Independent_Verification_v1.json
-          if-no-files-found: error
+          name: packet-015-cross-source-conflict-diagnostic
+          path: |
+            verification.log
+            audit/Packet_01.5_Cross_Source_Conflict_Independent_Verification_v1.json
+          if-no-files-found: warn
+      - name: Preserve verifier result
+        shell: bash
+        run: exit "${{ steps.verify.outputs.exit_code }}"
