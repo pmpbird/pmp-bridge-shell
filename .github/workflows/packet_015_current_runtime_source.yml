@@ -1,0 +1,31 @@
+name: Packet 015 current runtime source family
+
+on:
+  pull_request:
+    paths:
+      - "audit/Packet_01.5_Current_Runtime_Source_PR_Trigger.txt"
+      - "audit/applicability/Packet_01.5_Runtime_Source_Pass_v1.json"
+      - "tools/runtime_source_git.py"
+      - "tools/runtime_source_graph.py"
+      - "tools/runtime_source_rules.py"
+      - "tools/runtime_source_paths.py"
+      - "tools/runtime_source_evaluate.py"
+      - "tools/build_packet_01_5_runtime_source_v1.py"
+      - "tools/verify_packet_01_5_runtime_source_v1.py"
+      - "tools/write_packet_01_5_runtime_source_receipts_v1.py"
+      - "tools/commit_runtime_source_outputs.sh"
+      - ".github/workflows/packet_015_current_runtime_source.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 tools/build_packet_01_5_runtime_source_v1.py
+      - run: python3 tools/verify_packet_01_5_runtime_source_v1.py > audit/Packet_01.5_Current_Runtime_Source_Independent_Verification_v1.json
+      - run: python3 tools/write_packet_01_5_runtime_source_receipts_v1.py
