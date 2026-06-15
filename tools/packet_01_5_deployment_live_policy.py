@@ -14,7 +14,8 @@ EXCLUDED_PREFIXES = (
 EXCLUDED_TERMS = (
     "historical", "reconstructed", "provisional", "discovery", "working_register",
     "working-register", "limitation_register", "limitation-register",
-    "deployment_live_family", "deployment-live-family"
+    "deployment_live_family", "deployment-live-family", "deployment_live_evidence",
+    "deployment-live-evidence", "routing_status_v86", "routing-status-v86"
 )
 COMPLETION_MARKERS = ("status: pass", '"status": "pass"', "status: approved", '"status": "approved"', "verified", "completed")
 
