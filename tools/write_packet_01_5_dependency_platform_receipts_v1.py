@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import json
+import json,os,subprocess
 from pathlib import Path
 R=Path(__file__).resolve().parents[1];A=R/'audit';P=A/'applicability';v=json.loads((A/'Packet_01.5_Dependency_Platform_Independent_Verification_v1.json').read_text());d=[json.loads(x) for x in (P/'Packet_01.5_Dependency_Platform_Family_Decisions_v1.jsonl').read_text().splitlines()];q=[json.loads(x) for x in (P/'Packet_01.5_Dependency_Platform_Family_Remaining_Queue_v1.jsonl').read_text().splitlines()];m=json.loads((A/'Packet_01.5_Dependency_Platform_Evidence_Matrix_v1.json').read_text());by={x['composite_address']:x for x in m['matrix']}
 rows='\n'.join(f"- `{x['composite_address']}` / `{by[x['composite_address']]['original_identifier']}` — `{x['applicability_state']}`" for x in d) or '- No complete repository predicate produced a decision.'
@@ -66,3 +66,4 @@ All 14 addresses remain preserved in original source order and appear exactly on
 
 The scalable gate remains active. Stop before routing, destinations, grouping, closure, implementation, or Packet 04.
 ''')
+if os.environ.get('GITHUB_ACTIONS')=='true':subprocess.run(['bash','tools/commit_dep_platform_outputs.sh'],check=True)
