@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/home/runner/work/pmp-bridge-shell/pmp-bridge-shell/tools/build_packet_01_5_runtime_source_v1.py", line 23, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/home/runner/work/pmp-bridge-shell/pmp-bridge-shell/tools/build_packet_01_5_runtime_source_v1.py", line 11, in main
+    data=compute();graph=data['graph'];family=data['family'];decisions=data['decisions'];remaining=data['remaining'];matrix=data['matrix'];tests=data['bounded_tests']
+         ^^^^^^^^^
+  File "/home/runner/work/pmp-bridge-shell/pmp-bridge-shell/tools/runtime_source_evaluate.py", line 38, in compute
+    need(len(decisions)==11 and len(remaining)==9,'expected partition')
+  File "/home/runner/work/pmp-bridge-shell/pmp-bridge-shell/tools/runtime_source_evaluate.py", line 10, in need
+    if not value:raise ValueError(message)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: expected partition
