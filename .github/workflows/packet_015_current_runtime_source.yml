@@ -10,6 +10,7 @@ on:
       - "tools/runtime_source_rules.py"
       - "tools/runtime_source_paths.py"
       - "tools/runtime_source_evaluate.py"
+      - "tools/diagnose_runtime_source_partition.py"
       - "tools/build_packet_01_5_runtime_source_v1.py"
       - "tools/verify_packet_01_5_runtime_source_v1.py"
       - "tools/write_packet_01_5_runtime_source_receipts_v1.py"
@@ -29,7 +30,9 @@ jobs:
           ref: ${{ github.head_ref || github.ref_name }}
           fetch-depth: 0
       - name: Build runtime family
-        run: python3 tools/build_packet_01_5_runtime_source_v1.py 2> audit/Packet_01.5_Current_Runtime_Source_Debug.log
+        run: |
+          python3 tools/diagnose_runtime_source_partition.py > audit/Packet_01.5_Current_Runtime_Source_Debug.log
+          python3 tools/build_packet_01_5_runtime_source_v1.py 2>> audit/Packet_01.5_Current_Runtime_Source_Debug.log
       - name: Commit failure diagnostic
         if: failure()
         run: bash tools/commit_runtime_source_diagnostic.sh
