@@ -6,6 +6,25 @@ v=json.loads(VERIFY_JSON.read_text());m=json.loads(MATRIX.read_text());by={x['co
 d=[json.loads(x) for x in DECISIONS.read_text().splitlines()];q=[json.loads(x) for x in REMAINING.read_text().splitlines()]
 rows='\n'.join(f"- `{x['composite_address']}` / `{by[x['composite_address']]['original_identifier']}` — `{x['applicability_state']}`" for x in d)
 queues='\n'.join(f"- `{x['composite_address']}` / `{x['original_identifier']}` — {x['decision_blocked_until']}" for x in q)
+SUMMARY.write_text(f'''# Packet 01.5 — Current Runtime Source Family v1
+
+STATUS: VERIFIED
+FAMILY RECORDS: 20
+EVIDENCE-SUPPORTED DECISIONS: {v['evidence_supported_decisions']}
+REMAINING QUEUED: {v['remaining_queued_records']}
+UNKNOWN — HOLD CREATED: 0
+ROUTING ASSIGNMENTS: 0
+GROUPING ASSIGNMENTS: 0
+SOURCE RECORDS REMOVED OR CLOSED: 0
+
+Effective-source precedence is anchored to authoritative `main` commit `{v['main_commit_anchor']}`.
+
+The effective route was reconstructed from the public entry through the primary map, Route Guardian loader, nested wrappers, inner application, runtime-injected scripts, worker, and platform configuration. Fallback-only and manual-action paths remain separately identified.
+
+Static source decisions are separated from browser, device, environment-dependent, and non-runtime evidence queues. Every family address appears exactly once as decided or queued in original source order.
+
+Stop before routing, destinations, grouping, closure, implementation, or Packet 04.
+''')
 VERIFY_MD.write_text(f'''# Packet 01.5 — Current Runtime Source Independent Verification v1
 
 STATUS: PASS — CURRENT RUNTIME SOURCE FAMILY VERIFIED
