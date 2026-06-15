@@ -38,7 +38,7 @@ The remaining 24 records preserve permanent addresses and source order. Their qu
 
 - complete 31-record family coverage: PASS
 - current main commit anchor: `65a889a66b9a83836fff3174e3494c5c8814e41c`
-- filtered current-corpus digest: `0e89201762818fe1653070606123778d9f5bfe6b2e449a87cea96607521914d2`
+- filtered current-corpus digest: `faac9c86ed7b852a76e5f330dce17bf8dcf9eecccf43e4be4c2200cae2139a2d`
 - effective-runtime corpus digest: `0f1dbbbe56de4cd72a21e64675fd3a9fa9fc907de2addbbb5ebfecd5d5b25441`
 - every reviewed predicate independently rerun: PASS
 - all partial evidence kept queued: PASS
