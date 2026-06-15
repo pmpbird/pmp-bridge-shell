@@ -41,3 +41,5 @@ jobs:
         run: bash tools/commit_runtime_source_diagnostic.sh
       - run: python3 tools/run_runtime_source_check_v2.py > audit/Packet_01.5_Current_Runtime_Source_Independent_Verification_v1.json
       - run: python3 tools/write_packet_01_5_runtime_source_receipts_v1.py
+        env:
+          CRS_COMMIT_OUTPUTS: "true"
