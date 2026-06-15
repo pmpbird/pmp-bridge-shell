@@ -1,0 +1,13 @@
+{
+  "packet": "01.5",
+  "family": "CURRENT_RUNTIME_SOURCE",
+  "version": 1,
+  "expected_records": 20,
+  "source_queue_sha256": "1b28dbfd69e9af4b51ce5cf4eb4e43d4ed4aaea107129b2e11b7b41c9dfd861a",
+  "source_inventory_sha256": "76169a80e07603cea51d769d3d89b32735149c2aef7eb09f893ed94fe5d72477",
+  "main_anchor": "9f71336fb28068db705a495e8fb5107dbfcbd440",
+  "decision_author": "resident-current-runtime-source-classifier-v1",
+  "decision_verifier": "github-actions-independent-current-runtime-verifier-v1",
+  "unknown_hold_created": false,
+  "stop_before_downstream_work": true
+}
