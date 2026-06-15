@@ -1,0 +1,28 @@
+{
+  "packet": "01.5",
+  "family": "CROSS_SOURCE_CONFLICT",
+  "version": 1,
+  "authoritative_anchor": "32eb61ff9376a769a23292f4de06c3fdc08236f0",
+  "family_records": 1,
+  "decided_records": 0,
+  "remaining_queued_records": 1,
+  "unknown_hold_created": 0,
+  "family_addresses_in_source_order": [
+    "P01.5::B::0043"
+  ],
+  "decided_addresses": [],
+  "queued_addresses": [
+    "P01.5::B::0043"
+  ],
+  "complete_decided_or_queued_coverage": true,
+  "conflict_pairs_verified": 3,
+  "source_inventory_count": 2750,
+  "source_inventory_sha256": "76169a80e07603cea51d769d3d89b32735149c2aef7eb09f893ed94fe5d72477",
+  "source_inventory_unchanged": true,
+  "routing_assignments": 0,
+  "destination_assignments": 0,
+  "grouping_assignments": 0,
+  "source_records_removed_or_closed": 0,
+  "implementation_actions": 0,
+  "packet_04_actions": 0
+}
