@@ -2,8 +2,8 @@
   "packet": "01.5",
   "family": "DEPENDENCY_OR_PLATFORM_STATE",
   "records": 14,
-  "decided": 4,
-  "queued": 10,
+  "decided": 6,
+  "queued": 8,
   "matrix": [
     {
       "composite_address": "P01.5::B::0011",
@@ -70,20 +70,12 @@
       "original_identifier": "BUILD-011",
       "claim": "No configuration/version management separates code, laws, prompts, schemas, tests, and provider settings as one release identity.",
       "predicate": "UNIFIED_RELEASE_IDENTITY_ABSENT",
-      "outcome": "UNRESOLVED",
+      "outcome": "SUPPORTED",
       "detail": {
         "complete": [],
-        "partial": [
-          {
-            "path": "audit/Packet_01.5_Other_Record_Specific_Evidence_Matrix_v1.json",
-            "sha256": "815e79e28f64e118682b54e1efe1749e92357e22f0a8c0c7b8e7107120a460a2",
-            "groups": 5,
-            "verified": true,
-            "passage": "{ \"packet\": \"01.5\", \"family\": \"OTHER_RECORD_SPECIFIC_PROOF\", \"records\": 31, \"decided\": 7, \"remaining_queued\": 24, \"main_commit_anchor\": \"65a889a66b9a83836fff3174e3494c5c8814e41c\", \"filtered_corpus_sha256\": \"faac9c86ed7b852a76e5f330dce17bf8dcf9eecccf43e4be4c2200cae2139a2d\", \"effective_runtime_corpus_sha256\": \"0f1dbbbe56de4cd72a21e64675fd3a9fa9fc907de2addbbb5ebfecd5d5b25441\", \"records_matrix\": [ { \"composite_address\": \"P01.5::B::0015\", \"original_identifier\": \"AI-015\", \"claim\": \"Prompt injection and malicious repository/content instructions are not technically contained.\", \"predicate\": null, \"outcome\": \"UNRESOLVED\", \"state_if_decided\": null, \"confidence_if_decided\": null, \"predicate_detail\": { \"reason\": \"no reviewed predicate\" }, \"predicate_files\": [], \"result\": \"REMAIN_QUEUED\" }, { \"composite_address\": \"P01.5::B::0016\", \"original_identifier\": \"AI-016\", \"claim\": \"Hallucination, uncertainty "
-          }
-        ]
+        "partial": []
       },
-      "result": "REMAIN_QUEUED"
+      "result": "DECIDED"
     },
     {
       "composite_address": "P01.5::B::0065",
@@ -106,13 +98,6 @@
       "detail": {
         "complete": [],
         "partial": [
-          {
-            "path": "audit/Packet_01.5_Other_Record_Specific_Evidence_Matrix_v1.json",
-            "sha256": "815e79e28f64e118682b54e1efe1749e92357e22f0a8c0c7b8e7107120a460a2",
-            "groups": 7,
-            "verified": true,
-            "passage": "{ \"packet\": \"01.5\", \"family\": \"OTHER_RECORD_SPECIFIC_PROOF\", \"records\": 31, \"decided\": 7, \"remaining_queued\": 24, \"main_commit_anchor\": \"65a889a66b9a83836fff3174e3494c5c8814e41c\", \"filtered_corpus_sha256\": \"faac9c86ed7b852a76e5f330dce17bf8dcf9eecccf43e4be4c2200cae2139a2d\", \"effective_runtime_corpus_sha256\": \"0f1dbbbe56de4cd72a21e64675fd3a9fa9fc907de2addbbb5ebfecd5d5b25441\", \"records_matrix\": [ { \"composite_address\": \"P01.5::B::0015\", \"original_identifier\": \"AI-015\", \"claim\": \"Prompt injection and malicious repository/content instructions are not technically contained.\", \"predicate\": null, \"outcome\": \"UNRESOLVED\", \"state_if_decided\": null, \"confidence_if_decided\": null, \"predicate_detail\": { \"reason\": \"no reviewed predicate\" }, \"predicate_files\": [], \"result\": \"REMAIN_QUEUED\" }, { \"composite_address\": \"P01.5::B::0016\", \"original_identifier\": \"AI-016\", \"claim\": \"Hallucination, uncertainty "
-          },
           {
             "path": "audit/control-spine/PMP_Control_Spine_05_dependency-and-provider_v1.json",
             "sha256": "afb9f296736f77d77df0139114e665380e1c02dfdb832461810a5f29cfd3467b",
@@ -150,20 +135,12 @@
       "original_identifier": "OPS-006",
       "claim": "No data classification decision says what source code and project context may be sent to an AI provider.",
       "predicate": "AI_DATA_CLASSIFICATION_DECISION_ABSENT",
-      "outcome": "UNRESOLVED",
+      "outcome": "SUPPORTED",
       "detail": {
         "complete": [],
-        "partial": [
-          {
-            "path": "audit/Packet_01.5_Other_Record_Specific_Evidence_Matrix_v1.json",
-            "sha256": "815e79e28f64e118682b54e1efe1749e92357e22f0a8c0c7b8e7107120a460a2",
-            "groups": 4,
-            "verified": true,
-            "passage": "{ \"packet\": \"01.5\", \"family\": \"OTHER_RECORD_SPECIFIC_PROOF\", \"records\": 31, \"decided\": 7, \"remaining_queued\": 24, \"main_commit_anchor\": \"65a889a66b9a83836fff3174e3494c5c8814e41c\", \"filtered_corpus_sha256\": \"faac9c86ed7b852a76e5f330dce17bf8dcf9eecccf43e4be4c2200cae2139a2d\", \"effective_runtime_corpus_sha256\": \"0f1dbbbe56de4cd72a21e64675fd3a9fa9fc907de2addbbb5ebfecd5d5b25441\", \"records_matrix\": [ { \"composite_address\": \"P01.5::B::0015\", \"original_identifier\": \"AI-015\", \"claim\": \"Prompt injection and malicious repository/content instructions are not technically contained.\", \"predicate\": null, \"outcome\": \"UNRESOLVED\", \"state_if_decided\": null, \"confidence_if_decided\": null, \"predicate_detail\": { \"reason\": \"no reviewed predicate\" }, \"predicate_files\": [], \"result\": \"REMAIN_QUEUED\" }, { \"composite_address\": \"P01.5::B::0016\", \"original_identifier\": \"AI-016\", \"claim\": \"Hallucination, uncertainty "
-          }
-        ]
+        "partial": []
       },
-      "result": "REMAIN_QUEUED"
+      "result": "DECIDED"
     },
     {
       "composite_address": "P01.5::B::0070",
@@ -202,13 +179,6 @@
       "detail": {
         "complete": [],
         "partial": [
-          {
-            "path": "audit/Packet_01.5_Other_Record_Specific_Evidence_Matrix_v1.json",
-            "sha256": "815e79e28f64e118682b54e1efe1749e92357e22f0a8c0c7b8e7107120a460a2",
-            "groups": 4,
-            "verified": true,
-            "passage": "{ \"packet\": \"01.5\", \"family\": \"OTHER_RECORD_SPECIFIC_PROOF\", \"records\": 31, \"decided\": 7, \"remaining_queued\": 24, \"main_commit_anchor\": \"65a889a66b9a83836fff3174e3494c5c8814e41c\", \"filtered_corpus_sha256\": \"faac9c86ed7b852a76e5f330dce17bf8dcf9eecccf43e4be4c2200cae2139a2d\", \"effective_runtime_corpus_sha256\": \"0f1dbbbe56de4cd72a21e64675fd3a9fa9fc907de2addbbb5ebfecd5d5b25441\", \"records_matrix\": [ { \"composite_address\": \"P01.5::B::0015\", \"original_identifier\": \"AI-015\", \"claim\": \"Prompt injection and malicious repository/content instructions are not technically contained.\", \"predicate\": null, \"outcome\": \"UNRESOLVED\", \"state_if_decided\": null, \"confidence_if_decided\": null, \"predicate_detail\": { \"reason\": \"no reviewed predicate\" }, \"predicate_files\": [], \"result\": \"REMAIN_QUEUED\" }, { \"composite_address\": \"P01.5::B::0016\", \"original_identifier\": \"AI-016\", \"claim\": \"Hallucination, uncertainty "
-          },
           {
             "path": "audit/pmp-resident-reasoning-connection-audit-v1.json",
             "sha256": "7cfcf2f611b47bcc411249613836178acccb1fdbb890f03edd7de27bcac92b13",

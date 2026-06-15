@@ -2,12 +2,12 @@
   "packet": "01.5",
   "family": "DEPENDENCY_OR_PLATFORM_STATE",
   "family_records": 14,
-  "decided_records": 4,
-  "remaining_queued_records": 10,
+  "decided_records": 6,
+  "remaining_queued_records": 8,
   "unknown_hold_created": 0,
   "coverage_complete": true,
   "decision_states": {
-    "CURRENT DEFECT OR LIMITATION": 4
+    "CURRENT DEFECT OR LIMITATION": 6
   },
   "routing_assignments": 0,
   "grouping_assignments": 0,
