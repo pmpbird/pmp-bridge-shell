@@ -11,5 +11,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 20
       - run: python3 tools/run_packet_01_5_runtime_source_corrected_v2.py
