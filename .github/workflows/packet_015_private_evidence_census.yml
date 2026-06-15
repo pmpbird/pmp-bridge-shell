@@ -1,0 +1,26 @@
+name: Packet 015 private evidence census
+
+on:
+  pull_request:
+    paths:
+      - "tools/inspect_packet_01_5_private_evidence_v1.py"
+      - ".github/workflows/packet_015_private_evidence_census.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  census:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Build privacy-safe family census
+        run: python3 tools/inspect_packet_01_5_private_evidence_v1.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: packet-015-private-evidence-census
+          path: audit/Packet_01.5_Private_Evidence_Census_v1.json
+          if-no-files-found: error
