@@ -1,0 +1,15 @@
+{
+  "packet": "01.5",
+  "family": "OTHER_RECORD_SPECIFIC_PROOF",
+  "family_records": 31,
+  "decided_records": 7,
+  "remaining_queued_records": 24,
+  "unknown_hold_created": 0,
+  "coverage_complete": true,
+  "decision_states": {
+    "CURRENT DEFECT OR LIMITATION": 7
+  },
+  "routing_assignments": 0,
+  "grouping_assignments": 0,
+  "source_records_removed_or_closed": 0
+}

@@ -1,0 +1,1 @@
+Process and independently verify the complete OTHER_RECORD_SPECIFIC_PROOF evidence family. Apply decisions only through reviewed claim-specific three-way predicates. Keep partial, unmatched, stale, private, external, or live-dependent evidence queued. No routing, destinations, grouping, closure, implementation, or Packet 04 work is authorized.

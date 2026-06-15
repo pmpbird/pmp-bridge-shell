@@ -1,0 +1,137 @@
+{
+  "packet": "01.5",
+  "artifact": "other_record_specific_evidence_family_pass",
+  "version": 1,
+  "status": "PROPOSED_PENDING_BUILD_AND_INDEPENDENT_VERIFICATION",
+  "source_queue": {
+    "path": "audit/applicability/Packet_01.5_Scalable_Pass_001_Evidence_Queue_v1.jsonl",
+    "sha256": "1b28dbfd69e9af4b51ce5cf4eb4e43d4ed4aaea107129b2e11b7b41c9dfd861a"
+  },
+  "source_inventory": {
+    "path": "audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.jsonl",
+    "sha256": "76169a80e07603cea51d769d3d89b32735149c2aef7eb09f893ed94fe5d72477"
+  },
+  "family": "OTHER_RECORD_SPECIFIC_PROOF",
+  "expected_family_records": 31,
+  "evidence_boundary": {
+    "allowed": [
+      "current tracked source and configuration",
+      "current effective runtime route",
+      "current governing packet records and approved decisions",
+      "current independently verified receipts and status ledgers",
+      "current main commit and content digests",
+      "complete filtered tracked-file census"
+    ],
+    "excluded_as_proof": [
+      "source inventory claims",
+      "discovery and routing-batch copies",
+      "historical or reconstructed records",
+      "role ownership without implementation",
+      "plans without completion evidence",
+      "partial semantic similarity",
+      "untracked live or private state"
+    ]
+  },
+  "reviewed_predicates": [
+    {
+      "claim_contains": "Hallucination, uncertainty calibration, and unsupported-citation behavior have no measured acceptance thresholds",
+      "predicate": "NO_HALLUCINATION_ACCEPTANCE_THRESHOLDS",
+      "supported_state": "CURRENT DEFECT OR LIMITATION",
+      "supported_confidence": 96,
+      "disproved_state": "OUT-OF-SCOPE CANDIDATE",
+      "disproved_confidence": 98
+    },
+    {
+      "claim_contains": "No explicit feature-flag lifecycle proves disabled-by-default modules cannot accidentally activate",
+      "predicate": "NO_FEATURE_FLAG_LIFECYCLE_PROOF",
+      "supported_state": "CURRENT DEFECT OR LIMITATION",
+      "supported_confidence": 95,
+      "disproved_state": "OUT-OF-SCOPE CANDIDATE",
+      "disproved_confidence": 98
+    },
+    {
+      "claim_contains": "Exact Active Work Thread schema and migration are unresolved",
+      "predicate": "ACTIVE_WORK_THREAD_SCHEMA_MIGRATION_UNRESOLVED",
+      "supported_state": "CURRENT DEFECT OR LIMITATION",
+      "supported_confidence": 96,
+      "disproved_state": "OUT-OF-SCOPE CANDIDATE",
+      "disproved_confidence": 98
+    },
+    {
+      "claim_contains": "Exact safe-point, Last Good, emergency pointer, and freeze record schemas/ownership are unresolved",
+      "predicate": "POINTER_AND_FREEZE_SCHEMAS_UNRESOLVED",
+      "supported_state": "CURRENT DEFECT OR LIMITATION",
+      "supported_confidence": 95,
+      "disproved_state": "OUT-OF-SCOPE CANDIDATE",
+      "disproved_confidence": 98
+    },
+    {
+      "claim_contains": "Unknown-field preservation, duplicate handling, old-version handling, and archive/current separation are not enforced",
+      "predicate": "DATA_COMPATIBILITY_RULES_NOT_ENFORCED",
+      "supported_state": "CURRENT DEFECT OR LIMITATION",
+      "supported_confidence": 94,
+      "disproved_state": "OUT-OF-SCOPE CANDIDATE",
+      "disproved_confidence": 97
+    },
+    {
+      "claim_contains": "Completion receipts are not yet globally indexed with immutable IDs and digests",
+      "predicate": "NO_GLOBAL_RECEIPT_INDEX",
+      "supported_state": "CURRENT DEFECT OR LIMITATION",
+      "supported_confidence": 96,
+      "disproved_state": "OUT-OF-SCOPE CANDIDATE",
+      "disproved_confidence": 99
+    },
+    {
+      "claim_contains": "Unavailable old raw history prevents full-history lossless claims and can hide historical dependencies",
+      "predicate": "HISTORICAL_COVERAGE_LIMITS_LOSSLESS_CLAIMS",
+      "supported_state": "CURRENT DEFECT OR LIMITATION",
+      "supported_confidence": 97,
+      "disproved_state": "OUT-OF-SCOPE CANDIDATE",
+      "disproved_confidence": 99
+    },
+    {
+      "claim_contains": "No monitoring/alert delivery mechanism or responsible operator is defined",
+      "predicate": "NO_MONITORING_ALERT_OPERATOR",
+      "supported_state": "CURRENT DEFECT OR LIMITATION",
+      "supported_confidence": 95,
+      "disproved_state": "OUT-OF-SCOPE CANDIDATE",
+      "disproved_confidence": 98
+    },
+    {
+      "claim_contains": "No user-facing explanation standard proves that plain-language summaries are accurate, complete, and not hiding technical risks",
+      "predicate": "NO_USER_EXPLANATION_STANDARD_PROOF",
+      "supported_state": "CURRENT DEFECT OR LIMITATION",
+      "supported_confidence": 94,
+      "disproved_state": "OUT-OF-SCOPE CANDIDATE",
+      "disproved_confidence": 97
+    },
+    {
+      "claim_contains": "Shortcut completion and failure paths are untested",
+      "predicate": "SHORTCUT_SUCCESS_FAILURE_PATHS_UNTESTED",
+      "supported_state": "CURRENT DEFECT OR LIMITATION",
+      "supported_confidence": 95,
+      "disproved_state": "OUT-OF-SCOPE CANDIDATE",
+      "disproved_confidence": 98
+    },
+    {
+      "claim_contains": "Accessibility compliance is designed only at control-surface level and lacks a standard and execution proof",
+      "predicate": "NO_ACCESSIBILITY_STANDARD_EXECUTION_PROOF",
+      "supported_state": "CURRENT DEFECT OR LIMITATION",
+      "supported_confidence": 95,
+      "disproved_state": "OUT-OF-SCOPE CANDIDATE",
+      "disproved_confidence": 98
+    }
+  ],
+  "unmatched_policy": "REMAIN_QUEUED_WITH_RECORD_SPECIFIC_MISSING_PROOF",
+  "unknown_hold_created": false,
+  "decision_author": "resident-other-specific-family-classifier-v1",
+  "decision_verifier": "github-actions-independent-other-specific-family-verifier-v1",
+  "prohibited": [
+    "routing",
+    "destinations",
+    "grouping",
+    "closure",
+    "implementation",
+    "Packet 04"
+  ]
+}
