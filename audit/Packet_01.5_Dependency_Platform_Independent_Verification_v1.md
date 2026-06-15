@@ -38,7 +38,7 @@ PACKET 04 AUTHORIZED: NO
 - permanent source order: PASS
 - main anchor: `76ffbbe65f0eb5996fb23c0126f29dbe3b4c74c1`
 - authoritative corpus digest: `58df1fe6d146a6f6fbd77a32cecf7dd24adbbc8e0c3ddb504320ff0adfe86b4f`
-- complete file-census digest: `14d5cdfe78f9740c27f0a4a76d23a87ee8154c130b7924d1c47a8c986e07484e`
+- complete file-census digest: `e6ac73ab9f351b877c11d249de73be76422f4d62cc6035bb74e435be1e3cfb2b`
 - effective-runtime digest: `0f1dbbbe56de4cd72a21e64675fd3a9fa9fc907de2addbbb5ebfecd5d5b25441`
 - every decision predicate rerun: PASS
 - every remaining queue entry verified: PASS
