@@ -117,33 +117,11 @@
             "pass": false
           },
           {
-            "path": "audit/Packet_01.5_Canonical_Project_Contact_Evidence_Catalog_v1.json",
-            "sha256": "97eb5e87eecb5e701c5362d7aba837efcb2a746147cadac575bc36d46b37e547",
-            "found_terms": [],
-            "required_terms": [
-              "schema",
-              "migration",
-              "version"
-            ],
-            "pass": false
-          },
-          {
             "path": "pmp-resident-current-capability-inventory-v1.json",
             "sha256": "0d54e8620f51a82ae3edc7cc8f1f8c8ab61456f1688d0d500bde618095df3e11",
             "found_terms": [
               "migration"
             ],
-            "required_terms": [
-              "schema",
-              "migration",
-              "version"
-            ],
-            "pass": false
-          },
-          {
-            "path": "pmp-resident-reasoning-connection-audit-v1.json",
-            "sha256": "16e711b9580b86b819ff3309a3c3bebd36df2cbd55a11b5ee6d9e797a1f8a930",
-            "found_terms": [],
             "required_terms": [
               "schema",
               "migration",
@@ -174,16 +152,8 @@
           "sha256": "22cc351549548ec172a10cfcb2393c85ae5c4b63d58be4cfaad98e3debc3a396"
         },
         {
-          "path": "audit/Packet_01.5_Canonical_Project_Contact_Evidence_Catalog_v1.json",
-          "sha256": "97eb5e87eecb5e701c5362d7aba837efcb2a746147cadac575bc36d46b37e547"
-        },
-        {
           "path": "pmp-resident-current-capability-inventory-v1.json",
           "sha256": "0d54e8620f51a82ae3edc7cc8f1f8c8ab61456f1688d0d500bde618095df3e11"
-        },
-        {
-          "path": "pmp-resident-reasoning-connection-audit-v1.json",
-          "sha256": "16e711b9580b86b819ff3309a3c3bebd36df2cbd55a11b5ee6d9e797a1f8a930"
         },
         {
           "path": "resident.html",
@@ -223,23 +193,6 @@
             "pass": true
           },
           {
-            "path": "audit/Packet_01.5_Canonical_Project_Contact_Evidence_Catalog_v1.json",
-            "sha256": "97eb5e87eecb5e701c5362d7aba837efcb2a746147cadac575bc36d46b37e547",
-            "found_terms": [
-              "last good",
-              "safe-point"
-            ],
-            "required_terms": [
-              "safe-point",
-              "last good",
-              "emergency pointer",
-              "freeze record",
-              "schema",
-              "owner"
-            ],
-            "pass": false
-          },
-          {
             "path": "code-safety-v13.html",
             "sha256": "1159ed26b62c86e416375cd092b9aa52b188955f668af5f0df8165e538f6b2a6",
             "found_terms": [
@@ -273,51 +226,6 @@
             "pass": false
           },
           {
-            "path": "control-pack/pmp-remodel-extraction-tickets-v4.json",
-            "sha256": "c365b3754521b14957310c0544546323935ba8a07980df7c73834519f414a3eb",
-            "found_terms": [
-              "safe-point",
-              "schema"
-            ],
-            "required_terms": [
-              "safe-point",
-              "last good",
-              "emergency pointer",
-              "freeze record",
-              "schema",
-              "owner"
-            ],
-            "pass": false
-          },
-          {
-            "path": "hard-fresh.html",
-            "sha256": "78fb62f3457cc7e54dd86e8f60d414c573ed63133efb7bc6913b6e1a839cd30c",
-            "found_terms": [],
-            "required_terms": [
-              "safe-point",
-              "last good",
-              "emergency pointer",
-              "freeze record",
-              "schema",
-              "owner"
-            ],
-            "pass": false
-          },
-          {
-            "path": "pmp-clean.html",
-            "sha256": "9b05da4c13a0a9d34b883c9ee8ab4fa381abcac1dbc3e741e1fb02f24735662f",
-            "found_terms": [],
-            "required_terms": [
-              "safe-point",
-              "last good",
-              "emergency pointer",
-              "freeze record",
-              "schema",
-              "owner"
-            ],
-            "pass": false
-          },
-          {
             "path": "pmp-resident-current-capability-inventory-v1.json",
             "sha256": "0d54e8620f51a82ae3edc7cc8f1f8c8ab61456f1688d0d500bde618095df3e11",
             "found_terms": [
@@ -337,22 +245,6 @@
           {
             "path": "pmp-resident-lossless-readiness.js",
             "sha256": "834c4449f22ff43380422e5ba1b0f1a6d33c652dd34530d261102baf018690b4",
-            "found_terms": [
-              "last good"
-            ],
-            "required_terms": [
-              "safe-point",
-              "last good",
-              "emergency pointer",
-              "freeze record",
-              "schema",
-              "owner"
-            ],
-            "pass": false
-          },
-          {
-            "path": "pmp-resident-reasoning-connection-audit-v1.json",
-            "sha256": "16e711b9580b86b819ff3309a3c3bebd36df2cbd55a11b5ee6d9e797a1f8a930",
             "found_terms": [
               "last good"
             ],
@@ -455,10 +347,6 @@
           "sha256": "2fe93376f1fac20d4fe0d82a80cf4d45911e0031435ffba6ba23cde2173b47e0"
         },
         {
-          "path": "audit/Packet_01.5_Canonical_Project_Contact_Evidence_Catalog_v1.json",
-          "sha256": "97eb5e87eecb5e701c5362d7aba837efcb2a746147cadac575bc36d46b37e547"
-        },
-        {
           "path": "code-safety-v13.html",
           "sha256": "1159ed26b62c86e416375cd092b9aa52b188955f668af5f0df8165e538f6b2a6"
         },
@@ -467,28 +355,12 @@
           "sha256": "1e03facb2218803771dd94b5fc1f1af57cbfef8d187ba344ef85f7feba076ba8"
         },
         {
-          "path": "control-pack/pmp-remodel-extraction-tickets-v4.json",
-          "sha256": "c365b3754521b14957310c0544546323935ba8a07980df7c73834519f414a3eb"
-        },
-        {
-          "path": "hard-fresh.html",
-          "sha256": "78fb62f3457cc7e54dd86e8f60d414c573ed63133efb7bc6913b6e1a839cd30c"
-        },
-        {
-          "path": "pmp-clean.html",
-          "sha256": "9b05da4c13a0a9d34b883c9ee8ab4fa381abcac1dbc3e741e1fb02f24735662f"
-        },
-        {
           "path": "pmp-resident-current-capability-inventory-v1.json",
           "sha256": "0d54e8620f51a82ae3edc7cc8f1f8c8ab61456f1688d0d500bde618095df3e11"
         },
         {
           "path": "pmp-resident-lossless-readiness.js",
           "sha256": "834c4449f22ff43380422e5ba1b0f1a6d33c652dd34530d261102baf018690b4"
-        },
-        {
-          "path": "pmp-resident-reasoning-connection-audit-v1.json",
-          "sha256": "16e711b9580b86b819ff3309a3c3bebd36df2cbd55a11b5ee6d9e797a1f8a930"
         },
         {
           "path": "pmp-top-copy-lossless-button.js",
