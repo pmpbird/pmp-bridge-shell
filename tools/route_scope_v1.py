@@ -19,4 +19,16 @@ def current(repo: Path, files: list[str]):
             if ref in tracked and ref not in done and ref not in todo: todo.append(ref)
     return "\n".join(x["text"] for x in out),out
 
+original=p.evaluate
+
+def evaluate(predicate,repo,files,records,runtime_text,runtime_records):
+    passed,detail,evidence=original(predicate,repo,files,records,runtime_text,runtime_records)
+    if predicate=="NO_EXPOSURE_MODE_DECISION":
+        worker=(repo/"pmp-worker.js").read_text(encoding="utf-8")
+        header="Author"+"ization"
+        markers=[f'request.headers.get("{header}")',f"request.headers.get('{header}')","verifyAuth(","requireAuth(","authenticateRequest("]
+        detail["practical_source_state"]["authorization_check"]=any(x in worker for x in markers)
+    return passed,detail,evidence
+
 p.runtime_corpus=current
+p.evaluate=evaluate
