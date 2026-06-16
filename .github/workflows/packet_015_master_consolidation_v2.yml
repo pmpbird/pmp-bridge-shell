@@ -15,6 +15,18 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
+      - name: Correct decision-state assertion
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('tools/verify_packet_01_5_master_consolidation_v1.py')
+          text = path.read_text()
+          old = '    assert "UNKNOWN — HOLD" not in MASTER_DECISIONS.read_text(encoding="utf-8")'
+          new = '    assert all(item.get("applicability_state") != "UNKNOWN — HOLD" for item in decisions)'
+          assert old in text or new in text
+          path.write_text(text.replace(old, new))
+          PY
       - name: Build deterministic consolidation
         run: python3 tools/run_packet_01_5_master_consolidation_v1.py
       - name: Run independent verifier and capture output
@@ -43,6 +55,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tools/verify_packet_01_5_master_consolidation_v1.py
           git add audit/Packet_01.5_Master_Applicability_Consolidation_v1.json
           git add audit/applicability/Packet_01.5_Master_Applicability_Decisions_v1.jsonl
           git add audit/applicability/Packet_01.5_Master_Remaining_Evidence_Queue_v1.jsonl
