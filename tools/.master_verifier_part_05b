@@ -1,0 +1,13 @@
+
+
+def main() -> None:
+    receipt = verify()
+    MASTER_STATUS.write_text(final_status(receipt), encoding="utf-8")
+    receipt["status_sha256"] = file_sha(MASTER_STATUS)
+    MASTER_RECEIPT.write_text(json.dumps(receipt, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    print("STATUS: PASS — MASTER APPLICABILITY CONSOLIDATION VERIFIED")
+    print(json.dumps(receipt, indent=2, ensure_ascii=False))
+
+
+if __name__ == "__main__":
+    main()
