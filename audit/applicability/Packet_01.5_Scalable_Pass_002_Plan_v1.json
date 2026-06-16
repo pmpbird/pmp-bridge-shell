@@ -1,0 +1,23 @@
+{
+  "packet": "01.5",
+  "pass_id": "SCALABLE-PASS-002",
+  "authoritative_anchor": "15f99fab2fea10f2cb62c1885eb403030060a7b7",
+  "decision_rule": "Apply a decision only when an already-merged, claim-specific, same-address authoritative predicate directly proves or disproves the preserved claim.",
+  "reviewed_direct_predicates": [],
+  "decision_records": 0,
+  "queued_records": 122,
+  "mass_unknown_hold_prohibited": true,
+  "evidence_reacquisition_prohibited": true,
+  "evidence_family_processing_prohibited": true,
+  "established_evidence_domains": [
+    "AUTHORITATIVE_PACKET_LAW",
+    "DEPLOYMENT_AND_LIVE_BEHAVIOR",
+    "DEPENDENCY_OR_PLATFORM_STATE",
+    "PRIVATE_OR_UNCAPTURED_EVIDENCE",
+    "CROSS_SOURCE_CONFLICT",
+    "CURRENT_RUNTIME_SOURCE",
+    "OTHER_RECORD_SPECIFIC_PROOF"
+  ],
+  "decision_author": "Structure AI",
+  "decision_verifier": "Independent Verification AI"
+}
