@@ -1,0 +1,82 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import copy
+import hashlib
+import json
+import subprocess
+from collections import Counter, defaultdict
+from pathlib import Path
+from typing import Any, Iterable
+
+ROOT = Path(__file__).resolve().parents[1]
+ANCHOR = "1ef9b2268cd045d6c96e357539bbe09db137b5fe"
+CID = "P01.5-MASTER-CONSOLIDATION-v1"
+INVENTORY = "audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.jsonl"
+PRIOR_OVERLAY = "audit/routing-inventory/Packet_01.5_Applicability_Inventory_v9_Batch_008.jsonl"
+WINDOW = "audit/applicability/Packet_01.5_Scalable_Pass_001_Window_v1.json"
+PLAN = "audit/applicability/Packet_01.5_Scalable_Pass_001_Plan_v1.json"
+BASE_DECISIONS = "audit/applicability/Packet_01.5_Scalable_Pass_001_Decisions_v1.jsonl"
+BASE_QUEUE = "audit/applicability/Packet_01.5_Scalable_Pass_001_Evidence_Queue_v1.jsonl"
+BASE_COVERAGE = "audit/Packet_01.5_Scalable_Pass_001_Coverage_v1.json"
+BASE_RECEIPT = "audit/Packet_01.5_Scalable_Pass_001_Independent_Verification_v1.json"
+
+MASTER_MANIFEST = ROOT / "audit/Packet_01.5_Master_Applicability_Consolidation_v1.json"
+MASTER_DECISIONS = ROOT / "audit/applicability/Packet_01.5_Master_Applicability_Decisions_v1.jsonl"
+MASTER_QUEUE = ROOT / "audit/applicability/Packet_01.5_Master_Remaining_Evidence_Queue_v1.jsonl"
+MASTER_OVERLAY = ROOT / "audit/routing-inventory/Packet_01.5_Applicability_Inventory_v10_Master_Consolidated.jsonl"
+MASTER_LEDGER = ROOT / "audit/Packet_01.5_Master_Applicability_Conflict_Ledger_v1.json"
+MASTER_COVERAGE = ROOT / "audit/Packet_01.5_Master_Applicability_Coverage_v1.json"
+MASTER_STATUS = ROOT / "audit/Packet_01.5_Master_Applicability_Status_v1.md"
+MASTER_RECEIPT = ROOT / "audit/Packet_01.5_Master_Applicability_Independent_Verification_v1.json"
+
+FAMILIES = [
+    ("CURRENT_RUNTIME_SOURCE", "audit/applicability/Packet_01.5_Current_Runtime_Source_Corrected_Decisions_v1.jsonl", "audit/applicability/Packet_01.5_Current_Runtime_Source_Corrected_Remaining_Queue_v1.jsonl", "audit/Packet_01.5_Current_Runtime_Source_Corrected_Coverage_v1.json", "audit/Packet_01.5_Current_Runtime_Source_Corrected_Independent_Verification_v1.json"),
+    ("AUTHORITATIVE_PACKET_LAW", "audit/applicability/Packet_01.5_Authoritative_Packet_Law_Family_Decisions_v1.jsonl", "audit/applicability/Packet_01.5_Authoritative_Packet_Law_Family_Remaining_Queue_v1.jsonl", "audit/Packet_01.5_Authoritative_Packet_Law_Family_Coverage_v1.json", "audit/Packet_01.5_Authoritative_Packet_Law_Family_Independent_Verification_v1.json"),
+    ("DEPLOYMENT_AND_LIVE_BEHAVIOR", "audit/applicability/Packet_01.5_Deployment_Live_Family_Decisions_v1.jsonl", "audit/applicability/Packet_01.5_Deployment_Live_Family_Remaining_Queue_v1.jsonl", "audit/Packet_01.5_Deployment_Live_Family_Coverage_v1.json", "audit/Packet_01.5_Deployment_Live_Family_Independent_Verification_v1.json"),
+    ("OTHER_RECORD_SPECIFIC_PROOF", "audit/applicability/Packet_01.5_Other_Record_Specific_Family_Decisions_v1.jsonl", "audit/applicability/Packet_01.5_Other_Record_Specific_Family_Remaining_Queue_v1.jsonl", "audit/Packet_01.5_Other_Record_Specific_Family_Coverage_v1.json", "audit/Packet_01.5_Other_Record_Specific_Family_Independent_Verification_v1.json"),
+    ("DEPENDENCY_OR_PLATFORM_STATE", "audit/applicability/Packet_01.5_Dependency_Platform_Family_Decisions_v1.jsonl", "audit/applicability/Packet_01.5_Dependency_Platform_Family_Remaining_Queue_v1.jsonl", "audit/Packet_01.5_Dependency_Platform_Family_Coverage_v1.json", "audit/Packet_01.5_Dependency_Platform_Independent_Verification_v1.json"),
+    ("CROSS_SOURCE_CONFLICT", "audit/applicability/Packet_01.5_Cross_Source_Conflict_Decisions_v1.jsonl", "audit/applicability/Packet_01.5_Cross_Source_Conflict_Remaining_Queue_v1.jsonl", "audit/Packet_01.5_Cross_Source_Conflict_Coverage_v1.json", "audit/Packet_01.5_Cross_Source_Conflict_Independent_Verification_v1.json"),
+    ("PRIVATE_OR_UNCAPTURED_EVIDENCE", "audit/applicability/Packet_01.5_Private_Evidence_Family_Decisions_v1.jsonl", "audit/applicability/Packet_01.5_Private_Evidence_Family_Remaining_Queue_v1.jsonl", "audit/Packet_01.5_Private_Evidence_Family_Coverage_v1.json", "audit/Packet_01.5_Private_Evidence_Family_Independent_Verification_v1.json"),
+]
+
+ALLOWED_CHANGED = {
+    ".github/workflows/packet_015_master_consolidation_v2.yml",
+    "tools/build_packet_01_5_master_consolidation_v1.py",
+    "tools/run_packet_01_5_master_consolidation_v1.py",
+    "tools/verify_packet_01_5_master_consolidation_v1.py",
+    "audit/Packet_01.5_Master_Applicability_Consolidation_v1.json",
+    "audit/applicability/Packet_01.5_Master_Applicability_Decisions_v1.jsonl",
+    "audit/applicability/Packet_01.5_Master_Remaining_Evidence_Queue_v1.jsonl",
+    "audit/routing-inventory/Packet_01.5_Applicability_Inventory_v10_Master_Consolidated.jsonl",
+    "audit/Packet_01.5_Master_Applicability_Conflict_Ledger_v1.json",
+    "audit/Packet_01.5_Master_Applicability_Coverage_v1.json",
+    "audit/Packet_01.5_Master_Applicability_Status_v1.md",
+    "audit/Packet_01.5_Master_Applicability_Independent_Verification_v1.json",
+}
+
+
+def git(*args: str, binary: bool = False) -> bytes | str:
+    result = subprocess.run(["git", *args], cwd=ROOT, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout
+    return result if binary else result.decode("utf-8", errors="replace")
+
+
+def source_bytes(path: str) -> bytes:
+    return git("show", f"{ANCHOR}:{path}", binary=True)  # type: ignore[return-value]
+
+
+def source_text(path: str) -> str:
+    return source_bytes(path).decode("utf-8")
+
+
+def source_json(path: str) -> Any:
+    return json.loads(source_text(path))
+
+
+def source_jsonl(path: str) -> list[dict[str, Any]]:
+    return [json.loads(line) for line in source_text(path).splitlines() if line.strip()]
+
+
+def file_json(path: Path) -> Any:
+    return json.loads(path.read_text(encoding="utf-8"))
