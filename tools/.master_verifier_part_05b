@@ -1,0 +1,23 @@
+
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--write-receipt", action="store_true")
+    args = parser.parse_args()
+
+    receipt = verify()
+    if args.write_receipt:
+        MASTER_STATUS.write_text(final_status(receipt), encoding="utf-8")
+        receipt = verify()
+        MASTER_RECEIPT.write_text(json.dumps(receipt, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    else:
+        assert file_json(MASTER_RECEIPT) == receipt
+        assert MASTER_STATUS.read_text(encoding="utf-8") == final_status(receipt)
+
+    print("STATUS: PASS — PACKET 01.5 MASTER APPLICABILITY CONSOLIDATION VERIFIED")
+    print(json.dumps(receipt, indent=2, ensure_ascii=False))
+
+
+if __name__ == "__main__":
+    main()
