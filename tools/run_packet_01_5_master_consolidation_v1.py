@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -42,3 +43,21 @@ def schema_aware_claim(record):
 
 module.claim = schema_aware_claim
 module.main()
+
+# The family decision artifacts do not all repeat ordinal and original identifier.
+# Add those immutable identity fields explicitly from the authoritative window.
+window = module.js(module.WIN)
+identity = {
+    item["composite_address"]: {
+        "source_record_ordinal": item["source_record_ordinal"],
+        "original_identifier": item["original_identifier"],
+        "source_envelope_hash": item["envelope_hash"],
+        "source_block_hash": item["source_block_hash"],
+    }
+    for item in window["record_identities"]
+}
+rows = [json.loads(line) for line in module.OD.read_text(encoding="utf-8").splitlines() if line.strip()]
+for row in rows:
+    for key, value in identity[row["composite_address"]].items():
+        row[key] = value
+module.wl(module.OD, rows)
