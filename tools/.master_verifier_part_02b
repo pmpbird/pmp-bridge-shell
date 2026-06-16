@@ -1,0 +1,38 @@
+
+    for family, decision_path, queue_path, coverage_path, receipt_path in FAMILIES:
+        decisions = source_jsonl(decision_path)
+        queue = source_jsonl(queue_path)
+        coverage = source_json(coverage_path)
+        receipt = source_json(receipt_path)
+        decision_addresses = [item["composite_address"] for item in decisions]
+        queue_addresses = [item["composite_address"] for item in queue]
+        assert len(decision_addresses) == len(set(decision_addresses))
+        assert len(queue_addresses) == len(set(queue_addresses))
+        assert set(decision_addresses).isdisjoint(queue_addresses)
+        assert set(decision_addresses) | set(queue_addresses) == set(expected_by_family[family])
+        assert pass_receipt(receipt)
+        assert sha256(inventory_bytes) in json.dumps(receipt)
+        assert first_int(coverage, ("family_records",)) == len(expected_by_family[family])
+        assert first_int(coverage, ("decided_records", "decisions_created")) == len(decisions)
+        assert first_int(coverage, ("remaining_queued_records", "remaining_exact_queues")) == len(queue)
+        assert first_int(coverage, ("unknown_hold_created", "unknown_hold_decisions")) == 0
+
+        for item in decisions:
+            address = item["composite_address"]
+            assert address not in expected_decisions
+            expected_decisions[address] = (family, decision_path, item)
+        for item in queue:
+            address = item["composite_address"]
+            assert address not in expected_queue
+            expected_queue[address] = (family, queue_path, item)
+
+        family_integrity.append({
+            "family": family,
+            "records": len(expected_by_family[family]),
+            "decisions": len(decisions),
+            "queued": len(queue),
+            "decision_sha256": source_sha(decision_path),
+            "queue_sha256": source_sha(queue_path),
+            "coverage_sha256": source_sha(coverage_path),
+            "receipt_sha256": source_sha(receipt_path),
+        })
