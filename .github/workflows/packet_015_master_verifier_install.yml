@@ -1,0 +1,48 @@
+name: Assemble Packet 015 master verifier
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - name: Assemble readable verifier
+        shell: bash
+        run: |
+          cat \
+            tools/.master_verifier_part_00 \
+            tools/.master_verifier_part_01 \
+            tools/.master_verifier_part_02a \
+            tools/.master_verifier_part_02b \
+            tools/.master_verifier_part_03 \
+            tools/.master_verifier_part_04 \
+            tools/.master_verifier_part_05a \
+            tools/.master_verifier_part_05b \
+            > tools/verify_packet_01_5_master_consolidation_v1.py
+          chmod +x tools/verify_packet_01_5_master_consolidation_v1.py
+          python3 -m py_compile tools/verify_packet_01_5_master_consolidation_v1.py
+          rm tools/.master_verifier_part_00
+          rm tools/.master_verifier_part_01
+          rm tools/.master_verifier_part_02a
+          rm tools/.master_verifier_part_02b
+          rm tools/.master_verifier_part_03
+          rm tools/.master_verifier_part_04
+          rm tools/.master_verifier_part_05a
+          rm tools/.master_verifier_part_05b
+      - name: Commit assembled verifier
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A tools
+          git commit -m "Add independent Packet 01.5 master verifier"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
