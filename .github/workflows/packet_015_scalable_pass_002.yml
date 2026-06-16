@@ -5,47 +5,18 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  build-verify:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
-      - name: Build deterministic Pass 002
+      - name: Rebuild deterministic Pass 002
         run: python3 tools/build_packet_01_5_scalable_pass_002_v1.py
-      - name: Stage authorized Pass 002 scope
-        shell: bash
-        run: |
-          git add .github/workflows/packet_015_scalable_pass_002.yml
-          git add tools/build_packet_01_5_scalable_pass_002_v1.py
-          git add tools/verify_packet_01_5_scalable_pass_002_v1.py
-          git add audit/applicability/Packet_01.5_Scalable_Pass_002_Window_v1.json
-          git add audit/applicability/Packet_01.5_Scalable_Pass_002_Plan_v1.json
-          git add audit/applicability/Packet_01.5_Scalable_Pass_002_Decisions_v1.jsonl
-          git add audit/applicability/Packet_01.5_Scalable_Pass_002_Evidence_Queue_v1.jsonl
-          git add audit/routing-inventory/Packet_01.5_Applicability_Inventory_v11_Pass_002.jsonl
-          git add audit/Packet_01.5_Scalable_Pass_002_Coverage_v1.json
-          git add audit/Packet_01.5_Scalable_Pass_002_v1.md
-      - name: Independently verify and write permanent receipt
-        run: python3 tools/verify_packet_01_5_scalable_pass_002_v1.py --write-receipt
-      - name: Verify receipt read-only
-        shell: bash
-        run: |
-          git add audit/Packet_01.5_Scalable_Pass_002_v1.md
-          git add audit/Packet_01.5_Scalable_Pass_002_Independent_Verification_v1.json
-          python3 tools/verify_packet_01_5_scalable_pass_002_v1.py
-      - name: Commit verified Pass 002 outputs when changed
-        shell: bash
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if git diff --cached --quiet; then
-            echo "Verified Pass 002 outputs already committed"
-          else
-            git commit -m "Add verified Packet 01.5 Scalable Pass 002"
-            git push origin HEAD:${{ github.event.pull_request.head.ref }}
-          fi
+      - name: Independently verify permanent receipt
+        run: python3 tools/verify_packet_01_5_scalable_pass_002_v1.py
+      - name: Confirm deterministic no-diff result
+        run: git diff --exit-code
