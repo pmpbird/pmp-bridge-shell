@@ -1,0 +1,23 @@
+name: Packet 015 scalable pass 002 discovery
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Inspect authoritative Pass 002 window
+        run: python3 tools/inspect_packet_01_5_scalable_pass_002_v1.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: packet-015-scalable-pass-002-discovery
+          path: audit/Packet_01.5_Scalable_Pass_002_Discovery_v1.json
+          if-no-files-found: error
