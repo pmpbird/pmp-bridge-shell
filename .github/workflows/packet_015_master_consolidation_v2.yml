@@ -1,4 +1,4 @@
-name: Packet 015 master consolidation finalization
+name: Packet 015 master consolidation verification
 
 on:
   pull_request:
@@ -8,43 +8,22 @@ permissions:
   contents: write
 
 jobs:
-  finalize:
+  verify-and-commit:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
-
-      - name: Assemble independent verifier
-        shell: bash
-        run: |
-          cat tools/.master_verifier_part_* > tools/verify_packet_01_5_master_consolidation_v1.py
-          python3 - <<'PY'
-          from pathlib import Path
-          path = Path('tools/verify_packet_01_5_master_consolidation_v1.py')
-          text = path.read_text()
-          text = text.replace(
-              '    assert "UNKNOWN — HOLD" not in MASTER_DECISIONS.read_text(encoding="utf-8")',
-              '    assert all(item.get("applicability_state") != "UNKNOWN — HOLD" for item in decisions)'
-          )
-          text = text.replace(
-              'git("diff", "--name-only", ANCHOR, "HEAD")',
-              'git("diff", "--cached", "--name-only", ANCHOR)'
-          )
-          path.write_text(text)
-          PY
-          chmod +x tools/verify_packet_01_5_master_consolidation_v1.py
-          rm tools/.master_verifier_part_*
-
       - name: Build deterministic consolidation
         run: python3 tools/run_packet_01_5_master_consolidation_v1.py
-
-      - name: Stage final scope
+      - name: Independently verify and write receipt
+        run: python3 tools/verify_packet_01_5_master_consolidation_v1.py
+      - name: Commit verified outputs when changed
         shell: bash
         run: |
-          git add -A tools
-          git add .github/workflows/packet_015_master_consolidation_v2.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add audit/Packet_01.5_Master_Applicability_Consolidation_v1.json
           git add audit/applicability/Packet_01.5_Master_Applicability_Decisions_v1.jsonl
           git add audit/applicability/Packet_01.5_Master_Remaining_Evidence_Queue_v1.jsonl
@@ -52,21 +31,10 @@ jobs:
           git add audit/Packet_01.5_Master_Applicability_Conflict_Ledger_v1.json
           git add audit/Packet_01.5_Master_Applicability_Coverage_v1.json
           git add audit/Packet_01.5_Master_Applicability_Status_v1.md
-
-      - name: Independently verify and write permanent receipt
-        run: python3 tools/verify_packet_01_5_master_consolidation_v1.py --write-receipt
-
-      - name: Verify permanent receipt read-only
-        shell: bash
-        run: |
-          git add audit/Packet_01.5_Master_Applicability_Status_v1.md
           git add audit/Packet_01.5_Master_Applicability_Independent_Verification_v1.json
-          python3 tools/verify_packet_01_5_master_consolidation_v1.py
-
-      - name: Commit verified consolidation
-        shell: bash
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Add verified Packet 01.5 master consolidation"
-          git push origin HEAD:${{ github.event.pull_request.head.ref }}
+          if git diff --cached --quiet; then
+            echo "Verified outputs already committed"
+          else
+            git commit -m "Add verified Packet 01.5 master consolidation"
+            git push origin HEAD:${{ github.event.pull_request.head.ref }}
+          fi
