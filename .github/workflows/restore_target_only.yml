@@ -1,0 +1,19 @@
+name: Restore target workflow only
+on:
+  pull_request:
+permissions:
+  contents: write
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - run: bash tools/restore_target_only.sh
+      - run: |
+          git config user.name github-actions
+          git config user.email actions@github.com
+          git add .github/workflows/packet_015_pass_002_current_runtime_family.yml
+          git commit -m "Restore target workflow"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
