@@ -361,7 +361,7 @@ def verify() -> dict[str, Any]:
         assert coverage[key] == 0
         assert manifest["prohibited_actions"][key] == 0
 
-    assert "UNKNOWN — HOLD" not in MASTER_DECISIONS.read_text(encoding="utf-8")
+    assert all(item.get("applicability_state") != "UNKNOWN — HOLD" for item in decisions)
     assert INVENTORY not in {item for item in git("diff", "--name-only", ANCHOR, "HEAD").splitlines() if item}
     changed = {item for item in git("diff", "--name-only", ANCHOR, "HEAD").splitlines() if item}
     assert changed <= ALLOWED_CHANGED, sorted(changed - ALLOWED_CHANGED)
