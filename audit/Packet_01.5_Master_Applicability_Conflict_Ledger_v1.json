@@ -1,0 +1,391 @@
+{
+  "packet": "01.5",
+  "artifact": "master_applicability_conflict_ledger",
+  "version": 1,
+  "anchor": "1ef9b2268cd045d6c96e357539bbe09db137b5fe",
+  "real_contradiction_count": 0,
+  "real_contradictions": [],
+  "same_state_duplicate_count": 0,
+  "same_state_duplicates": [],
+  "supersession_count": 41,
+  "supersessions": [
+    {
+      "composite_address": "P01.5::B::0001",
+      "prior_state": "ACTIVE_CONDITIONAL_RISK",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": "0029f3fcf3fd2f64e20b2454970af1ab5b691f5651b9cd706e7fa6ede3cfaa37",
+      "new_decision_hash": "13508564901254394fe364d423cb7669c5a5c3f7cd6ed18291e99489390b46b5",
+      "source_family": "DEPLOYMENT_AND_LIVE_BEHAVIOR",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0002",
+      "prior_state": "ACTIVE_CONDITIONAL_RISK",
+      "new_state": "OUT-OF-SCOPE CANDIDATE",
+      "prior_decision_hash": "a57f78127a39424e7d745f9e33704bd6209f3dea0b174942bcf135b44d1a4145",
+      "new_decision_hash": "9d7a8fb0959982485a28c1d2f069093f81c7846a4106f4696fe3ed861e6c8681",
+      "source_family": "AUTHORITATIVE_PACKET_LAW",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0003",
+      "prior_state": "ACTIVE_CONDITIONAL_RISK",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": "edd767ce534d7def2abcf692180210ddca88017fa0c63955587a6ab86834cb49",
+      "new_decision_hash": "b3e0c7f395bf771f68ab74cca4a22afb70080ada3933e37533022c2ababf0051",
+      "source_family": null,
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0004",
+      "prior_state": "ACTIVE_CONDITIONAL_RISK",
+      "new_state": "ACTIVE CONDITIONAL RISK",
+      "prior_decision_hash": "01bb5ffcd28ce8728ffaa5f8204c04065474ff64d21597cd17ae8d57d73282f3",
+      "new_decision_hash": "1f19e5bc6bff4eaae395a19a30e606483f4623f3253c895734982f580875cd35",
+      "source_family": null,
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0005",
+      "prior_state": "ACTIVE_CONDITIONAL_RISK",
+      "new_state": "ACTIVE CONDITIONAL RISK",
+      "prior_decision_hash": "1fb42840b29846d40bd20a6823ef6b09fc6fef8d5b092a8fcef388d3df923ebe",
+      "new_decision_hash": "6d33e3a680f58fa3425b96c6fe5a2c85f1a5de964fa7d29d1ebd1fb568ad1cdf",
+      "source_family": null,
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0006",
+      "prior_state": "ACTIVE_CONDITIONAL_RISK",
+      "new_state": "ACTIVE CONDITIONAL RISK",
+      "prior_decision_hash": "967abb489a7012bb7f29f9151cd64f185e06a43b8b799af9ad4226f789638d2b",
+      "new_decision_hash": "aef080020d848b34fac7a8135dd5a21651239bc193f8404e54b7b793e67c9e8a",
+      "source_family": null,
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0007",
+      "prior_state": "ACTIVE_CONDITIONAL_RISK",
+      "new_state": "ACTIVE CONDITIONAL RISK",
+      "prior_decision_hash": "7c43ab1c1afdb103cb1c8732c7e36e27f5901bfa081f0e2f6ea55d1bda38598a",
+      "new_decision_hash": "a9c93c013555e706a9fa7be1683c23a6fe6fbcaca62c5b88e7658dd0ecc0f863",
+      "source_family": null,
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0008",
+      "prior_state": "ACTIVE_CONDITIONAL_RISK",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": "2b42e6163c4931bca34c40de05189b4008ef5d33857c75d2ed69666a545361fe",
+      "new_decision_hash": "a7710da39dac65e3b586a091fadcaaa2af5cfae1aab6029c736ae62a91d47c01",
+      "source_family": null,
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0009",
+      "prior_state": "ACTIVE_CONDITIONAL_RISK",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": "cd9242f2d8177eb87c59c8aa644bca8bc6e7346a3a12a7ee618846ea4d7b1efd",
+      "new_decision_hash": "92b7460136cda6d1161df3d9ed029c33d9f1004e38dc4808ada4f9a26434f085",
+      "source_family": "DEPLOYMENT_AND_LIVE_BEHAVIOR",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0010",
+      "prior_state": "ACTIVE_CONDITIONAL_RISK",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": "67884406ef178536423c54904529a22d46a2aa86a5408b64f8daa1fe75525229",
+      "new_decision_hash": "e54e9c23e51a1a3192e7b9f1c66ed744528c1bf7a4f8d86e1e82cace41e30a6d",
+      "source_family": "DEPLOYMENT_AND_LIVE_BEHAVIOR",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0014",
+      "prior_state": "ACTIVE_CONDITIONAL_RISK",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": "f49ba9c9b4ec3f6cd579f41d0cdadeac34d12eb2cc3aa0331a0a66901d70870a",
+      "new_decision_hash": "402d5d17cec73f903d3b754b0383c3454318e3899108dc58346703e2da3a8a12",
+      "source_family": "DEPLOYMENT_AND_LIVE_BEHAVIOR",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0016",
+      "prior_state": "ACTIVE_CONDITIONAL_RISK",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": "b5ee11ced4049707df9cfe5d003d71796769f89a37bbca40abbb837bf65bb10d",
+      "new_decision_hash": "2eca55d9e757b8d3acf5547cd334de7eb4dad683b681497f2da25a4c7f7a61aa",
+      "source_family": "OTHER_RECORD_SPECIFIC_PROOF",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0020",
+      "prior_state": "ACTIVE_CONDITIONAL_RISK",
+      "new_state": "OUT-OF-SCOPE CANDIDATE",
+      "prior_decision_hash": "3395cc5b1e1a82c16a24d1dea135783afc25e21ef4f785ee8809bd6e32029f88",
+      "new_decision_hash": "df82a1f86c8630edaeb4d08616ed0fdef63872c45993a5ebb816dabb63c19f5d",
+      "source_family": "AUTHORITATIVE_PACKET_LAW",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0021",
+      "prior_state": "ACTIVE_CONDITIONAL_RISK",
+      "new_state": "OUT-OF-SCOPE CANDIDATE",
+      "prior_decision_hash": "ad3e30b52e9f0e56d062627596f62191200de9b754b4bb0dec2c3b971707b60a",
+      "new_decision_hash": "689284319d831bf441a43ef567d9ed3274014b73146c37a06df34f0c313281f1",
+      "source_family": "AUTHORITATIVE_PACKET_LAW",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0024",
+      "prior_state": "CURRENT_DEFECT",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": "a2692d96230d2c00dcdeffe274161a8b74222dc1f38f34295334c4cfa4a7aa0d",
+      "new_decision_hash": "f598e49fd834f309725573ea43b57b0faf04bcd76664c3cf0abaca84246bf771",
+      "source_family": "DEPENDENCY_OR_PLATFORM_STATE",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0026",
+      "prior_state": "CURRENT_DEFECT",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": "7ce4380501040614ac0115c944fed325b6ae6d30007482d748680dca6b4339a1",
+      "new_decision_hash": "47d3f506bb06e3c5b066d16375d7dc912ce1451693b4437c982c498ccd382532",
+      "source_family": "DEPENDENCY_OR_PLATFORM_STATE",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0029",
+      "prior_state": "CURRENT_DEFECT",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": "6f520764dc584dbf2d47ff5831a0e92660d913eef15694e75652165b4b030546",
+      "new_decision_hash": "ace6184eb2a297bad0076f730b1d5ca929e3357fbf659fcfcc80efb5194a3c4d",
+      "source_family": "DEPENDENCY_OR_PLATFORM_STATE",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0030",
+      "prior_state": "ACTIVE_CONDITIONAL_RISK",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": "0bb6940009a52d4010ef7363209b770261fe080a5813d36a0a0d70b48891fa09",
+      "new_decision_hash": "ca6e48dd7e9d858cf1c79c32425bb2e5f09ded3aeaebe4f85813a11d919bd7ba",
+      "source_family": "OTHER_RECORD_SPECIFIC_PROOF",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0036",
+      "prior_state": "CURRENT_DEFECT",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": "ff668a6032c6865129ee363e50511bfbf1cf4a52910ff794b4a68689176aab4b",
+      "new_decision_hash": "19715ff78f319c8ec7736170183653c039e8b8e046aef0279259c1e7bfc16b8f",
+      "source_family": "OTHER_RECORD_SPECIFIC_PROOF",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0037",
+      "prior_state": "CURRENT_DEFECT",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": "dce4ca9e2ed32883a57c696ac796cd817136938166c04fed78e1db0e3b139866",
+      "new_decision_hash": "cfa46e65a3a9b7784bede86ea89b9f8807b6b2038cfdf388d9719034277d8a6d",
+      "source_family": "OTHER_RECORD_SPECIFIC_PROOF",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0039",
+      "prior_state": "CURRENT_DEFECT",
+      "new_state": "OUT-OF-SCOPE CANDIDATE",
+      "prior_decision_hash": "87c372ed363d18de11d495058f8ef4d61f66bf50515452de9e8e0dba3b8b6a8d",
+      "new_decision_hash": "5472dbf641f1cf05afb683c2f67595e3015487cdd65b64e5c3eea52f10a7864e",
+      "source_family": "CURRENT_RUNTIME_SOURCE",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0042",
+      "prior_state": "CURRENT_DEFECT",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": "0f678a4202d9d01bbd8ea8d7c33367e33acf15b0d3bb01abe82ebc4739157c49",
+      "new_decision_hash": "2dcfeefea9a51386e653006be784e95717959a058869c7ff31d94f1c1cc4827f",
+      "source_family": "PRIVATE_OR_UNCAPTURED_EVIDENCE",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0047",
+      "prior_state": "CURRENT_DEFECT",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": "4737a3e0a45bd60fd69bcdd45185bfe0b4ad5460b1bdae46446ecb4c24ce9d0c",
+      "new_decision_hash": "d3de5c859ab0b0944d16fd79cc834078a20225485007efd93184f4fc6b1345e1",
+      "source_family": "DEPLOYMENT_AND_LIVE_BEHAVIOR",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0056",
+      "prior_state": "DORMANT_FUTURE_RISK",
+      "new_state": "OUT-OF-SCOPE CANDIDATE",
+      "prior_decision_hash": "48a196c7b97a40b101e1359c48e3f11469c6ebb5baf63d7f4e73bdec0be7214f",
+      "new_decision_hash": "ef2417183c594cd48240a07b4e545d5402f888b18fdc78db9eb3c3e68d13658e",
+      "source_family": "PRIVATE_OR_UNCAPTURED_EVIDENCE",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0058",
+      "prior_state": "CURRENT_DEFECT",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": "003eae58db203c3eeb69b2ccf1c5404a90ed2459258ba7a5592eef92b6f630cb",
+      "new_decision_hash": "371f087defb04434a92d5affa07b95447b9322b4a217276dc93409f1726383c8",
+      "source_family": "OTHER_RECORD_SPECIFIC_PROOF",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0060",
+      "prior_state": "ACTIVE_CONDITIONAL_RISK",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": "ef150530527f50640fb4623a6e63ee0919d58b08892901be1dc239dbf83927fe",
+      "new_decision_hash": "fde5dd5fe73813e228dca08024f25cf711b804f4ecb0aae235fa1558fb43a344",
+      "source_family": "OTHER_RECORD_SPECIFIC_PROOF",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0062",
+      "prior_state": "CURRENT_DEFECT",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": "35e86fa7aeafa18dc8909da3d58c84dd974b511b33d6f512d6788b53f440cf7f",
+      "new_decision_hash": "7f1d81063daa82fa27004840857f2662c3a890c7df6475c18cff51b2de71a96d",
+      "source_family": "CURRENT_RUNTIME_SOURCE",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0063",
+      "prior_state": "CURRENT_DEFECT",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": "181407c046645682a14cdc2a06523475a5e55673582b9885baf16b3914eb0a07",
+      "new_decision_hash": "c681f7bc27a2dc9451cb69af8e0d0eb305769f42ae079cea6b13f1a52e230629",
+      "source_family": "DEPLOYMENT_AND_LIVE_BEHAVIOR",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0065",
+      "prior_state": "CURRENT_DEFECT",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": "80355a4283abef3c4924918fd1ef7a97c840ca41016a4d89833f2fdec696569f",
+      "new_decision_hash": "ea830973e84b1283ddcbf3e6fb451e9916d4700f3037f942aaad3a328161547c",
+      "source_family": "DEPENDENCY_OR_PLATFORM_STATE",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0067",
+      "prior_state": "ACTIVE_CONDITIONAL_RISK",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": "c57dd2e352e0b2f107a9c3b1cf905f56cd0e1e8dd66cbd2f0f993d9c2fac63c0",
+      "new_decision_hash": "f2f4e046bac0da21c414dcad0799ad0913fcf18eda053e1f2565d35b35e11c32",
+      "source_family": "DEPLOYMENT_AND_LIVE_BEHAVIOR",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0068",
+      "prior_state": "ACTIVE_CONDITIONAL_RISK",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": "562f6afd8cf7a04637a7827454f6d3a680e2e32b5ecae880bed54f098cdb4178",
+      "new_decision_hash": "652c3687688554aa0be68aa7e5b501bb9b2739faf016e39d7842f071a899345b",
+      "source_family": "DEPENDENCY_OR_PLATFORM_STATE",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0070",
+      "prior_state": "CURRENT_DEFECT",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": "7ec5aa76fa7b0db63b3d9317bc8b365b2c3ad95694fe0a375478bb63fd2ce537",
+      "new_decision_hash": "46208afc8d771f665c13292efe38a59ebe000843f6927c7cad36f80c493bdcd6",
+      "source_family": "DEPENDENCY_OR_PLATFORM_STATE",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0072",
+      "prior_state": "CURRENT_DEFECT",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": "928787fe6978a60f4c3d4e3b0a679efa9b5182d6776bc189b5ebbee54bf38a06",
+      "new_decision_hash": "8767b867866ac01adf2071e21ce7fdad0ab3148f0d70ac779c493b3a7d262956",
+      "source_family": "DEPLOYMENT_AND_LIVE_BEHAVIOR",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0076",
+      "prior_state": "CURRENT_DEFECT",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": "12fab9a21a2e6424b4f5bd4d3dbd8814ad9e7a248c7fc949fbcb92971672963a",
+      "new_decision_hash": "25c95de5e39d70f6eacefbe7c0efed61431d99b55b6ac7bae557c627434bc51f",
+      "source_family": "OTHER_RECORD_SPECIFIC_PROOF",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0079",
+      "prior_state": "DORMANT_FUTURE_RISK",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": "1b8b01b72ed12a03a3c0a7ae4b25374d3e6df85482923ef8c9a5e414b24123b7",
+      "new_decision_hash": "410d282e8d3429fac5033b5b51a200702e3c8587932dd00a558430311fad2874",
+      "source_family": "DEPLOYMENT_AND_LIVE_BEHAVIOR",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0084",
+      "prior_state": "UNCLASSIFIED",
+      "new_state": "ACTIVE CONDITIONAL RISK",
+      "prior_decision_hash": null,
+      "new_decision_hash": "aa646d5b9a16e9c5cacc5d24b28400ff89a2a691207f4d63b5f830c021b0df22",
+      "source_family": "DEPLOYMENT_AND_LIVE_BEHAVIOR",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0085",
+      "prior_state": "UNCLASSIFIED",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": null,
+      "new_decision_hash": "086884d2b7ac2032bf7e25c97b3f5c5a1e5b3a7fe7a96ea0ad3bfda86bcf3897",
+      "source_family": "DEPLOYMENT_AND_LIVE_BEHAVIOR",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0091",
+      "prior_state": "UNCLASSIFIED",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": null,
+      "new_decision_hash": "612893b6839dfac4e704a5af54c48185e5288f9c08b0529d5bda0eeedb1813bb",
+      "source_family": "DEPLOYMENT_AND_LIVE_BEHAVIOR",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0092",
+      "prior_state": "UNCLASSIFIED",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": null,
+      "new_decision_hash": "5305884cdbe9def47b4ace1d93ce90a5c826e689744d097a604a8c601777f8f3",
+      "source_family": "DEPLOYMENT_AND_LIVE_BEHAVIOR",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0110",
+      "prior_state": "UNCLASSIFIED",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": null,
+      "new_decision_hash": "ec593591d467e8c3181ff9f943f692fa691f42b9ee09a8e11f59bba40e1ae69d",
+      "source_family": "PRIVATE_OR_UNCAPTURED_EVIDENCE",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    },
+    {
+      "composite_address": "P01.5::B::0112",
+      "prior_state": "UNCLASSIFIED",
+      "new_state": "CURRENT DEFECT OR LIMITATION",
+      "prior_decision_hash": null,
+      "new_decision_hash": "8b7f77835f2aec63ab4d6b5e8cce5ee09560d34367d478c4e2b2dc57aae19638",
+      "source_family": "AUTHORITATIVE_PACKET_LAW",
+      "result": "NEWER_VERIFIED_DECISION_APPLIED"
+    }
+  ],
+  "precedence_rules": [
+    "Immutable identity and claim come from the baseline window and source inventory.",
+    "Verified baseline decisions remain unless a later verified same-address decision exists.",
+    "The seven families partition the 116 baseline evidence-queue records.",
+    "Corrected current-runtime results supersede the earlier untrusted runtime partition.",
+    "Later merged independently verified family decisions supersede the prior overlay.",
+    "Queued records preserve prior applicability state and decision hash.",
+    "Equal-precedence different states are real contradictions and stop consolidation."
+  ]
+}
