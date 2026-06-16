@@ -1,0 +1,30 @@
+{
+  "packet": "01.5",
+  "pass": "002",
+  "family": "PRIVATE_OR_UNCAPTURED_EVIDENCE",
+  "authoritative_anchor": "417d11653d7e94dcc5b57939dfd4a26f30fdc221",
+  "family_records": 1,
+  "addresses_in_inventory_order": [
+    "P01.5::P004::OBS-004"
+  ],
+  "records": [
+    {
+      "composite_address": "P01.5::P004::OBS-004",
+      "inventory_position": 184,
+      "source_record_ordinal": 11,
+      "original_identifier": "OBS-004",
+      "preserved_claim": "observed behavior differs from normal behavior and private data leaks.",
+      "source_path": "audit/Packet_01.5_Discovery_Pass_04_Performance_Observability_Accessibility_and_Metrics_v1.md",
+      "source_pass": 4,
+      "source_set": "PROVISIONAL",
+      "source_file_hash": "dea3d33cc02124c99bf95698010667c948cda094fabc3bba86e016232aa5d764",
+      "source_envelope_hash": "86169e8a89bb971ace18343077a868911c2107941e04916dbebc2f0d290e49b4",
+      "source_block_hash": "abb1938a4528f05013354a2bc6d047e092a5ab8008f33664245d572013beedb3",
+      "queue_id": "SP002-PRIVATE_OR_UNCAPTURED_EVIDENCE",
+      "evidence_domain": "PRIVATE_OR_UNCAPTURED_EVIDENCE",
+      "prior_applicability_state": "UNCLASSIFIED",
+      "prior_applicability_decision_hash": null,
+      "state_preservation_rule": "PRESERVE_CURRENT_STATE_UNTIL_DIRECT_MERGED_EVIDENCE_SUPPORTS_A_DECISION"
+    }
+  ]
+}
