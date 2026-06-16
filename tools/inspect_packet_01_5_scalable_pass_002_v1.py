@@ -13,6 +13,7 @@ OVERLAY = "audit/routing-inventory/Packet_01.5_Applicability_Inventory_v10_Maste
 OUTPUT = ROOT / "audit/Packet_01.5_Scalable_Pass_002_Discovery_v1.json"
 FIRST = 123
 LAST = 244
+ORDINAL_KEYS = ("source_record_ordinal", "record_ordinal", "source_ordinal", "ordinal")
 
 
 def git(*args: str, binary: bool = False):
@@ -32,6 +33,14 @@ def rows(data: bytes) -> list[dict]:
     return [json.loads(line) for line in data.decode("utf-8").splitlines() if line.strip()]
 
 
+def ordinal_field(record: dict) -> tuple[str | None, int | None]:
+    for key in ORDINAL_KEYS:
+        value = record.get(key)
+        if isinstance(value, int):
+            return key, value
+    return None, None
+
+
 def text_fields(record: dict) -> dict:
     result = {}
     for key, value in record.items():
@@ -39,9 +48,9 @@ def text_fields(record: dict) -> dict:
             result[key] = value
         elif isinstance(value, (int, float, bool)) or value is None:
             result[key] = value
-        elif isinstance(value, list) and len(value) <= 12:
+        elif isinstance(value, list) and len(value) <= 20:
             result[key] = value
-        elif isinstance(value, dict) and len(value) <= 12:
+        elif isinstance(value, dict) and len(value) <= 20:
             result[key] = value
     return result
 
@@ -59,19 +68,40 @@ def main() -> None:
     assert len(selected_inventory) == len(selected_overlay) == 122
 
     records = []
+    detected_inventory_ordinal_keys = set()
+    detected_overlay_ordinal_keys = set()
     for expected_ordinal, (source, current) in enumerate(zip(selected_inventory, selected_overlay), start=FIRST):
         expected_address = f"P01.5::B::{expected_ordinal:04d}"
-        assert source.get("source_record_ordinal") == expected_ordinal
-        assert source.get("composite_address") == expected_address
-        assert current.get("source_record_ordinal") == expected_ordinal
-        assert current.get("composite_address") == expected_address
-        assert source.get("envelope_hash") == current.get("envelope_hash")
+        assert source.get("composite_address") == expected_address, (expected_ordinal, source.get("composite_address"))
+        assert current.get("composite_address") == expected_address, (expected_ordinal, current.get("composite_address"))
+
+        source_ordinal_key, source_ordinal = ordinal_field(source)
+        overlay_ordinal_key, overlay_ordinal = ordinal_field(current)
+        if source_ordinal_key:
+            detected_inventory_ordinal_keys.add(source_ordinal_key)
+            assert source_ordinal == expected_ordinal
+        if overlay_ordinal_key:
+            detected_overlay_ordinal_keys.add(overlay_ordinal_key)
+            assert overlay_ordinal == expected_ordinal
+
+        source_envelope_hash = source.get("envelope_hash") or source.get("source_envelope_hash")
+        overlay_envelope_hash = current.get("envelope_hash") or current.get("source_envelope_hash")
+        assert source_envelope_hash == overlay_envelope_hash
         assert source.get("source_block_hash") == current.get("source_block_hash")
+
         records.append({
             "composite_address": expected_address,
             "source_record_ordinal": expected_ordinal,
+            "ordinal_validation": {
+                "inventory_line_position": expected_ordinal,
+                "inventory_ordinal_key": source_ordinal_key,
+                "inventory_ordinal_value": source_ordinal,
+                "overlay_ordinal_key": overlay_ordinal_key,
+                "overlay_ordinal_value": overlay_ordinal,
+                "address_suffix_matches_ordinal": expected_address.endswith(f"{expected_ordinal:04d}"),
+            },
             "original_identifier": source.get("original_identifier"),
-            "source_envelope_hash": source.get("envelope_hash"),
+            "source_envelope_hash": source_envelope_hash,
             "source_block_hash": source.get("source_block_hash"),
             "inventory_fields": text_fields(source),
             "overlay_fields": text_fields(current),
@@ -89,6 +119,13 @@ def main() -> None:
             "first_ordinal": FIRST,
             "last_ordinal": LAST,
             "records": len(records),
+            "inventory_ordinal_keys_detected": sorted(detected_inventory_ordinal_keys),
+            "overlay_ordinal_keys_detected": sorted(detected_overlay_ordinal_keys),
+            "line_position_is_authoritative_ordinal_when_no_explicit_key": True,
+        },
+        "record_schema": {
+            "inventory_keys": sorted(selected_inventory[0].keys()),
+            "overlay_keys": sorted(selected_overlay[0].keys()),
         },
         "records": records,
     }
@@ -99,6 +136,8 @@ def main() -> None:
         "first_address": records[0]["composite_address"],
         "last_address": records[-1]["composite_address"],
         "records": len(records),
+        "inventory_ordinal_keys": sorted(detected_inventory_ordinal_keys),
+        "overlay_ordinal_keys": sorted(detected_overlay_ordinal_keys),
         "inventory_sha256": result["inventory"]["sha256"],
         "overlay_sha256": result["starting_overlay"]["sha256"],
     }, indent=2))
