@@ -5,68 +5,18 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  verify-and-commit:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
-      - name: Correct decision-state assertion
-        shell: bash
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          path = Path('tools/verify_packet_01_5_master_consolidation_v1.py')
-          text = path.read_text()
-          old = '    assert "UNKNOWN — HOLD" not in MASTER_DECISIONS.read_text(encoding="utf-8")'
-          new = '    assert all(item.get("applicability_state") != "UNKNOWN — HOLD" for item in decisions)'
-          assert old in text or new in text
-          path.write_text(text.replace(old, new))
-          PY
-      - name: Build deterministic consolidation
+      - name: Rebuild deterministic consolidation
         run: python3 tools/run_packet_01_5_master_consolidation_v1.py
-      - name: Run independent verifier and capture output
-        id: verify
-        shell: bash
-        run: |
-          set +e
-          python3 tools/verify_packet_01_5_master_consolidation_v1.py > master-verification.log 2>&1
-          code=$?
-          cat master-verification.log
-          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
-          exit 0
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: packet-015-master-verification-diagnostic
-          path: |
-            master-verification.log
-            audit/Packet_01.5_Master_Applicability_Independent_Verification_v1.json
-          if-no-files-found: warn
-      - name: Preserve verification result
-        shell: bash
-        run: exit "${{ steps.verify.outputs.exit_code }}"
-      - name: Commit verified outputs when changed
-        shell: bash
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add tools/verify_packet_01_5_master_consolidation_v1.py
-          git add audit/Packet_01.5_Master_Applicability_Consolidation_v1.json
-          git add audit/applicability/Packet_01.5_Master_Applicability_Decisions_v1.jsonl
-          git add audit/applicability/Packet_01.5_Master_Remaining_Evidence_Queue_v1.jsonl
-          git add audit/routing-inventory/Packet_01.5_Applicability_Inventory_v10_Master_Consolidated.jsonl
-          git add audit/Packet_01.5_Master_Applicability_Conflict_Ledger_v1.json
-          git add audit/Packet_01.5_Master_Applicability_Coverage_v1.json
-          git add audit/Packet_01.5_Master_Applicability_Status_v1.md
-          git add audit/Packet_01.5_Master_Applicability_Independent_Verification_v1.json
-          if git diff --cached --quiet; then
-            echo "Verified outputs already committed"
-          else
-            git commit -m "Add verified Packet 01.5 master consolidation"
-            git push origin HEAD:${{ github.event.pull_request.head.ref }}
-          fi
+      - name: Independently verify permanent receipt
+        run: python3 tools/verify_packet_01_5_master_consolidation_v1.py
+      - name: Confirm deterministic no-diff result
+        run: git diff --exit-code
