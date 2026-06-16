@@ -1,0 +1,27 @@
+name: Packet 015 private evidence verification
+
+on:
+  pull_request:
+    paths:
+      - "tools/verify_packet_01_5_private_evidence_v1.py"
+      - "audit/Packet_01.5_Private_Evidence_Matrix_v1.json"
+      - "audit/applicability/Packet_01.5_Private_Evidence_Family_Decisions_v1.jsonl"
+      - "audit/applicability/Packet_01.5_Private_Evidence_Family_Remaining_Queue_v1.jsonl"
+      - "audit/Packet_01.5_Private_Evidence_Family_Coverage_v1.json"
+      - "audit/Packet_01.5_Private_Evidence_Family_Status_v1.md"
+      - "audit/Packet_01.5_Private_Evidence_Family_Independent_Verification_v1.json"
+      - ".github/workflows/packet_015_private_evidence_census.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Independently verify complete private-evidence family
+        run: python3 tools/verify_packet_01_5_private_evidence_v1.py
