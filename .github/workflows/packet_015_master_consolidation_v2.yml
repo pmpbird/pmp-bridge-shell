@@ -17,8 +17,27 @@ jobs:
           fetch-depth: 0
       - name: Build deterministic consolidation
         run: python3 tools/run_packet_01_5_master_consolidation_v1.py
-      - name: Independently verify and write receipt
-        run: python3 tools/verify_packet_01_5_master_consolidation_v1.py
+      - name: Run independent verifier and capture output
+        id: verify
+        shell: bash
+        run: |
+          set +e
+          python3 tools/verify_packet_01_5_master_consolidation_v1.py > master-verification.log 2>&1
+          code=$?
+          cat master-verification.log
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          exit 0
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: packet-015-master-verification-diagnostic
+          path: |
+            master-verification.log
+            audit/Packet_01.5_Master_Applicability_Independent_Verification_v1.json
+          if-no-files-found: warn
+      - name: Preserve verification result
+        shell: bash
+        run: exit "${{ steps.verify.outputs.exit_code }}"
       - name: Commit verified outputs when changed
         shell: bash
         run: |
