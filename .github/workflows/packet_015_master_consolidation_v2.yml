@@ -1,0 +1,30 @@
+name: Packet 015 master consolidation v2
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Build consolidation
+        run: python3 tools/run_packet_01_5_master_consolidation_v1.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: packet-015-master-consolidation-build-v2
+          path: |
+            audit/Packet_01.5_Master_Applicability_Consolidation_v1.json
+            audit/applicability/Packet_01.5_Master_Applicability_Decisions_v1.jsonl
+            audit/applicability/Packet_01.5_Master_Remaining_Evidence_Queue_v1.jsonl
+            audit/routing-inventory/Packet_01.5_Applicability_Inventory_v10_Master_Consolidated.jsonl
+            audit/Packet_01.5_Master_Applicability_Conflict_Ledger_v1.json
+            audit/Packet_01.5_Master_Applicability_Coverage_v1.json
+            audit/Packet_01.5_Master_Applicability_Status_v1.md
+          if-no-files-found: error
