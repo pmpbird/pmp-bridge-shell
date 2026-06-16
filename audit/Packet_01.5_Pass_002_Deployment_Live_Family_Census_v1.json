@@ -1,0 +1,49 @@
+{
+  "packet": "01.5",
+  "pass": "002",
+  "family": "DEPLOYMENT_AND_LIVE_BEHAVIOR",
+  "authoritative_anchor": "696ab70f3dde70f8ee8e0ef3a733f5e44ef1f515",
+  "family_records": 2,
+  "addresses_in_inventory_order": [
+    "P01.5::P002::SEC-003",
+    "P01.5::P005::REPO-001"
+  ],
+  "records": [
+    {
+      "composite_address": "P01.5::P002::SEC-003",
+      "inventory_position": 135,
+      "source_record_ordinal": 3,
+      "original_identifier": "SEC-003",
+      "preserved_claim": "host compromise, secret theft, network exfiltration, or modification outside the candidate.",
+      "source_path": "audit/Packet_01.5_Discovery_Pass_02_Security_Privacy_and_Human_Risk_v1.md",
+      "source_pass": 2,
+      "source_set": "PROVISIONAL",
+      "source_file_hash": "8506f61d266208458cb79ca97cbce3f8b3baa715f992c40035ef72013727410b",
+      "source_envelope_hash": "776de00b2f12ea082163da59f15cba949d6a810d7c89221a9074677b92dbbf7c",
+      "source_block_hash": "b05b8be6e526e4f54ee0e04668656f3cbc2a90d10f7ffb8d4614ecd6ee9d1b3f",
+      "queue_id": "SP002-DEPLOYMENT_AND_LIVE_BEHAVIOR",
+      "evidence_domain": "DEPLOYMENT_AND_LIVE_BEHAVIOR",
+      "prior_applicability_state": "UNCLASSIFIED",
+      "prior_applicability_decision_hash": null,
+      "state_preservation_rule": "PRESERVE_CURRENT_STATE_UNTIL_DIRECT_MERGED_EVIDENCE_SUPPORTS_A_DECISION"
+    },
+    {
+      "composite_address": "P01.5::P005::REPO-001",
+      "inventory_position": 225,
+      "source_record_ordinal": 20,
+      "original_identifier": "REPO-001",
+      "preserved_claim": "source, history, issues, evidence, and deployment control may disappear together.",
+      "source_path": "audit/Packet_01.5_Discovery_Pass_05_Governance_Audit_Retention_and_Succession_v1.md",
+      "source_pass": 5,
+      "source_set": "PROVISIONAL",
+      "source_file_hash": "fd14c3e585bc88006628b1310905f64c9f26814c402d8ea30926ae7d8b8acb0f",
+      "source_envelope_hash": "f60f37b5a24795ba47085edd58e6ddec04cd7f9c152cee590e36594d2404fdb2",
+      "source_block_hash": "8b55affd5c3a624fffb74f059a88557166d6b28b8cc3652c95cf68f6506ff7d5",
+      "queue_id": "SP002-DEPLOYMENT_AND_LIVE_BEHAVIOR",
+      "evidence_domain": "DEPLOYMENT_AND_LIVE_BEHAVIOR",
+      "prior_applicability_state": "UNCLASSIFIED",
+      "prior_applicability_decision_hash": null,
+      "state_preservation_rule": "PRESERVE_CURRENT_STATE_UNTIL_DIRECT_MERGED_EVIDENCE_SUPPORTS_A_DECISION"
+    }
+  ]
+}
