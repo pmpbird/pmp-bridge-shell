@@ -16,7 +16,9 @@ jobs:
           fetch-depth: 0
       - name: Rebuild deterministic Pass 002
         run: python3 tools/build_packet_01_5_scalable_pass_002_v1.py
-      - name: Independently verify permanent receipt
+      - name: Regenerate deterministic permanent receipt
+        run: python3 tools/verify_packet_01_5_scalable_pass_002_v1.py --write-receipt
+      - name: Independently verify permanent receipt read-only
         run: python3 tools/verify_packet_01_5_scalable_pass_002_v1.py
       - name: Confirm deterministic no-diff result
         run: git diff --exit-code
