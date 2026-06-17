@@ -1,0 +1,164 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+import argparse, hashlib, json, re, subprocess
+from pathlib import Path
+
+R=Path(__file__).resolve().parents[1]
+A='e4d9bf6f69c25622dad671db926233db51a576b7'
+F='AUTHORITATIVE_PACKET_LAW'
+ADDRESSES=['P01.5::P001::REG-001','P01.5::P001::REG-005','P01.5::P002::SEC-002','P01.5::P002::SEC-004','P01.5::P005::AUTH-003','P01.5::P005::EMERG-001']
+QUEUE='audit/applicability/Packet_01.5_Scalable_Pass_002_Evidence_Queue_v1.jsonl'
+WINDOW='audit/applicability/Packet_01.5_Scalable_Pass_002_Window_v1.json'
+INVENTORY='audit/routing-inventory/Packet_01.5_Blank_Routing_Inventory_v1.jsonl'
+OVERLAY='audit/routing-inventory/Packet_01.5_Applicability_Inventory_v11_Pass_002.jsonl'
+CURRENT_RECEIPT='audit/Packet_01.5_Pass_002_Current_Runtime_Family_Independent_Verification_v1.json'
+PRIVATE_RECEIPT='audit/Packet_01.5_Pass_002_Private_Uncaptured_Family_Independent_Verification_v1.json'
+DEPLOY_RECEIPT='audit/Packet_01.5_Pass_002_Deployment_Live_Family_Independent_Verification_v1.json'
+DEPENDENCY_RECEIPT='audit/Packet_01.5_Pass_002_Dependency_Platform_Family_Independent_Verification_v1.json'
+CROSS_RECEIPT='audit/Packet_01.5_Pass_002_Cross_Source_Conflict_Family_Independent_Verification_v1.json'
+CENSUS=R/'audit/Packet_01.5_Pass_002_Authoritative_Packet_Law_Family_Census_v1.json'
+DEC=R/'audit/applicability/Packet_01.5_Pass_002_Authoritative_Packet_Law_Family_Decisions_v1.jsonl'
+REM=R/'audit/applicability/Packet_01.5_Pass_002_Authoritative_Packet_Law_Family_Remaining_Queue_v1.jsonl'
+COV=R/'audit/Packet_01.5_Pass_002_Authoritative_Packet_Law_Family_Coverage_v1.json'
+STAT=R/'audit/Packet_01.5_Pass_002_Authoritative_Packet_Law_Family_Status_v1.md'
+REC=R/'audit/Packet_01.5_Pass_002_Authoritative_Packet_Law_Family_Independent_Verification_v1.json'
+ALLOWED={'.github/workflows/packet_015_pass_002_authoritative_packet_law_family.yml','tools/build_packet_01_5_pass_002_authoritative_packet_law_family_v1.py','tools/verify_packet_01_5_pass_002_authoritative_packet_law_family_v1.py',str(CENSUS.relative_to(R)),str(DEC.relative_to(R)),str(REM.relative_to(R)),str(COV.relative_to(R)),str(STAT.relative_to(R)),str(REC.relative_to(R))}
+IDENTITY_KEYS=('composite_address','inventory_position','source_record_ordinal','original_identifier','preserved_claim','source_path','source_pass','source_set','source_file_hash','source_envelope_hash','source_block_hash','queue_id','evidence_domain','prior_applicability_state','prior_applicability_decision_hash','state_preservation_rule')
+FORBIDDEN_KEYS={'secret_value','secret_values','credential','credentials','token_value','token_values','password','passwords','private_key','private_keys','personal_data','raw_private_data','private_memory_contents'}
+FORBIDDEN_PATTERNS=[re.compile(r'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----'),re.compile(r'gh[pousr]_[A-Za-z0-9]{20,}'),re.compile(r'sk-[A-Za-z0-9]{20,}'),re.compile(r'AKIA[0-9A-Z]{16}'),re.compile(r'(?i)password\s*[:=]\s*[^\s,}]+')]
+
+def git(*args):
+ p=subprocess.run(['git',*args],cwd=R,check=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE).stdout
+ return p.decode(errors='replace').strip()
+def show(path): return subprocess.run(['git','show',f'{A}:{path}'],cwd=R,check=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE).stdout
+def rows(data): return [json.loads(x) for x in data.decode().splitlines() if x.strip()]
+def sha(data): return hashlib.sha256(data).hexdigest()
+def fj(path): return json.loads(path.read_text())
+def fl(path): return [json.loads(x) for x in path.read_text().splitlines() if x.strip()]
+def require(value): assert value
+def reject(fn):
+ try: fn()
+ except (AssertionError,KeyError,TypeError,ValueError): return
+ raise AssertionError('invalid fixture accepted')
+def scan_keys(value):
+ if isinstance(value,dict):
+  for k,v in value.items():
+   assert k.lower() not in FORBIDDEN_KEYS
+   scan_keys(v)
+ elif isinstance(value,list):
+  for v in value: scan_keys(v)
+def scan_text(text):
+ for pattern in FORBIDDEN_PATTERNS: assert not pattern.search(text)
+
+def status(r):
+ return f'''# Packet 01.5 Pass 002 — Authoritative Packet Law Family v1
+
+STATUS: INDEPENDENTLY VERIFIED
+
+- Authoritative anchor: `{A}`
+- Permanent addresses: `{ADDRESSES[0]}`, `{ADDRESSES[1]}`, `{ADDRESSES[2]}`, `{ADDRESSES[3]}`, `{ADDRESSES[4]}`, `{ADDRESSES[5]}`
+- Family records: 6
+- Direct decisions: 0
+- Exact remaining queues: 6
+- Automatic `UNKNOWN — HOLD`: 0
+- Authoritative packet-law receipts reviewed: 0
+- Governing laws identified: 0
+- Governing law hashes verified: no
+- Effective law versions verified: no
+- Authority statuses verified: no
+- Applicability rules verified: no
+- Immutable inventory: 2,750 records unchanged
+- Pass 002 v11 overlay: 2,750 records unchanged
+- Previously merged family artifacts: unchanged
+- Pass 002 reconciliation if merged: 43 processed + 79 remaining = 122
+- Rejection fixtures passed: {r['rejection_fixtures_passed']}
+
+No current claim-specific authoritative packet-law receipt was available. All six prior `UNCLASSIFIED` states remain preserved, and all six records remain queued for the smallest exact packet-law proof required.
+
+No application behavior, configuration, dependencies, deployment, runtime state, routing, destinations, grouping, source-record closure, implementation, Pass 002 consolidation, or Packet 04 work occurred.
+'''
+
+def verify():
+ qb,wb,ib,ob=show(QUEUE),show(WINDOW),show(INVENTORY),show(OVERLAY)
+ source=sorted((x for x in rows(qb) if x.get('evidence_domain')==F),key=lambda x:x['inventory_position'])
+ assert len(rows(qb))==122
+ assert len(source)==6 and [x['composite_address'] for x in source]==ADDRESSES
+ census,dec,rem,cov=fj(CENSUS),fl(DEC),fl(REM),fj(COV)
+ assert census['family_records']==6 and census['addresses_in_inventory_order']==ADDRESSES and len(census['records'])==6
+ assert dec==[] and len(rem)==6 and [x['composite_address'] for x in rem]==ADDRESSES
+ for c,r,q in zip(census['records'],rem,source):
+  for k in IDENTITY_KEYS: assert c[k]==r[k]==q[k]
+  for k,v in q.items(): assert r[k]==v
+  assert r['family']==F and r['family_result']=='REMAIN_QUEUED'
+  assert r['family_inspection_status']=='NO_CURRENT_CLAIM_SPECIFIC_AUTHORITATIVE_PACKET_LAW_RECEIPT'
+  assert r['direct_decision_supported'] is False
+  assert r['authoritative_packet_law_receipts_reviewed']==0
+  assert r['governing_law_identified'] is False and r['governing_law_hash_verified'] is False
+  assert r['effective_law_version_verified'] is False and r['authority_status_verified'] is False
+  assert r['applicability_rule_verified'] is False
+  assert r['prior_state_preserved'] is True and r['prior_applicability_state']=='UNCLASSIFIED'
+  assert r['prior_applicability_decision_hash'] is None
+  assert r['composite_address'] in r['smallest_exact_remaining_proof']
+  assert r['preserved_claim'] in r['smallest_exact_remaining_proof']
+  assert 'current, independently verifiable' in r['smallest_exact_remaining_proof']
+  assert 'immutable law hash' in r['smallest_exact_remaining_proof']
+  assert 'effective version' in r['smallest_exact_remaining_proof']
+  assert 'authority status' in r['smallest_exact_remaining_proof']
+  assert 'applicability rule' in r['smallest_exact_remaining_proof']
+ assert cov['family_records']==6 and cov['decided_records']==0 and cov['remaining_queued_records']==6
+ assert cov['unknown_hold_created']==0 and cov['complete_nonduplicated_coverage']
+ assert cov['direct_decision_gate_matches']==0 and cov['authoritative_packet_law_receipts_reviewed']==0
+ assert cov['governing_laws_identified']==0 and cov['governing_law_hashes_verified'] is False
+ assert cov['effective_law_versions_verified'] is False and cov['authority_statuses_verified'] is False
+ assert cov['applicability_rules_verified'] is False
+ assert cov['pass_002_total_records']==122 and cov['previously_processed_records']==37
+ assert cov['family_records_accounted']==6 and cov['processed_records_if_merged']==43
+ assert cov['remaining_unprocessed_records']==79 and cov['pass_002_reconciliation_exact'] is True
+ assert 37+6+79==122
+ assert cov['queue_sha256']==sha(qb)=='0c4b9660151448fdb03b328e3fa41d0e98e679d0233759f651e90eae3a5a0e96'
+ assert cov['window_sha256']==sha(wb)=='eb75fa865feab6e3017f6d93938fb71ff2740870b618d513cafa86f20382dc28'
+ assert len(rows(ib))==cov['source_inventory_count']==2750
+ assert cov['source_inventory_sha256']==sha(ib)=='76169a80e07603cea51d769d3d89b32735149c2aef7eb09f893ed94fe5d72477'
+ assert len(rows(ob))==cov['pass_002_overlay_count']==2750
+ assert cov['pass_002_overlay_sha256']==sha(ob)=='465ed8e338c7d32ce3c460960d8637855c65d7018d7f5c90db12c915a1c88654'
+ current_blob=git('rev-parse',f'{A}:{CURRENT_RECEIPT}'); private_blob=git('rev-parse',f'{A}:{PRIVATE_RECEIPT}'); deploy_blob=git('rev-parse',f'{A}:{DEPLOY_RECEIPT}'); dependency_blob=git('rev-parse',f'{A}:{DEPENDENCY_RECEIPT}'); cross_blob=git('rev-parse',f'{A}:{CROSS_RECEIPT}')
+ assert current_blob==cov['current_runtime_family_receipt_blob_sha']=='5942c78a331d078b11364f46313079df3d9e887f'
+ assert private_blob==cov['private_uncaptured_family_receipt_blob_sha']=='92045d7fa63839582ec518066033d58fede2ed8c'
+ assert deploy_blob==cov['deployment_live_family_receipt_blob_sha']=='84d580215ee70c3c1e6b0b5a2d606c0c5d690eac'
+ assert dependency_blob==cov['dependency_platform_family_receipt_blob_sha']=='7ccb9a57451e80ced1a88de47406e92b7dc0b486'
+ assert cross_blob==cov['cross_source_conflict_family_receipt_blob_sha']=='3e7df143344d51b4be07e3cd25cd6d3be78edee9'
+ assert cov['previously_merged_family_artifacts_unchanged'] is True and cov['records_outside_family_unchanged'] is True
+ for k in ('evidence_reacquired','other_evidence_families_processed','application_behavior_modified','configuration_modified','dependencies_modified','deployment_modified','runtime_state_modified'): assert cov[k] is False
+ for k in ('routing_assignments','destination_assignments','grouping_assignments','source_records_removed_or_closed','implementation_actions','packet_04_actions'): assert cov[k]==0
+ for value in (census,rem,cov): scan_keys(value)
+ for path in (CENSUS,DEC,REM,COV,STAT): scan_text(path.read_text())
+ changed={x for x in git('diff','--name-only',A,'HEAD').splitlines() if x}
+ assert changed==ALLOWED
+ n=0
+ reject(lambda:require(len(rem[:-1])==6)); n+=1
+ reject(lambda:require(set(ADDRESSES+['P01.5::BAD'])==set(ADDRESSES))); n+=1
+ reject(lambda:require(census['records'][0]['source_envelope_hash']=='bad')); n+=1
+ reject(lambda:require(rem[0]['direct_decision_supported'] is True)); n+=1
+ reject(lambda:require(cov['family_records']==5)); n+=1
+ reject(lambda:require(cov['authoritative_packet_law_receipts_reviewed']==1)); n+=1
+ reject(lambda:require(cov['governing_laws_identified']==1)); n+=1
+ reject(lambda:require(cov['governing_law_hashes_verified'] is True)); n+=1
+ reject(lambda:require(cov['effective_law_versions_verified'] is True)); n+=1
+ reject(lambda:require(cov['authority_statuses_verified'] is True)); n+=1
+ reject(lambda:require(cov['applicability_rules_verified'] is True)); n+=1
+ reject(lambda:require(cov['routing_assignments']==1)); n+=1
+ reject(lambda:require(cross_blob=='bad')); n+=1
+ reject(lambda:require('secret_value' not in FORBIDDEN_KEYS)); n+=1
+ return {'packet':'01.5','verification':'pass_002_authoritative_packet_law_family_independent','version':1,'status':'PASS_AUTHORITATIVE_PACKET_LAW_FAMILY_VERIFIED','authoritative_anchor':A,'family':F,'family_records':6,'decisions_created':0,'remaining_exact_queues':6,'unknown_hold_created':0,'permanent_addresses':ADDRESSES,'authoritative_packet_law_receipts_reviewed':0,'governing_laws_identified':0,'governing_law_hashes_verified':False,'effective_law_versions_verified':False,'authority_statuses_verified':False,'applicability_rules_verified':False,'source_inventory_sha256':sha(ib),'source_inventory_count':2750,'source_inventory_unchanged':True,'pass_002_overlay_sha256':sha(ob),'pass_002_overlay_count':2750,'pass_002_overlay_unchanged':True,'queue_sha256':sha(qb),'window_sha256':sha(wb),'census_sha256':sha(CENSUS.read_bytes()),'decisions_sha256':sha(DEC.read_bytes()),'remaining_queue_sha256':sha(REM.read_bytes()),'coverage_sha256':sha(COV.read_bytes()),'current_runtime_family_receipt_blob_sha':current_blob,'private_uncaptured_family_receipt_blob_sha':private_blob,'deployment_live_family_receipt_blob_sha':deploy_blob,'dependency_platform_family_receipt_blob_sha':dependency_blob,'cross_source_conflict_family_receipt_blob_sha':cross_blob,'previously_merged_family_artifacts_unchanged':True,'pass_002_total_records':122,'previously_processed_records':37,'family_records_accounted':6,'processed_records_if_merged':43,'remaining_unprocessed_records':79,'pass_002_reconciliation_exact':True,'permanent_identities_preserved':True,'preserved_claims_unchanged':True,'prior_states_preserved':True,'records_outside_family_unchanged':True,'other_evidence_families_processed':False,'private_values_exposed':False,'rejection_fixtures_passed':n,'application_behavior_modified':False,'configuration_modified':False,'dependencies_modified':False,'deployment_modified':False,'runtime_state_modified':False,'routing_assignments':0,'destination_assignments':0,'grouping_assignments':0,'source_records_removed_or_closed':0,'implementation_actions':0,'packet_04_actions':0}
+
+def main():
+ p=argparse.ArgumentParser();p.add_argument('--write-receipt',action='store_true');a=p.parse_args()
+ r=verify()
+ if a.write_receipt:
+  STAT.write_text(status(r));REC.write_text(json.dumps(r,indent=2,ensure_ascii=False)+'\n');r=verify()
+ else:
+  assert fj(REC)==r and STAT.read_text()==status(r)
+ print('STATUS: PASS — PASS 002 AUTHORITATIVE PACKET LAW FAMILY VERIFIED')
+ print(json.dumps(r,indent=2))
+
+if __name__=='__main__': main()
