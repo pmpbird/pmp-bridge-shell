@@ -1,0 +1,24 @@
+name: Packet 01.5 Pass 002 closure verification
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Build deterministic closure artifacts
+        run: python3 tools/build_packet_01_5_pass_002_closure_v1.py
+      - name: Regenerate independent closure receipt
+        run: python3 tools/verify_packet_01_5_pass_002_closure_v1.py --write-receipt
+      - name: Verify closure independently read-only
+        run: python3 tools/verify_packet_01_5_pass_002_closure_v1.py
+      - name: Confirm deterministic no-diff result
+        run: git diff --exit-code
