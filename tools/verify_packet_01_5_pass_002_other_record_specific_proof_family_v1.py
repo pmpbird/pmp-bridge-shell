@@ -23,6 +23,7 @@ RCP={
 'authoritative_packet_law_family_receipt_blob_sha':('audit/Packet_01.5_Pass_002_Authoritative_Packet_Law_Family_Independent_Verification_v1.json','10e46b2498a3bff34bbd4a5afd82a125be3fc0b8')}
 ID=('composite_address','inventory_position','source_record_ordinal','original_identifier','preserved_claim','source_path','source_pass','source_set','source_file_hash','source_envelope_hash','source_block_hash','queue_id','evidence_domain','prior_applicability_state','prior_applicability_decision_hash','state_preservation_rule')
 AL={'.github/workflows/packet_015_pass_002_other_record_specific_proof_family.yml','tools/build_packet_01_5_pass_002_other_record_specific_proof_family_v1.py','tools/verify_packet_01_5_pass_002_other_record_specific_proof_family_v1.py',str(C.relative_to(R)),str(D.relative_to(R)),str(M.relative_to(R)),str(V.relative_to(R)),str(S.relative_to(R)),str(X.relative_to(R))}
+PRIVATE_FIELDS={'private_value','private_values','raw_private_data','private_memory_contents','personal_data'}
 
 def g(*a): return subprocess.run(['git',*a],cwd=R,check=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE).stdout.decode().strip()
 def sh(p): return subprocess.run(['git','show',f'{A}:{p}'],cwd=R,check=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE).stdout
@@ -33,9 +34,14 @@ def jj(p): return json.loads(p.read_text())
 def scan(v):
  if isinstance(v,dict):
   for k,x in v.items():
-   assert k.lower() not in {'private_value','private_values','raw_private_data','private_memory_contents','personal_data'}; scan(x)
+   assert k.lower() not in PRIVATE_FIELDS; scan(x)
  elif isinstance(v,list):
   for x in v: scan(x)
+def require(value): assert value
+def reject(fn):
+ try: fn()
+ except (AssertionError,KeyError,TypeError,ValueError): return
+ raise AssertionError('invalid rejection fixture was accepted')
 def status(n): return f'''# Packet 01.5 Pass 002 — Other Record Specific Proof Family v1
 
 STATUS: INDEPENDENTLY VERIFIED
@@ -83,7 +89,17 @@ def verify():
  for k in ('evidence_reacquired','other_evidence_families_processed','application_behavior_modified','configuration_modified','dependencies_modified','deployment_modified','runtime_state_modified'): assert v[k] is False
  for k in ('routing_assignments','destination_assignments','grouping_assignments','source_records_removed_or_closed','implementation_actions','packet_04_actions'): assert v[k]==0
  scan(c); scan(m); scan(v); changed={x for x in g('diff','--name-only',A,'HEAD').splitlines() if x}|{x for x in g('ls-files','--others','--exclude-standard').splitlines() if x}; assert changed==AL
- n=10
+ n=0
+ reject(lambda: require(len(m[:-1])==79)); n+=1
+ reject(lambda: require(len(set(add+['P01.5::BAD']))==79)); n+=1
+ reject(lambda: require(c['records'][0]['source_block_hash']=='bad')); n+=1
+ reject(lambda: require(m[0]['direct_decision_supported'] is True)); n+=1
+ reject(lambda: require(v['family_records']==78)); n+=1
+ reject(lambda: require(v['address_specific_evidence_receipts_reviewed']==1)); n+=1
+ reject(lambda: require(v['remaining_unprocessed_records']==1)); n+=1
+ reject(lambda: require(v['routing_assignments']==1)); n+=1
+ reject(lambda: require(r['authoritative_packet_law_family_receipt_blob_sha']=='bad')); n+=1
+ reject(lambda: require('private_value' not in PRIVATE_FIELDS)); n+=1
  return {'packet':'01.5','verification':'pass_002_other_record_specific_proof_family_independent','version':1,'status':'PASS_OTHER_RECORD_SPECIFIC_PROOF_FAMILY_VERIFIED','authoritative_anchor':A,'family':F,'family_records':79,'decisions_created':0,'remaining_exact_queues':79,'unknown_hold_created':0,'permanent_addresses':add,'source_pass_distribution':dist,'address_specific_evidence_receipts_reviewed':0,'exact_evidence_sources_identified':0,'current_evidence_dates_verified':False,'immutable_evidence_hashes_verified':False,'provenance_statuses_verified':False,'reproducible_acquisition_verified':False,'source_inventory_sha256':h(ib),'source_inventory_count':2750,'source_inventory_unchanged':True,'pass_002_overlay_sha256':h(ob),'pass_002_overlay_count':2750,'pass_002_overlay_unchanged':True,'queue_sha256':h(qb),'window_sha256':h(wb),'census_sha256':h(C.read_bytes()),'decisions_sha256':h(D.read_bytes()),'remaining_queue_sha256':h(M.read_bytes()),'coverage_sha256':h(V.read_bytes()),**r,'previously_merged_family_artifacts_unchanged':True,'pass_002_total_records':122,'previously_processed_records':43,'family_records_accounted':79,'processed_records_if_merged':122,'remaining_unprocessed_records':0,'pass_002_reconciliation_exact':True,'permanent_identities_preserved':True,'preserved_claims_unchanged':True,'prior_states_preserved':True,'records_outside_family_unchanged':True,'other_evidence_families_processed':False,'private_values_exposed':False,'rejection_fixtures_passed':n,'application_behavior_modified':False,'configuration_modified':False,'dependencies_modified':False,'deployment_modified':False,'runtime_state_modified':False,'routing_assignments':0,'destination_assignments':0,'grouping_assignments':0,'source_records_removed_or_closed':0,'implementation_actions':0,'packet_04_actions':0}
 def main():
  a=argparse.ArgumentParser(); a.add_argument('--write-receipt',action='store_true'); z=a.parse_args(); r=verify()
