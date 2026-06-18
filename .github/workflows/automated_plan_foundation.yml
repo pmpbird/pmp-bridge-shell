@@ -61,4 +61,10 @@ jobs:
       - name: Test the real Control Room at multiple contrast profiles
         env:
           PMP_BASE_URL: http://127.0.0.1:8000
-        run: node tools/test_automated_plan_real_app_v1.mjs
+        run: |
+          if node tools/test_automated_plan_real_app_v1.mjs > /tmp/automated-plan-real-app.log 2>&1; then
+            cat /tmp/automated-plan-real-app.log
+          else
+            cat /tmp/automated-plan-real-app.log
+            exit 1
+          fi
