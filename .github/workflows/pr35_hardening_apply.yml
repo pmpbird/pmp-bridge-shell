@@ -8,14 +8,14 @@ on:
       - '.github/workflows/pr35_hardening_apply.yml'
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: pr35-hardening-apply
   cancel-in-progress: true
 
 jobs:
-  verify-apply-and-clean:
+  verify-apply-and-export:
     if: github.repository == 'pmpbird/pmp-bridge-shell' && github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'automated-plan-controller-v1'
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -24,7 +24,7 @@ jobs:
         with:
           ref: automated-plan-controller-v1
           fetch-depth: 0
-          persist-credentials: true
+          persist-credentials: false
 
       - name: Confirm exact branch head
         run: |
@@ -163,10 +163,59 @@ jobs:
               raise SystemExit(f'hardening boundary mismatch: {sorted(changed ^ expected)}')
           PY
 
-      - name: Commit verified hardening to draft branch
+      - name: Export exact verified final tree
         run: |
           set -euo pipefail
-          git config user.name 'pmp-automated-plan-hardening'
-          git config user.email 'actions@users.noreply.github.com'
-          git commit -m 'Harden Automated Plan controller boundaries'
-          git push origin HEAD:automated-plan-controller-v1
+          rm -rf /tmp/pr35-final
+          mkdir -p /tmp/pr35-final/files
+          python3 - <<'PY'
+          import hashlib, json, pathlib, shutil, subprocess
+          root=pathlib.Path('.')
+          out=pathlib.Path('/tmp/pr35-final')
+          payload={
+              '.github/workflows/automated_plan_controller.yml',
+              '.github/workflows/automated_plan_controller_ci.yml',
+              '.github/workflows/packet_015_pass_002_dependency_platform_family.yml',
+              '.github/workflows/packet_015_pass_002_other_record_specific_proof_family.yml',
+              '.github/workflows/packet_015_pass_002_private_uncaptured_family.yml',
+              '.github/workflows/packet_015_scalable_pass_002.yml',
+              '.github/workflows/packet_015_pass_002_deployment_live_family.yml',
+              '.github/workflows/packet_015_master_consolidation_v2.yml',
+              '.github/workflows/packet_015_pass_002_current_runtime_family.yml',
+              '.github/workflows/packet_015_pass_002_authoritative_packet_law_family.yml',
+              '.github/workflows/packet_01_5_pass_002_closure.yml',
+              '.github/workflows/packet_015_pass_002_cross_source_conflict_family.yml',
+              'audit/Automated_Plan_Controller_Status_v1.md',
+              'automation/controller/v1/controller-contract.json',
+              'automation/controller/v1/controller.py',
+              'automation/engine/v1/engine-policy.json',
+              'automation/state/controller-status.json',
+              'pmp-automated-plan-room-v1.js',
+              'tools/test_automated_plan_controller_v1.py',
+              'tools/test_automated_plan_controller_errors_v1.py',
+              'tools/test_automated_plan_controller_container_v1.py',
+              'tools/test_automated_plan_controller_workflow_v1.py',
+              'tools/verify_automated_plan_controller_v1.py',
+          }
+          hashes={}
+          for rel in sorted(payload):
+              src=root/rel; dst=out/'files'/rel
+              dst.parent.mkdir(parents=True,exist_ok=True)
+              shutil.copyfile(src,dst)
+              hashes[rel]=hashlib.sha256(src.read_bytes()).hexdigest()
+          manifest={
+              'source_head':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+              'files':hashes,
+              'delete_paths':['.github/workflows/pr35_hardening_apply.yml']+[f'.pr35-hardening/chunk{i:02d}' for i in range(8)],
+              'active_plan_sha256':hashlib.sha256((root/'automation/state/active-plan.json').read_bytes()).hexdigest(),
+              'registered_plan_sha256':hashlib.sha256((root/'automation/plans/packet-01-5.v1.json').read_bytes()).hexdigest(),
+              'verification':['behavior','backend-errors','static-policy','non-executing-workflow','javascript-syntax','real-container','exact-checkpoint-boundary','exact-file-boundary'],
+          }
+          (out/'manifest.json').write_text(json.dumps(manifest,indent=2,sort_keys=True)+'\n')
+          PY
+      - name: Upload verified final tree
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr35-verified-final-tree
+          path: /tmp/pr35-final
+          retention-days: 1
