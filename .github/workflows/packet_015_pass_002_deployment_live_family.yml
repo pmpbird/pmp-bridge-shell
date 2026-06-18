@@ -2,6 +2,11 @@ name: Packet 015 Pass 002 deployment and live behavior family verification
 
 on:
   pull_request:
+    paths:
+      - 'audit/Packet_01.5_Pass_002_Deployment_Live_Family_*'
+      - 'audit/applicability/Packet_01.5_Pass_002_Deployment_Live_Family_*'
+      - 'tools/build_packet_01_5_pass_002_deployment_live_family_v1.py'
+      - 'tools/verify_packet_01_5_pass_002_deployment_live_family_v1.py'
   workflow_dispatch:
 
 permissions:

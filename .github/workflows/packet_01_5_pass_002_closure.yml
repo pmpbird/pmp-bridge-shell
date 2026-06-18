@@ -2,6 +2,11 @@ name: Packet 01.5 Pass 002 closure verification
 
 on:
   pull_request:
+    paths:
+      - 'audit/Packet_01.5_Pass_002_Closure_*'
+      - 'audit/applicability/Packet_01.5_Pass_002_Closure_*'
+      - 'tools/build_packet_01_5_pass_002_closure_v1.py'
+      - 'tools/verify_packet_01_5_pass_002_closure_v1.py'
   workflow_dispatch:
 
 permissions:

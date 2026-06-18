@@ -2,6 +2,12 @@ name: Packet 015 master consolidation verification
 
 on:
   pull_request:
+    paths:
+      - 'audit/Packet_01.5_Master_*'
+      - 'audit/applicability/Packet_01.5_Master_*'
+      - 'audit/routing-inventory/Packet_01.5_Applicability_Inventory_v10_Master_Consolidated.jsonl'
+      - 'tools/run_packet_01_5_master_consolidation_v1.py'
+      - 'tools/verify_packet_01_5_master_consolidation_v1.py'
   workflow_dispatch:
 
 permissions:
