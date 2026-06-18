@@ -1,8 +1,8 @@
 {
   "type": "PMP_AUTOMATED_PLAN_CONTROLLER_BUILD_STATUS",
   "schema_id": "pmp.automated-plan.controller-build-status.v1",
-  "schema_version": "1.0.0",
-  "controller_status": "built_tested_execution_locked",
+  "schema_version": "1.1.0",
+  "controller_status": "hardened_tested_execution_locked",
   "active_plan_id": "packet_01_5",
   "last_completed_boundary": "pass_002",
   "next_unit": "pass_003",
@@ -22,9 +22,14 @@
   "paid_api_allowed": false,
   "paid_fallback_allowed": false,
   "spending_ceiling_usd": 0,
+  "zero_cost_assurance": "unverified",
+  "hosted_execution_blocked_until_account_paid_usage_disabled": true,
+  "billing_gate_verification_method": "fresh repository-variable attestation of the personal account setting",
+  "verification_sandbox": "docker-network-none-read-only-root",
+  "persistence_checkpoint_mode": "independent_reconstruction",
   "pause_reason": "execution_disabled",
   "resume_from": "pass_003",
   "free_limit_state": "not_consumed",
-  "safe_message": "Controller is built and tested. Pass 003 has not started. The first real run remains locked for supervision.",
+  "safe_message": "Controller hardening is installed. Hosted execution remains blocked until the account-level paid-usage setting is verified. Pass 003 has not started.",
   "runtime_status_url": "https://raw.githubusercontent.com/pmpbird/pmp-bridge-shell/automation-runtime/automation/runtime/status.json"
 }

@@ -1,23 +1,28 @@
 {
   "type": "PMP_AUTOMATED_PLAN_EVENT_CONTROLLER_CONTRACT",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "controller_path": "automation/controller/v1/controller.py",
   "runtime_branch": "automation-runtime",
   "runtime_root": "automation/runtime",
   "events": {
-    "manual": [
-      "status",
-      "run_one",
-      "resume",
-      "pause",
-      "switch_backend"
-    ],
+    "manual": ["status", "run_one", "resume", "pause", "switch_backend"],
     "repository_dispatch": "automated-plan-resume",
     "scheduled_resume": {
       "enabled_only_when_repository_variable_is_true": "PMP_AUTOMATION_ENABLED",
       "cadence": "hourly",
       "first_real_unit_must_be_supervised": true
     }
+  },
+  "billing_gate": {
+    "hosted_inference_requires_account_level_paid_usage_disabled": true,
+    "verification_method": "fresh_operator_attestation_in_repository_variables",
+    "required_variables": [
+      "PMP_GITHUB_MODELS_PAID_USAGE_DISABLED",
+      "PMP_GITHUB_MODELS_BILLING_SCOPE",
+      "PMP_GITHUB_MODELS_BILLING_VERIFIED_AT"
+    ],
+    "maximum_attestation_age_days": 31,
+    "unverified_behavior": "block_hosted_inference_and_do_not_claim_zero_cost"
   },
   "work_unit_policy": {
     "maximum_units_per_event": 1,
@@ -28,31 +33,10 @@
     "resume_same_unit_after_rate_limit_or_transient_error": true
   },
   "authority_split": {
-    "prepare_job": {
-      "contents": "read",
-      "models": "none",
-      "may_execute_model_output": false,
-      "may_write_repository": false
-    },
-    "inference_job": {
-      "contents": "read",
-      "models": "read_for_hosted_free_only",
-      "may_execute_model_output": false,
-      "may_write_repository": false
-    },
-    "verification_job": {
-      "contents": "read",
-      "models": "none",
-      "may_execute_proposal_in_ephemeral_sandbox": true,
-      "may_write_repository": false
-    },
-    "persistence_job": {
-      "contents": "write_runtime_branch_only",
-      "models": "none",
-      "may_execute_model_output": false,
-      "may_write_main": false,
-      "may_merge": false
-    },
+    "prepare_job": {"contents": "read", "models": "none", "may_execute_model_output": false, "may_write_repository": false},
+    "inference_job": {"contents": "read", "models": "read_for_hosted_free_only", "may_execute_model_output": false, "may_write_repository": false},
+    "verification_job": {"contents": "read", "models": "none", "may_execute_proposal_only_inside_isolated_container": true, "may_write_repository": false},
+    "persistence_job": {"contents": "write_runtime_branch_only", "models": "none", "may_execute_model_output": false, "may_write_main": false, "may_merge": false, "must_reconstruct_checkpoint_independently": true},
     "model_output_authority": "proposal_only"
   },
   "backends": {
@@ -62,6 +46,8 @@
       "api_version": "2026-03-10",
       "default_model": "openai/gpt-4o-mini",
       "authentication": "GITHUB_TOKEN_models_read",
+      "required_billing_scope": "personal:pmpbird",
+      "account_level_paid_usage_must_be_disabled": true,
       "paid_api_key_allowed": false,
       "paid_fallback_allowed": false
     },
@@ -74,12 +60,27 @@
       "paid_fallback_allowed": false
     }
   },
+  "verification_sandbox": {
+    "engine": "docker",
+    "image": "python:3.13-slim",
+    "network": "none",
+    "root_filesystem": "read_only",
+    "workspace_mount": "single_designated_rw_bind",
+    "user": "65534:65534",
+    "capabilities": "drop_all",
+    "no_new_privileges": true,
+    "pids_limit": 64,
+    "memory_limit": "512m",
+    "cpu_limit": 1,
+    "allowed_executables": ["python3", "sh"]
+  },
   "shared_contracts": {
     "plan_schema": "pmp.automated-plan.plan.v1",
     "checkpoint_schema": "pmp.automated-plan.checkpoint.v1",
     "evidence_capsule_schema": "pmp.automated-plan.evidence-capsule.v1",
     "result_schema": "pmp.automated-plan.result.v1",
     "runtime_schema": "pmp.automated-plan.controller-runtime.v1",
+    "verified_receipt_schema": "pmp.automated-plan.verified-result.v2",
     "backend_switch_requires_plan_redesign": false,
     "backend_switch_requires_checkpoint_reverification": true
   },
@@ -92,13 +93,12 @@
   },
   "write_boundary": {
     "allowed_branch": "automation-runtime",
-    "allowed_paths": [
-      "automation/runtime/**"
-    ],
+    "allowed_paths": ["automation/runtime/**"],
     "main_direct_write_allowed": false,
     "pull_request_merge_allowed": false,
     "model_generated_shell_allowed": false,
-    "model_generated_workflow_allowed": false
+    "model_generated_workflow_allowed": false,
+    "persistence_accepts_runtime_candidate_from_verifier": false
   },
   "activation_boundary": {
     "controller_built": true,
@@ -106,6 +106,7 @@
     "execution_enabled": false,
     "pass_003_started": false,
     "pass_003_compiled": false,
-    "first_pass_003_run_requires_supervision": true
+    "first_pass_003_run_requires_supervision": true,
+    "hosted_billing_gate_verified": false
   }
 }

@@ -1,6 +1,6 @@
 {
   "type": "PMP_UNIVERSAL_FREE_AUTOMATED_PLAN_ENGINE_POLICY",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "user_facing_entry_label": "Automated Plan",
   "contract_path": "automation/engine/v1/universal-contract.json",
   "state_path": "automation/state/active-plan.json",
@@ -10,19 +10,23 @@
   "controller_status_path": "automation/state/controller-status.json",
   "cost_policy": {
     "mode": "zero_additional_api_cost",
+    "assurance_status": "unverified_hosted_execution_blocked",
     "spending_ceiling_usd": 0,
     "paid_api_allowed": false,
     "paid_fallback_allowed": false,
     "larger_paid_github_runners_allowed": false,
-    "automatic_cost_escalation_allowed": false
+    "automatic_cost_escalation_allowed": false,
+    "hosted_paid_usage_account_setting_must_be_disabled": true,
+    "hosted_zero_cost_claim_requires_fresh_attestation": true
   },
   "execution_backends": [
     {
       "backend_id": "github_models_free",
       "label": "Hosted Free",
-      "cost_class": "free_allowance_only",
+      "cost_class": "free_allowance_only_after_verified_account_setting",
       "rate_limited": true,
-      "requires_paid_api_key": false
+      "requires_paid_api_key": false,
+      "requires_account_level_paid_usage_disabled": true
     },
     {
       "backend_id": "local_ollama",
@@ -49,6 +53,7 @@
     "model_may_merge_directly": false,
     "deterministic_verification_required": true,
     "independent_verification_required": true,
+    "container_isolation_required": true,
     "locked_reviewed_head_required": true,
     "stop_instead_of_guess": true
   },
@@ -60,7 +65,7 @@
     "pass_003_started": false
   },
   "controller": {
-    "implementation_status": "built_tested_execution_locked",
+    "implementation_status": "hardened_tested_execution_locked",
     "event_driven": true,
     "one_work_unit_per_event": true,
     "runtime_branch": "automation-runtime",
@@ -72,8 +77,12 @@
     "hosted_default_model": "openai/gpt-4o-mini",
     "hosted_model_job_repository_write": false,
     "verification_job_repository_write": false,
+    "verification_container_network": "none",
+    "verification_container_root_filesystem": "read_only",
     "persistence_job_model_access": false,
     "persistence_job_main_write": false,
+    "persistence_reconstructs_checkpoint": true,
+    "persistence_trusts_runtime_candidate": false,
     "runtime_proposals_are_applied_to_main": false,
     "automatic_resume_from_same_checkpoint": true
   },
@@ -85,18 +94,7 @@
     "inherit_global_theme": true,
     "inherit_global_contrast": true,
     "inherit_global_spacing_typography_and_navigation": true,
-    "native_class_contract": [
-      "wrap",
-      "card",
-      "big",
-      "mini",
-      "grid",
-      "panel",
-      "note",
-      "sub",
-      "icon",
-      "chev"
-    ],
+    "native_class_contract": ["wrap", "card", "big", "mini", "grid", "panel", "note", "sub", "icon", "chev"],
     "separate_color_palette_allowed": false,
     "separate_contrast_system_allowed": false
   }
