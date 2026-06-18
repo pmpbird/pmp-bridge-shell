@@ -1,0 +1,29 @@
+name: Packet 015 Pass 002 private or uncaptured evidence family verification
+
+on:
+  pull_request:
+    paths:
+      - 'audit/Packet_01.5_Pass_002_Private_Uncaptured_Family_*'
+      - 'audit/applicability/Packet_01.5_Pass_002_Private_Uncaptured_Family_*'
+      - 'tools/build_packet_01_5_pass_002_private_uncaptured_family_v1.py'
+      - 'tools/verify_packet_01_5_pass_002_private_uncaptured_family_v1.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Rebuild deterministic family artifacts
+        run: python3 tools/build_packet_01_5_pass_002_private_uncaptured_family_v1.py
+      - name: Regenerate deterministic permanent receipt
+        run: python3 tools/verify_packet_01_5_pass_002_private_uncaptured_family_v1.py --write-receipt
+      - name: Independently verify permanent receipt read-only
+        run: python3 tools/verify_packet_01_5_pass_002_private_uncaptured_family_v1.py
+      - name: Confirm deterministic no-diff result
+        run: git diff --exit-code
