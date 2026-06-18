@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#f3ded4">
+<title>PMP Current Inner RG Controls v6</title>
+<script>
+const COLOR_KEY='pmp_single_colors_v6',PREV_KEY='pmp_single_colors_v5';
+const DEFAULT_COLORS={accent:'#acd1fb',background:'#f3ded4',card:'#ffffff',line:'#07101c'};
+function jj(k){try{return JSON.parse(localStorage.getItem(k)||'{}')}catch(e){return{}}}
+function activeColors(){let c={...DEFAULT_COLORS,...jj(PREV_KEY),...jj(COLOR_KEY)};if(String(c.background).toLowerCase()==='#52b5df')c.background=DEFAULT_COLORS.background;return c}
+function bootShellColors(){let c=activeColors();document.documentElement.style.setProperty('--floor',c.background);let m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',c.background)}
+bootShellColors();
+</script>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--floor,#f3ded4)}
+iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:var(--floor,#f3ded4)}
+</style>
+</head>
+<body>
+<iframe id="app" title="PMP Current Inner v4"></iframe>
+<script src="pmp-automated-plan-room-v1.js?fresh=automated-plan-foundation-v1"></script>
+<script src="pmp-automated-plan-native-match-v1.js?fresh=automated-plan-native-match-v1"></script>
+<script>
+const f=document.getElementById('app');
+const h=(location.hash&&location.hash!=='#world')?location.hash:'#control';
+f.src='pmp-current-inner-cleanbug-rgcontrols-v4.html?fresh=v6-automated-plan-native-match-'+Date.now()+h;
+</script>
+</body>
+</html>

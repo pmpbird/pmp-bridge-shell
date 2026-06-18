@@ -1,0 +1,47 @@
+{
+  "type": "PMP_AUTOMATED_PLAN_ACTIVE_STATE",
+  "schema_id": "pmp.automated-plan.state.v1",
+  "schema_version": "1.0.0",
+  "contract_path": "automation/engine/v1/universal-contract.json",
+  "active_plan_id": "packet_01_5",
+  "active_plan_path": "automation/plans/packet-01-5.v1.json",
+  "active_plan_version": "1.0.0",
+  "status": "setup",
+  "execution_enabled": false,
+  "checkpoint": {
+    "schema_id": "pmp.automated-plan.checkpoint.v1",
+    "authoritative_main_at_registration": "19434527e1218d0586e63f75c9c820a0a7bfff9a",
+    "last_completed_boundary": "pass_002",
+    "last_verified_unit": "pass_002",
+    "next_unit": "pass_003",
+    "checkpoint_sequence": 0,
+    "resume_requires_live_main_reverification": true
+  },
+  "recovery": {
+    "resume_strategy": "exact_checkpoint",
+    "on_interruption": "resume_same_unit",
+    "on_rate_limit": "pause_and_resume_after_reset",
+    "on_backend_change": "continue_same_unit_after_checkpoint_reverification",
+    "on_checkpoint_mismatch": "stop",
+    "on_authoritative_main_change": "stop_and_replan",
+    "backend_switch_requires_checkpoint_reverification": true,
+    "completed_verified_units_must_not_repeat": true,
+    "unverified_units_must_not_be_skipped": true
+  },
+  "execution": {
+    "selected_backend": "github_models_free",
+    "allowed_backends": [
+      "github_models_free",
+      "local_ollama"
+    ],
+    "requested_action": "none",
+    "model_output_authority": "proposal_only",
+    "write_authority": "none",
+    "merge_authority": "none",
+    "paid_fallback_allowed": false,
+    "spending_ceiling_usd": 0,
+    "stop_reason": "foundation_only_not_enabled"
+  },
+  "safe_claim": "The Automated Plan room can identify Packet 01.5 internally and preserve its exact resume boundary without showing the packet name on the Control Room button.",
+  "do_not_claim": "This state does not start Pass 003, enable autonomous execution, prove an executable plan, grant repository write authority, or authorize merging."
+}

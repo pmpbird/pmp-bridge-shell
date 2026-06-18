@@ -1,0 +1,50 @@
+{
+  "type": "PMP_UNIVERSAL_AUTOMATED_PLAN",
+  "schema_id": "pmp.automated-plan.plan.v1",
+  "schema_version": "1.0.0",
+  "contract_path": "automation/engine/v1/universal-contract.json",
+  "plan_id": "packet_01_5",
+  "plan_version": "1.0.0",
+  "internal_name": "Packet 01.5",
+  "user_facing_main_entry": "Automated Plan",
+  "plan_status": "registered_not_compiled",
+  "execution_enabled": false,
+  "last_completed_boundary": "pass_002",
+  "next_declared_boundary": "pass_003",
+  "continuity": {
+    "last_completed_boundary": "pass_002",
+    "next_declared_boundary": "pass_003",
+    "resume_rule": "Verify the live authoritative main, plan identity, plan version, stored checkpoint, and next unit before execution selection."
+  },
+  "backend_policy": {
+    "preferred_backend": "github_models_free",
+    "allowed_backends": [
+      "github_models_free",
+      "local_ollama"
+    ],
+    "same_contract_on_switch": true,
+    "checkpoint_reverification_required_on_switch": true,
+    "paid_fallback_allowed": false
+  },
+  "result_schema_id": "pmp.automated-plan.result.v1",
+  "compiled_units": [],
+  "stop_conditions": [
+    "execution_disabled",
+    "plan_not_compiled",
+    "schema_invalid",
+    "plan_identity_mismatch",
+    "checkpoint_mismatch",
+    "authoritative_main_changed",
+    "backend_unavailable",
+    "free_limit_reached",
+    "paid_path_detected",
+    "unsafe_permission_detected",
+    "changed_file_outside_allowlist",
+    "deterministic_verification_failed",
+    "independent_rebuild_mismatch",
+    "unresolved_ambiguity",
+    "manual_stop_requested"
+  ],
+  "resume_rule": "Verify live authoritative main and the stored checkpoint before selecting the next unit.",
+  "foundation_rule": "This registration preserves identity, contracts, and resume position only. It must not begin Pass 003 until executable units are compiled, independently verified, and explicitly enabled."
+}

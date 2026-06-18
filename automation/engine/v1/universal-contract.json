@@ -1,0 +1,252 @@
+{
+  "type": "PMP_UNIVERSAL_AUTOMATED_PLAN_CONTRACT",
+  "version": "1.0.0",
+  "compatibility_key": "pmp-automated-plan-contract-v1",
+  "schema_registry": {
+    "plan": {
+      "schema_id": "pmp.automated-plan.plan.v1",
+      "required_fields": [
+        "type",
+        "schema_id",
+        "schema_version",
+        "contract_path",
+        "plan_id",
+        "plan_version",
+        "internal_name",
+        "user_facing_main_entry",
+        "plan_status",
+        "execution_enabled",
+        "continuity",
+        "backend_policy",
+        "result_schema_id",
+        "compiled_units",
+        "stop_conditions",
+        "foundation_rule"
+      ]
+    },
+    "checkpoint": {
+      "schema_id": "pmp.automated-plan.checkpoint.v1",
+      "required_fields": [
+        "schema_id",
+        "authoritative_main_at_registration",
+        "last_completed_boundary",
+        "last_verified_unit",
+        "next_unit",
+        "checkpoint_sequence",
+        "resume_requires_live_main_reverification"
+      ]
+    },
+    "result_envelope": {
+      "schema_id": "pmp.automated-plan.result.v1",
+      "required_fields": [
+        "schema_id",
+        "plan_id",
+        "unit_id",
+        "request_id",
+        "backend_id",
+        "status",
+        "proposal_only",
+        "output_paths",
+        "evidence_used",
+        "usage",
+        "verification_claims"
+      ],
+      "allowed_statuses": [
+        "proposed",
+        "needs_more_evidence",
+        "blocked",
+        "failed"
+      ],
+      "authority": "proposal_only"
+    },
+    "usage_ledger": {
+      "schema_id": "pmp.automated-plan.usage.v1",
+      "required_fields": [
+        "type",
+        "schema_id",
+        "schema_version",
+        "plan_id",
+        "measurement_status",
+        "window",
+        "totals",
+        "backends",
+        "completed_pass_samples",
+        "estimate",
+        "rule"
+      ]
+    },
+    "evidence_capsule": {
+      "schema_id": "pmp.automated-plan.evidence-capsule.v1",
+      "required_fields": [
+        "schema_id",
+        "plan_id",
+        "unit_id",
+        "request_id",
+        "objective",
+        "evidence",
+        "constraints",
+        "expected_result_schema_id",
+        "authority"
+      ],
+      "authority": "request_for_proposal_only"
+    }
+  },
+  "state_machine": {
+    "initial_status": "setup",
+    "statuses": [
+      "setup",
+      "ready",
+      "running",
+      "pausing",
+      "paused",
+      "stopped",
+      "complete"
+    ],
+    "transitions": {
+      "setup": [
+        "ready",
+        "stopped"
+      ],
+      "ready": [
+        "running",
+        "paused",
+        "stopped"
+      ],
+      "running": [
+        "pausing",
+        "paused",
+        "stopped",
+        "complete"
+      ],
+      "pausing": [
+        "paused",
+        "stopped"
+      ],
+      "paused": [
+        "running",
+        "stopped"
+      ],
+      "stopped": [
+        "ready"
+      ],
+      "complete": []
+    },
+    "pause_resume": {
+      "pause_commits_checkpoint_before_exit": true,
+      "resume_starts_from_stored_next_unit": true,
+      "resume_requires_plan_identity_match": true,
+      "resume_requires_live_main_reverification": true,
+      "resume_must_not_repeat_verified_completed_units": true,
+      "resume_must_not_skip_unverified_units": true
+    }
+  },
+  "backend_contract": {
+    "request_schema_id": "pmp.automated-plan.evidence-capsule.v1",
+    "result_schema_id": "pmp.automated-plan.result.v1",
+    "checkpoint_schema_id": "pmp.automated-plan.checkpoint.v1",
+    "common_authority": "proposal_only",
+    "backends": [
+      {
+        "backend_id": "github_models_free",
+        "label": "Hosted Free",
+        "cost_class": "free_allowance_only",
+        "rate_limited": true,
+        "requires_paid_api_key": false,
+        "requires_self_hosted_runner": false,
+        "model_may_write_repository": false,
+        "model_may_merge": false
+      },
+      {
+        "backend_id": "local_ollama",
+        "label": "Laptop",
+        "cost_class": "local_no_api_charge",
+        "rate_limited": false,
+        "requires_paid_api_key": false,
+        "requires_self_hosted_runner": true,
+        "model_may_write_repository": false,
+        "model_may_merge": false
+      }
+    ],
+    "switching_invariants": [
+      "same_plan_id",
+      "same_plan_version",
+      "same_checkpoint_schema",
+      "same_evidence_capsule_schema",
+      "same_result_schema",
+      "same_next_unit",
+      "same_stop_conditions",
+      "same_independent_verification",
+      "checkpoint_reverified_before_resume"
+    ]
+  },
+  "usage_measurement": {
+    "record_per_attempt": [
+      "plan_id",
+      "unit_id",
+      "backend_id",
+      "request_id",
+      "started_at",
+      "finished_at",
+      "input_tokens_or_units",
+      "output_tokens_or_units",
+      "retry_number",
+      "result_status",
+      "rate_limit_observed"
+    ],
+    "record_per_completed_pass": [
+      "pass_id",
+      "completed_units",
+      "model_requests",
+      "retries",
+      "hosted_free_requests",
+      "laptop_requests",
+      "elapsed_seconds"
+    ],
+    "minimum_completed_pass_samples_for_estimate": 3,
+    "estimate_method": "floor(remaining_free_requests / max(1, observed_average_requests_per_completed_pass))",
+    "no_estimate_without_samples": true,
+    "rate_limit_behavior": "checkpoint_then_pause_without_paid_fallback",
+    "resume_behavior": "resume_same_next_unit_after_capacity_returns_or_laptop_backend_is_selected"
+  },
+  "stop_conditions": [
+    "execution_disabled",
+    "plan_not_compiled",
+    "schema_invalid",
+    "plan_identity_mismatch",
+    "checkpoint_mismatch",
+    "authoritative_main_changed",
+    "backend_unavailable",
+    "free_limit_reached",
+    "paid_path_detected",
+    "unsafe_permission_detected",
+    "changed_file_outside_allowlist",
+    "deterministic_verification_failed",
+    "independent_rebuild_mismatch",
+    "unresolved_ambiguity",
+    "manual_stop_requested"
+  ],
+  "independent_verification": {
+    "required": true,
+    "checks": [
+      "schema_validation",
+      "plan_identity_validation",
+      "checkpoint_continuity_validation",
+      "authoritative_main_validation",
+      "changed_file_allowlist_validation",
+      "hash_and_count_validation",
+      "result_envelope_validation",
+      "zero_cost_policy_validation",
+      "backend_authority_validation",
+      "independent_rebuild_or_equivalent_deterministic_check",
+      "locked_reviewed_head_validation_before_merge",
+      "merge_parent_validation_after_merge"
+    ]
+  },
+  "foundation_boundary": {
+    "execution_enabled": false,
+    "autonomous_trigger_enabled": false,
+    "merge_authority_granted": false,
+    "pass_003_started": false,
+    "foundation_may_only_register_identity_contracts_checkpoint_usage_and_interface": true
+  }
+}

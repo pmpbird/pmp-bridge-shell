@@ -1,0 +1,83 @@
+{
+  "type": "PMP_UNIVERSAL_FREE_AUTOMATED_PLAN_ENGINE_POLICY",
+  "version": "1.1.0",
+  "user_facing_entry_label": "Automated Plan",
+  "contract_path": "automation/engine/v1/universal-contract.json",
+  "state_path": "automation/state/active-plan.json",
+  "usage_ledger_path": "automation/state/usage-ledger.json",
+  "plan_registry_root": "automation/plans",
+  "cost_policy": {
+    "mode": "zero_additional_api_cost",
+    "spending_ceiling_usd": 0,
+    "paid_api_allowed": false,
+    "paid_fallback_allowed": false,
+    "larger_paid_github_runners_allowed": false,
+    "automatic_cost_escalation_allowed": false
+  },
+  "execution_backends": [
+    {
+      "backend_id": "github_models_free",
+      "label": "Hosted Free",
+      "cost_class": "free_allowance_only",
+      "rate_limited": true,
+      "requires_paid_api_key": false
+    },
+    {
+      "backend_id": "local_ollama",
+      "label": "Laptop",
+      "cost_class": "local_no_api_charge",
+      "rate_limited": false,
+      "requires_paid_api_key": false,
+      "requires_self_hosted_runner": true
+    }
+  ],
+  "backend_switching": {
+    "same_plan_format": true,
+    "same_checkpoint_format": true,
+    "same_evidence_capsule_format": true,
+    "same_result_schema": true,
+    "same_verification_contract": true,
+    "checkpoint_reverification_required": true,
+    "redesign_required": false
+  },
+  "authority": {
+    "model_output_authority": "proposal_only",
+    "model_may_write_main_directly": false,
+    "model_may_write_repository_directly": false,
+    "model_may_merge_directly": false,
+    "deterministic_verification_required": true,
+    "independent_verification_required": true,
+    "locked_reviewed_head_required": true,
+    "stop_instead_of_guess": true
+  },
+  "execution_defaults": {
+    "execution_enabled": false,
+    "autonomous_trigger_enabled": false,
+    "merge_authority_granted": false,
+    "requested_action": "none",
+    "pass_003_started": false
+  },
+  "interface": {
+    "control_room_entry_count": 1,
+    "control_room_entry_label": "Automated Plan",
+    "plan_specific_name_on_main_button": false,
+    "plan_identity_available_in_details_only": true,
+    "inherit_global_theme": true,
+    "inherit_global_contrast": true,
+    "inherit_global_spacing_typography_and_navigation": true,
+    "native_class_contract": [
+      "wrap",
+      "card",
+      "big",
+      "mini",
+      "grid",
+      "panel",
+      "note",
+      "sub",
+      "icon",
+      "chev"
+    ],
+    "separate_color_palette_allowed": false,
+    "separate_contrast_system_allowed": false
+  }
+}
