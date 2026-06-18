@@ -8,6 +8,7 @@ on:
       - 'automation/engine/v1/engine-policy.json'
       - 'pmp-automated-plan-room-v1.js'
       - 'tools/test_automated_plan_controller_v1.py'
+      - 'tools/test_automated_plan_controller_errors_v1.py'
       - 'tools/verify_automated_plan_controller_v1.py'
       - '.github/workflows/automated_plan_controller.yml'
       - '.github/workflows/automated_plan_controller_ci.yml'
@@ -30,6 +31,8 @@ jobs:
         run: python3 -m py_compile automation/controller/v1/controller.py tools/test_automated_plan_controller_v1.py tools/verify_automated_plan_controller_v1.py
       - name: Run controller behavior tests
         run: python3 tools/test_automated_plan_controller_v1.py
+      - name: Test safe pause on backend errors
+        run: python3 tools/test_automated_plan_controller_errors_v1.py
       - name: Verify workflow authority split and locked checkpoint
         run: python3 tools/verify_automated_plan_controller_v1.py
       - name: Check Automated Plan room syntax
