@@ -6,7 +6,7 @@
   "status": "setup",
   "execution_enabled": false,
   "checkpoint": {
-    "authoritative_main_at_registration": "1557da6a872fa05c558e780a8d8bff2c0a8a6ba3",
+    "authoritative_main_at_registration": "19434527e1218d0586e63f75c9c820a0a7bfff9a",
     "last_completed_boundary": "pass_002",
     "next_unit": "pass_003",
     "resume_requires_live_main_reverification": true
