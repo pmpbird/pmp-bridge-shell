@@ -1,0 +1,117 @@
+name: PR 35 verified non-workflow apply
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/pr35_nonworkflow_apply.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pr35-nonworkflow-apply
+  cancel-in-progress: true
+
+jobs:
+  verify-and-apply:
+    if: github.repository == 'pmpbird/pmp-bridge-shell' && github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'automated-plan-controller-v1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: automated-plan-controller-v1
+          fetch-depth: 0
+          persist-credentials: true
+      - name: Confirm exact branch and restore payload
+        run: |
+          set -euo pipefail
+          git fetch origin automated-plan-controller-v1 --quiet
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/automated-plan-controller-v1)"
+          cat .pr35-hardening/chunk{00..07} | base64 --decode > /tmp/pr35-hardening.tgz
+          echo '2fb25e457b8f8223cfe73baab074dce045c2925b68635f89d5228baa82bdac28  /tmp/pr35-hardening.tgz' | sha256sum -c -
+          tar -xzf /tmp/pr35-hardening.tgz -C .
+          python3 - <<'PY'
+          from pathlib import Path
+          path=Path('automation/controller/v1/controller.py')
+          text=path.read_text()
+          old='--mount", f"type=bind,src={workspace},dst=/workspace,rw",'
+          new='--mount", f"type=bind,src={workspace},dst=/workspace",'
+          if text.count(old) != 1: raise SystemExit('Docker mount repair mismatch')
+          path.write_text(text.replace(old,new))
+          PY
+      - name: Verify exact non-workflow hashes
+        run: |
+          python3 - <<'PY'
+          import hashlib,pathlib
+          expected={
+            'audit/Automated_Plan_Controller_Status_v1.md':'f23e691e1bf1cc50333125e042070dff30d4646f1bd55abd8bcc5dbe89e28da5',
+            'automation/controller/v1/controller-contract.json':'69d369b418cf86fb6f5fabfb2d04aa60569394d0a09af908fc723cea008d6abc',
+            'automation/controller/v1/controller.py':'572c64a138332f39e0baeadb866d0e03f9ed2ac1a420b60eb6947243d71302ab',
+            'automation/engine/v1/engine-policy.json':'8a929d9360dca18c4b5fc0e4148c8174a3ab3551d276c4355ae8bc4c2e6fc5ea',
+            'automation/state/controller-status.json':'096a64087653827d83ab5902d1eade5d6b3dc09dcc12136232dd47dadae0b75e',
+            'pmp-automated-plan-room-v1.js':'946d6e242367926e8b8b9cf0a83f897934f5eac42625ba13be4f96e719807f66',
+            'tools/test_automated_plan_controller_container_v1.py':'16f1590721ed04533341389da46efcd853ef8bef130115c449fbc24e64c66b95',
+            'tools/test_automated_plan_controller_errors_v1.py':'e05c78f38d8cec738a15712125f5a755823c1652a8db7282c14d8840258590b6',
+            'tools/test_automated_plan_controller_v1.py':'0cf1af818ac29a6e618b67c98d0489e8d2825e4e490f085816cebd6a2a6f442f',
+            'tools/test_automated_plan_controller_workflow_v1.py':'99a2383741a6d7563731641881d2d7f75f3244bd927b18110299fe10d0ed882c',
+            'tools/verify_automated_plan_controller_v1.py':'8c25fa3986220308aa830784693c97f0ef68466fba67ab0a393a17c143221aaf',
+          }
+          for rel,want in expected.items():
+            got=hashlib.sha256(pathlib.Path(rel).read_bytes()).hexdigest()
+            if got!=want: raise SystemExit(f'hash mismatch: {rel}')
+          PY
+      - name: Repeat complete hardening tests
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          set -euo pipefail
+          python3 tools/test_automated_plan_controller_v1.py
+          python3 tools/test_automated_plan_controller_errors_v1.py
+          python3 tools/verify_automated_plan_controller_v1.py
+          python3 tools/test_automated_plan_controller_workflow_v1.py
+          node --check pmp-automated-plan-room-v1.js
+          docker pull python:3.13-slim
+          python3 tools/test_automated_plan_controller_container_v1.py
+      - name: Stage only verified non-workflow hardening
+        run: |
+          set -euo pipefail
+          git diff --exit-code -- automation/state/active-plan.json automation/plans/packet-01-5.v1.json
+          git restore .github/workflows
+          rm -rf .pr35-hardening
+          find . -type d -name __pycache__ -prune -exec rm -rf {} +
+          git add \
+            audit/Automated_Plan_Controller_Status_v1.md \
+            automation/controller/v1/controller-contract.json \
+            automation/controller/v1/controller.py \
+            automation/engine/v1/engine-policy.json \
+            automation/state/controller-status.json \
+            pmp-automated-plan-room-v1.js \
+            tools/test_automated_plan_controller_container_v1.py \
+            tools/test_automated_plan_controller_errors_v1.py \
+            tools/test_automated_plan_controller_v1.py \
+            tools/test_automated_plan_controller_workflow_v1.py \
+            tools/verify_automated_plan_controller_v1.py \
+            .pr35-hardening
+          python3 - <<'PY'
+          import subprocess
+          expected={
+            'audit/Automated_Plan_Controller_Status_v1.md','automation/controller/v1/controller-contract.json',
+            'automation/controller/v1/controller.py','automation/engine/v1/engine-policy.json',
+            'automation/state/controller-status.json','pmp-automated-plan-room-v1.js',
+            'tools/test_automated_plan_controller_container_v1.py','tools/test_automated_plan_controller_errors_v1.py',
+            'tools/test_automated_plan_controller_v1.py','tools/test_automated_plan_controller_workflow_v1.py',
+            'tools/verify_automated_plan_controller_v1.py',
+          }|{f'.pr35-hardening/chunk{i:02d}' for i in range(8)}
+          changed=set(subprocess.check_output(['git','diff','--cached','--name-only'],text=True).splitlines())
+          if changed!=expected: raise SystemExit(f'staged boundary mismatch: {sorted(changed^expected)}')
+          PY
+      - name: Commit verified non-workflow hardening
+        run: |
+          set -euo pipefail
+          git config user.name 'pmp-automated-plan-hardening'
+          git config user.email 'actions@users.noreply.github.com'
+          git commit -m 'Install verified Automated Plan hardening core'
+          git push origin HEAD:automated-plan-controller-v1
