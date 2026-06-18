@@ -7,6 +7,7 @@ on:
       - 'pmp-automated-plan-room-v1.js'
       - 'pmp-current-inner-cleanbug-rgcontrols-v6.html'
       - 'pmp-current-map-v9.json'
+      - 'pmp-home-single-v6.html'
       - 'tools/verify_automated_plan_foundation_v1.py'
       - '.github/workflows/automated_plan_foundation.yml'
   workflow_dispatch:
@@ -14,12 +15,17 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: automated-plan-foundation-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   verify-foundation:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - name: Verify JSON, identity, checkpoint, theme inheritance, and zero-cost lock
+      - name: Verify universal contracts, checkpoint recovery, usage measurement, theme inheritance, and zero-cost lock
         run: python3 tools/verify_automated_plan_foundation_v1.py
       - name: Check Automated Plan room JavaScript syntax
         run: node --check pmp-automated-plan-room-v1.js
