@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'automation/**'
+      - 'audit/Automated_Plan_Foundation_Status_v1.md'
       - 'pmp-automated-plan-room-v1.js'
       - 'pmp-automated-plan-native-match-v1.js'
       - 'pmp-current-inner-cleanbug-rgcontrols-v6.html'
