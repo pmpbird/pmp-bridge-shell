@@ -1,0 +1,30 @@
+name: Packet 015 scalable pass 002 verification
+
+on:
+  pull_request:
+    paths:
+      - 'audit/Packet_01.5_Scalable_Pass_002_*'
+      - 'audit/applicability/Packet_01.5_Scalable_Pass_002_*'
+      - 'audit/routing-inventory/Packet_01.5_Applicability_Inventory_v11_Pass_002.jsonl'
+      - 'tools/build_packet_01_5_scalable_pass_002_v1.py'
+      - 'tools/verify_packet_01_5_scalable_pass_002_v1.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Rebuild deterministic Pass 002
+        run: python3 tools/build_packet_01_5_scalable_pass_002_v1.py
+      - name: Regenerate deterministic permanent receipt
+        run: python3 tools/verify_packet_01_5_scalable_pass_002_v1.py --write-receipt
+      - name: Independently verify permanent receipt read-only
+        run: python3 tools/verify_packet_01_5_scalable_pass_002_v1.py
+      - name: Confirm deterministic no-diff result
+        run: git diff --exit-code
