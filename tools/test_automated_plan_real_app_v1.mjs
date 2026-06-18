@@ -110,7 +110,7 @@ try {
   assert.match(detailsText, /Internal plan\s+packet_01_5/);
   assert.match(detailsText, /Last completed\s+pass_002/);
   assert.match(detailsText, /Next unit\s+pass_003/);
-  assert.match(detailsText, /Free-only lock\s+\$0 additional API usage/);
+  assert.match(detailsText, /Zero-cost assurance\s+unverified — hosted execution blocked/);
   assert.match(detailsText, /Execution enabled\s+no/);
 
   await appFrame.locator('#pmpAutomatedPlanOverlayV1 button.big', { hasText: 'Back to Control Room' }).click();
