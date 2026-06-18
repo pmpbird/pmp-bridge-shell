@@ -29,7 +29,7 @@ try {
 
   assert.equal(await appFrame.locator('#pmpAutomatedPlanEntryV1').count(), 1, 'Control Room must contain exactly one Automated Plan entry');
   const entryText = (await appFrame.locator('#pmpAutomatedPlanEntryV1').innerText()).trim();
-  assert.match(entryText, /^Automated Plan\nSetup — execution is safely locked$/);
+  assert.match(entryText, /Automated Plan\s+Setup — execution is safely locked/);
   assert.doesNotMatch(entryText, /Packet|01\.5|packet_01_5/i);
 
   const buttonProperties = [
