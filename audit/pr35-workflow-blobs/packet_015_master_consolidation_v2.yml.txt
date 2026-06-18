@@ -1,0 +1,28 @@
+name: Packet 015 master consolidation verification
+
+on:
+  pull_request:
+    paths:
+      - 'audit/Packet_01.5_Master_*'
+      - 'audit/applicability/Packet_01.5_Master_*'
+      - 'audit/routing-inventory/Packet_01.5_Applicability_Inventory_v10_Master_Consolidated.jsonl'
+      - 'tools/run_packet_01_5_master_consolidation_v1.py'
+      - 'tools/verify_packet_01_5_master_consolidation_v1.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Rebuild deterministic consolidation
+        run: python3 tools/run_packet_01_5_master_consolidation_v1.py
+      - name: Independently verify permanent receipt
+        run: python3 tools/verify_packet_01_5_master_consolidation_v1.py
+      - name: Confirm deterministic no-diff result
+        run: git diff --exit-code
