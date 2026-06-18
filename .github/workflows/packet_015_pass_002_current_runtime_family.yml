@@ -2,6 +2,12 @@ name: Packet 015 Pass 002 current runtime family verification
 
 on:
   pull_request:
+    paths:
+      - 'audit/Packet_01.5_Pass_002_Current_Runtime_*'
+      - 'audit/applicability/Packet_01.5_Pass_002_Current_Runtime_*'
+      - 'tools/build_packet_01_5_pass_002_current_runtime_family_v1.py'
+      - 'tools/inspect_packet_01_5_pass_002_current_runtime_v1.py'
+      - 'tools/verify_packet_01_5_pass_002_current_runtime_family_v1.py'
   workflow_dispatch:
 
 permissions:

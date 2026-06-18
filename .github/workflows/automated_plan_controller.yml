@@ -8,28 +8,20 @@ on:
         required: true
         default: status
         type: choice
-        options:
-          - status
-          - run_one
-          - resume
-          - pause
-          - switch_backend
+        options: [status, run_one, resume, pause, switch_backend]
       backend:
         description: Execution backend
         required: true
         default: github_models_free
         type: choice
-        options:
-          - github_models_free
-          - local_ollama
+        options: [github_models_free, local_ollama]
       supervised:
         description: Required for the first real work unit
         required: true
         default: false
         type: boolean
   repository_dispatch:
-    types:
-      - automated-plan-resume
+    types: [automated-plan-resume]
   schedule:
     - cron: '17 * * * *'
 
@@ -100,13 +92,16 @@ jobs:
           echo "backend=$backend" >> "$GITHUB_OUTPUT"
           echo "supervised=$supervised" >> "$GITHUB_OUTPUT"
           echo "automatic=$automatic" >> "$GITHUB_OUTPUT"
-      - name: Prepare exactly one event
+      - name: Prepare exactly one event with billing gate
         env:
           ACTION: ${{ steps.event.outputs.action }}
           BACKEND: ${{ steps.event.outputs.backend }}
           SUPERVISED: ${{ steps.event.outputs.supervised }}
           AUTOMATIC: ${{ steps.event.outputs.automatic }}
           LIVE_MAIN_SHA: ${{ steps.main.outputs.sha }}
+          PMP_GITHUB_MODELS_PAID_USAGE_DISABLED: ${{ vars.PMP_GITHUB_MODELS_PAID_USAGE_DISABLED }}
+          PMP_GITHUB_MODELS_BILLING_SCOPE: ${{ vars.PMP_GITHUB_MODELS_BILLING_SCOPE }}
+          PMP_GITHUB_MODELS_BILLING_VERIFIED_AT: ${{ vars.PMP_GITHUB_MODELS_BILLING_VERIFIED_AT }}
         run: |
           rm -rf "$PREP_OUT"
           args=(prepare --definition-root . --runtime-root "$RUNTIME_ROOT" --live-main-sha "$LIVE_MAIN_SHA" --action "$ACTION" --out-dir "$PREP_OUT")
@@ -132,7 +127,10 @@ jobs:
 
   infer-hosted-free:
     needs: prepare
-    if: needs.prepare.outputs.should_infer == 'true' && needs.prepare.outputs.backend == 'github_models_free'
+    if: >-
+      needs.prepare.outputs.should_infer == 'true' &&
+      needs.prepare.outputs.backend == 'github_models_free' &&
+      vars.PMP_GITHUB_MODELS_PAID_USAGE_DISABLED == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -147,13 +145,17 @@ jobs:
         with:
           name: automated-plan-prepare
           path: /tmp/pmp-controller-prepare
-      - name: Request one proposal from GitHub Models free mode
+      - name: Request one proposal after account billing gate
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PMP_GITHUB_MODEL: openai/gpt-4o-mini
           PMP_MAX_OUTPUT_TOKENS: '3000'
+          PMP_GITHUB_MODELS_PAID_USAGE_DISABLED: ${{ vars.PMP_GITHUB_MODELS_PAID_USAGE_DISABLED }}
+          PMP_GITHUB_MODELS_BILLING_SCOPE: ${{ vars.PMP_GITHUB_MODELS_BILLING_SCOPE }}
+          PMP_GITHUB_MODELS_BILLING_VERIFIED_AT: ${{ vars.PMP_GITHUB_MODELS_BILLING_VERIFIED_AT }}
         run: |
           python3 automation/controller/v1/controller.py infer \
+            --definition-root . \
             --request /tmp/pmp-controller-prepare/request.json \
             --out /tmp/pmp-controller-transport.json
       - uses: actions/upload-artifact@v4
@@ -165,9 +167,7 @@ jobs:
   infer-laptop:
     needs: prepare
     if: needs.prepare.outputs.should_infer == 'true' && needs.prepare.outputs.backend == 'local_ollama'
-    runs-on:
-      - self-hosted
-      - pmp-ollama
+    runs-on: [self-hosted, pmp-ollama]
     timeout-minutes: 30
     permissions:
       contents: read
@@ -180,12 +180,13 @@ jobs:
         with:
           name: automated-plan-prepare
           path: /tmp/pmp-controller-prepare
-      - name: Request one proposal from local Ollama
+      - name: Request one proposal from loopback-only Ollama
         env:
           PMP_OLLAMA_ENDPOINT: http://127.0.0.1:11434/api/chat
           PMP_OLLAMA_MODEL: ${{ vars.PMP_OLLAMA_MODEL }}
         run: |
           python3 automation/controller/v1/controller.py infer \
+            --definition-root . \
             --request /tmp/pmp-controller-prepare/request.json \
             --out /tmp/pmp-controller-transport.json
       - uses: actions/upload-artifact@v4
@@ -195,10 +196,7 @@ jobs:
           retention-days: 1
 
   verify:
-    needs:
-      - prepare
-      - infer-hosted-free
-      - infer-laptop
+    needs: [prepare, infer-hosted-free, infer-laptop]
     if: >-
       always() &&
       needs.prepare.result == 'success' &&
@@ -208,7 +206,7 @@ jobs:
         needs.infer-laptop.result == 'success'
       )
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     permissions:
       contents: read
     steps:
@@ -240,9 +238,13 @@ jobs:
         with:
           name: automated-plan-transport
           path: /tmp/pmp-transport
-      - name: Verify independently in two ephemeral workspaces
+      - name: Prepare isolated verifier image
+        if: needs.prepare.outputs.should_infer == 'true'
+        run: docker pull python:3.13-slim
+      - name: Verify in two no-network read-only-root containers
         env:
           SHOULD_INFER: ${{ needs.prepare.outputs.should_infer }}
+          PMP_VERIFIER_IMAGE: python:3.13-slim
         run: |
           rm -rf "$VERIFIED_OUT"
           args=(verify --definition-root . --runtime-root "$RUNTIME_ROOT" --live-main-sha "${{ needs.prepare.outputs.main_sha }}" --decision /tmp/pmp-controller-prepare/decision.json --out-dir "$VERIFIED_OUT")
@@ -255,9 +257,7 @@ jobs:
           retention-days: 1
 
   persist-runtime-only:
-    needs:
-      - prepare
-      - verify
+    needs: [prepare, verify]
     if: needs.verify.result == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -274,6 +274,16 @@ jobs:
           test "$(git rev-parse origin/main)" = "${{ needs.prepare.outputs.main_sha }}"
       - uses: actions/download-artifact@v4
         with:
+          name: automated-plan-prepare
+          path: /tmp/pmp-controller-prepare
+      - name: Download transport result
+        if: needs.prepare.outputs.should_infer == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: automated-plan-transport
+          path: /tmp/pmp-transport
+      - uses: actions/download-artifact@v4
+        with:
           name: automated-plan-verified
           path: /tmp/pmp-controller-verified
       - name: Open isolated runtime branch worktree
@@ -286,22 +296,30 @@ jobs:
             git worktree add -b "$RUNTIME_BRANCH" /tmp/pmp-runtime-worktree "${{ needs.prepare.outputs.main_sha }}"
           fi
           mkdir -p /tmp/pmp-runtime-worktree/automation/runtime
-      - name: Persist verified state without executing model output
+      - name: Independently reconstruct and persist exact transition
+        env:
+          SHOULD_INFER: ${{ needs.prepare.outputs.should_infer }}
         run: |
-          python3 automation/controller/v1/controller.py persist \
-            --definition-root . \
-            --runtime-root /tmp/pmp-runtime-worktree/automation/runtime \
-            --live-main-sha "${{ needs.prepare.outputs.main_sha }}" \
-            --verified /tmp/pmp-controller-verified/verified.json
+          args=(persist --definition-root . --runtime-root /tmp/pmp-runtime-worktree/automation/runtime --live-main-sha "${{ needs.prepare.outputs.main_sha }}" --decision /tmp/pmp-controller-prepare/decision.json --verified /tmp/pmp-controller-verified/verified.json)
+          if [ "$SHOULD_INFER" = "true" ]; then args+=(--transport /tmp/pmp-transport/pmp-controller-transport.json); fi
+          python3 automation/controller/v1/controller.py "${args[@]}"
       - name: Enforce runtime-only write boundary
         run: |
           cd /tmp/pmp-runtime-worktree
-          git status --porcelain | tee /tmp/pmp-runtime-changes.txt
-          test -s /tmp/pmp-runtime-changes.txt
-          if awk '{print $2}' /tmp/pmp-runtime-changes.txt | grep -Ev '^automation/runtime/' ; then
-            echo 'Write outside automation/runtime was blocked.' >&2
-            exit 1
-          fi
+          python3 - <<'PY'
+          import subprocess
+          raw=subprocess.check_output(['git','status','--porcelain=v1','-z'])
+          entries=[x for x in raw.split(b'\0') if x]
+          if not entries:
+              raise SystemExit('No runtime state change was produced.')
+          bad=[]
+          for entry in entries:
+              path=entry[3:].decode('utf-8','strict')
+              if not path.startswith('automation/runtime/'):
+                  bad.append(path)
+          if bad:
+              raise SystemExit('Write outside automation/runtime was blocked: '+', '.join(bad))
+          PY
       - name: Commit runtime checkpoint only
         env:
           EVENT_ACTION: ${{ needs.prepare.outputs.action }}

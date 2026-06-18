@@ -7,11 +7,21 @@ on:
       - 'automation/state/controller-status.json'
       - 'automation/engine/v1/engine-policy.json'
       - 'pmp-automated-plan-room-v1.js'
-      - 'tools/test_automated_plan_controller_v1.py'
-      - 'tools/test_automated_plan_controller_errors_v1.py'
+      - 'audit/Automated_Plan_Controller_Status_v1.md'
+      - 'tools/test_automated_plan_controller*.py'
       - 'tools/verify_automated_plan_controller_v1.py'
       - '.github/workflows/automated_plan_controller.yml'
       - '.github/workflows/automated_plan_controller_ci.yml'
+      - '.github/workflows/packet_015_pass_002_dependency_platform_family.yml'
+      - '.github/workflows/packet_015_pass_002_other_record_specific_proof_family.yml'
+      - '.github/workflows/packet_015_pass_002_private_uncaptured_family.yml'
+      - '.github/workflows/packet_015_scalable_pass_002.yml'
+      - '.github/workflows/packet_015_pass_002_deployment_live_family.yml'
+      - '.github/workflows/packet_015_master_consolidation_v2.yml'
+      - '.github/workflows/packet_015_pass_002_current_runtime_family.yml'
+      - '.github/workflows/packet_015_pass_002_authoritative_packet_law_family.yml'
+      - '.github/workflows/packet_01_5_pass_002_closure.yml'
+      - '.github/workflows/packet_015_pass_002_cross_source_conflict_family.yml'
   workflow_dispatch:
 
 permissions:
@@ -24,16 +34,36 @@ concurrency:
 jobs:
   controller-safety:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      - name: Check controller syntax
-        run: python3 -m py_compile automation/controller/v1/controller.py tools/test_automated_plan_controller_v1.py tools/verify_automated_plan_controller_v1.py
-      - name: Run controller behavior tests
+        with:
+          persist-credentials: false
+      - name: Check Python syntax
+        run: python3 -m py_compile automation/controller/v1/controller.py tools/test_automated_plan_controller_v1.py tools/test_automated_plan_controller_errors_v1.py tools/test_automated_plan_controller_container_v1.py tools/test_automated_plan_controller_workflow_v1.py tools/verify_automated_plan_controller_v1.py
+      - name: Run controller behavior and adversarial receipt tests
         run: python3 tools/test_automated_plan_controller_v1.py
       - name: Test safe pause on backend errors
         run: python3 tools/test_automated_plan_controller_errors_v1.py
-      - name: Verify workflow authority split and locked checkpoint
+      - name: Verify hardened workflow, authority split, billing gate, and legacy scope
         run: python3 tools/verify_automated_plan_controller_v1.py
+      - name: Run complete non-executing controller workflow
+        run: python3 tools/test_automated_plan_controller_workflow_v1.py
       - name: Check Automated Plan room syntax
         run: node --check pmp-automated-plan-room-v1.js
+
+  container-adversarial:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Pull fixed verifier image tag
+        run: docker pull python:3.13-slim
+      - name: Test no-network, read-only-root, host-write, and background-process isolation
+        env:
+          PMP_VERIFIER_IMAGE: python:3.13-slim
+        run: python3 tools/test_automated_plan_controller_container_v1.py
