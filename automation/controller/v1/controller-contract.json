@@ -1,0 +1,111 @@
+{
+  "type": "PMP_AUTOMATED_PLAN_EVENT_CONTROLLER_CONTRACT",
+  "version": "1.0.0",
+  "controller_path": "automation/controller/v1/controller.py",
+  "runtime_branch": "automation-runtime",
+  "runtime_root": "automation/runtime",
+  "events": {
+    "manual": [
+      "status",
+      "run_one",
+      "resume",
+      "pause",
+      "switch_backend"
+    ],
+    "repository_dispatch": "automated-plan-resume",
+    "scheduled_resume": {
+      "enabled_only_when_repository_variable_is_true": "PMP_AUTOMATION_ENABLED",
+      "cadence": "hourly",
+      "first_real_unit_must_be_supervised": true
+    }
+  },
+  "work_unit_policy": {
+    "maximum_units_per_event": 1,
+    "concurrency_group": "pmp-automated-plan-controller",
+    "cancel_in_progress": false,
+    "checkpoint_before_every_request": true,
+    "checkpoint_after_verified_result_only": true,
+    "resume_same_unit_after_rate_limit_or_transient_error": true
+  },
+  "authority_split": {
+    "prepare_job": {
+      "contents": "read",
+      "models": "none",
+      "may_execute_model_output": false,
+      "may_write_repository": false
+    },
+    "inference_job": {
+      "contents": "read",
+      "models": "read_for_hosted_free_only",
+      "may_execute_model_output": false,
+      "may_write_repository": false
+    },
+    "verification_job": {
+      "contents": "read",
+      "models": "none",
+      "may_execute_proposal_in_ephemeral_sandbox": true,
+      "may_write_repository": false
+    },
+    "persistence_job": {
+      "contents": "write_runtime_branch_only",
+      "models": "none",
+      "may_execute_model_output": false,
+      "may_write_main": false,
+      "may_merge": false
+    },
+    "model_output_authority": "proposal_only"
+  },
+  "backends": {
+    "github_models_free": {
+      "label": "Hosted Free",
+      "endpoint": "https://models.github.ai/inference/chat/completions",
+      "api_version": "2026-03-10",
+      "default_model": "openai/gpt-4o-mini",
+      "authentication": "GITHUB_TOKEN_models_read",
+      "paid_api_key_allowed": false,
+      "paid_fallback_allowed": false
+    },
+    "local_ollama": {
+      "label": "Laptop",
+      "endpoint": "http://127.0.0.1:11434/api/chat",
+      "model_environment_variable": "PMP_OLLAMA_MODEL",
+      "loopback_only": true,
+      "paid_api_key_allowed": false,
+      "paid_fallback_allowed": false
+    }
+  },
+  "shared_contracts": {
+    "plan_schema": "pmp.automated-plan.plan.v1",
+    "checkpoint_schema": "pmp.automated-plan.checkpoint.v1",
+    "evidence_capsule_schema": "pmp.automated-plan.evidence-capsule.v1",
+    "result_schema": "pmp.automated-plan.result.v1",
+    "runtime_schema": "pmp.automated-plan.controller-runtime.v1",
+    "backend_switch_requires_plan_redesign": false,
+    "backend_switch_requires_checkpoint_reverification": true
+  },
+  "limits": {
+    "max_evidence_bytes": 200000,
+    "max_output_tokens": 3000,
+    "verification_command_timeout_seconds": 120,
+    "transient_retry_seconds": 900,
+    "maximum_automatic_attempts_per_unit": 3
+  },
+  "write_boundary": {
+    "allowed_branch": "automation-runtime",
+    "allowed_paths": [
+      "automation/runtime/**"
+    ],
+    "main_direct_write_allowed": false,
+    "pull_request_merge_allowed": false,
+    "model_generated_shell_allowed": false,
+    "model_generated_workflow_allowed": false
+  },
+  "activation_boundary": {
+    "controller_built": true,
+    "controller_tested": true,
+    "execution_enabled": false,
+    "pass_003_started": false,
+    "pass_003_compiled": false,
+    "first_pass_003_run_requires_supervision": true
+  }
+}
