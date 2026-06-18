@@ -9,6 +9,8 @@
   "user_facing_main_entry": "Automated Plan",
   "plan_status": "registered_not_compiled",
   "execution_enabled": false,
+  "last_completed_boundary": "pass_002",
+  "next_declared_boundary": "pass_003",
   "continuity": {
     "last_completed_boundary": "pass_002",
     "next_declared_boundary": "pass_003",
@@ -43,5 +45,6 @@
     "unresolved_ambiguity",
     "manual_stop_requested"
   ],
+  "resume_rule": "Verify live authoritative main and the stored checkpoint before selecting the next unit.",
   "foundation_rule": "This registration preserves identity, contracts, and resume position only. It must not begin Pass 003 until executable units are compiled, independently verified, and explicitly enabled."
 }
