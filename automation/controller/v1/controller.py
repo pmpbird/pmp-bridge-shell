@@ -783,7 +783,7 @@ def verify_event(args: argparse.Namespace) -> int:
         attempts = copy.deepcopy(runtime.get("attempts_by_unit", {}))
         attempts[decision["unit_id"]] = int(attempts.get(decision["unit_id"], 0)) + 1
         runtime["attempts_by_unit"] = attempts
-        if transport["status"] in {"rate_limited", "transient_error"}:
+        if transport["status"] in {"rate_limited", "transient_error", "blocked"}:
             candidate = pause_verified(decision, runtime, transport)
             verified = {
                 "schema_id": VERIFIED_SCHEMA,
