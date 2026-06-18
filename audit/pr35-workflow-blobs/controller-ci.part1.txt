@@ -1,0 +1,32 @@
+name: Automated Plan Controller CI
+
+on:
+  pull_request:
+    paths:
+      - 'automation/controller/**'
+      - 'automation/state/controller-status.json'
+      - 'automation/engine/v1/engine-policy.json'
+      - 'pmp-automated-plan-room-v1.js'
+      - 'audit/Automated_Plan_Controller_Status_v1.md'
+      - 'tools/test_automated_plan_controller*.py'
+      - 'tools/verify_automated_plan_controller_v1.py'
+      - '.github/workflows/automated_plan_controller.yml'
+      - '.github/workflows/automated_plan_controller_ci.yml'
+      - '.github/workflows/packet_015_pass_002_dependency_platform_family.yml'
+      - '.github/workflows/packet_015_pass_002_other_record_specific_proof_family.yml'
+      - '.github/workflows/packet_015_pass_002_private_uncaptured_family.yml'
+      - '.github/workflows/packet_015_scalable_pass_002.yml'
+      - '.github/workflows/packet_015_pass_002_deployment_live_family.yml'
+      - '.github/workflows/packet_015_master_consolidation_v2.yml'
+      - '.github/workflows/packet_015_pass_002_current_runtime_family.yml'
+      - '.github/workflows/packet_015_pass_002_authoritative_packet_law_family.yml'
+      - '.github/workflows/packet_01_5_pass_002_closure.yml'
+      - '.github/workflows/packet_015_pass_002_cross_source_conflict_family.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: automated-plan-controller-ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
