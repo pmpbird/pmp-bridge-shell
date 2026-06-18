@@ -23,8 +23,11 @@ for native_class in ["'big'", "'wrap'", "'card'", "'grid'", "'panel pmp-ap-detai
     need(native_class in match, f'native class not enforced: {native_class}')
 for native_class in ['big','mini','panel','note','sub','icon','chev']:
     need(native_class in room, f'room does not use native class: {native_class}')
-for forbidden in ['font-family:', 'background:#', 'color:#', 'border-radius:28px', 'box-shadow:']:
+for forbidden in ['font-family:', 'background:#', 'color:#', 'border-radius:28px']:
     need(forbidden not in match, f'native matcher defines separate visual value: {forbidden}')
+need('background:var(--a)!important' in match, 'small controls do not follow the live accent variable')
+need('color:var(--buttonText)!important' in match, 'small controls do not follow live contrast text')
+need('box-shadow:var(--miniShadow)!important' in match, 'small controls do not follow live shadow settings')
 need('Packet 01.5' not in match and 'packet_01_5' not in match, 'packet identity leaked into matcher')
 need(match.count('Automated Plan') == 1, 'matcher should expose only the universal label')
 need("id=\"control\"" in app or "id='control'" in app, 'real app Control Room not found')
