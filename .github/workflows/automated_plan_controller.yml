@@ -1,0 +1,314 @@
+name: Automated Plan Controller
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: One controller event
+        required: true
+        default: status
+        type: choice
+        options:
+          - status
+          - run_one
+          - resume
+          - pause
+          - switch_backend
+      backend:
+        description: Execution backend
+        required: true
+        default: github_models_free
+        type: choice
+        options:
+          - github_models_free
+          - local_ollama
+      supervised:
+        description: Required for the first real work unit
+        required: true
+        default: false
+        type: boolean
+  repository_dispatch:
+    types:
+      - automated-plan-resume
+  schedule:
+    - cron: '17 * * * *'
+
+permissions: {}
+
+concurrency:
+  group: pmp-automated-plan-controller
+  cancel-in-progress: false
+
+env:
+  RUNTIME_BRANCH: automation-runtime
+  RUNTIME_ROOT: /tmp/pmp-runtime-snapshot/automation/runtime
+  PREP_OUT: /tmp/pmp-controller-prepare
+  VERIFIED_OUT: /tmp/pmp-controller-verified
+
+jobs:
+  prepare:
+    if: github.event_name == 'workflow_dispatch' || vars.PMP_AUTOMATION_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    outputs:
+      should_infer: ${{ steps.decision.outputs.should_infer }}
+      backend: ${{ steps.decision.outputs.backend }}
+      action: ${{ steps.event.outputs.action }}
+      main_sha: ${{ steps.main.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Lock to current authoritative main
+        id: main
+        run: |
+          git fetch origin main --quiet
+          sha="$(git rev-parse origin/main)"
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          test "$sha" = "$(git rev-parse HEAD)"
+      - name: Restore exact runtime checkpoint
+        run: |
+          rm -rf /tmp/pmp-runtime-snapshot
+          mkdir -p /tmp/pmp-runtime-snapshot
+          if git ls-remote --exit-code --heads origin "$RUNTIME_BRANCH" >/dev/null 2>&1; then
+            git fetch origin "$RUNTIME_BRANCH" --quiet
+            git archive "origin/$RUNTIME_BRANCH" automation/runtime 2>/dev/null | tar -x -C /tmp/pmp-runtime-snapshot || true
+          fi
+          mkdir -p "$RUNTIME_ROOT"
+      - name: Resolve event
+        id: event
+        env:
+          MANUAL_ACTION: ${{ inputs.action }}
+          MANUAL_BACKEND: ${{ inputs.backend }}
+          MANUAL_SUPERVISED: ${{ inputs.supervised }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          action="$MANUAL_ACTION"
+          backend="$MANUAL_BACKEND"
+          supervised="$MANUAL_SUPERVISED"
+          automatic="false"
+          if [ "$EVENT_NAME" != "workflow_dispatch" ]; then
+            action="resume"
+            backend=""
+            supervised="false"
+            automatic="true"
+          fi
+          echo "action=$action" >> "$GITHUB_OUTPUT"
+          echo "backend=$backend" >> "$GITHUB_OUTPUT"
+          echo "supervised=$supervised" >> "$GITHUB_OUTPUT"
+          echo "automatic=$automatic" >> "$GITHUB_OUTPUT"
+      - name: Prepare exactly one event
+        env:
+          ACTION: ${{ steps.event.outputs.action }}
+          BACKEND: ${{ steps.event.outputs.backend }}
+          SUPERVISED: ${{ steps.event.outputs.supervised }}
+          AUTOMATIC: ${{ steps.event.outputs.automatic }}
+          LIVE_MAIN_SHA: ${{ steps.main.outputs.sha }}
+        run: |
+          rm -rf "$PREP_OUT"
+          args=(prepare --definition-root . --runtime-root "$RUNTIME_ROOT" --live-main-sha "$LIVE_MAIN_SHA" --action "$ACTION" --out-dir "$PREP_OUT")
+          if [ -n "$BACKEND" ]; then args+=(--backend "$BACKEND"); fi
+          if [ "$SUPERVISED" = "true" ]; then args+=(--supervised); fi
+          if [ "$AUTOMATIC" = "true" ]; then args+=(--automatic); fi
+          python3 automation/controller/v1/controller.py "${args[@]}"
+      - name: Publish decision outputs
+        id: decision
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          from pathlib import Path
+          d=json.loads(Path('/tmp/pmp-controller-prepare/decision.json').read_text())
+          print('should_infer=' + ('true' if d['should_infer'] else 'false'))
+          print('backend=' + d['backend_id'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: automated-plan-prepare
+          path: /tmp/pmp-controller-prepare
+          retention-days: 1
+
+  infer-hosted-free:
+    needs: prepare
+    if: needs.prepare.outputs.should_infer == 'true' && needs.prepare.outputs.backend == 'github_models_free'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      models: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare.outputs.main_sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: automated-plan-prepare
+          path: /tmp/pmp-controller-prepare
+      - name: Request one proposal from GitHub Models free mode
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PMP_GITHUB_MODEL: openai/gpt-4o-mini
+          PMP_MAX_OUTPUT_TOKENS: '3000'
+        run: |
+          python3 automation/controller/v1/controller.py infer \
+            --request /tmp/pmp-controller-prepare/request.json \
+            --out /tmp/pmp-controller-transport.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: automated-plan-transport
+          path: /tmp/pmp-controller-transport.json
+          retention-days: 1
+
+  infer-laptop:
+    needs: prepare
+    if: needs.prepare.outputs.should_infer == 'true' && needs.prepare.outputs.backend == 'local_ollama'
+    runs-on:
+      - self-hosted
+      - pmp-ollama
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare.outputs.main_sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: automated-plan-prepare
+          path: /tmp/pmp-controller-prepare
+      - name: Request one proposal from local Ollama
+        env:
+          PMP_OLLAMA_ENDPOINT: http://127.0.0.1:11434/api/chat
+          PMP_OLLAMA_MODEL: ${{ vars.PMP_OLLAMA_MODEL }}
+        run: |
+          python3 automation/controller/v1/controller.py infer \
+            --request /tmp/pmp-controller-prepare/request.json \
+            --out /tmp/pmp-controller-transport.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: automated-plan-transport
+          path: /tmp/pmp-controller-transport.json
+          retention-days: 1
+
+  verify:
+    needs:
+      - prepare
+      - infer-hosted-free
+      - infer-laptop
+    if: >-
+      always() &&
+      needs.prepare.result == 'success' &&
+      (
+        needs.prepare.outputs.should_infer == 'false' ||
+        needs.infer-hosted-free.result == 'success' ||
+        needs.infer-laptop.result == 'success'
+      )
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare.outputs.main_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Reverify authoritative main
+        run: |
+          git fetch origin main --quiet
+          test "$(git rev-parse origin/main)" = "${{ needs.prepare.outputs.main_sha }}"
+      - name: Restore exact runtime checkpoint
+        run: |
+          rm -rf /tmp/pmp-runtime-snapshot
+          mkdir -p /tmp/pmp-runtime-snapshot
+          if git ls-remote --exit-code --heads origin "$RUNTIME_BRANCH" >/dev/null 2>&1; then
+            git fetch origin "$RUNTIME_BRANCH" --quiet
+            git archive "origin/$RUNTIME_BRANCH" automation/runtime 2>/dev/null | tar -x -C /tmp/pmp-runtime-snapshot || true
+          fi
+          mkdir -p "$RUNTIME_ROOT"
+      - uses: actions/download-artifact@v4
+        with:
+          name: automated-plan-prepare
+          path: /tmp/pmp-controller-prepare
+      - name: Download transport result
+        if: needs.prepare.outputs.should_infer == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: automated-plan-transport
+          path: /tmp/pmp-transport
+      - name: Verify independently in two ephemeral workspaces
+        env:
+          SHOULD_INFER: ${{ needs.prepare.outputs.should_infer }}
+        run: |
+          rm -rf "$VERIFIED_OUT"
+          args=(verify --definition-root . --runtime-root "$RUNTIME_ROOT" --live-main-sha "${{ needs.prepare.outputs.main_sha }}" --decision /tmp/pmp-controller-prepare/decision.json --out-dir "$VERIFIED_OUT")
+          if [ "$SHOULD_INFER" = "true" ]; then args+=(--transport /tmp/pmp-transport/pmp-controller-transport.json); fi
+          python3 automation/controller/v1/controller.py "${args[@]}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: automated-plan-verified
+          path: /tmp/pmp-controller-verified
+          retention-days: 1
+
+  persist-runtime-only:
+    needs:
+      - prepare
+      - verify
+    if: needs.verify.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare.outputs.main_sha }}
+          fetch-depth: 0
+      - name: Reverify authoritative main before write
+        run: |
+          git fetch origin main --quiet
+          test "$(git rev-parse origin/main)" = "${{ needs.prepare.outputs.main_sha }}"
+      - uses: actions/download-artifact@v4
+        with:
+          name: automated-plan-verified
+          path: /tmp/pmp-controller-verified
+      - name: Open isolated runtime branch worktree
+        run: |
+          rm -rf /tmp/pmp-runtime-worktree
+          if git ls-remote --exit-code --heads origin "$RUNTIME_BRANCH" >/dev/null 2>&1; then
+            git fetch origin "$RUNTIME_BRANCH" --quiet
+            git worktree add -B "$RUNTIME_BRANCH" /tmp/pmp-runtime-worktree "origin/$RUNTIME_BRANCH"
+          else
+            git worktree add -b "$RUNTIME_BRANCH" /tmp/pmp-runtime-worktree "${{ needs.prepare.outputs.main_sha }}"
+          fi
+          mkdir -p /tmp/pmp-runtime-worktree/automation/runtime
+      - name: Persist verified state without executing model output
+        run: |
+          python3 automation/controller/v1/controller.py persist \
+            --definition-root . \
+            --runtime-root /tmp/pmp-runtime-worktree/automation/runtime \
+            --live-main-sha "${{ needs.prepare.outputs.main_sha }}" \
+            --verified /tmp/pmp-controller-verified/verified.json
+      - name: Enforce runtime-only write boundary
+        run: |
+          cd /tmp/pmp-runtime-worktree
+          git status --porcelain | tee /tmp/pmp-runtime-changes.txt
+          test -s /tmp/pmp-runtime-changes.txt
+          if awk '{print $2}' /tmp/pmp-runtime-changes.txt | grep -Ev '^automation/runtime/' ; then
+            echo 'Write outside automation/runtime was blocked.' >&2
+            exit 1
+          fi
+      - name: Commit runtime checkpoint only
+        env:
+          EVENT_ACTION: ${{ needs.prepare.outputs.action }}
+        run: |
+          cd /tmp/pmp-runtime-worktree
+          git config user.name 'pmp-automated-plan-controller'
+          git config user.email 'actions@users.noreply.github.com'
+          git add automation/runtime
+          git commit -m "Automated Plan runtime: $EVENT_ACTION"
+          git push origin "HEAD:$RUNTIME_BRANCH"
