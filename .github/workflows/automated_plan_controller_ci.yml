@@ -1,0 +1,36 @@
+name: Automated Plan Controller CI
+
+on:
+  pull_request:
+    paths:
+      - 'automation/controller/**'
+      - 'automation/state/controller-status.json'
+      - 'automation/engine/v1/engine-policy.json'
+      - 'pmp-automated-plan-room-v1.js'
+      - 'tools/test_automated_plan_controller_v1.py'
+      - 'tools/verify_automated_plan_controller_v1.py'
+      - '.github/workflows/automated_plan_controller.yml'
+      - '.github/workflows/automated_plan_controller_ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: automated-plan-controller-ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  controller-safety:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check controller syntax
+        run: python3 -m py_compile automation/controller/v1/controller.py tools/test_automated_plan_controller_v1.py tools/verify_automated_plan_controller_v1.py
+      - name: Run controller behavior tests
+        run: python3 tools/test_automated_plan_controller_v1.py
+      - name: Verify workflow authority split and locked checkpoint
+        run: python3 tools/verify_automated_plan_controller_v1.py
+      - name: Check Automated Plan room syntax
+        run: node --check pmp-automated-plan-room-v1.js
