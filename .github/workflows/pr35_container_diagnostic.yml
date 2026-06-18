@@ -26,6 +26,14 @@ jobs:
           cat .pr35-hardening/chunk{00..07} | base64 --decode > /tmp/pr35-hardening.tgz
           echo '2fb25e457b8f8223cfe73baab074dce045c2925b68635f89d5228baa82bdac28  /tmp/pr35-hardening.tgz' | sha256sum -c -
           tar -xzf /tmp/pr35-hardening.tgz -C .
+      - name: Upload exact container sources
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr35-container-sources
+          path: |
+            automation/controller/v1/controller.py
+            tools/test_automated_plan_controller_container_v1.py
+          retention-days: 1
       - name: Run container suite and capture full output
         id: test
         continue-on-error: true
