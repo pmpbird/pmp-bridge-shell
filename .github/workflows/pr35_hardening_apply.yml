@@ -32,7 +32,7 @@ jobs:
           git fetch origin automated-plan-controller-v1 --quiet
           test "$(git rev-parse HEAD)" = "$(git rev-parse origin/automated-plan-controller-v1)"
 
-      - name: Verify and unpack hardening payload
+      - name: Verify, unpack, and repair hardening payload
         run: |
           set -euo pipefail
           cat > /tmp/pr35-chunks.sha256 <<'EOF'
@@ -85,6 +85,16 @@ jobs:
                       raise SystemExit(f'unsafe archive member: {member.name}')
           PY
           tar -xzf /tmp/pr35-hardening.tgz -C .
+          python3 - <<'PY'
+          from pathlib import Path
+          path=Path('automation/controller/v1/controller.py')
+          text=path.read_text()
+          old='--mount", f"type=bind,src={workspace},dst=/workspace,rw",'
+          new='--mount", f"type=bind,src={workspace},dst=/workspace",'
+          if text.count(old) != 1:
+              raise SystemExit('expected one Docker bind mount syntax to repair')
+          path.write_text(text.replace(old,new))
+          PY
           rm -rf .pr35-hardening .github/workflows/pr35_hardening_apply.yml
 
       - name: Run controller syntax and behavior tests
