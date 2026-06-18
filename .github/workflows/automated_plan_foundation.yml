@@ -5,11 +5,14 @@ on:
     paths:
       - 'automation/**'
       - 'pmp-automated-plan-room-v1.js'
+      - 'pmp-automated-plan-native-match-v1.js'
       - 'pmp-current-inner-cleanbug-rgcontrols-v6.html'
       - 'pmp-current-map-v9.json'
       - 'pmp-home-single-v6.html'
       - 'tools/verify_automated_plan_foundation_v1.py'
       - 'tools/verify_automated_plan_universal_contract_v1.py'
+      - 'tools/verify_automated_plan_visual_match_v1.py'
+      - 'tools/test_automated_plan_real_app_v1.mjs'
       - '.github/workflows/automated_plan_foundation.yml'
   workflow_dispatch:
 
@@ -30,5 +33,32 @@ jobs:
         run: python3 tools/verify_automated_plan_foundation_v1.py
       - name: Verify universal contracts, recovery, usage measurement, backend switching, and stop conditions
         run: python3 tools/verify_automated_plan_universal_contract_v1.py
-      - name: Check Automated Plan room JavaScript syntax
-        run: node --check pmp-automated-plan-room-v1.js
+      - name: Verify native Control Room visual structure
+        run: python3 tools/verify_automated_plan_visual_match_v1.py
+      - name: Check Automated Plan JavaScript syntax
+        run: |
+          node --check pmp-automated-plan-room-v1.js
+          node --check pmp-automated-plan-native-match-v1.js
+
+  real-app-visual:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install headless browser test dependency
+        run: |
+          npm install --no-save playwright@1.53.1
+          npx playwright install --with-deps chromium
+      - name: Start the real app locally
+        run: |
+          python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/pmp-http.log 2>&1 &
+          for i in $(seq 1 30); do
+            curl -fsS http://127.0.0.1:8000/pmp-current-inner-cleanbug-rgcontrols-v6.html >/dev/null && exit 0
+            sleep 1
+          done
+          cat /tmp/pmp-http.log
+          exit 1
+      - name: Test the real Control Room at multiple contrast profiles
+        env:
+          PMP_BASE_URL: http://127.0.0.1:8000
+        run: node tools/test_automated_plan_real_app_v1.mjs
