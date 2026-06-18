@@ -1,0 +1,26 @@
+{
+  "type": "PMP_AUTOMATED_PLAN_ACTIVE_STATE",
+  "schema_version": "1.0.0",
+  "active_plan_id": "packet_01_5",
+  "active_plan_path": "automation/plans/packet-01-5.v1.json",
+  "status": "setup",
+  "execution_enabled": false,
+  "checkpoint": {
+    "authoritative_main_at_registration": "1557da6a872fa05c558e780a8d8bff2c0a8a6ba3",
+    "last_completed_boundary": "pass_002",
+    "next_unit": "pass_003",
+    "resume_requires_live_main_reverification": true
+  },
+  "execution": {
+    "selected_backend": "github_models_free",
+    "allowed_backends": [
+      "github_models_free",
+      "local_ollama"
+    ],
+    "paid_fallback_allowed": false,
+    "spending_ceiling_usd": 0,
+    "stop_reason": "foundation_only_not_enabled"
+  },
+  "safe_claim": "The Automated Plan room can identify Packet 01.5 internally and preserve its resume boundary without showing the packet name on the Control Room button.",
+  "do_not_claim": "This state does not start Pass 003, enable autonomous execution, prove the full plan, or authorize merging."
+}

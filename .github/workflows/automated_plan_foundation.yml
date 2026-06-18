@@ -1,0 +1,25 @@
+name: Automated Plan Foundation
+
+on:
+  pull_request:
+    paths:
+      - 'automation/**'
+      - 'pmp-automated-plan-room-v1.js'
+      - 'pmp-current-inner-cleanbug-rgcontrols-v6.html'
+      - 'pmp-current-map-v9.json'
+      - 'tools/verify_automated_plan_foundation_v1.py'
+      - '.github/workflows/automated_plan_foundation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-foundation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify JSON, identity, checkpoint, theme inheritance, and zero-cost lock
+        run: python3 tools/verify_automated_plan_foundation_v1.py
+      - name: Check Automated Plan room JavaScript syntax
+        run: node --check pmp-automated-plan-room-v1.js

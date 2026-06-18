@@ -1,0 +1,14 @@
+{
+  "type": "PMP_UNIVERSAL_AUTOMATED_PLAN",
+  "schema_version": "1.0.0",
+  "plan_id": "packet_01_5",
+  "internal_name": "Packet 01.5",
+  "user_facing_main_entry": "Automated Plan",
+  "plan_status": "registered_not_compiled",
+  "execution_enabled": false,
+  "last_completed_boundary": "pass_002",
+  "next_declared_boundary": "pass_003",
+  "compiled_units": [],
+  "resume_rule": "Verify live authoritative main and the stored checkpoint before selecting the next unit.",
+  "foundation_rule": "This registration preserves identity and resume position only. It must not begin Pass 003 until the complete executable plan is compiled and independently verified."
+}
