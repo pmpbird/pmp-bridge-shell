@@ -9,6 +9,7 @@ on:
       - 'pmp-current-map-v9.json'
       - 'pmp-home-single-v6.html'
       - 'tools/verify_automated_plan_foundation_v1.py'
+      - 'tools/verify_automated_plan_universal_contract_v1.py'
       - '.github/workflows/automated_plan_foundation.yml'
   workflow_dispatch:
 
@@ -25,7 +26,9 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - name: Verify universal contracts, checkpoint recovery, usage measurement, theme inheritance, and zero-cost lock
+      - name: Verify original identity, checkpoint, interface, and zero-cost foundation
         run: python3 tools/verify_automated_plan_foundation_v1.py
+      - name: Verify universal contracts, recovery, usage measurement, backend switching, and stop conditions
+        run: python3 tools/verify_automated_plan_universal_contract_v1.py
       - name: Check Automated Plan room JavaScript syntax
         run: node --check pmp-automated-plan-room-v1.js
