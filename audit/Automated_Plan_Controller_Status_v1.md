@@ -36,7 +36,7 @@ Safety remains locked:
 Local verification completed:
 
 - controller syntax and static policy verification
-- ten controller behavior tests
+- eleven controller behavior tests
 - first-run supervision gate
 - one-unit lock
 - exact checkpoint advancement
