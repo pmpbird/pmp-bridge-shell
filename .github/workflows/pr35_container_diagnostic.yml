@@ -26,7 +26,17 @@ jobs:
           cat .pr35-hardening/chunk{00..07} | base64 --decode > /tmp/pr35-hardening.tgz
           echo '2fb25e457b8f8223cfe73baab074dce045c2925b68635f89d5228baa82bdac28  /tmp/pr35-hardening.tgz' | sha256sum -c -
           tar -xzf /tmp/pr35-hardening.tgz -C .
-      - name: Upload exact container sources
+          python3 - <<'PY'
+          from pathlib import Path
+          path=Path('automation/controller/v1/controller.py')
+          text=path.read_text()
+          old='--mount", f"type=bind,src={workspace},dst=/workspace,rw",'
+          new='--mount", f"type=bind,src={workspace},dst=/workspace",'
+          if text.count(old) != 1:
+              raise SystemExit('expected one Docker bind mount syntax to repair')
+          path.write_text(text.replace(old,new))
+          PY
+      - name: Upload repaired container sources
         uses: actions/upload-artifact@v4
         with:
           name: pr35-container-sources
@@ -35,37 +45,12 @@ jobs:
             automation/controller/v1/controller-contract.json
             tools/test_automated_plan_controller_container_v1.py
           retention-days: 1
-      - name: Probe generated container command
-        run: |
-          docker pull python:3.13-slim >/dev/null
-          python3 - <<'PY' > /tmp/pr35-container-probe.log 2>&1
-          import importlib.util, json, os, subprocess, tempfile
-          from pathlib import Path
-          root=Path.cwd()
-          spec=importlib.util.spec_from_file_location('controller', root/'automation/controller/v1/controller.py')
-          c=importlib.util.module_from_spec(spec); spec.loader.exec_module(c)
-          contract=json.loads((root/'automation/controller/v1/controller-contract.json').read_text())
-          with tempfile.TemporaryDirectory() as d:
-              w=Path(d); c.chmod_for_container(w)
-              print('host uid/gid', os.getuid(), os.getgid())
-              print('workspace', oct(w.stat().st_mode & 0o777), w)
-              for label, user in [('fixed','65534:65534'),('host',f'{os.getuid()}:{os.getgid()}')]:
-                  argv=c.container_argv(w,['python3','-c',"import os; from pathlib import Path; print(os.getuid(),os.getgid()); print(oct(Path('/workspace').stat().st_mode & 0o777)); Path('/workspace/'+os.environ['LABEL']+'.txt').write_text('ok')"],contract)
-                  idx=argv.index('--user')+1; argv[idx]=user
-                  env={'PATH':os.environ['PATH']}
-                  argv[argv.index('--env')+1]='LABEL='+label
-                  p=subprocess.run(argv,text=True,capture_output=True,env=env)
-                  print(label,'rc',p.returncode); print('stdout',p.stdout); print('stderr',p.stderr)
-              argv=c.container_argv(w,['sh','-c','(sleep 2; echo escaped > /workspace/background.txt) & exit 0'],contract)
-              p=subprocess.run(argv,text=True,capture_output=True,env={'PATH':os.environ['PATH']})
-              print('background rc',p.returncode); print('background stdout',p.stdout); print('background stderr',p.stderr)
-          PY
-      - name: Run container suite and capture full output
+      - name: Run real container suite
         id: test
         continue-on-error: true
         run: |
           set -o pipefail
-          cat /tmp/pr35-container-probe.log | tee /tmp/pr35-container.log
+          docker pull python:3.13-slim 2>&1 | tee /tmp/pr35-container.log
           python3 tools/test_automated_plan_controller_container_v1.py 2>&1 | tee -a /tmp/pr35-container.log
       - name: Upload diagnostic log
         if: always()
