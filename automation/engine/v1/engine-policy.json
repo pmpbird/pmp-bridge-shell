@@ -1,11 +1,13 @@
 {
   "type": "PMP_UNIVERSAL_FREE_AUTOMATED_PLAN_ENGINE_POLICY",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "user_facing_entry_label": "Automated Plan",
   "contract_path": "automation/engine/v1/universal-contract.json",
   "state_path": "automation/state/active-plan.json",
   "usage_ledger_path": "automation/state/usage-ledger.json",
   "plan_registry_root": "automation/plans",
+  "controller_contract_path": "automation/controller/v1/controller-contract.json",
+  "controller_status_path": "automation/state/controller-status.json",
   "cost_policy": {
     "mode": "zero_additional_api_cost",
     "spending_ceiling_usd": 0,
@@ -56,6 +58,24 @@
     "merge_authority_granted": false,
     "requested_action": "none",
     "pass_003_started": false
+  },
+  "controller": {
+    "implementation_status": "built_tested_execution_locked",
+    "event_driven": true,
+    "one_work_unit_per_event": true,
+    "runtime_branch": "automation-runtime",
+    "runtime_write_root": "automation/runtime",
+    "first_real_run_requires_supervision": true,
+    "scheduled_resume_requires_repository_variable": "PMP_AUTOMATION_ENABLED",
+    "github_models_endpoint": "https://models.github.ai/inference/chat/completions",
+    "github_models_api_version": "2026-03-10",
+    "hosted_default_model": "openai/gpt-4o-mini",
+    "hosted_model_job_repository_write": false,
+    "verification_job_repository_write": false,
+    "persistence_job_model_access": false,
+    "persistence_job_main_write": false,
+    "runtime_proposals_are_applied_to_main": false,
+    "automatic_resume_from_same_checkpoint": true
   },
   "interface": {
     "control_room_entry_count": 1,
