@@ -99,9 +99,9 @@ try {
 
   for (const profile of profiles) {
     await appFrame.evaluate((vars) => {
-      for (const [key, value] of Object.entries(vars)) document.documentElement.style.setProperty(key, value);
+      for (const [key, value] of Object.entries(vars)) document.documentElement.style.setProperty(key, value, 'important');
     }, profile.vars);
-    await page.waitForTimeout(250);
+    await page.waitForTimeout(500);
     await assertNativeMatch(profile.name);
   }
 
