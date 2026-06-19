@@ -1,0 +1,67 @@
+{
+  "type": "PMP_FREE_IN_APP_AUTOMATED_PLAN_ENGINE_CONTRACT",
+  "schema_id": "pmp.automated-plan.free-in-app-engine.v1",
+  "schema_version": "1.0.0",
+  "user_facing_entry": "Automated Plan",
+  "goal": "Allow the user to give an instruction inside the app, compile it into a safe queued plan, and prepare it for free-path execution without starting execution.",
+  "engine_parts": {
+    "command_intake_inside_app": {
+      "required": true,
+      "storage_mode": "local_draft_only_until_execution_enabled",
+      "must_not_start_execution": true
+    },
+    "free_plan_compiler": {
+      "required": true,
+      "mode": "deterministic_local_draft_compiler_first",
+      "paid_api_allowed": false,
+      "paid_fallback_allowed": false,
+      "spending_ceiling_usd": 0,
+      "output": "queued_plan_draft"
+    },
+    "free_queued_runner": {
+      "required": true,
+      "mode": "queue_over_existing_verified_unit_controller",
+      "internal_unit_safety": "one_verified_unit_at_a_time",
+      "user_experience_goal": "run_queue_without_manual_pass_by_pass_prompting_after_enabled",
+      "must_stop_before_first_real_run_until_supervised": true
+    },
+    "hard_free_path_stop_gates": {
+      "required": true,
+      "stop_on": [
+        "execution_disabled",
+        "paid_api_detected",
+        "paid_fallback_detected",
+        "spending_ceiling_above_zero",
+        "unsafe_write_authority",
+        "merge_authority_detected",
+        "unclear_user_instruction",
+        "plan_not_compiled",
+        "changed_file_outside_allowlist",
+        "authoritative_main_changed",
+        "checkpoint_mismatch",
+        "deterministic_verification_failed",
+        "independent_rebuild_mismatch",
+        "manual_stop_requested"
+      ]
+    }
+  },
+  "free_path_authority": {
+    "model_output_authority": "proposal_only",
+    "write_authority": "none_until_verified_and_explicitly_enabled",
+    "merge_authority": "none",
+    "paid_api_allowed": false,
+    "paid_fallback_allowed": false,
+    "automatic_cost_escalation_allowed": false,
+    "spending_ceiling_usd": 0
+  },
+  "execution_state": {
+    "built": true,
+    "execution_enabled": false,
+    "start_requested": false,
+    "pass_003_started": false,
+    "queue_may_be_prepared": true,
+    "queue_may_execute_now": false
+  },
+  "safe_claim": "The free in-app engine can collect a user command and prepare a queued plan draft without starting execution or granting paid/API/write/merge authority.",
+  "do_not_claim": "This contract does not start Pass 003, execute the queue, spend money, merge changes, or prove any future plan result."
+}
