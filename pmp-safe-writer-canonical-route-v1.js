@@ -1,7 +1,7 @@
 (()=>{
-  if(window.PMPSafeWriterCanonicalRouteV1)return;
-  window.PMPSafeWriterCanonicalRouteV1=true;
+  window.PMPSafeWriterCanonicalRouteV1='v2';
   const SCREEN_ID='safeWriterCanonical';
+  const VERSION='v2';
   const REQ_KEY='pmp_safe_writer_request_v1';
   const OUT_KEY='pmp_safe_writer_output_v1';
   function textOf(x){return String(x&&x.textContent||'').replace(/\s+/g,' ').trim()}
@@ -17,9 +17,9 @@
     }
     return last;
   }
-  function setTab(d,name){try{Array.from(d.querySelectorAll('.tab')).forEach(t=>t.classList.toggle('on',textOf(t).toLowerCase().includes(name)))}catch(e){}}
-  function showScreen(w,d,id){try{Array.from(d.querySelectorAll('.screen')).forEach(s=>s.classList.remove('on'));let s=d.getElementById(id);if(s)s.classList.add('on');d.location.hash=id==='control'?'#control':'#safe-writer';setTab(d,'control');if(typeof w.repaintAll==='function')w.repaintAll()}catch(e){}}
-  function backToControl(w,d){try{if(typeof w.go==='function'){w.go('control');setTab(d,'control');return false}}catch(e){}showScreen(w,d,'control');return false}
+  function setTab(d){try{Array.from(d.querySelectorAll('.tab')).forEach(t=>t.classList.toggle('on',textOf(t).toLowerCase().includes('control')))}catch(e){}}
+  function showScreen(w,d,id){try{Array.from(d.querySelectorAll('.screen')).forEach(s=>s.classList.remove('on'));let s=d.getElementById(id);if(s)s.classList.add('on');d.location.hash=id==='control'?'#control':'#safe-writer';setTab(d);if(typeof w.repaintAll==='function')w.repaintAll()}catch(e){}}
+  function backToControl(w,d){try{if(typeof w.go==='function'){w.go('control');setTab(d);return false}}catch(e){}showScreen(w,d,'control');return false}
   function safeWriterDraft(d){
     let req=d.getElementById('pmpSafeWriterRequestV1');
     let out=d.getElementById('pmpSafeWriterOutputV1');
@@ -37,24 +37,32 @@
     try{await navigator.clipboard.writeText(text);out.value=text+'\n\nCopied.'}catch(e){out.value=text+'\n\nCopy failed. Select and copy this text manually.'}
     return false;
   }
-  function ensureScreen(w,d){
-    if(!d||!d.body)return null;
-    let existing=d.getElementById(SCREEN_ID);if(existing)return existing;
+  function buildScreen(w,d){
     let wrap=d.querySelector('.wrap')||d.body;
-    let s=d.createElement('section');s.id=SCREEN_ID;s.className='screen';
+    let old=d.getElementById(SCREEN_ID);
+    let savedReq='',savedOut='';
+    try{savedReq=localStorage.getItem(REQ_KEY)||'';savedOut=localStorage.getItem(OUT_KEY)||''}catch(e){}
+    if(old)old.remove();
+    let s=d.createElement('section');s.id=SCREEN_ID;s.className='screen';s.dataset.pmpSafeWriterVersion=VERSION;
     s.innerHTML='<div class="card"><h1>Safe Writer v14</h1><p class="sub">Resident is inside Safe Writer. This page uses the normal app shell and returns through Control Room.</p><button class="mini" data-pmp-safe-writer-back="1">Back to Control</button></div><div class="card"><h1>PMP Safe Writer</h1><p class="sub">Write the app change here. Safe Writer turns it into a guarded update request without starting automation.</p><textarea id="pmpSafeWriterRequestV1" placeholder="Describe the app change you want to make..."></textarea><div class="grid"><button class="mini" data-pmp-safe-writer-prepare="1">Prepare Safe Update Request</button><button class="mini" data-pmp-safe-writer-copy="1">Copy Request</button></div><textarea id="pmpSafeWriterOutputV1" placeholder="Safe Writer output appears here."></textarea><div class="panel">Safe Writer is for app-code changes only. It does not activate automation, start Pass 003, or run maintenance verification.</div></div>';
     wrap.appendChild(s);
     let req=s.querySelector('#pmpSafeWriterRequestV1'),out=s.querySelector('#pmpSafeWriterOutputV1');
-    try{req.value=localStorage.getItem(REQ_KEY)||'';out.value=localStorage.getItem(OUT_KEY)||''}catch(e){}
+    req.value=savedReq;out.value=savedOut;
     s.querySelector('[data-pmp-safe-writer-back]').onclick=function(e){if(e)e.preventDefault();return backToControl(w,d)};
     s.querySelector('[data-pmp-safe-writer-prepare]').onclick=function(e){if(e)e.preventDefault();return safeWriterDraft(d)};
     s.querySelector('[data-pmp-safe-writer-copy]').onclick=function(e){if(e)e.preventDefault();return copySafeWriter(d)};
     return s;
   }
+  function ensureScreen(w,d){
+    if(!d||!d.body)return null;
+    let existing=d.getElementById(SCREEN_ID);
+    if(existing&&existing.dataset.pmpSafeWriterVersion===VERSION)return existing;
+    return buildScreen(w,d);
+  }
   function openSafeWriter(w,d){
-    ensureScreen(w,d);
+    buildScreen(w,d);
     showScreen(w,d,SCREEN_ID);
-    try{localStorage.setItem('pmp_safe_writer_route_fix_v1',JSON.stringify({type:'PMP_SAFE_WRITER_CANONICAL_ROUTE_V1',at:new Date().toISOString(),safe_claim:'Safe Writer opened inside the current app shell with Back to Control and usable request/copy controls.',do_not_claim:'This does not activate automation, start Pass 003, run verification, or create a commit by itself.'}))}catch(e){}
+    try{localStorage.setItem('pmp_safe_writer_route_fix_v1',JSON.stringify({type:'PMP_SAFE_WRITER_CANONICAL_ROUTE_V2',at:new Date().toISOString(),safe_claim:'Safe Writer force-refreshed inside the current app shell with Back to Control and usable request/copy controls.',do_not_claim:'This does not activate automation, start Pass 003, run verification, or create a commit by itself.'}))}catch(e){}
     return false;
   }
   function patch(){
@@ -64,10 +72,8 @@
       const t=textOf(b);
       if(/Open Safe Writer/i.test(t)){
         b.onclick=function(e){if(e){e.preventDefault();e.stopPropagation()}return openSafeWriter(w,d)};
-        if(!b.dataset.pmpSafeWriterCanonicalRouteV1){
-          b.dataset.pmpSafeWriterCanonicalRouteV1='1';
-          b.addEventListener('click',function(e){e.preventDefault();e.stopImmediatePropagation();return openSafeWriter(w,d)},true);
-        }
+        b.dataset.pmpSafeWriterCanonicalRouteV2='1';
+        b.addEventListener('click',function(e){e.preventDefault();e.stopImmediatePropagation();return openSafeWriter(w,d)},true);
       }
     });
     try{w.openSafeWriter=function(){return openSafeWriter(w,d)}}catch(e){}
