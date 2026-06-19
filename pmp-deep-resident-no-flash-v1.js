@@ -17,30 +17,46 @@
       if(btn){btn.textContent='← Back to Control Room';btn.onclick=function(e){if(e)e.preventDefault();let old=hostDoc.getElementById('pmpDeepResidentOverlayCurrentV1');if(old)old.remove();try{if(typeof hostWindow.go==='function')hostWindow.go('control');else hostWindow.location.hash='#control'}catch(x){}return false};let c=colors();btn.style.background=c.accent;btn.style.color='#07101c';btn.style.border='2px solid '+c.line;btn.style.borderRadius='18px';btn.style.padding='15px';btn.style.fontWeight='950';btn.style.width='100%'}
     }catch(e){}
   }
+  function openNoFlash(hostWindow,hostDoc){
+    applyColors(hostDoc);
+    try{if(typeof hostWindow.go==='function')hostWindow.go('control')}catch(e){}
+    const existing=hostDoc.getElementById('pmpDeepResidentOverlayCurrentV1');if(existing)existing.remove();
+    const c=colors();
+    const overlay=hostDoc.createElement('div');overlay.id='pmpDeepResidentOverlayCurrentV1';overlay.style.position='fixed';overlay.style.inset='0';overlay.style.zIndex='999999';overlay.style.background=c.background;overlay.style.overflow='hidden';overlay.style.visibility='hidden';overlay.style.opacity='0';
+    const frame=hostDoc.createElement('iframe');frame.id='pmpDeepResidentFrameCurrentV1';frame.title='Resident Intelligence';frame.src='resident.html?embedded=live-current-control&fresh=no-flash-'+Date.now();frame.style.position='fixed';frame.style.inset='0';frame.style.width='100%';frame.style.height='100%';frame.style.border='0';frame.style.background=c.background;frame.style.visibility='hidden';frame.style.opacity='0';frame.style.transition='opacity 80ms linear';
+    overlay.appendChild(frame);hostDoc.body.appendChild(overlay);
+    function reveal(){try{applyColors(frame.contentDocument||(frame.contentWindow&&frame.contentWindow.document));wireBack(hostWindow,hostDoc,frame)}catch(e){}requestAnimationFrame(()=>{overlay.style.visibility='visible';overlay.style.opacity='1';frame.style.visibility='visible';frame.style.opacity='1'})}
+    frame.onload=function(){reveal();setTimeout(()=>wireBack(hostWindow,hostDoc,frame),250);setTimeout(()=>wireBack(hostWindow,hostDoc,frame),800)};
+    setTimeout(()=>{if(hostDoc.getElementById('pmpDeepResidentOverlayCurrentV1')&&frame.style.visibility==='hidden')reveal()},1400);
+    const timer=hostWindow.setInterval(function(){if(!hostDoc.getElementById('pmpDeepResidentOverlayCurrentV1')){hostWindow.clearInterval(timer);return}wireBack(hostWindow,hostDoc,frame)},600);
+    return false;
+  }
   function patchDoc(hostDoc){
     try{
       const hostWindow=hostDoc.defaultView;
-      if(!hostWindow||typeof hostWindow.openDeepResident!=='function'||hostWindow.__pmpDeepResidentNoFlashV1)return false;
-      hostWindow.__pmpDeepResidentNoFlashV1=true;
-      hostWindow.openDeepResident=function(){
-        applyColors(hostDoc);
-        try{if(typeof hostWindow.go==='function')hostWindow.go('control')}catch(e){}
-        const existing=hostDoc.getElementById('pmpDeepResidentOverlayCurrentV1');if(existing)existing.remove();
-        const c=colors();
-        const overlay=hostDoc.createElement('div');overlay.id='pmpDeepResidentOverlayCurrentV1';overlay.style.position='fixed';overlay.style.inset='0';overlay.style.zIndex='999999';overlay.style.background=c.background;overlay.style.overflow='hidden';overlay.style.visibility='hidden';overlay.style.opacity='0';
-        const frame=hostDoc.createElement('iframe');frame.id='pmpDeepResidentFrameCurrentV1';frame.title='Resident Intelligence';frame.src='resident.html?embedded=live-current-control&fresh=no-flash-'+Date.now();frame.style.position='fixed';frame.style.inset='0';frame.style.width='100%';frame.style.height='100%';frame.style.border='0';frame.style.background=c.background;frame.style.visibility='hidden';frame.style.opacity='0';frame.style.transition='opacity 80ms linear';
-        overlay.appendChild(frame);hostDoc.body.appendChild(overlay);
-        function reveal(){try{applyColors(frame.contentDocument||(frame.contentWindow&&frame.contentWindow.document));wireBack(hostWindow,hostDoc,frame)}catch(e){}requestAnimationFrame(()=>{overlay.style.visibility='visible';overlay.style.opacity='1';frame.style.visibility='visible';frame.style.opacity='1'})}
-        frame.onload=function(){reveal();setTimeout(()=>wireBack(hostWindow,hostDoc,frame),250);setTimeout(()=>wireBack(hostWindow,hostDoc,frame),800)};
-        setTimeout(()=>{if(hostDoc.getElementById('pmpDeepResidentOverlayCurrentV1')&&frame.style.visibility==='hidden')reveal()},1400);
-        const timer=hostWindow.setInterval(function(){if(!hostDoc.getElementById('pmpDeepResidentOverlayCurrentV1')){hostWindow.clearInterval(timer);return}wireBack(hostWindow,hostDoc,frame)},600);
-        return false;
-      };
+      if(!hostWindow)return false;
+      if(typeof hostWindow.openDeepResident==='function'&&!hostWindow.__pmpDeepResidentNoFlashV1){
+        hostWindow.__pmpDeepResidentNoFlashV1=true;
+        hostWindow.openDeepResident=function(){return openNoFlash(hostWindow,hostDoc)};
+      }
+      if(!hostDoc.documentElement.dataset.pmpDeepResidentNoFlashClickV1){
+        hostDoc.documentElement.dataset.pmpDeepResidentNoFlashClickV1='1';
+        hostDoc.addEventListener('click',function(e){
+          try{
+            const target=e.target&&e.target.closest&&e.target.closest('button,[role="button"],a');
+            if(!target)return;
+            const t=textOf(target);
+            if(!/Deep Resident/i.test(t))return;
+            e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();
+            return openNoFlash(hostWindow,hostDoc);
+          }catch(x){}
+        },true);
+      }
       return true;
     }catch(e){return false}
   }
   function scan(){deepDocuments(document).forEach(patchDoc)}
-  window.addEventListener('load',()=>[80,250,600,1200,2400].forEach(t=>setTimeout(scan,t)));
-  setInterval(scan,700);
+  window.addEventListener('load',()=>[50,100,180,300,600,1200,2400].forEach(t=>setTimeout(scan,t)));
+  setInterval(scan,500);
   scan();
 })();
