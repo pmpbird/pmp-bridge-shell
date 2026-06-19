@@ -1,8 +1,8 @@
 {
   "type": "PMP_AUTOMATED_PLAN_CONTROLLER_BUILD_STATUS",
   "schema_id": "pmp.automated-plan.controller-build-status.v1",
-  "schema_version": "1.1.0",
-  "controller_status": "hardened_tested_execution_locked",
+  "schema_version": "1.2.0",
+  "controller_status": "free_in_app_engine_built_execution_locked",
   "active_plan_id": "packet_01_5",
   "last_completed_boundary": "pass_002",
   "next_unit": "pass_003",
@@ -16,6 +16,11 @@
   "first_real_run_requires_supervision": true,
   "one_work_unit_at_a_time": true,
   "automatic_resume_supported": true,
+  "in_app_command_intake": true,
+  "free_plan_compiler": true,
+  "free_queued_runner": true,
+  "hard_free_path_stop_gates": true,
+  "queue_execution_started": false,
   "runtime_branch": "automation-runtime",
   "model_write_authority": "none",
   "model_merge_authority": "none",
@@ -30,6 +35,5 @@
   "pause_reason": "execution_disabled",
   "resume_from": "pass_003",
   "free_limit_state": "not_consumed",
-  "safe_message": "Controller hardening is installed. Hosted execution remains blocked until the account-level paid-usage setting is verified. Pass 003 has not started.",
-  "runtime_status_url": "https://raw.githubusercontent.com/pmpbird/pmp-bridge-shell/automation-runtime/automation/runtime/status.json"
+  "safe_message": "Free in-app command intake, compiler, and queued runner scaffold are installed. Execution remains locked. Pass 003 has not started."
 }
