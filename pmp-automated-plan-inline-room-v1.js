@@ -5,16 +5,26 @@
   const STATE_URL='automation/state/active-plan.json';
   const CONTROLLER_URL='automation/state/controller-status.json';
   const ENGINE_URL='automation/state/free-in-app-engine-status.json';
-  const DRAFT_KEY='pmp_free_in_app_engine_draft_v1';
+  const DRAFT_KEY='pmp_free_in_app_engine_recovery_draft_v1';
+  const LEGACY_DRAFT_KEY='pmp_free_in_app_engine_draft_v1';
+  const KEEP_KEY='pmp_free_in_app_engine_kept_draft_v1';
+  const RECOVERY_TTL_MS=7*24*60*60*1000;
   const STOP_GATES=['execution_disabled','paid_api_detected','paid_fallback_detected','spending_ceiling_above_zero','unsafe_write_authority','merge_authority_detected','unclear_user_instruction','authoritative_main_changed','checkpoint_mismatch','deterministic_verification_failed','independent_rebuild_mismatch','manual_stop_requested'];
   function deepDocuments(root,depth,out){out=out||[];depth=depth||0;if(!root||depth>7)return out;try{out.push(root);Array.from(root.querySelectorAll('iframe')).forEach(frame=>{try{let d=frame.contentDocument||(frame.contentWindow&&frame.contentWindow.document);if(d)deepDocuments(d,depth+1,out)}catch(e){}})}catch(e){}return out}
   async function readJson(path){let r=await fetch(path+'?fresh='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error(path+' '+r.status);return r.json()}
   async function readOptional(path){try{return await readJson(path)}catch(e){return null}}
   function yesNo(v){return v?'yes':'no'}
   function back(w,d){try{if(typeof w.go==='function'){w.go('control');return false}}catch(e){}try{Array.from(d.querySelectorAll('.screen')).forEach(s=>s.classList.remove('on'));d.getElementById('control').classList.add('on');d.location.hash='#control'}catch(e){}return false}
-  function loadDraft(){try{return JSON.parse(localStorage.getItem(DRAFT_KEY)||'null')}catch(e){return null}}
-  function saveDraft(draft){localStorage.setItem(DRAFT_KEY,JSON.stringify(draft,null,2))}
-  function clearDraft(){localStorage.removeItem(DRAFT_KEY)}
+  function readStored(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}}
+  function draftExpired(draft){return !!(draft&&draft.recovery_expires_at&&Date.now()>Date.parse(draft.recovery_expires_at))}
+  function loadDraft(){let draft=readStored(DRAFT_KEY)||readStored(LEGACY_DRAFT_KEY);if(draftExpired(draft)){localStorage.removeItem(DRAFT_KEY);localStorage.removeItem(LEGACY_DRAFT_KEY);return null}if(draft&&/complete|success|finished/i.test(String(draft.status||''))){localStorage.removeItem(DRAFT_KEY);localStorage.removeItem(LEGACY_DRAFT_KEY);return null}return draft}
+  function loadKept(){return readStored(KEEP_KEY)}
+  function withRecoveryMeta(draft){let now=Date.now();return Object.assign({},draft,{storage_mode:'temporary_recovery',stored_at:new Date(now).toISOString(),recovery_expires_at:new Date(now+RECOVERY_TTL_MS).toISOString(),keep_status:'not_kept',single_active_slot:true})}
+  function saveDraft(draft){localStorage.setItem(DRAFT_KEY,JSON.stringify(withRecoveryMeta(draft),null,2));localStorage.removeItem(LEGACY_DRAFT_KEY)}
+  function keepDraft(){let draft=loadDraft();if(!draft)return null;let kept=Object.assign({},draft,{storage_mode:'kept_single_slot',keep_status:'kept_by_user',kept_at:new Date().toISOString(),recovery_expires_at:null,single_kept_slot:true});localStorage.setItem(KEEP_KEY,JSON.stringify(kept,null,2));return kept}
+  function recoverKept(){let kept=loadKept();if(!kept)return null;let draft=withRecoveryMeta(Object.assign({},kept,{keep_status:'recovered_from_kept_slot',status:'draft_not_started',execution_enabled:false,start_requested:false}));localStorage.setItem(DRAFT_KEY,JSON.stringify(draft,null,2));return draft}
+  function clearDraft(){localStorage.removeItem(DRAFT_KEY);localStorage.removeItem(LEGACY_DRAFT_KEY)}
+  function clearKept(){localStorage.removeItem(KEEP_KEY)}
   function statusLine(state,controller,engine){let next=controller&&controller.next_unit||state&&state.checkpoint&&state.checkpoint.next_unit||'pass_003';if(engine&&engine.engine_status)return'Free in-app engine built — execution locked — next: '+next;if(controller&&String(controller.controller_status||'').indexOf('execution_locked')>=0)return'Controller ready — '+next+' has not started';if(state&&state.status==='setup')return'Setup — execution is safely locked';return'Plan state loaded'}
   function detailRows(state,controller,engine){let cp=state&&state.checkpoint||{};let ex=state&&state.execution||{};return[
     ['Internal plan',state&&state.active_plan_id||'none'],['Controller',controller&&controller.controller_status||'not loaded'],['Engine',engine&&engine.engine_status||'not loaded'],['Command intake',engine?yesNo(engine.command_intake_inside_app):'unknown'],['Free compiler',engine?yesNo(engine.free_plan_compiler):'unknown'],['Queued runner',engine?yesNo(engine.free_queued_runner):'unknown'],['Last completed',cp.last_completed_boundary||'none'],['Next unit',controller&&controller.next_unit||cp.next_unit||'none'],['Next unit started',controller?yesNo(controller.next_unit_started):'unknown'],['Execution enabled',state&&state.execution_enabled?'yes':'no'],['Write authority',ex.write_authority||'none'],['Merge authority',ex.merge_authority||'none'],['Requested action',ex.requested_action||'none'],['Paid fallback',ex.paid_fallback_allowed?'yes':'no']
@@ -26,10 +36,11 @@
     if(!draft){out(d,'No queue draft yet.','pass');return}
     el.className='hold';el.innerHTML='';
     const title=d.createElement('div');title.style.cssText='font-size:20px;font-weight:950;margin-bottom:10px';title.textContent='Queue Draft Built';el.appendChild(title);
-    [['Status',draft.status||'draft_not_started'],['Execution',draft.execution_enabled?'enabled':'not started'],['Start requested',draft.start_requested?'yes':'no'],['Resume from',draft.resume_from||'pass_003']].forEach(([k,v])=>el.appendChild(row(d,k,v)));
-    const next=d.createElement('div');next.style.cssText='margin-top:12px;font-weight:900';next.textContent='Review the queue. Enablement is a separate future step.';el.appendChild(next);
+    [['Status',draft.status||'draft_not_started'],['Execution',draft.execution_enabled?'enabled':'not started'],['Start requested',draft.start_requested?'yes':'no'],['Resume from',draft.resume_from||'pass_003'],['Storage',draft.storage_mode==='kept_single_slot'?'kept single slot':'temporary recovery'],['Keep status',draft.keep_status||'not kept']].forEach(([k,v])=>el.appendChild(row(d,k,v)));
+    const next=d.createElement('div');next.style.cssText='margin-top:12px;font-weight:900';next.textContent='Temporary by default. Use Keep Draft only if you want to preserve this one draft.';el.appendChild(next);
   }
   function rawOut(d,draft){out(d,draft?{status:'RAW_DRAFT',execution_started:false,draft:draft}:{status:'NO_DRAFT',execution_started:false},draft?'hold':'pass')}
+  function storageOut(d){let draft=loadDraft(),kept=loadKept();out(d,{status:'DRAFT_STORAGE',execution_started:false,active_recovery_draft:draft?{exists:true,stored_at:draft.stored_at||null,expires_at:draft.recovery_expires_at||null,resume_from:draft.resume_from||null}:{exists:false},kept_draft:kept?{exists:true,kept_at:kept.kept_at||null,resume_from:kept.resume_from||null}:{exists:false},rule:'One temporary recovery draft. One optional kept draft. No long list.'},'hold')}
   function compileLocal(d,state,controller,engine){
     const box=d.getElementById('pmpApCommandBox');
     const command=String(box&&box.value||'').trim();
@@ -44,7 +55,7 @@
       {unit_id:'queued_execution_ready',objective:'Prepare the queue for the existing verified-unit controller without starting it.'},
       {unit_id:'user_enablement_gate',objective:'Stop until explicit execution enablement and free gates pass.'}
     ],hard_stop_gates:STOP_GATES,authority:{model_output_authority:'proposal_only',write_authority:'none',merge_authority:'none',paid_api_allowed:false,paid_fallback_allowed:false,spending_ceiling_usd:0},engine_status:engine&&engine.engine_status||'built_execution_locked'};
-    saveDraft(draft);renderDraft(d,draft);summaryOut(d,draft);return false
+    saveDraft(draft);let saved=loadDraft();renderDraft(d,saved);summaryOut(d,saved);return false
   }
   function renderDraft(d,draft){
     const p=d.getElementById('pmpApQueuePreview');if(!p)return;
@@ -59,7 +70,7 @@
     let old=d.getElementById(SCREEN_ID);if(old)old.remove();
     let wrap=d.querySelector('.wrap')||d.body;
     let s=d.createElement('section');s.id=SCREEN_ID;s.className='screen on';
-    s.innerHTML='<div class="card"><h1>Automated Plan</h1><p class="sub" id="pmpApInlineStatus"></p><button class="big" data-pmp-ap-back="1"><span class="icon">←</span><span>Back to Control Room<small>return without changing plan state</small></span><span class="chev">›</span></button><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0 0"><button class="mini" data-pmp-ap-refresh="1" style="width:100%;margin:0;min-width:0">Refresh</button><button class="mini" data-pmp-ap-details="1" style="width:100%;margin:0;min-width:0">Details</button></div><div class="note" id="pmpApInlineNote">Free in-app command engine is installed. Execution remains locked. Pass 003 has not started.</div><div class="panel hidden" id="pmpApInlineDetails" style="margin-top:10px"></div></div><div class="card"><h2>Engine Command</h2><p class="sub">Tell the engine what to do. This only builds a free queued plan draft; it does not run it.</p><textarea id="pmpApCommandBox" style="min-height:120px" placeholder="Example: clean up the app quality without changing Automated Plan execution state"></textarea><div class="grid"><button class="mini" data-pmp-ap-compile="1">Build Free Plan Draft</button><button class="mini" data-pmp-ap-preview="1">Preview Queue</button><button class="mini" data-pmp-ap-raw="1">Raw Draft</button><button class="mini" data-pmp-ap-clear="1">Clear Draft</button><button class="mini" data-pmp-ap-gates="1">Show Stop Gates</button></div><div id="pmpApEngineOut" class="pass">Ready. No execution started.</div><div id="pmpApQueuePreview" class="note" style="margin-top:10px">No queue draft yet.</div></div><div class="card"><h2>Hard Free-Path Gates</h2><div class="hold">Free only. No paid API. No paid fallback. $0 ceiling. No write authority. No merge authority. Stop on ambiguity, changed main, checkpoint mismatch, unsafe path, failed verification, or manual stop.</div></div>';
+    s.innerHTML='<div class="card"><h1>Automated Plan</h1><p class="sub" id="pmpApInlineStatus"></p><button class="big" data-pmp-ap-back="1"><span class="icon">←</span><span>Back to Control Room<small>return without changing plan state</small></span><span class="chev">›</span></button><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0 0"><button class="mini" data-pmp-ap-refresh="1" style="width:100%;margin:0;min-width:0">Refresh</button><button class="mini" data-pmp-ap-details="1" style="width:100%;margin:0;min-width:0">Details</button></div><div class="note" id="pmpApInlineNote">Drafts are temporary recovery by default. Keep Draft saves one optional single-slot draft. Execution remains locked. Pass 003 has not started.</div><div class="panel hidden" id="pmpApInlineDetails" style="margin-top:10px"></div></div><div class="card"><h2>Engine Command</h2><p class="sub">Tell the engine what to do. This only builds a free queued plan draft; it does not run it.</p><textarea id="pmpApCommandBox" style="min-height:120px" placeholder="Example: clean up the app quality without changing Automated Plan execution state"></textarea><div class="grid"><button class="mini" data-pmp-ap-compile="1">Build Free Plan Draft</button><button class="mini" data-pmp-ap-preview="1">Preview Queue</button><button class="mini" data-pmp-ap-raw="1">Raw Draft</button><button class="mini" data-pmp-ap-keep="1">Keep Draft</button><button class="mini" data-pmp-ap-recover="1">Recover Kept</button><button class="mini" data-pmp-ap-storage="1">Draft Storage</button><button class="mini" data-pmp-ap-clear="1">Clear Temporary</button><button class="mini" data-pmp-ap-clearkept="1">Clear Kept</button><button class="mini" data-pmp-ap-gates="1">Show Stop Gates</button></div><div id="pmpApEngineOut" class="pass">Ready. No execution started.</div><div id="pmpApQueuePreview" class="note" style="margin-top:10px">No queue draft yet.</div></div><div class="card"><h2>Hard Free-Path Gates</h2><div class="hold">Free only. No paid API. No paid fallback. $0 ceiling. No write authority. No merge authority. Stop on ambiguity, changed main, checkpoint mismatch, unsafe path, failed verification, or manual stop.</div></div>';
     wrap.appendChild(s);
     Array.from(d.querySelectorAll('.screen')).forEach(x=>{if(x!==s)x.classList.remove('on')});
     d.location.hash='#automated-plan';
@@ -72,7 +83,11 @@
     s.querySelector('[data-pmp-ap-compile]').onclick=e=>{e.preventDefault();return compileLocal(d,state,controller,engine)};
     s.querySelector('[data-pmp-ap-preview]').onclick=e=>{e.preventDefault();let draft=loadDraft();renderDraft(d,draft);summaryOut(d,draft);return false};
     s.querySelector('[data-pmp-ap-raw]').onclick=e=>{e.preventDefault();rawOut(d,loadDraft());return false};
-    s.querySelector('[data-pmp-ap-clear]').onclick=e=>{e.preventDefault();clearDraft();renderDraft(d,null);out(d,{status:'DRAFT_CLEARED',execution_started:false},'pass');return false};
+    s.querySelector('[data-pmp-ap-keep]').onclick=e=>{e.preventDefault();let kept=keepDraft();if(kept){summaryOut(d,kept);out(d,{status:'DRAFT_KEPT',meaning:'Saved to the single Keep Draft slot. No execution started.',kept_at:kept.kept_at,resume_from:kept.resume_from},'hold')}else out(d,{status:'NO_DRAFT_TO_KEEP',execution_started:false},'pass');return false};
+    s.querySelector('[data-pmp-ap-recover]').onclick=e=>{e.preventDefault();let draft=recoverKept();renderDraft(d,draft);if(draft){summaryOut(d,draft)}else out(d,{status:'NO_KEPT_DRAFT',execution_started:false},'pass');return false};
+    s.querySelector('[data-pmp-ap-storage]').onclick=e=>{e.preventDefault();storageOut(d);return false};
+    s.querySelector('[data-pmp-ap-clear]').onclick=e=>{e.preventDefault();clearDraft();renderDraft(d,null);out(d,{status:'TEMPORARY_DRAFT_CLEARED',execution_started:false},'pass');return false};
+    s.querySelector('[data-pmp-ap-clearkept]').onclick=e=>{e.preventDefault();clearKept();out(d,{status:'KEPT_DRAFT_CLEARED',execution_started:false},'pass');return false};
     s.querySelector('[data-pmp-ap-gates]').onclick=e=>{e.preventDefault();out(d,{status:'HARD_FREE_PATH_STOP_GATES',execution_started:false,stop_gates:STOP_GATES},'hold');return false};
     return false;
   }
