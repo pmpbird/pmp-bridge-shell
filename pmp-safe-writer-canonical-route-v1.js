@@ -1,84 +1,39 @@
 (()=>{
-  window.PMPSafeWriterCanonicalRouteV1='v2';
+  window.PMPSafeWriterCanonicalRouteV1='v3-safe';
   const SCREEN_ID='safeWriterCanonical';
-  const VERSION='v2';
-  const REQ_KEY='pmp_safe_writer_request_v1';
-  const OUT_KEY='pmp_safe_writer_output_v1';
+  const VERSION='v3-safe';
+  const GOOD='pmp_safe_writer_last_good_v3';
+  const BANK_KEY='pmp_code_safety_bank_v1';
+  const LEGACY_KEY='pmp_code_safety_bank_v1_shell';
+  const DRAFT_KEY='pmp_safe_writer_update_request_v3';
   function textOf(x){return String(x&&x.textContent||'').replace(/\s+/g,' ').trim()}
-  function deepestApp(){
-    let w=window,d=document,last={w,d};
-    for(let i=0;i<8;i++){
-      try{
-        let f=(d&&d.getElementById&&d.getElementById('app'))||(d&&d.querySelector&&d.querySelector('iframe'));
-        if(!f||!f.contentWindow||!f.contentDocument)break;
-        w=f.contentWindow;d=f.contentDocument;last={w,d};
-        if(d.getElementById&&d.getElementById('control'))return{w,d};
-      }catch(e){break}
-    }
-    return last;
-  }
+  function deepestApp(){let w=window,d=document,last={w,d};for(let i=0;i<8;i++){try{let f=(d&&d.getElementById&&d.getElementById('app'))||(d&&d.querySelector&&d.querySelector('iframe'));if(!f||!f.contentWindow||!f.contentDocument)break;w=f.contentWindow;d=f.contentDocument;last={w,d};if(d.getElementById&&d.getElementById('control'))return{w,d}}catch(e){break}}return last}
   function setTab(d){try{Array.from(d.querySelectorAll('.tab')).forEach(t=>t.classList.toggle('on',textOf(t).toLowerCase().includes('control')))}catch(e){}}
   function showScreen(w,d,id){try{Array.from(d.querySelectorAll('.screen')).forEach(s=>s.classList.remove('on'));let s=d.getElementById(id);if(s)s.classList.add('on');d.location.hash=id==='control'?'#control':'#safe-writer';setTab(d);if(typeof w.repaintAll==='function')w.repaintAll()}catch(e){}}
   function backToControl(w,d){try{if(typeof w.go==='function'){w.go('control');setTab(d);return false}}catch(e){}showScreen(w,d,'control');return false}
-  function safeWriterDraft(d){
-    let req=d.getElementById('pmpSafeWriterRequestV1');
-    let out=d.getElementById('pmpSafeWriterOutputV1');
-    if(!req||!out)return false;
-    let request=req.value.trim();
-    if(!request){out.value='Write the app change you want Safe Writer to guard first.';return false}
-    let text='SAFE WRITER REQUEST\n\nGoal:\n'+request+'\n\nRules:\n- Keep the normal app shell.\n- Keep Back to Control.\n- Do not activate automation.\n- Do not start Pass 003.\n- Do not add maintenance-only buttons to normal user screens.\n- Return through the canonical Control Room route.\n\nNext action:\nTurn this into a guarded app-update patch or a clear no-change reason.';
-    out.value=text;
-    try{localStorage.setItem(REQ_KEY,request);localStorage.setItem(OUT_KEY,text)}catch(e){}
-    return false;
-  }
-  async function copySafeWriter(d){
-    let out=d.getElementById('pmpSafeWriterOutputV1');let text=out&&out.value||'';
-    if(!text.trim())safeWriterDraft(d),text=out&&out.value||'';
-    try{await navigator.clipboard.writeText(text);out.value=text+'\n\nCopied.'}catch(e){out.value=text+'\n\nCopy failed. Select and copy this text manually.'}
-    return false;
-  }
-  function buildScreen(w,d){
-    let wrap=d.querySelector('.wrap')||d.body;
-    let old=d.getElementById(SCREEN_ID);
-    let savedReq='',savedOut='';
-    try{savedReq=localStorage.getItem(REQ_KEY)||'';savedOut=localStorage.getItem(OUT_KEY)||''}catch(e){}
-    if(old)old.remove();
-    let s=d.createElement('section');s.id=SCREEN_ID;s.className='screen';s.dataset.pmpSafeWriterVersion=VERSION;
-    s.innerHTML='<div class="card"><h1>Safe Writer v14</h1><p class="sub">Resident is inside Safe Writer. This page uses the normal app shell and returns through Control Room.</p><button class="mini" data-pmp-safe-writer-back="1">Back to Control</button></div><div class="card"><h1>PMP Safe Writer</h1><p class="sub">Write the app change here. Safe Writer turns it into a guarded update request without starting automation.</p><textarea id="pmpSafeWriterRequestV1" placeholder="Describe the app change you want to make..."></textarea><div class="grid"><button class="mini" data-pmp-safe-writer-prepare="1">Prepare Safe Update Request</button><button class="mini" data-pmp-safe-writer-copy="1">Copy Request</button></div><textarea id="pmpSafeWriterOutputV1" placeholder="Safe Writer output appears here."></textarea><div class="panel">Safe Writer is for app-code changes only. It does not activate automation, start Pass 003, or run maintenance verification.</div></div>';
-    wrap.appendChild(s);
-    let req=s.querySelector('#pmpSafeWriterRequestV1'),out=s.querySelector('#pmpSafeWriterOutputV1');
-    req.value=savedReq;out.value=savedOut;
-    s.querySelector('[data-pmp-safe-writer-back]').onclick=function(e){if(e)e.preventDefault();return backToControl(w,d)};
-    s.querySelector('[data-pmp-safe-writer-prepare]').onclick=function(e){if(e)e.preventDefault();return safeWriterDraft(d)};
-    s.querySelector('[data-pmp-safe-writer-copy]').onclick=function(e){if(e)e.preventDefault();return copySafeWriter(d)};
-    return s;
-  }
-  function ensureScreen(w,d){
-    if(!d||!d.body)return null;
-    let existing=d.getElementById(SCREEN_ID);
-    if(existing&&existing.dataset.pmpSafeWriterVersion===VERSION)return existing;
-    return buildScreen(w,d);
-  }
-  function openSafeWriter(w,d){
-    buildScreen(w,d);
-    showScreen(w,d,SCREEN_ID);
-    try{localStorage.setItem('pmp_safe_writer_route_fix_v1',JSON.stringify({type:'PMP_SAFE_WRITER_CANONICAL_ROUTE_V2',at:new Date().toISOString(),safe_claim:'Safe Writer force-refreshed inside the current app shell with Back to Control and usable request/copy controls.',do_not_claim:'This does not activate automation, start Pass 003, run verification, or create a commit by itself.'}))}catch(e){}
-    return false;
-  }
-  function patch(){
-    const o=deepestApp(),w=o.w,d=o.d;if(!d||!d.querySelectorAll)return;
-    ensureScreen(w,d);
-    Array.from(d.querySelectorAll('button')).forEach(b=>{
-      const t=textOf(b);
-      if(/Open Safe Writer/i.test(t)){
-        b.onclick=function(e){if(e){e.preventDefault();e.stopPropagation()}return openSafeWriter(w,d)};
-        b.dataset.pmpSafeWriterCanonicalRouteV2='1';
-        b.addEventListener('click',function(e){e.preventDefault();e.stopImmediatePropagation();return openSafeWriter(w,d)},true);
-      }
-    });
-    try{w.openSafeWriter=function(){return openSafeWriter(w,d)}}catch(e){}
-  }
-  window.addEventListener('load',()=>[80,250,600,1200,2400].forEach(t=>setTimeout(patch,t)));
-  setInterval(patch,700);
-  patch();
+  function now(){return new Date().toISOString()}
+  function el(d,id){return d.getElementById(id)}
+  function bank(){try{let raw=localStorage.getItem(BANK_KEY)||localStorage.getItem(LEGACY_KEY)||'';let b=raw?JSON.parse(raw):null;if(b&&Array.isArray(b.safe_points))return b}catch(e){}return{bank_state:{last_good_safe_point_id:'',pinned_emergency_safe_point_id:'',bank_health:'UNKNOWN'},safe_points:[],quarantine:[]}}
+  function renderBank(d){let b=bank(),box=el(d,'pmpSafeWriterBankV1');if(!box)return;box.textContent=['Last Good: '+(b.bank_state&&b.bank_state.last_good_safe_point_id||'none'),'Pinned Emergency: '+(b.bank_state&&b.bank_state.pinned_emergency_safe_point_id||'none'),'Bank Health: '+(b.bank_state&&b.bank_state.bank_health||'UNKNOWN'),'Safe Points: '+(b.safe_points||[]).length,'Quarantine: '+(b.quarantine||[]).length,'Role: status here; manage the bank in Code Safety.'].join('\n')}
+  function setStatus(d,m,bad){let x=el(d,'pmpSafeWriterStatusV1');if(!x)return;x.className=bad?'warn':'note';x.textContent=typeof m==='string'?m:JSON.stringify(m,null,2)}
+  function setFind(d,m){let x=el(d,'pmpSafeWriterFindOutV1');if(x)x.textContent=m}
+  function countMatches(text,needle){return needle?String(text).split(needle).length-1:0}
+  function nearby(text,needle){let i=String(text).indexOf(needle);if(i<0)return'';let a=Math.max(0,i-220),b=Math.min(String(text).length,i+needle.length+220);return String(text).slice(a,b)}
+  function markerBetween(code,start,end){let a=code.indexOf(start),b=code.indexOf(end,a+start.length);return a>=0&&b>a}
+  async function hashText(text){let bytes=new TextEncoder().encode(text);let hash=await crypto.subtle.digest('SHA-256',bytes);return Array.from(new Uint8Array(hash)).map(x=>x.toString(16).padStart(2,'0')).join('')}
+  function guardCode(code){let blockers=[],warnings=[];code=String(code||'');let lower=code.trim().toLowerCase();if(!(lower.indexOf('<!doctype html')===0||lower.indexOf('<html')>=0))blockers.push('not full HTML');let doc=null;try{doc=new DOMParser().parseFromString(code,'text/html')}catch(e){blockers.push('DOM parse failed: '+e.message)}if(doc){let title=(doc.querySelector('title')||{}).textContent||'';if(title.trim()!=='PMP')blockers.push('missing PMP title');['world','bridge','control'].forEach(id=>{if(!doc.getElementById(id))blockers.push(id+' screen missing')});if(doc.querySelectorAll('script').length<1)blockers.push('no script elements parsed');if(doc.querySelectorAll('style').length<1)blockers.push('no style elements parsed')}if(!markerBetween(code,'<body','</body>'))blockers.push('body boundary not detected');if(!markerBetween(code,'<html','</html>'))blockers.push('html boundary not detected');if(code.indexOf('VISIBLE PROJECT LIST REPAIR PATCH')>-1)blockers.push('known broken visible-list patch text present');if(code.indexOf('pmpVisibleProjectListRepairV12')>-1)blockers.push('known risky V12 repair script present');if(code.length<5000)blockers.push('file too small to be full pmp.html');return{ok:blockers.length===0,status:blockers.length?'GUARD_BLOCKED':'GUARD_PASS',blockers,warnings}}
+  function runGuard(d){let guard=guardCode(el(d,'pmpSafeWriterBoxV1').value);let x=el(d,'pmpSafeWriterGuardV1');x.className=guard.ok?'note':'warn';x.textContent=JSON.stringify({ok:guard.ok,status:guard.status,blockers:guard.blockers,warnings:guard.warnings},null,2);return guard}
+  function findCode(d){let txt=el(d,'pmpSafeWriterBoxV1').value,needle=el(d,'pmpSafeWriterFindV1').value;if(!txt)return setFind(d,'Paste full app first.');if(!needle)return setFind(d,'Put exact code in Find box first.');let n=countMatches(txt,needle);setFind(d,'Matches found: '+n+(n?'\n\nNearby code:\n'+nearby(txt,needle):'\n\nNo exact match.'))}
+  function previewReplace(d){let txt=el(d,'pmpSafeWriterBoxV1').value,needle=el(d,'pmpSafeWriterFindV1').value,repl=el(d,'pmpSafeWriterReplaceV1').value;if(!txt)return setFind(d,'Paste full app first.');if(!needle)return setFind(d,'Put exact code in Find box first.');let n=countMatches(txt,needle);if(!n)return setFind(d,'No exact matches. Nothing to preview.');setFind(d,'Replacement preview\nMatches to replace: '+n+'\nReplacement length: '+repl.length+'\n\nBefore:\n'+nearby(txt,needle)+'\n\nAfter nearby:\n'+(nearby(txt.replaceAll(needle,repl),repl)||'[replacement is blank; selected code will be removed]'))}
+  function applyReplace(d){let txt=el(d,'pmpSafeWriterBoxV1').value,needle=el(d,'pmpSafeWriterFindV1').value,repl=el(d,'pmpSafeWriterReplaceV1').value;if(!txt)return setFind(d,'Paste full app first.');if(!needle)return setFind(d,'Put exact code in Find box first.');let n=countMatches(txt,needle);if(!n)return setFind(d,'No exact matches. Box was not changed.');el(d,'pmpSafeWriterBoxV1').value=txt.replaceAll(needle,repl);runGuard(d);setFind(d,'Applied exact replacement to box. Matches replaced: '+n+'\nNow run Guard, then Preview Transaction.')}
+  function saveLocalGood(d){let txt=el(d,'pmpSafeWriterBoxV1').value;if(!txt.trim())return setStatus(d,'Paste full app first.',true);localStorage.setItem(GOOD,JSON.stringify({saved_at:now(),content:txt}));setStatus(d,'Local good copy saved in this browser.')}
+  function restoreGood(d){let g=null;try{g=JSON.parse(localStorage.getItem(GOOD)||'null')}catch(e){}if(!g||!g.content)return setStatus(d,'No local good copy saved.',true);el(d,'pmpSafeWriterBoxV1').value=g.content;runGuard(d);setStatus(d,'Local good copy restored into box.')}
+  async function copyGood(d){let g=null;try{g=JSON.parse(localStorage.getItem(GOOD)||'null')}catch(e){}if(!g||!g.content)return setStatus(d,'No local good copy saved.',true);try{await navigator.clipboard.writeText(g.content);setStatus(d,'Local good copy copied.')}catch(e){setStatus(d,'Copy failed: '+e.message,true)}}
+  async function copyRequest(d){let txt=el(d,'pmpSafeWriterStatusV1').textContent||'';try{await navigator.clipboard.writeText(txt);setStatus(d,txt+'\n\nCopied.')}catch(e){setStatus(d,txt+'\n\nCopy failed. Select and copy manually.',true)}}
+  async function previewTxn(d){let txt=el(d,'pmpSafeWriterBoxV1').value;if(!txt.trim())return setStatus(d,'Paste full app first.',true);let guard=runGuard(d);let h=await hashText(txt);let request={type:'PMP_SAFE_WRITER_UPDATE_REQUEST',built_at:now(),target:{repo:el(d,'pmpSafeWriterRepoV1').value,branch:el(d,'pmpSafeWriterBranchV1').value,path:el(d,'pmpSafeWriterPathV1').value},message:el(d,'pmpSafeWriterMsgV1').value||'Safe writer transaction update',staged_clean:guard.ok,blockers:guard.blockers,code_size:txt.length,code_hash:h,steps:['review target','save before safe point','guard staged app','commit only if clean','save after safe point','mark after as local good'],staged_app:txt};localStorage.setItem(DRAFT_KEY,JSON.stringify(request));setStatus(d,request,!guard.ok)}
+  function buildScreen(w,d){let wrap=d.querySelector('.wrap')||d.body,old=d.getElementById(SCREEN_ID);if(old)old.remove();let s=d.createElement('section');s.id=SCREEN_ID;s.className='screen';s.dataset.pmpSafeWriterVersion=VERSION;s.innerHTML='<div class="card"><h1>Safe Writer v14</h1><p class="sub">Protected app update workbench. Use it to stage, guard, and prepare app changes through Safe Update Transaction.</p><button class="mini" data-pmp-safe-writer-back="1">Back to Control</button></div><div class="card"><h2>Update Target</h2><input id="pmpSafeWriterRepoV1" value="pmpbird/pmp-bridge-shell"><input id="pmpSafeWriterBranchV1" value="main"><input id="pmpSafeWriterPathV1" value="pmp.html"><div class="grid"><button class="mini" data-pmp-save-good="1">Save Local Good</button><button class="mini" data-pmp-restore-good="1">Restore Local Good</button></div></div><div class="card"><h2>Safety Status</h2><p class="sub">Status only. Full safe-point bank management lives in Code Safety.</p><div id="pmpSafeWriterBankV1" class="note">Loading safety status...</div><div class="grid"><button class="mini" data-pmp-refresh-bank="1">Refresh Safety Status</button><button class="mini" data-pmp-code-safety="1">Open Code Safety</button></div></div><div class="card"><h2>Code Finder</h2><textarea id="pmpSafeWriterFindV1" class="smallbox" placeholder="Code to find"></textarea><textarea id="pmpSafeWriterReplaceV1" class="smallbox" placeholder="Replacement code. Leave blank to delete the found code."></textarea><div class="grid"><button class="mini" data-pmp-find="1">Find</button><button class="mini" data-pmp-preview-replace="1">Preview Replace</button></div><button class="mini danger" data-pmp-apply-replace="1">Apply Replace to Box</button><div id="pmpSafeWriterFindOutV1" class="note">No search yet.</div></div><div class="card"><h2>Safety</h2><div class="grid"><button class="mini" data-pmp-guard="1">Run Guard</button><button class="mini" data-pmp-preview-txn="1">Preview Transaction</button><button class="mini" data-pmp-copy-good="1">Copy Local Good</button><button class="mini" data-pmp-copy-request="1">Copy Request</button></div><div id="pmpSafeWriterGuardV1" class="note">Guard not run yet.</div></div><div class="card"><h2>Safe Update Transaction</h2><input id="pmpSafeWriterMsgV1" value="Safe writer transaction update"><textarea id="pmpSafeWriterBoxV1" style="min-height:360px" placeholder="Paste COMPLETE pmp.html here."></textarea><button class="mini danger" data-pmp-prepare="1">Prepare Safe Update Request</button><div id="pmpSafeWriterStatusV1" class="note">Safe Writer loaded. Role is edit and update only.</div></div>';wrap.appendChild(s);s.querySelector('[data-pmp-safe-writer-back]').onclick=e=>{e.preventDefault();return backToControl(w,d)};s.querySelector('[data-pmp-save-good]').onclick=e=>{e.preventDefault();return saveLocalGood(d)};s.querySelector('[data-pmp-restore-good]').onclick=e=>{e.preventDefault();return restoreGood(d)};s.querySelector('[data-pmp-refresh-bank]').onclick=e=>{e.preventDefault();return renderBank(d)};s.querySelector('[data-pmp-code-safety]').onclick=e=>{e.preventDefault();try{w.location.href='code-safety-v13.html'}catch(x){}return false};s.querySelector('[data-pmp-find]').onclick=e=>{e.preventDefault();return findCode(d)};s.querySelector('[data-pmp-preview-replace]').onclick=e=>{e.preventDefault();return previewReplace(d)};s.querySelector('[data-pmp-apply-replace]').onclick=e=>{e.preventDefault();return applyReplace(d)};s.querySelector('[data-pmp-guard]').onclick=e=>{e.preventDefault();return runGuard(d)};s.querySelector('[data-pmp-preview-txn]').onclick=e=>{e.preventDefault();return previewTxn(d)};s.querySelector('[data-pmp-copy-good]').onclick=e=>{e.preventDefault();return copyGood(d)};s.querySelector('[data-pmp-copy-request]').onclick=e=>{e.preventDefault();return copyRequest(d)};s.querySelector('[data-pmp-prepare]').onclick=e=>{e.preventDefault();return previewTxn(d)};renderBank(d);return s}
+  function ensureScreen(w,d){if(!d||!d.body)return null;let existing=d.getElementById(SCREEN_ID);if(existing&&existing.dataset.pmpSafeWriterVersion===VERSION)return existing;return buildScreen(w,d)}
+  function openSafeWriter(w,d){buildScreen(w,d);showScreen(w,d,SCREEN_ID);try{localStorage.setItem('pmp_safe_writer_route_fix_v1',JSON.stringify({type:'PMP_SAFE_WRITER_CANONICAL_ROUTE_V3',at:now(),safe_claim:'Safe Writer opened inside the current app shell with app update controls.',do_not_claim:'This does not run Packet 01.5, start Pass 003, run checks, or create a commit by itself.'}))}catch(e){}return false}
+  function patch(){const o=deepestApp(),w=o.w,d=o.d;if(!d||!d.querySelectorAll)return;ensureScreen(w,d);Array.from(d.querySelectorAll('button')).forEach(b=>{const t=textOf(b);if(/Open Safe Writer/i.test(t)){b.onclick=e=>{if(e){e.preventDefault();e.stopPropagation()}return openSafeWriter(w,d)};b.dataset.pmpSafeWriterCanonicalRouteV3='1';b.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();return openSafeWriter(w,d)},true)}});try{w.openSafeWriter=()=>openSafeWriter(w,d)}catch(e){}}
+  window.addEventListener('load',()=>[80,250,600,1200,2400].forEach(t=>setTimeout(patch,t)));setInterval(patch,700);patch();
 })();
