@@ -2,6 +2,8 @@
   if(window.PMPSafeWriterCanonicalRouteV1)return;
   window.PMPSafeWriterCanonicalRouteV1=true;
   const SCREEN_ID='safeWriterCanonical';
+  const REQ_KEY='pmp_safe_writer_request_v1';
+  const OUT_KEY='pmp_safe_writer_output_v1';
   function textOf(x){return String(x&&x.textContent||'').replace(/\s+/g,' ').trim()}
   function deepestApp(){
     let w=window,d=document,last={w,d};
@@ -15,37 +17,44 @@
     }
     return last;
   }
-  function setTab(d,name){
-    try{Array.from(d.querySelectorAll('.tab')).forEach(t=>t.classList.toggle('on',textOf(t).toLowerCase().includes(name)))}catch(e){}
-  }
-  function showScreen(w,d,id){
-    try{Array.from(d.querySelectorAll('.screen')).forEach(s=>s.classList.remove('on'));let s=d.getElementById(id);if(s)s.classList.add('on');d.location.hash=id==='control'?'#control':'#safe-writer';setTab(d,id==='control'?'control':'control');if(typeof w.repaintAll==='function')w.repaintAll()}catch(e){}
-  }
-  function backToControl(w,d){
-    try{if(typeof w.go==='function'){w.go('control');setTab(d,'control');return false}}catch(e){}
-    showScreen(w,d,'control');
+  function setTab(d,name){try{Array.from(d.querySelectorAll('.tab')).forEach(t=>t.classList.toggle('on',textOf(t).toLowerCase().includes(name)))}catch(e){}}
+  function showScreen(w,d,id){try{Array.from(d.querySelectorAll('.screen')).forEach(s=>s.classList.remove('on'));let s=d.getElementById(id);if(s)s.classList.add('on');d.location.hash=id==='control'?'#control':'#safe-writer';setTab(d,'control');if(typeof w.repaintAll==='function')w.repaintAll()}catch(e){}}
+  function backToControl(w,d){try{if(typeof w.go==='function'){w.go('control');setTab(d,'control');return false}}catch(e){}showScreen(w,d,'control');return false}
+  function safeWriterDraft(d){
+    let req=d.getElementById('pmpSafeWriterRequestV1');
+    let out=d.getElementById('pmpSafeWriterOutputV1');
+    if(!req||!out)return false;
+    let request=req.value.trim();
+    if(!request){out.value='Write the app change you want Safe Writer to guard first.';return false}
+    let text='SAFE WRITER REQUEST\n\nGoal:\n'+request+'\n\nRules:\n- Keep the normal app shell.\n- Keep Back to Control.\n- Do not activate automation.\n- Do not start Pass 003.\n- Do not add maintenance-only buttons to normal user screens.\n- Return through the canonical Control Room route.\n\nNext action:\nTurn this into a guarded app-update patch or a clear no-change reason.';
+    out.value=text;
+    try{localStorage.setItem(REQ_KEY,request);localStorage.setItem(OUT_KEY,text)}catch(e){}
     return false;
   }
-  function openResident(w,d){
-    try{if(typeof w.openDeepResident==='function')return w.openDeepResident()}catch(e){}
-    try{if(typeof w.toggleDrawer==='function')return w.toggleDrawer('resident')}catch(e){}
-    return backToControl(w,d);
+  async function copySafeWriter(d){
+    let out=d.getElementById('pmpSafeWriterOutputV1');let text=out&&out.value||'';
+    if(!text.trim())safeWriterDraft(d),text=out&&out.value||'';
+    try{await navigator.clipboard.writeText(text);out.value=text+'\n\nCopied.'}catch(e){out.value=text+'\n\nCopy failed. Select and copy this text manually.'}
+    return false;
   }
   function ensureScreen(w,d){
     if(!d||!d.body)return null;
     let existing=d.getElementById(SCREEN_ID);if(existing)return existing;
     let wrap=d.querySelector('.wrap')||d.body;
     let s=d.createElement('section');s.id=SCREEN_ID;s.className='screen';
-    s.innerHTML='<div class="card"><h1>Safe Writer v14</h1><p class="sub">Resident is inside Safe Writer. This page uses the normal app shell and returns through Control Room.</p><div class="grid"><button class="mini" data-pmp-safe-writer-resident="1">Resident</button><button class="mini" data-pmp-safe-writer-back="1">Back to Control</button></div></div><div class="card"><h1>PMP Safe Writer</h1><p class="sub">Update machine only. Safe Writer edits, guards, and commits full pmp.html through Safe Update Transaction.</p><div class="panel">Clean split: manage the safe-point bank in Code Safety. Use this page only when changing app code.</div></div><div class="card"><h1>Connection</h1><p class="sub">Safe Writer stays inside this app. Maintenance verification buttons are hidden from the normal user screen.</p></div>';
+    s.innerHTML='<div class="card"><h1>Safe Writer v14</h1><p class="sub">Resident is inside Safe Writer. This page uses the normal app shell and returns through Control Room.</p><button class="mini" data-pmp-safe-writer-back="1">Back to Control</button></div><div class="card"><h1>PMP Safe Writer</h1><p class="sub">Write the app change here. Safe Writer turns it into a guarded update request without starting automation.</p><textarea id="pmpSafeWriterRequestV1" placeholder="Describe the app change you want to make..."></textarea><div class="grid"><button class="mini" data-pmp-safe-writer-prepare="1">Prepare Safe Update Request</button><button class="mini" data-pmp-safe-writer-copy="1">Copy Request</button></div><textarea id="pmpSafeWriterOutputV1" placeholder="Safe Writer output appears here."></textarea><div class="panel">Safe Writer is for app-code changes only. It does not activate automation, start Pass 003, or run maintenance verification.</div></div>';
     wrap.appendChild(s);
+    let req=s.querySelector('#pmpSafeWriterRequestV1'),out=s.querySelector('#pmpSafeWriterOutputV1');
+    try{req.value=localStorage.getItem(REQ_KEY)||'';out.value=localStorage.getItem(OUT_KEY)||''}catch(e){}
     s.querySelector('[data-pmp-safe-writer-back]').onclick=function(e){if(e)e.preventDefault();return backToControl(w,d)};
-    s.querySelector('[data-pmp-safe-writer-resident]').onclick=function(e){if(e)e.preventDefault();return openResident(w,d)};
+    s.querySelector('[data-pmp-safe-writer-prepare]').onclick=function(e){if(e)e.preventDefault();return safeWriterDraft(d)};
+    s.querySelector('[data-pmp-safe-writer-copy]').onclick=function(e){if(e)e.preventDefault();return copySafeWriter(d)};
     return s;
   }
   function openSafeWriter(w,d){
     ensureScreen(w,d);
     showScreen(w,d,SCREEN_ID);
-    try{localStorage.setItem('pmp_safe_writer_route_fix_v1',JSON.stringify({type:'PMP_SAFE_WRITER_CANONICAL_ROUTE_V1',at:new Date().toISOString(),safe_claim:'Safe Writer opened inside the current app shell with canonical Back to Control and without maintenance verification buttons.',do_not_claim:'This does not activate automation, start Pass 003, or run any verification.'}))}catch(e){}
+    try{localStorage.setItem('pmp_safe_writer_route_fix_v1',JSON.stringify({type:'PMP_SAFE_WRITER_CANONICAL_ROUTE_V1',at:new Date().toISOString(),safe_claim:'Safe Writer opened inside the current app shell with Back to Control and usable request/copy controls.',do_not_claim:'This does not activate automation, start Pass 003, run verification, or create a commit by itself.'}))}catch(e){}
     return false;
   }
   function patch(){
