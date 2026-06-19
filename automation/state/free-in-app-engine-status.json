@@ -1,12 +1,21 @@
 {
   "type": "PMP_FREE_IN_APP_ENGINE_STATUS",
   "schema_id": "pmp.automated-plan.free-in-app-engine-status.v1",
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "engine_status": "built_execution_locked",
   "command_intake_inside_app": true,
   "free_plan_compiler": true,
   "free_queued_runner": true,
   "hard_free_path_stop_gates": true,
+  "draft_storage_mode": "temporary_recovery_one_active_slot",
+  "temporary_recovery_draft_key": "pmp_free_in_app_engine_recovery_draft_v1",
+  "temporary_recovery_ttl_days": 7,
+  "replace_old_temporary_draft_on_new_build": true,
+  "auto_clear_temporary_draft_after_success": true,
+  "manual_clear_supported": true,
+  "keep_draft_supported": true,
+  "keep_draft_mode": "one_optional_single_slot_not_a_list",
+  "kept_draft_key": "pmp_free_in_app_engine_kept_draft_v1",
   "execution_enabled": false,
   "start_requested": false,
   "next_runtime_boundary": "pass_003",
@@ -17,6 +26,6 @@
   "spending_ceiling_usd": 0,
   "write_authority": "none",
   "merge_authority": "none",
-  "safe_message": "Free in-app command intake, compiler, and queued runner scaffold are installed. Execution remains locked and Pass 003 has not started.",
-  "do_not_claim": "This status does not prove execution, run a queue, start Pass 003, spend money, write to main, or merge."
+  "safe_message": "Free in-app command intake, compiler, queued runner scaffold, temporary recovery draft storage, and one optional Keep Draft slot are installed. Execution remains locked and Pass 003 has not started.",
+  "do_not_claim": "This status does not prove execution, run a queue, start Pass 003, spend money, write to main, merge, or create a permanent draft list."
 }
