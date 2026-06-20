@@ -1,21 +1,22 @@
 {
-  "type": "PMP_LATEST_APP_POINTER_V4",
+  "type": "PMP_LATEST_APP_POINTER_V5",
   "latest": "pmp-route-guardian-current-loader-v14.html",
-  "last_good": "pmp-route-guardian-current-loader-v14.html",
+  "last_good": "pmp-current-inner-cleanbug-rgcontrols-v6.html",
+  "last_good_route_guardian": "pmp-route-guardian-current-loader-v14.html",
   "last_good_saves": [
     {
       "name": "Stable Dashboard — Reset Cycles Works",
-      "target": "pmp-route-guardian-current-loader-v14.html",
-      "note": "Pause/Resume stable, Reset Cycles button works, instant Cycle 1 repaint works, engine state preserved.",
+      "target": "pmp-current-inner-cleanbug-rgcontrols-v6.html",
+      "note": "Exact stable current app target. Pause/Resume stable, Reset Cycles button works, instant Cycle 1 repaint works, engine state preserved.",
       "saved_at": "2026-06-20T00:00:00-07:00"
     }
   ],
   "minimum_good_version": "v14",
-  "updated_at": "2026-06-20T00:00:00-07:00",
+  "updated_at": "2026-06-20T12:24:00-07:00",
   "health_required": true,
   "fallback_enabled": true,
   "blocked_detours": [
     "safe-writer"
   ],
-  "meaning": "Permanent launchers read this file and open Route Guardian v14 inside the same Home Screen app. Last Good now exposes a compact named save list only when pressed. This pointer change does not prove app wiring, hook validation, full transfer, current-clean, frozen, or best-in-world."
+  "meaning": "Permanent launchers open Route Guardian as latest. Last Good recovery uses exact stable current app targets, not the Route Guardian loader, so named saves do not loop through the wrong door. This pointer change does not prove app wiring, hook validation, full transfer, current-clean, frozen, or best-in-world."
 }
