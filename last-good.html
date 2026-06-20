@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Last Good">
+<meta name="theme-color" content="#17324a">
+<title>Last Good Saves</title>
+<style>
+html,body{margin:0;min-height:100%;background:linear-gradient(180deg,#52b5df,#17324a);color:#eef4fb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-text-size-adjust:100%}
+.wrap{max-width:520px;margin:0 auto;padding:calc(18px + env(safe-area-inset-top,0px)) 14px calc(22px + env(safe-area-inset-bottom,0px))}.card{border:2px solid rgba(255,255,255,.9);border-radius:22px;background:rgba(13,20,29,.94);padding:16px;box-shadow:0 14px 40px rgba(0,0,0,.35)}h1{margin:0 0 8px;font-size:23px}.hint{font-size:13px;line-height:1.38;color:#b9c8d8;margin:0 0 12px}.saveRow{width:100%;border:1px solid rgba(255,255,255,.22);border-radius:15px;background:#172234;color:#eef4fb;padding:12px;text-align:left;margin-top:9px;font:inherit}.saveRow strong{display:block;font-size:14px}.saveRow span{display:block;margin-top:4px;font-size:12px;color:#b9c8d8;line-height:1.32}.currentBefore{background:#123024;border-color:#245c45;color:#c9f7d7}.toplink{display:inline-block;color:#eef4fb;background:#24384d;border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:9px 12px;text-decoration:none;font-size:13px;font-weight:900;margin-bottom:12px}.status{margin-top:12px;border-radius:12px;background:#123024;color:#c9f7d7;border:1px solid #245c45;padding:10px;font-size:12px;white-space:pre-wrap}.warn{background:#2b2010;color:#ffe0a3;border-color:#745522}.empty{border:1px dashed rgba(255,255,255,.28);border-radius:14px;padding:12px;color:#b9c8d8;font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap"><div class="card">
+<a class="toplink" href="index.html">← Launcher</a>
+<h1>Last Good Saves</h1>
+<p class="hint">This page does not load the control room behind it. Pick a save when you are ready. The top row returns to the current target captured before this page opened.</p>
+<div id="list"><div class="empty">Loading saves…</div></div>
+<div id="status" class="status">Route Guardian Last Good page ready.</div>
+</div></div>
+<script>
+(()=>{
+  const POINTER='pmp-latest.json';
+  const FALLBACK='pmp-clean-v22.html';
+  const LIST=document.getElementById('list');
+  const STATUS=document.getElementById('status');
+  function status(msg,warn=false){STATUS.textContent=msg;STATUS.className='status'+(warn?' warn':'')}
+  function cleanTarget(t){t=String(t||'').trim();if(!t||/[\s<>"']/.test(t))return FALLBACK;if(!/\.html($|[?#])/.test(t))return FALLBACK;if(/^https?:\/\//i.test(t))return FALLBACK;return t.replace(/^\.\//,'')}
+  function read(k,d){try{return localStorage.getItem(k)||d}catch(e){return d}}
+  function write(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+  function currentBefore(p){return cleanTarget(read('pmp_route_guardian_current_target','')||read('pmp_route_guardian_last_good','')||p.latest||p.last_good||FALLBACK)}
+  function name(save,i){return String(save?.name||save?.label||('Saved Build '+(i+1))).trim()}
+  function note(save){return String(save?.note||save?.meaning||save?.notes||'Stable saved launcher target.').trim()}
+  function openTarget(target,label){const t=cleanTarget(target);write('pmp_route_guardian_current_target',t);write('pmp_route_guardian_last_good',t);write('pmp_route_guardian_receipt',JSON.stringify({type:'PMP_ROUTE_GUARDIAN_LAST_GOOD_PAGE_RECEIPT_V1',target:t,label,at:new Date().toISOString(),safe_claim:'Standalone Last Good page opened a user-selected saved build.',do_not_claim:'This is launcher recovery only, not proof that inner hooks are validated.'}));status('Opening saved build with Route Guardian choice.\nTarget: '+t);location.href=t+'?fresh=last-good-page-'+Date.now()+'#control'}
+  function row(save,i){const b=document.createElement('button');b.type='button';b.className='saveRow'+(save.currentBefore?' currentBefore':'');const target=cleanTarget(save.target||save.url||save.href||FALLBACK);b.innerHTML='<strong></strong><span></span>';b.querySelector('strong').textContent=name(save,i);b.querySelector('span').textContent=note(save)+' · '+target;b.onclick=()=>openTarget(target,name(save,i));return b}
+  async function init(){
+    let p={latest:FALLBACK,last_good:FALLBACK,last_good_saves:[]};
+    try{const r=await fetch(POINTER+'?last_good_page='+Date.now(),{cache:'no-store'});p=await r.json()}catch(e){status('Could not read save pointer. Showing emergency fallback.',true)}
+    const before=currentBefore(p);write('pmp_route_guardian_current_before_last_good',before);
+    const saves=[{name:'Current Before Last Good',target:before,note:'Captured before opening Last Good.',currentBefore:true}];
+    if(Array.isArray(p.last_good_saves)&&p.last_good_saves.length)saves.push(...p.last_good_saves);else saves.push({name:'Last Good',target:p.last_good||before,note:'Current Last Good pointer.'});
+    LIST.innerHTML='';
+    saves.forEach((s,i)=>LIST.appendChild(row(s,i)));
+    status('Named save list loaded. Nothing has opened yet.');
+  }
+  init();
+})();
+</script>
+</body>
+</html>
