@@ -1,12 +1,17 @@
 {
   "type": "PMP_FREE_IN_APP_ENGINE_STATUS",
   "schema_id": "pmp.automated-plan.free-in-app-engine-status.v1",
-  "schema_version": "1.1.0",
+  "schema_version": "1.2.0",
   "engine_status": "built_execution_locked",
+  "engine_mode": "continuous_run_mission_setup",
   "command_intake_inside_app": true,
   "free_plan_compiler": true,
   "free_queued_runner": true,
   "hard_free_path_stop_gates": true,
+  "continuous_run_mission_supported": true,
+  "continuous_run_mission_state": "mission_setup_only_execution_locked",
+  "automatic_pass_to_pass_after_future_start": true,
+  "start_continuous_run_available": false,
   "draft_storage_mode": "temporary_recovery_one_active_slot",
   "temporary_recovery_draft_key": "pmp_free_in_app_engine_recovery_draft_v1",
   "temporary_recovery_ttl_days": 7,
@@ -26,6 +31,6 @@
   "spending_ceiling_usd": 0,
   "write_authority": "none",
   "merge_authority": "none",
-  "safe_message": "Free in-app command intake, compiler, queued runner scaffold, temporary recovery draft storage, and one optional Keep Draft slot are installed. Execution remains locked and Pass 003 has not started.",
+  "safe_message": "Automated Plan now defines a standing Continuous Run Mission for future automatic pass-to-pass running. It is setup only: execution remains locked and Pass 003 has not started.",
   "do_not_claim": "This status does not prove execution, run a queue, start Pass 003, spend money, write to main, merge, or create a permanent draft list."
 }
