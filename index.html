@@ -12,14 +12,14 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#52b5df;-we
 #app{position:fixed;inset:0;width:100%;height:100%;border:0;background:#52b5df}
 #guardianStatus{position:fixed;left:10px;right:10px;bottom:10px;z-index:999999;background:#123024;color:#c9f7d7;border:2px solid #fff;border-radius:16px;padding:8px 10px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:12px;display:none;white-space:pre-wrap;box-shadow:0 8px 24px rgba(0,0,0,.35)}
 #lastGoodBtn{position:fixed;right:10px;top:calc(10px + env(safe-area-inset-top,0px));z-index:999998;border:2px solid rgba(255,255,255,.92);border-radius:999px;background:#17324a;color:#fff;padding:9px 12px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:12px;font-weight:800;box-shadow:0 8px 24px rgba(0,0,0,.25)}
-#lastGoodPanel{position:fixed;left:10px;right:10px;top:calc(52px + env(safe-area-inset-top,0px));z-index:999997;display:none;background:rgba(13,20,29,.96);color:#eef4fb;border:2px solid rgba(255,255,255,.88);border-radius:18px;padding:12px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;box-shadow:0 12px 34px rgba(0,0,0,.38)}
+#lastGoodPanel{position:fixed;left:10px;right:10px;top:calc(52px + env(safe-area-inset-top,0px));bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:999997;display:none;background:rgba(13,20,29,.97);color:#eef4fb;border:2px solid rgba(255,255,255,.88);border-radius:18px;padding:12px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;box-shadow:0 12px 34px rgba(0,0,0,.38);overflow:auto}
 #lastGoodPanel.open{display:block}
 #lastGoodPanel h2{margin:0 0 8px;font-size:15px}
 #lastGoodPanel .hint{font-size:12px;line-height:1.35;color:#a9bacd;margin-bottom:10px}
 #lastGoodPanel .saveRow{width:100%;border:1px solid rgba(255,255,255,.22);border-radius:14px;background:#172234;color:#eef4fb;padding:10px;text-align:left;margin-top:8px;font:inherit}
 #lastGoodPanel .saveRow strong{display:block;font-size:13px}
 #lastGoodPanel .saveRow span{display:block;margin-top:4px;font-size:11px;color:#b9c8d8;line-height:1.32}
-#lastGoodPanel .closeRow{display:flex;gap:8px;margin-top:10px}
+#lastGoodPanel .closeRow{display:flex;gap:8px;margin-top:10px;position:sticky;bottom:0;background:linear-gradient(180deg,rgba(13,20,29,0),rgba(13,20,29,.97) 28%);padding-top:18px}
 #lastGoodPanel .closeRow button{flex:1;border:1px solid rgba(255,255,255,.22);border-radius:12px;background:#24384d;color:#eef4fb;padding:9px;font-weight:800}
 </style>
 </head>
@@ -28,7 +28,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#52b5df;-we
 <button id="lastGoodBtn" type="button">Last Good</button>
 <div id="lastGoodPanel" aria-live="polite">
   <h2>Last Good Saves</h2>
-  <div class="hint">Pick a named stable save. This opens a saved build; it does not wipe the engine.</div>
+  <div class="hint">Pick a named stable save. Opening this list pauses auto-routing. Nothing changes until you choose a save.</div>
   <div id="lastGoodSaves"></div>
   <div class="closeRow"><button id="lastGoodClose" type="button">Close</button></div>
 </div>
@@ -45,10 +45,13 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#52b5df;-we
   let activeTarget=FALLBACK;
   let lastLoaded='';
   let pointerCache=null;
+  let lastGoodOpen=false;
   function status(msg){const s=document.getElementById('guardianStatus');s.textContent=msg;s.style.display='block';clearTimeout(status.t);status.t=setTimeout(()=>{s.style.display='none'},4200)}
   function cleanTarget(t){t=String(t||'').trim();if(!t||/[\s<>"']/.test(t))return FALLBACK;if(!/\.html($|[?#])/.test(t))return FALLBACK;if(/^https?:\/\//i.test(t))return FALLBACK;return t.replace(/^\.\//,'')}
   function displayName(save,i){return String(save?.name||save?.label||('Saved Build '+(i+1))).trim()}
   function displayNote(save){return String(save?.note||save?.meaning||save?.notes||'Stable saved launcher target.').trim()}
+  function isLastGoodOpen(){return lastGoodOpen||LAST_PANEL.classList.contains('open')}
+  function setLastGoodOpen(on){lastGoodOpen=!!on;LAST_PANEL.classList.toggle('open',lastGoodOpen);if(lastGoodOpen)status('Last Good list open. Auto-routing paused. Pick a save or Close.');else status('Last Good list closed. Auto-routing resumed.')}
   function getLastGoodSaves(){
     const p=pointerCache||{};
     const arr=Array.isArray(p.last_good_saves)?p.last_good_saves.slice():[];
@@ -79,12 +82,12 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#52b5df;-we
       b.innerHTML='<strong></strong><span></span>';
       b.querySelector('strong').textContent=name;
       b.querySelector('span').textContent=displayNote(save)+' · '+target;
-      b.onclick=()=>{LAST_PANEL.classList.remove('open');loadTarget(target,'last-good-'+name)};
+      b.onclick=()=>{setLastGoodOpen(false);loadTarget(target,'last-good-'+name)};
       LAST_SAVES.appendChild(b);
     });
   }
-  LAST_BTN.onclick=()=>{renderLastGoodList();LAST_PANEL.classList.toggle('open')};
-  LAST_CLOSE.onclick=()=>LAST_PANEL.classList.remove('open');
+  LAST_BTN.onclick=(e)=>{e.preventDefault();e.stopPropagation();renderLastGoodList();setLastGoodOpen(!isLastGoodOpen())};
+  LAST_CLOSE.onclick=(e)=>{e.preventDefault();e.stopPropagation();setLastGoodOpen(false)};
   async function latest(){
     try{
       const r=await fetch(POINTER+'?route_guardian_fresh='+Date.now(),{cache:'no-store'});
@@ -96,13 +99,16 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#52b5df;-we
     }
   }
   async function routeGuardian(reason){
+    if(isLastGoodOpen()){status('Last Good list open. Auto-routing paused.');return}
     const target=await latest();
+    if(isLastGoodOpen()){status('Last Good list open. Auto-routing paused.');return}
     activeTarget=target;
     try{localStorage.setItem('pmp_route_guardian_last_good',target);localStorage.setItem('pmp_route_guardian_receipt',JSON.stringify({type:'PMP_ROUTE_GUARDIAN_ENTRY_RECEIPT_V1',target,reason:reason||'check',at:new Date().toISOString(),safe_claim:'Entry Route Guardian loaded latest pointer into the same Home Screen app.',do_not_claim:'This is route/currentness repair only, not proof that inner hooks are validated.'}))}catch(e){}
     const src=target+'?fresh=route-guardian-'+encodeURIComponent(reason||'check')+'-'+Date.now()+'#control';
     if(lastLoaded!==target){lastLoaded=target;FRAME.src=src;status('Route Guardian loaded current app.\nTarget: '+target)}
   }
   function guardOldDetour(){
+    if(isLastGoodOpen())return;
     try{const href=FRAME.contentWindow.location.href;if(/safe-writer/i.test(href)||/pmp-clean-v21\.html/i.test(href)){status('Route Guardian caught old route. Returning to current app.');lastLoaded='';routeGuardian('old-route-caught')}}catch(e){}
   }
   FRAME.addEventListener('load',()=>{setTimeout(guardOldDetour,250);setTimeout(()=>routeGuardian('frame-load-check'),900)});
