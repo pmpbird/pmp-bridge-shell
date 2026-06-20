@@ -1,5 +1,5 @@
 (()=>{
- if(window.PMPCRDCardV10)return;window.PMPCRDCardV10=true;
+ if(window.PMPCRDCardV11)return;window.PMPCRDCardV11=true;
  const AK='pmp_continuous_run_active_v1',UK='pmp_continuous_run_compiled_unit_v1',VK='pmp_continuous_run_verified_unit_v1',HK='pmp_continuous_run_verified_history_v1',BK='pmp_visible_cycle_base_v1',PK='pmp_crd_pause_v1',VB='verified_saved_boundary';
  const K=(...n)=>String.fromCharCode(...n),WA=K(119,114,105,116,101,95,97,117,116,104,111,114,105,116,121),MA=K(109,101,114,103,101,95,97,117,116,104,111,114,105,116,121),PA=K(112,97,105,100,95,97,112,105,95,97,108,108,111,119,101,100),PF=K(112,97,105,100,95,102,97,108,108,98,97,99,107,95,97,108,108,111,119,101,100);
  function q(s){return String(s==null?'':s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
@@ -25,7 +25,7 @@
  function label(){return isPaused()?'Resume Run':'Pause Run'}
  function toggle(d,b){setPaused(!isPaused());b.textContent=label();if(isPaused())pausedCard(d);else{let u=read(UK)||{};card(d,{unit_index:seqOf(u),free_only:true,locks_held:true,continuation_allowed:true,next_step:'Continue when ready.'});quiet(d)}return false}
  function ensure(d){let grid=d.querySelector('#continuousRunDashboardV1 .grid');if(!grid)return;let old=d.getElementById('pmpPauseRunBtn'),b=old;if(old&&old.dataset.pmpShortPause!=='1'){b=d.createElement('button');old.parentNode.replaceChild(b,old)}if(!b){b=d.createElement('button');grid.appendChild(b)}b.type='button';b.id='pmpPauseRunBtn';b.className='mini';b.dataset.pmpShortPause='1';b.style.minHeight='44px';b.style.minWidth='120px';b.style.maxWidth='100%';b.style.whiteSpace='normal';b.style.overflow='hidden';b.style.textOverflow='clip';b.textContent=label();if(!b.dataset.pmpWired){b.dataset.pmpWired='1';b.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();return freeze(d,()=>toggle(d,b))},true)}}
- function wire(d){prestabilize(d);ensure(d);let c=d.querySelector('#continuousRunDashboardV1 [data-compileunit]'),v=d.querySelector('#continuousRunDashboardV1 [data-verifyunit]');if(c&&!c.dataset.cardSource){c.dataset.cardSource='1';c.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();return compile(d)},true)}if(v&&!v.dataset.cardSource){v.dataset.cardSource='1';v.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();return verify(d)},true)}}
+ function wire(d){prestabilize(d);ensure(d);let c=d.querySelector('#continuousRunDashboardV1 [data-compileunit]'),v=d.querySelector('#continuousRunDashboardV1 [data-verifyunit]');if(c&&!c.dataset.cardSource){c.dataset.cardSource='1';c.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();return freeze(d,()=>compile(d))},true)}if(v&&!v.dataset.cardSource){v.dataset.cardSource='1';v.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();return freeze(d,()=>verify(d))},true)}}
  function scan(){docs(document).forEach(wire)}
  window.addEventListener('load',()=>[40,120,300,800,1600,3200].forEach(t=>setTimeout(scan,t)));
  document.addEventListener('click',()=>setTimeout(scan,20),true);setInterval(scan,900);scan();
