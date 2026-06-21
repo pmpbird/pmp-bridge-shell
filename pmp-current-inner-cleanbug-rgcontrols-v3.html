@@ -106,6 +106,23 @@ function simplifyBridgeButtons(w,d){
     });
   }catch(e){}
 }
+async function copyTextCurrent(text){try{await navigator.clipboard.writeText(text);return true}catch(e){try{const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.focus();ta.select();const ok=document.execCommand('copy');ta.remove();return ok}catch(err){return false}}}
+function latestBridgeStatus(d){const p=d&&d.getElementById&&d.getElementById('bridgePanel');return p?(p.innerText||p.textContent||'').trim():''}
+function installImproveLosslessAutoCopy(w,d){
+  if(w.__pmpImproveLosslessAutoCopyV1)return;
+  w.__pmpImproveLosslessAutoCopyV1=true;
+  async function copyLatest(){
+    const txt=latestBridgeStatus(d);
+    if(!txt)return false;
+    const ok=await copyTextCurrent(txt);
+    try{const r=d.getElementById('residentReply');if(r)r.textContent=ok?'Lossless status copied.':'Could not copy lossless status.'}catch(e){}
+    return ok;
+  }
+  function scheduleCopy(){[700,1600,3200].forEach(t=>setTimeout(copyLatest,t))}
+  const old=typeof w.improveLossless==='function'?w.improveLossless:null;
+  if(old){w.improveLossless=function(){let result=old.apply(this,arguments);scheduleCopy();return result}}
+  Array.from(d.querySelectorAll('button')).forEach(b=>{const t=textOf(b);if(t.includes('Improve Lossless Quality')&&!b.dataset.pmpImproveAutoCopyV1){b.dataset.pmpImproveAutoCopyV1='1';b.addEventListener('click',scheduleCopy,false)}});
+}
 function installDeepResidentOverlay(w,d){
   if(w.__pmpDeepResidentOverlayCurrentV2)return;
   w.__pmpDeepResidentOverlayCurrentV2=true;
@@ -154,6 +171,7 @@ function patch(){
   try{if(window.PMPPhase2PrivateWindowAdapterV1&&typeof window.PMPPhase2PrivateWindowAdapterV1.run==='function')window.PMPPhase2PrivateWindowAdapterV1.run(w,d)}catch(e){}
   installBridgeToggleFix(w,d);
   simplifyBridgeButtons(w,d);
+  installImproveLosslessAutoCopy(w,d);
   installDeepResidentOverlay(w,d);
   repaintAll();
   if(!d.documentElement.dataset.pmpRgControlsV3Delegate){
