@@ -2,7 +2,7 @@
   "type": "PMP_CURRENT_APP_MAP",
   "app_name": "PMP Current",
   "app_version": "PMP-CURRENT-1",
-  "updated_at": "2026-06-20T17:00:00-07:00",
+  "updated_at": "2026-06-20T19:58:00-07:00",
   "route_guardian_loader": {
     "path": "pmp-route-guardian-current-loader-v14.html",
     "label": "PMP Current Route Guardian Loader v14",
@@ -10,16 +10,16 @@
     "status": "current"
   },
   "current_app": {
-    "path": "pmp-current-inner-cleanbug-rgcontrols-v8.html",
-    "label": "PMP Current v8 continuous run state ledger wrapper",
-    "cache_key": "pmp-current-v8-continuous-run-state-ledger-v1",
+    "path": "pmp-current-inner-cleanbug-rgcontrols-v9.html",
+    "label": "PMP Current v9 finished continuous run engine wrapper",
+    "cache_key": "pmp-current-v9-continuous-run-state-ledger-v2-route-guardian-protected",
     "status": "current"
   },
   "user_facing_rule": "Only show PMP Current / PMP-CURRENT-1 as the app version.",
   "home_screen_rule": "Install pmp-app-current.html once. It is a stable map-driven door and should change as little as possible.",
-  "update_rule": "Route Guardian v14 opens the current app only after the user presses Open Latest App. Current v8 keeps the Route Guardian Last Good doorway path and adds a Continuous Run State Ledger with phase, last completed fix, next planned fix, blocked state, cycle state, route guardian fallback, and do-not-repeat fix ledger. This does not begin Packet 1.5, enable autonomous paid execution, authorize merging, prove hook validation, real app proof, current-clean, frozen, or best-in-world.",
+  "update_rule": "Route Guardian v14 opens the current app only after the user presses Open Latest App. Current v9 keeps the Route Guardian Last Good doorway path, upgrades the Continuous Run State Ledger to v2, synchronizes current-before-last-good to v9, and protects the current app through Route Guardian Last Good v18 plus Recovery Tools v8. This does not begin Packet 1.5, enable autonomous paid execution, authorize merging, prove hook validation, real app proof, current-clean, frozen, or best-in-world.",
   "fallback_app": {
-    "path": "pmp-current-inner-cleanbug-rgcontrols-v8.html",
-    "cache_key": "fallback-continuous-run-state-ledger-v1"
+    "path": "pmp-current-inner-cleanbug-rgcontrols-v9.html",
+    "cache_key": "fallback-continuous-run-state-ledger-v2-route-guardian-protected"
   }
 }
