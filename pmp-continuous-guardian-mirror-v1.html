@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PMP">
+<meta name="theme-color" content="#f3ded4">
+<title>PMP Current</title>
+<script>
+const COLOR_KEY='pmp_single_colors_v6',PREV_KEY='pmp_single_colors_v5';
+const DEFAULT_COLORS={accent:'#acd1fb',background:'#f3ded4',card:'#ffffff',line:'#07101c'};
+function jj(k){try{return JSON.parse(localStorage.getItem(k)||'{}')}catch(e){return{}}}
+function activeColors(){let c={...DEFAULT_COLORS,...jj(PREV_KEY),...jj(COLOR_KEY)};if(String(c.background).toLowerCase()==='#52b5df')c.background=DEFAULT_COLORS.background;if(String(c.card).toLowerCase()==='#46a9d3')c.card=DEFAULT_COLORS.card;if(String(c.accent).toLowerCase()==='#a1fcfd')c.accent=DEFAULT_COLORS.accent;return c}
+function bootShellColors(){let c=activeColors();document.documentElement.style.setProperty('--floor',c.background);document.documentElement.style.setProperty('--card',c.card);document.documentElement.style.setProperty('--a',c.accent);document.documentElement.style.setProperty('--line',c.line);let m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',c.background)}
+bootShellColors();
+</script>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--floor,#f3ded4);color:#101827;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:var(--floor,#f3ded4)}
+#status{position:fixed;inset:0;display:grid;place-items:center;text-align:center;font-weight:950;padding:18px;background:var(--floor,#f3ded4);z-index:2}
+.card{width:min(620px,100%);background:var(--card,#fff);border:3px solid #07101c;border-radius:28px;padding:18px;box-shadow:0 10px 24px rgba(0,0,0,.2)}
+.badge{display:inline-block;background:var(--a,#acd1fb);border:2px solid #07101c;border-radius:999px;padding:6px 10px;font-size:12px;margin-bottom:10px}
+h1{font-size:28px;margin:0 0 8px}.hide{display:none!important}
+</style>
+</head>
+<body>
+<iframe id="app" title="PMP Current"></iframe>
+<div id="status"><div class="card"><div class="badge">PMP CURRENT</div><h1>Opening Current</h1><div id="msg">Loading the current Route Guardian loader.</div></div></div>
+<script>
+const MAP_PATHS=['pmp-current-map-v9.json','pmp-current-map.json'];
+const FALLBACK_LOADER='pmp-route-guardian-current-loader-v9.html';
+const app=document.getElementById('app');
+const status=document.getElementById('status');
+const msg=document.getElementById('msg');
+function safePath(path,fallback){path=String(path||fallback||'').trim();return /^[a-zA-Z0-9._\/-]+\.html$/.test(path)?path.replace(/^\/+/, ''):fallback}
+async function fetchJson(path){const r=await fetch(path+'?stable-door-v11-clean='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error(path+' did not load: '+r.status);const map=await r.json();map.__loaded_map_path=path;return map}
+async function loadMap(){let lastErr=null;for(const path of MAP_PATHS){try{return await fetchJson(path)}catch(e){lastErr=e}}throw lastErr||new Error('No current map loaded')}
+function loaderFromMap(map){const loader=map.route_guardian_loader||map.current_loader||{};const path=safePath(loader.path,FALLBACK_LOADER);const key=loader.cache_key||map.loader_cache_key||map.updated_at||Date.now();return path+'?fresh=stable-door-v11-clean-'+encodeURIComponent(key)+'-'+Date.now()+(location.hash||'')}
+async function boot(){bootShellColors();try{const map=await loadMap();msg.textContent='Loaded '+(map.__loaded_map_path||'current map');app.src=loaderFromMap(map);app.onload=()=>setTimeout(()=>status.classList.add('hide'),350)}catch(e){msg.textContent='Map load failed. Opening fallback Route Guardian v9.';app.src=FALLBACK_LOADER+'?fresh=fallback-v9-'+Date.now()+(location.hash||'');app.onload=()=>setTimeout(()=>status.classList.add('hide'),700)}}
+boot();
+</script>
+<script src="pmp-continuous-guardian-engine-v1.js?fresh=mirror-loader-v1-watch-only"></script>
+</body>
+</html>
