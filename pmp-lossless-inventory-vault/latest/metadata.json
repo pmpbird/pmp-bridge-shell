@@ -1,20 +1,20 @@
 {
   "type": "PMP_VAULT_LATEST_FOLDER_METADATA",
-  "version": "1.0.0",
-  "updated_at": "2026-06-21T19:50:03.640Z",
+  "version": "1.1.0-edited-comment-trigger",
+  "updated_at": "2026-06-21T20:31:28.959Z",
   "storage_policy": "rewrite_four_latest_files_only",
   "source_kind": "github_issue_inbox_comment",
   "issue": "https://github.com/pmpbird/pmp-bridge-shell/issues/1",
   "comment_url": "https://github.com/pmpbird/pmp-bridge-shell/issues/1#issuecomment-4763106010",
   "comment_id": 4763106010,
-  "body_hash": "701b949972d28cf7ecd7641fc293e8a63ddb7502c7acc9ed2dcf7dcfa97685de",
+  "body_hash": "5b4cd27b8cbb38595ebf77b933d7504ce6d2b6d45f98689d39b7fd737821c911",
   "packet_path": "pmp-lossless-inventory-vault/latest/packet.json",
   "report_path": "pmp-lossless-inventory-vault/latest/report.json",
   "metadata_path": "pmp-lossless-inventory-vault/latest/metadata.json",
   "status_path": "pmp-lossless-inventory-vault/latest/mirror-status.json",
   "packet_type": "PMP_LOSSLESS_VAULT_WRITE_PACKET",
-  "packet_built_at": "2026-06-21T19:49:30.703Z",
+  "packet_built_at": "2026-06-21T20:31:17.286Z",
   "report_type": "PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES",
-  "report_built_at": "2026-06-21T19:49:30.703Z",
-  "note": "This folder is rewritten on each valid run. No per-run packet folders are created by this writer."
+  "report_built_at": "2026-06-21T20:31:17.286Z",
+  "note": "This folder is rewritten when the Shortcut edits the fixed inbox comment. No per-run packet folders are created by this writer."
 }
