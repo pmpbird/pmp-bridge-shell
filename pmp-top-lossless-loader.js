@@ -2,6 +2,7 @@
   const files = [
     'pmp-top-lossless-packet-builder.js',
     'pmp-top-lossless-copy-open.js',
+    'pmp-copy-lossless-diagnostic.js',
     'pmp-top-copy-lossless-button.js'
   ];
   function fresh(src) {
