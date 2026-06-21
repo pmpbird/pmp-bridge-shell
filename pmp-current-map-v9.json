@@ -2,7 +2,7 @@
   "type": "PMP_CURRENT_APP_MAP",
   "app_name": "PMP Current",
   "app_version": "PMP-CURRENT-1",
-  "updated_at": "2026-06-21T00:44:00-07:00",
+  "updated_at": "2026-06-21T01:03:00-07:00",
   "route_guardian_loader": {
     "path": "pmp-route-guardian-current-loader-v14.html",
     "label": "PMP Current Route Guardian Loader v14",
@@ -10,16 +10,16 @@
     "status": "current"
   },
   "current_app": {
-    "path": "pmp-current-inner-cleanbug-rgcontrols-v14.html",
-    "label": "PMP Current v14 without Recovery Tools v9 normal shell",
-    "cache_key": "pmp-current-v14-no-recovery-tools-v9-normal-path",
+    "path": "pmp-current-inner-cleanbug-rgcontrols-v15.html",
+    "label": "PMP Current v15 with true same-shell Move Ledger candidate panel",
+    "cache_key": "pmp-current-v15-true-same-shell-move-ledger-candidate-panel",
     "status": "current"
   },
   "user_facing_rule": "Only show PMP Current / PMP-CURRENT-1 as the app version.",
   "home_screen_rule": "Install pmp-app-current.html once. It is a stable map-driven door and should change as little as possible.",
-  "update_rule": "Current v14 removes Recovery Tools v9 from the normal Route Guardian Last Good path. Route Guardian Last Good opens Recovery Tools v8 directly as the protected recovery shell. This avoids the extra v9 wrapper strip coming back even when Move Ledger is not used. The candidate-follow panel file remains available for later direct Move Ledger review, but it is no longer introduced by the Recovery Tools v9 wrapper. Packet 1.5, free-only gates, Safe Writer, Dashboard, and the core app shell are unchanged.",
+  "update_rule": "Current v15 keeps Recovery Tools v8 as emergency recovery only and removes Recovery Tools v9 from the normal path. It adds a true same-shell Move Ledger button inside Route Guardian Last Good using pmp-same-shell-move-ledger-lite-v1.js. Move targets open inside the app shell with a collapsible candidate panel, Go Back returns to the same-shell Move Ledger screen, and Make This Version Current only saves a Route Guardian make-current request. Packet 1.5, free-only gates, Safe Writer, Dashboard, and the core app shell are unchanged.",
   "fallback_app": {
-    "path": "pmp-current-inner-cleanbug-rgcontrols-v13.html",
-    "cache_key": "fallback-pmp-current-v13-move-ledger-candidate-follow-panel"
+    "path": "pmp-current-inner-cleanbug-rgcontrols-v14.html",
+    "cache_key": "fallback-pmp-current-v14-no-recovery-tools-v9-normal-path"
   }
 }
