@@ -1,0 +1,100 @@
+name: PMP Vault Latest Folder Writer
+
+on:
+  issue_comment:
+    types: [created]
+  workflow_run:
+    workflows: ["PMP Vault Inbox Processor"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: read
+
+concurrency:
+  group: pmp-vault-latest-folder-writer
+  cancel-in-progress: false
+
+jobs:
+  write-latest-folder:
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_run' || github.event.issue.number == 1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Write latest folder
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const crypto = require('crypto');
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const issue_number = 1;
+            const MARKER = 'PMP LOSSLESS INVENTORY REPORT';
+            const LATEST = 'pmp-lossless-inventory-vault/latest';
+            const currentPath = 'pmp-lossless-inventory-vault/current.json';
+            function ensure(filePath) { fs.mkdirSync(path.dirname(filePath), { recursive: true }); }
+            function writeJson(filePath, data) { ensure(filePath); fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n'); }
+            function readJson(filePath) { return JSON.parse(fs.readFileSync(filePath, 'utf8')); }
+            function bodyHash(body) { return crypto.createHash('sha256').update(String(body || '')).digest('hex'); }
+            function payloadFrom(body) {
+              const first = body.indexOf('{');
+              if (first < 0) throw new Error('No JSON payload found.');
+              return JSON.parse(body.slice(first).trim());
+            }
+            async function latestComment() {
+              if (context.eventName === 'issue_comment') return context.payload.comment;
+              const current = readJson(currentPath);
+              const commentId = current && current.source && current.source.comment_id;
+              if (commentId) {
+                const found = await github.rest.issues.getComment({ owner, repo, comment_id: commentId });
+                return found.data;
+              }
+              const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number, per_page: 100 });
+              const matches = comments.filter(c => (c.body || '').includes(MARKER));
+              return matches[matches.length - 1];
+            }
+            const comment = await latestComment();
+            if (!comment || !(comment.body || '').includes(MARKER)) { core.info('No latest PMP lossless report comment found.'); return; }
+            if ((comment.user && comment.user.login) !== owner) { core.info('Latest report comment is not owner-authored.'); return; }
+            const payload = payloadFrom(comment.body || '');
+            const report = payload.type === 'PMP_LOSSLESS_VAULT_WRITE_PACKET' ? payload.report : payload;
+            if (!report || report.type !== 'PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES') throw new Error('Latest payload does not contain the expected report.');
+            const meta = {
+              type: 'PMP_VAULT_LATEST_FOLDER_METADATA',
+              version: '1.0.0',
+              updated_at: new Date().toISOString(),
+              storage_policy: 'rewrite_four_latest_files_only',
+              source_kind: 'github_issue_inbox_comment',
+              issue: `https://github.com/${owner}/${repo}/issues/${issue_number}`,
+              comment_url: comment.html_url || `https://github.com/${owner}/${repo}/issues/${issue_number}#issuecomment-${comment.id}`,
+              comment_id: comment.id,
+              body_hash: bodyHash(comment.body || ''),
+              packet_path: `${LATEST}/packet.json`,
+              report_path: `${LATEST}/report.json`,
+              metadata_path: `${LATEST}/metadata.json`,
+              status_path: `${LATEST}/mirror-status.json`,
+              packet_type: payload.type || null,
+              packet_built_at: payload.built_at || null,
+              report_type: report.type,
+              report_built_at: report.built_at || null,
+              note: 'This folder is rewritten on each valid run. No per-run packet folders are created by this writer.'
+            };
+            writeJson(`${LATEST}/packet.json`, payload);
+            writeJson(`${LATEST}/report.json`, report);
+            writeJson(`${LATEST}/metadata.json`, meta);
+            writeJson(`${LATEST}/mirror-status.json`, { type: 'PMP_VAULT_LATEST_FOLDER_STATUS', version: '1.0.0', status: 'latest_folder_rewritten', checked_at: meta.updated_at, comment_id: comment.id, storage_policy: meta.storage_policy });
+            const status = await exec.getExecOutput('git', ['status', '--porcelain']);
+            if (!status.stdout.trim()) { core.info('No latest folder changes to commit.'); return; }
+            await exec.exec('git', ['config', 'user.name', 'github-actions[bot]']);
+            await exec.exec('git', ['config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com']);
+            await exec.exec('git', ['add', LATEST]);
+            await exec.exec('git', ['commit', '-m', 'Rewrite PMP vault latest folder']);
+            try { await exec.exec('git', ['push']); }
+            catch (error) { await exec.exec('git', ['pull', '--rebase']); await exec.exec('git', ['push']); }
