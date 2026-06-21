@@ -98,7 +98,14 @@
       "rejected_at": "2026-06-21T18:18:41.261Z",
       "reason": "No JSON object found.",
       "body_hash": "0a084bfe006990ae53afc75c48eb6588d79a5081b96e00f575bf71c5cc1c7849"
+    },
+    {
+      "source_comment_id": 4762894033,
+      "source_url": "https://github.com/pmpbird/pmp-bridge-shell/issues/1#issuecomment-4762894033",
+      "rejected_at": "2026-06-21T18:27:01.459Z",
+      "reason": "No JSON object found.",
+      "body_hash": "0be65287077f142af40e354720f7efda364979c3aba83480dc15ccc1921f60a7"
     }
   ],
-  "updated_at": "2026-06-21T18:18:41.261Z"
+  "updated_at": "2026-06-21T18:27:01.459Z"
 }
