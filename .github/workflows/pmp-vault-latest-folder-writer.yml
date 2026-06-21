@@ -2,7 +2,7 @@ name: PMP Vault Latest Folder Writer
 
 on:
   issue_comment:
-    types: [created]
+    types: [created, edited]
   workflow_run:
     workflows: ["PMP Vault Inbox Processor"]
     types: [completed]
@@ -68,7 +68,7 @@ jobs:
             if (!report || report.type !== 'PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES') throw new Error('Latest payload does not contain the expected report.');
             const meta = {
               type: 'PMP_VAULT_LATEST_FOLDER_METADATA',
-              version: '1.0.0',
+              version: '1.1.0-edited-comment-trigger',
               updated_at: new Date().toISOString(),
               storage_policy: 'rewrite_four_latest_files_only',
               source_kind: 'github_issue_inbox_comment',
@@ -84,12 +84,12 @@ jobs:
               packet_built_at: payload.built_at || null,
               report_type: report.type,
               report_built_at: report.built_at || null,
-              note: 'This folder is rewritten on each valid run. No per-run packet folders are created by this writer.'
+              note: 'This folder is rewritten when the Shortcut edits the fixed inbox comment. No per-run packet folders are created by this writer.'
             };
             writeJson(`${LATEST}/packet.json`, payload);
             writeJson(`${LATEST}/report.json`, report);
             writeJson(`${LATEST}/metadata.json`, meta);
-            writeJson(`${LATEST}/mirror-status.json`, { type: 'PMP_VAULT_LATEST_FOLDER_STATUS', version: '1.0.0', status: 'latest_folder_rewritten', checked_at: meta.updated_at, comment_id: comment.id, storage_policy: meta.storage_policy });
+            writeJson(`${LATEST}/mirror-status.json`, { type: 'PMP_VAULT_LATEST_FOLDER_STATUS', version: '1.1.0-edited-comment-trigger', status: 'latest_folder_rewritten', checked_at: meta.updated_at, comment_id: comment.id, storage_policy: meta.storage_policy });
             const status = await exec.getExecOutput('git', ['status', '--porcelain']);
             if (!status.stdout.trim()) { core.info('No latest folder changes to commit.'); return; }
             await exec.exec('git', ['config', 'user.name', 'github-actions[bot]']);
