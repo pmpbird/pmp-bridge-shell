@@ -2,5 +2,20 @@
   "type": "PMP_VAULT_REJECTED_LEDGER",
   "version": "1.0.0",
   "purpose": "Permanent compact index of rejected inbox comments and why they were not promoted.",
-  "rejected_records": []
+  "rejected_records": [
+    {
+      "rejected_id": "PMP-REJECT-2026-06-21T17-53-51-036Z",
+      "source_comment_id": 4762807512,
+      "source_url": "https://github.com/pmpbird/pmp-bridge-shell/issues/1#issuecomment-4762807512",
+      "source_user": "pmpbird",
+      "author_association": "OWNER",
+      "rejected_at": "2026-06-21T17:53:51.036Z",
+      "reason": "validation_failed",
+      "detail": "No JSON object found in inbox comment.",
+      "body_hash": "eff474c31f9865dc330fa2901f9468bf53592135fbe0ac1607aec9cb4c5add8c",
+      "body_preview": "PMP LOSSLESS INVENTORY REPORT /packet.json",
+      "promoted_to_current": false
+    }
+  ],
+  "updated_at": "2026-06-21T17:53:51.036Z"
 }
