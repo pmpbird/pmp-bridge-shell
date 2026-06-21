@@ -1,11 +1,11 @@
 {
   "type": "PMP_VAULT_DELTA_RECORD",
   "version": "2.1.0-type-isolated-processor",
-  "record_id": "PMP-DELTA-2026-06-21-0007",
-  "source_record_id": "PMP-INV-2026-06-21-0007",
-  "built_at": "2026-06-21T16:16:54.727Z",
-  "previous_current_record_id": "PMP-INV-2026-05-10-0006",
-  "current_record_id": "PMP-INV-2026-06-21-0007",
+  "record_id": "PMP-DELTA-2026-06-21-0008",
+  "source_record_id": "PMP-INV-2026-06-21-0008",
+  "built_at": "2026-06-21T16:34:27.383Z",
+  "previous_current_record_id": "PMP-INV-2026-06-21-0007",
+  "current_record_id": "PMP-INV-2026-06-21-0008",
   "delta_status": "compared",
   "count_changes": {},
   "active_file_changes": {

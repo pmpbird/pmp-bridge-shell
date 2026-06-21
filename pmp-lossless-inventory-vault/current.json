@@ -1,29 +1,23 @@
 {
   "type": "PMP_LOSSLESS_INVENTORY_VAULT_CURRENT",
-  "version": "3.2.0-separate-promotion-step",
-  "status": "CURRENT_WITH_HISTORY_PROMOTION",
+  "version": "3.1.0-type-isolated-processor",
+  "status": "CURRENT_FROM_TYPE_ISOLATED_INBOX_PROCESSOR",
   "storage_area_name": "PMP Lossless Inventory Vault",
-  "current_record_id": "PMP-INV-2026-06-21-0007",
-  "promoted_at": "2026-06-21T16:27:20Z",
+  "current_record_id": "PMP-INV-2026-06-21-0008",
   "source": {
     "source_kind": "github_issue_inbox_comment",
     "issue": "https://github.com/pmpbird/pmp-bridge-shell/issues/1",
-    "comment_url": "https://github.com/pmpbird/pmp-bridge-shell/issues/1#issuecomment-4762561013",
-    "comment_id": 4762561013,
-    "created_at": "2026-06-21T16:16:44Z",
-    "body_hash": "e047c4f26e5b9c3987488c305c3081c332a43006392603311437f645a6e52b9d",
-    "note": "Full report is preserved in the inbox comment; current.json stores compact normalized current state and points to the promoted history file."
-  },
-  "vault_paths": {
-    "current": "pmp-lossless-inventory-vault/current.json",
-    "history": "pmp-lossless-inventory-vault/history/2026-06-21T16-16-38-278Z.json"
+    "comment_url": "https://github.com/pmpbird/pmp-bridge-shell/issues/1#issuecomment-4762605218",
+    "comment_id": 4762605218,
+    "body_hash": "80aaa114a642ded6279e669abc9804f2d7c37a03449a9d68ff490c37073536d4",
+    "note": "Full report is preserved in the inbox comment; current.json stores compact normalized current state."
   },
   "report_identity": {
     "packet_type": "PMP_LOSSLESS_VAULT_WRITE_PACKET",
     "packet_version": "1.4.0-direct-tap-open",
-    "packet_built_at": "2026-06-21T16:16:38.278Z",
+    "packet_built_at": "2026-06-21T16:33:59.550Z",
     "report_type": "PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES",
-    "report_built_at": "2026-06-21T16:16:38.278Z",
+    "report_built_at": "2026-06-21T16:33:59.550Z",
     "inventory_eyes_version": "2.9.0-current-inner-no-shortcut-app-update",
     "inventory_eyes_built_at": "2026-05-10T22:17:13.568Z"
   },
@@ -32,8 +26,7 @@
     "record_kind": "inventory_eyes_lossless_report",
     "record_status": "accepted_current",
     "keep_full_report": "source_inbox_comment_for_now",
-    "promote_to_history": true,
-    "history_record_path": "pmp-lossless-inventory-vault/history/2026-06-21T16-16-38-278Z.json",
+    "promote_to_history": false,
     "delta_required": true,
     "privacy_gate": "passed_by_type_isolated_automated_validator",
     "confidence": "high"
@@ -79,9 +72,9 @@
   ],
   "truth_boundary": "This is a compact normalized pointer and summary of the latest full inbox report. Private values are not captured; only key names and app structure are allowed.",
   "next_actions": [
-    "Keep the big phone button as Issue Inbox intake because it works.",
-    "Use the separate promotion step to write current.json and history records.",
-    "Do not connect this step to the main app until the vault process is stable.",
-    "Later, build an automated promoter only after several successful manual promotions."
+    "Use record-ledger.json as permanent compact index.",
+    "Use category-map.json to sort records.",
+    "Use latest-delta.json to compare against previous current state.",
+    "Keep inbox as temporary intake, not permanent storage of all reports forever."
   ]
 }
