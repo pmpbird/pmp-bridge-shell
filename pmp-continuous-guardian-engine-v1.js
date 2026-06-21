@@ -1,5 +1,5 @@
 (() => {
-  const VERSION = '1.5.0-watch-only-safe-layer';
+  const VERSION = '1.5.1-watch-only-safe-layer-manual-control';
   const STATE_KEY = 'pmp_continuous_guardian_state_v1';
   const LEDGER_KEY = 'pmp_continuous_guardian_event_ledger_v1';
   const HEARTBEAT_KEY = 'pmp_continuous_guardian_last_heartbeat_v1';
@@ -14,6 +14,7 @@
     'pmp-lossless-inventory-vault/latest/mirror-status.json'
   ];
 
+  const saved = safeRead(STATE_KEY, null);
   const state = {
     type: 'PMP_CONTINUOUS_GUARDIAN_STATE',
     version: VERSION,
@@ -24,6 +25,8 @@
     last_local_check_at: null,
     last_github_check_at: null,
     loop_count: 0,
+    auto_paused_by_visibility: false,
+    user_paused: false,
     local: { status: 'UNKNOWN', weak: [] },
     github: { status: 'UNKNOWN', weak: [] },
     guards: {
@@ -34,13 +37,22 @@
       no_mutation: true,
       no_auto_save: true,
       no_shortcut_open: true,
-      no_github_write: true
+      no_github_write: true,
+      manual_control_required: true
     },
     note: 'Watch-only observer. Does not write app files, vault files, GitHub files, or open shortcuts.'
   };
+  if (saved && saved.type === 'PMP_CONTINUOUS_GUARDIAN_STATE') {
+    state.started_at = saved.started_at || null;
+    state.loop_count = Number(saved.loop_count || 0);
+    state.local = saved.local || state.local;
+    state.github = saved.github || state.github;
+    state.status = saved.status === 'RUNNING' ? 'RUNNING' : 'STOPPED';
+  }
 
   function now(){return new Date().toISOString()}
-  function read(k, fallback){try{const v=localStorage.getItem(k);return v?JSON.parse(v):fallback}catch(_){return fallback}}
+  function safeRead(k, fallback){try{const v=localStorage.getItem(k);return v?JSON.parse(v):fallback}catch(_){return fallback}}
+  function read(k, fallback){return safeRead(k,fallback)}
   function write(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(_){}}
   function ms(t){const n=Date.parse(t||'');return Number.isFinite(n)?n:NaN}
   function safeMessage(x){return String(x||'').slice(0,180)}
@@ -85,6 +97,8 @@
   }
   function persist(){state.updated_at=now();write(STATE_KEY,state)}
   function setStatus(s,why,proof){
+    if(state.status==='STOPPED'&&s!=='RUNNING')return;
+    if(state.user_paused&&s==='RUNNING')return;
     const priority={BLOCKED:6,PAUSED:5,WAITING:4,WATCH:3,RUNNING:2,GOOD:1,STOPPED:0,UNKNOWN:0};
     const old=state.status;
     if(priority[s]>=priority[old]||old==='STOPPED'||s==='STOPPED')state.status=s;
@@ -101,6 +115,7 @@
   function buttons(d){try{return Array.from(d.querySelectorAll('button')).map(b=>(b.textContent||'').replace(/\s+/g,' ').trim()).filter(Boolean)}catch(_){return[]}}
   function routeProof(){try{return location.pathname+(location.search||'')+(location.hash||'')}catch(_){return''}}
   function localCheck(){
+    if(state.status==='STOPPED')return;
     const o=deep(),d=o.d,w=o.w,b=d?buttons(d):[];
     const weak=[];
     if(!d)weak.push('App document not loaded');
@@ -120,6 +135,7 @@
   function stamp(path,j){if(!j)return null;if(path.includes('metadata'))return j.updated_at||j.packet_built_at||j.report_built_at||j.built_at||null;return j.built_at||j.updated_at||j.packet_built_at||j.report_built_at||null}
   function notOlder(fileTime, expectedTime){const f=ms(fileTime),e=ms(expectedTime);return Number.isFinite(f)&&Number.isFinite(e)&&f+5000>=e}
   async function githubCheck(){
+    if(state.status==='STOPPED')return;
     const save=read(SAVE_KEY,null);
     const expected=save&&(save.packet_built_at||save.pressed_at)||null;
     const results=[];const weak=[];
@@ -147,12 +163,13 @@
     persist();
   }
   function start(){
+    state.user_paused=false;state.auto_paused_by_visibility=false;
     state.status='RUNNING';state.started_at=state.started_at||now();event('ENGINE_STARTED','good','Watch-only engine started',{route:routeProof()});persist();
     localCheck();
   }
-  function pause(){setStatus('PAUSED','User paused engine',{route:routeProof()});event('ENGINE_PAUSED','info','Engine paused by user',{})}
-  function resume(){if(state.status==='PAUSED'){state.status='RUNNING';event('ENGINE_RESUMED','info','Engine resumed by user',{});persist();localCheck()}}
-  function stop(){state.status='STOPPED';event('ENGINE_STOPPED','info','Engine stopped by user',{});persist()}
+  function pause(){state.user_paused=true;state.auto_paused_by_visibility=false;setStatus('PAUSED','User paused engine',{route:routeProof()});event('ENGINE_PAUSED','info','Engine paused by user',{});persist()}
+  function resume(){if(state.status==='PAUSED'&&state.user_paused){state.user_paused=false;state.status='RUNNING';event('ENGINE_RESUMED','info','Engine resumed by user',{});persist();localCheck()}}
+  function stop(){state.status='STOPPED';state.user_paused=false;state.auto_paused_by_visibility=false;event('ENGINE_STOPPED','info','Engine stopped by user',{});persist()}
   function snapshot(){return JSON.parse(JSON.stringify({state,ledger:ledger()}))}
 
   let localTimer=null, githubTimer=null, heartbeatTimer=null;
@@ -161,11 +178,15 @@
     heartbeatTimer=setInterval(heartbeat,1000);
     localTimer=setInterval(()=>{if(state.status!=='STOPPED'&&state.status!=='PAUSED')localCheck()},10000);
     githubTimer=setInterval(()=>{if(state.status!=='STOPPED'&&state.status!=='PAUSED')githubCheck()},60000);
-    document.addEventListener('visibilitychange',()=>{if(document.hidden){setStatus('PAUSED','App hidden or backgrounded',{route:routeProof()})}else{event('APP_RESUMED','watch','App resumed; running local recovery check',{route:routeProof()});state.status='RUNNING';localCheck();githubCheck()}});
+    document.addEventListener('visibilitychange',()=>{
+      if(state.status==='STOPPED')return;
+      if(document.hidden){state.auto_paused_by_visibility=true;setStatus('PAUSED','App hidden or backgrounded',{route:routeProof()});return}
+      if(state.auto_paused_by_visibility&&!state.user_paused){event('APP_RESUMED','watch','App resumed; running local recovery check',{route:routeProof()});state.auto_paused_by_visibility=false;state.status='RUNNING';persist();localCheck();githubCheck()}
+    });
   }
 
   window.PMPContinuousGuardianEngineV1={version:VERSION,start,pause,resume,stop,localCheck,githubCheck,snapshot,guards:state.guards};
   write(SETTINGS_KEY,{version:VERSION,max_events:MAX_EVENTS,watch_only:true,created_at:now()});
   installTimers();
-  if(read(STATE_KEY,null)&&read(STATE_KEY,null).status==='RUNNING')start();
+  if(state.status==='RUNNING')start(); else persist();
 })();
