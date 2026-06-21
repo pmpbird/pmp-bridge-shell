@@ -2,15 +2,15 @@
   "type": "PMP_VAULT_INBOX_INTAKE_STATUS",
   "version": "2.1.0-type-isolated-processor",
   "status": "accepted_and_promoted",
-  "checked_at": "2026-06-21T18:06:52.931Z",
+  "checked_at": "2026-06-21T18:12:04.713Z",
   "candidates_checked": 1,
   "accepted": 1,
   "rejected": 0,
   "skipped": 0,
   "ignored_other_payload_type": 0,
   "latest_accepted": {
-    "comment_id": 4762842549,
-    "record_id": "PMP-INV-2026-06-21-0011",
+    "comment_id": 4762855859,
+    "record_id": "PMP-INV-2026-06-21-0012",
     "summary": {
       "manifest_paths": 55,
       "active_files": 11,

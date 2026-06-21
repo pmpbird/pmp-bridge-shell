@@ -3,12 +3,12 @@
   "version": "3.1.0-type-isolated-processor",
   "status": "CURRENT_FROM_TYPE_ISOLATED_INBOX_PROCESSOR",
   "storage_area_name": "PMP Lossless Inventory Vault",
-  "current_record_id": "PMP-INV-2026-06-21-0011",
+  "current_record_id": "PMP-INV-2026-06-21-0012",
   "source": {
     "source_kind": "github_issue_inbox_comment",
     "issue": "https://github.com/pmpbird/pmp-bridge-shell/issues/1",
-    "comment_url": "https://github.com/pmpbird/pmp-bridge-shell/issues/1#issuecomment-4762842549",
-    "comment_id": 4762842549,
+    "comment_url": "https://github.com/pmpbird/pmp-bridge-shell/issues/1#issuecomment-4762855859",
+    "comment_id": 4762855859,
     "body_hash": "74daf1415fd91f9567acafa504449a6fefcbbe0a0dc09a4dbc25eb6c508f93e9",
     "note": "Full report is preserved in the inbox comment; current.json stores compact normalized current state."
   },
