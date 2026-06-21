@@ -1,7 +1,7 @@
 {
   "type": "PMP_CURRENT_UPDATE_STATUS",
   "version": "1.1.0-unversioned-map",
-  "checked_at": "2026-06-21T19:34:55.477Z",
+  "checked_at": "2026-06-21T19:49:44.218Z",
   "target_map": "pmp-current-map.json",
   "candidates_checked": 1,
   "accepted": 0,
