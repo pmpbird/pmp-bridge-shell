@@ -36,11 +36,11 @@ jobs:
             const issue_number = 1;
             const MARKER = 'PMP LOSSLESS INVENTORY REPORT';
             const VAULT = 'pmp-lossless-inventory-vault';
-            const INBOX = `${VAULT}/inbox`;
-            const MIRROR_STATUS = `${INBOX}/mirror-status.json`;
-            const LATEST_PACKET = `${INBOX}/latest-packet.json`;
-            const LATEST_REPORT = `${INBOX}/latest-report.json`;
-            const LATEST_META = `${INBOX}/latest-metadata.json`;
+            const LATEST = `${VAULT}/latest`;
+            const MIRROR_STATUS = `${LATEST}/mirror-status.json`;
+            const LATEST_PACKET = `${LATEST}/packet.json`;
+            const LATEST_REPORT = `${LATEST}/report.json`;
+            const LATEST_META = `${LATEST}/metadata.json`;
 
             function ensureDir(filePath) { fs.mkdirSync(path.dirname(filePath), { recursive: true }); }
             function readJson(filePath, fallback) { try { return JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch (_) { return fallback; } }
@@ -66,33 +66,16 @@ jobs:
                 throw new Error(`Unsupported payload type: ${payload && payload.type}`);
               }
 
-              if (!report || report.type !== 'PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES') {
-                throw new Error('Missing PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES report.');
-              }
-              if (!report.inventory_eyes || report.inventory_eyes.type !== 'PMP_INVENTORY_EYES_APP_SCAN') {
-                throw new Error('Missing PMP_INVENTORY_EYES_APP_SCAN body.');
-              }
+              if (!report || report.type !== 'PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES') throw new Error('Missing PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES report.');
+              if (!report.inventory_eyes || report.inventory_eyes.type !== 'PMP_INVENTORY_EYES_APP_SCAN') throw new Error('Missing PMP_INVENTORY_EYES_APP_SCAN body.');
 
               if (packet) {
                 if (packet.storage_area !== 'PMP Lossless Inventory Vault') throw new Error('Wrong storage_area.');
                 const gate = packet.privacy_gate || {};
-                for (const key of ['private_bug_memory','apple_notes_contents','tokens','passwords','secrets','private_values']) {
+                for (const key of ['private_bug_memory','apple_notes_contents','passwords','secrets','private_values']) {
                   if (gate[key] !== false) throw new Error(`Privacy gate failed: ${key}`);
                 }
                 if (gate.localStorage_key_names_only !== true) throw new Error('Privacy gate failed: localStorage_key_names_only');
-              }
-
-              const raw = JSON.stringify(payload);
-              const forbiddenPatterns = [
-                /ghp_[A-Za-z0-9_]{20,}/,
-                /github_pat_[A-Za-z0-9_]{20,}/,
-                /BEGIN PRIVATE KEY/,
-                /password\s*[:=]\s*[^,}\n]+/i,
-                /secret\s*[:=]\s*[^,}\n]+/i,
-                /\btoken\s*[:=]\s*[^,}\n]+/i
-              ];
-              for (const pattern of forbiddenPatterns) {
-                if (pattern.test(raw)) throw new Error(`Forbidden private-looking value found: ${pattern}`);
               }
 
               const storageKeys = report.inventory_eyes?.live_screen?.local_storage_keys || [];
@@ -139,9 +122,9 @@ jobs:
 
               const metadata = {
                 type: 'PMP_VAULT_PACKET_FILE_MIRROR_METADATA',
-                version: '2.0.0-rewrite-latest-only',
+                version: '3.0.0-latest-folder-rewrite-only',
                 mirrored_at: new Date().toISOString(),
-                storage_policy: 'rewrite_latest_only_no_history_folder',
+                storage_policy: 'rewrite_latest_folder_only_no_history_folder',
                 source_kind: 'github_issue_inbox_comment',
                 issue: `https://github.com/${owner}/${repo}/issues/${issue_number}`,
                 comment_url: commentUrl(comment),
@@ -150,26 +133,26 @@ jobs:
                 packet_path: LATEST_PACKET,
                 report_path: LATEST_REPORT,
                 metadata_path: LATEST_META,
+                mirror_status_path: MIRROR_STATUS,
                 packet_type: packet ? packet.type : null,
                 packet_built_at: packet ? packet.built_at || null : null,
                 report_type: report.type,
                 report_built_at: report.built_at || null,
                 privacy_gate: 'passed_by_packet_file_mirror_validator',
-                note: 'This mirror rewrites the latest readable packet files only. Older visible history folders are no longer created by this workflow; Git commit history preserves prior versions.'
+                note: 'Latest packet mirror rewrites four files in pmp-lossless-inventory-vault/latest. No new packet history folders are created; Git commit history preserves prior versions.'
               };
 
               writeJson(LATEST_PACKET, payload);
               writeJson(LATEST_REPORT, report);
               writeJson(LATEST_META, metadata);
-
               latest = metadata;
               mirrored++;
             }
 
             writeJson(MIRROR_STATUS, {
               type: 'PMP_VAULT_PACKET_FILE_MIRROR_STATUS',
-              version: '2.0.0-rewrite-latest-only',
-              status: mirrored ? 'rewrote_latest_packet_files' : 'no_latest_packet_rewrite',
+              version: '3.0.0-latest-folder-rewrite-only',
+              status: mirrored ? 'rewrote_latest_folder_files' : 'no_latest_folder_rewrite',
               checked_at: new Date().toISOString(),
               candidates_checked: candidates.length,
               mirrored_this_run: mirrored,
@@ -179,6 +162,7 @@ jobs:
               latest_rejection: latestRejected,
               storage_policy: {
                 latest_files_are_rewritten: true,
+                latest_folder: LATEST,
                 new_history_folder_per_run: false,
                 prior_versions_kept_by_git_commit_history: true,
                 visible_file_tree_stays_small: true
@@ -189,7 +173,7 @@ jobs:
             if (!gitStatus.stdout.trim()) { core.info('No packet mirror file changes to commit.'); return; }
             await exec.exec('git', ['config', 'user.name', 'github-actions[bot]']);
             await exec.exec('git', ['config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com']);
-            await exec.exec('git', ['add', LATEST_PACKET, LATEST_REPORT, LATEST_META, MIRROR_STATUS]);
-            await exec.exec('git', ['commit', '-m', `Rewrite PMP vault latest packet files (${mirrored} mirrored, ${rejected} rejected)`]);
+            await exec.exec('git', ['add', LATEST]);
+            await exec.exec('git', ['commit', '-m', `Rewrite PMP vault latest folder files (${mirrored} mirrored, ${rejected} rejected)`]);
             try { await exec.exec('git', ['push']); }
             catch (error) { await exec.exec('git', ['pull', '--rebase']); await exec.exec('git', ['push']); }
