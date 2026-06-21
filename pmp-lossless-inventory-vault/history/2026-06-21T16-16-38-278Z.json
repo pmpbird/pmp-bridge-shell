@@ -1,0 +1,85 @@
+{
+  "type": "PMP_LOSSLESS_INVENTORY_VAULT_HISTORY_RECORD",
+  "version": "1.0.0-separate-promotion-step",
+  "status": "PROMOTED_FROM_ISSUE_INBOX_TO_HISTORY",
+  "storage_area_name": "PMP Lossless Inventory Vault",
+  "record_id": "PMP-INV-2026-06-21-0007",
+  "promoted_at": "2026-06-21T16:27:20Z",
+  "source": {
+    "source_kind": "github_issue_inbox_comment",
+    "issue": "https://github.com/pmpbird/pmp-bridge-shell/issues/1",
+    "comment_url": "https://github.com/pmpbird/pmp-bridge-shell/issues/1#issuecomment-4762561013",
+    "comment_id": 4762561013,
+    "created_at": "2026-06-21T16:16:44Z",
+    "body_hash": "e047c4f26e5b9c3987488c305c3081c332a43006392603311437f645a6e52b9d",
+    "note": "This history record is the separate promotion step from Issue Inbox into the Lossless Inventory Vault. The original full packet/report remains preserved in the source inbox comment."
+  },
+  "targets": {
+    "current": "pmp-lossless-inventory-vault/current.json",
+    "history": "pmp-lossless-inventory-vault/history/2026-06-21T16-16-38-278Z.json"
+  },
+  "report_identity": {
+    "packet_type": "PMP_LOSSLESS_VAULT_WRITE_PACKET",
+    "packet_version": "1.4.0-direct-tap-open",
+    "packet_built_at": "2026-06-21T16:16:38.278Z",
+    "report_type": "PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES",
+    "report_built_at": "2026-06-21T16:16:38.278Z",
+    "inventory_eyes_version": "2.9.0-current-inner-no-shortcut-app-update",
+    "inventory_eyes_built_at": "2026-05-10T22:17:13.568Z"
+  },
+  "record_classification": {
+    "primary_category": "app_inventory",
+    "record_kind": "inventory_eyes_lossless_report",
+    "record_status": "accepted_history",
+    "privacy_gate": "passed_by_type_isolated_automated_validator",
+    "confidence": "high",
+    "history_written": true,
+    "current_pointer_updated": true
+  },
+  "scan_summary": {
+    "manifest_paths": 55,
+    "active_files": 11,
+    "inactive_files": 44,
+    "helper_or_support_files": 21,
+    "privacy_sensitive_surfaces": 20,
+    "theme_review_targets": 17,
+    "local_storage_keys": 11,
+    "html_pages": 35,
+    "json_files": 13,
+    "js_files": 6,
+    "css_files": 0,
+    "config_files": 3
+  },
+  "active_files": [
+    "pmp-app-current.html",
+    "pmp-current-map.json",
+    "pmp-current-inner.html",
+    "pmp-home-single-v14.html",
+    "pmp-home-single-v6.html",
+    "bm.html",
+    "private-bug-memory-hub-v9.html",
+    "resident-notes-catalog-v3.html",
+    "resident-notes-backend-v2.html",
+    "resident-zip-xray-v2.html",
+    "private-bug-mixer-lab-v1.html"
+  ],
+  "category_tags": [
+    "inventory_eyes",
+    "lossless_quality",
+    "app_inventory",
+    "active_files",
+    "inactive_files",
+    "theme_review",
+    "privacy_surfaces",
+    "local_storage_key_names",
+    "version_control",
+    "route_control"
+  ],
+  "truth_boundary": "This is a compact promoted history record from the Issue Inbox packet. Private values are not captured; only key names and app structure are allowed. The original full report stays in the GitHub Issue Inbox source comment.",
+  "next_actions": [
+    "Keep the big phone button as Issue Inbox intake because it works.",
+    "Use this separate promotion step to write current.json and history records.",
+    "Do not connect this step to the main app until the vault process is stable.",
+    "Later, build an automated promoter only after several successful manual promotions."
+  ]
+}
