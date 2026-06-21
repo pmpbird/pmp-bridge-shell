@@ -2,11 +2,11 @@
   "type": "PMP_CURRENT_APP_MAP",
   "app_name": "PMP Current",
   "app_version": "PMP-CURRENT-1",
-  "updated_at": "2026-06-21T07:21:00Z",
+  "updated_at": "2026-06-21T07:30:00Z",
   "route_guardian_loader": {
     "path": "pmp-route-guardian-current-loader-v14.html",
-    "label": "PMP Current Route Guardian Loader v14",
-    "cache_key": "pmp-route-guardian-current-loader-v14-private-window-phase2-fix-restored-after-packet03-proof",
+    "label": "PMP Current Route Guardian Loader v14 force-map-current-app",
+    "cache_key": "pmp-route-guardian-current-loader-v14-force-current-app-path-20260621T0730Z",
     "status": "current"
   },
   "current_app": {
@@ -17,7 +17,7 @@
   },
   "user_facing_rule": "Only show PMP Current / PMP-CURRENT-1 as the app version.",
   "home_screen_rule": "Install pmp-app-current.html once. It is a stable map-driven door and should change as little as possible.",
-  "update_rule": "Current v16 uses the ledger-identified last clean route family, pmp-current-inner-cleanbug-rgcontrols-v13.html#control, as the recovery baseline. It performs a hard ownership reset: current loads one Route Guardian Last Good owner only, pmp-route-guardian-last-good-clean-v1.js. It does not load pmp-last-good-label-v11.js, Recovery Tools v9, Move Ledger target-opening helpers, candidate panel helpers, stage/test helpers, or self-contained helper experiments. Route Guardian Last Good now has only Save Current, Copy Recovery Report, Saved Spots, and Back to Control. Recovery Tools v8 remains emergency-only. Packet 1.5, free-only gates, Safe Writer, Dashboard, and the core app shell are unchanged.",
+  "update_rule": "Route Guardian loader v14 has been patched so Open Latest App force-fetches pmp-current-map-v9.json with a fresh timestamp, ignores stale saved current-route/candidate values, and opens current_app.path exactly. Current remains v16 clean ownership reset from the ledger-identified v13 clean route family. Route Guardian Last Good has only Save Current, Copy Recovery Report, Saved Spots, and Back to Control. Recovery Tools v8 remains emergency-only. No v9 wrapper, candidate panel helper, Move Ledger target-opening helper, or stage/test helper is loaded by current.",
   "fallback_app": {
     "path": "pmp-current-inner-cleanbug-rgcontrols-v13.html",
     "cache_key": "fallback-pmp-current-v13-ledger-clean-current"
