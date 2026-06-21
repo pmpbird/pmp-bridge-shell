@@ -1,11 +1,13 @@
 (() => {
   const EYES = 'pmp_inventory_eyes_latest_v1';
   const INVENTORY = 'pmp_app_lossless_inventory_latest_v1';
+  const LAST_SAVE = 'pmp_last_save_to_github_vault_press_v1';
   const SHORTCUT = 'PMP Vault GitHub Writer';
   const SHORTCUT_URL = 'shortcuts://run-shortcut?name=' + encodeURIComponent(SHORTCUT);
   const VAULT_CURRENT = 'pmp-lossless-inventory-vault/current.json';
   const VAULT_HISTORY = 'pmp-lossless-inventory-vault/history/';
   function read(k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (_) { return null; } }
+  function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(_){}}
   function now() { return new Date().toISOString(); }
   function deep() {
     try {
@@ -46,7 +48,7 @@
     };
     return JSON.stringify({
       type: 'PMP_LOSSLESS_VAULT_WRITE_PACKET',
-      version: '1.4.0-direct-tap-open',
+      version: '1.5.0-record-save-press-time',
       built_at: stamp,
       writer_name: 'Vault GitHub Writer',
       shortcut_name: SHORTCUT,
@@ -89,6 +91,10 @@
   function copyAndOpen() {
     const txt = packetText();
     if (!txt) { status('No full report found. Run Improve Lossless Quality first.'); return false; }
+    const press = now();
+    let built = null;
+    try{built = JSON.parse(txt).built_at || null}catch(_){built=null}
+    save(LAST_SAVE,{pressed_at:press,packet_built_at:built,source:'Save to GitHub Vault',shortcut_name:SHORTCUT});
     fallbackCopy(txt);
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).catch(()=>{});
     status('Copied Vault Write Packet. Opening PMP Vault GitHub Writer Shortcut.');
