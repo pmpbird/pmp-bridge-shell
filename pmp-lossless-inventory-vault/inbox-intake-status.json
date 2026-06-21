@@ -1,12 +1,29 @@
 {
   "type": "PMP_VAULT_INBOX_INTAKE_STATUS",
   "version": "2.1.0-type-isolated-processor",
-  "status": "no_new_valid_lossless_reports",
-  "checked_at": "2026-06-21T17:53:51.038Z",
+  "status": "accepted_and_promoted",
+  "checked_at": "2026-06-21T17:57:42.170Z",
   "candidates_checked": 1,
-  "accepted": 0,
-  "rejected": 1,
+  "accepted": 1,
+  "rejected": 0,
   "skipped": 0,
   "ignored_other_payload_type": 0,
-  "latest_accepted": null
+  "latest_accepted": {
+    "comment_id": 4762816935,
+    "record_id": "PMP-INV-2026-06-21-0009",
+    "summary": {
+      "manifest_paths": 55,
+      "active_files": 11,
+      "inactive_files": 44,
+      "helper_or_support_files": 21,
+      "privacy_sensitive_surfaces": 20,
+      "theme_review_targets": 17,
+      "local_storage_keys": 11,
+      "html_pages": 35,
+      "json_files": 13,
+      "js_files": 6,
+      "css_files": 0,
+      "config_files": 3
+    }
+  }
 }
