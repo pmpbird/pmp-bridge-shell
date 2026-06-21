@@ -1,0 +1,40 @@
+{
+  "type": "PMP_VAULT_PACKET_FILE_MIRROR_STATUS",
+  "version": "1.0.0",
+  "mirrored_comments": [
+    {
+      "comment_id": 4762977427,
+      "mirrored_at": "2026-06-21T19:00:46.493Z",
+      "packet_path": "pmp-lossless-inventory-vault/inbox/history/comment-4762977427-2026-06-21T19-00-31-118Z/packet.json",
+      "report_path": "pmp-lossless-inventory-vault/inbox/history/comment-4762977427-2026-06-21T19-00-31-118Z/report.json",
+      "metadata_path": "pmp-lossless-inventory-vault/inbox/history/comment-4762977427-2026-06-21T19-00-31-118Z/metadata.json",
+      "body_hash": "e4c001e630bfce322da3d51058ea305ad629556fc131a9f15592da1e76561a31"
+    }
+  ],
+  "rejected_comments": [],
+  "status": "mirrored_packet_files",
+  "checked_at": "2026-06-21T19:00:46.495Z",
+  "candidates_checked": 1,
+  "mirrored_this_run": 1,
+  "rejected_this_run": 0,
+  "skipped_this_run": 0,
+  "latest_mirror": {
+    "type": "PMP_VAULT_PACKET_FILE_MIRROR_METADATA",
+    "version": "1.0.0",
+    "mirrored_at": "2026-06-21T19:00:46.493Z",
+    "source_kind": "github_issue_inbox_comment",
+    "issue": "https://github.com/pmpbird/pmp-bridge-shell/issues/1",
+    "comment_url": "https://github.com/pmpbird/pmp-bridge-shell/issues/1#issuecomment-4762977427",
+    "comment_id": 4762977427,
+    "body_hash": "e4c001e630bfce322da3d51058ea305ad629556fc131a9f15592da1e76561a31",
+    "packet_path": "pmp-lossless-inventory-vault/inbox/history/comment-4762977427-2026-06-21T19-00-31-118Z/packet.json",
+    "report_path": "pmp-lossless-inventory-vault/inbox/history/comment-4762977427-2026-06-21T19-00-31-118Z/report.json",
+    "metadata_path": "pmp-lossless-inventory-vault/inbox/history/comment-4762977427-2026-06-21T19-00-31-118Z/metadata.json",
+    "packet_type": "PMP_LOSSLESS_VAULT_WRITE_PACKET",
+    "packet_built_at": "2026-06-21T19:00:31.118Z",
+    "report_type": "PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES",
+    "report_built_at": "2026-06-21T19:00:31.118Z",
+    "privacy_gate": "passed_by_packet_file_mirror_validator",
+    "note": "This mirror makes the full accepted packet readable from GitHub files without a ZIP upload."
+  }
+}
