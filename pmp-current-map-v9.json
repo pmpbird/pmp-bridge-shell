@@ -2,7 +2,7 @@
   "type": "PMP_CURRENT_APP_MAP",
   "app_name": "PMP Current",
   "app_version": "PMP-CURRENT-1",
-  "updated_at": "2026-06-20T21:02:00-07:00",
+  "updated_at": "2026-06-20T21:10:00-07:00",
   "route_guardian_loader": {
     "path": "pmp-route-guardian-current-loader-v14.html",
     "label": "PMP Current Route Guardian Loader v14",
@@ -11,15 +11,15 @@
   },
   "current_app": {
     "path": "pmp-current-inner-cleanbug-rgcontrols-v9.html",
-    "label": "PMP Current v9 with standalone compressed continuous run dashboard route",
-    "cache_key": "pmp-current-v9-standalone-compressed-continuous-run-dashboard-v1",
+    "label": "PMP Current v9 with single-owner standalone compressed Continuous Run Dashboard route",
+    "cache_key": "pmp-current-v9-single-owner-standalone-continuous-run-dashboard-route",
     "status": "current"
   },
   "user_facing_rule": "Only show PMP Current / PMP-CURRENT-1 as the app version.",
   "home_screen_rule": "Install pmp-app-current.html once. It is a stable map-driven door and should change as little as possible.",
-  "update_rule": "Route Guardian v14 opens the current app only after the user presses Open Latest App. Current v9 keeps the Route Guardian Last Good doorway path, Continuous Run State Ledger v2, current-before-last-good v9 protection, Route Guardian Last Good v18, Recovery Tools v8, and routes the Continuous Run Dashboard button to standalone page pmp-continuous-run-dashboard-compressed-v1.html. The old inline dashboard opener is not loaded by v9, so the old dashboard should not be built before the compressed route. More Tools preserves the legacy functions on the standalone route. This does not remove gates, weaken free-only locks, start Packet 1.5, enable autonomous paid execution, authorize merging, prove hook validation, real app proof, current-clean, frozen, or best-in-world.",
+  "update_rule": "Route Guardian v14 opens the current app only after the user presses Open Latest App. Current v9 keeps the Route Guardian Last Good doorway path, Continuous Run State Ledger v2, current-before-last-good v9 protection, Route Guardian Last Good v18, Recovery Tools v8, and routes the Continuous Run Dashboard button to standalone page pmp-continuous-run-dashboard-compressed-v1.html. The old inline dashboard opener and extra label helpers are not loaded by v9, leaving the standalone route button as the single owner of the Continuous Run Dashboard entry. More Tools preserves the legacy functions on the standalone route. This does not remove gates, weaken free-only locks, start Packet 1.5, enable autonomous paid execution, authorize merging, prove hook validation, real app proof, current-clean, frozen, or best-in-world.",
   "fallback_app": {
     "path": "pmp-current-inner-cleanbug-rgcontrols-v9.html",
-    "cache_key": "fallback-standalone-compressed-continuous-run-dashboard-v1"
+    "cache_key": "fallback-single-owner-standalone-continuous-run-dashboard-route"
   }
 }
