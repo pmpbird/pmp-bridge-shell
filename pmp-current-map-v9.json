@@ -2,7 +2,7 @@
   "type": "PMP_CURRENT_APP_MAP",
   "app_name": "PMP Current",
   "app_version": "PMP-CURRENT-1",
-  "updated_at": "2026-06-20T21:48:00-07:00",
+  "updated_at": "2026-06-20T22:04:00-07:00",
   "route_guardian_loader": {
     "path": "pmp-route-guardian-current-loader-v14.html",
     "label": "PMP Current Route Guardian Loader v14",
@@ -11,15 +11,15 @@
   },
   "current_app": {
     "path": "pmp-current-inner-cleanbug-rgcontrols-v10.html",
-    "label": "PMP Current v10 cache-breaking wrapper for old-shape standalone Continuous Run Dashboard v3",
-    "cache_key": "pmp-current-v10-cache-break-old-shape-dashboard-v3-route-button-v2",
+    "label": "PMP Current v10 with normalized standalone Continuous Run Dashboard v4",
+    "cache_key": "pmp-current-v10-dashboard-v4-route-normalized-v10-everywhere",
     "status": "current"
   },
   "user_facing_rule": "Only show PMP Current / PMP-CURRENT-1 as the app version.",
   "home_screen_rule": "Install pmp-app-current.html once. It is a stable map-driven door and should change as little as possible.",
-  "update_rule": "Route Guardian v14 opens the current app only after the user presses Open Latest App. Current v10 is a cache-breaking wrapper that writes current-before-last-good as pmp-current-inner-cleanbug-rgcontrols-v10.html#control and loads new route button v2. The Continuous Run Dashboard button routes to pmp-continuous-run-dashboard-compressed-v3.html, which keeps the standalone safety route but uses the old-shape compact dashboard. This does not remove gates, weaken free-only locks, start Packet 1.5, enable autonomous paid execution, authorize merging, prove hook validation, real app proof, current-clean, frozen, or best-in-world.",
+  "update_rule": "Route Guardian v14 opens the current app only after the user presses Open Latest App. Current v10 writes current-before-last-good as pmp-current-inner-cleanbug-rgcontrols-v10.html#control and loads route button v3. The Continuous Run Dashboard button routes to pmp-continuous-run-dashboard-compressed-v4.html. Dashboard v4 normalizes current_app_route, back_route, state proof, and Route Guardian current-before to pmp-current-inner-cleanbug-rgcontrols-v10.html#control. This does not remove gates, weaken free-only locks, start Packet 1.5, enable autonomous paid execution, authorize merging, prove hook validation, real app proof, current-clean, frozen, or best-in-world.",
   "fallback_app": {
     "path": "pmp-current-inner-cleanbug-rgcontrols-v10.html",
-    "cache_key": "fallback-pmp-current-v10-cache-break-old-shape-dashboard-v3"
+    "cache_key": "fallback-pmp-current-v10-dashboard-v4-route-normalized"
   }
 }
