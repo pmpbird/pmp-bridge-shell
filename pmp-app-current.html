@@ -23,22 +23,31 @@ iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:var(--f
 .card{width:min(620px,100%);background:var(--card,#fff);border:3px solid #07101c;border-radius:28px;padding:18px;box-shadow:0 10px 24px rgba(0,0,0,.2)}
 .badge{display:inline-block;background:var(--a,#acd1fb);border:2px solid #07101c;border-radius:999px;padding:6px 10px;font-size:12px;margin-bottom:10px}
 h1{font-size:28px;margin:0 0 8px}.hide{display:none!important}
+#diagBtn{position:fixed;right:10px;bottom:10px;z-index:20;border:2px solid #07101c;border-radius:999px;background:#acd1fb;color:#07101c;padding:8px 10px;font:inherit;font-size:12px;font-weight:950}
+#diag{position:fixed;left:10px;right:10px;bottom:52px;z-index:19;display:none;max-height:45vh;overflow:auto;text-align:left;background:#102033;color:#eaffef;border:2px solid #07101c;border-radius:16px;padding:10px;font:12px ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap}
+#diag.open{display:block}
 </style>
 </head>
 <body>
 <iframe id="app" title="PMP Current"></iframe>
 <div id="status"><div class="card"><div class="badge">PMP CURRENT</div><h1>Opening Current</h1><div id="msg">Loading the current Route Guardian loader.</div></div></div>
+<button id="diagBtn">Route</button><pre id="diag">No route report yet.</pre>
 <script>
 const MAP_PATHS=['pmp-current-map-v9.json','pmp-current-map.json'];
 const FALLBACK_LOADER='pmp-route-guardian-current-loader-v9.html';
 const app=document.getElementById('app');
 const status=document.getElementById('status');
 const msg=document.getElementById('msg');
+const diag=document.getElementById('diag');
+const diagBtn=document.getElementById('diagBtn');
+let routeReceipt={type:'PMP_APP_CURRENT_ROUTE_DIAGNOSTIC_V1',shell:'pmp-app-current.html',generated_at:new Date().toISOString(),loaded_map:null,loader_route:null,current_app_from_map:null,iframe_src:null,notes:'Tap Route, then copy this route report if the app is not changing.'};
 function safePath(path,fallback){path=String(path||fallback||'').trim();return /^[a-zA-Z0-9._\/-]+\.html$/.test(path)?path.replace(/^\/+/, ''):fallback}
-async function fetchJson(path){const r=await fetch(path+'?stable-door-v9='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error(path+' did not load: '+r.status);const map=await r.json();map.__loaded_map_path=path;return map}
+function writeDiag(){routeReceipt.generated_at=new Date().toISOString();routeReceipt.iframe_src=app.getAttribute('src')||'';routeReceipt.top_location=location.href;diag.textContent=JSON.stringify(routeReceipt,null,2);try{localStorage.setItem('pmp_app_current_route_diagnostic_v1',JSON.stringify(routeReceipt,null,2))}catch(e){}}
+async function fetchJson(path){const r=await fetch(path+'?stable-door-v10-route-diag='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error(path+' did not load: '+r.status);const map=await r.json();map.__loaded_map_path=path;return map}
 async function loadMap(){let lastErr=null;for(const path of MAP_PATHS){try{return await fetchJson(path)}catch(e){lastErr=e}}throw lastErr||new Error('No current map loaded')}
-function loaderFromMap(map){const loader=map.route_guardian_loader||map.current_loader||{};const path=safePath(loader.path,FALLBACK_LOADER);const key=loader.cache_key||map.loader_cache_key||map.updated_at||Date.now();return path+'?fresh=stable-door-'+encodeURIComponent(key)+'-'+Date.now()+(location.hash||'')}
-async function boot(){bootShellColors();try{const map=await loadMap();msg.textContent='Loaded '+(map.__loaded_map_path||'current map');app.src=loaderFromMap(map);app.onload=()=>setTimeout(()=>status.classList.add('hide'),350)}catch(e){msg.textContent='Map load failed. Opening fallback Route Guardian v9.';app.src=FALLBACK_LOADER+'?fresh=fallback-v9-'+Date.now()+(location.hash||'');app.onload=()=>setTimeout(()=>status.classList.add('hide'),700)}}
+function loaderFromMap(map){const loader=map.route_guardian_loader||map.current_loader||{};const path=safePath(loader.path,FALLBACK_LOADER);const key=loader.cache_key||map.loader_cache_key||map.updated_at||Date.now();routeReceipt.loaded_map=map.__loaded_map_path||'';routeReceipt.loader_route=path;routeReceipt.current_app_from_map=(map.current_app&&map.current_app.path)||'';routeReceipt.current_app_cache_key=(map.current_app&&map.current_app.cache_key)||'';routeReceipt.map_updated_at=map.updated_at||'';writeDiag();return path+'?fresh=stable-door-v10-route-diag-'+encodeURIComponent(key)+'-'+Date.now()+(location.hash||'')}
+async function boot(){bootShellColors();try{const map=await loadMap();msg.textContent='Loaded '+(map.__loaded_map_path||'current map');app.src=loaderFromMap(map);app.onload=()=>{writeDiag();setTimeout(()=>status.classList.add('hide'),350)}}catch(e){routeReceipt.error=String(e&&e.message||e);msg.textContent='Map load failed. Opening fallback Route Guardian v9.';app.src=FALLBACK_LOADER+'?fresh=fallback-v9-'+Date.now()+(location.hash||'');app.onload=()=>{writeDiag();setTimeout(()=>status.classList.add('hide'),700)}}}
+diagBtn.onclick=async()=>{writeDiag();diag.classList.toggle('open');try{await navigator.clipboard.writeText(diag.textContent);diagBtn.textContent='Copied'}catch(e){diagBtn.textContent='Route'}};
 boot();
 </script>
 </body>
