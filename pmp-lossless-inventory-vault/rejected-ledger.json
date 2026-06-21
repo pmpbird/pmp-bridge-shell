@@ -28,7 +28,20 @@
       "body_hash": "0a084bfe006990ae53afc75c48eb6588d79a5081b96e00f575bf71c5cc1c7849",
       "body_preview": "PMP LOSSLESS INVENTORY REPORT GitHubResponse set",
       "promoted_to_current": false
+    },
+    {
+      "rejected_id": "PMP-REJECT-2026-06-21T18-27-00-455Z",
+      "source_comment_id": 4762894033,
+      "source_url": "https://github.com/pmpbird/pmp-bridge-shell/issues/1#issuecomment-4762894033",
+      "source_user": "pmpbird",
+      "author_association": "OWNER",
+      "rejected_at": "2026-06-21T18:27:00.455Z",
+      "reason": "validation_failed",
+      "detail": "No JSON object found in inbox comment.",
+      "body_hash": "0be65287077f142af40e354720f7efda364979c3aba83480dc15ccc1921f60a7",
+      "body_preview": "PMP LOSSLESS INVENTORY REPORT ran with GitHubResponse",
+      "promoted_to_current": false
     }
   ],
-  "updated_at": "2026-06-21T18:18:42.296Z"
+  "updated_at": "2026-06-21T18:27:00.455Z"
 }

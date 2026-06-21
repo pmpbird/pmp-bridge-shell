@@ -2,7 +2,7 @@
   "type": "PMP_VAULT_INBOX_INTAKE_STATUS",
   "version": "2.1.0-type-isolated-processor",
   "status": "no_new_valid_lossless_reports",
-  "checked_at": "2026-06-21T18:18:42.297Z",
+  "checked_at": "2026-06-21T18:27:00.456Z",
   "candidates_checked": 1,
   "accepted": 0,
   "rejected": 1,
