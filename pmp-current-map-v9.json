@@ -2,7 +2,7 @@
   "type": "PMP_CURRENT_APP_MAP",
   "app_name": "PMP Current",
   "app_version": "PMP-CURRENT-1",
-  "updated_at": "2026-06-20T23:18:00-07:00",
+  "updated_at": "2026-06-20T23:29:00-07:00",
   "route_guardian_loader": {
     "path": "pmp-route-guardian-current-loader-v14.html",
     "label": "PMP Current Route Guardian Loader v14",
@@ -11,15 +11,15 @@
   },
   "current_app": {
     "path": "pmp-current-inner-cleanbug-rgcontrols-v11.html",
-    "label": "PMP Current v11 with inline native Continuous Run Dashboard",
-    "cache_key": "pmp-current-v11-inline-native-dashboard-single-visual-owner",
+    "label": "PMP Current v11 with true same-shell Continuous Run Dashboard page",
+    "cache_key": "pmp-current-v11-true-same-shell-dashboard-page",
     "status": "current"
   },
   "user_facing_rule": "Only show PMP Current / PMP-CURRENT-1 as the app version.",
   "home_screen_rule": "Install pmp-app-current.html once. It is a stable map-driven door and should change as little as possible.",
-  "update_rule": "Stop stacking visual fixes. Current v11 does not load pmp-visual-scale-contrast-reset-v1.js and no longer opens a separate hardcoded standalone dashboard shell. The Continuous Run Dashboard is now injected as an inline Control Room card by pmp-continuous-run-dashboard-inline-native-v1.js, so it inherits the existing app visual owner, card style, button style, Launcher/Resident shell, and bottom navigation. This does not start Packet 1.5 or weaken free-only gates.",
+  "update_rule": "Stop stacking visual fixes. Current v11 does not load pmp-visual-scale-contrast-reset-v1.js and no longer opens a separate hardcoded standalone dashboard shell. The Continuous Run Dashboard is now injected as a true same-shell screen/page by pmp-continuous-run-dashboard-inline-native-v1.js, so it inherits the existing app visual owner, card style, button style, Launcher/Resident shell, and bottom navigation while moving content below Launcher/Resident. This does not start Packet 1.5 or weaken free-only gates.",
   "fallback_app": {
     "path": "pmp-current-inner-cleanbug-rgcontrols-v11.html",
-    "cache_key": "fallback-pmp-current-v11-inline-native-dashboard-single-visual-owner"
+    "cache_key": "fallback-pmp-current-v11-true-same-shell-dashboard-page"
   }
 }
