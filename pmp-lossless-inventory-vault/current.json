@@ -3,21 +3,21 @@
   "version": "3.1.0-type-isolated-processor",
   "status": "CURRENT_FROM_TYPE_ISOLATED_INBOX_PROCESSOR",
   "storage_area_name": "PMP Lossless Inventory Vault",
-  "current_record_id": "PMP-INV-2026-06-21-0018",
+  "current_record_id": "PMP-INV-2026-06-21-0019",
   "source": {
     "source_kind": "github_issue_inbox_comment",
     "issue": "https://github.com/pmpbird/pmp-bridge-shell/issues/1",
-    "comment_url": "https://github.com/pmpbird/pmp-bridge-shell/issues/1#issuecomment-4763076420",
-    "comment_id": 4763076420,
-    "body_hash": "8baa8eeab8e8d673adc2d2e3351663bf44bd1947799bc66d617014c23b2ca453",
+    "comment_url": "https://github.com/pmpbird/pmp-bridge-shell/issues/1#issuecomment-4763106010",
+    "comment_id": 4763106010,
+    "body_hash": "701b949972d28cf7ecd7641fc293e8a63ddb7502c7acc9ed2dcf7dcfa97685de",
     "note": "Full report is preserved in the inbox comment; current.json stores compact normalized current state."
   },
   "report_identity": {
     "packet_type": "PMP_LOSSLESS_VAULT_WRITE_PACKET",
     "packet_version": "1.4.0-direct-tap-open",
-    "packet_built_at": "2026-06-21T19:37:09.690Z",
+    "packet_built_at": "2026-06-21T19:49:30.703Z",
     "report_type": "PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES",
-    "report_built_at": "2026-06-21T19:37:09.690Z",
+    "report_built_at": "2026-06-21T19:49:30.703Z",
     "inventory_eyes_version": "2.9.0-current-inner-no-shortcut-app-update",
     "inventory_eyes_built_at": "2026-05-10T22:17:13.568Z"
   },
