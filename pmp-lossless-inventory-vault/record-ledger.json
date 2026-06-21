@@ -632,7 +632,50 @@
       "promoted_to_history": false,
       "delta_record": "pmp-lossless-inventory-vault/deltas/latest-delta.json",
       "notes": "Automatically processed from GitHub Issue #1 inbox by type-isolated processor."
+    },
+    {
+      "record_id": "PMP-INV-2026-06-21-0015",
+      "record_kind": "inventory_eyes_lossless_report",
+      "primary_category": "app_inventory",
+      "status": "accepted_current",
+      "source_kind": "github_issue_inbox_comment",
+      "source_url": "https://github.com/pmpbird/pmp-bridge-shell/issues/1#issuecomment-4762977427",
+      "source_comment_id": 4762977427,
+      "body_hash": "e4c001e630bfce322da3d51058ea305ad629556fc131a9f15592da1e76561a31",
+      "packet_built_at": "2026-06-21T19:00:31.118Z",
+      "report_built_at": "2026-06-21T19:00:31.118Z",
+      "summary": {
+        "manifest_paths": 55,
+        "active_files": 11,
+        "inactive_files": 44,
+        "helper_or_support_files": 21,
+        "privacy_sensitive_surfaces": 20,
+        "theme_review_targets": 17,
+        "local_storage_keys": 11,
+        "html_pages": 35,
+        "json_files": 13,
+        "js_files": 6,
+        "css_files": 0,
+        "config_files": 3
+      },
+      "categories": [
+        "inventory_eyes",
+        "lossless_quality",
+        "app_inventory",
+        "active_files",
+        "inactive_files",
+        "theme_review",
+        "privacy_surfaces",
+        "local_storage_key_names",
+        "version_control",
+        "route_control"
+      ],
+      "full_report_location": "github_issue_1_comment_4762977427",
+      "promoted_to_current": true,
+      "promoted_to_history": false,
+      "delta_record": "pmp-lossless-inventory-vault/deltas/latest-delta.json",
+      "notes": "Automatically processed from GitHub Issue #1 inbox by type-isolated processor."
     }
   ],
-  "updated_at": "2026-06-21T18:52:47.908Z"
+  "updated_at": "2026-06-21T19:00:43.384Z"
 }
