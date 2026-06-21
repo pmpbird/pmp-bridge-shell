@@ -2,7 +2,7 @@
   "type": "PMP_CURRENT_APP_MAP",
   "app_name": "PMP Current",
   "app_version": "PMP-CURRENT-1",
-  "updated_at": "2026-06-20T23:43:00-07:00",
+  "updated_at": "2026-06-20T23:57:00-07:00",
   "route_guardian_loader": {
     "path": "pmp-route-guardian-current-loader-v14.html",
     "label": "PMP Current Route Guardian Loader v14",
@@ -11,15 +11,15 @@
   },
   "current_app": {
     "path": "pmp-current-inner-cleanbug-rgcontrols-v11.html",
-    "label": "PMP Current v11 with same-shell Dashboard and Safe Writer",
-    "cache_key": "pmp-current-v11-same-shell-dashboard-safe-writer",
+    "label": "PMP Current v11 with same-shell Dashboard Safe Writer and Route Guardian Last Good",
+    "cache_key": "pmp-current-v11-dashboard-safe-writer-route-guardian-last-good",
     "status": "current"
   },
   "user_facing_rule": "Only show PMP Current / PMP-CURRENT-1 as the app version.",
   "home_screen_rule": "Install pmp-app-current.html once. It is a stable map-driven door and should change as little as possible.",
-  "update_rule": "Current v11 keeps the true same-shell Continuous Run Dashboard screen and restores pmp-safe-writer-canonical-route-v1.js so Open Safe Writer is patched back into a same-shell Safe Writer screen instead of a separate standalone webpage. This does not change Route Guardian, Recovery Tools, Packet 1.5, or free-only gates.",
+  "update_rule": "Current v11 keeps the true same-shell Continuous Run Dashboard screen, same-shell Safe Writer, and restores the Last Good label helper so the plain Last Good button is labeled Route Guardian Last Good and opens pmp-route-guardian-last-good-v18.html with the current v11 return route. This does not change Recovery Tools, Packet 1.5, or free-only gates.",
   "fallback_app": {
     "path": "pmp-current-inner-cleanbug-rgcontrols-v11.html",
-    "cache_key": "fallback-pmp-current-v11-same-shell-dashboard-safe-writer"
+    "cache_key": "fallback-pmp-current-v11-dashboard-safe-writer-route-guardian-last-good"
   }
 }
