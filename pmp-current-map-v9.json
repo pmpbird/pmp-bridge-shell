@@ -2,7 +2,7 @@
   "type": "PMP_CURRENT_APP_MAP",
   "app_name": "PMP Current",
   "app_version": "PMP-CURRENT-1",
-  "updated_at": "2026-06-20T14:10:00.000Z",
+  "updated_at": "2026-06-20T17:00:00-07:00",
   "route_guardian_loader": {
     "path": "pmp-route-guardian-current-loader-v14.html",
     "label": "PMP Current Route Guardian Loader v14",
@@ -10,16 +10,16 @@
     "status": "current"
   },
   "current_app": {
-    "path": "pmp-current-inner-cleanbug-rgcontrols-v7.html",
-    "label": "PMP Current v7 fresh Route Guardian Last Good current wrapper",
-    "cache_key": "pmp-current-v7-route-guardian-last-good-current-wrapper-v1",
+    "path": "pmp-current-inner-cleanbug-rgcontrols-v8.html",
+    "label": "PMP Current v8 continuous run state ledger wrapper",
+    "cache_key": "pmp-current-v8-continuous-run-state-ledger-v1",
     "status": "current"
   },
   "user_facing_rule": "Only show PMP Current / PMP-CURRENT-1 as the app version.",
   "home_screen_rule": "Install pmp-app-current.html once. It is a stable map-driven door and should change as little as possible.",
-  "update_rule": "Route Guardian v14 opens the current app only after the user presses Open Latest App. Current v7 refreshes the wrapper so Route Guardian opens the newest Last Good handoff instead of cached v6. This does not begin Pass 003, enable autonomous execution, authorize merging, prove hook validation, real app proof, current-clean, frozen, or best-in-world.",
+  "update_rule": "Route Guardian v14 opens the current app only after the user presses Open Latest App. Current v8 keeps the Route Guardian Last Good doorway path and adds a Continuous Run State Ledger with phase, last completed fix, next planned fix, blocked state, cycle state, route guardian fallback, and do-not-repeat fix ledger. This does not begin Packet 1.5, enable autonomous paid execution, authorize merging, prove hook validation, real app proof, current-clean, frozen, or best-in-world.",
   "fallback_app": {
-    "path": "pmp-current-inner-cleanbug-rgcontrols-v7.html",
-    "cache_key": "fallback-route-guardian-last-good-current-wrapper-v1"
+    "path": "pmp-current-inner-cleanbug-rgcontrols-v8.html",
+    "cache_key": "fallback-continuous-run-state-ledger-v1"
   }
 }
