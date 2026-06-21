@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Route Guardian Recovery Tools v7</title>
+<style>
+body{margin:0;background:#f3ded4;color:#07101c;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:18px}.card{background:#fff;border:3px solid #07101c;border-radius:26px;padding:16px;max-width:680px;margin:auto}.badge{display:inline-block;background:#acd1fb;border:2px solid #07101c;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:950}.btn{display:block;width:100%;box-sizing:border-box;margin:10px 0;border:2px solid #07101c;border-radius:16px;background:#eef4fb;color:#07101c;padding:14px;text-align:left;font:inherit;font-weight:900;text-decoration:none}.good{background:#dff7e8}.warn{background:#fff4d6}.dark{background:#172234;color:#eef4fb}.danger{background:#3a1212;color:#ffe6e6}.copy{background:#e9ecff}.bank{display:none;background:#0c141e;color:#eef4fb;border-radius:14px;padding:10px;margin-top:10px;max-height:38vh;overflow:auto}.open{display:block}.spotcard,.movecard,.summarycard{background:#172234;color:#eef4fb;border:2px solid #eef4fb;border-radius:16px;padding:12px;margin:10px 0}.summarycard{background:#20314a}.small{font-size:12px;opacity:.9;white-space:pre-wrap;overflow-wrap:anywhere}.viewbox{display:none;margin-top:14px;border:3px solid #07101c;border-radius:22px;overflow:hidden;background:#fff}.frame{width:100%;height:55vh;border:0;background:#fff}.status{background:#123024;color:#d8ffe2}
+</style>
+</head>
+<body>
+<div class="card">
+<span class="badge">RECOVERY TOOLS</span>
+<h1>Route Guardian Recovery Tools</h1>
+<p>Move Ledger summary separates best current route from best saved restore point.</p>
+<a id="back" class="btn good">Return to Route Guardian Last Good</a>
+<button id="make" class="btn warn">Make This Version Current</button>
+<button id="spots" class="btn dark">Saved Spots</button>
+<div id="spotBox" class="bank"></div>
+<button id="moves" class="btn dark">Move Ledger</button>
+<div id="moveBox" class="bank"></div>
+<div id="status" class="btn status">Recovery tools ready.</div>
+<div id="viewWrap" class="viewbox"><iframe id="view" class="frame"></iframe></div>
+</div>
+<script>
+(()=>{
+const TOOLS='pmp-route-guardian-recovery-tools-v7.html',TOOLS_VERSION='Route Guardian Recovery Tools v7',SP='pmp_route_guardian_saved_spots_bank_v1',MV='pmp_route_guardian_move_ledger_bank_v1';
+const q=new URLSearchParams(location.search),VIEW=q.get('view')||'',BACK=q.get('back')||'pmp-route-guardian-last-good-v17.html';
+const $=id=>document.getElementById(id),BACKBTN=$('back'),MAKE=$('make'),SPOTS=$('spots'),MOVES=$('moves'),SPOTBOX=$('spotBox'),MOVEBOX=$('moveBox'),STATUS=$('status'),VIEWWRAP=$('viewWrap'),VIEWFRAME=$('view');
+function esc(v){return String(v||'—').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function read(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
+function write(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function fresh(t){t=String(t||BACK);let h='',i=t.indexOf('#');if(i>=0){h=t.slice(i);t=t.slice(0,i)}return t+(t.includes('?')?'&':'?')+'fresh='+Date.now()+h}
+function pretty(k){return String(k||'Move').replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase())}
+function line(label,val){return '<div class="small"><b>'+label+':</b> '+esc(val)+'</div>'}
+function bareRoute(t){return String(t||'').split(/[?#]/)[0]}
+function isGuardianRoute(t){return /^pmp-route-guardian-last-good-v\d+\.html$/.test(bareRoute(t))}
+function isRecoveryRoute(t){return /^pmp-route-guardian-recovery-tools-v\d+\.html$/.test(bareRoute(t))}
+function routeOf(m){if(!m)return'';for(const k of ['to','view','from','return_to','route','target']){const v=m[k];if(v&&String(v).includes('.html'))return String(v)}return''}
+function guardianRouteOf(m){if(!m)return'';for(const k of ['to','from','view','return_to','route','target']){const v=m[k];if(isGuardianRoute(v))return String(v)}return''}
+function recoveryRouteOf(m){if(!m)return'';if(isRecoveryRoute(m.tools_route))return m.tools_route;for(const k of ['to','from','view','return_to','route','target']){const v=m[k];if(isRecoveryRoute(v))return String(v)}return''}
+function move(kind,to,extra={}){let b=read(MV,{entries:[]});b.entries=Array.isArray(b.entries)?b.entries:[];b.entries.push(Object.assign({id:'move_'+Date.now(),at:new Date().toISOString(),kind,from:TOOLS,view:VIEW||'tools',to,tools_route:TOOLS,version:TOOLS_VERSION},extra));b.entries=b.entries.slice(-100);write(MV,b)}
+function summarize(entries){let newest=entries.slice().reverse(),kindCounts={};entries.forEach(m=>{let k=m.kind||'unknown';kindCounts[k]=(kindCounts[k]||0)+1});let latest=newest[0]||{};let active=newest.find(m=>guardianRouteOf(m)&&/enter_route_guardian_last_good|return_to_route_guardian_last_good|open_route_guardian_last_good/i.test(m.kind||''))||newest.find(m=>guardianRouteOf(m)&&!/save_current|delete_saved_spot|make_this_version_current|open_recovery/i.test(m.kind||''));let latestSave=newest.find(m=>m.kind==='save_current');let latestTools=newest.find(m=>recoveryRouteOf(m)||/open_recovery/i.test(m.kind||''));let latestMake=newest.find(m=>/make_this_version_current/i.test(m.kind||''));let latestDelete=newest.find(m=>/delete_saved_spot/i.test(m.kind||''));let latestCurrentBefore=newest.find(m=>m.current_before||m.current_before_last_good);let unique=[];newest.forEach(m=>{let r=guardianRouteOf(m)||recoveryRouteOf(m)||routeOf(m);if(r&&!unique.includes(r))unique.push(r)});let bestCurrent=guardianRouteOf(active)||BACK;let restore=guardianRouteOf(latestSave)||routeOf(latestSave)||'';let recovery=(latestTools&&(recoveryRouteOf(latestTools)||latestTools.tools_route))||TOOLS;let cap=entries.length>=100?'ledger is capped at 100 moves; older moves may already be trimmed':'ledger has not reached the 100-move cap';return ['DETAILED REPORT SUMMARY','best_current_route: '+bestCurrent,'best_saved_restore_point: '+restore,'best_saved_restore_point_time: '+((latestSave&&latestSave.at)||''),'best_saved_restore_point_version: '+((latestSave&&latestSave.version)||''),'latest_recovery_tools_route: '+recovery,'recommended_next_route: '+bestCurrent,'restore_note: use best_saved_restore_point only when asking to restore or go back to a saved point','newest_move_kind: '+(latest.kind||''),'newest_move_time: '+(latest.at||''),'newest_move_target: '+(routeOf(latest)||latest.to||latest.view||latest.from||''),'latest_route_guardian_route: '+(guardianRouteOf(active)||''),'latest_make_current_request: '+(latestMake?routeOf(latestMake):''),'latest_deleted_saved_spot_target: '+(latestDelete?routeOf(latestDelete):''),'latest_current_before_last_good: '+(latestCurrentBefore&&(latestCurrentBefore.current_before||latestCurrentBefore.current_before_last_good)||''),'visible_entry_count: '+entries.length,'cap_warning: '+cap,'unique_recent_routes_newest_first: '+unique.slice(0,12).join(' | '),'action_counts: '+Object.keys(kindCounts).sort().map(k=>k+'='+kindCounts[k]).join(', '),'ai_use_note: paste this report into ChatGPT with your goal, and ask which route to open next.']}
+function report(){let b=read(MV,{entries:[]});let entries=Array.isArray(b.entries)?b.entries:[];let newest=entries.slice().reverse();let lines=['ROUTE GUARDIAN MOVE LEDGER REPORT','report_quality: LOSSLESS','generated_at: '+new Date().toISOString(),'entry_count: '+entries.length,'order_note: readable section is newest-first; raw JSON preserves saved order',''];lines.push(...summarize(entries));lines.push('','READABLE MOVES — NEWEST FIRST','');newest.forEach((m,i)=>{lines.push('MOVE '+(i+1),'kind: '+(m.kind||''),'time: '+(m.at||''),'from: '+(m.from||''),'to: '+(m.to||''),'viewed_version: '+(m.view||''),'tools_route: '+(m.tools_route||''),'current_before_last_good: '+(m.current_before||m.current_before_last_good||''),'return_to: '+(m.return_to||''),'version: '+(m.version||''),'id: '+(m.id||m.move_id||''),'full_move_json: '+JSON.stringify(m),'')});lines.push('RAW MOVE LEDGER JSON — LOSSLESS SAVED ORDER',JSON.stringify(b,null,2));return lines.join('\n')}
+function copyText(t){if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(()=>STATUS.textContent='Copied full lossless Move Ledger report with corrected summary. Paste it into ChatGPT.').catch(()=>fallback(t))}else fallback(t)}
+function fallback(t){let ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();STATUS.textContent='Copied full lossless Move Ledger report with corrected summary. Paste it into ChatGPT.'}
+function drawSummary(entries){let s=document.createElement('div');s.className='summarycard';s.innerHTML='<b>Detailed Report Summary</b>'+summarize(entries).slice(1).map(x=>{let i=x.indexOf(':');return line(i>-1?x.slice(0,i):'summary',i>-1?x.slice(i+1).trim():x)}).join('');MOVEBOX.appendChild(s)}
+function drawSpots(){let b=read(SP,{entries:[]});b.entries=Array.isArray(b.entries)?b.entries:[];SPOTBOX.innerHTML='';if(!b.entries.length){SPOTBOX.textContent='No saved spots yet.';return}b.entries.forEach((s,i)=>{let card=document.createElement('div');card.className='spotcard';let title=s.label||s.name||('Saved Spot '+(i+1));card.innerHTML='<b>'+esc(title)+'</b>'+line('Saved',s.saved_at||s.at||s.time)+line('Version',s.version||s.version_name||s.page)+line('Route',s.route)+line('Current Before Last Good',s.current_before||s.current_before_last_good)+line('Recovery Note',s.recovery_note||s.recovery_state||s.state||s.recovery_state_name);let open=document.createElement('a');open.className='btn good';open.href=fresh(s.route);open.textContent='Open Saved Spot';card.appendChild(open);let d=document.createElement('button');d.className='btn danger';d.textContent='Delete Saved Spot';d.onclick=()=>{let x=read(SP,{entries:[]});x.entries=(x.entries||[]).filter(e=>e.id!==s.id&&e.spot_id!==s.spot_id&&e.route!==s.route);write(SP,x);move('delete_saved_spot',s.route);drawSpots()};card.appendChild(d);SPOTBOX.appendChild(card)})}
+function drawMoves(){let b=read(MV,{entries:[]});let entries=Array.isArray(b.entries)?b.entries.slice(-100):[];let arr=entries.slice().reverse();MOVEBOX.innerHTML='';let c=document.createElement('button');c.className='btn copy';c.textContent='Copy Move Ledger Report';c.onclick=()=>copyText(report());MOVEBOX.appendChild(c);drawSummary(entries);if(!arr.length){let p=document.createElement('div');p.className='movecard';p.textContent='No moves yet.';MOVEBOX.appendChild(p);return}arr.forEach((m,i)=>{let card=document.createElement('div');card.className='movecard';card.innerHTML='<b>'+esc((i+1)+'. '+pretty(m.kind))+'</b>'+line('Time',m.at)+line('From',m.from)+line('To',m.to)+line('Viewed Version',m.view)+line('Current Before Last Good',m.current_before||m.current_before_last_good)+line('Return To',m.return_to)+line('Version',m.version);let target=guardianRouteOf(m)||recoveryRouteOf(m)||routeOf(m);if(target){let a=document.createElement('a');a.className='btn good';a.href=fresh(target);a.textContent='Open This Move Target';card.appendChild(a)}MOVEBOX.appendChild(card)})}
+BACKBTN.href=fresh(BACK);BACKBTN.onclick=()=>move('return_to_route_guardian_last_good',BACK,{return_to:BACK});
+if(VIEW){VIEWWRAP.style.display='block';VIEWFRAME.src=fresh(VIEW);STATUS.textContent='Viewing version inside Recovery Tools.'}
+MAKE.onclick=()=>{if(!VIEW){STATUS.textContent='No viewed version is open. Open Last Good first.';return}localStorage.setItem('pmp_route_guardian_make_current_request_v1',VIEW);move('make_this_version_current_request',VIEW);STATUS.textContent='Marked viewed version as current request on this device.'};
+SPOTS.onclick=()=>{drawSpots();SPOTBOX.classList.toggle('open')};
+MOVES.onclick=()=>{drawMoves();MOVEBOX.classList.toggle('open')};
+move('open_recovery_tools',BACK,{return_to:BACK});
+})();
+</script>
+</body>
+</html>
