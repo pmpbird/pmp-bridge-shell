@@ -1,6 +1,8 @@
 name: PMP Vault Record Ledger Latest Only
 
 on:
+  issue_comment:
+    types: [created, edited]
   workflow_run:
     workflows: ["PMP Vault Inbox Processor"]
     types: [completed]
@@ -15,6 +17,7 @@ concurrency:
 
 jobs:
   compact-record-ledger:
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_run' || github.event.issue.number == 1
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
