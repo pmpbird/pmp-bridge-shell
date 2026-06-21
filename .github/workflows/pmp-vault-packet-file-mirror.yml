@@ -23,7 +23,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Mirror accepted PMP vault packet into readable files
+      - name: Mirror accepted PMP vault packet into latest readable files
         uses: actions/github-script@v7
         with:
           script: |
@@ -42,31 +42,18 @@ jobs:
             const LATEST_REPORT = `${INBOX}/latest-report.json`;
             const LATEST_META = `${INBOX}/latest-metadata.json`;
 
-            function ensureDir(filePath) {
-              fs.mkdirSync(path.dirname(filePath), { recursive: true });
-            }
-            function readJson(filePath, fallback) {
-              try { return JSON.parse(fs.readFileSync(filePath, 'utf8')); }
-              catch (_) { return fallback; }
-            }
-            function writeJson(filePath, value) {
-              ensureDir(filePath);
-              fs.writeFileSync(filePath, JSON.stringify(value, null, 2) + '\n');
-            }
-            function hashText(text) {
-              return crypto.createHash('sha256').update(String(text || '')).digest('hex');
-            }
-            function safeStamp(text) {
-              return String(text || new Date().toISOString()).replace(/[:.]/g, '-').replace(/[^0-9A-Za-z_-]/g, '-');
-            }
-            function commentUrl(c) {
-              return c.html_url || `https://github.com/${owner}/${repo}/issues/${issue_number}#issuecomment-${c.id}`;
-            }
+            function ensureDir(filePath) { fs.mkdirSync(path.dirname(filePath), { recursive: true }); }
+            function readJson(filePath, fallback) { try { return JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch (_) { return fallback; } }
+            function writeJson(filePath, value) { ensureDir(filePath); fs.writeFileSync(filePath, JSON.stringify(value, null, 2) + '\n'); }
+            function hashText(text) { return crypto.createHash('sha256').update(String(text || '')).digest('hex'); }
+            function commentUrl(c) { return c.html_url || `https://github.com/${owner}/${repo}/issues/${issue_number}#issuecomment-${c.id}`; }
+
             function findJsonPayload(body) {
               const firstBrace = body.indexOf('{');
               if (firstBrace < 0) throw new Error('No JSON object found in inbox comment.');
               return JSON.parse(body.slice(firstBrace).trim());
             }
+
             function validatePacketOrReport(payload) {
               let packet = null;
               let report = null;
@@ -78,12 +65,14 @@ jobs:
               } else {
                 throw new Error(`Unsupported payload type: ${payload && payload.type}`);
               }
+
               if (!report || report.type !== 'PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES') {
                 throw new Error('Missing PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES report.');
               }
               if (!report.inventory_eyes || report.inventory_eyes.type !== 'PMP_INVENTORY_EYES_APP_SCAN') {
                 throw new Error('Missing PMP_INVENTORY_EYES_APP_SCAN body.');
               }
+
               if (packet) {
                 if (packet.storage_area !== 'PMP Lossless Inventory Vault') throw new Error('Wrong storage_area.');
                 const gate = packet.privacy_gate || {};
@@ -92,6 +81,7 @@ jobs:
                 }
                 if (gate.localStorage_key_names_only !== true) throw new Error('Privacy gate failed: localStorage_key_names_only');
               }
+
               const raw = JSON.stringify(payload);
               const forbiddenPatterns = [
                 /ghp_[A-Za-z0-9_]{20,}/,
@@ -104,46 +94,37 @@ jobs:
               for (const pattern of forbiddenPatterns) {
                 if (pattern.test(raw)) throw new Error(`Forbidden private-looking value found: ${pattern}`);
               }
+
               const storageKeys = report.inventory_eyes?.live_screen?.local_storage_keys || [];
               for (const k of storageKeys) {
                 if (k.value_captured !== false) throw new Error(`localStorage value captured for key: ${k.key}`);
                 if (Object.prototype.hasOwnProperty.call(k, 'value')) throw new Error(`localStorage private value field present for key: ${k.key}`);
               }
+
               return { packet, report };
-            }
-            function loadStatus() {
-              const status = readJson(MIRROR_STATUS, {
-                type: 'PMP_VAULT_PACKET_FILE_MIRROR_STATUS',
-                version: '1.0.0',
-                mirrored_comments: [],
-                rejected_comments: []
-              });
-              status.mirrored_comments = Array.isArray(status.mirrored_comments) ? status.mirrored_comments : [];
-              status.rejected_comments = Array.isArray(status.rejected_comments) ? status.rejected_comments : [];
-              return status;
             }
 
             async function getCandidateComments() {
               if (context.eventName === 'issue_comment') return [context.payload.comment];
               const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number, per_page: 100 });
-              return comments.filter(c => (c.body || '').includes(MARKER)).slice(-25);
+              const matches = comments.filter(c => (c.body || '').includes(MARKER));
+              return matches.length ? [matches[matches.length - 1]] : [];
             }
 
-            const status = loadStatus();
-            const mirroredIds = new Set(status.mirrored_comments.map(x => String(x.comment_id)));
+            const previousStatus = readJson(MIRROR_STATUS, null);
             const candidates = await getCandidateComments();
             let mirrored = 0;
             let rejected = 0;
             let skipped = 0;
             let latest = null;
+            let latestRejected = null;
 
             for (const comment of candidates) {
               const body = comment.body || '';
               const bodyHash = hashText(body);
               if (!body.includes(MARKER)) { skipped++; continue; }
-              if (mirroredIds.has(String(comment.id))) { skipped++; continue; }
               if ((comment.user && comment.user.login) !== owner) {
-                status.rejected_comments.push({ comment_id: comment.id, reason: 'unauthorized_comment_author', checked_at: new Date().toISOString(), body_hash: bodyHash });
+                latestRejected = { comment_id: comment.id, reason: 'unauthorized_comment_author', checked_at: new Date().toISOString(), body_hash: bodyHash };
                 rejected++; continue;
               }
 
@@ -152,65 +133,63 @@ jobs:
                 payload = findJsonPayload(body);
                 ({ packet, report } = validatePacketOrReport(payload));
               } catch (error) {
-                status.rejected_comments.push({ comment_id: comment.id, reason: 'validation_failed', detail: String(error.message || error).slice(0, 1000), checked_at: new Date().toISOString(), body_hash: bodyHash });
+                latestRejected = { comment_id: comment.id, reason: 'validation_failed', detail: String(error.message || error).slice(0, 1000), checked_at: new Date().toISOString(), body_hash: bodyHash };
                 rejected++; continue;
               }
 
-              const stamp = safeStamp((packet && packet.built_at) || report.built_at || comment.created_at || new Date().toISOString());
-              const base = `${INBOX}/history/comment-${comment.id}-${stamp}`;
-              const packetPath = `${base}/packet.json`;
-              const reportPath = `${base}/report.json`;
-              const metaPath = `${base}/metadata.json`;
               const metadata = {
                 type: 'PMP_VAULT_PACKET_FILE_MIRROR_METADATA',
-                version: '1.0.0',
+                version: '2.0.0-rewrite-latest-only',
                 mirrored_at: new Date().toISOString(),
+                storage_policy: 'rewrite_latest_only_no_history_folder',
                 source_kind: 'github_issue_inbox_comment',
                 issue: `https://github.com/${owner}/${repo}/issues/${issue_number}`,
                 comment_url: commentUrl(comment),
                 comment_id: comment.id,
                 body_hash: bodyHash,
-                packet_path: packetPath,
-                report_path: reportPath,
-                metadata_path: metaPath,
+                packet_path: LATEST_PACKET,
+                report_path: LATEST_REPORT,
+                metadata_path: LATEST_META,
                 packet_type: packet ? packet.type : null,
                 packet_built_at: packet ? packet.built_at || null : null,
                 report_type: report.type,
                 report_built_at: report.built_at || null,
                 privacy_gate: 'passed_by_packet_file_mirror_validator',
-                note: 'This mirror makes the full accepted packet readable from GitHub files without a ZIP upload.'
+                note: 'This mirror rewrites the latest readable packet files only. Older visible history folders are no longer created by this workflow; Git commit history preserves prior versions.'
               };
 
-              writeJson(packetPath, payload);
-              writeJson(reportPath, report);
-              writeJson(metaPath, metadata);
               writeJson(LATEST_PACKET, payload);
               writeJson(LATEST_REPORT, report);
               writeJson(LATEST_META, metadata);
 
-              status.mirrored_comments.push({ comment_id: comment.id, mirrored_at: metadata.mirrored_at, packet_path: packetPath, report_path: reportPath, metadata_path: metaPath, body_hash: bodyHash });
               latest = metadata;
               mirrored++;
             }
 
-            status.version = '1.0.0';
-            status.status = mirrored ? 'mirrored_packet_files' : 'no_new_packets_to_mirror';
-            status.checked_at = new Date().toISOString();
-            status.candidates_checked = candidates.length;
-            status.mirrored_this_run = mirrored;
-            status.rejected_this_run = rejected;
-            status.skipped_this_run = skipped;
-            status.latest_mirror = latest;
-            writeJson(MIRROR_STATUS, status);
+            writeJson(MIRROR_STATUS, {
+              type: 'PMP_VAULT_PACKET_FILE_MIRROR_STATUS',
+              version: '2.0.0-rewrite-latest-only',
+              status: mirrored ? 'rewrote_latest_packet_files' : 'no_latest_packet_rewrite',
+              checked_at: new Date().toISOString(),
+              candidates_checked: candidates.length,
+              mirrored_this_run: mirrored,
+              rejected_this_run: rejected,
+              skipped_this_run: skipped,
+              latest_mirror: latest || previousStatus?.latest_mirror || null,
+              latest_rejection: latestRejected,
+              storage_policy: {
+                latest_files_are_rewritten: true,
+                new_history_folder_per_run: false,
+                prior_versions_kept_by_git_commit_history: true,
+                visible_file_tree_stays_small: true
+              }
+            });
 
             const gitStatus = await exec.getExecOutput('git', ['status', '--porcelain']);
-            if (!gitStatus.stdout.trim()) {
-              core.info('No packet mirror file changes to commit.');
-              return;
-            }
+            if (!gitStatus.stdout.trim()) { core.info('No packet mirror file changes to commit.'); return; }
             await exec.exec('git', ['config', 'user.name', 'github-actions[bot]']);
             await exec.exec('git', ['config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com']);
-            await exec.exec('git', ['add', INBOX]);
-            await exec.exec('git', ['commit', '-m', `Mirror PMP vault packet files (${mirrored} mirrored, ${rejected} rejected)`]);
+            await exec.exec('git', ['add', LATEST_PACKET, LATEST_REPORT, LATEST_META, MIRROR_STATUS]);
+            await exec.exec('git', ['commit', '-m', `Rewrite PMP vault latest packet files (${mirrored} mirrored, ${rejected} rejected)`]);
             try { await exec.exec('git', ['push']); }
             catch (error) { await exec.exec('git', ['pull', '--rebase']); await exec.exec('git', ['push']); }
