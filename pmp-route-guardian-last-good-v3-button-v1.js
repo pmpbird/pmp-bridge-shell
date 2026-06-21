@@ -1,0 +1,10 @@
+(()=>{
+if(window.PMPRouteGuardianLastGoodV3ButtonV1)return;window.PMPRouteGuardianLastGoodV3ButtonV1=true;
+const CURRENT='pmp-current-inner-cleanbug-rgcontrols-v9.html#control',DOOR='pmp-route-guardian-last-good-v1.html';
+function docs(r,d,o){o=o||[];d=d||0;if(!r||d>8)return o;try{o.push(r);Array.from(r.querySelectorAll('iframe')).forEach(f=>{try{let x=f.contentDocument||(f.contentWindow&&f.contentWindow.document);if(x)docs(x,d+1,o)}catch(e){}})}catch(e){}return o}
+function txt(x){return String(x&&x.textContent||'').replace(/\s+/g,' ').trim()}
+function sync(){try{localStorage.setItem('pmp_route_guardian_current_before_last_good_v1',CURRENT);localStorage.setItem('pmp_route_guardian_current_before_last_good_route',JSON.stringify({type:'PMP_CURRENT_BEFORE_LAST_GOOD_ROUTE_V3',route_entry:CURRENT,captured_at:new Date().toISOString(),fixed_for:'continuous_run_engine_v9'}));localStorage.setItem('pmp_route_guardian_exact_before_last_good',CURRENT);localStorage.setItem('pmp_route_guardian_current_before_last_good',CURRENT);localStorage.setItem('pmp_route_guardian_current_target',CURRENT)}catch(e){}}
+function go(doc){sync();let u=DOOR+'?from=inner-launcher&return='+encodeURIComponent(CURRENT)+'&fresh='+Date.now();try{(doc.defaultView||window).top.location.href=u}catch(e){doc.location.href=u}return false}
+function scan(){sync();docs(document).forEach(doc=>{try{Array.from(doc.querySelectorAll('button')).forEach(b=>{let t=txt(b);if(t==='Last Good'||t==='Route Guardian Last Good'||b.dataset.pmpRouteGuardianLastGood==='true'){b.textContent='Route Guardian Last Good';b.dataset.pmpRouteGuardianLastGood='true';b.onclick=e=>{if(e){e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation()}return go(doc)}})}catch(e){}})}
+window.addEventListener('load',()=>[80,250,600,1200,2400].forEach(t=>setTimeout(scan,t)));setInterval(scan,700);scan();
+})();
