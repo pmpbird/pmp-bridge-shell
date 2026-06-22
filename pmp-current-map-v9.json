@@ -2,7 +2,7 @@
   "type": "PMP_CURRENT_APP_MAP",
   "app_name": "PMP Current",
   "app_version": "PMP-CURRENT-1",
-  "updated_at": "2026-06-22T06:20:00Z",
+  "updated_at": "2026-06-22T16:25:00Z",
   "route_guardian_loader": {
     "path": "pmp-route-guardian-current-loader-v14.html",
     "label": "PMP Current Route Guardian Loader v14 force-map-current-app",
@@ -11,13 +11,13 @@
   },
   "current_app": {
     "path": "pmp-current-inner-cleanbug-rgcontrols-v16.html",
-    "label": "PMP Current v16 clean ownership reset from v13 with continuous run root collar stabilizer",
-    "cache_key": "pmp-current-v16-root-collar-stabilizer-20260622T0620Z",
+    "label": "PMP Current v16 continuous runner with root collar anti-downgrade repair",
+    "cache_key": "pmp-current-v16-root-collar-anti-downgrade-20260622T1625Z",
     "status": "current"
   },
   "user_facing_rule": "Only show PMP Current / PMP-CURRENT-1 as the app version.",
   "home_screen_rule": "Install pmp-app-current.html once. It is a stable map-driven door and should change as little as possible.",
-  "update_rule": "Route Guardian loader v14 has been patched so Open Latest App force-fetches pmp-current-map-v9.json with a fresh timestamp, ignores stale saved current-route/candidate values, and opens current_app.path exactly. Current remains v16 clean ownership reset from the ledger-identified v13 clean route family. Continuous Run v16 includes the root collar stabilizer for saturated kernel-to-leaf guard families. Route Guardian Last Good has only Save Current, Copy Recovery Report, Saved Spots, and Back to Control. Recovery Tools v8 remains emergency-only. No v9 wrapper, candidate panel helper, Move Ledger target-opening helper, or stage/test helper is loaded by current.",
+  "update_rule": "Route Guardian loader v14 force-fetches pmp-current-map-v9.json with a fresh timestamp and opens current_app.path exactly. Current remains v16 clean ownership reset from the ledger-identified v13 clean route family. Continuous Run v16 includes root collar stabilization, continuous-until-done mode after manual start, and an anti-downgrade repair so older saturated V2 guard scripts cannot replace the detailed root-collar guard. Route Guardian Last Good has only Save Current, Copy Recovery Report, Saved Spots, and Back to Control. Recovery Tools v8 remains emergency-only.",
   "fallback_app": {
     "path": "pmp-current-inner-cleanbug-rgcontrols-v13.html",
     "cache_key": "fallback-pmp-current-v13-ledger-clean-current"
