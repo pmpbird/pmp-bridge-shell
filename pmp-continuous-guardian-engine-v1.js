@@ -1,5 +1,5 @@
 (() => {
-  const VERSION = '1.6.0-page-scope-real-app-gate';
+  const VERSION = '1.7.0-real-app-dormant-until-enabled';
   const BASE_STATE_KEY = 'pmp_continuous_guardian_state_v1';
   const BASE_LEDGER_KEY = 'pmp_continuous_guardian_event_ledger_v1';
   const BASE_HEARTBEAT_KEY = 'pmp_continuous_guardian_last_heartbeat_v1';
@@ -45,6 +45,89 @@
     if(!realAppExplicitlyEnabled())return {ok:false,reason:'real app guardian not explicitly enabled'};
     return {ok:true,reason:'real app explicitly enabled'};
   }
+  function routeProof(){try{return location.pathname+(location.search||'')+(location.hash||'')}catch(_){return''}}
+
+  if (IS_REAL_APP && !pageGate().ok) {
+    const gate = pageGate();
+    function dormantSnapshot(){
+      return {
+        state: {
+          type: 'PMP_CONTINUOUS_GUARDIAN_DORMANT_STATE',
+          version: VERSION,
+          page_scope: PAGE_SCOPE,
+          page_path: PAGE_PATH,
+          status: 'DORMANT',
+          dormant: true,
+          reason: gate.reason,
+          real_app_gate: {
+            enabled: realAppExplicitlyEnabled(),
+            kill_switch: realAppKillSwitchActive(),
+            can_start: false,
+            reason: gate.reason
+          },
+          guards: dormantGuards(),
+          note: 'Real app guardian is fully dormant until explicitly enabled. No timers, checks, heartbeat, monitoring state, GitHub writes, Save calls, or shortcut calls run on load.'
+        },
+        ledger: []
+      };
+    }
+    function dormantGuards(){
+      return {
+        watch_only: true,
+        zero_cost: true,
+        app_safe: true,
+        page_scope_separated: true,
+        real_app_dormant_until_enabled: true,
+        real_app_explicit_enable_required: true,
+        real_app_kill_switch: true,
+        no_mutation: true,
+        no_auto_save: true,
+        no_shortcut_open: true,
+        no_github_write: true,
+        no_timers_when_dormant: true,
+        no_state_write_on_dormant_load: true,
+        manual_control_required: true
+      };
+    }
+    function allowRealAppStart(){
+      write(REAL_APP_ENABLED_KEY,{enabled:true,enabled_at:now(),version:VERSION});
+      write(REAL_APP_KILL_SWITCH_KEY,{enabled:false,cleared_at:now(),version:VERSION});
+      return {ok:true,next_move:'Reload the real app, then start the guardian manually if a control surface is present.'};
+    }
+    function disableRealAppStart(){
+      write(REAL_APP_ENABLED_KEY,{enabled:false,disabled_at:now(),version:VERSION});
+      return {ok:true,next_move:'Real app guardian will remain dormant on load.'};
+    }
+    function killRealAppGuardian(){
+      write(REAL_APP_ENABLED_KEY,{enabled:false,disabled_at:now(),version:VERSION});
+      write(REAL_APP_KILL_SWITCH_KEY,{enabled:true,killed_at:now(),version:VERSION});
+      return {ok:true,next_move:'Real app guardian kill switch is active. Reload keeps it dormant.'};
+    }
+    function clearRealAppKillSwitch(){
+      write(REAL_APP_KILL_SWITCH_KEY,{enabled:false,cleared_at:now(),version:VERSION});
+      return {ok:true,next_move:'Kill switch cleared. Explicit enable is still required before the guardian can run.'};
+    }
+    function blocked(){return {ok:false,status:'DORMANT',reason:pageGate().reason,next_move:'Explicitly enable real app guardian first, or leave it dormant.'}}
+    window.PMPContinuousGuardianEngineV1={
+      version:VERSION,
+      page_scope:PAGE_SCOPE,
+      dormant:true,
+      start:blocked,
+      pause:blocked,
+      resume:blocked,
+      stop:()=>({ok:true,status:'DORMANT',reason:pageGate().reason}),
+      localCheck:blocked,
+      githubCheck:blocked,
+      snapshot:dormantSnapshot,
+      guards:dormantGuards(),
+      allowRealAppStart,
+      disableRealAppStart,
+      killRealAppGuardian,
+      clearRealAppKillSwitch
+    };
+    return;
+  }
+
   function compactProof(p){
     const out={};
     if(!p||typeof p!=='object')return out;
@@ -77,6 +160,7 @@
       app_safe: true,
       mirror_safe: true,
       page_scope_separated: true,
+      real_app_dormant_until_enabled: true,
       real_app_explicit_enable_required: true,
       real_app_kill_switch: true,
       no_mutation: true,
@@ -93,7 +177,7 @@
       real_app_enabled: REAL_APP_ENABLED_KEY,
       real_app_kill_switch: REAL_APP_KILL_SWITCH_KEY
     },
-    note: 'Watch-only observer. Page-scoped state separates mirror from real app. Real app cannot start unless explicitly enabled and not killed.'
+    note: 'Watch-only observer. Page-scoped state separates mirror from real app. Real app is fully dormant unless explicitly enabled.'
   };
   if (saved && saved.type === 'PMP_CONTINUOUS_GUARDIAN_STATE' && saved.page_scope === PAGE_SCOPE) {
     state.started_at = saved.started_at || null;
@@ -168,7 +252,6 @@
     }catch(e){return{error:String(e.message||e)}}
   }
   function buttons(d){try{return Array.from(d.querySelectorAll('button')).map(b=>(b.textContent||'').replace(/\s+/g,' ').trim()).filter(Boolean)}catch(_){return[]}}
-  function routeProof(){try{return location.pathname+(location.search||'')+(location.hash||'')}catch(_){return''}}
   function localCheck(){
     if(state.status==='STOPPED')return;
     if(blockIfGateClosed('LOCAL_CHECK_GATE_BLOCKED'))return;
@@ -233,6 +316,7 @@
   function allowRealAppStart(){
     if(!IS_REAL_APP)return {ok:false,reason:'real app enable can only be set from the real app page',page_scope:PAGE_SCOPE};
     write(REAL_APP_ENABLED_KEY,{enabled:true,enabled_at:now(),version:VERSION});
+    write(REAL_APP_KILL_SWITCH_KEY,{enabled:false,cleared_at:now(),version:VERSION});
     refreshGate();event('REAL_APP_EXPLICITLY_ENABLED','info','Real app guardian explicitly enabled',{route:routeProof(),gate_reason:state.real_app_gate.reason});persist();return snapshot();
   }
   function disableRealAppStart(){
@@ -242,6 +326,7 @@
   }
   function killRealAppGuardian(){
     if(!IS_REAL_APP)return {ok:false,reason:'real app kill switch can only be set from the real app page',page_scope:PAGE_SCOPE};
+    write(REAL_APP_ENABLED_KEY,{enabled:false,disabled_at:now(),version:VERSION});
     write(REAL_APP_KILL_SWITCH_KEY,{enabled:true,killed_at:now(),version:VERSION});
     state.status='STOPPED';refreshGate();event('REAL_APP_KILL_SWITCH_ON','blocked','Real app kill switch set; engine stopped',{route:routeProof(),gate_reason:state.real_app_gate.reason});persist();return snapshot();
   }
@@ -268,8 +353,8 @@
     });
   }
 
-  window.PMPContinuousGuardianEngineV1={version:VERSION,start,pause,resume,stop,localCheck,githubCheck,snapshot,guards:state.guards,allowRealAppStart,disableRealAppStart,killRealAppGuardian,clearRealAppKillSwitch};
-  write(SETTINGS_KEY,{version:VERSION,max_events:MAX_EVENTS,watch_only:true,page_scope:PAGE_SCOPE,state_key:STATE_KEY,ledger_key:LEDGER_KEY,real_app_explicit_enable_required:true,real_app_kill_switch:true,created_at:now()});
+  window.PMPContinuousGuardianEngineV1={version:VERSION,page_scope:PAGE_SCOPE,dormant:false,start,pause,resume,stop,localCheck,githubCheck,snapshot,guards:state.guards,allowRealAppStart,disableRealAppStart,killRealAppGuardian,clearRealAppKillSwitch};
+  write(SETTINGS_KEY,{version:VERSION,max_events:MAX_EVENTS,watch_only:true,page_scope:PAGE_SCOPE,state_key:STATE_KEY,ledger_key:LEDGER_KEY,real_app_dormant_until_enabled:true,real_app_explicit_enable_required:true,real_app_kill_switch:true,created_at:now()});
   installTimers();
   if(state.status==='RUNNING')start(); else persist();
 })();
