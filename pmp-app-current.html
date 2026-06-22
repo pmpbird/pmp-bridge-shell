@@ -41,5 +41,6 @@ function loaderFromMap(map){const loader=map.route_guardian_loader||map.current_
 async function boot(){bootShellColors();try{const map=await loadMap();msg.textContent='Loaded '+(map.__loaded_map_path||'current map');app.src=loaderFromMap(map);app.onload=()=>setTimeout(()=>status.classList.add('hide'),350)}catch(e){msg.textContent='Map load failed. Opening fallback Route Guardian v9.';app.src=FALLBACK_LOADER+'?fresh=fallback-v9-'+Date.now()+(location.hash||'');app.onload=()=>setTimeout(()=>status.classList.add('hide'),700)}}
 boot();
 </script>
+<script src="pmp-continuous-guardian-engine-v1.js?fresh=real-app-watch-only-v1"></script>
 </body>
 </html>
