@@ -1,11 +1,13 @@
 {
   "type": "PMP_CONTINUOUS_GUARDIAN_ROLLBACK_BASELINE",
-  "version": "1.0.0-before-real-app-promotion",
+  "version": "1.1.0-before-real-app-promotion-fresh-proof",
   "created_at": "2026-06-22T01:40:56.052Z",
+  "updated_at": "2026-06-22T03:24:11.434Z",
   "storage_rule": "No private content, no tokens, no full reports, no vault data bodies.",
   "status": {
     "mirror_safety_proof": "PASS",
-    "real_app_save_proof": "PASS",
+    "mirror_state_reset": "PASS_STOPPED",
+    "real_app_save_proof": "FRESH_PASS",
     "promotion_eligible": true,
     "promotion_applied": false
   },
@@ -20,7 +22,11 @@
     "sha": "822c51c90d27422d8d2acb471b12561586b48ea9"
   },
   "promotion_patch": {
+    "prepared": true,
+    "applied": false,
     "allowed_change_count": 1,
+    "target_file": "pmp-app-current.html",
+    "exact_insertion_point": "after existing </script> and directly before </body>",
     "exact_line_to_add": "<script src=\"pmp-continuous-guardian-engine-v1.js?fresh=real-app-watch-only-v1\"></script>",
     "forbidden_files": [
       "pmp-continuous-guardian-test-panel-v1.js",
@@ -40,16 +46,18 @@
     ]
   },
   "real_app_save_proof": {
-    "diagnostic_checked_at": "2026-06-22T01:40:56.052Z",
+    "diagnostic_checked_at": "2026-06-22T03:24:11.434Z",
     "overall": "GOOD",
     "local_app_check": "GOOD",
     "github_vault_check": "GOOD",
     "freshness_proof": "GOOD",
     "lossless_quality_check": "GOOD",
-    "last_save_press": "2026-06-22T01:37:11.991Z",
-    "latest_packet_time": "2026-06-22T01:37:11.991Z",
-    "latest_report_time": "2026-06-22T01:37:11.991Z",
-    "latest_metadata_time": "2026-06-22T01:37:26.241Z"
+    "last_save_press": "2026-06-22T03:22:14.388Z",
+    "expected_packet_time": "2026-06-22T03:22:14.388Z",
+    "latest_packet_time": "2026-06-22T03:22:14.388Z",
+    "latest_report_time": "2026-06-22T03:22:14.388Z",
+    "latest_metadata_time": "2026-06-22T03:22:28.358Z",
+    "weak_spots": []
   },
   "rollback": {
     "trigger_if": [
