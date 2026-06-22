@@ -1,5 +1,5 @@
 (() => {
-  const VERSION = '1.7.0-real-app-dormant-until-enabled';
+  const VERSION = '1.7.1-lossless-quality-diagnostics-label-compatible';
   const BASE_STATE_KEY = 'pmp_continuous_guardian_state_v1';
   const BASE_LEDGER_KEY = 'pmp_continuous_guardian_event_ledger_v1';
   const BASE_HEARTBEAT_KEY = 'pmp_continuous_guardian_last_heartbeat_v1';
@@ -258,7 +258,7 @@
     const o=deep(),d=o.d,w=o.w,b=d?buttons(d):[];
     const weak=[];
     if(!d)weak.push('App document not loaded');
-    if(!b.find(x=>x.includes('Improve Lossless Quality')))weak.push('Improve Lossless Quality button missing');
+    if(!b.find(x=>x.includes('Improve Lossless Quality')||x.includes('Lossless Quality Diagnostics')))weak.push('Lossless Quality Diagnostics button missing');
     if(!b.find(x=>x.includes('Save to GitHub Vault')||x.includes('Copy Lossless Report')))weak.push('Save to GitHub Vault button missing');
     if(!(w&&typeof w.copyCurrent==='function'))weak.push('copyCurrent missing');
     if(!(w&&typeof w.copyLosslessReport==='function'))weak.push('copyLosslessReport missing');
