@@ -1,25 +1,36 @@
 {
   "type": "PMP_CONTINUOUS_GUARDIAN_ROLLBACK_BASELINE",
-  "version": "1.1.0-before-real-app-promotion-fresh-proof",
+  "version": "1.2.0-before-real-app-promotion-engine-hardened",
   "created_at": "2026-06-22T01:40:56.052Z",
   "updated_at": "2026-06-22T03:24:11.434Z",
+  "engine_hardened_at": "2026-06-22T03:24:11.434Z",
   "storage_rule": "No private content, no tokens, no full reports, no vault data bodies.",
   "status": {
-    "mirror_safety_proof": "PASS",
-    "mirror_state_reset": "PASS_STOPPED",
+    "mirror_safety_proof_previous_engine": "PASS",
+    "mirror_state_reset_previous_engine": "PASS_STOPPED",
     "real_app_save_proof": "FRESH_PASS",
-    "promotion_eligible": true,
+    "engine_hardening_applied": true,
+    "engine_retest_required_before_promotion": true,
+    "promotion_eligible": false,
     "promotion_applied": false
   },
   "trusted_real_app": {
     "path": "pmp-app-current.html",
     "sha_before_promotion": "faafbbcfaf2178bcfb155b7db2d71a8063900872",
-    "insertion_point": "directly before </body>"
+    "insertion_point": "directly before </body>",
+    "touched_by_engine_hardening": false
   },
   "guardian_engine": {
     "path": "pmp-continuous-guardian-engine-v1.js",
-    "version": "1.5.1-watch-only-safe-layer-manual-control",
-    "sha": "822c51c90d27422d8d2acb471b12561586b48ea9"
+    "version": "1.6.0-page-scope-real-app-gate",
+    "sha": "ea98df5fba301803f2b1140728b5b75e96d44cb0",
+    "hardening": [
+      "page-scoped state separates mirror from real app",
+      "real app guardian cannot start unless explicitly enabled",
+      "real app kill switch exists",
+      "mirror state cannot carry into real app state",
+      "watch-only/no-save/no-shortcut/no-github-write guards remain"
+    ]
   },
   "promotion_patch": {
     "prepared": true,
@@ -58,6 +69,20 @@
     "latest_report_time": "2026-06-22T03:22:14.388Z",
     "latest_metadata_time": "2026-06-22T03:22:28.358Z",
     "weak_spots": []
+  },
+  "required_retest_after_engine_hardening": {
+    "where": "mirror only",
+    "steps": [
+      "reload mirror",
+      "open latest app",
+      "press START",
+      "press LOCAL CHECK",
+      "press SAVE DIAG",
+      "confirm LOCAL STATUS GOOD",
+      "confirm SAVE DIAG FOUND YES and HANDLER INLINE FOUND",
+      "confirm ENGINE 1.6.0-page-scope-real-app-gate"
+    ],
+    "github_status_rule": "WATCH is acceptable in mirror; real app GitHub freshness proof is already fresh GOOD."
   },
   "rollback": {
     "trigger_if": [
