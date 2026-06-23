@@ -49,7 +49,41 @@ function inside(){try{return{w:F.contentWindow,d:F.contentDocument||F.contentWin
 function bugUrl(){return 'bug-memory-current-clean-v1.html?fresh=open-certified-native-contrast-'+Date.now()+'&contrast=2'}
 function actionUrl(kind){return 'pmp-route-guardian-action-v2.html?action='+encodeURIComponent(kind)+'&from=current-inner-rgcontrols-v3&fresh='+Date.now()}
 function textOf(x){return (x&&x.textContent||'').replace(/\s+/g,' ').trim()}
-function hideBridgePanel(d){const p=d&&d.getElementById&&d.getElementById('bridgePanel');if(p){p.className='hidden';p.textContent='';p.innerHTML='';}return false}
+const BANK_INVENTORY_OWNER='pmp-bridge-connections-owner-v3';
+const BANK_INVENTORY_KEY='pmp_connection_bank_inventory_v1';
+const BANK_REGISTRY_KEY='pmp_connection_protected_bank_registry_v1';
+const BANK_RECEIPT_KEY='pmp_connection_bank_inventory_receipt_v1';
+const PROTECTED_BANKS=[
+  {key:'pmp_code_safety_bank_v1',owner:'Code Safety',purpose:'code-safety memory and checks',policy:'DO NOT OVERWRITE'},
+  {key:'pmp_safe_writer_last_good_v3',owner:'Safe Writer',purpose:'last-good safe writer pointer',policy:'DO NOT OVERWRITE'},
+  {key:'pmp_clean_connection_packets_v5',owner:'Connections',purpose:'clean connection packet set',policy:'DO NOT OVERWRITE'},
+  {key:'pmp_corpus_inbox_v1',owner:'PMP Corpus',purpose:'protected corpus inbox/source bank',policy:'DO NOT OVERWRITE'},
+  {key:'pmp_private_bug_memory_existing_v1',owner:'Bug Memory',purpose:'existing private bug memory',policy:'DO NOT OVERWRITE'},
+  {key:'pmp_backend_config_v1',owner:'Backend Config',purpose:'backend/tool configuration',policy:'DO NOT OVERWRITE'},
+  {key:'bug_memory',owner:'Bug Memory',purpose:'bug memory family',policy:'DO NOT OVERWRITE'},
+  {key:'safe_point_bank',owner:'Safe Point',purpose:'safe-point bank family',policy:'DO NOT OVERWRITE'},
+  {key:'last_good_pointer',owner:'Route Guardian / Safe Writer',purpose:'last-good pointer family',policy:'DO NOT OVERWRITE'},
+  {key:'emergency_pointer',owner:'Route Guardian',purpose:'emergency pointer family',policy:'DO NOT OVERWRITE'},
+  {key:'proof_ledger',owner:'Proof Ledger',purpose:'proof ledger family',policy:'DO NOT OVERWRITE'},
+  {key:'receipt_ledger',owner:'Receipt Ledger',purpose:'receipt ledger family',policy:'DO NOT OVERWRITE'},
+  {key:'automation_runtime_checkpoint',owner:'Automation Runtime',purpose:'automation/runtime checkpoint family',policy:'DO NOT OVERWRITE'},
+  {key:BANK_INVENTORY_KEY,owner:'Connections Bank Inventory',purpose:'bank inventory output',policy:'OWNED BY CONNECTIONS OWNER'},
+  {key:BANK_REGISTRY_KEY,owner:'Connections Bank Inventory',purpose:'protected bank registry output',policy:'OWNED BY CONNECTIONS OWNER'},
+  {key:BANK_RECEIPT_KEY,owner:'Connections Bank Inventory',purpose:'inventory receipt output',policy:'OWNED BY CONNECTIONS OWNER'}
+];
+function bankEsc(s){return String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
+function bankHash(s){let h=2166136261;s=String(s||'');for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return(h>>>0).toString(16).padStart(8,'0')}
+function bankBytes(s){try{return new Blob([s||'']).size}catch(e){return String(s||'').length}}
+function bankFamily(k){const x=String(k||'').toLowerCase();if(x.includes('corpus'))return'PMP Corpus / protected source bank';if(x.includes('connection'))return'Connection / bridge bank';if(x.includes('bug'))return'Bug Memory';if(x.includes('safe')||x.includes('last_good'))return'Safe Writer / last-good';if(x.includes('receipt'))return'Receipt ledger';if(x.includes('proof'))return'Proof ledger';if(x.includes('packet'))return'Packet source or packet state';if(x.includes('queue')||x.includes('task'))return'Task queue';if(x.includes('backend'))return'Backend configuration';if(x.includes('vault')||x.includes('bank')||x.includes('store'))return'Bank / store';return'Other app storage'}
+function bankPolicy(k){const key=String(k||'').toLowerCase();for(const p of PROTECTED_BANKS){const pkey=String(p.key||'').toLowerCase();if(key===pkey||key.includes(pkey)||pkey.includes(key))return p.policy}if(/corpus|bug|safe|last_good|emergency|proof|receipt|backend|vault|bank/.test(key))return'PROTECT UNTIL OWNER AUDIT';return'READ ONLY UNTIL OWNER AUDIT'}
+function buildBankInventory(){const rows=[];try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i),v=localStorage.getItem(k)||'';if(!/pmp|packet|corpus|connection|vault|bank|store|bug|safe|receipt|proof|ledger|queue|task|backend|last_good|emergency/i.test(k))continue;rows.push({key:k,family:bankFamily(k),policy:bankPolicy(k),chars:v.length,bytes:bankBytes(v),hash:bankHash(v),has_value:!!v})}}catch(e){rows.push({key:'INVENTORY_SCAN_ERROR',family:'error',policy:'BLOCKED',error:String(e)})}rows.sort((a,b)=>String(a.family).localeCompare(String(b.family))||String(a.key).localeCompare(String(b.key)));return{type:'PMP_CONNECTION_BANK_INVENTORY_V1',owner:BANK_INVENTORY_OWNER,created_at:new Date().toISOString(),rule:'Bridge Connections owner only; inventory only; no existing bank overwritten',protected_registry:PROTECTED_BANKS,rows}}
+function saveBankInventory(){const inv=buildBankInventory();const receipt={type:'PMP_BANK_INVENTORY_RECEIPT_V1',owner:BANK_INVENTORY_OWNER,at:new Date().toISOString(),inventory_key:BANK_INVENTORY_KEY,registry_key:BANK_REGISTRY_KEY,receipt_key:BANK_RECEIPT_KEY,total_rows:inv.rows.length,protected_count:PROTECTED_BANKS.length,write_policy:'writes only new connection inventory namespace; existing banks read only'};localStorage.setItem(BANK_INVENTORY_KEY,JSON.stringify(inv,null,2));localStorage.setItem(BANK_REGISTRY_KEY,JSON.stringify(PROTECTED_BANKS,null,2));localStorage.setItem(BANK_RECEIPT_KEY,JSON.stringify(receipt,null,2));return{inv,receipt}}
+function bankCopy(d,val){try{navigator.clipboard.writeText(val)}catch(e){const ta=d.createElement('textarea');ta.value=val;d.body.appendChild(ta);ta.select();d.execCommand('copy');ta.remove()}}
+function bankButton(d,id,title,sub,icon,fn){const b=d.createElement('button');b.id=id;b.type='button';b.className='big';b.innerHTML='<span class="icon">'+bankEsc(icon||'▣')+'</span><span>'+bankEsc(title)+'<small>'+bankEsc(sub||'')+'</small></span><span class="chev">›</span>';b.onclick=function(e){if(e){e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation()}return fn&&fn(e)};return b}
+function injectBankInventoryButton(w,d){try{if(!w.__pmpBridgePanelToggleFixV3||w.__pmpBridgePanelToggleFixV3.active!=='connections')return;const p=d.getElementById('bridgePanel');if(!p||p.className==='hidden')return;if(d.getElementById('pmpOpenBankInventoryBtn'))return;const b=bankButton(d,'pmpOpenBankInventoryBtn','Bank Inventory','protected registry / do-not-overwrite map','▣',()=>renderBankInventory(w,d));p.appendChild(b);repaintAll()}catch(e){}}
+function restoreConnectionsPanel(w,d){try{if(w.__pmpBridgePanelToggleFixV3)w.__pmpBridgePanelToggleFixV3.active='connections';const old=w.__pmpBridgePanelToggleFixV3&&w.__pmpBridgePanelToggleFixV3.oldConnections;if(typeof old==='function')old.apply(w,[]);[60,220,600].forEach(t=>setTimeout(()=>injectBankInventoryButton(w,d),t));setTimeout(repaintAll,80)}catch(e){}}
+function renderBankInventory(w,d){const p=d&&d.getElementById&&d.getElementById('bridgePanel');if(!p)return false;const saved=saveBankInventory(),inv=saved.inv;if(w.__pmpBridgePanelToggleFixV3)w.__pmpBridgePanelToggleFixV3.active='bankInventory';p.className='';p.dataset.pmpBankInventoryOpen='1';p.style.background='var(--card,#ffffff)';p.style.color='var(--text,#101827)';p.style.border='2px solid var(--line,#07101c)';p.style.borderRadius='22px';p.style.padding='14px';p.style.marginTop='10px';p.style.whiteSpace='normal';p.style.overflowWrap='anywhere';p.innerHTML='<div style="display:grid;gap:10px"><h2 style="margin:0;color:var(--text,#101827)">Bank Inventory + Protected Registry</h2><div><b>Status:</b> inventory saved. Existing banks were read only.</div><div><b>Rows:</b> '+inv.rows.length+' &nbsp; <b>Protected:</b> '+PROTECTED_BANKS.length+'</div><button class="big" id="pmpCopyBankInventoryBtn"><span class="icon">⧉</span><span>Copy Inventory JSON<small>copy full bank inventory</small></span><span class="chev">›</span></button><button class="big" id="pmpCopyProtectedRegistryBtn"><span class="icon">🛡</span><span>Copy Protected Registry<small>copy do-not-overwrite map</small></span><span class="chev">›</span></button><div style="background:var(--card,#ffffff);color:var(--text,#101827);border:2px solid var(--line,#07101c);border-radius:18px;padding:12px"><b>Do not overwrite:</b><br>'+PROTECTED_BANKS.map(x=>bankEsc(x.key)+' — '+bankEsc(x.owner)).join('<br>')+'</div><pre style="white-space:pre-wrap;overflow:auto;max-height:360px;background:var(--card,#ffffff);color:var(--text,#101827);border:2px solid var(--line,#07101c);border-radius:14px;padding:10px">'+bankEsc(inv.rows.map(r=>r.policy+' | '+r.family+' | '+r.key+' | chars:'+r.chars+' | hash:'+r.hash).join('\n'))+'</pre><button class="big" id="pmpCloseBankInventoryBtn"><span class="icon">×</span><span>Close Bank Inventory<small>return to Connections</small></span><span class="chev">›</span></button></div>';const a=d.getElementById('pmpCopyBankInventoryBtn');if(a)a.onclick=function(e){if(e)e.preventDefault();bankCopy(d,JSON.stringify(inv,null,2));return false};const b=d.getElementById('pmpCopyProtectedRegistryBtn');if(b)b.onclick=function(e){if(e)e.preventDefault();bankCopy(d,JSON.stringify(PROTECTED_BANKS,null,2));return false};const c=d.getElementById('pmpCloseBankInventoryBtn');if(c)c.onclick=function(e){if(e)e.preventDefault();restoreConnectionsPanel(w,d);return false};repaintAll();return false}
+function hideBridgePanel(d){const p=d&&d.getElementById&&d.getElementById('bridgePanel');if(p){delete p.dataset.pmpBankInventoryOpen;p.removeAttribute('style');p.className='hidden';p.textContent='';p.innerHTML='';}return false}
 function repaintAll(){
   try{if(window.PMPNativeContrastBridgeV2&&typeof window.PMPNativeContrastBridgeV2.apply==='function')window.PMPNativeContrastBridgeV2.apply()}catch(e){}
   try{if(window.PMPVisualCleanupV1&&typeof window.PMPVisualCleanupV1.apply==='function')window.PMPVisualCleanupV1.apply()}catch(e){}
@@ -58,12 +92,13 @@ function repaintAll(){
 function installBridgeToggleFix(w,d){
   if(w.__pmpBridgePanelToggleFixV3)return;
   if(typeof w.openSharePanel!=='function'||typeof w.openConnectionsPanel!=='function')return;
-  w.__pmpBridgePanelToggleFixV3={active:''};
   const oldShare=w.openSharePanel, oldConnections=w.openConnectionsPanel;
+  w.__pmpBridgePanelToggleFixV3={active:'',oldConnections:oldConnections,oldShare:oldShare};
   const oldSetBridgeOutput=typeof w.setBridgeOutput==='function'?w.setBridgeOutput:null;
   w.openSharePanel=function(){if(w.__pmpBridgePanelToggleFixV3.active==='share'){w.__pmpBridgePanelToggleFixV3.active='';return hideBridgePanel(d)}w.__pmpBridgePanelToggleFixV3.active='share';setTimeout(repaintAll,80);return oldShare.apply(this,arguments)};
-  w.openConnectionsPanel=function(){if(w.__pmpBridgePanelToggleFixV3.active==='connections'){w.__pmpBridgePanelToggleFixV3.active='';return hideBridgePanel(d)}w.__pmpBridgePanelToggleFixV3.active='connections';setTimeout(repaintAll,80);return oldConnections.apply(this,arguments)};
+  w.openConnectionsPanel=function(){if(w.__pmpBridgePanelToggleFixV3.active==='connections'||w.__pmpBridgePanelToggleFixV3.active==='bankInventory'){w.__pmpBridgePanelToggleFixV3.active='';return hideBridgePanel(d)}w.__pmpBridgePanelToggleFixV3.active='connections';const r=oldConnections.apply(this,arguments);[60,220,600].forEach(t=>setTimeout(()=>injectBankInventoryButton(w,d),t));setTimeout(repaintAll,80);return r};
   if(oldSetBridgeOutput){w.setBridgeOutput=function(){w.__pmpBridgePanelToggleFixV3.active='';setTimeout(repaintAll,80);return oldSetBridgeOutput.apply(this,arguments)}}
+  w.openBankInventoryProtectedRegistry=function(){return renderBankInventory(w,d)};
 }
 function saveToVault(w,d){
    try{if(typeof w.copyLosslessReport==='function')return w.copyLosslessReport()}catch(e){}
@@ -157,6 +192,7 @@ function patch(){
   simplifyBridgeButtons(w,d);
   installImproveLosslessAutoCopy(w,d);
   installDeepResidentOverlay(w,d);
+  try{injectBankInventoryButton(w,d)}catch(e){}
   repaintAll();
   if(!d.documentElement.dataset.pmpRgControlsV3Delegate){
     d.documentElement.dataset.pmpRgControlsV3Delegate='1';
