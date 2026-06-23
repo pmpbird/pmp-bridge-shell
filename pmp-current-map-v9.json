@@ -2,7 +2,7 @@
   "type": "PMP_CURRENT_APP_MAP",
   "app_name": "PMP Current",
   "app_version": "PMP-CURRENT-1",
-  "updated_at": "2026-06-23T21:25:00Z",
+  "updated_at": "2026-06-23T21:40:00Z",
   "route_guardian_loader": {
     "path": "pmp-route-guardian-current-loader-v14.html",
     "label": "PMP Current Route Guardian Loader v14",
@@ -10,16 +10,16 @@
     "status": "current"
   },
   "current_app": {
-    "path": "pmp-current-inner-cleanbug-rgcontrols-v19.html",
-    "label": "PMP Current v19 stable Start Continuous Run",
-    "cache_key": "pmp-current-v19-stable-start-continuous-run-20260623T2125Z",
+    "path": "pmp-current-inner-cleanbug-rgcontrols-v20.html",
+    "label": "PMP Current v20 stable Start Continuous Run",
+    "cache_key": "pmp-current-v20-stable-start-continuous-run-20260623T2140Z",
     "status": "current"
   },
   "user_facing_rule": "Only show PMP Current / PMP-CURRENT-1 as the app version.",
   "home_screen_rule": "Install pmp-app-current.html once. It is a stable map-driven door and should change as little as possible.",
   "update_rule": "Route Guardian opens the full current app. Start Continuous Run uses the stable Packet 1.5 runner in the app.",
   "fallback_app": {
-    "path": "pmp-current-inner-cleanbug-rgcontrols-v18.html",
-    "cache_key": "fallback-pmp-current-v18-full-app"
+    "path": "pmp-current-inner-cleanbug-rgcontrols-v19.html",
+    "cache_key": "fallback-pmp-current-v19-full-app"
   }
 }
