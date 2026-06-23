@@ -4,6 +4,7 @@
   const INVENTORY_KEY='pmp_connection_bank_inventory_v1';
   const REGISTRY_KEY='pmp_connection_protected_bank_registry_v1';
   const RECEIPT_KEY='pmp_connection_bank_inventory_receipt_v1';
+  let OLD_CONNECTIONS_PANEL=null;
   const PROTECTED=[
     {key:'pmp_code_safety_bank_v1',owner:'Code Safety',purpose:'code-safety memory and checks',policy:'DO NOT OVERWRITE'},
     {key:'pmp_safe_writer_last_good_v3',owner:'Safe Writer',purpose:'last-good safe writer pointer',policy:'DO NOT OVERWRITE'},
@@ -86,19 +87,43 @@
     btn.onclick=function(e){if(e){e.preventDefault();e.stopPropagation()}return onClick&&onClick(e)};
     return btn;
   }
+  function styleReadablePanel(p){
+    p.className='';
+    p.style.background='var(--card,#ffffff)';
+    p.style.color='var(--text,#101827)';
+    p.style.border='2px solid var(--line,#07101c)';
+    p.style.borderRadius='22px';
+    p.style.padding='13px';
+    p.style.marginTop='10px';
+    p.style.whiteSpace='normal';
+    p.style.overflowWrap='anywhere';
+  }
+  function closeInventory(d){
+    d=d||panelDoc(); if(!d)return false;
+    const w=panelWin();
+    const p=d.getElementById('bridgePanel');
+    if(p){delete p.dataset.pmpBankInventoryOpen; p.removeAttribute('style'); p.className='note';}
+    try{if(OLD_CONNECTIONS_PANEL)OLD_CONNECTIONS_PANEL.apply(w||window,[])}catch(e){if(p){p.textContent='Connections ready.'}}
+    setTimeout(()=>addConnectionButton(d),60);
+    setTimeout(()=>addConnectionButton(d),220);
+    return false;
+  }
   function renderPanel(d){
     d=d||panelDoc(); if(!d)return false;
     const p=d.getElementById('bridgePanel'); if(!p)return false;
+    if(p.dataset.pmpBankInventoryOpen==='1')return closeInventory(d);
     const saved=saveInventory(); const inv=saved.inv;
-    p.className='note';
-    p.innerHTML='<div style="display:grid;gap:10px"><h2 style="margin:0;color:#d8ffe2">Bank Inventory + Protected Registry</h2><div><b>Status:</b> inventory saved. Existing banks were read only.</div><div><b>Rows:</b> '+inv.rows.length+' &nbsp; <b>Protected:</b> '+PROTECTED.length+'</div><button class="mini" id="pmpCopyBankInventoryBtn">Copy Inventory JSON</button><button class="mini" id="pmpCopyProtectedRegistryBtn">Copy Protected Registry</button><div class="warn"><b>Do not overwrite:</b><br>'+PROTECTED.map(x=>esc(x.key)+' — '+esc(x.owner)).join('<br>')+'</div><pre style="white-space:pre-wrap;overflow:auto;max-height:360px;background:#0c141e;color:#d8ffe2;border:1px solid var(--line,#fff);border-radius:14px;padding:10px">'+esc(inv.rows.map(r=>r.policy+' | '+r.family+' | '+r.key+' | chars:'+r.chars+' | hash:'+r.hash).join('\n'))+'</pre></div>';
+    p.dataset.pmpBankInventoryOpen='1';
+    styleReadablePanel(p);
+    p.innerHTML='<div style="display:grid;gap:10px"><h2 style="margin:0;color:var(--text,#101827)">Bank Inventory + Protected Registry</h2><div><b>Status:</b> inventory saved. Existing banks were read only.</div><div><b>Rows:</b> '+inv.rows.length+' &nbsp; <b>Protected:</b> '+PROTECTED.length+'</div><button class="mini" style="background:var(--a,#acd1fb);color:var(--buttonText,#07101c);border:2px solid var(--line,#07101c)" id="pmpCopyBankInventoryBtn">Copy Inventory JSON</button><button class="mini" style="background:var(--a,#acd1fb);color:var(--buttonText,#07101c);border:2px solid var(--line,#07101c)" id="pmpCopyProtectedRegistryBtn">Copy Protected Registry</button><div style="background:#f6fbff;color:#101827;border:2px solid var(--line,#07101c);border-radius:18px;padding:12px"><b>Do not overwrite:</b><br>'+PROTECTED.map(x=>esc(x.key)+' — '+esc(x.owner)).join('<br>')+'</div><pre style="white-space:pre-wrap;overflow:auto;max-height:360px;background:#f7f7f7;color:#101827;border:2px solid var(--line,#07101c);border-radius:14px;padding:10px">'+esc(inv.rows.map(r=>r.policy+' | '+r.family+' | '+r.key+' | chars:'+r.chars+' | hash:'+r.hash).join('\n'))+'</pre><button class="big" style="background:var(--a,#acd1fb);color:var(--buttonText,#07101c);border:2px solid var(--line,#07101c);width:100%" id="pmpCloseBankInventoryBtn"><span class="icon">×</span><span>Close Bank Inventory<small>return to Connections</small></span><span class="chev">›</span></button></div>';
     const a=d.getElementById('pmpCopyBankInventoryBtn'); if(a)a.onclick=function(e){if(e)e.preventDefault();copyText(d,JSON.stringify(inv,null,2));return false};
     const b=d.getElementById('pmpCopyProtectedRegistryBtn'); if(b)b.onclick=function(e){if(e)e.preventDefault();copyText(d,JSON.stringify(PROTECTED,null,2));return false};
+    const c=d.getElementById('pmpCloseBankInventoryBtn'); if(c)c.onclick=function(e){if(e)e.preventDefault();return closeInventory(d)};
     return false;
   }
   function addConnectionButton(d){
     d=d||panelDoc(); if(!d)return;
-    const p=d.getElementById('bridgePanel'); if(!p)return;
+    const p=d.getElementById('bridgePanel'); if(!p || p.dataset.pmpBankInventoryOpen==='1')return;
     const t=text(p);
     if(!/connection/i.test(t) && !/connect/i.test(t))return;
     if(d.getElementById('pmpOpenBankInventoryBtn'))return;
@@ -115,6 +140,7 @@
       w.__pmpConnectionBankInventoryV1=true;
       const old=w.openConnectionsPanel;
       if(typeof old==='function'){
+        OLD_CONNECTIONS_PANEL=old;
         w.openConnectionsPanel=function(){const r=old.apply(this,arguments); setTimeout(()=>addConnectionButton(d),60); setTimeout(()=>addConnectionButton(d),220); setTimeout(()=>addConnectionButton(d),600); return r};
       }
       w.openBankInventoryProtectedRegistry=function(){return renderPanel(d)};
