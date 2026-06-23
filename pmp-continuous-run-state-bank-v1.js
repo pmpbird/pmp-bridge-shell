@@ -4,8 +4,7 @@
   const STATE_KEY='pmp_continuous_run_state_bank_v1';
   const RECEIPTS_KEY='pmp_continuous_run_state_receipts_v1';
   const MANIFEST_KEY='pmp_continuous_run_state_manifest_v1';
-  const TEST_CLEAR_FLAG='pmp_continuous_run_state_test_clear_v1_done';
-  const VERSION='1.0.3-clear-test-data';
+  const VERSION='1.0.4-button-only-clear';
   function now(){return new Date().toISOString()}
   function parse(k,fallback){try{const v=localStorage.getItem(k);return v?JSON.parse(v):fallback}catch(e){return fallback}}
   function save(k,v){localStorage.setItem(k,JSON.stringify(v,null,2));return v}
@@ -36,7 +35,6 @@
   function isTestReceipt(r){if(!r)return false;const n=String(r.note||r.reason||r.next_safe_action||'').trim().toLowerCase();if(n==='test')return true;return ['PMP_RUN_STATE_MANUAL_SAVE','PMP_RUN_STOP_RECORDED','PMP_RUN_RESUME_RECORDED','PMP_RUN_STATE_EXPORTED'].includes(String(r.type||''))}
   function clearTestData(){const s=readRunState();let changed=false;if(String(s.notes||'').trim().toLowerCase()==='test'){s.notes='';changed=true}if(String(s.next_safe_action||'').trim().toLowerCase()==='test'){s.next_safe_action='';changed=true}if(!s.current_packet&&!s.current_item){if(['resumed','stopped'].includes(String(s.last_run_status||''))){s.last_run_status='not_started';s.last_stop_reason='';s.last_resume_point='';changed=true}if(s.context_recovery_state&&s.context_recovery_state.status==='resume_recorded'){s.context_recovery_state={status:'not_checked',last_check_at:null,missing:[]};changed=true}if(s.export_snapshot){s.export_snapshot=null;changed=true}}
     const before=readReceipts();const after=before.filter(r=>!isTestReceipt(r));if(after.length!==before.length){save(RECEIPTS_KEY,after);changed=true}if(changed){s.updated_at=now();s.last_valid_receipt=null;save(STATE_KEY,s);appendReceipt({type:'PMP_RUN_STATE_TEST_DATA_CLEARED',removed_receipts:before.length-after.length});writeManifest()}return{ok:true,changed,removed_receipts:before.length-after.length,state:readRunState(),manifest:writeManifest()}}
-  function autoClearTestOnce(){if(localStorage.getItem(TEST_CLEAR_FLAG)==='1')return;const s=readRunState();const hasTest=String(s.notes||'').trim().toLowerCase()==='test'||String(s.next_safe_action||'').trim().toLowerCase()==='test';if(hasTest){clearTestData();localStorage.setItem(TEST_CLEAR_FLAG,'1')}}
   function deepest(win){win=win||window;try{const fs=win.document.querySelectorAll('iframe');for(const f of fs){try{if(f.contentWindow&&f.contentWindow.document)return deepest(f.contentWindow)}catch(e){}}}catch(e){}return win}
   function doc(){try{return deepest(window).document}catch(e){return null}}
   function win(){try{return deepest(window)}catch(e){return null}}
@@ -56,5 +54,5 @@
   function injectViewer(w,d){try{w=w||win();d=d||doc();if(!w||!d||!w.__pmpBridgePanelToggleFixV3||w.__pmpBridgePanelToggleFixV3.active!=='connections')return;const p=d.getElementById('bridgePanel');if(!p||p.className==='hidden'||d.getElementById('pmpOpenRunStateBankBtn'))return;const b=appButton(d,'pmpOpenRunStateBankBtn','Continuous Run State','engine memory / resume / export','▶',()=>renderViewer(w,d));p.appendChild(b)}catch(e){}}
   function patch(){const w=win(),d=doc();if(!w||!d)return;if(!w.__pmpRunStateBankViewerV1){w.__pmpRunStateBankViewerV1=true;const old=w.openConnectionsPanel;if(typeof old==='function'){w.openConnectionsPanel=function(){const r=old.apply(this,arguments);[100,300,800].forEach(t=>setTimeout(()=>injectViewer(w,d),t));return r}}w.openPersistentContinuousRunState=function(){return renderViewer(w,d)}}try{injectViewer(w,d)}catch(e){}}
   window.PMPContinuousRunStateBankV1={keys:{STATE_KEY,RECEIPTS_KEY,MANIFEST_KEY},readRunState,writeRunState,appendReceipt,setCurrentPacket,setCurrentItem,setNextAction,setPacketQueue,setActiveItems,markItemPassed,markItemBlocked,markItemWatch,setHelperOwner,recordStop,recordResume,exportResumePack,manualClear,clearTestData,writeManifest,buildManifest,renderViewer,injectViewer,patch};
-  readRunState();autoClearTestOnce();writeManifest();[300,900,1800,3000].forEach(t=>setTimeout(patch,t));
+  readRunState();writeManifest();[300,900,1800,3000].forEach(t=>setTimeout(patch,t));
 })();
