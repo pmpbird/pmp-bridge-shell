@@ -1,0 +1,17 @@
+(()=>{
+'use strict';
+const V='1.0.0-packet-name-field',DEPOSIT_KEY='pmp_connections_bank_chat_memory_deposits_v1';
+function docs(root,d,a){a=a||[];d=d||0;if(!root||d>8)return a;try{a.push(root);Array.from(root.querySelectorAll('iframe')).forEach(f=>{try{let z=f.contentDocument||(f.contentWindow&&f.contentWindow.document);if(z)docs(z,d+1,a)}catch(e){}})}catch(e){}return a}
+function clean(t){t=String(t||'').trim().replace(/[\u201C\u201D\u201E\u201F]/g,'"').replace(/[\u2018\u2019\u201A\u201B]/g,"'");if(t.startsWith('```'))t=t.replace(/^```[a-zA-Z0-9_-]*\s*/,'').replace(/```$/,'').trim();let a=t.indexOf('{'),b=t.lastIndexOf('}');if(a>=0&&b>a)t=t.slice(a,b+1);return t.trim()}
+function packetId(text){try{let o=JSON.parse(clean(text));return String(o.project_state_id||o?.search_surface?.primary_lookup_key||'').trim()}catch(e){return ''}}
+function getStore(w){try{return JSON.parse(w.localStorage.getItem(DEPOSIT_KEY)||'{}')||{}}catch(e){return {}}}
+function saveStore(w,s){try{w.localStorage.setItem(DEPOSIT_KEY,JSON.stringify(s,null,2));return true}catch(e){return false}}
+function msg(d,text){let out=d.querySelector('[data-bank-out]');if(out){out.classList.remove('hidden');out.textContent=text}}
+function applyNames(d){let w=d.defaultView||window,store=getStore(w),records=store.records||{},sel=d.querySelector('[data-connections-packet-select]'),pre=d.querySelector('[data-connections-saved]');if(sel){Array.from(sel.options).forEach(o=>{let id=o.value,r=records[id];if(!id||!r)return;let label=r.packet_name||r.display_name||r.project_name||id;o.textContent=(r.category||'Uncategorized')+' — '+label+' ('+id+')'})}if(pre){let lines=Object.keys(records).sort().map(id=>{let r=records[id];return '['+(r.category||'Uncategorized')+'] '+(r.packet_name||r.display_name||r.project_name||id)+'\n  id: '+id+'\n  quality: '+(r.quality_level||'UNKNOWN')+'\n  versions: '+(r.version_count||0)});if(lines.length)pre.textContent=lines.join('\n\n')}}
+function patch(d){let intake=d.querySelector('[data-connections-intake]');if(!intake||intake.dataset.packetNamePatched==='1')return;let packet=intake.querySelector('[data-connections-packet]'),save=intake.querySelector('[data-connections-save]');if(!packet||!save)return;let label=d.createElement('label');label.textContent='Packet Name';let input=d.createElement('input');input.setAttribute('data-connections-packet-name','1');input.placeholder='Example: PMP current memory deposit';label.appendChild(input);packet.parentNode.insertBefore(label,packet);intake.dataset.packetNamePatched='1';save.addEventListener('click',()=>{let name=String(input.value||'').trim(),id=packetId(packet.value);if(!name||!id)return;setTimeout(()=>{let w=d.defaultView||window,store=getStore(w);if(store.records&&store.records[id]){store.records[id].packet_name=name;store.records[id].display_name=name;store.updated_at=new Date().toISOString();saveStore(w,store);applyNames(d);msg(d,'Saved packet name: '+name+' for '+id)}},700)},true);let filter=intake.querySelector('[data-connections-category-filter]');if(filter)filter.addEventListener('change',()=>setTimeout(()=>applyNames(d),80));setTimeout(()=>applyNames(d),100)}
+function scan(){docs(document).forEach(d=>{try{patch(d);applyNames(d)}catch(e){}})}
+window.PMPConnectionsBankPacketNameV1={version:V,scan};
+window.addEventListener('load',()=>[50,150,400,900,1800].forEach(t=>setTimeout(scan,t)));
+setInterval(scan,1500);
+scan();
+})();
