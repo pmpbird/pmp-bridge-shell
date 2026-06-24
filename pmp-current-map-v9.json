@@ -2,7 +2,7 @@
   "type": "PMP_CURRENT_APP_MAP",
   "app_name": "PMP Current",
   "app_version": "PMP-CURRENT-1",
-  "updated_at": "2026-06-23T21:55:00Z",
+  "updated_at": "2026-06-24T09:12:00Z",
   "route_guardian_loader": {
     "path": "pmp-route-guardian-current-loader-v14.html",
     "label": "PMP Current Route Guardian Loader v14",
@@ -12,7 +12,7 @@
   "current_app": {
     "path": "pmp-current-inner-cleanbug-rgcontrols-v23.html",
     "label": "PMP Current v23 stable dashboard helper",
-    "cache_key": "pmp-current-v23-stable-dashboard-helper-20260623T2155Z",
+    "cache_key": "pmp-current-v23-connections-copy-output-fix-20260624T0912Z",
     "status": "current"
   },
   "user_facing_rule": "Only show PMP Current / PMP-CURRENT-1 as the app version.",
