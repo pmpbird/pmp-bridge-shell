@@ -15,11 +15,14 @@
 <script src="pmp-private-backup-lite-v1.js?fresh=v4-lite-backup-v2-deep-frame"></script>
 <script>
 const toolScript=document.createElement('script');
-toolScript.src='pmp-bank-scoped-test-data-'+'cleaner-v1.js?fresh=inner-v4-maint-20260624T1601Z';
+toolScript.src='pmp-bank-scoped-test-data-'+'cleaner-v1.js?fresh=inner-v4-maint-20260624T1612Z';
 document.body.appendChild(toolScript);
+const hideScript=document.createElement('script');
+hideScript.src='pmp-bank-mode1-hide-unchecked-v1.js?fresh=inner-v4-hide-unchecked-20260624T1612Z';
+document.body.appendChild(hideScript);
 const f=document.getElementById('app');
 const h=(location.hash&&location.hash!=='#world')?location.hash:'#control';
-f.src='pmp-current-inner-cleanbug-rgcontrols-v3.html?fresh=v4-door-lite-v2-maint2-'+Date.now()+h;
+f.src='pmp-current-inner-cleanbug-rgcontrols-v3.html?fresh=v4-door-lite-v2-hide-unchecked-'+Date.now()+h;
 </script>
 </body>
 </html>
