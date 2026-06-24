@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const V='1.6.0-self-contained-stable-dark';
+const V='1.7.0-connections-conservative-saved-packets';
 const K={crM:'pmp_continuous_run_bank_transfer_store_manifest_v1',crR:'pmp_continuous_run_bank_transfer_store_receipts_v1',runR:'pmp_continuous_run_state_receipts_v1',runS:'pmp_continuous_run_state_bank_v1',conn:'pmp_connections_bank_chat_memory_deposits_v1',inv:'pmp_master_bank_inventory_v1',route:'pmp_source_bank_router_receipts_v1',help:'pmp_helper_bank_index_v1'};
 const DB={cr:'pmp_continuous_run_bank_transfer_store_db_v1',conn:'pmp_connections_bank_deposits_db_v1'},OS={cr:'items',conn:'deposits'};
 const BAD=/\b(test|testing|placeholder|sample|example|asdf|todo|tbd)\b/i;
@@ -19,7 +19,7 @@ function idbOpen(db,os){return new Promise((res,rej)=>{try{let q=indexedDB.open(
 async function idbDel(dbn,os,k){try{let db=await idbOpen(dbn,os);await new Promise((res,rej)=>{let tx=db.transaction(os,'readwrite'),q=tx.objectStore(os).delete(k);q.onsuccess=()=>res();q.onerror=()=>rej(q.error||Error('IndexedDB delete failed'))});return true}catch(e){return false}}
 function emptyQueue(x){let y=s(x).replace(/\s+/g,'').toLowerCase();return /"(work_queue|packet_queue|guide_active_items)":\[\]/.test(y)||/^\[\]$/.test(y)}
 function textTest(x){return BAD.test(s(x))||SAFE.test(s(x))||emptyQueue(x)||Number(x&&x.characters||0)>0&&Number(x.characters)<20}
-function connTest(id,r){let z=id+' '+s(r);return BAD.test(z)||SAFE.test(z)||Number(r&&r.characters)>0&&Number(r.characters)<20}
+function connTest(id,r){let meta=[id,r&&r.name,r&&r.title,r&&r.category,r&&r.summary,r&&r.label].join(' '),protectedReal=/current_resident|resident_route_guardian|route_guardian|packet_engine|chat_memory_deposit_current/i.test(meta);if(protectedReal&&!BAD.test(meta)&&!/placeholder|sample|example|asdf|todo|tbd/i.test(meta))return false;return BAD.test(meta)||/placeholder|sample|example|asdf|todo|tbd/i.test(meta)||(!protectedReal&&/too_short|not_verified|not_lossless|blocked_test|test_clear|test_verification/i.test(meta))||(!protectedReal&&Number(r&&r.characters)>0&&Number(r.characters)<20)}
 function scopedTest(x,b){return own(x,b)&&(BAD.test(s(x))||SAFE.test(s(x))||emptyQueue(x))}
 function artifactBank(k,v){let a=(k+' '+v).toLowerCase();if(/connection|request_prompt|chat_memory|handoff|future_chat/.test(a))return'connections';if(/continuous|runner|proof_gate|work_intake|work_draft|intake_draft|p15|packet_1_5|temporary_transfer|transfer_store|work_queue|packet_queue|resume_pack|blocked|not_verified|not_lossless/.test(a))return'continuous_run';return''}
 function artifacts(bank,mode){let out=[];for(let i=0;i<localStorage.length;i++){let key=localStorage.key(i);if(!key||Object.values(K).includes(key))continue;let val=localStorage.getItem(key)||'',b=artifactBank(key,val);if(b!==bank)continue;let t=(BAD.test(key+' '+val)||SAFE.test(key+' '+val)||emptyQueue(val))&&!PROTECT.test(key);if(mode==='test'&&!t)continue;out.push({bank,kind:'local_artifact',label:'Test artifact: '+key,auto:mode==='test'&&t,meta:{key}})}return out}
