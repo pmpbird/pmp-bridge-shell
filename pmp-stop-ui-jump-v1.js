@@ -1,0 +1,1 @@
+(()=>{if(window.PMPStopUIJumpV1)return;window.PMPStopUIJumpV1=true;function run(){try{document.querySelectorAll('[data-source-zip-reader-level2],[data-source-zip-extractor-level2b],[data-source-pdf-text-level2c]').forEach(x=>x.style.position='static')}catch(e){}}window.addEventListener('load',run);setInterval(run,1000);run();})();
