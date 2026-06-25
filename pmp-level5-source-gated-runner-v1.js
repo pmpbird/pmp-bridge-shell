@@ -1,0 +1,17 @@
+(()=>{
+'use strict';
+const V='1.0.0-level5-source-gated-runner';
+const RK='pmp_level5_source_gated_runner_receipt_v1';
+const W=()=>{try{return window.top||window}catch(e){return window}};
+const docs=(r,a=[],n=0)=>{if(!r||n>8)return a;try{a.push(r);r.querySelectorAll('iframe').forEach(f=>{try{let d=f.contentDocument||(f.contentWindow&&f.contentWindow.document);if(d)docs(d,a,n+1)}catch(e){}})}catch(e){}return a};
+const save=(v)=>{try{W().localStorage.setItem(RK,JSON.stringify(v,null,2))}catch(e){}return v};
+function gate(){return W().PMPSourceReferenceGateLevel4V1||window.PMPSourceReferenceGateLevel4V1}
+function short(s,n=420){s=String(s||'').replace(/\s+/g,' ').trim();return s.length>n?s.slice(0,n)+'…':s}
+async function run(input){input=String(input||'').trim();let g=gate();if(!g||typeof g.autoGate!=='function')return save({level:5,version:V,status:'WAITING_FOR_LEVEL_4B',input});let r=await g.autoGate(input),b=r.gate&&r.gate.best_match||{};let ok=!!r.allowed;return save({level:5,version:V,at:new Date().toISOString(),input,allowed:ok,status:ok?'ALLOWED_BY_SOURCE':'STOPPED_NO_SOURCE',source:ok?{order:b.order,note:b.note,file:b.file,confidence:r.gate.confidence,excerpt:short(b.snippet)}:null})}
+function text(x){if(!x)return 'Level 5 ready.';if(x.status==='WAITING_FOR_LEVEL_4B')return 'Level 5\nStatus: waiting for Level 4B';if(!x.allowed)return 'Level 5\nStatus: STOPPED — NO SOURCE MATCH\nNo source-backed work ran.\n\nInput:\n'+x.input;let s=x.source||{};return 'Level 5\nStatus: ALLOWED BY SOURCE\nSource: Order '+String(s.order).padStart(2,'0')+' | Note '+s.note+'\nConfidence: '+s.confidence+'%\n\nSource ground:\n'+(s.excerpt||'')}
+function patch(d){let box=d.querySelector('[data-temp-transfer-store][data-v2="1"]')||d.querySelector('[data-temp-transfer-store]')||d.getElementById('bank');if(!box)return;let host=box.querySelector('[data-source-zip-levels-single]')||box;let p=box.querySelector('[data-level5-source-gated-runner]')||d.querySelector('[data-level5-source-gated-runner]');if(!p){p=d.createElement('div');p.setAttribute('data-level5-source-gated-runner','');p.style.margin='8px 0 0';p.style.padding='8px';p.style.border='1px solid rgba(0,0,0,.08)';p.style.borderRadius='10px';p.innerHTML='<h4 style="margin:0 0 4px">Level 5 — Resident Source-Gated Work Runner</h4><p class="sub">Uses Level 4B automatically before work is allowed.</p><input data-l5-q placeholder="source-backed claim or task" style="width:100%;box-sizing:border-box;margin:4px 0;padding:8px;border-radius:8px"><div class="grid"><button class="mini" data-l5-run>Run Through Gate</button><button class="mini" data-l5-fake>Fake Unsourced Test</button></div><pre class="note" data-l5-out style="max-height:260px;overflow:auto;white-space:pre-wrap">Level 5 ready.</pre>'}if(p.parentNode!==host)host.appendChild(p);let q=p.querySelector('[data-l5-q]'),o=p.querySelector('[data-l5-out]');p.querySelector('[data-l5-run]').onclick=async()=>{o.textContent='Checking Level 4B...';o.textContent=text(await run(q.value))};p.querySelector('[data-l5-fake]').onclick=async()=>{q.value='purple banana airplane rule';o.textContent=text(await run(q.value))}}
+function scan(){docs(W().document).forEach(d=>{try{patch(d)}catch(e){}})}
+window.PMPLevel5SourceGatedRunnerV1={version:V,scan,run,text};
+window.addEventListener('load',()=>[300,1000,2500,5000].forEach(t=>setTimeout(scan,t)));
+setInterval(scan,2000);scan();
+})();
