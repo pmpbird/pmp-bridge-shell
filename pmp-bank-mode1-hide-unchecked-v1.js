@@ -1,10 +1,18 @@
 (()=>{
 'use strict';
-const V='4.1.0-source-level-visual-quarantine';
+const V='4.2.0-single-source-zip-levels-box';
+const MK='pmp_continuous_run_bank_transfer_store_manifest_v1';
 const BAD='[data-source-zip-reader-level2],[data-source-zip-extractor-level2b],[data-source-pdf-text-level2c]';
+function topw(){try{return window.top||window}catch(e){return window}}
+function readManifest(){try{return JSON.parse(topw().localStorage.getItem(MK)||'{}')}catch(e){return {}}}
 function docs(d,a,n){a=a||[];n=n||0;if(!d||n>8)return a;try{a.push(d);d.querySelectorAll('iframe').forEach(f=>{try{let x=f.contentDocument||(f.contentWindow&&f.contentWindow.document);if(x)docs(x,a,n+1)}catch(e){}})}catch(e){}return a}
-function scan(){docs(document).forEach(d=>{try{d.querySelectorAll(BAD).forEach(x=>{x.style.display='none';x.style.height='0';x.style.margin='0';x.style.padding='0';x.style.overflow='hidden'})}catch(e){}})}
+function hideOld(d){try{d.querySelectorAll(BAD).forEach(x=>{x.style.display='none';x.style.height='0';x.style.margin='0';x.style.padding='0';x.style.overflow='hidden'})}catch(e){}}
+function line(){let m=readManifest(),z=m.source_zip_reader_level2,b=m.source_zip_extractor_level2b,c=m.source_pdf_text_level2c;let s=[];s.push('Source ZIP: '+((m.must_reference_source_zip||{}).present?'PRESENT':'missing'));s.push('Level 2: '+(z?'PDFs '+z.pdf_count:'not read'));s.push('Level 2B: '+(b?'records '+b.note_count:'not extracted'));s.push('Level 2C: '+(c?'text '+c.text_record_count+' / notes with text '+c.notes_with_text:'not extracted'));return s.join('\n')}
+function loadScript(src,flag){return new Promise((ok,bad)=>{try{if(window[flag])return ok();let s=document.createElement('script');s.src=src+'?fresh=singlebox-'+Date.now();s.onload=()=>ok();s.onerror=()=>bad(Error('could not load '+src));(document.head||document.documentElement).appendChild(s)}catch(e){bad(e)}})}
+async function runLevel(kind,out){try{if(kind==='2'){out.textContent='Reading ZIP...';await loadScript('pmp-source-zip-reader-level2-v1.js','PMPSourceZipReaderLevel2V1');await window.PMPSourceZipReaderLevel2V1.readZip()}if(kind==='2b'){out.textContent='Extracting PDF records...';await loadScript('pmp-source-zip-extractor-level2b-v1.js','PMPSourceZipExtractorLevel2BV1');await window.PMPSourceZipExtractorLevel2BV1.extractAll()}if(kind==='2c'){out.textContent='Extracting PDF text...';await loadScript('pmp-source-pdf-text-level2c-v1.js','PMPSourcePDFTextLevel2CV1');await window.PMPSourcePDFTextLevel2CV1.extractAll()}out.textContent=line();setTimeout(scan,50)}catch(e){out.textContent='Failed: '+e.message}}
+function box(d){let store=d.querySelector('[data-temp-transfer-store][data-v2="1"]')||d.querySelector('[data-temp-transfer-store]');if(!store)return;let anchor=store.querySelector('[data-source-zip-lane]');if(!anchor)return;let p=store.querySelector('[data-source-zip-levels-single]');if(!p){p=d.createElement('div');p.setAttribute('data-source-zip-levels-single','');p.style.margin='8px 0';p.style.padding='8px';p.style.borderRadius='10px';p.style.maxHeight='250px';p.style.overflow='hidden';p.innerHTML='<h2 style="font-size:16px;margin:0 0 6px">Source ZIP Levels</h2><div class="grid"><button class="mini" data-l2>Read ZIP</button><button class="mini" data-l2b>Extract PDFs</button><button class="mini" data-l2c>Extract Text</button></div><pre class="note" data-out style="max-height:115px;overflow:auto;font-size:11px;line-height:1.25;margin:6px 0 0;padding:6px"></pre>'}if(anchor.previousSibling!==p)store.insertBefore(p,anchor);let out=p.querySelector('[data-out]');out.textContent=line();p.querySelector('[data-l2]').onclick=()=>runLevel('2',out);p.querySelector('[data-l2b]').onclick=()=>runLevel('2b',out);p.querySelector('[data-l2c]').onclick=()=>runLevel('2c',out)}
+function scan(){docs(topw().document).forEach(d=>{hideOld(d);box(d)})}
 window.PMPBankMode1HideUncheckedV1={version:V,scan};
-window.addEventListener('load',()=>[0,200,800,2000,5000].forEach(t=>setTimeout(scan,t)));
-setInterval(scan,1000);scan();
+window.addEventListener('load',()=>[0,300,1000,2500,5000].forEach(t=>setTimeout(scan,t)));
+setInterval(scan,1200);scan();
 })();
