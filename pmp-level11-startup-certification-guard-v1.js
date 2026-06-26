@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const V='1.0.0-level11-startup-certification-guard';
+const V='1.0.1-level11-startup-certification-guard';
 const L10K='pmp_level10_full_chain_certification_lock_v1';
 const L11K='pmp_level11_startup_certification_guard_v1';
 function W(){try{return window.top||window}catch(e){return window}}
