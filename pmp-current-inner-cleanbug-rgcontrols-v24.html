@@ -40,11 +40,19 @@ iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#f3ded4
 <script src="pmp-resident-continuous-run-status-reader-v1.js?fresh=resident-continuous-run-status-reader-v101-20260627T2052Z"></script>
 <script src="pmp-resident-cr-status-router-v1.js?fresh=cr-local-answer-router-v100-20260627T2106Z"></script>
 <script src="pmp-staging-transfer-store-universal-ui-v1.js?fresh=staging-transfer-store-universal-layout-v110-20260627T2136Z"></script>
+<script src="pmp-current-screen-test-engine-v1.js?fresh=v24-hidden-current-page-test-20260628A"></script>
+<script src="pmp-bank-reload-current-button-v1.js?fresh=v24-reload-current-engine-v140-20260628A"></script>
+<script src="pmp-launcher-reload-current-bridge-v1.js?fresh=v24-old-reload-bridge-20260628A"></script>
+<script src="pmp-current-page-code-scope-v1.js?fresh=v24-current-page-code-scope-20260628A"></script>
+<script src="pmp-reload-current-visible-receipt-v1.js?fresh=v24-quiet-reload-20260628A"></script>
 <script>
 function pmpValidHash(x){return /^#(world|bridge|library|workshop|control|bank)$/i.test(String(x||''))}
-function pmpSavedHash(){try{if(pmpValidHash(location.hash))return location.hash.toLowerCase();let s=JSON.parse(localStorage.getItem('pmp_reload_current_live_snapshot_v12')||localStorage.getItem('pmp_reload_current_live_snapshot_v12_last_kept')||'null');if(s&&pmpValidHash(s.page))return String(s.page).toLowerCase()}catch(e){}return '#world'}
-const h=pmpSavedHash();
-document.getElementById('app').src='pmp-current-inner-cleanbug-rgcontrols-v4.html?fresh=q18-v24-staging-transfer-store-layout-20260627T2136Z-'+Date.now()+h;
+function pmpIsReloadCurrent(){return /from=live-reload-snapshot/i.test(String(location.search||''))}
+function pmpIsRouteGuardianOpen(){let s=String(location.search+' '+location.href+' '+document.referrer).toLowerCase();return s.includes('rg14-run-app')||s.includes('route-guardian')||s.includes('open-current')||s.includes('lastgood')}
+function pmpFreshReloadSnapshot(){try{if(!pmpIsReloadCurrent())return'';let s=JSON.parse(localStorage.getItem('pmp_reload_current_live_snapshot_v12')||'null');if(!s||!pmpValidHash(s.page))return'';if(Date.now()-Number(s.made_at||0)>120000)return'';return String(s.page).toLowerCase()}catch(e){return''}}
+function pmpStartHash(){try{if(pmpValidHash(location.hash)){let h=location.hash.toLowerCase();if(h==='#control'&&!pmpIsRouteGuardianOpen()&&!pmpIsReloadCurrent())return '#world';return h}let r=pmpFreshReloadSnapshot();if(r)return r}catch(e){}return '#world'}
+const h=pmpStartHash();
+document.getElementById('app').src='pmp-current-inner-cleanbug-rgcontrols-v4.html?fresh=q18-v24-actual-app-hidden-reload-current-20260628A-'+Date.now()+h;
 </script>
 </body>
 </html>
