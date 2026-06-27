@@ -2,7 +2,7 @@
   "type": "PMP_CURRENT_APP_MAP",
   "app_name": "PMP Current",
   "app_version": "PMP-CURRENT-1",
-  "updated_at": "2026-06-27T21:24:00Z",
+  "updated_at": "2026-06-27T21:36:00Z",
   "route_guardian_loader": {
     "path": "pmp-route-guardian-current-loader-v14.html",
     "label": "PMP Current Route Guardian Loader v14",
@@ -11,13 +11,13 @@
   },
   "current_app": {
     "path": "pmp-current-inner-cleanbug-rgcontrols-v24.html",
-    "label": "PMP Current v24 universal staging transfer store UI",
-    "cache_key": "pmp-current-v24-staging-transfer-store-universal-ui-20260627T2124Z",
+    "label": "PMP Current v24 universal staging transfer store ordered layout",
+    "cache_key": "pmp-current-v24-staging-transfer-store-layout-20260627T2136Z",
     "status": "current"
   },
   "user_facing_rule": "Only show PMP Current / PMP-CURRENT-1 as the app version.",
   "home_screen_rule": "Install pmp-app-current.html once. It is a stable map-driven door and should change as little as possible.",
-  "update_rule": "Route Guardian opens the full current app. Staging Transfer Store wording replaces Temporary Transfer Store, debug buttons are hidden on the Bank screen, and store item types are universal with project-specific packet labels kept only as compatibility/profile labels.",
+  "update_rule": "Route Guardian opens the full current app. Bank order is Lossless Slots ZIP Import, then Bank Project Registry, then Staging Transfer Store. Reload Current and Test Current Page are removed from the Bank UI, not hidden. Store item types are universal with project-specific packet labels kept only as compatibility/profile labels.",
   "fallback_app": {
     "path": "pmp-current-inner-cleanbug-rgcontrols-v23.html",
     "cache_key": "fallback-pmp-current-v23-cr-local-answer-router"
