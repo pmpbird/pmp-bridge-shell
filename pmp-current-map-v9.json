@@ -2,22 +2,17 @@
   "type": "PMP_CURRENT_APP_MAP",
   "app_name": "PMP Current",
   "app_version": "PMP-CURRENT-1",
-  "updated_at": "2026-06-28T00:35:00Z",
+  "updated_at": "2026-06-28T00:50:00Z",
   "route_guardian_loader": {
     "path": "pmp-route-guardian-current-loader-v14.html",
-    "label": "PMP Current Route Guardian Loader v14",
     "cache_key": "pmp-route-guardian-current-loader-v14-20260622T2300Z",
     "status": "current"
   },
   "current_app": {
     "path": "pmp-current-reload-owner-v25.html",
-    "label": "PMP Current v25",
-    "cache_key": "pmp-current-v25-20260628A",
+    "cache_key": "pmp-current-v25-bridge-restored-20260628A",
     "status": "current"
   },
-  "user_facing_rule": "Only show PMP Current / PMP-CURRENT-1 as the app version.",
-  "home_screen_rule": "Install pmp-app-current.html once.",
-  "update_rule": "Route Guardian opens the current app path from this map.",
   "fallback_app": {
     "path": "pmp-current-inner-cleanbug-rgcontrols-v23.html",
     "cache_key": "fallback-pmp-current-v23-cr-local-answer-router"
