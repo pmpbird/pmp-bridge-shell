@@ -2,7 +2,7 @@
   "type": "PMP_CURRENT_APP_MAP",
   "app_name": "PMP Current",
   "app_version": "PMP-CURRENT-1",
-  "updated_at": "2026-06-27T21:06:00Z",
+  "updated_at": "2026-06-27T21:24:00Z",
   "route_guardian_loader": {
     "path": "pmp-route-guardian-current-loader-v14.html",
     "label": "PMP Current Route Guardian Loader v14",
@@ -10,16 +10,16 @@
     "status": "current"
   },
   "current_app": {
-    "path": "pmp-current-inner-cleanbug-rgcontrols-v23.html",
-    "label": "PMP Current v23 stable dashboard helper + Resident CR local answer router",
-    "cache_key": "pmp-current-v23-cr-local-answer-router-20260627T2106Z",
+    "path": "pmp-current-inner-cleanbug-rgcontrols-v24.html",
+    "label": "PMP Current v24 universal staging transfer store UI",
+    "cache_key": "pmp-current-v24-staging-transfer-store-universal-ui-20260627T2124Z",
     "status": "current"
   },
   "user_facing_rule": "Only show PMP Current / PMP-CURRENT-1 as the app version.",
   "home_screen_rule": "Install pmp-app-current.html once. It is a stable map-driven door and should change as little as possible.",
-  "update_rule": "Route Guardian opens the full current app. Resident now has a local Continuous Run status answer router before the generic ChatGPT handoff path.",
+  "update_rule": "Route Guardian opens the full current app. Staging Transfer Store wording replaces Temporary Transfer Store, debug buttons are hidden on the Bank screen, and store item types are universal with project-specific packet labels kept only as compatibility/profile labels.",
   "fallback_app": {
-    "path": "pmp-current-inner-cleanbug-rgcontrols-v21.html",
-    "cache_key": "fallback-pmp-current-v21-full-app"
+    "path": "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+    "cache_key": "fallback-pmp-current-v23-cr-local-answer-router"
   }
 }
