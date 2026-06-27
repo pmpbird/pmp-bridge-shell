@@ -1,0 +1,86 @@
+{
+  "type": "PMP_ROUTE_CODE_MAP_V1",
+  "version": "1.1.0-live-comparison-ready",
+  "authority": "diagnostic_only_reload_snapshot_remains_destination_authority",
+  "global_shell_files": [
+    "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+    "pmp-current-screen-test-engine-v1.js",
+    "pmp-bank-reload-current-button-v1.js",
+    "pmp-reload-current-visible-receipt-v1.js",
+    "pmp-route-code-map-adapter-v1.js",
+    "pmp-route-code-map-v1.json"
+  ],
+  "route_files": {
+    "#control": [
+      "pmp-route-guardian-last-good-clean-v1.js",
+      "pmp-safe-writer-canonical-route-v1.js",
+      "pmp-p15-builder-fix-v2.js",
+      "pmp-p15-units-restore-v1.js",
+      "pmp-p15-proof-section-v1.js",
+      "pmp-p15-continuous-runner-stable-v1.js"
+    ],
+    "#bank": [
+      "pmp-master-bank-inventory-router-v1.js",
+      "pmp-master-bank-tab-v1.js",
+      "pmp-bank-project-registry-v1.js",
+      "pmp-bank-scoped-test-data-cleaner-v1.js",
+      "pmp-bank-mode1-hide-unchecked-v1.js",
+      "pmp-bank-reload-current-button-v1.js"
+    ],
+    "#bridge": [
+      "pmp-connections-bank-packet-delete-v1.js",
+      "pmp-connections-bank-packet-name-v1.js",
+      "pmp-connections-bank-inventory-off-v1.js",
+      "pmp-connections-copy-output-fix-v1.js",
+      "pmp-connections-request-prompt-schema-v1.js",
+      "pmp-connections-request-prompt-complete-v1.js"
+    ],
+    "#library": ["pmp-master-bank-tab-v1.js", "pmp-master-bank-inventory-router-v1.js"],
+    "#workshop": ["pmp-p15-builder-fix-v2.js", "pmp-p15-units-restore-v1.js", "pmp-p15-proof-section-v1.js"],
+    "#world": ["pmp-master-bank-inventory-router-v1.js", "pmp-master-bank-tab-v1.js"]
+  },
+  "bank_detail_files": {
+    "continuous_run": [
+      "pmp-continuous-run-state-bank-v1.js",
+      "pmp-continuous-run-dashboard-stable-v1.js",
+      "pmp-continuous-run-bank-transfer-store-v2.js",
+      "pmp-continuous-run-bank-verify-receipt-fix-v1.js",
+      "pmp-continuous-run-bank-zip-importer-v1.js",
+      "pmp-continuous-run-bank-must-source-zip-v1.js",
+      "pmp-continuous-run-bank-stable-status-owner-v1.js"
+    ],
+    "connections": [
+      "pmp-connections-bank-packet-delete-v1.js",
+      "pmp-connections-bank-packet-name-v1.js",
+      "pmp-connections-bank-inventory-off-v1.js",
+      "pmp-connections-copy-output-fix-v1.js",
+      "pmp-connections-request-prompt-schema-v1.js",
+      "pmp-connections-request-prompt-complete-v1.js"
+    ],
+    "protection": [
+      "pmp-source-reference-gate-level4-v1.js",
+      "pmp-level10-random-source-certification-v1.js",
+      "pmp-level11-startup-certification-guard-v1.js",
+      "pmp-level16-source-bound-startup-enforcement-v1.js",
+      "pmp-level17-source-mismatch-resident-block-test-v1.js",
+      "pmp-level18-source-recertification-required-gate-v1.js",
+      "pmp-level19-recertification-recovery-proof-v1.js",
+      "pmp-level20-certification-chain-summary-lock-v1.js",
+      "pmp-level21-one-tap-full-chain-retest-lock-v1.js",
+      "pmp-level22-exportable-certification-receipt-v1.js",
+      "pmp-level23-export-receipt-integrity-check-v1.js",
+      "pmp-level24-tampered-receipt-rejection-test-v1.js",
+      "pmp-level25-receipt-bundle-v1.js",
+      "pmp-level26-portable-packet-integrity-check-v1.js",
+      "pmp-level27-tampered-packet-rejection-test-v1.js",
+      "pmp-level28-one-tap-final-export-bundle-v1.js",
+      "pmp-level29-cold-start-verification-proof-v1.js",
+      "pmp-resident-startup-level30-auto-gate-v1.js"
+    ],
+    "migration": ["pmp-phase1-migrate-v1.js", "pmp-private-backup-lite-v1.js"],
+    "ui_control_surface": ["pmp-crd-prestyle-v1.js", "pmp-layout-guard-v1.js", "pmp-master-bank-tab-v1.js", "pmp-reload-current-visible-receipt-v1.js"],
+    "test_verification": ["pmp-current-screen-test-engine-v1.js", "pmp-route-code-map-adapter-v1.js", "pmp-route-code-map-v1.json"]
+  }
+}
