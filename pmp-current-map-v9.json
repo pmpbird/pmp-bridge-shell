@@ -2,7 +2,7 @@
   "type": "PMP_CURRENT_APP_MAP",
   "app_name": "PMP Current",
   "app_version": "PMP-CURRENT-1",
-  "updated_at": "2026-06-27T20:49:00Z",
+  "updated_at": "2026-06-27T20:52:00Z",
   "route_guardian_loader": {
     "path": "pmp-route-guardian-current-loader-v14.html",
     "label": "PMP Current Route Guardian Loader v14",
@@ -11,8 +11,8 @@
   },
   "current_app": {
     "path": "pmp-current-inner-cleanbug-rgcontrols-v23.html",
-    "label": "PMP Current v23 stable dashboard helper + Resident Continuous Run reader",
-    "cache_key": "pmp-current-v23-resident-continuous-reader-20260627T2049Z",
+    "label": "PMP Current v23 stable dashboard helper + Resident Continuous Run reader v101",
+    "cache_key": "pmp-current-v23-resident-continuous-reader-v101-20260627T2052Z",
     "status": "current"
   },
   "user_facing_rule": "Only show PMP Current / PMP-CURRENT-1 as the app version.",
