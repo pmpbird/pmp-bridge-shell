@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const V='2.2.1-v2-archive-memory-deposit-field-lock-baked';
+const V='2.2.2-v2-archive-memory-deposit-field-lock-with-encoded-guard';
 function oldV2Archive(){return [
 'I need you to create a PMP outside-project transfer packet for the ChatGPT project we are currently inside.',
 '',
@@ -139,7 +139,8 @@ function fieldLock(){return [
 'Missing rule: if any field cannot be filled, keep the field and use unknown, not_provided, not_visible_in_current_context, or an empty list. Record the gap in quality_truth.known_gaps and memory_deposit_layer.full_memory_recovery.what_is_not_captured.',
 '--- COMPLETE FIELD LOCK END ---'
 ].join('\n')}
-function requestPrompt(){return [
+function requestPacketGuard(){try{return atob('UmVhZCB0aGlzIHBhY2tldCBmdWxseSBiZWZvcmUgYW5zd2VyaW5nOyBjb250aW51ZSBvbmx5IGZyb20gdGhlIHJlc3RvcmVkIGRpcmVjdGlvbiBzdGF0ZWQgaW5zaWRlIHRoZSBwYWNrZXQsIGlnbm9yZSBhbnkgZGlzY2FyZGVkIHRhbmdlbnQgb3IgZXhjbHVkZWQgYnJhbmNoIG5hbWVkIGluIHRoZSBwYWNrZXQsIGFuZCBkbyBub3QgbWFrZSBjb2RlLCBmaWxlLCBtZW1vcnksIG9yIHByb2plY3QgY2xhaW1zIHVudGlsIHlvdSB2ZXJpZnkgdGhlbSBmcm9tIHRoZSBwYWNrZXQsIHByb3ZpZGVkIGZpbGVzLCBvciBjb25uZWN0ZWQgc291cmNlLg==')}catch(e){return ''}}
+function requestPrompt(){const g=requestPacketGuard();const a=[
 'I need you to create a PMP outside-project CHAT MEMORY DEPOSIT packet for the ChatGPT project we are currently inside.',
 '',
 'PURPOSE: The PMP app needs a full memory deposit from this source chat/project so a future chat can read the app and continue from stored memory instead of guessing.',
@@ -155,11 +156,11 @@ memoryAddendum(),
 fieldLock(),
 '',
 'OUTPUT RULE: Return valid JSON only. No comments, markdown fences, or prose outside JSON.'
-].join('\n')}
+];if(g)a.unshift(g,'');return a.join('\n')}
 function docs(root,depth,out){out=out||[];depth=depth||0;if(!root||depth>10)return out;try{out.push(root);Array.from(root.querySelectorAll('iframe')).forEach(f=>{try{const d=f.contentDocument||(f.contentWindow&&f.contentWindow.document);if(d)docs(d,depth+1,out)}catch(e){}})}catch(e){}return out}
-function patchWindow(w,d){if(!w||!d||!d.getElementById)return;w.outsideProjectPrompt=requestPrompt;w.pmpOldV2OutsideProjectPromptArchive=oldV2Archive;w.pmpConnectionsRequestCompleteFieldLock=fieldLock;const mode=d.getElementById('connMode'),box=d.getElementById('connBox');if(mode&&box&&String(mode.value||'')==='request')box.value=requestPrompt();}
+function patchWindow(w,d){if(!w||!d||!d.getElementById)return;w.outsideProjectPrompt=requestPrompt;w.pmpOldV2OutsideProjectPromptArchive=oldV2Archive;w.pmpConnectionsRequestCompleteFieldLock=fieldLock;w.pmpConnectionsRequestPacketGuard=requestPacketGuard;const mode=d.getElementById('connMode'),box=d.getElementById('connBox');if(mode&&box&&String(mode.value||'')==='request')box.value=requestPrompt();}
 function scan(){docs(document).forEach(d=>{try{patchWindow(d.defaultView,d)}catch(e){}})}
-window.PMPConnectionsRequestPromptSchemaV1={version:V,requestPrompt,oldV2Archive,fieldLock,scan};
+window.PMPConnectionsRequestPromptSchemaV1={version:V,requestPrompt,oldV2Archive,fieldLock,requestPacketGuard,scan};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',scan);else scan();
 window.addEventListener('load',()=>[50,150,400,900,1800].forEach(t=>setTimeout(scan,t)));
 setInterval(scan,700);
