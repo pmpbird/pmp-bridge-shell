@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const V='1.0.0-complete-field-lock';
+const V='1.1.0-complete-field-lock-copyable-json-block';
 function addendum(){return [
 '',
 '--- COMPLETE FIELD LOCK START ---',
@@ -49,7 +49,9 @@ function addendum(){return [
 'Memory truth rule: the app cannot read old chat memory unless the source places it in the packet, a transcript/export is pasted/imported, or a user-provided link/source is used. Therefore the full_memory_recovery section must be as complete as the source chat can make it.',
 '',
 'Missing rule: if any field cannot be filled, keep the field and use unknown, not_provided, not_visible_in_current_context, or an empty list. Record the gap in quality_truth.known_gaps and memory_deposit_layer.full_memory_recovery.what_is_not_captured.',
-'--- COMPLETE FIELD LOCK END ---'
+'--- COMPLETE FIELD LOCK END ---',
+'',
+'FINAL COPY FORMAT RULE: Return the completed packet inside one copyable markdown code block labeled json. Put no prose before or after the code block. Inside the code block, include valid JSON only.'
 ].join('\n')}
 function docs(root,depth,out){out=out||[];depth=depth||0;if(!root||depth>10)return out;try{out.push(root);Array.from(root.querySelectorAll('iframe')).forEach(f=>{try{const d=f.contentDocument||(f.contentWindow&&f.contentWindow.document);if(d)docs(d,depth+1,out)}catch(e){}})}catch(e){}return out}
 function patchWindow(w,d){if(!w||!d||!d.getElementById)return;if(w.__pmpRequestPromptCompleteV1===V)return;const prior=typeof w.outsideProjectPrompt==='function'?w.outsideProjectPrompt.bind(w):null;w.__pmpRequestPromptCompleteV1=V;w.pmpConnectionsRequestCompleteFieldLock=addendum;w.outsideProjectPrompt=function(){const base=prior?prior():'';return String(base||'')+addendum()};const mode=d.getElementById('connMode'),box=d.getElementById('connBox');if(mode&&box&&String(mode.value||'')==='request')box.value=w.outsideProjectPrompt();}
