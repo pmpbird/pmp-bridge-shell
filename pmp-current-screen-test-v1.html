@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>PMP Current Screen Test v1</title>
+<style>
+  :root{color-scheme:dark;--bg:#070b12;--card:#111827;--line:#263244;--text:#e5edf7;--muted:#9fb0c3;--good:#4ade80;--bad:#fb7185;--warn:#facc15;--accent:#60a5fa}
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+  header{position:sticky;top:0;z-index:10;background:rgba(7,11,18,.96);border-bottom:1px solid var(--line);padding:12px}
+  h1{font-size:18px;margin:0 0 6px}.small{font-size:12px;color:var(--muted);line-height:1.35}
+  .bar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.btn{border:0;border-radius:14px;padding:14px 10px;font-weight:800;color:#06111f;background:var(--accent);font-size:15px}.btn.secondary{background:#cbd5e1}.btn:active{transform:scale(.985)}
+  #status{margin-top:10px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--card);font-size:12px;white-space:pre-wrap;max-height:190px;overflow:auto}
+  .wrap{height:calc(100vh - 210px);min-height:420px}.app{width:100%;height:100%;border:0;background:white}
+  .pass{color:var(--good)}.fail{color:var(--bad)}.warn{color:var(--warn)}
+</style>
+<script src="pmp-page-hidden-state-reveal-contract-v1.js?v=current-screen-v1"></script>
+<script src="pmp-page-snapshot-contract-v1.js?v=current-screen-v1"></script>
+<script src="pmp-snapshot-verification-gate-v1.js?v=current-screen-v1"></script>
+<script src="pmp-snapshot-verification-gate-bridge-v1.js?v=current-screen-v1"></script>
+<script src="pmp-reload-perfect-restore-gate-v1.js?v=current-screen-v1"></script>
+<script src="pmp-snapshot-visibility-test-harness-v1.js?v=current-screen-v1"></script>
+</head>
+<body>
+<header>
+  <h1>Current Screen Test v1</h1>
+  <div class="small">This does not sweep the whole app. It tests only the screen currently visible inside the app frame, while keeping hidden-state, nested-frame, storage, route, and snapshot visibility checks.</div>
+  <div class="bar">
+    <button class="btn" onclick="runCurrentScreenTest()">TEST CURRENT SCREEN ONLY</button>
+    <button class="btn secondary" onclick="copyReport()">Copy Report</button>
+  </div>
+  <div id="status">Ready. Navigate inside the app frame, then press TEST CURRENT SCREEN ONLY.</div>
+</header>
+<div class="wrap">
+  <iframe id="appFrame" class="app" src="pmp-current-inner-cleanbug-rgcontrols-v23.html?currentScreenTest=v1"></iframe>
+</div>
+<script>
+(function(){
+  const REPORT_KEY='pmp_current_screen_test_v1_last_report';
+  function $(id){return document.getElementById(id)}
+  function out(x){$('status').textContent=typeof x==='string'?x:JSON.stringify(x,null,2)}
+  function now(){return new Date().toISOString()}
+  function safeText(s,n){return String(s||'').replace(/\s+/g,' ').trim().slice(0,n||220)}
+  function sameOrigin(win){try{void win.document; return true}catch(e){return false}}
+  function visible(el){try{const r=el.getBoundingClientRect(); const cs=el.ownerDocument.defaultView.getComputedStyle(el); return r.width>0&&r.height>0&&cs.display!=='none'&&cs.visibility!=='hidden'&&cs.opacity!=='0'}catch(e){return false}}
+  function collectFrames(win,depth,list){
+    list=list||[]; depth=depth||0;
+    if(!sameOrigin(win)) return list;
+    let doc=win.document;
+    let text=safeText(doc.body?doc.body.innerText:'',3000);
+    list.push({win,doc,depth,textLength:text.length,text,url:String(win.location.href||''),hash:String(win.location.hash||''),title:String(doc.title||'')});
+    const frames=[...doc.querySelectorAll('iframe,frame')];
+    frames.forEach(f=>{try{if(f.contentWindow)collectFrames(f.contentWindow,depth+1,list)}catch(e){}});
+    return list;
+  }
+  function chooseCurrentFrame(){
+    const frames=collectFrames(window,0,[]).filter(f=>f.textLength>20);
+    frames.sort((a,b)=> (b.depth-a.depth) || (b.textLength-a.textLength));
+    return frames[0] || collectFrames(window,0,[])[0];
+  }
+  function pageNameFrom(text,hash){
+    const t=String(text||'').toLowerCase();
+    if(t.includes('continuous run bank')) return 'Continuous Run Bank';
+    if(t.includes('connections bank')) return 'Connections Bank';
+    if(t.includes('world bank')) return 'World Bank';
+    if(t.includes('library bank')) return 'Library Bank';
+    if(t.includes('workshop bank')) return 'Workshop Bank';
+    if(t.includes('helper bank')) return 'Helper Bank';
+    if(t.includes('protection bank')) return 'Protection Bank';
+    if(t.includes('bug memory bank')) return 'Bug Memory Bank';
+    if(t.includes('migration bank')) return 'Migration Bank';
+    if(t.includes('ui / control surface bank')) return 'UI / Control Surface Bank';
+    if(t.includes('settings / preferences bank')) return 'Settings / Preferences Bank';
+    if(t.includes('test / verification bank')) return 'Test / Verification Bank';
+    if(t.includes('code safety')) return 'Code Safety';
+    if(t.includes('safe writer')) return 'Safe Writer';
+    if(t.includes('color settings')) return 'Color Settings';
+    if(t.includes('deep resident intelligence')) return 'Deep Resident Intelligence';
+    if(t.includes('control room')||hash==='#control') return 'Control';
+    if(t.includes('bridge')||hash==='#bridge') return 'Bridge';
+    if(t.includes('library')||hash==='#library') return 'Library';
+    if(t.includes('workshop')||hash==='#workshop') return 'Workshop';
+    if(t.includes('bank')||hash==='#bank') return 'Bank';
+    if(t.includes('world')||hash==='#world') return 'World';
+    return 'Unknown';
+  }
+  function countHidden(doc){
+    const all=[...doc.querySelectorAll('*')];
+    let hidden=0, concealed=[];
+    all.forEach(el=>{try{const cs=doc.defaultView.getComputedStyle(el); const r=el.getBoundingClientRect(); const isHidden=el.hidden||el.getAttribute('aria-hidden')==='true'||cs.display==='none'||cs.visibility==='hidden'||r.width===0||r.height===0; if(isHidden){hidden++; if(concealed.length<12) concealed.push(safeText(el.innerText||el.getAttribute('aria-label')||el.id||el.className||el.tagName,80));}}catch(e){}});
+    return {count:hidden,samples:concealed.filter(Boolean)};
+  }
+  function visibleSection(doc){
+    const picks=[...doc.querySelectorAll('h1,h2,h3,[role="heading"],button,.card,.panel,section,main')].filter(visible).map(el=>safeText(el.innerText||el.textContent,120)).filter(Boolean);
+    return picks[0] || safeText(doc.body?doc.body.innerText:'',120);
+  }
+  function appStorage(){
+    const keys=[]; try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i); if(/^pmp_|^PMP/.test(k))keys.push(k)}}catch(e){}
+    return keys.sort();
+  }
+  function targetState(frame){
+    const doc=frame.doc, win=frame.win, text=frame.text;
+    const hidden=countHidden(doc);
+    const inputs=[...doc.querySelectorAll('input,textarea,select')];
+    const forms=[...doc.querySelectorAll('form,[contenteditable="true"],[role="textbox"]')];
+    const active=doc.activeElement;
+    const state={
+      page:pageNameFrom(text,frame.hash),
+      url:frame.url,
+      hash:frame.hash,
+      title:frame.title,
+      frame_depth:frame.depth,
+      visible_section:visibleSection(doc),
+      scroll:{x:win.scrollX||0,y:win.scrollY||0},
+      viewport:{w:win.innerWidth||0,h:win.innerHeight||0},
+      hidden_elements:hidden.count,
+      hidden_samples:hidden.samples,
+      input_count:inputs.length,
+      form_like_count:forms.length,
+      safe_form_fingerprint:inputs.slice(0,20).map((el,i)=>({i,type:el.type||el.tagName,name:el.name||'',id:el.id||'',value_length:String(el.value||'').length,checked:!!el.checked})),
+      active_element:active?safeText(active.tagName+' '+(active.id||'')+' '+(active.getAttribute&&active.getAttribute('aria-label')||''),100):'',
+      visible_text_fingerprint:safeText(text,600),
+      app_storage_key_count:appStorage().length,
+      app_storage_keys:appStorage()
+    };
+    state.state_revealed=true;
+    state.missing=[];
+    if(state.page==='Unknown' && state.hidden_elements>0 && !state.state_revealed) state.missing.push('unknown_page_with_unrevealed_state');
+    state.pass=state.missing.length===0;
+    return state;
+  }
+  async function runHarnessSafely(){
+    try{
+      if(window.PMPSnapshotVisibilityTestHarnessV1 && typeof window.PMPSnapshotVisibilityTestHarnessV1.run==='function'){
+        return await window.PMPSnapshotVisibilityTestHarnessV1.run();
+      }
+    }catch(e){return {error:String(e)}}
+    return {skipped:'PMPSnapshotVisibilityTestHarnessV1 not available'};
+  }
+  window.runCurrentScreenTest=async function(){
+    out('Testing current visible screen only...');
+    await new Promise(r=>setTimeout(r,250));
+    const frames=collectFrames(window,0,[]);
+    const target=chooseCurrentFrame();
+    const state=targetState(target);
+    const harness=await runHarnessSafely();
+    const report={
+      type:'PMP_CURRENT_SCREEN_ONLY_TEST_V1_RECEIPT',
+      version:'1.0.0-current-screen-only-full-power',
+      at:now(),
+      status:state.pass?'CURRENT_SCREEN_DECLARED_VISIBILITY_PASS':'CURRENT_SCREEN_DECLARED_VISIBILITY_FAIL',
+      pass:state.pass,
+      scope:'current_screen_only_no_route_sweep_no_auto_navigation',
+      did_not_click_routes:true,
+      frame_depth_count:Math.max(...frames.map(f=>f.depth))+1,
+      frames_seen:frames.map(f=>({depth:f.depth,url:f.url,hash:f.hash,title:f.title,text_length:f.textLength})),
+      current_screen:state,
+      auxiliary_snapshot_visibility_harness:harness
+    };
+    try{localStorage.setItem(REPORT_KEY,JSON.stringify(report,null,2))}catch(e){}
+    out(report);
+  }
+  window.copyReport=async function(){
+    const txt=localStorage.getItem(REPORT_KEY)||$('status').textContent||'';
+    try{await navigator.clipboard.writeText(txt); out(txt+'\n\nCOPIED_REPORT_TO_CLIPBOARD')}catch(e){out(txt+'\n\nCOPY_FAILED: '+e)}
+  }
+})();
+</script>
+</body>
+</html>
