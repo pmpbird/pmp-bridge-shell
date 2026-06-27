@@ -1,4 +1,4 @@
-(()=>
+(()=>{
 'use strict';
 const V='2.2.1-v2-archive-memory-deposit-field-lock-baked';
 function oldV2Archive(){return [
