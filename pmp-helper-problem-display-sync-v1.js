@@ -1,26 +1,33 @@
 (()=>{
 'use strict';
-const V='1.1.1-visible-section-names';
+const V='1.1.2-idempotent-section-names';
 const ACTIVE='pmp_helper_problem_memory_active_v1';
+const TYPES='pmp_helper_problem_memory_types_v1';
+const EVID='pmp_helper_symptom_evidence_v1';
 const RISK=/^(Duplicate helper files|Duplicate running helpers|Duplicate saved helper records|Empty Continuous Run level stack|Many uncategorized helpers)$/;
+const LOOP='Active Problems Found Label Rewrite Loop';
+let loopHits=0,loopMisses=0;
 function T(){try{return top||window}catch(e){return window}}
+function clean(s){return String(s||'').replace(/\s+/g,' ').trim()}
 function docs(r,a,n){a=a||[];n=n||0;if(!r||n>10)return a;try{a.push(r);r.querySelectorAll('iframe,frame').forEach(f=>{try{let d=f.contentDocument||(f.contentWindow&&f.contentWindow.document);if(d)docs(d,a,n+1)}catch(e){}})}catch(e){}return a}
-function activeLoad(){try{return JSON.parse(localStorage.getItem(ACTIVE)||'[]').filter(Boolean)}catch(e){return[]}}
+function load(k,d){try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(d))}catch(e){return d}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function activeLoad(){return load(ACTIVE,[]).filter(Boolean)}
 function isRiskName(x){return RISK.test(String(x||''))}
 function stableCount(){return activeLoad().length}
-function patchLive(){try{let api=T().PMPHelperBankLiveInspectorV2||window.PMPHelperBankLiveInspectorV2;if(!api||!api.live||api.__stableMemoryCountSourceNoDomFight)return;let old=api.live.bind(api);api.live=function(){let d=old()||{},stable=activeLoad(),risks=[];d.problems=(d.problems||[]).filter(p=>{risks.push(p);return false}).concat(stable.map(x=>({problem:x.kind,severity:x.severity||'medium',where:x.where,count:1,why:x.why})));d.checks=(d.checks||[]).map(c=>{if(c&&c.status==='PROBLEM'&&(isRiskName(c.check)||!/Auto Problem Memory:/.test(String(c.check||''))))return Object.assign({},c,{status:'risk',why:String(c.why||'')+' Kept as reference only; not counted as active unless stable problem memory confirms it.'});return c});d.summary=d.summary||{};d.summary.problems=stable.length;d.summary.stable_active_problems=stable.length;d.summary.problem_risks=risks.length;return d};api.__stableMemoryCountSourceNoDomFight=V}catch(e){}}
-function renameText(s){return String(s||'')
- .replace(/\bProblems Found\b/g,'Active Problems Found')
- .replace(/\bActive Problems\b/g,'Active Problems Found')
- .replace(/\bAuto Problem Memory\b/g,'Known Problem Types')
- .replace(/\bLearned problem types\b/gi,'Known Problem Types')
- .replace(/\bSymptom Evidence Panel v1\b/g,'Symptom Evidence')
- .replace(/\bSymptom Evidence Panel\b/g,'Symptom Evidence');}
-function renameDom(){docs(T().document).forEach(d=>{try{let bank=d.getElementById('bank');if(!bank)return;Array.from(bank.querySelectorAll('h1,h2,h3,p,summary,button,span,small,pre')).forEach(el=>{try{if(el.closest&&el.closest('pre.note')&&String(el.textContent||'').trim().charAt(0)==='{')return;let old=String(el.textContent||''),nu=renameText(old);if(nu!==old)el.textContent=nu}catch(e){}})}catch(e){}})}
+function row(sample){return{kind:LOOP,type:LOOP,problem:LOOP,signature:'type:'+LOOP.toLowerCase(),where:'Active Problems Found label',severity:'high',why:'A display rename helper kept rewriting an already-renamed label, causing visible repeated words like Active Active Active Problems Found.',how_it_happens:'A display rename helper kept rewriting an already-renamed label, causing visible repeated words like Active Active Active Problems Found.',fix_rule:'Make visible label rewrites idempotent. Normalize repeated words first, then only rename original labels that are not already renamed.',sample:sample||'',at:new Date().toISOString()}}
+function learnLoop(sample){let r=row(sample),key=LOOP.toLowerCase();let list=load(TYPES,[]).filter(Boolean),old=list.find(x=>clean(x.type).toLowerCase()===key);if(old){old.last_seen=new Date().toISOString();old.seen=(Number(old.seen||0)||0)+1;old.where=r.where;old.how_it_happens=r.how_it_happens;old.fix_rule=r.fix_rule;old.auto=true;old.learned_from='Display Sync idempotence guard'}else list.push({id:'type_'+Date.now(),auto:true,learned_from:'Display Sync idempotence guard',type:LOOP,signature:'type:'+key,where:r.where,severity:'high',how_it_happens:r.how_it_happens,fix_rule:r.fix_rule,created_at:new Date().toISOString(),last_seen:new Date().toISOString(),seen:1});save(TYPES,list.slice(-60));let ev=load(EVID,[]).filter(Boolean),e=ev.find(x=>x.key==='active-label-rewrite-loop')||{id:'evidence_'+Date.now(),key:'active-label-rewrite-loop',type:LOOP,where:r.where,first_seen:new Date().toISOString(),hits:0};e.symptom=r.how_it_happens;e.last_seen=new Date().toISOString();e.hits=(Number(e.hits||0)||0)+1;e.stage='stored problem type';e.confidence=95;e.severity='high';e.fix_rule=r.fix_rule;e.evidence={sample:r.sample};if(!ev.find(x=>x.key===e.key))ev.push(e);save(EVID,ev.slice(-40));return r}
+function setActive(r){let list=activeLoad(),old=list.find(x=>x.signature===r.signature);if(old)Object.assign(old,r);else list.push(r);save(ACTIVE,list.slice(0,20))}
+function clearActive(){let key=LOOP.toLowerCase();save(ACTIVE,activeLoad().filter(x=>clean(x.type||x.kind).toLowerCase()!==key))}
+function patchLive(){try{let api=T().PMPHelperBankLiveInspectorV2||window.PMPHelperBankLiveInspectorV2;if(!api||!api.live||api.__stableMemoryCountSourceNoDomFight)return;let old=api.live.bind(api);api.live=function(){let d=old()||{},stable=activeLoad(),risks=[];d.problems=(d.problems||[]).filter(p=>{risks.push(p);return false}).concat(stable.map(x=>({problem:x.kind||x.type,severity:x.severity||'medium',where:x.where,count:1,why:x.why||x.how_it_happens})));d.checks=(d.checks||[]).map(c=>{if(c&&c.status==='PROBLEM'&&(isRiskName(c.check)||!/Auto Problem Memory:/.test(String(c.check||''))))return Object.assign({},c,{status:'risk',why:String(c.why||'')+' Kept as reference only; not counted as active unless stable problem memory confirms it.'});return c});d.summary=d.summary||{};d.summary.problems=stable.length;d.summary.active_problems_found=stable.length;d.summary.stable_active_problems=stable.length;d.summary.problem_risks=risks.length;return d};api.__stableMemoryCountSourceNoDomFight=V}catch(e){}}
+function repeatedActive(s){return /\bActive\s+Active\b/i.test(s)||/\bFound\s+Found\b/i.test(s)||/\b(?:Active\s+){2,}Problems\s+Found\b/i.test(s)}
+function normalizeActiveLabel(s){let x=String(s||'');x=x.replace(/\b(?:Active\s+)+Problems\s+Found\b/gi,'Active Problems Found');x=x.replace(/\b(?:Found\s+){2,}/gi,'Found ');x=x.replace(/\bActive\s+(?=Active\b)/gi,'');x=x.replace(/\s+/g,' ').trim();x=x.replace(/\bProblems Found\b/g,(m,off,str)=>{let before=str.slice(0,off).trim().split(/\s+/).pop();return before==='Active'?m:'Active Problems Found'});x=x.replace(/\bActive Problems\b/g,(m,off,str)=>/^\s+Found\b/.test(str.slice(off+m.length))?m:'Active Problems Found');x=x.replace(/\b(?:Active\s+)+Problems\s+Found\b/gi,'Active Problems Found');return x}
+function renameText(s){let x=normalizeActiveLabel(s);x=x.replace(/\bAuto Problem Memory\b/g,'Known Problem Types');x=x.replace(/\bLearned problem types\b/gi,'Known Problem Types');x=x.replace(/\bSymptom Evidence Panel v1\b/g,'Symptom Evidence');x=x.replace(/\bSymptom Evidence Panel\b/g,'Symptom Evidence');return x}
+function renameDom(){let saw=false,sample='';docs(T().document).forEach(d=>{try{let bank=d.getElementById('bank');if(!bank)return;Array.from(bank.querySelectorAll('h1,h2,h3,p,summary,button,span,small')).forEach(el=>{try{let old=String(el.textContent||'');if(repeatedActive(old)){saw=true;sample=sample||old}let nu=renameText(old);if(nu!==old)el.textContent=nu}catch(e){}})}catch(e){}});if(saw){loopHits++;loopMisses=0;let r=learnLoop(sample);if(loopHits>=1)setActive(r)}else{loopMisses++;if(loopMisses>=3){loopHits=0;clearActive()}}}
 function refresh(){try{patchLive();let api=T().PMPHelperBankLiveInspectorV2||window.PMPHelperBankLiveInspectorV2;if(api&&api.scan)api.scan();setTimeout(renameDom,120);setTimeout(renameDom,500)}catch(e){}}
 function scan(){patchLive();renameDom()}
 window.PMPHelperProblemDisplaySyncV1={version:V,scan,refresh,count:stableCount,renameDom};
-try{let mo=new MutationObserver(()=>setTimeout(renameDom,80));mo.observe(document.documentElement,{childList:true,subtree:true,characterData:true})}catch(e){}
+try{let pending=false,mo=new MutationObserver(()=>{if(pending)return;pending=true;setTimeout(()=>{pending=false;renameDom()},120)});mo.observe(document.documentElement,{childList:true,subtree:true,characterData:true})}catch(e){}
 window.addEventListener('load',()=>[250,900,2500,5000].forEach(t=>setTimeout(scan,t)));
 setInterval(scan,2500);scan();
 })();
