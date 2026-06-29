@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>PMP Bank Diagnostic v3</title>
+<style>
+:root{--bg:#f3ded4;--ink:#07101c;--blue:#acd3ff;--navy:#111c2e;--green:#0e3a28;--line:#111;--muted:#294f5d;--card:#fff}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}body{padding:20px}.wrap{max-width:900px;margin:0 auto}.card{background:var(--card);border:4px solid var(--line);border-radius:34px;padding:22px;margin:18px 0;box-shadow:0 8px 28px rgba(0,0,0,.10)}h1{font-size:34px;margin:0 0 12px}h2{font-size:24px;margin:12px 0}.sub{font-size:18px;line-height:1.35;color:var(--muted);font-weight:800}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}button{font:inherit;font-weight:900;background:var(--blue);border:3px solid var(--line);border-radius:20px;padding:16px 12px;box-shadow:0 4px 12px rgba(0,0,0,.18)}button.dark{background:var(--navy);color:#fff}.note{white-space:pre-wrap;word-break:break-word;background:var(--green);color:#d9ffe6;border:3px solid var(--line);border-radius:24px;padding:16px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;max-height:360px;overflow:auto}.warn{background:#fff6d6}.bad{background:#ffe0e0}.ok{background:#dfffe9}.framebox{height:650px;border:4px solid #111;border-radius:24px;overflow:hidden;background:#fff}.hidden{display:none}iframe{width:100%;height:100%;border:0}.pill{display:inline-block;padding:6px 10px;border:2px solid #111;border-radius:999px;background:#fff;margin:3px;font-weight:800}.small{font-size:13px;color:#294f5d}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card warn">
+    <h1>Bank Live Owner / Flicker Diagnostic v3</h1>
+    <p class="sub">Diagnostic only. No app patching. Records the first 8 seconds of Bank loading every 75ms and freezes if Level 3 appears before Bank buttons are ready.</p>
+    <div class="grid">
+      <button id="loadBtn">Reload + Record 8s</button>
+      <button id="scanBtn">Scan Now</button>
+      <button id="copyBtn">Copy Report</button>
+      <button id="showBtn">Show / Hide App Frame</button>
+    </div>
+  </div>
+
+  <div id="statusCard" class="card">
+    <h2>Status</h2>
+    <div id="badges"></div>
+    <pre id="summary" class="note">Ready.</pre>
+  </div>
+
+  <div class="card">
+    <h2>Timeline Events</h2>
+    <pre id="events" class="note">No events yet.</pre>
+  </div>
+
+  <div class="card hidden" id="frameCard">
+    <h2>Live App Frame</h2>
+    <p class="small">The app is inside this frame. The recorder samples same-origin nested frames.</p>
+    <div class="framebox"><iframe id="appFrame" title="PMP Current app test frame"></iframe></div>
+  </div>
+</div>
+<script>
+(()=>{
+'use strict';
+const V='3.0.0-flicker-recorder-report-only';
+const SAMPLE_MS=75;
+const RUN_MS=8000;
+const CURRENT='pmp-current-reload-owner-v27.html';
+const QS=['#bank','.tabs','[data-tab="bank"]','[data-open-bank="continuous_run"]','[data-bank-back]','[data-bank-detail-wrap]','[data-run-bank-tools]','[data-cr-top-sequence-v1]','[data-cr-level1-level2-sequence-v1]','[data-bank-delete-modes][data-bank-scope="continuous_run"]','[data-source-text-reader-level3]','[data-source-reference-gate-level4]','[data-level30-final-seal]','[data-resident-l30b-auto-gate]'];
+let report=null,timer=null,startAt=0,freeze=false,lastSig='',events=[];
+const $=s=>document.querySelector(s);
+function nowISO(){return new Date().toISOString()}
+function vis(el){if(!el)return false;try{let cs=el.ownerDocument.defaultView.getComputedStyle(el),r=el.getBoundingClientRect();return cs.display!=='none'&&cs.visibility!=='hidden'&&cs.opacity!=='0'&&r.width>0&&r.height>0&&!el.classList.contains('hidden')}catch(e){return false}}
+function txt(el,n=180){return String(el&&el.textContent||'').replace(/\s+/g,' ').trim().slice(0,n)}
+function attrs(el){let o={};try{Array.from(el.attributes||[]).forEach(a=>{if(['id','class'].includes(a.name)||a.name.indexOf('data-')===0)o[a.name]=a.value})}catch(e){}return o}
+function docs(root,arr,path){arr=arr||[];path=path||'diagnostic_v3';try{arr.push({doc:root,path,url:String(root.location&&root.location.href||''),title:root.title||''});Array.from(root.querySelectorAll('iframe')).forEach((f,i)=>{try{let d=f.contentDocument||(f.contentWindow&&f.contentWindow.document);if(d)docs(d,arr,path+' > iframe['+i+'] '+(f.title||''));}catch(e){arr.push({doc:null,path:path+' > iframe['+i+']',url:'blocked',error:String(e&&e.message||e)})}})}catch(e){}return arr}
+function winVer(d){try{let w=d.defaultView;let keys=['PMPMasterBankTabV1','PMPContinuousRunBankOrderFrameLoaderV1','PMPBankMode1HideUncheckedV1','PMPBankScreenOwnerV1','PMPContinuousRunLevelUIScopeV1','PMPMasterBankInventoryRouterV1'];let out={};keys.forEach(k=>{let v=w&&w[k];out[k]=v?{version:v.version||null,owner:v.owner||null,data_only:!!v.data_only}:null});return out}catch(e){return {error:String(e&&e.message||e)}}}
+function sampleDoc(item){let d=item.doc;if(!d)return {path:item.path,url:item.url,error:item.error||'no document'};let one={path:item.path,url:item.url,title:item.title,versions:winVer(d),anchors:{},top_items:[]};QS.forEach(sel=>{let nodes=[];try{nodes=Array.from(d.querySelectorAll(sel))}catch(e){};one.anchors[sel]={total:nodes.length,visible:nodes.filter(vis).length,samples:nodes.slice(0,2).map(n=>({selector:sel,visible:vis(n),attrs:attrs(n),text:txt(n),parent:n.parentElement?tag(n.parentElement):null}))}});
+try{one.top_items=Array.from(d.querySelectorAll('h1,h2,button,[data-bank-buttons],[data-bank-detail-wrap],[data-cr-top-sequence-v1],[data-cr-level1-level2-sequence-v1],[data-source-text-reader-level3],[data-source-reference-gate-level4]')).filter(vis).slice(0,28).map(n=>({selector:tag(n),text:txt(n,120),parent:n.parentElement?tag(n.parentElement):null}))}catch(e){}
+return one}
+function tag(n){if(!n)return null;let s=n.tagName?n.tagName.toLowerCase():'node';if(n.id)s+='#'+n.id;if(n.className&&typeof n.className==='string')s+='.'+n.className.trim().replace(/\s+/g,'.');Array.from(n.attributes||[]).forEach(a=>{if(a.name.indexOf('data-')===0)s+='['+a.name+(a.value?'="'+a.value+'"':'')+']'});return s}
+function appDocSnap(all){let scored=all.map(x=>{let a=x.anchors||{};let score=0;score+=(a['#bank']&&a['#bank'].total)||0;score+=3*((a['[data-tab="bank"]']&&a['[data-tab="bank"]'].total)||0);score+=5*((a['[data-source-text-reader-level3]']&&a['[data-source-text-reader-level3]'].total)||0);score+=5*((a['[data-open-bank="continuous_run"]']&&a['[data-open-bank="continuous_run"]'].total)||0);return {x,score}}).sort((a,b)=>b.score-a.score);return scored[0]&&scored[0].score>0?scored[0].x:null}
+function stateFrom(app){if(!app)return {app_found:false};let a=app.anchors||{};let get=sel=>a[sel]||{total:0,visible:0,samples:[]};let bankButtonsText='';let loading=false;try{let doc=docs(document).map(x=>x.doc).filter(Boolean).find(d=>String(d.location.href)===app.url);let bb=doc&&doc.querySelector('[data-bank-buttons]');bankButtonsText=txt(bb,260);loading=/^Loading\.\.\.$|Master Bank Inventory loading/i.test(bankButtonsText)}catch(e){}
+let open=get('[data-open-bank="continuous_run"]'),l3=get('[data-source-text-reader-level3]'),lvl=get('[data-cr-level1-level2-sequence-v1]'),top=get('[data-cr-top-sequence-v1]'),detail=get('[data-bank-detail-wrap]'),run=get('[data-run-bank-tools]'),bank=get('#bank'),tabs=get('.tabs');
+let version=app.versions&&app.versions.PMPMasterBankTabV1&&app.versions.PMPMasterBankTabV1.version;
+return {app_found:true,url:app.url,version,bank_visible:bank.visible>0,tabs_visible:tabs.visible>0,bank_buttons_total:open.total,bank_buttons_visible:open.visible,bank_buttons_ready:open.total>0&&!loading,bank_buttons_text:bankButtonsText||'(empty)',loading_visible:loading,continuous_run_opener_total:open.total,continuous_run_opener_visible:open.visible,bank_home_visible:!!(app.top_items||[]).find(i=>/Master Bank Inventory/.test(i.text)),detail_wrap_total:detail.total,detail_wrap_visible:detail.visible,run_bank_tools_total:run.total,run_bank_tools_visible:run.visible,top_tools_total:top.total,top_tools_visible:top.visible,level1_level2_total:lvl.total,level1_level2_visible:lvl.visible,level3_total:l3.total,level3_visible:l3.visible,level4_visible:get('[data-source-reference-gate-level4]').visible,delete_tools_total:get('[data-bank-delete-modes][data-bank-scope="continuous_run"]').total,delete_tools_visible:get('[data-bank-delete-modes][data-bank-scope="continuous_run"]').visible};
+}
+function sig(s){return [s.app_found,s.version,s.bank_buttons_ready,s.loading_visible,s.continuous_run_opener_total,s.continuous_run_opener_visible,s.detail_wrap_visible,s.run_bank_tools_visible,s.top_tools_visible,s.level1_level2_visible,s.level3_visible,s.delete_tools_total,s.delete_tools_visible].join('|')}
+function label(s){if(!s.app_found)return 'app not found';if(s.level3_visible&&!s.bank_buttons_ready)return 'GLITCH: Level 3 visible before Bank buttons ready';if(s.loading_visible&&!s.bank_buttons_ready)return 'Loading only / buttons not ready';if(s.bank_buttons_ready&&!s.detail_wrap_visible)return 'Bank home ready with blue buttons';if(s.detail_wrap_visible&&s.run_bank_tools_visible)return 'Continuous Run detail visible';return 'Bank partial state'}
+function render(){if(!report)return;let cur=report.samples[report.samples.length-1];let s=cur&&cur.state||{};let badges=[];function b(name,ok){badges.push('<span class="pill '+(ok?'ok':'bad')+'">'+name+': '+(ok?'YES':'NO')+'</span>')}b('App found',!!s.app_found);b('Bank buttons ready',!!s.bank_buttons_ready);b('Loading gone',!s.loading_visible);b('Level 3 visible',!!s.level3_visible);b('Frozen',!!report.freeze);$('#badges').innerHTML=badges.join(' ');$('#statusCard').className='card '+(report.freeze?'bad':(s.bank_buttons_ready?'ok':''));$('#summary').textContent=JSON.stringify({type:report.type,version:report.version,at:report.at,status:report.status,freeze:report.freeze,freeze_reason:report.freeze_reason||null,latest_state:s,sample_count:report.samples.length,event_count:report.events.length},null,2);$('#events').textContent=report.events.map(e=>e.t_ms+'ms — '+e.label+' — '+JSON.stringify(e.state)).join('\n\n')||'No events yet.'}
+function sample(){let t=Date.now()-startAt;let per=docs(document).map(sampleDoc);let app=appDocSnap(per);let st=stateFrom(app);let record={t_ms:t,state:st,documents:per};let sg=sig(st);if(sg!==lastSig){lastSig=sg;events.push({t_ms:t,label:label(st),state:st});}
+report.samples.push(record);report.events=events;let glitch=st.level3_visible&&!st.bank_buttons_ready;if(glitch){report.freeze=true;report.freeze_reason='Level 3 visible before Bank buttons were ready';report.status='frozen_on_glitch';stopTimer();}
+if(t>=RUN_MS&&!report.freeze){report.status='complete_8s';stopTimer();}
+render();}
+function stopTimer(){if(timer){clearInterval(timer);timer=null}}
+function start(){stopTimer();freeze=false;lastSig='';events=[];startAt=Date.now();let fresh='bank-diag-v3-'+startAt;let src=CURRENT+'?fresh='+fresh+'#bank';report={type:'PMP_BANK_FLICKER_DIAGNOSTIC_V3',version:V,at:nowISO(),purpose:'Diagnostic only. No app patching. Records first 8 seconds of Bank loading every 75ms and freezes if Level 3 appears before Bank buttons are ready.',loaded_app_src:src,status:'recording',freeze:false,freeze_reason:null,sample_ms:SAMPLE_MS,run_ms:RUN_MS,samples:[],events:[]};$('#appFrame').src=src;$('#frameCard').classList.remove('hidden');$('#summary').textContent='Loading app and recording...';setTimeout(()=>{sample();timer=setInterval(sample,SAMPLE_MS)},100);}
+async function copyReport(){if(!report)sampleOnce();await C(JSON.stringify(report,null,2));$('#summary').textContent='Copied report.\n\n'+$('#summary').textContent}
+function sampleOnce(){if(!report){startAt=Date.now();report={type:'PMP_BANK_FLICKER_DIAGNOSTIC_V3',version:V,at:nowISO(),purpose:'Manual single scan. Diagnostic only.',loaded_app_src:$('#appFrame').src||'',status:'manual_scan',freeze:false,sample_ms:SAMPLE_MS,run_ms:RUN_MS,samples:[],events:[]};events=[];lastSig=''}sample()}
+$('#loadBtn').onclick=start;$('#scanBtn').onclick=sampleOnce;$('#copyBtn').onclick=copyReport;$('#showBtn').onclick=()=>$('#frameCard').classList.toggle('hidden');
+window.PMPBankFlickerDiagnosticV3={version:V,start,sample:sampleOnce,copyReport,getReport:()=>report};
+start();
+})();
+</script>
+</body>
+</html>
