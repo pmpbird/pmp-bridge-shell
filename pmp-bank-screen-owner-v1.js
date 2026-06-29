@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const V='1.0.5-sequential-clean-card-order';
+const V='1.0.6-persistent-bank-detail-scan';
 const REG_KEY='pmp_bank_project_registry_v1';
 const REG_RECEIPT='pmp_bank_project_registry_v1_receipt';
 const CORE={'bank-project-bank-system-000001':1,'bank-project-resident-system-000002':1,'bank-project-continuous-run-engine-000003':1};
@@ -26,7 +26,7 @@ function statusText(){let v=verifyStoreSafe();if(!v)return 'Staging Transfer Sto
 function summaryText(){let s=get(K.state,null)||{},r=get(K.runner,null)||get(K.runnerLegacy,null)||{},p=get(K.proof,null)||{},rp=get(K.runnerProof,null)||{},v=verifyStoreSafe();let runStatus=clean(r.status||rp.status||s.status||'READY');let proofStatus=clean(p.status||rp.status||'unknown');let storeOk=!!(v&&(v.lossless_verified||v.slot_check_passed));let missing=v?([].concat(v.missing||[],v.lossless_missing||[])):['staging_store_api_loading'];let next='Start at the first not-passed level and continue in order.';if(!storeOk)next='Verify Staging Transfer Store before trusting the levels.';else if(proofStatus&&proofStatus!=='PASS'&&proofStatus!=='COMPLETE'&&proofStatus!=='unknown')next='Run or repair Proof Gate before continuing.';else if(String(runStatus).toUpperCase()==='RUNNING')next='Continue current run without skipping levels.';else if(String(runStatus).toUpperCase()==='COMPLETE')next='Review final proof, then Level 30 / 30B.';let current=clean(s.current_level||s.current_work_item||s.current_work_area||r.current_unit&&r.current_unit.title||'not set');return ['Run State Summary','Status: '+runStatus,'Current: '+current,'Proof Gate: '+proofStatus,'Staging Store: '+(storeOk?'VERIFIED':'NOT VERIFIED'),'Missing: '+(missing.length?missing.join(', '):'none'),'Next: '+next].join('\n')}
 function typeOptions(){return TYPES.map(x=>'<option value="'+esc(x[0])+'">'+esc(x[1])+'</option>').join('')}
 function projectRows(){let r=registry();return '<div style="display:grid;gap:6px">'+r.projects.map(p=>'<div style="border:3px solid rgba(0,0,0,.22);border-radius:14px;padding:10px;background:rgba(255,255,255,.72)"><b>'+esc(p.name)+'</b><br><small>'+esc(p.category)+' | '+esc(p.status)+' | items: '+esc(p.item_count||0)+'</small><br><small>ID: '+esc(p.id)+'</small><br><button class="mini" data-bso-del="'+esc(p.id)+'" '+(CORE[p.id]?'disabled':'')+' style="margin-top:7px">'+(CORE[p.id]?'Protected':'Delete Project')+'</button></div>').join('')+'</div>'}
-function isContinuousRun(d){let bank=d.getElementById('bank');if(!bank)return false;let t=clean((bank.querySelector('[data-bank-detail-title],h1,h2')||{}).textContent||'');return !t||/Continuous Run Bank/i.test(t)}
+function isContinuousRun(d){let bank=d.getElementById('bank');if(!bank)return false;let run=bank.querySelector('[data-run-bank-tools]');if(!run)return false;let t=clean((bank.querySelector('[data-bank-detail-title],h1,h2')||{}).textContent||'');return !t||/Continuous Run Bank/i.test(t)||!!run.querySelector('[data-source-text-reader-level3],[data-level30-final-seal],[data-resident-l30b-auto-gate]')}
 function removeWrong(d){try{d.querySelectorAll('[data-bank-screen-owner-v1]').forEach(x=>{if(!x.closest('[data-run-bank-tools]'))x.remove()});d.querySelectorAll('[data-bank-project-registry-v1],[data-staging-transfer-store],[data-zip-importer],[data-source-zip-lane]').forEach(x=>{if(!x.closest('[data-bank-screen-owner-v1]'))x.remove()})}catch(e){}}
 function cardStyle(){return 'padding:10px;border-radius:14px;border:3px solid rgba(0,0,0,.22);background:rgba(255,255,255,.72)'}
 function html(){return '<div data-bank-screen-owner-v1 data-bso-version="'+V+'" style="margin:10px 0;display:grid;gap:12px">'
@@ -44,5 +44,6 @@ function place(d){if(!isContinuousRun(d))return;let bank=d.getElementById('bank'
 function scan(){docs(T().document).forEach(d=>{try{place(d)}catch(e){}})}
 window.PMPBankScreenOwnerV1={version:V,scope:'continuous_run_detail_only',scan,registry,saveProject:upsertProject,summary:summaryText};
 window.addEventListener('load',()=>[200,600,1200,2500,5000].forEach(t=>setTimeout(scan,t)));
+setInterval(scan,1200);
 scan();
 })();
