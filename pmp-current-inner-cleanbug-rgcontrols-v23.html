@@ -52,8 +52,7 @@
 <script src="pmp-resident-continuous-run-status-reader-v1.js?fresh=resident-continuous-run-status-reader-v101-20260627T2052Z"></script>
 <script src="pmp-resident-cr-status-router-v1.js?fresh=cr-local-answer-router-v100-20260627T2106Z"></script>
 <script src="pmp-bank-screen-owner-v1.js?fresh=bank-screen-owner-v104-keep-launcher-reload-current-20260628K"></script>
-<script src="pmp-continuous-run-level-ui-scope-v1.js?fresh=level-ui-scope-v117-no-dom-move-20260629F"></script>
-<script src="pmp-continuous-run-helper-conflict-blocker-v1.js?fresh=continuous-run-helper-conflict-blocker-v101-disabled-20260629F"></script>
+<script src="pmp-continuous-run-level-ui-scope-v1.js?fresh=level-ui-scope-v115-restored-simple-level3-20260629G"></script>
 <script>
 function pmpValidHash(x){return /^#(world|bridge|library|workshop|control|bank)$/i.test(String(x||''))}
 function pmpIsReloadRestore(){return /from=live-reload-snapshot/i.test(String(location.search||''))}
@@ -61,7 +60,7 @@ function pmpAllowControlHash(){let s=String(location.search+' '+location.href+' 
 function pmpFreshSnapshotPage(){try{if(!pmpIsReloadRestore())return'';let s=JSON.parse(localStorage.getItem('pmp_reload_current_live_snapshot_v12')||'null');if(!s||!pmpValidHash(s.page))return'';if(Date.now()-Number(s.made_at||0)>120000)return'';return String(s.page).toLowerCase()}catch(e){return''}}
 function pmpSavedHash(){try{if(pmpValidHash(location.hash)){let h=location.hash.toLowerCase();if(h==='#control'&&!pmpAllowControlHash()&&!pmpIsReloadRestore())return '#world';return h}let r=pmpFreshSnapshotPage();if(r)return r}catch(e){}return '#world'}
 const h=pmpSavedHash();
-document.getElementById('app').src='pmp-current-inner-cleanbug-rgcontrols-v4.html?fresh=q18-v23-bank-screen-owner-20260628I-'+Date.now()+h;
+document.getElementById('app').src='pmp-current-inner-cleanbug-rgcontrols-v4.html?fresh=q18-v23-bank-screen-owner-20260628J-'+Date.now()+h;
 </script>
 </body>
 </html>
