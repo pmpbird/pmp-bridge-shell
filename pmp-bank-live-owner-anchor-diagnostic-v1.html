@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#f3ded4">
+<title>PMP Bank Live Owner Diagnostic v1</title>
+<style>
+html,body{margin:0;background:#f3ded4;color:#07101c;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{padding:12px;display:grid;gap:10px}
+.card{background:#fff;border:3px solid #07101c;border-radius:24px;padding:14px;box-shadow:0 10px 24px #0002}
+button{border:2px solid #07101c;border-radius:14px;background:#acd1fb;color:#07101c;font:inherit;font-weight:900;padding:11px 12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+iframe{width:100%;height:54vh;border:3px solid #07101c;border-radius:20px;background:#f3ded4}
+pre{white-space:pre-wrap;word-break:break-word;background:#102033;color:#eaffef;border-radius:18px;padding:12px;max-height:42vh;overflow:auto;font-size:12px;line-height:1.35}
+.small{font-size:12px;opacity:.75}.warn{background:#fff3de}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card warn">
+    <h1 style="margin:0 0 6px">Bank Live Owner / Anchor Diagnostic v1</h1>
+    <p class="small">Diagnostic only. It does not change layout, storage, routes, levels, engine logic, or Bank records. It only loads the current app in a frame and reports visible anchors/owners.</p>
+    <div class="grid"><button id="loadBtn">Load Current Bank</button><button id="scanBtn">Scan Now</button><button id="copyBtn">Copy Report</button><button id="showBtn">Show / Hide App Frame</button></div>
+  </div>
+  <iframe id="app" title="Current app diagnostic frame"></iframe>
+  <pre id="out">Ready. Tap Load Current Bank, wait for the Bank screen, then tap Scan Now and Copy Report.</pre>
+</div>
+<script>
+(()=>{
+'use strict';
+const V='1.0.0-diagnostic-only';
+const out=document.getElementById('out'),app=document.getElementById('app');
+let last=null;
+function now(){return new Date().toISOString()}
+function short(s,n){s=String(s||'').replace(/\s+/g,' ').trim();return s.length>(n||160)?s.slice(0,n||160)+'…':s}
+function attrs(el){let o={tag:el&&el.tagName?el.tagName.toLowerCase():''};if(!el||!el.attributes)return o;Array.from(el.attributes).forEach(a=>{if(a.name==='id'||a.name==='class'||a.name.indexOf('data-')===0)o[a.name]=a.value||''});return o}
+function sel(el){if(!el)return'';let s=(el.tagName||'').toLowerCase();if(el.id)s+='#'+el.id;if(el.className&&typeof el.className==='string')s+='.'+el.className.trim().split(/\s+/).slice(0,3).join('.');Array.from(el.attributes||[]).filter(a=>a.name.indexOf('data-')===0).slice(0,4).forEach(a=>s+='['+a.name+(a.value?'="'+a.value+'"':'')+']');return s}
+function vis(el){try{let w=el.ownerDocument.defaultView,cs=w.getComputedStyle(el),r=el.getBoundingClientRect();return cs.display!=='none'&&cs.visibility!=='hidden'&&Number(cs.opacity)!==0&&r.width>0&&r.height>0}catch(e){return false}}
+function docUrl(d){try{return d.location&&d.location.href||''}catch(e){return''}}
+function docs(d,path,a,n){a=a||[];n=n||0;if(!d||n>10)return a;let item={doc:d,path:path||'top',url:docUrl(d)};a.push(item);try{Array.from(d.querySelectorAll('iframe,frame')).forEach((f,i)=>{try{let x=f.contentDocument||(f.contentWindow&&f.contentWindow.document);if(x)docs(x,(path||'top')+' > iframe['+i+'] '+short(f.getAttribute('title')||f.id||'',40),a,n+1)}catch(e){a.push({path:(path||'top')+' > iframe['+i+']',url:'blocked',error:e.message})}})}catch(e){item.error=e.message}return a}
+function countSel(d,selector){let nodes=[];try{nodes=Array.from(d.querySelectorAll(selector))}catch(e){}return{selector,total:nodes.length,visible:nodes.filter(vis).length,samples:nodes.slice(0,4).map(x=>({visible:vis(x),attrs:attrs(x),text:short(x.textContent,180),parent:sel(x.parentElement)}))}}
+function parentChain(el){let a=[];for(let x=el,i=0;x&&i<8;x=x.parentElement,i++)a.push({selector:sel(x),attrs:attrs(x),text:short(x.textContent,120)});return a}
+function topStack(d){let bank=d.getElementById('bank')||d.querySelector('[data-bank-detail],[data-bank-screen],[data-run-bank-tools]')||d.body;let heads=[];try{heads=Array.from(bank.querySelectorAll('h1,h2,h3,button,[data-source-reference-gate-level4],[data-source-text-reader-level3],[data-temp-transfer-store],[data-run-bank-tools],[data-source-zip-lane],[data-source-zip-levels-single]')).filter(vis).slice(0,40)}catch(e){}
+let first=heads[0]||null,owner=null;if(first){owner=first.closest('[data-run-bank-tools],[data-temp-transfer-store],[data-source-zip-lane],[data-source-zip-levels-single],[data-bank-screen-owner-v1],[data-source-reference-gate-level4],section,.card')||first.parentElement}
+return{bank_found:!!(d.getElementById('bank')),bank_attrs:bank?attrs(bank):null,first_visible_heading:first?short(first.textContent,160):null,first_visible_selector:first?sel(first):null,owner_candidate:owner?{selector:sel(owner),attrs:attrs(owner),text:short(owner.textContent,220),chain:parentChain(owner)}:null,visible_top_items:heads.map(x=>({selector:sel(x),text:short(x.textContent,140),parent:sel(x.parentElement)}))}}
+function levelOwners(d){let selectors=[
+ ['Level 3 text reader','[data-source-text-reader-level3]'],
+ ['Level 4 reference gate','[data-source-reference-gate-level4]'],
+ ['Level 10 random source certification','[data-level10-random-source-certification],[data-l10-random-source-certification]'],
+ ['Level 11 startup certification','[data-level11-startup-certification-guard],[data-l11-startup-certification-guard]'],
+ ['Level 16 source bound startup','[data-level16-source-bound-startup-enforcement],[data-l16-source-bound-startup-enforcement]'],
+ ['Level 30 final seal','[data-level30-final-seal],[data-l30-final-seal]'],
+ ['30B resident startup','[data-resident-l30b-auto-gate],[data-resident-startup-level30-auto-gate]']
+];
+return selectors.map(([name,s])=>{let n=[];try{n=Array.from(d.querySelectorAll(s))}catch(e){}return{name,selector:s,total:n.length,visible:n.filter(vis).length,samples:n.slice(0,3).map(x=>({visible:vis(x),attrs:attrs(x),text:short(x.textContent,180),parent:sel(x.parentElement)}))}}).filter(x=>x.total||x.visible)}
+function scripts(d){let arr=[];try{arr=Array.from(d.scripts||[]).map(s=>s.src||'[inline]').filter(Boolean)}catch(e){}let key=/(bank|level|source|resident|continuous|route|reload|current|owner|guard)/i;return{total:arr.length,last_20:arr.slice(-20),relevant_last_35:arr.filter(x=>key.test(x)).slice(-35)}}
+function localReceipts(){let keys=['pmp_bank_mode1_hide_unchecked_v1_receipt','pmp_continuous_run_bank_order_frame_loader_v1_receipt','pmp_bank_screen_owner_v1_receipt','pmp_continuous_run_level_ui_scope_v1_receipt','pmp_current_screen_pointer_v1_receipt','pmp_reload_current_visible_receipt_v1','pmp_request_packet_guard_loader_v1_receipt'];let o={};keys.forEach(k=>{try{o[k]=JSON.parse(localStorage.getItem(k)||'null')}catch(e){o[k]=localStorage.getItem(k)||null}});return o}
+function scan(){let rootDoc=document;try{rootDoc=window.top.document}catch(e){}let all=docs(rootDoc,'diagnostic_page');let report={type:'PMP_BANK_LIVE_OWNER_ANCHOR_DIAGNOSTIC_V1',version:V,at:now(),purpose:'Diagnostic only. No layout patching.',loaded_app_src:app.getAttribute('src')||'',documents:all.map(x=>({path:x.path,url:x.url,error:x.error||null})),required_anchor_summary:{},per_document:[],local_storage_receipts:localReceipts()};
+all.forEach(x=>{if(!x.doc)return;let d=x.doc;let counts=['[data-run-bank-tools]','[data-temp-transfer-store]','[data-source-zip-lane]','[data-source-zip-levels-single]','[data-bank-screen-owner-v1]','[data-cr-top-sequence-v1]','[data-source-text-reader-level3]','[data-source-reference-gate-level4]'].map(s=>countSel(d,s));counts.forEach(c=>{let a=report.required_anchor_summary[c.selector]||(report.required_anchor_summary[c.selector]={total:0,visible:0});a.total+=c.total;a.visible+=c.visible});report.per_document.push({path:x.path,url:x.url,title:(d.title||''),anchors:counts,level3_plus_visible_owners:levelOwners(d),top_card_stack_owner:topStack(d),scripts:scripts(d)})});
+last=report;out.textContent=JSON.stringify(report,null,2);return report}
+function load(){let u='pmp-current-reload-owner-v27.html?fresh=bank-live-owner-diag-'+Date.now()+'#bank';app.src=u;out.textContent='Loading '+u+'\nWait for Bank screen, then tap Scan Now.';setTimeout(scan,1800);setTimeout(scan,4200);setTimeout(scan,7500)}
+document.getElementById('loadBtn').onclick=load;
+document.getElementById('scanBtn').onclick=scan;
+document.getElementById('showBtn').onclick=()=>{app.style.display=app.style.display==='none'?'block':'none'};
+document.getElementById('copyBtn').onclick=async()=>{try{if(!last)scan();await navigator.clipboard.writeText(JSON.stringify(last,null,2));out.textContent='Copied report. Paste it into ChatGPT.\n\n'+JSON.stringify(last,null,2)}catch(e){out.textContent='Copy failed. Long-press/select the report below.\n\n'+JSON.stringify(last||scan(),null,2)}};
+})();
+</script>
+</body>
+</html>
