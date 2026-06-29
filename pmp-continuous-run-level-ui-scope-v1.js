@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const V='1.0.17-restore-missing-level1-level2';
+const V='1.0.18-level3plus-containment-guard';
 const ORDER=[
 '[data-cr-level1-source-gate]',
 '[data-source-zip-levels-single]',
@@ -35,11 +35,19 @@ const ORDER=[
 '[data-level30-final-seal]',
 '[data-resident-l30b-auto-gate]'
 ];
+const GUARDED=ORDER.slice(2);
 const RESIDENT_CHILDREN=['[data-resident-use-mode-v1]','[data-request-intake-v1]'];
+const WATCHED=new WeakSet();
 function T(){try{return top||window}catch(e){return window}}
 function docs(r,a,n){a=a||[];n=n||0;if(!r||n>8)return a;try{a.push(r);r.querySelectorAll('iframe,frame').forEach(f=>{try{let d=f.contentDocument||(f.contentWindow&&f.contentWindow.document);if(d)docs(d,a,n+1)}catch(e){}})}catch(e){}return a}
 function clean(s){return String(s||'').replace(/\s+/g,' ').trim()}
 function S(x,k,v){try{x.style.setProperty(k,v,'important')}catch(e){}}
+function R(x,k){try{x.style.removeProperty(k)}catch(e){}}
+function properStack(x){return !!(x&&x.closest('[data-bank-detail-wrap]')&&x.closest('[data-run-bank-tools]')&&x.closest('[data-cr-level-stack]'))}
+function hideLoose(x){if(!x||properStack(x))return;try{x.setAttribute('data-cr-level-containment-hidden','1')}catch(e){}S(x,'display','none');S(x,'visibility','hidden');S(x,'pointer-events','none')}
+function showStacked(x){if(!x)return;try{x.removeAttribute('data-cr-level-containment-hidden')}catch(e){}R(x,'display');R(x,'visibility');R(x,'pointer-events')}
+function containmentGuard(d){let b=d&&d.getElementById&&d.getElementById('bank');if(!b)return;GUARDED.forEach(sel=>{Array.from(b.querySelectorAll(sel)).forEach(x=>{if(properStack(x))showStacked(x);else hideLoose(x)})})}
+function watch(d){try{if(!d||!d.body||WATCHED.has(d))return;WATCHED.add(d);let pending=false;new MutationObserver(()=>{if(pending)return;pending=true;setTimeout(()=>{pending=false;try{containmentGuard(d)}catch(e){}},0)}).observe(d.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style','hidden']})}catch(e){}}
 function isCR(d){let b=d.getElementById('bank');if(!b)return false;let run=b.querySelector('[data-run-bank-tools]');if(!run)return false;let t=clean((b.querySelector('[data-bank-detail-title],h1,h2')||{}).textContent||'');return !t||/Continuous Run Bank/i.test(t)||!!run.querySelector('[data-source-text-reader-level3],[data-level30-final-seal],[data-resident-l30b-auto-gate]')}
 function styleCard(x){S(x,'background','rgba(255,255,255,.72)');S(x,'border','3px solid rgba(0,0,0,.22)');S(x,'border-radius','14px');S(x,'margin','0');S(x,'padding','10px');S(x,'box-sizing','border-box');S(x,'max-width','100%');S(x,'overflow','visible');Array.from(x.querySelectorAll('h1,h2,h3,h4,p,.sub,b,strong,button,summary,label')).forEach(e=>{S(e,'white-space','normal');S(e,'overflow','visible');S(e,'text-overflow','clip');S(e,'max-width','100%')});Array.from(x.querySelectorAll('pre,.note,.statusbar')).forEach(e=>{S(e,'white-space','pre-wrap');S(e,'overflow','auto');S(e,'max-width','100%')})}
 function ensureCard(h,sel,html){let x=h.querySelector(sel);if(!x){let holder=document.createElement('div');holder.innerHTML=html;x=holder.firstElementChild;let s=h.querySelector('[data-cr-level-stack]')||h;h.insertBefore(x,s)}return x}
@@ -48,10 +56,11 @@ function stack(h){let s=h.querySelector('[data-cr-level-stack]');if(!s){s=docume
 function firstIn(b,sel){let a=Array.from(b.querySelectorAll(sel));return a.find(x=>x&&x.closest('[data-run-bank-tools]'))||a[0]||null}
 function keepResidentInside30B(b){let l30b=firstIn(b,'[data-resident-l30b-auto-gate]');if(!l30b)return;RESIDENT_CHILDREN.forEach(sel=>Array.from(b.querySelectorAll(sel)).forEach(x=>{try{if(x!==l30b&&!l30b.contains(x))l30b.appendChild(x);styleCard(x)}catch(e){}}))}
 function orderedLevels(b){let out=[];ORDER.forEach(sel=>{let x=firstIn(b,sel);if(x&&out.indexOf(x)<0)out.push(x)});return out}
-function move(d,h){let b=d.getElementById('bank'),s=stack(h);keepResidentInside30B(b);orderedLevels(b).forEach(x=>{try{s.appendChild(x);styleCard(x)}catch(e){}});Array.from(h.querySelectorAll('[data-cr-level-head]')).forEach(styleCard)}
-function scanDoc(d){if(!isCR(d))return;let h=host(d);if(!h)return;move(d,h);try{localStorage.setItem('pmp_continuous_run_level_ui_scope_v1_receipt',JSON.stringify({type:'PMP_CONTINUOUS_RUN_LEVEL_UI_SCOPE_V1',version:V,at:new Date().toISOString(),status:'exact_sequential_clean_cards_restore_level1_level2',order:'1,2,3,4,4B,5-30,30B',resident_tools:'inside_30B_only'}))}catch(e){}}
-function scan(){docs(T().document).forEach(d=>{try{scanDoc(d)}catch(e){}})}
-window.PMPContinuousRunLevelUIScopeV1={version:V,scan,rule:'exact sequential Continuous Run levels; restores missing Level 1 and Level 2'};
-window.addEventListener('load',()=>[150,500,1200,3000].forEach(t=>setTimeout(scan,t)));
+function move(d,h){let b=d.getElementById('bank'),s=stack(h);keepResidentInside30B(b);orderedLevels(b).forEach(x=>{try{s.appendChild(x);showStacked(x);styleCard(x)}catch(e){}});Array.from(h.querySelectorAll('[data-cr-level-head]')).forEach(styleCard);containmentGuard(d)}
+function scanDoc(d){containmentGuard(d);if(!isCR(d))return;let h=host(d);if(!h)return;move(d,h);try{localStorage.setItem('pmp_continuous_run_level_ui_scope_v1_receipt',JSON.stringify({type:'PMP_CONTINUOUS_RUN_LEVEL_UI_SCOPE_V1',version:V,at:new Date().toISOString(),status:'level3plus_contained_or_stacked',order:'1,2,3,4,4B,5-30,30B',resident_tools:'inside_30B_only',guard:'level3plus_hidden_unless_inside_bank_detail_run_tools_stack'}))}catch(e){}}
+function scan(){docs(T().document).forEach(d=>{try{watch(d);scanDoc(d)}catch(e){}})}
+window.PMPContinuousRunLevelUIScopeV1={version:V,scan,rule:'exact sequential Continuous Run levels; Level 3+ hidden unless inside Continuous Run level stack'};
+window.addEventListener('load',()=>[0,50,120,250,500,900,1200,2000,3000,5000,8000].forEach(t=>setTimeout(scan,t)));
+let fastUntil=Date.now()+12000;let fast=setInterval(()=>{scan();if(Date.now()>fastUntil)clearInterval(fast)},250);
 setInterval(scan,1200);scan();
 })();
