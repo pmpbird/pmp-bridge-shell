@@ -1,19 +1,56 @@
 (()=>{
 'use strict';
-const V='1.0.15-restored-simple-level3';
-const LEVELS='[data-source-text-reader-level3],[data-source-reference-gate-level4],[data-source-reference-gate-level4b],[data-level5-source-gated-runner],[data-level6-audit-receipt-lock],[data-level7-no-bypass-enforcement],[data-level8-output-gate],[data-level9-actual-resident-integration],[data-level10-cert-lock],[data-level11-startup-guard],[data-level12-startup-enforcement],[data-level13-failure-test],[data-level14-recovery-proof],[data-level15-source-invalidation],[data-level16-source-bound],[data-level17-source-mismatch],[data-level18-recert-gate],[data-level19-recovery-proof],[data-level20-summary-lock],[data-level21-one-tap-retest],[data-level22-export-receipt],[data-level23-integrity-check],[data-level24-tamper-test],[data-level25-receipt-bundle],[data-level26-packet-integrity],[data-level27-tampered-packet],[data-level28-final-export],[data-level29-cold-start],[data-level30-final-seal],[data-resident-l30b-auto-gate],[data-resident-use-mode-v1],[data-request-intake-v1]';
+const V='1.0.16-exact-sequential-clean-cards';
+const ORDER=[
+'[data-cr-level1-source-gate]',
+'[data-source-zip-levels-single]',
+'[data-source-text-reader-level3]',
+'[data-source-reference-gate-level4]',
+'[data-source-reference-gate-level4b]',
+'[data-level5-source-gated-runner]',
+'[data-level6-audit-receipt-lock]',
+'[data-level7-no-bypass-enforcement]',
+'[data-level8-output-gate]',
+'[data-level9-actual-resident-integration]',
+'[data-level10-cert-lock]',
+'[data-level11-startup-guard]',
+'[data-level12-startup-enforcement]',
+'[data-level13-failure-test]',
+'[data-level14-recovery-proof]',
+'[data-level15-source-invalidation]',
+'[data-level16-source-bound]',
+'[data-level17-source-mismatch]',
+'[data-level18-recert-gate]',
+'[data-level19-recovery-proof]',
+'[data-level20-summary-lock]',
+'[data-level21-one-tap-retest]',
+'[data-level22-export-receipt]',
+'[data-level23-integrity-check]',
+'[data-level24-tamper-test]',
+'[data-level25-receipt-bundle]',
+'[data-level26-packet-integrity]',
+'[data-level27-tampered-packet]',
+'[data-level28-final-export]',
+'[data-level29-cold-start]',
+'[data-level30-final-seal]',
+'[data-resident-l30b-auto-gate]'
+];
+const RESIDENT_CHILDREN=['[data-resident-use-mode-v1]','[data-request-intake-v1]'];
 function T(){try{return top||window}catch(e){return window}}
 function docs(r,a,n){a=a||[];n=n||0;if(!r||n>8)return a;try{a.push(r);r.querySelectorAll('iframe,frame').forEach(f=>{try{let d=f.contentDocument||(f.contentWindow&&f.contentWindow.document);if(d)docs(d,a,n+1)}catch(e){}})}catch(e){}return a}
 function clean(s){return String(s||'').replace(/\s+/g,' ').trim()}
 function S(x,k,v){try{x.style.setProperty(k,v,'important')}catch(e){}}
-function isCR(d){let b=d.getElementById('bank');if(!b)return false;let t=clean((b.querySelector('[data-bank-detail-title]')||{}).textContent||'');return t==='Continuous Run Bank'}
-function styleCard(x){S(x,'background','rgba(255,255,255,.72)');S(x,'border','3px solid rgba(0,0,0,.22)');S(x,'border-radius','14px');S(x,'margin','10px 0');S(x,'padding','14px');S(x,'box-sizing','border-box');S(x,'max-width','100%');S(x,'overflow','hidden');Array.from(x.querySelectorAll('h1,h2,h3,h4,p,.sub,b,strong,button,summary')).forEach(e=>{S(e,'white-space','nowrap');S(e,'overflow','hidden');S(e,'text-overflow','ellipsis');S(e,'max-width','100%')})}
-function host(d){let b=d.getElementById('bank');if(!b)return null;let run=b.querySelector('[data-run-bank-tools]');if(!run)return null;let h=run.querySelector('[data-continuous-run-level-ui-scope-v1]');if(!h){h=d.createElement('div');h.setAttribute('data-continuous-run-level-ui-scope-v1','');h.setAttribute('data-temp-transfer-store','');h.setAttribute('data-v2','1');h.innerHTML='<div data-cr-level-head><h2>Continuous Run Levels 1 through 30B</h2><p class="sub">Restored simple Level 3 state. Level panels live below the top Continuous Run tools.</p></div><div data-cr-level1-source-gate><h3>Level 1 — Must-Reference Source ZIP Gate / Import</h3><p class="sub">Import the Must-Reference Source ZIP before Level 2 reads it.</p></div><div data-source-zip-levels-single><h3>Level 2 — Source ZIP Reader</h3><p class="sub">Reads the ZIP imported by Level 1. Level 2B extracts PDFs. Level 2C recovers text.</p></div><div data-cr-level-stack></div>';let last=run.querySelector('[data-bso-stage]')||run.querySelector('[data-bso-registry]')||run.querySelector('[data-bso-zip]');if(last&&last.parentNode===run)run.insertBefore(h,last.nextSibling);else run.appendChild(h)}S(h,'display','grid');S(h,'gap','12px');S(h,'background','transparent');S(h,'border','0');S(h,'padding','0');S(h,'margin','10px 0');return h}
+function isCR(d){let b=d.getElementById('bank');if(!b)return false;let t=clean((b.querySelector('[data-bank-detail-title],h1,h2')||{}).textContent||'');return !t||/Continuous Run Bank/i.test(t)}
+function styleCard(x){S(x,'background','rgba(255,255,255,.72)');S(x,'border','3px solid rgba(0,0,0,.22)');S(x,'border-radius','14px');S(x,'margin','0');S(x,'padding','10px');S(x,'box-sizing','border-box');S(x,'max-width','100%');S(x,'overflow','visible');Array.from(x.querySelectorAll('h1,h2,h3,h4,p,.sub,b,strong,button,summary,label')).forEach(e=>{S(e,'white-space','normal');S(e,'overflow','visible');S(e,'text-overflow','clip');S(e,'max-width','100%')});Array.from(x.querySelectorAll('pre,.note,.statusbar')).forEach(e=>{S(e,'white-space','pre-wrap');S(e,'overflow','auto');S(e,'max-width','100%')})}
+function host(d){let b=d.getElementById('bank');if(!b)return null;let run=b.querySelector('[data-run-bank-tools]');if(!run)return null;let h=run.querySelector('[data-continuous-run-level-ui-scope-v1]');if(!h){h=d.createElement('div');h.setAttribute('data-continuous-run-level-ui-scope-v1','');h.setAttribute('data-v2','1');h.innerHTML='<div data-cr-level-head><h2>Continuous Run Levels 1 through 30B</h2><p class="sub">Run in exact order. Resident Use Mode and Request Intake stay inside Level 30B.</p></div><div data-cr-level1-source-gate><h3>Level 1 — Must-Reference Source ZIP Gate / Import</h3><p class="sub">Import the Must-Reference Source ZIP before Level 2 reads it.</p></div><div data-source-zip-levels-single><h3>Level 2 — Source ZIP Reader</h3><p class="sub">Reads the ZIP imported by Level 1. Level 2B extracts PDFs. Level 2C recovers text.</p></div><div data-cr-level-stack></div>';run.appendChild(h)}let owner=run.querySelector('[data-bank-screen-owner-v1]');if(owner&&h.previousElementSibling!==owner)run.insertBefore(h,owner.nextSibling);S(h,'display','grid');S(h,'gap','12px');S(h,'background','transparent');S(h,'border','0');S(h,'padding','0');S(h,'margin','10px 0');return h}
 function stack(h){let s=h.querySelector('[data-cr-level-stack]');if(!s){s=document.createElement('div');s.setAttribute('data-cr-level-stack','');h.appendChild(s)}S(s,'display','grid');S(s,'gap','12px');return s}
-function move(d,h){let s=stack(h),b=d.getElementById('bank');Array.from(b.querySelectorAll(LEVELS)).forEach(x=>{try{if(!h.contains(x))s.appendChild(x);styleCard(x)}catch(e){}});Array.from(h.querySelectorAll('[data-cr-level-head],[data-cr-level1-source-gate],[data-source-zip-levels-single]')).forEach(styleCard)}
-function scanDoc(d){if(!isCR(d))return;let h=host(d);if(!h)return;move(d,h);try{localStorage.setItem('pmp_continuous_run_level_ui_scope_v1_receipt',JSON.stringify({type:'PMP_CONTINUOUS_RUN_LEVEL_UI_SCOPE_V1',version:V,at:new Date().toISOString(),status:'restored_simple_level3_state'}))}catch(e){}}
+function firstIn(b,sel){let a=Array.from(b.querySelectorAll(sel));return a.find(x=>x&&x.closest('[data-run-bank-tools]'))||a[0]||null}
+function keepResidentInside30B(b){let l30b=firstIn(b,'[data-resident-l30b-auto-gate]');if(!l30b)return;RESIDENT_CHILDREN.forEach(sel=>Array.from(b.querySelectorAll(sel)).forEach(x=>{try{if(x!==l30b&&!l30b.contains(x))l30b.appendChild(x);styleCard(x)}catch(e){}}))}
+function orderedLevels(b){let out=[];ORDER.forEach(sel=>{let x=firstIn(b,sel);if(x&&out.indexOf(x)<0)out.push(x)});return out}
+function move(d,h){let b=d.getElementById('bank'),s=stack(h);keepResidentInside30B(b);orderedLevels(b).forEach(x=>{try{s.appendChild(x);styleCard(x)}catch(e){}});Array.from(h.querySelectorAll('[data-cr-level-head]')).forEach(styleCard)}
+function scanDoc(d){if(!isCR(d))return;let h=host(d);if(!h)return;move(d,h);try{localStorage.setItem('pmp_continuous_run_level_ui_scope_v1_receipt',JSON.stringify({type:'PMP_CONTINUOUS_RUN_LEVEL_UI_SCOPE_V1',version:V,at:new Date().toISOString(),status:'exact_sequential_clean_cards',order:'1,2,3,4,4B,5-30,30B',resident_tools:'inside_30B_only'}))}catch(e){}}
 function scan(){docs(T().document).forEach(d=>{try{scanDoc(d)}catch(e){}})}
-window.PMPContinuousRunLevelUIScopeV1={version:V,scan,rule:'restored simpler Level 3 state'};
+window.PMPContinuousRunLevelUIScopeV1={version:V,scan,rule:'exact sequential Continuous Run levels; no top Resident tool cards'};
 window.addEventListener('load',()=>[150,500,1200,3000].forEach(t=>setTimeout(scan,t)));
 setInterval(scan,1400);scan();
 })();
