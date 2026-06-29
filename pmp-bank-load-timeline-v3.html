@@ -1,14 +1,110 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bank Timeline v3</title><style>body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f3ded4;margin:0;color:#07101c}header{position:sticky;top:0;background:#f3ded4;padding:10px;border-bottom:3px solid #07101c}button{font-weight:800;border:2px solid #07101c;border-radius:12px;background:#acd1fb;padding:10px;margin:4px}iframe{width:100%;height:60vh;border:3px solid #07101c}pre{white-space:pre-wrap;word-break:break-word;background:#102033;color:#eaffef;padding:10px;border-radius:14px;font-size:12px}</style></head><body><header><b>Bank Timeline v3</b><br><button onclick="go()">Reload and record</button><button onclick="copyReport()">Copy report</button><span id="st">ready</span></header><iframe id="app"></iframe><pre id="out">ready</pre><script>
-var app=document.getElementById('app'),out=document.getElementById('out'),st=document.getElementById('st');var report=null,timer=null,t0=0,last='';
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#f3ded4">
+<title>PMP Bank Load Timeline Diagnostic v3</title>
+<style>
+:root{--bg:#f3ded4;--ink:#07101c;--blue:#acd1fb;--navy:#172234;--green:#123024;--bad:#ffe1e1;--ok:#e4ffe9;--warn:#fff3de;--card:#fff;--line:#07101c}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}body{padding:10px}.card{background:var(--card);border:3px solid var(--line);border-radius:22px;padding:12px;margin:10px 0;box-shadow:0 8px 22px rgba(0,0,0,.12)}h1{font-size:25px;margin:0 0 6px}h2{font-size:18px;margin:0 0 6px}.sub{color:#294f5d;font-weight:850;line-height:1.28}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}button{border:2px solid var(--line);border-radius:14px;background:var(--blue);color:var(--ink);font:inherit;font-weight:950;padding:11px 8px}button.dark{background:var(--navy);color:#fff}.pill{display:inline-block;border:2px solid var(--line);border-radius:999px;background:#fff;padding:5px 8px;margin:3px;font-size:12px;font-weight:900}.bad{background:var(--bad)}.ok{background:var(--ok)}.warn{background:var(--warn)}pre{white-space:pre-wrap;word-break:break-word;background:#102033;color:#eaffef;border-radius:16px;padding:10px;max-height:42vh;overflow:auto;font-size:12px;line-height:1.35}.framebox{height:62vh;border:3px solid var(--line);border-radius:18px;overflow:hidden;background:var(--bg)}iframe{width:100%;height:100%;border:0;background:var(--bg)}.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="card warn">
+  <h1>Bank Load Timeline Diagnostic v3</h1>
+  <p class="sub">Diagnostic only. No app patching. Records the first 8 seconds of Bank loading every 75ms. Freezes if Level 3 is visible before Bank buttons are ready. Also captures the fast Level 1/2/3 flash order and where Level 3 is mounted.</p>
+  <div class="grid">
+    <button id="runBtn">Reload + Record 8s</button>
+    <button id="copyBtn" class="dark">Copy Report</button>
+    <button id="scanBtn" class="dark">Scan Once</button>
+    <button id="frameBtn" class="dark">Show / Hide App</button>
+  </div>
+</div>
+<div id="statusCard" class="card">
+  <h2>Status</h2>
+  <div id="badges"></div>
+  <pre id="summary">Ready.</pre>
+</div>
+<div class="card">
+  <h2>Timeline Events</h2>
+  <pre id="events">No events yet.</pre>
+</div>
+<div class="card hidden" id="frameCard">
+  <h2>Live App Frame</h2>
+  <div class="framebox"><iframe id="app" title="PMP Current app test frame"></iframe></div>
+</div>
+<script>
+(()=>{
+'use strict';
+const V='3.1.0-refill-race-recorder-report-only';
+const CURRENT='pmp-current-reload-owner-v27.html';
+const SAMPLE_MS=75;
+const RUN_MS=8000;
+const MAX_EVENTS=80;
+const $=s=>document.querySelector(s);
+const app=$('#app');
+let report=null,timer=null,t0=0,lastSig='';
+const WATCH_LEVELS={
+  top_tools:'[data-cr-top-sequence-v1]',
+  level1:'[data-cr-level1-source-gate],[data-cr-level1],[data-source-zip-lane]',
+  level2:'[data-source-zip-levels-single],[data-cr-level2],[data-source-zip-reader-level2]',
+  level3:'[data-source-text-reader-level3]',
+  level4:'[data-source-reference-gate-level4]',
+  level4b:'[data-source-reference-gate-level4b]',
+  level5_plus:'[data-level5-source-gated-runner],[data-level6-audit-receipt-lock],[data-level7-no-bypass-enforcement],[data-level8-output-gate],[data-level9-actual-resident-integration],[data-level10-cert-lock],[data-level11-startup-guard],[data-level12-startup-enforcement],[data-level13-failure-test],[data-level14-recovery-proof],[data-level15-source-invalidation],[data-level16-source-bound],[data-level17-source-mismatch],[data-level18-recert-gate],[data-level19-recovery-proof],[data-level20-summary-lock],[data-level21-one-tap-retest],[data-level22-export-receipt],[data-level23-integrity-check],[data-level24-tamper-test],[data-level25-receipt-bundle],[data-level26-packet-integrity],[data-level27-tampered-packet],[data-level28-final-export],[data-level29-cold-start],[data-level30-final-seal],[data-resident-l30b-auto-gate]'
+};
+const VERSION_KEYS=['PMPMasterBankTabV1','PMPContinuousRunBankOrderFrameLoaderV1','PMPBankMode1HideUncheckedV1','PMPBankScreenOwnerV1','PMPContinuousRunLevelUIScopeV1','PMPSourceTextReaderLevel3V1','PMPMasterBankInventoryRouterV1'];
+const RECEIPT_KEYS=['pmp_continuous_run_bank_order_frame_loader_v1_receipt','pmp_bank_mode1_hide_unchecked_v1_receipt','pmp_bank_screen_owner_v1_receipt','pmp_continuous_run_level_ui_scope_v1_receipt','pmp_request_packet_guard_loader_v1_receipt'];
+function iso(){return new Date().toISOString()}
 function clean(s){return String(s||'').replace(/\s+/g,' ').trim()}
-function visible(e){try{var cs=e.ownerDocument.defaultView.getComputedStyle(e),r=e.getBoundingClientRect();return cs.display!=='none'&&cs.visibility!=='hidden'&&r.width>0&&r.height>0}catch(x){return false}}
-function collect(d,p,a,n){a=a||[];n=n||0;if(!d||n>10)return a;a.push({doc:d,path:p,url:(function(){try{return d.location.href}catch(e){return ''}})(),title:d.title||''});try{Array.from(d.querySelectorAll('iframe')).forEach(function(f,i){try{var x=f.contentDocument||(f.contentWindow&&f.contentWindow.document);if(x)collect(x,p+' > iframe'+i,a,n+1)}catch(e){}})}catch(e){}return a}
-function target(){var all=collect(document,'root',[],0),best=null,score=-1;all.forEach(function(x){var d=x.doc,s=0;try{if(d.getElementById('bank'))s+=10;if((d.location.href||'').indexOf('pmp-home-single')>=0)s+=10;if(d.querySelector('[data-source-text-reader-level3]'))s+=5}catch(e){}if(s>score){score=s;best=x}});return score>0?best:null}
-function snap(){var x=target();if(!x)return{t:Date.now()-t0,ready:false,reason:'no app doc'};var d=x.doc,b=d.getElementById('bank');if(!b)return{t:Date.now()-t0,ready:false,reason:'no bank',url:x.url,title:x.title};var btn=b.querySelector('[data-bank-buttons]'),op=b.querySelector('[data-open-bank="continuous_run"]'),l3=b.querySelector('[data-source-text-reader-level3]'),top=b.querySelector('[data-cr-top-sequence-v1]'),l12=b.querySelector('[data-cr-level1-level2-sequence-v1]'),rt=b.querySelector('[data-run-bank-tools]'),home=b.querySelector('[data-bank-home]'),detail=b.querySelector('[data-bank-detail-wrap]');var text=clean(btn?btn.textContent:'');var ready=!!(btn&&op&&text&&text!=='Loading...');return{t:Date.now()-t0,version:(d.defaultView.PMPMasterBankTabV1&&d.defaultView.PMPMasterBankTabV1.version)||'',url:x.url,title:x.title,buttons_ready:ready,buttons_count:btn?btn.children.length:0,buttons_text:text.slice(0,260),opener:!!op,home_visible:!!home&&visible(home),detail_visible:!!detail&&visible(detail),level3_visible:!!l3&&visible(l3),top_visible:!!top&&visible(top),level1_2_visible:!!l12&&visible(l12),run_tools_visible:!!rt&&visible(rt),watch_hit:(!!l3&&visible(l3)&&!ready)}}
-function key(s){return[s.buttons_ready,s.buttons_count,s.opener,s.home_visible,s.detail_visible,s.level3_visible,s.top_visible,s.level1_2_visible,s.run_tools_visible,s.version].join('|')}
-function add(s){report.samples.push(s);var k=key(s);if(k!==last){last=k;report.timeline.push(s)}}
-function finish(reason){clearInterval(timer);timer=null;report.end_reason=reason;report.final=snap();out.textContent=JSON.stringify(report,null,2);st.textContent=reason}
-function go(){clearInterval(timer);last='';t0=Date.now();report={type:'PMP_BANK_TIMELINE_DIAGNOSTIC_V3',at:new Date().toISOString(),samples:[],timeline:[],rule:'record first 8 seconds and stop if Level 3 appears before Bank buttons are ready'};app.src='pmp-current-reload-owner-v27.html?fresh=bank-timeline-v3-'+Date.now()+'#bank';st.textContent='recording';out.textContent='recording';timer=setInterval(function(){var s=snap();add(s);if(s.watch_hit)return finish('stopped on early Level 3 before bank buttons');if(Date.now()-t0>8000)return finish('done')},75)}
-function copyReport(){if(!report){out.textContent='No report yet';return}navigator.clipboard.writeText(JSON.stringify(report,null,2)).then(function(){st.textContent='copied'},function(){st.textContent='copy failed; select report'})}
-go();
-</script></body></html>
+function short(s,n){s=clean(s);return s.length>(n||180)?s.slice(0,n||180)+'…':s}
+function vis(el){if(!el)return false;try{let w=el.ownerDocument.defaultView,cs=w.getComputedStyle(el),r=el.getBoundingClientRect();return cs.display!=='none'&&cs.visibility!=='hidden'&&Number(cs.opacity)!==0&&r.width>0&&r.height>0&&!el.classList.contains('hidden')&&el.getAttribute('aria-hidden')!=='true'}catch(e){return false}}
+function tag(el){if(!el)return null;let s=(el.tagName||'node').toLowerCase();if(el.id)s+='#'+el.id;if(el.className&&typeof el.className==='string')s+='.'+el.className.trim().split(/\s+/).slice(0,3).join('.');try{Array.from(el.attributes||[]).forEach(a=>{if(a.name.indexOf('data-')===0)s+='['+a.name+(a.value?'="'+a.value+'"':'')+']'})}catch(e){}return s}
+function pathOf(el){let out=[];let n=el;for(let i=0;n&&i<8;i++,n=n.parentElement)out.push(tag(n));return out}
+function docs(d,path,arr,depth){arr=arr||[];depth=depth||0;path=path||'diagnostic_v3';if(!d||depth>12)return arr;let item={doc:d,path,url:'',title:''};try{item.url=String(d.location&&d.location.href||'');item.title=d.title||''}catch(e){item.url='blocked';item.error=String(e&&e.message||e)}arr.push(item);try{Array.from(d.querySelectorAll('iframe,frame')).forEach((f,i)=>{try{let x=f.contentDocument||(f.contentWindow&&f.contentWindow.document);if(x)docs(x,path+' > iframe['+i+'] '+short(f.title||f.id||'',30),arr,depth+1)}catch(e){arr.push({doc:null,path:path+' > iframe['+i+']',url:'blocked',title:'',error:String(e&&e.message||e)})}})}catch(e){}return arr}
+function allDocs(){let root=document;try{root=window.top.document}catch(e){}return docs(root)}
+function versions(d){let out={};try{let w=d.defaultView||{};VERSION_KEYS.forEach(k=>{let x=w[k];out[k]=x?{version:x.version||null,owner:x.owner||null,scope:x.scope||null,rule:x.rule||null,data_only:!!x.data_only}:null})}catch(e){out.error=String(e&&e.message||e)}return out}
+function receipts(){let out={};RECEIPT_KEYS.forEach(k=>{try{out[k]=JSON.parse(localStorage.getItem(k)||'null')}catch(e){out[k]=localStorage.getItem(k)}});return out}
+function count(d,sel){let a=[];try{a=Array.from(d.querySelectorAll(sel))}catch(e){}return{selector:sel,total:a.length,visible:a.filter(vis).length,samples:a.slice(0,4).map(el=>({visible:vis(el),tag:tag(el),text:short(el.textContent,160),path:pathOf(el)}))}}
+function scoreDoc(item){let d=item.doc;if(!d)return -1;let s=0;try{if(d.getElementById('bank'))s+=100;if(d.querySelector('[data-bank-buttons]'))s+=60;if(d.querySelector('[data-tab="bank"]'))s+=30;if(/pmp-home-single/i.test(item.url))s+=30;if(d.querySelector('[data-source-text-reader-level3]'))s+=20;if(d.querySelector('[data-cr-level1-source-gate],[data-source-zip-levels-single]'))s+=15}catch(e){}return s}
+function bankDoc(items){let best=null,bs=-1;items.forEach(x=>{let s=scoreDoc(x);if(s>bs){bs=s;best=x}});return bs>0?best:null}
+function textVisibleIn(root,rx){try{return Array.from(root.querySelectorAll('h1,h2,h3,h4,p,button,div,pre')).some(x=>vis(x)&&rx.test(clean(x.textContent)))}catch(e){return false}}
+function placement(el){return{exists:!!el,visible:vis(el),tag:tag(el),text:short(el&&el.textContent,160),parent:tag(el&&el.parentElement),path:pathOf(el),inside_bank_home:!!(el&&el.closest('[data-bank-home]')),inside_detail_wrap:!!(el&&el.closest('[data-bank-detail-wrap]')),inside_run_bank_tools:!!(el&&el.closest('[data-run-bank-tools]')),inside_level_stack:!!(el&&el.closest('[data-cr-level-stack]')),inside_bank_screen_owner:!!(el&&el.closest('[data-bank-screen-owner-v1]')),inside_temp_transfer_store:!!(el&&el.closest('[data-temp-transfer-store]'))}}
+function levelState(bank,name,sel){let nodes=[];try{nodes=Array.from(bank.querySelectorAll(sel))}catch(e){}let first=nodes[0]||null;return{name,total:nodes.length,visible:nodes.filter(vis).length,first:placement(first)}}
+function makeState(item){if(!item||!item.doc)return{app_found:false,reason:'no app document'};let d=item.doc,bank=d.getElementById('bank');if(!bank)return{app_found:true,bank_found:false,url:item.url,title:item.title};let buttonHost=bank.querySelector('[data-bank-buttons]');let openers=buttonHost?Array.from(buttonHost.querySelectorAll('[data-open-bank]')):Array.from(bank.querySelectorAll('[data-open-bank]'));
+let buttonText=clean(buttonHost&&buttonHost.textContent);let loadingText=/^Loading\.\.\.?$/i.test(buttonText)||/Master Bank Inventory loading/i.test(buttonText)||textVisibleIn(bank,/^Loading\.\.\.?$/i);let bankHome=bank.querySelector('[data-bank-home]');let detail=bank.querySelector('[data-bank-detail-wrap]');let runTools=bank.querySelector('[data-run-bank-tools]');let levels={};Object.keys(WATCH_LEVELS).forEach(k=>levels[k]=levelState(bank,k,WATCH_LEVELS[k]));let l3=levels.level3;
+let ready=!!(buttonHost&&vis(buttonHost)&&openers.length>0&&buttonText&&!loadingText);
+let state={app_found:true,bank_found:true,url:item.url,title:item.title,bank_visible:vis(bank),bank_home_visible:vis(bankHome),detail_visible:vis(detail),run_tools_visible:vis(runTools),bank_buttons_host_visible:vis(buttonHost),bank_buttons_ready:ready,bank_buttons_count:openers.length,bank_buttons_visible_count:openers.filter(vis).length,bank_buttons_text:buttonText||'(empty)',loading_visible:!!loadingText,detail_title:short((bank.querySelector('[data-bank-detail-title]')||{}).textContent,80),level3_visible:l3.visible>0,level3_total:l3.total,level3_placement:l3.first,levels,versions:versions(d)};
+state.watch_hit=!!(state.level3_visible&&!state.bank_buttons_ready);
+state.misplaced_level3=!!(state.level3_visible&&state.level3_placement&&!state.level3_placement.inside_detail_wrap);
+state.fast_level_flash=Object.keys(levels).filter(k=>levels[k].visible>0);
+return state}
+function compact(s){return{app_found:s.app_found,bank_found:s.bank_found,bank_buttons_ready:s.bank_buttons_ready,bank_buttons_count:s.bank_buttons_count,loading_visible:s.loading_visible,bank_home_visible:s.bank_home_visible,detail_visible:s.detail_visible,run_tools_visible:s.run_tools_visible,level3_visible:s.level3_visible,level3_total:s.level3_total,misplaced_level3:s.misplaced_level3,fast_level_flash:s.fast_level_flash,version:s.versions&&s.versions.PMPMasterBankTabV1&&s.versions.PMPMasterBankTabV1.version}}
+function signature(s){return JSON.stringify(compact(s))}
+function audit(item){if(!item||!item.doc)return null;let d=item.doc,bank=d.getElementById('bank');let selectors=['#bank','[data-bank-home]','[data-bank-buttons]','[data-open-bank]','[data-bank-detail-wrap]','[data-run-bank-tools]','[data-cr-top-sequence-v1]','[data-cr-level1-source-gate]','[data-source-zip-levels-single]','[data-source-text-reader-level3]','[data-source-reference-gate-level4]','[data-bank-screen-owner-v1]','[data-continuous-run-level-ui-scope-v1]','[data-cr-level-stack]'];let top=[];try{top=Array.from((bank||d).querySelectorAll('h1,h2,h3,h4,button,[data-source-text-reader-level3],[data-source-zip-levels-single],[data-cr-level1-source-gate]')).filter(vis).slice(0,60).map(x=>({tag:tag(x),text:short(x.textContent,140),path:pathOf(x)}))}catch(e){}return{path:item.path,url:item.url,title:item.title,versions:versions(d),receipts:receipts(),anchors:selectors.map(s=>count(d,s)),visible_top_items:top}}
+function label(s){if(!s.app_found)return'no app document yet';if(!s.bank_found)return'app loaded but no bank section yet';if(s.watch_hit)return'FREEZE: Level 3 visible before Bank buttons ready';if(s.loading_visible&&s.level3_visible)return'Level 3 visible while Bank still says Loading';if(s.fast_level_flash&&s.fast_level_flash.length&&!s.detail_visible)return'Level block visible before detail is open';if(s.bank_buttons_ready&&!s.detail_visible)return'Bank home ready with blue bank buttons';if(s.detail_visible)return'Bank detail visible';return'Bank partial/loading state'}
+function render(){if(!report)return;let latest=report.samples[report.samples.length-1]||{};let s=latest.state||{};let pill=(name,on,bad)=>'<span class="pill '+(bad&&on?'bad':on?'ok':'')+'">'+name+': '+(on?'YES':'NO')+'</span>';
+$('#badges').innerHTML=[pill('App',!!s.app_found),pill('Buttons ready',!!s.bank_buttons_ready),pill('Loading',!!s.loading_visible,true),pill('Level 3',!!s.level3_visible,true),pill('Frozen',!!report.freeze,true)].join(' ');
+$('#statusCard').className='card '+(report.freeze?'bad':s.bank_buttons_ready?'ok':s.loading_visible?'warn':'');
+$('#summary').textContent=JSON.stringify({type:report.type,version:report.version,status:report.status,freeze:report.freeze,freeze_reason:report.freeze_reason,loaded_app_src:report.loaded_app_src,sample_ms:report.sample_ms,run_ms:report.run_ms,sample_count:report.samples.length,event_count:report.events.length,latest_state:compact(s),latest_level3_placement:s.level3_placement||null},null,2);
+$('#events').textContent=report.events.map(e=>e.t_ms+'ms — '+e.label+'\n'+JSON.stringify(e.state,null,2)).join('\n\n')||'No events yet.';
+}
+function stop(reason){if(timer){clearInterval(timer);timer=null}if(report){report.status=reason||report.status;report.finished_at=iso();let item=bankDoc(allDocs());report.final_audit=audit(item);render()}}
+function sample(){let t=Date.now()-t0;let item=bankDoc(allDocs());let state=makeState(item);let rec={t_ms:t,state:compact(state)};report.samples.push(rec);let sig=signature(state);if(sig!==lastSig){lastSig=sig;if(report.events.length<MAX_EVENTS)report.events.push({t_ms:t,label:label(state),state:state,audit:audit(item)})}
+if(state.watch_hit&&!report.freeze){report.freeze=true;report.freeze_reason='Level 3 visible before Bank buttons were ready';report.freeze_sample={t_ms:t,state:state,audit:audit(item)};stop('frozen_on_level3_before_bank_buttons_ready');return}
+if(t>=RUN_MS){stop('complete_8s');return}
+render()}
+function start(){if(timer)clearInterval(timer);lastSig='';t0=Date.now();let src=CURRENT+'?fresh=bank-load-timeline-v3-'+t0+'#bank';report={type:'PMP_BANK_LOAD_TIMELINE_DIAGNOSTIC_V3',version:V,purpose:'Diagnostic only. No app patching. Record first 8 seconds of Bank loading every 75ms and freeze if Level 3 is visible before Bank buttons are ready.',at:iso(),loaded_app_src:src,sample_ms:SAMPLE_MS,run_ms:RUN_MS,status:'recording',freeze:false,freeze_reason:null,samples:[],events:[],local_storage_receipts_at_start:receipts()};$('#frameCard').classList.remove('hidden');app.src=src;$('#summary').textContent='Recording...';$('#events').textContent='No events yet.';setTimeout(()=>{sample();timer=setInterval(sample,SAMPLE_MS)},50)}
+function scanOnce(){let item=bankDoc(allDocs());let state=makeState(item);if(!report){report={type:'PMP_BANK_LOAD_TIMELINE_DIAGNOSTIC_V3',version:V,purpose:'Manual scan only. Diagnostic only. No app patching.',at:iso(),loaded_app_src:app.src||'',sample_ms:SAMPLE_MS,run_ms:RUN_MS,status:'manual_scan',freeze:false,freeze_reason:null,samples:[],events:[]}}
+let t=report.samples.length?Date.now()-t0:0;report.samples.push({t_ms:t,state:compact(state)});report.events.push({t_ms:t,label:'manual scan — '+label(state),state:state,audit:audit(item)});render()}
+async function copy(){try{await navigator.clipboard.writeText(JSON.stringify(report||{status:'no report yet'},null,2));$('#summary').textContent='Copied report. Paste it into ChatGPT.\n\n'+$('#summary').textContent}catch(e){$('#summary').textContent='Copy failed. Long-press/select the report.\n\n'+JSON.stringify(report||{status:'no report yet'},null,2)}}
+$('#runBtn').onclick=start;
+$('#scanBtn').onclick=scanOnce;
+$('#copyBtn').onclick=copy;
+$('#frameBtn').onclick=()=>$('#frameCard').classList.toggle('hidden');
+start();
+})();
+</script>
+</body>
+</html>
