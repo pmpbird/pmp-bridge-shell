@@ -1,0 +1,74 @@
+{
+  "type": "PMP_ATLAS_REPO_HISTORY_SCAN_PASS1S_V1",
+  "version": "1.0.0-pass-1s-final-history-layer-freeze-decision",
+  "owner": "pmp-atlas-repo-history-scan-pass1s-v1",
+  "created_for": "Pass 1S / one more commit-history layer and active-path freeze decision",
+  "mode": "passive_history_scan_only",
+  "status": "FINAL_HISTORY_LAYER_SCAN_NOT_MAIN_ATLAS_MERGE",
+  "search_basis": [
+    "commit search for route guardian / control test / diagnostic / scanner / harness / auditor",
+    "commit search for current wrapper / route button / dashboard route / last good / route code",
+    "fetched high-signal commits for route guardian v15, control-forcer safe v2, route-code map/adapter, current wrappers v10/v17/v18/v20, and old dashboard route buttons"
+  ],
+  "new_history_candidates_to_verify_before_any_later_merge": {
+    "LEGACY_INSPECT_ONLY": [
+      "pmp-route-guardian-current-loader-v15.html",
+      "pmp-current-inner-control-forcer-safe-v2.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v10.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v17.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v18.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v20.html"
+    ],
+    "EXTERNAL_TOOL_SURFACE": [
+      "pmp-route-code-map-v1.json",
+      "pmp-route-code-map-adapter-v1.js",
+      "pmp-route-guardian-last-good-clean-v1.js",
+      "pmp-safe-writer-canonical-route-v1.js",
+      "pmp-crd-prestyle-v1.js",
+      "pmp-continuous-run-dashboard-inline-native-v1.js",
+      "pmp-continuous-run-state-ledger-v2.js",
+      "pmp-continuous-run-root-collar-stabilizer-v1.js",
+      "pmp-continuous-run-root-collar-anti-downgrade-v1.js",
+      "pmp-crd-intake-guard-v1.js",
+      "pmp-continuous-run-packet15-continuous-runner-v1.js",
+      "pmp-continuous-run-dashboard-route-button-v2.js",
+      "pmp-continuous-run-dashboard-route-button-v3.js",
+      "pmp-continuous-run-dashboard-route-button-v4.js",
+      "pmp-rglg-recovery-controls-stage1-v1.js"
+    ]
+  },
+  "already_covered_or_active_examples_seen_again": [
+    "pmp-current-page-code-scope-v1.js",
+    "pmp-resident-cr-status-router-v1.js",
+    "pmp-app-current.html route diagnostic patch"
+  ],
+  "freeze_decision": {
+    "active_app_path_freeze_recommendation": "YES_FREEZE_ACTIVE_PATH_NOW",
+    "reason": "The latest history layer found old wrappers, diagnostics, route-code support, and old recovery/test helpers, but no new required live boot dependency. Current runtime proof already passes at version 1.3.9 with missing_expected_count 0 and blank_screen_warning none_obvious.",
+    "freeze_scope": [
+      "freeze current active boot path and proof baseline",
+      "do not freeze the entire repository as complete-tree certified",
+      "continue treating old wrappers/test rooms as legacy or external support only",
+      "do not mount any history-only or unverified path"
+    ],
+    "frozen_active_path_expected_version": "1.3.9-pass1q-history-merged",
+    "frozen_active_path_expected_runtime_markers": {
+      "missing_expected_count": 0,
+      "blank_screen_warning": "none_obvious",
+      "bank_cr_scoped_order_issue": 0
+    }
+  },
+  "coverage_update": {
+    "repo_census_estimate": "about 94 percent, not final complete-tree certified",
+    "active_path_confidence": "high enough to freeze active app path",
+    "remaining_work_type": "legacy/support classification only, not active boot dependency discovery"
+  },
+  "do_not_claim": [
+    "not complete repo tree certified",
+    "not main Atlas merge yet for Pass 1S candidates",
+    "not runtime behavior change",
+    "not permission to mount legacy wrappers or old route buttons",
+    "not proof that every commit in repo history has been exhausted"
+  ],
+  "next_best_move": "Pass 1T — create an Active Path Freeze Manifest for version 1.3.9, lock the proof markers, and defer remaining legacy/support cleanup to later non-boot census passes."
+}
