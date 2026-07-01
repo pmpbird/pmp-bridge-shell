@@ -1,0 +1,34 @@
+{
+  "type": "PMP_ATLAS_EXPANSION_V1",
+  "version": "1.0.0-batch-2-reload-current-home-subowners",
+  "owner": "pmp-atlas-expansion-batch-2-v1",
+  "created_for": "Pass 1E / Atlas Expansion Batch 2",
+  "mode": "passive_atlas_expansion_only",
+  "rule": "Adds Reload Current subowners and Home App subowners found during Pass 1B/1C follow-up. No app behavior change, no mount change, no deletion, no storage write.",
+  "parent_atlas": "pmp-mount-registry-v1.js",
+  "files_to_add_or_sharpen": [
+    {"path":"pmp-current-screen-test-engine-v1.js","bucket":"ACTIVE_CURRENT_APP","owner":"Current Screen Test Engine Owner","parent":"Reload Current Tools","policy":"tests/snapshots current page surface only; does not own route or app sections"},
+    {"path":"pmp-bank-reload-current-button-v1.js","bucket":"ACTIVE_CURRENT_APP","owner":"Bank Reload Current Button Owner","parent":"Reload Current Tools / Bank","policy":"Bank-facing reload current trigger only; does not define current app source of truth"},
+    {"path":"pmp-launcher-reload-current-bridge-v1.js","bucket":"ACTIVE_CURRENT_APP","owner":"Launcher Reload Current Bridge Owner","parent":"Reload Current Tools / Launcher","policy":"bridges launcher reload action into reload-current flow; does not choose app path except through current map chain"},
+    {"path":"pmp-current-page-code-scope-v1.js","bucket":"ACTIVE_CURRENT_APP","owner":"Current Page Code Scope Owner","parent":"Reload Current Tools","policy":"scopes code proof to current page; does not own page content"},
+    {"path":"pmp-reload-current-visible-receipt-v1.js","bucket":"ACTIVE_CURRENT_APP","owner":"Reload Current Visible Receipt Owner","parent":"Reload Current Tools","policy":"visible reload receipt/proof only; does not reload by itself"},
+    {"path":"pmp-current-page-snapshot-test-launcher-v1.js","bucket":"ACTIVE_CURRENT_APP","owner":"Current Page Snapshot Test Launcher Owner","parent":"Reload Current Tools","policy":"launches current-page snapshot test; does not own route or content"},
+    {"path":"pmp-home-single-v6.html","bucket":"ACTIVE_CURRENT_APP","owner":"Launcher Drawer Owner","parent":"Home App","selectors":["#launcher","#launcherStatus"],"policy":"Launcher drawer surface and local launcher controls"},
+    {"path":"pmp-home-single-v6.html","bucket":"ACTIVE_CURRENT_APP","owner":"Resident Drawer Owner","parent":"Home App","selectors":["#resident","#residentChatBox","#residentReply","#residentToolsBox"],"policy":"Resident drawer/chat/tools surface only"},
+    {"path":"pmp-home-single-v6.html","bucket":"ACTIVE_CURRENT_APP","owner":"Bridge Panel Owner","parent":"Home App / Bridge","selectors":["#bridge","#bridgePanel"],"policy":"Bridge visible panel and bridge buttons"},
+    {"path":"pmp-home-single-v6.html","bucket":"PROTECTED_STORAGE_OWNER","owner":"Library Notes Owner","parent":"Home App / Library","selectors":["#libraryNotes"],"storage_keys":["pmp_clean_library_single_v6"],"policy":"Library notes UI and saved notes key"},
+    {"path":"pmp-home-single-v6.html","bucket":"PROTECTED_STORAGE_OWNER","owner":"Workshop Box Owner","parent":"Home App / Workshop","selectors":["#workshopBox"],"storage_keys":["pmp_clean_workshop_single_v6"],"policy":"Workshop box UI and saved workshop key"},
+    {"path":"pmp-home-single-v6.html","bucket":"ACTIVE_CURRENT_APP","owner":"Control Room Surface Owner","parent":"Home App / Control","selectors":["#control","#controlTitle"],"policy":"Control Room visible surface; does not own external tools"},
+    {"path":"pmp-home-single-v6.html","bucket":"PROTECTED_STORAGE_OWNER","owner":"Color Theme Readability Owner","parent":"Home App / Control","selectors":["#colorPanel","#themeSelect","#readability"],"storage_keys":["pmp_single_colors_v6","pmp_single_colors_v5","pmp_single_themes_v6","pmp_readability_layer_v6"],"policy":"colors, themes, and readability settings"},
+    {"path":"pmp-home-single-v6.html","bucket":"PROTECTED_STORAGE_OWNER","owner":"Backend Config Surface Owner","parent":"Home App / Launcher","selectors":["#backendBox","#backendUrl"],"storage_keys":["pmp_backend_config_v1"],"policy":"backend/tool configuration surface"},
+    {"path":"safe-writer-v14.html","bucket":"EXTERNAL_TOOL_SURFACE","owner":"Safe Writer Link Owner","parent":"Home App / Control","policy":"link from Control Room to Safe Writer external tool; tool itself remains external surface"},
+    {"path":"code-safety-v13.html","bucket":"EXTERNAL_TOOL_SURFACE","owner":"Code Safety Link Owner","parent":"Home App / Control","policy":"link from Control Room to Code Safety external tool; tool itself remains external surface"}
+  ],
+  "do_not_claim": [
+    "not yet merged into pmp-mount-registry-v1.js runtime registry",
+    "not enforcement",
+    "not mount behavior",
+    "not whole-repo exhaustive",
+    "not deletion proof"
+  ]
+}
