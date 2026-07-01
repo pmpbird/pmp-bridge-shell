@@ -1,0 +1,88 @@
+{
+  "type": "PMP_ATLAS_REPO_HISTORY_CENSUS_V1",
+  "version": "1.0.0-pass-1m-history-vault-manifest-census",
+  "owner": "pmp-atlas-repo-history-census-pass1m-v1",
+  "created_for": "Pass 1M / continue repo census from vault and history evidence",
+  "mode": "passive_census_only",
+  "status": "BEST_AVAILABLE_HISTORY_CENSUS_NOT_MAIN_ATLAS_MERGE",
+  "basis": [
+    "pmp-inventory-eyes-manifest-v1.0.0.json current version 2.1.0-full-safe-detail-baseline",
+    "pmp-inventory-eyes-detail-map-v1.0.0.json",
+    "pmp-current-update-ledger.json",
+    "pmp-current-update-status.json",
+    "pmp-lossless-inventory-vault/rejected-ledger.json",
+    "older Issue #1 lossless inventory report showing historical manifest_paths count 140"
+  ],
+  "connector_limitation": {
+    "directory_listing_available": false,
+    "rule": "This pass uses manifest/vault/history evidence. It still does not certify a complete repository tree."
+  },
+  "newly_found_or_reclassified": {
+    "EXTERNAL_TOOL_SURFACE": [
+      {"path":"pmp-inventory-eyes-manifest-v1.0.0.json","reason":"Current safe Inventory Eyes manifest / public app-structure baseline."},
+      {"path":"pmp-inventory-eyes-detail-map-v1.0.0.json","reason":"Safe detail/aspect coverage map for Inventory Eyes and X-Ray."},
+      {"path":"pmp-inventory-eyes-xray-feed.js","reason":"Read-only X-Ray feed for Inventory Eyes summaries."},
+      {"path":"pmp-shared-theme-v1.js","reason":"Shared theme/readability helper listed by manifest and verified as theme helper."},
+      {"path":"private-bug-mixer-lab-spec-v1.json","reason":"Public-safe private Bug Mixer Lab spec only; not private records."},
+      {"path":"pmp-lossless-inventory-vault/rejected-ledger.json","reason":"Vault rejected-comment ledger support record."},
+      {"path":"pmp-current-update-ledger.json","reason":"Current-update support ledger; repo support, not runtime app shell."},
+      {"path":"pmp-current-update-status.json","reason":"Current-update status support record; repo support, not runtime app shell."},
+      {"path":"pmp-current-map-v1.0.0.json","reason":"Historical/versioned map support record listed by manifest."},
+      {"path":"safety-hub.html","reason":"Safety support surface listed by manifest; not current live route."},
+      {"path":"local-storage-manager.html","reason":"Support tool surface listed by manifest; not current live route."},
+      {"path":"bridge-contextual-menu.html","reason":"Bridge support surface listed by manifest; not current live route."},
+      {"path":"corpus-workbench.html","reason":"Corpus support/workbench surface listed by manifest; not current live route."},
+      {"path":"project-connection-workbench.html","reason":"Project connection support/workbench surface listed by manifest; not current live route."},
+      {"path":"lossless-certification-system.html","reason":"Lossless certification support surface listed by manifest; not current live route."},
+      {"path":"proof-ledger-system.html","reason":"Proof ledger support surface listed by manifest; not current live route."},
+      {"path":"wrangler.toml","reason":"Worker/config support file listed by manifest."},
+      {"path":"worker.js","reason":"Worker support file listed by manifest."},
+      {"path":"cloudflare-worker.js","reason":"Worker support file listed by manifest."}
+    ],
+    "LEGACY_INSPECT_ONLY": [
+      {"path":"index.html","reason":"Root historical entry listed by Inventory Eyes; not current Home Screen route."},
+      {"path":"pmp-home-single-v7.html","reason":"Manifest classifies as internal archive/version residue."},
+      {"path":"pmp-home-single-v10.html","reason":"Manifest classifies as internal archive/version residue."},
+      {"path":"pmp-home-single-v12.html","reason":"Manifest classifies as internal archive/version residue; file existence verified."},
+      {"path":"pmp-home-single-v13.html","reason":"Manifest classifies as internal archive/version residue."},
+      {"path":"private-bug-memory-hub-v7.html","reason":"Manifest classifies as internal archive/version residue."},
+      {"path":"resident-v1.html","reason":"Historical Resident support surface listed by manifest; not current live app route."},
+      {"path":"resident-brain-core-v1.html","reason":"Historical Resident support surface listed by manifest; not current live app route."},
+      {"path":"resident-intelligence-v1.html","reason":"Historical Resident support surface listed by manifest; not current live app route."},
+      {"path":"resident-conversation-layer.html","reason":"Historical Resident support surface listed by manifest; not current live app route."},
+      {"path":"resident-chat-menu.html","reason":"Historical Resident support surface listed by manifest; not current live app route."}
+    ],
+    "UNKNOWN_DO_NOT_MOUNT": [
+      {"path":"resident-notes-catalog-v4.html","reason":"Manifest marks as expected missing/future; fetch returned Not Found in Pass 1M."},
+      {"path":"private-bug-mixer-lab-v2.html","reason":"Manifest marks as expected missing/future until verified."},
+      {"path":"resident-zip-xray-v3.html","reason":"Manifest marks as expected missing/future until verified."}
+    ]
+  },
+  "candidate_backlog_from_older_manifest_commit_not_merged_yet": {
+    "reason": "Older manifest expansion commit listed a much larger 140-path history. These should be checked in a later pass before merge.",
+    "families": [
+      "pmp-home-single-v1 through v13 family",
+      "pmp-app-v1 through v21 family",
+      "pmp-current-clean-app and v18-v21 family",
+      "permanent/forever launcher and wrapper family",
+      "safe-writer-v1 through v13 family",
+      "code-safety-v1 through v12 family",
+      "private GitHub writer family",
+      "direct safety / emergency restore / hard fresh cleaner family"
+    ]
+  },
+  "coverage_update": {
+    "pass1l_known_classified_paths_estimate": 136,
+    "newly_classified_paths_this_pass": 33,
+    "best_available_known_classified_paths_after_pass": 169,
+    "whole_repo_percent_estimate_after_pass": "about 85 percent, not final"
+  },
+  "do_not_claim": [
+    "not complete repo tree certified",
+    "not main Atlas merge yet",
+    "not runtime behavior change",
+    "not proof that expected-missing/future files exist",
+    "not permission to mount legacy or unknown files"
+  ],
+  "next_best_move": "Pass 1N — merge Pass 1M verified classifications into main Atlas while keeping UNKNOWN_DO_NOT_MOUNT paths non-boot and non-required, then proof."
+}
