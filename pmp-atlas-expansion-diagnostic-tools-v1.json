@@ -1,0 +1,53 @@
+{
+  "type": "PMP_ATLAS_EXPANSION_V1",
+  "version": "1.0.0-diagnostic-tool-owners",
+  "owner": "pmp-atlas-expansion-diagnostic-tools-v1",
+  "created_for": "Pass 1E.2 / Diagnostic-tool owners",
+  "mode": "passive_atlas_expansion_only",
+  "rule": "Adds diagnostic-tool owners so diagnostics are tracked without changing app behavior. No mount change, no patching behavior, no deletion, no storage overwrite.",
+  "parent_atlas": "pmp-mount-registry-v1.js",
+  "diagnostic_tool_owners": [
+    {
+      "path": "pmp-bank-live-owner-anchor-diagnostic-v3.html",
+      "bucket": "EXTERNAL_TOOL_SURFACE",
+      "owner": "Bank Live Owner / Flicker Diagnostic Owner",
+      "parent": "Diagnostics Owner future / Bank diagnostic surface",
+      "policy": "diagnostic only; records Bank loading and freezes on Level 3 before Bank buttons ready; no app patching"
+    },
+    {
+      "path": "pmp-copy-lossless-diagnostic.js",
+      "bucket": "ACTIVE_CURRENT_APP",
+      "owner": "Lossless Copy Diagnostic Owner",
+      "parent": "v3 Home Wrapper / Lossless support",
+      "policy": "copy/lossless diagnostic support only; does not own route, storage, or app sections"
+    },
+    {
+      "path": "pmp-current-screen-test-engine-v1.js",
+      "bucket": "ACTIVE_CURRENT_APP",
+      "owner": "Current Screen Test Engine Owner",
+      "parent": "Reload Current Tools",
+      "policy": "current-page test diagnostic only; does not own current app path"
+    },
+    {
+      "path": "pmp-current-page-snapshot-test-launcher-v1.js",
+      "bucket": "ACTIVE_CURRENT_APP",
+      "owner": "Current Page Snapshot Test Launcher Owner",
+      "parent": "Reload Current Tools",
+      "policy": "snapshot test launcher only; does not own route or content"
+    },
+    {
+      "path": "pmp-reload-current-visible-receipt-v1.js",
+      "bucket": "ACTIVE_CURRENT_APP",
+      "owner": "Reload Current Visible Receipt Owner",
+      "parent": "Reload Current Tools",
+      "policy": "visible receipt/proof only; does not reload by itself"
+    }
+  ],
+  "do_not_claim": [
+    "not yet merged into pmp-mount-registry-v1.js runtime registry",
+    "not enforcement",
+    "not mount behavior",
+    "not whole-repo exhaustive",
+    "not deletion proof"
+  ]
+}
