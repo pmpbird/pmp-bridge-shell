@@ -5,12 +5,12 @@
   "updated_at": "2026-07-01T00:00:00Z",
   "route_guardian_loader": {
     "path": "pmp-route-guardian-current-loader-v14.html",
-    "cache_key": "pmp-route-guardian-current-loader-v14-restored-look-20260628A",
+    "cache_key": "pmp-route-guardian-current-loader-v14-pass1f-atlas-20260701A",
     "status": "current"
   },
   "current_app": {
     "path": "pmp-current-reload-owner-v27.html",
-    "cache_key": "pmp-current-v27-pass1f-atlas-addenda-merged-20260701A",
+    "cache_key": "pmp-current-v27-pass1f-atlas-wrapper-20260701B",
     "status": "current"
   },
   "fallback_app": {
