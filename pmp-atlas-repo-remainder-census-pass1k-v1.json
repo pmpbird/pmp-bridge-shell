@@ -1,0 +1,111 @@
+{
+  "type": "PMP_ATLAS_REPO_REMAINDER_CENSUS_V1",
+  "version": "1.0.0-pass-1k-best-available-census",
+  "owner": "pmp-atlas-repo-remainder-census-pass1k-v1",
+  "created_for": "Pass 1K / Full Repo Remainder Census",
+  "mode": "passive_census_only",
+  "status": "BEST_AVAILABLE_CENSUS_NOT_FINAL_TREE_CERTIFICATION",
+  "basis": [
+    "Pass 1I known repo classification",
+    "current live proof through 1.3.5-doc-url-merge-scan-fix",
+    "commit search evidence",
+    "fetched commit evidence",
+    "pmp-lossless-inventory-vault current record"
+  ],
+  "connector_limitation": {
+    "directory_listing_available": false,
+    "github_contents_directory_fetch": "blocked_by_connector_contract",
+    "code_search_full_inventory": "not_available",
+    "rule": "This pass improves coverage from commit and vault evidence, but does not certify every repo file."
+  },
+  "newly_found_or_reclassified": {
+    "ACTIVE_CURRENT_APP": [
+      {
+        "path": "pmp-resident-use-mode-v1.js",
+        "reason": "Commit evidence shows it was added as Resident Use Mode v1 and v4 was updated to load it in the actual app.",
+        "owner": "Resident Use Mode Owner",
+        "parent": "Level 30B / Resident startup gate",
+        "action_needed": "Merge into main Atlas/classification on next pass."
+      }
+    ],
+    "EXTERNAL_TOOL_SURFACE": [
+      {
+        "path": ".github/workflows/pmp-vault-inbox-processor.yml",
+        "reason": "Repo automation for PMP Vault Inbox Processor; external support workflow, not app runtime."
+      },
+      {
+        "path": ".github/workflows/pmp-vault-record-ledger-latest-only.yml",
+        "reason": "Repo automation for compacting vault record ledger; external support workflow, not app runtime."
+      },
+      {
+        "path": "pmp-lossless-inventory-vault/current.json",
+        "reason": "Repo vault current pointer and compact inventory summary; support record, not app runtime."
+      },
+      {
+        "path": "pmp-lossless-inventory-vault/deltas/latest-delta.json",
+        "reason": "Repo vault delta record; support record, not app runtime."
+      },
+      {
+        "path": "pmp-lossless-inventory-vault/inbox-intake-status.json",
+        "reason": "Repo vault intake status; support record, not app runtime."
+      },
+      {
+        "path": "pmp-lossless-inventory-vault/processor-health.json",
+        "reason": "Repo vault processor health record; support record, not app runtime."
+      },
+      {
+        "path": "pmp-lossless-inventory-vault/record-ledger.json",
+        "reason": "Repo vault record ledger; support record, not app runtime."
+      }
+    ],
+    "LEGACY_INSPECT_ONLY": [
+      {
+        "path": "pmp-current-inner.html",
+        "reason": "Listed as active in older vault inventory, but not current Route Guardian/live proof path."
+      },
+      {
+        "path": "pmp-home-single-v14.html",
+        "reason": "Listed as active in older vault inventory, but current live path uses pmp-home-single-v6.html."
+      },
+      {
+        "path": "bm.html",
+        "reason": "Listed as active in older vault inventory, but not current live proof path."
+      },
+      {
+        "path": "private-bug-memory-hub-v9.html",
+        "reason": "Older vault inventory private/bug support surface; not current live proof path."
+      },
+      {
+        "path": "resident-notes-catalog-v3.html",
+        "reason": "Older vault inventory resident-notes support surface; not current live proof path."
+      },
+      {
+        "path": "resident-notes-backend-v2.html",
+        "reason": "Older vault inventory resident-notes support surface; not current live proof path."
+      },
+      {
+        "path": "resident-zip-xray-v2.html",
+        "reason": "Older vault inventory resident ZIP/X-ray support surface; not current live proof path."
+      },
+      {
+        "path": "private-bug-mixer-lab-v1.html",
+        "reason": "Older vault inventory private bug lab surface; not current live proof path."
+      }
+    ],
+    "UNKNOWN_DO_NOT_MOUNT": []
+  },
+  "coverage_update": {
+    "previous_known_classified_files": 120,
+    "newly_found_classified_paths": 16,
+    "best_available_known_classified_paths_after_pass": 136,
+    "whole_repo_percent_estimate_after_pass": "about 75-80 percent, not final"
+  },
+  "do_not_claim": [
+    "not complete repo tree certified",
+    "not behavior change",
+    "not main Atlas merge yet",
+    "not proof of every historical file",
+    "not permission to mount older legacy files"
+  ],
+  "next_best_move": "Pass 1L — merge Pass 1K newly found classifications into main Atlas, then proof."
+}
