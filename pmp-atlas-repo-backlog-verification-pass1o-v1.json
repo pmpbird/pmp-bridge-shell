@@ -1,6 +1,6 @@
 {
   "type": "PMP_ATLAS_REPO_BACKLOG_VERIFICATION_V1",
-  "version": "1.0.0-pass-1o-backlog-family-verification",
+  "version": "1.0.1-pass-1o-backlog-family-verification-corrected",
   "owner": "pmp-atlas-repo-backlog-verification-pass1o-v1",
   "created_for": "Pass 1O / verify older 140-path backlog families one group at a time",
   "mode": "passive_verification_only",
@@ -19,7 +19,6 @@
       {"path":"pmp-home-single-v5.html","reason":"Exact fetch succeeded; old Home Single version."},
       {"path":"pmp-home-single-v8.html","reason":"Exact fetch succeeded; old Home Single version."},
       {"path":"pmp-home-single-v9.html","reason":"Exact fetch succeeded; old Home Single version."},
-      {"path":"pmp-home-single-v11.html","reason":"Exact fetch returned 404; do not classify as real."},
       {"path":"private-bug-memory-hub-v1.html","reason":"Exact fetch succeeded; old private bug hub shell, inspect-only."},
       {"path":"private-bug-memory-hub-v3.html","reason":"Exact fetch succeeded; old private bug hub shell, inspect-only."},
       {"path":"private-bug-memory-hub-v4.html","reason":"Exact fetch succeeded; old private bug hub shell, inspect-only."},
@@ -32,7 +31,7 @@
   "correction_note": {
     "path":"pmp-home-single-v11.html",
     "status":"FETCH_404_NOT_REAL_CURRENT_REPO_FILE",
-    "rule":"This entry appears in old backlog evidence but was not found. It should not be merged as legacy real; keep as unknown/not-real backlog note only."
+    "rule":"This entry appears in old backlog evidence but was not found. It must not be merged as legacy real; keep as not-real backlog evidence only."
   },
   "verified_missing_not_real_current_repo_files": {
     "pmp_app_v1_to_v21_family": [
@@ -61,6 +60,9 @@
     ],
     "private_bug_hub_missing_member": [
       "private-bug-memory-hub-v2.html"
+    ],
+    "home_family_missing_member": [
+      "pmp-home-single-v11.html"
     ]
   },
   "already_classified_and_reverified_samples": [
@@ -71,9 +73,9 @@
   ],
   "coverage_update": {
     "pass1n_known_classified_paths_estimate": 169,
-    "new_real_paths_to_merge_next": 15,
-    "not_real_or_missing_backlog_paths_checked": 71,
-    "best_available_known_classified_paths_after_next_merge": 184,
+    "new_real_paths_to_merge_next": 16,
+    "not_real_or_missing_backlog_paths_checked": 72,
+    "best_available_known_classified_paths_after_next_merge": 185,
     "whole_repo_percent_estimate_after_pass": "about 90 percent, not final"
   },
   "do_not_claim": [
@@ -83,5 +85,5 @@
     "not proof that all old 140 manifest paths were checked",
     "not permission to mount legacy or unknown files"
   ],
-  "next_best_move": "Pass 1P — merge Pass 1O real verified paths into main Atlas, remove pmp-home-single-v11.html from real legacy classification if present, keep all missing backlog paths non-boot/non-required, then proof."
+  "next_best_move": "Pass 1P — merge Pass 1O real verified paths into main Atlas, keep pmp-home-single-v11.html out of real legacy classification, keep all missing backlog paths non-boot/non-required, then proof."
 }
