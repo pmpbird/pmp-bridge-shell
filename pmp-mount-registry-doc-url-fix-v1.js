@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
-const V='1.3.0-pass1m-version-aligned-scan-fix';
-const REGISTRY_VERSION='1.3.7-pass1m-history-census-merged';
+const V='1.4.0-pass1o-version-aligned-scan-fix';
+const REGISTRY_VERSION='1.3.8-pass1o-backlog-merged';
 const OWNER='pmp-mount-registry-doc-url-fix-v1';
 const K={registry:'pmp_mount_registry_v1',receipt:'pmp_mount_registry_v1_receipt',snapshot:'pmp_mount_registry_live_snapshot_v1',missing:'pmp_mount_registry_missing_expected_v1'};
 const OPTIONAL_ROUTE=['pmp-route-guardian-current-loader-v14.html','pmp-current-reload-owner-v27.html'];
