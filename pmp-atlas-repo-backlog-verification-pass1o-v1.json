@@ -1,0 +1,87 @@
+{
+  "type": "PMP_ATLAS_REPO_BACKLOG_VERIFICATION_V1",
+  "version": "1.0.0-pass-1o-backlog-family-verification",
+  "owner": "pmp-atlas-repo-backlog-verification-pass1o-v1",
+  "created_for": "Pass 1O / verify older 140-path backlog families one group at a time",
+  "mode": "passive_verification_only",
+  "status": "BEST_AVAILABLE_EXACT_PATH_VERIFICATION_NOT_MAIN_ATLAS_MERGE",
+  "rule": "Only exact paths that GitHub fetch_file returned successfully are classified as real. 404 paths are not treated as real files and must not be mounted.",
+  "verified_real_to_classify": {
+    "EXTERNAL_TOOL_SURFACE": [
+      {"path":"pmp-latest.json","reason":"Exact fetch succeeded; latest app pointer/support JSON."}
+    ],
+    "LEGACY_INSPECT_ONLY": [
+      {"path":"pmp-home.html","reason":"Exact fetch succeeded; older home shell not current live route."},
+      {"path":"pmp-home-single-v1.html","reason":"Exact fetch succeeded; old Home Single version."},
+      {"path":"pmp-home-single-v2.html","reason":"Exact fetch succeeded; old Home Single version."},
+      {"path":"pmp-home-single-v3.html","reason":"Exact fetch succeeded; old Home Single version."},
+      {"path":"pmp-home-single-v4.html","reason":"Exact fetch succeeded; old Home Single version."},
+      {"path":"pmp-home-single-v5.html","reason":"Exact fetch succeeded; old Home Single version."},
+      {"path":"pmp-home-single-v8.html","reason":"Exact fetch succeeded; old Home Single version."},
+      {"path":"pmp-home-single-v9.html","reason":"Exact fetch succeeded; old Home Single version."},
+      {"path":"pmp-home-single-v11.html","reason":"Exact fetch returned 404; do not classify as real."},
+      {"path":"private-bug-memory-hub-v1.html","reason":"Exact fetch succeeded; old private bug hub shell, inspect-only."},
+      {"path":"private-bug-memory-hub-v3.html","reason":"Exact fetch succeeded; old private bug hub shell, inspect-only."},
+      {"path":"private-bug-memory-hub-v4.html","reason":"Exact fetch succeeded; old private bug hub shell, inspect-only."},
+      {"path":"private-bug-memory-hub-v5.html","reason":"Exact fetch succeeded; old private bug hub shell, inspect-only."},
+      {"path":"private-bug-memory-hub-v6.html","reason":"Exact fetch succeeded; old private bug hub shell, inspect-only."},
+      {"path":"private-bug-memory-hub-v8.html","reason":"Exact fetch succeeded; old private bug hub shell, inspect-only."},
+      {"path":"safe-writer-v13.html","reason":"Exact fetch succeeded; old Safe Writer version, inspect-only because v14 is current support surface."}
+    ]
+  },
+  "correction_note": {
+    "path":"pmp-home-single-v11.html",
+    "status":"FETCH_404_NOT_REAL_CURRENT_REPO_FILE",
+    "rule":"This entry appears in old backlog evidence but was not found. It should not be merged as legacy real; keep as unknown/not-real backlog note only."
+  },
+  "verified_missing_not_real_current_repo_files": {
+    "pmp_app_v1_to_v21_family": [
+      "pmp-app-v1.html","pmp-app-v2.html","pmp-app-v3.html","pmp-app-v4.html","pmp-app-v5.html","pmp-app-v6.html","pmp-app-v7.html","pmp-app-v8.html","pmp-app-v9.html","pmp-app-v10.html","pmp-app-v11.html","pmp-app-v12.html","pmp-app-v13.html","pmp-app-v14.html","pmp-app-v15.html","pmp-app-v16.html","pmp-app-v17.html","pmp-app-v18.html","pmp-app-v19.html","pmp-app-v20.html","pmp-app-v21.html"
+    ],
+    "current_clean_family": [
+      "pmp-current-clean-app.html","pmp-current-clean-app-v18.html","pmp-current-clean-app-v19.html","pmp-current-clean-app-v20.html","pmp-current-clean-app-v21.html"
+    ],
+    "launcher_wrapper_family": [
+      "pmp-permanent-loader.html","pmp-permanent-home-launcher.html","pmp-permanent-home-launcher-v2.html","pmp-forever-launcher.html","pmp-current-wrapper.html","pmp-current-app-wrapper.html","pmp-auto-update-router.html"
+    ],
+    "safe_writer_older_family": [
+      "safe-writer-v1.html","safe-writer-v2.html","safe-writer-v3.html","safe-writer-v4.html","safe-writer-v5.html","safe-writer-v6.html","safe-writer-v7.html","safe-writer-v8.html","safe-writer-v9.html","safe-writer-v10.html","safe-writer-v11.html","safe-writer-v12.html"
+    ],
+    "code_safety_older_family": [
+      "code-safety-v1.html","code-safety-v2.html","code-safety-v3.html","code-safety-v4.html","code-safety-v5.html","code-safety-v6.html","code-safety-v7.html","code-safety-v8.html","code-safety-v9.html","code-safety-v10.html","code-safety-v11.html","code-safety-v12.html"
+    ],
+    "private_writer_and_safety_utility_family": [
+      "private-github-writer.html","private-github-writer-v2.html","standalone-private-github-writer.html","gated-private-writer.html","direct-safety-shortcut.html","emergency-restore.html","hard-fresh-cleaner.html","hub.html","private-window-bug-memory.html"
+    ],
+    "root_current_aliases": [
+      "latest.html","current.html","pmp-current.html"
+    ],
+    "public_inventory_shell_expected_missing_family": [
+      "pmp-app-lossless-inventory-v1.0.0.json","pmp-app-page-inventory-v1.0.0.json","pmp-tool-index-v1.0.0.json","pmp-room-shell-v1.0.0.css","pmp-room-shell-v1.0.0.js"
+    ],
+    "private_bug_hub_missing_member": [
+      "private-bug-memory-hub-v2.html"
+    ]
+  },
+  "already_classified_and_reverified_samples": [
+    "pmp-home-single-v7.html",
+    "pmp-home-single-v10.html",
+    "pmp-home-single-v12.html",
+    "pmp-home-single-v13.html"
+  ],
+  "coverage_update": {
+    "pass1n_known_classified_paths_estimate": 169,
+    "new_real_paths_to_merge_next": 15,
+    "not_real_or_missing_backlog_paths_checked": 71,
+    "best_available_known_classified_paths_after_next_merge": 184,
+    "whole_repo_percent_estimate_after_pass": "about 90 percent, not final"
+  },
+  "do_not_claim": [
+    "not complete repo tree certified",
+    "not main Atlas merge yet",
+    "not runtime behavior change",
+    "not proof that all old 140 manifest paths were checked",
+    "not permission to mount legacy or unknown files"
+  ],
+  "next_best_move": "Pass 1P — merge Pass 1O real verified paths into main Atlas, remove pmp-home-single-v11.html from real legacy classification if present, keep all missing backlog paths non-boot/non-required, then proof."
+}
