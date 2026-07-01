@@ -1,0 +1,99 @@
+{
+  "type": "PMP_ACTIVE_APP_FILE_SWEEP_PASS1T_V1",
+  "version": "1.0.0-pass-1t-active-app-file-sweep-before-freeze",
+  "owner": "pmp-active-app-file-sweep-pass1t-v1",
+  "created_for": "Pass 1T / Active-App File Sweep Before Freeze",
+  "mode": "passive_active_reference_sweep_only",
+  "status": "FREEZE_BLOCKED_ACTIVE_REFERENCES_FOUND",
+  "rule": "Only current active route references were inspected. This is not a whole-repo history pass and not a runtime behavior change.",
+  "active_files_inspected": [
+    "pmp-app-current.html",
+    "pmp-current-map-v9.json",
+    "pmp-route-guardian-current-loader-v14.html",
+    "pmp-current-reload-owner-v27.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v24.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+    "pmp-home-single-v6.html"
+  ],
+  "active_reference_chain_confirmed": [
+    "pmp-app-current.html -> pmp-current-map-v9.json",
+    "pmp-current-map-v9.json -> pmp-route-guardian-current-loader-v14.html",
+    "pmp-route-guardian-current-loader-v14.html -> pmp-current-reload-owner-v27.html",
+    "pmp-current-reload-owner-v27.html -> pmp-current-inner-cleanbug-rgcontrols-v24.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v24.html -> pmp-current-inner-cleanbug-rgcontrols-v23.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v23.html -> pmp-current-inner-cleanbug-rgcontrols-v4.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v4.html -> pmp-current-inner-cleanbug-rgcontrols-v3.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v3.html -> pmp-home-single-v6.html"
+  ],
+  "active_references_missing_from_main_atlas_1_3_9": {
+    "ACTIVE_CURRENT_APP_needed": [
+      "pmp-crd-prestyle-v1.js",
+      "pmp-helper-problem-memory-v1.js",
+      "pmp-helper-problem-type-seeds-v1.js",
+      "pmp-helper-problem-type-only-v1.js",
+      "pmp-helper-problem-display-sync-v1.js",
+      "pmp-hidden-safe-writer-surface-cleaner-v1.js",
+      "pmp-bug-lab-secret-control-owner-v1.js",
+      "pmp-mold-to-app-flow-owner-v1.js",
+      "pmp-route-guardian-last-good-clean-v1.js"
+    ],
+    "reason": "These are directly loaded by pmp-current-inner-cleanbug-rgcontrols-v23.html in the current active wrapper path, but they are not present in the 1.3.9 main Atlas classification list."
+  },
+  "active_references_already_classified_or_expected": {
+    "outer_door_and_map": [
+      "pmp-active-page-tracker-v1.js",
+      "pmp-launcher-reload-current-bridge-v1.js",
+      "pmp-current-screen-pointer-v1.js",
+      "pmp-launcher-panel-reload-button-v1.js",
+      "pmp-reload-current-final-wire-v1.js",
+      "pmp-current-map-v9.json",
+      "pmp-route-guardian-current-loader-v14.html",
+      "pmp-current-reload-owner-v27.html"
+    ],
+    "v24_boot": [
+      "pmp-app-orchestrator-v1.js",
+      "pmp-mount-registry-v1.js",
+      "pmp-mount-registry-doc-url-fix-v1.js",
+      "pmp-pass1r-version-aligner-v1.js",
+      "pmp-continuous-run-bank-order-frame-loader-v1.js",
+      "pmp-current-inner-cleanbug-rgcontrols-v23.html"
+    ],
+    "v4_v3_home_core": [
+      "pmp-phase1-migrate-v1.js",
+      "pmp-private-backup-lite-v1.js",
+      "pmp-bank-scoped-test-data-cleaner-v1.js",
+      "pmp-bank-mode1-hide-unchecked-v1.js",
+      "pmp-continuous-run-bank-stable-status-owner-v1.js",
+      "pmp-layout-guard-v1.js",
+      "pmp-source-text-reader-level3-v1.js",
+      "pmp-source-reference-gate-level4-v1.js",
+      "pmp-request-packet-guard-v1.js",
+      "pmp-top-lossless-injector.js",
+      "pmp-resident-lossless-readiness.js",
+      "pmp-current-truth-face.js",
+      "pmp-control-room-cleanup-v1.js",
+      "safe-writer-v14.html",
+      "code-safety-v13.html"
+    ]
+  },
+  "freeze_decision": {
+    "final_freeze_allowed_now": false,
+    "reason": "The active sweep found direct active wrapper references missing from the main Atlas. A final freeze would be premature.",
+    "required_before_freeze": [
+      "Merge the 9 missing active references into main Atlas as ACTIVE_CURRENT_APP or correct active bucket.",
+      "Refresh v24 cache token if registry version changes.",
+      "Run Copy Smoke Test Proof again.",
+      "Require mount_registry_version updated, missing_expected_count 0, blank_screen_warning none_obvious, Bank/CR scoped order issue 0."
+    ]
+  },
+  "do_not_claim": [
+    "not active path frozen",
+    "not complete repo certified",
+    "not runtime behavior change",
+    "not permission to mount any legacy files",
+    "not proof of the 9 missing files until exact-fetch/merge/proof pass completes"
+  ],
+  "next_best_move": "Pass 1U — exact-fetch and merge the 9 active-wrapper references into main Atlas, refresh v24, then proof. After that, create the final Active Path Freeze Manifest."
+}
