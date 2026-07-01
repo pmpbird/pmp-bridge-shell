@@ -1,12 +1,12 @@
 (()=>{
 'use strict';
-const V='1.0.2-visible-boot-delay-proof';
+const V='1.0.3-number-harmony-boot-proof';
 const OWNER='pmp-app-orchestrator-v1';
 const KEYS={receipt:'pmp_app_orchestrator_v1_receipt',status:'pmp_app_orchestrator_boot_status_v1',mounts:'pmp_app_orchestrator_mount_registry_v1_preview'};
 const EXPECTED={map:'pmp-current-map-v9.json',current:'pmp-current-reload-owner-v27.html',diagnostic:'pmp-bank-live-owner-anchor-diagnostic-v3.html'};
 const SEL={bankTab:'[data-tab="bank"]',bankScreen:'#bank',continuousRun:'[data-open-bank="continuous_run"]',runTools:'[data-run-bank-tools]',levelStack:'[data-continuous-run-level-ui-scope-v1]',level30:'[data-level30-final-seal]',level30b:'[data-resident-l30b-auto-gate]',residentUse:'[data-resident-use-mode-v1]',requestIntake:'[data-request-intake-v1]'};
 const STRIP_ID='pmpAppOrchestratorBootStatusStripV1';
-const STRIP_HOLD_MS=2200;
+const STRIP_HOLD_MS=1800;
 let stripDismissed=false,last=null;
 function T(){try{return window.top||window}catch(e){return window}}
 function now(){return new Date().toISOString()}
@@ -26,8 +26,8 @@ function ensureStrip(){if(stripDismissed)return null;removeLegacyTopStrip();let 
 function paint(){let x=ensureStrip();if(!x)return;let span=x.querySelector('span')||x;span.innerHTML=esc('App Orchestrator working…')}
 function attachDismiss(){try{let f=document.getElementById('app');if(f&&!f.__pmpAppOrchestratorDismissBound){f.__pmpAppOrchestratorDismissBound=true;f.addEventListener('load',()=>{let src=String(f.getAttribute('src')||f.src||'');if(/pmp-current-inner-cleanbug-rgcontrols-v23\.html/i.test(src))setTimeout(()=>dismissStrip('inner_app_frame_loaded'),80)},false)}}catch(e){}setTimeout(()=>dismissStrip('visible_boot_delay_timeout_'+STRIP_HOLD_MS+'ms'),STRIP_HOLD_MS)}
 async function readMap(){try{let r=await fetch(EXPECTED.map+'?app-orchestrator-passive='+Date.now(),{cache:'no-store',headers:{'Cache-Control':'no-cache'}});if(!r.ok)throw Error('map fetch '+r.status);let j=await r.json();return{ok:true,map:j,current_app:j&&j.current_app||null,route_guardian_loader:j&&j.route_guardian_loader||null,updated_at:j&&j.updated_at||null}}catch(e){return{ok:false,error:String(e&&e.message||e)}}}
-async function run(reason){let snap=snapshot();let map=await readMap();let receipt={type:'PMP_APP_ORCHESTRATOR_V1_RECEIPT',version:V,owner:OWNER,at:now(),reason:reason||'scan',mode:'passive_boot_status_proof_only',visual_mode:'visible_boot_delay_then_hidden',strip_hold_ms:STRIP_HOLD_MS,map,summary:snap.status,safe_claim:'App Orchestrator loaded and observed route/mount status without taking ownership.',do_not_claim:['not source acceptance','not final certification','not frozen','not Bank rebuild','not diagnostics tab install'],keys:KEYS};last=receipt;put(KEYS.status,snap);put(KEYS.mounts,mountRegistry(snap));put(KEYS.receipt,receipt);paint();return receipt}
-function schedule(){[0,80,250,700,1400,2100].forEach(t=>setTimeout(()=>run('scheduled_'+t),t));let until=Date.now()+9000;let fast=setInterval(()=>{run('readiness_loop');if(Date.now()>until)clearInterval(fast)},1500);setInterval(()=>run('slow_watch'),10000)}
-window.PMPAppOrchestratorV1={version:V,owner:OWNER,mode:'passive_boot_status_proof_only',visual_mode:'visible_boot_delay_then_hidden',strip_hold_ms:STRIP_HOLD_MS,keys:KEYS,scan:snapshot,run,dismissStrip,getLastReceipt:()=>last,rule:'No ownership takeover. No Bank rebuild. No level reorder. No Resident change. No map change. Visual proof is held briefly, then hidden.'};
+async function run(reason){let snap=snapshot();let map=await readMap();let receipt={type:'PMP_APP_ORCHESTRATOR_V1_RECEIPT',version:V,owner:OWNER,at:now(),reason:reason||'scan',mode:'passive_boot_status_proof_only',visual_mode:'visible_boot_delay_then_hidden',strip_hold_ms:STRIP_HOLD_MS,number_harmony:'prefer flexible app timings whose digits reduce to 3, 6, or 9 when function and safety allow',map,summary:snap.status,safe_claim:'App Orchestrator loaded and observed route/mount status without taking ownership.',do_not_claim:['not source acceptance','not final certification','not frozen','not Bank rebuild','not diagnostics tab install'],keys:KEYS};last=receipt;put(KEYS.status,snap);put(KEYS.mounts,mountRegistry(snap));put(KEYS.receipt,receipt);paint();return receipt}
+function schedule(){[0,90,270,630,990,1800].forEach(t=>setTimeout(()=>run('scheduled_'+t),t));let until=Date.now()+9000;let fast=setInterval(()=>{run('readiness_loop');if(Date.now()>until)clearInterval(fast)},1500);setInterval(()=>run('slow_watch'),10000)}
+window.PMPAppOrchestratorV1={version:V,owner:OWNER,mode:'passive_boot_status_proof_only',visual_mode:'visible_boot_delay_then_hidden',strip_hold_ms:STRIP_HOLD_MS,keys:KEYS,scan:snapshot,run,dismissStrip,getLastReceipt:()=>last,numberHarmony:'Flexible app timings prefer digital roots 3, 6, or 9. Function, safety, and platform constraints override number preference.',rule:'No ownership takeover. No Bank rebuild. No level reorder. No Resident change. No map change. Visual proof is held briefly, then hidden.'};
 try{ensureStrip();attachDismiss();schedule()}catch(e){try{put(KEYS.receipt,{type:'PMP_APP_ORCHESTRATOR_V1_RECEIPT',version:V,owner:OWNER,at:now(),status:'ERROR',error:String(e&&e.message||e)})}catch(x){}}
 })();
