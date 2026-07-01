@@ -1,0 +1,73 @@
+{
+  "type": "PMP_ATLAS_EXPANSION_V1",
+  "version": "1.0.0-resident-support-owners",
+  "owner": "pmp-atlas-expansion-resident-support-v1",
+  "created_for": "Pass 1E.3 / Resident support owners",
+  "mode": "passive_atlas_expansion_only",
+  "rule": "Adds Resident support owners so Resident health, app truth, bug memory, repair request, and mirror surfaces are tracked. No mount change, no app patching, no deletion, no storage overwrite.",
+  "parent_atlas": "pmp-mount-registry-v1.js",
+  "resident_support_owners": [
+    {
+      "path": "resident.html",
+      "bucket": "DYNAMIC_CURRENT_APP",
+      "owner": "Resident Intelligence Owner",
+      "parent": "Resident Owner / dynamic Resident surface",
+      "selectors": ["#autonomy", "#askBox", "#askOut"],
+      "policy": "guide, inspect, diagnose, and prepare support; cannot commit or restore"
+    },
+    {
+      "path": "resident.html",
+      "bucket": "DYNAMIC_CURRENT_APP",
+      "owner": "Resident Health Snapshot Owner",
+      "parent": "Resident Intelligence Owner",
+      "selectors": ["#healthOut"],
+      "policy": "whole-app health snapshot and safety watch only"
+    },
+    {
+      "path": "resident.html",
+      "bucket": "DYNAMIC_CURRENT_APP",
+      "owner": "Resident App Truth Scanner Owner",
+      "parent": "Resident Intelligence Owner",
+      "selectors": ["#bridgeOut"],
+      "policy": "App Truth / Bridge contract scanner; proof only, no direct patching"
+    },
+    {
+      "path": "resident.html",
+      "bucket": "PROTECTED_STORAGE_OWNER",
+      "owner": "Resident Bug Memory Writer Owner",
+      "parent": "Resident Intelligence Owner",
+      "storage_keys": ["pmp_bug_memory_v1"],
+      "policy": "writes Resident bug memory entries only when a live failure is proven"
+    },
+    {
+      "path": "resident.html",
+      "bucket": "DYNAMIC_CURRENT_APP",
+      "owner": "Resident Repair Request Builder Owner",
+      "parent": "Resident Intelligence Owner",
+      "policy": "builds Safe Writer repair request packet only; does not repair directly"
+    },
+    {
+      "path": "resident.html",
+      "bucket": "DYNAMIC_CURRENT_APP",
+      "owner": "Resident Mirror Owner",
+      "parent": "Resident Intelligence Owner",
+      "selectors": ["#mirror"],
+      "policy": "same-origin live app mirror for inspection; must not change the real app"
+    },
+    {
+      "path": "resident.html",
+      "bucket": "PROTECTED_STORAGE_OWNER",
+      "owner": "Resident Thread / Report Storage Owner",
+      "parent": "Resident Intelligence Owner",
+      "storage_keys": ["pmp_resident_thread_v1", "pmp_resident_report_v1"],
+      "policy": "stores Resident thread and report text only"
+    }
+  ],
+  "do_not_claim": [
+    "not yet merged into pmp-mount-registry-v1.js runtime registry",
+    "not enforcement",
+    "not mount behavior",
+    "not whole-repo exhaustive",
+    "not deletion proof"
+  ]
+}
