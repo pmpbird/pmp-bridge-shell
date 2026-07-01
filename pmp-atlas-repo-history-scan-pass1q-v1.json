@@ -1,0 +1,71 @@
+{
+  "type": "PMP_ATLAS_REPO_HISTORY_SCAN_V1",
+  "version": "1.0.0-pass-1q-history-scan-extra-files",
+  "owner": "pmp-atlas-repo-history-scan-pass1q-v1",
+  "created_for": "Pass 1Q / search remaining repo history for unverified files outside old 140-path backlog",
+  "mode": "passive_history_scan_only",
+  "status": "BEST_AVAILABLE_COMMIT_HISTORY_SCAN_NOT_MAIN_ATLAS_MERGE",
+  "rule": "This pass records filenames discovered from commit history and commit file patches. It does not change app behavior and does not make any discovered file boot-required.",
+  "search_basis": [
+    "GitHub commit search: Add",
+    "GitHub commit search: test room",
+    "GitHub commit search: Build",
+    "Fetched commits for Continuous Run Bank test rooms v13-v17",
+    "Fetched commits for Snapshot Test Rooms v1-v4",
+    "Fetched commits for whole-app test/auditor/route scanner files",
+    "Fetched commit for Control Room Route Guardian test copy"
+  ],
+  "newly_found_to_classify_next": {
+    "EXTERNAL_TOOL_SURFACE": [
+      {"path":"pmp-bank-live-owner-anchor-diagnostic-v2.html","reason":"Commit history adds Bank Diagnostic v2 test room; external diagnostic surface, not app boot."},
+      {"path":"pmp-snapshot-test-room-v1.html","reason":"Commit history adds separate Snapshot Test Room v1; external test room, not app boot."},
+      {"path":"pmp-snapshot-test-room-v2.html","reason":"Commit history adds Snapshot Test Room v2; external test room, not app boot."},
+      {"path":"pmp-snapshot-test-room-v3.html","reason":"Commit history adds Snapshot Test Room v3; external test room, not app boot."},
+      {"path":"pmp-snapshot-test-room-v4.html","reason":"Commit history adds one-button whole-app snapshot test room v4; external test room, not app boot."},
+      {"path":"pmp-one-click-whole-app-test-v1.html","reason":"Commit history adds one-click whole app test page; external test surface, not app boot."},
+      {"path":"pmp-app-route-inventory-scanner-v1.js","reason":"Commit history adds app route inventory scanner; external/testing support script."},
+      {"path":"pmp-whole-app-test-manifest-v1.js","reason":"Commit history adds whole-app test manifest; testing support script."},
+      {"path":"pmp-whole-app-coverage-auditor-v1.js","reason":"Commit history adds whole-app coverage auditor; testing support script."},
+      {"path":"pmp-snapshot-visibility-test-harness-v1.js","reason":"Commit history adds snapshot visibility test harness; testing support script."},
+      {"path":"pmp-page-snapshot-contract-v1.js","reason":"Commit history adds page snapshot contract; snapshot support script."},
+      {"path":"pmp-page-hidden-state-reveal-contract-v1.js","reason":"Referenced by Snapshot Test Rooms and Build history as page hidden-state reveal contract; verify exact current file before merge if not already present."},
+      {"path":"pmp-snapshot-verification-gate-v1.js","reason":"Referenced by Snapshot Test Rooms and Build history as snapshot verification gate; verify exact current file before merge if not already present."},
+      {"path":"pmp-snapshot-verification-gate-bridge-v1.js","reason":"Referenced by Snapshot Test Rooms and Build history as verification bridge; verify exact current file before merge if not already present."},
+      {"path":"pmp-reload-perfect-restore-gate-v1.js","reason":"Referenced by Snapshot Test Rooms and Build history as reload perfect-restore gate; verify exact current file before merge if not already present."},
+      {"path":"pmp-home-single-v6-route-guardian-control-test.html","reason":"Commit history adds Control Room Route Guardian test copy; external test wrapper, not app boot."}
+    ],
+    "LEGACY_INSPECT_ONLY": [
+      {"path":"pmp-current-reload-owner-v25.html","reason":"Commit history shows older reload owner v25; current live route uses v27, so v25 is legacy inspect-only if still present."}
+    ],
+    "HISTORY_DELETED_DO_NOT_MOUNT": [
+      {"path":"pmp-continuous-run-bank-test-room-v13.html","reason":"Commit history added this test room, later commit deletes old v13; history-only, not current repo truth."},
+      {"path":"pmp-continuous-run-bank-test-room-v14.html","reason":"Commit history added this test room, later commit deletes old v14; history-only, not current repo truth."},
+      {"path":"pmp-continuous-run-bank-test-room-v15.html","reason":"Commit history added this test room, later commit deletes old v15; history-only, not current repo truth."}
+    ],
+    "NEEDS_EXACT_CURRENT_FILENAME_VERIFICATION": [
+      {"label":"Continuous Run Bank cause map test room v16","reason":"Commit history proves a v16 cause-map test room existed, but exact current filename was not safely extracted for merge in this pass."},
+      {"label":"CR Bank ZIP export test room v17","reason":"Commit history proves a v17 ZIP test room existed, but exact current filename was not safely extracted for merge in this pass."}
+    ]
+  },
+  "do_not_merge_yet": [
+    "Anything marked HISTORY_DELETED_DO_NOT_MOUNT",
+    "Anything marked NEEDS_EXACT_CURRENT_FILENAME_VERIFICATION",
+    "Any file that returns 404 on exact fetch_file check",
+    "Any file not proven current or explicitly classified as legacy/external"
+  ],
+  "coverage_update": {
+    "new_merge_candidates_from_history": 17,
+    "history_deleted_do_not_mount": 3,
+    "needs_exact_filename_verification": 2,
+    "expected_known_classified_paths_after_next_safe_merge": "about 202, if exact fetch confirms candidates",
+    "whole_repo_percent_estimate_after_pass": "about 92 percent, not final"
+  },
+  "do_not_claim": [
+    "not complete repo tree certified",
+    "not main Atlas merge yet",
+    "not runtime behavior change",
+    "not exact verification of every Build/Add commit",
+    "not permission to mount history-deleted files"
+  ],
+  "next_best_move": "Pass 1R — exact-fetch the Pass 1Q merge candidates, merge only fetch-confirmed current files into main Atlas, keep history-deleted and unverified candidates non-boot/non-required, then proof."
+}
