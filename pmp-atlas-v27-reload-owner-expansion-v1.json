@@ -1,0 +1,73 @@
+{
+  "type": "PMP_ATLAS_EXPANSION_V1",
+  "version": "1.0.0-v27-reload-owner-expansion",
+  "owner": "pmp-atlas-v27-reload-owner-expansion-v1",
+  "created_for": "Pass 1D / Atlas expansion after Pass 1C",
+  "mode": "passive_atlas_expansion_only",
+  "rule": "Classifies active v27 child scripts found after the Atlas name lock. No app behavior change, no mount change, no deletion, no storage write.",
+  "parent_atlas": "pmp-mount-registry-v1.js",
+  "parent_context": {
+    "current_app_map": "pmp-current-map-v9.json",
+    "current_app_path": "pmp-current-reload-owner-v27.html",
+    "active_parent_owner": "Reload Owner"
+  },
+  "files_to_add": [
+    {
+      "path": "pmp-current-screen-pointer-v1.js",
+      "bucket": "ACTIVE_CURRENT_APP",
+      "group": "v27",
+      "owner": "Current Screen Pointer Owner",
+      "parent": "reload_owner_v27",
+      "policy": "remembers current screen and supports Reload Current restoration; does not own app sections",
+      "storage_keys": [
+        "pmp_current_screen_pointer_v1",
+        "pmp_reload_current_live_snapshot_v12",
+        "pmp_reload_current_live_snapshot_v12_last_kept"
+      ]
+    },
+    {
+      "path": "pmp-reload-world-from-map-v1.js",
+      "bucket": "ACTIVE_CURRENT_APP",
+      "group": "v27",
+      "owner": "Reload World From Map Owner",
+      "parent": "reload_owner_v27 / launcher reload",
+      "policy": "re-fetches current map and reloads current app to World; does not define app source of truth",
+      "selectors": [
+        "[data-launcher-reload-current]"
+      ]
+    }
+  ],
+  "slot_entries_to_merge_later": [
+    {
+      "id": "current_screen_pointer_owner",
+      "bucket": "ACTIVE_CURRENT_APP",
+      "owner": "Current Screen Pointer Owner",
+      "parent": "reload_owner_v27",
+      "selectors": [],
+      "files": [
+        "pmp-current-screen-pointer-v1.js"
+      ],
+      "policy": "remembers current screen and supports Reload Current restoration; does not own app sections"
+    },
+    {
+      "id": "reload_world_from_map_owner",
+      "bucket": "ACTIVE_CURRENT_APP",
+      "owner": "Reload World From Map Owner",
+      "parent": "reload_owner_v27 / launcher reload",
+      "selectors": [
+        "[data-launcher-reload-current]"
+      ],
+      "files": [
+        "pmp-reload-world-from-map-v1.js"
+      ],
+      "policy": "re-fetches current map and reloads current app to World; does not define app source of truth"
+    }
+  ],
+  "do_not_claim": [
+    "not yet merged into pmp-mount-registry-v1.js runtime registry",
+    "not enforcement",
+    "not mount behavior",
+    "not whole-repo exhaustive",
+    "not deletion proof"
+  ]
+}
