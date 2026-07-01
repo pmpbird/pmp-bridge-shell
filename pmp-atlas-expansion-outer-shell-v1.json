@@ -1,0 +1,66 @@
+{
+  "type": "PMP_ATLAS_EXPANSION_V1",
+  "version": "1.0.0-outer-home-screen-shell",
+  "owner": "pmp-atlas-expansion-outer-shell-v1",
+  "created_for": "Pass 1G / Outer Home Screen shell and live wrappers",
+  "mode": "passive_atlas_expansion_only",
+  "rule": "Classifies the live outer Home Screen install shell and its helper scripts. No app behavior change, no route change, no deletion, no storage overwrite.",
+  "parent_atlas": "pmp-mount-registry-v1.js",
+  "outer_shell_owners": [
+    {
+      "path": "pmp-app-current.html",
+      "bucket": "ACTIVE_CURRENT_APP",
+      "owner": "Home Screen Install Shell / Outer Door",
+      "parent": "browser/home-screen-entry",
+      "selectors": ["#app", "#status", "#msg"],
+      "policy": "outer installed shell; loads current map and opens Route Guardian loader; must not define app identity or core logic"
+    },
+    {
+      "path": "pmp-active-page-tracker-v1.js",
+      "bucket": "ACTIVE_CURRENT_APP",
+      "owner": "Outer Active Page Tracker Owner",
+      "parent": "Home Screen Install Shell / Outer Door",
+      "policy": "tracks active page for outer shell only; does not own route or app sections"
+    },
+    {
+      "path": "pmp-launcher-panel-reload-button-v1.js",
+      "bucket": "ACTIVE_CURRENT_APP",
+      "owner": "Outer Launcher Panel Reload Button Owner",
+      "parent": "Home Screen Install Shell / Outer Door",
+      "policy": "outer launcher reload button helper only; does not own app route"
+    },
+    {
+      "path": "pmp-reload-current-final-wire-v1.js",
+      "bucket": "ACTIVE_CURRENT_APP",
+      "owner": "Outer Reload Current Final Wire Owner",
+      "parent": "Home Screen Install Shell / Outer Door",
+      "policy": "outer reload-current final wiring helper only; must follow current map and Route Guardian"
+    },
+    {
+      "path": "pmp-current-map.json",
+      "bucket": "LEGACY_INSPECT_ONLY",
+      "owner": "Legacy Current Map Fallback",
+      "parent": "Home Screen Install Shell / Outer Door",
+      "policy": "fallback map path only; current truth remains pmp-current-map-v9.json"
+    },
+    {
+      "path": "pmp-route-guardian-current-loader-v9.html",
+      "bucket": "LEGACY_INSPECT_ONLY",
+      "owner": "Legacy Route Guardian Fallback v9",
+      "parent": "Home Screen Install Shell / Outer Door",
+      "policy": "fallback loader only; current truth remains pmp-route-guardian-current-loader-v14.html"
+    }
+  ],
+  "merge_later": {
+    "main_registry_target_version": "1.3.1-outer-shell-classified",
+    "remove_from_unsafe_legacy_if_present": ["pmp-app-current.html"],
+    "add_active_group": "outer_shell"
+  },
+  "do_not_claim": [
+    "not yet merged into pmp-mount-registry-v1.js runtime registry",
+    "not enforcement",
+    "not route change",
+    "not whole-repo exhaustive",
+    "not deletion proof"
+  ]
+}
