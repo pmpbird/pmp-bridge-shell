@@ -1,0 +1,112 @@
+{
+  "type": "PMP_REFERENCE_GRAPH_SWEEP_PASS1V_V1",
+  "version": "1.0.0-pass-1v-reference-graph-sweep",
+  "owner": "pmp-reference-graph-sweep-pass1v-v1",
+  "created_for": "Pass 1V / Reference Graph Sweep",
+  "mode": "passive_reference_graph_only",
+  "status": "REFERENCE_GRAPH_FOUND_UNMERGED_SUPPORT_SURFACE",
+  "search_method": {
+    "code_search_literal_result": "LIMITED_EMPTY_FOR_ONE_LINE_HTML_PATTERNS",
+    "used_instead": [
+      "current active path files",
+      "current map v9",
+      "route-code-map commit evidence",
+      "recent merged PR changed-file lists",
+      "PR file patches for referenced files"
+    ],
+    "reason": "Literal GitHub code search for script src / iframe src / src= returned empty, so the reliable graph was built from known reference-bearing files and PR changed-file lists."
+  },
+  "current_active_path_result": {
+    "status": "CLEAN_AFTER_PASS_1U",
+    "current_map_v9_now_points_to": [
+      "pmp-route-guardian-current-loader-v14.html",
+      "pmp-current-reload-owner-v27.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v23.html as fallback_app"
+    ],
+    "direct_active_wrapper_gap_found": 0,
+    "note": "Pass 1U merged the 9 direct active-wrapper references found by Pass 1T. No new current active boot reference was found in this sweep."
+  },
+  "new_unmerged_reference_surface": {
+    "name": "Automated Plan surface",
+    "source": [
+      "PR 34: Add free universal Automated Plan foundation",
+      "PR 35: Add event-driven Automated Plan controller"
+    ],
+    "current_active_boot_status": "NOT_CURRENT_ACTIVE_BOOT_IN_CURRENT_MAP_V9",
+    "why_not_current_boot": "Current pmp-current-map-v9.json no longer points current_app to pmp-current-inner-cleanbug-rgcontrols-v6.html; it points current_app to pmp-current-reload-owner-v27.html.",
+    "but_still_real_repo_surface": true,
+    "referenced_files_to_merge_later": {
+      "LEGACY_INSPECT_ONLY": [
+        "pmp-current-inner-cleanbug-rgcontrols-v6.html"
+      ],
+      "EXTERNAL_TOOL_SURFACE": [
+        "pmp-automated-plan-room-v1.js",
+        "pmp-automated-plan-native-match-v1.js",
+        "automation/state/active-plan.json",
+        "automation/state/controller-status.json",
+        "automation/state/usage-ledger.json",
+        "automation/engine/v1/engine-policy.json",
+        "automation/engine/v1/universal-contract.json",
+        "automation/controller/v1/controller-contract.json",
+        "automation/controller/v1/controller.py",
+        "automation/plans/packet-01-5.v1.json",
+        ".github/workflows/automated_plan_foundation.yml",
+        ".github/workflows/automated_plan_controller.yml",
+        ".github/workflows/automated_plan_controller_ci.yml",
+        "audit/Automated_Plan_Foundation_Status_v1.md",
+        "audit/Automated_Plan_Controller_Status_v1.md",
+        "tools/test_automated_plan_real_app_v1.mjs",
+        "tools/verify_automated_plan_foundation_v1.py",
+        "tools/verify_automated_plan_universal_contract_v1.py",
+        "tools/verify_automated_plan_visual_match_v1.py",
+        "tools/verify_automated_plan_controller_v1.py",
+        "tools/test_automated_plan_controller_v1.py",
+        "tools/test_automated_plan_controller_workflow_v1.py",
+        "tools/test_automated_plan_controller_container_v1.py",
+        "tools/test_automated_plan_controller_errors_v1.py"
+      ]
+    },
+    "remote_or_branch_reference_not_to_merge_as_file": [
+      "https://raw.githubusercontent.com/pmpbird/pmp-bridge-shell/automation-runtime/automation/runtime/status.json"
+    ]
+  },
+  "evidence_summary": {
+    "current_map_v9_current_app": "pmp-current-reload-owner-v27.html",
+    "pr34_old_map_patch_current_app": "pmp-current-inner-cleanbug-rgcontrols-v6.html",
+    "pr34_v6_scripts": [
+      "pmp-automated-plan-room-v1.js",
+      "pmp-automated-plan-native-match-v1.js"
+    ],
+    "automated_plan_room_fetches": [
+      "automation/state/active-plan.json",
+      "automation/engine/v1/engine-policy.json",
+      "automation/state/controller-status.json",
+      "runtime_status_url from controller-status.json"
+    ],
+    "pr35_controller_support": [
+      "automation/controller/v1/controller.py",
+      ".github/workflows/automated_plan_controller.yml",
+      "automation/state/controller-status.json"
+    ]
+  },
+  "merge_rule_for_next_pass": "Only merge exact current repo files. Keep pmp-current-inner-cleanbug-rgcontrols-v6.html legacy unless the current map again points to it. Keep automation runtime branch URL as an external reference only, not a main-branch file.",
+  "recommended_next_pass": "Pass 1W — exact-fetch the Automated Plan surface files from Pass 1V, merge confirmed files into Atlas as external/legacy support, then proof if the main registry changes.",
+  "future_better_search_method": {
+    "name": "Reference Graph + PR Changed-File Sweep",
+    "steps": [
+      "1. Read current map and active wrapper chain first.",
+      "2. Extract direct references from fetched active files.",
+      "3. Read known reference manifests: route-code map, inventory manifest, update ledgers.",
+      "4. List changed filenames from recent merged PRs and classify files by whether current map/path still reaches them.",
+      "5. Only then do commit-history search for leftovers."
+    ],
+    "why": "This avoids discovering one forgotten family per pass and catches recent merged support surfaces more directly than commit-message searching."
+  },
+  "do_not_claim": [
+    "not complete repo tree certified",
+    "not current active path freeze yet",
+    "not runtime behavior change",
+    "not proof Automated Plan is current active boot",
+    "not permission to mount legacy v6"
+  ]
+}
