@@ -2,10 +2,10 @@
   "type": "PMP_CURRENT_APP_MAP",
   "app_name": "PMP Current",
   "app_version": "PMP-CURRENT-1",
-  "updated_at": "2026-07-02T16:58:00Z",
+  "updated_at": "2026-07-02T17:05:00Z",
   "route_guardian_loader": {
-    "path": "pmp-route-guardian-current-loader-v14.html",
-    "cache_key": "pmp-route-guardian-current-loader-v14-pass1f-atlas-20260701B",
+    "path": "pmp-route-guardian-current-loader-v15.html",
+    "cache_key": "pmp-route-guardian-current-loader-v15-active-deep-atlas-20260702A",
     "status": "current"
   },
   "current_app": {
