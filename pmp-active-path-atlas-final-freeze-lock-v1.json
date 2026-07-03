@@ -1,0 +1,56 @@
+{
+  "type": "PMP_ACTIVE_PATH_ATLAS_FINAL_FREEZE_LOCK_V1",
+  "lock_id": "active-path-atlas-final-freeze-lock-1.5.4",
+  "created_at": "2026-07-03T02:05:15Z",
+  "created_at_user_local": "2026-07-02T19:05:15-07:00",
+  "repo": "pmpbird/pmp-bridge-shell",
+  "scope": "active_path_atlas_only",
+  "frozen_registry_version": "1.5.4-active-path-discovery-hardproof-merged",
+  "frozen_proof_reader_version": "1.5.4-active-path-live-proof-reader",
+  "frozen_discovery_version": "1.0.2-active-path-discovery-machine-classified",
+  "frozen_route_stack": [
+    "pmp-app-current.html",
+    "pmp-route-guardian-current-loader-v15.html",
+    "pmp-current-reload-owner-v27.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v24.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+    "pmp-home-single-v6.html"
+  ],
+  "proof_basis": {
+    "active_path_discovery_hard_missing_count": 0,
+    "active_path_discovery_live_runtime_missing_count": 0,
+    "active_path_discovery_direct_current_missing_count": 0,
+    "active_path_discovery_fallback_or_recovery_missing_count": 0,
+    "active_path_discovery_legacy_or_test_missing_count": 0,
+    "active_path_discovery_freeze_gate_pass": true,
+    "smoke_missing_expected_count": 0,
+    "smoke_blank_screen_warning": "none_obvious",
+    "smoke_external_file_count": 0,
+    "smoke_legacy_file_count": 0,
+    "smoke_unknown_file_count": 0,
+    "bank_cr_max_scoped_order_issue_count": 0,
+    "slot_count": 243,
+    "active_file_count": 118,
+    "dynamic_file_count": 66,
+    "storage_owner_count": 80,
+    "indexeddb_owner_count": 3
+  },
+  "manual_audit_basis": {
+    "manual_audit_record": "pmp-active-path-manual-audit-1.5.4-v1.json",
+    "manual_audit_result": "PASS_FOR_ACTIVE_PATH_ATLAS_FREEZE",
+    "new_active_candidate_found": false,
+    "new_hard_missing_found": false,
+    "new_live_runtime_missing_found": false
+  },
+  "lock_rules": [
+    "Active Path Atlas is frozen at 1.5.4.",
+    "No repo files were deleted by this freeze.",
+    "This is not whole-repo certification.",
+    "Unlisted repo files have no implementation authority unless later proven active.",
+    "Dead references remain excluded unless they become real reachable files and are proven active.",
+    "Future work must not silently expand the active path; new active candidates require proof before Atlas authority."
+  ],
+  "status": "FROZEN"
+}
