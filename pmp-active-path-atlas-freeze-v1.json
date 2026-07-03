@@ -1,0 +1,93 @@
+{
+  "type": "PMP_ACTIVE_PATH_ATLAS_FREEZE_RECORD_V1",
+  "freeze_id": "active-path-atlas-freeze-1.5.4",
+  "created_at": "2026-07-03T00:56:00Z",
+  "repo": "pmpbird/pmp-bridge-shell",
+  "scope": "active_path_atlas_only",
+  "not_scope": [
+    "whole_repo_certification",
+    "repository_deletion",
+    "legacy_file_authority",
+    "unlisted_file_authority"
+  ],
+  "basis": {
+    "smoke_test_proof_type": "PMP_COPY_SMOKE_TEST_PROOF_V1",
+    "proof_reader_version": "1.5.4-active-path-live-proof-reader",
+    "mount_registry_version": "1.5.4-active-path-discovery-hardproof-merged",
+    "app_orchestrator_version": "1.0.3-number-harmony-boot-proof",
+    "active_path_discovery_report_version": "1.0.2-active-path-discovery-machine-classified",
+    "active_path_discovery_hard_missing_count": 0,
+    "active_path_discovery_live_runtime_missing_count": 0,
+    "active_path_discovery_direct_current_missing_count": 0,
+    "active_path_discovery_freeze_gate_pass": true,
+    "smoke_missing_expected_count": 0,
+    "blank_screen_warning": "none_obvious",
+    "bank_cr_max_scoped_order_issue_count": 0,
+    "external_file_count": 0,
+    "legacy_file_count": 0,
+    "unknown_file_count": 0,
+    "slot_count": 243,
+    "atlas_bucket_count": 3,
+    "storage_owner_count": 80,
+    "indexeddb_owner_count": 3,
+    "active_file_count": 118,
+    "dynamic_file_count": 66
+  },
+  "active_route_stack": [
+    "pmp-app-current.html",
+    "pmp-route-guardian-current-loader-v15.html",
+    "pmp-current-reload-owner-v27.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v24.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+    "pmp-home-single-v6.html"
+  ],
+  "current_loaded_support": [
+    "pmp-active-page-tracker-v1.js",
+    "pmp-app-orchestrator-v1.js",
+    "pmp-mount-registry-v1.js",
+    "pmp-phase8-atlas-marker-v1.js",
+    "pmp-pass1r-version-aligner-v1.js",
+    "pmp-pass1w-live-proof-reader-v1.js",
+    "pmp-active-path-discovery-machine-v1.js",
+    "pmp-continuous-run-bank-order-frame-loader-v1.js"
+  ],
+  "dynamic_recovery_routes": [
+    "resident.html",
+    "pmp-clean-v21.html",
+    "safe-writer-v14.html",
+    "code-safety-v13.html",
+    "pmp.html",
+    "safety.html",
+    "restore.html",
+    "safe-writer.html",
+    "code-safety.html"
+  ],
+  "dead_references_excluded": [
+    "metadata.json",
+    "packet.json",
+    "report.json",
+    "pmp-clean-v13.html",
+    "PDF.js",
+    "category-map.json",
+    "current.json",
+    "record-ledger.json",
+    "bridge-contextual-menu.html",
+    "cloudflare-worker.js",
+    "corpus-workbench.html",
+    "local-storage-manager.html",
+    "lossless-certification-system.html",
+    "project-connection-workbench.html",
+    "proof-ledger-system.html",
+    "worker.js"
+  ],
+  "freeze_rules": [
+    "Only Active Path Atlas drives implementation.",
+    "Dynamic paths are reachable but not boot-required.",
+    "Unlisted repo files have no implementation authority unless later proven active.",
+    "No repo files were deleted by this freeze.",
+    "This is not whole-repo certification."
+  ],
+  "manual_audit_result": "No new active candidate appeared beyond the 1.5.4 registry and the passed active path discovery report. Freeze active path atlas at 1.5.4."
+}
