@@ -1,13 +1,13 @@
 (()=>{
 'use strict';
-const V='1.0.1-pass4-boot-status-strip-owner-expanded-detail';
+const V='1.0.2-pass4-boot-status-strip-owner-auto-clear-on-app-visible';
 const OWNER='pmp-boot-status-strip-owner-v1';
 const STRIP_ID='pmpAppOrchestratorBootStatusStripV1';
 const STYLE_ID='pmpBootStatusStripOwnerV1Style';
 const RECEIPT_KEY='pmp_boot_status_strip_owner_v1_receipt';
 const STATUS_KEY='pmp_boot_status_strip_owner_v1_status';
 const SLOW_MS=9000;
-const READY_HIDE_MS=990;
+const READY_HIDE_MS=240;
 let bootAt=Date.now(),hidden=false,readySeen=false,lastState=null,lastReceipt=null;
 function T(){try{return window.top||window}catch(e){return window}}
 function now(){return new Date().toISOString()}
@@ -27,17 +27,18 @@ function compute(){let list=allDocs();let checks={route_guardian_v16:hasFile(lis
 if(checks.app_orchestrator_loaded) {state='APP_ORCHESTRATOR_OK';detail_label='App Orchestrator OK'}
 if(checks.current_inner_v26) {state='APP_LOADING';detail_label='App Loading'}
 if(checks.mount_registry_loaded) {state='MOUNT_REGISTRY_OK';detail_label='Mount Registry OK'}
-if(checks.inner_v23||checks.visible_app_anchor){state='APP_READY';detail_label='App Ready'}
-if(Date.now()-bootAt>SLOW_MS&&state!=='APP_READY'){state='BOOT_SLOW';detail_label='Boot Slow — still watching'}
+if(checks.inner_v23){state='INNER_APP_LOADED';detail_label='Inner App Loaded'}
+if(checks.visible_app_anchor){state='APP_VISIBLE';detail_label='App Visible'}
+if(Date.now()-bootAt>SLOW_MS&&state!=='APP_VISIBLE'){state='BOOT_SLOW';detail_label='Boot Slow — still watching'}
 let status={type:'PMP_BOOT_STATUS_STRIP_OWNER_V1_STATUS',version:V,owner:OWNER,at:now(),elapsed_ms:Date.now()-bootAt,state,label:'App Orchestrator working…',detail_label,doing:currentDoing(steps),checks,steps,documents:list.map(x=>({path:x.path,url:x.url,title:x.title,blocked:!x.doc,error:x.error||null})),rule:'Passive visual/status layer only. No route change, no Bank rebuild, no level reorder, no Resident change, no storage migration.'};status.detail_lines=detailLines(status);return status}
 function ensureStyle(d){let st=d.getElementById(STYLE_ID);if(st)return st;st=d.createElement('style');st.id=STYLE_ID;st.textContent='#'+STRIP_ID+'{position:fixed;left:10px;right:10px;top:calc(6px + env(safe-area-inset-top));z-index:2147483647;pointer-events:none;display:grid;justify-items:center;gap:7px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#07101c}#'+STRIP_ID+' .pmpBootTitle{max-width:min(520px,calc(100vw - 20px));overflow:hidden;text-overflow:ellipsis;white-space:nowrap;background:rgba(255,255,255,.97);color:#07101c;border:2px solid #07101c;border-radius:999px;padding:7px 14px;font-size:12px;font-weight:950;box-shadow:0 6px 18px rgba(0,0,0,.14)}#'+STRIP_ID+' .pmpBootPanel{width:min(640px,calc(100vw - 24px));box-sizing:border-box;background:rgba(255,255,255,.91);border:2px solid rgba(7,16,28,.92);border-radius:22px;padding:10px 12px;text-align:left;box-shadow:0 8px 24px rgba(0,0,0,.12)}#'+STRIP_ID+' .pmpBootLine{font-size:11px;line-height:1.35;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:2px 0}#'+STRIP_ID+' .pmpBootLine:first-child{font-size:12px;font-weight:950}#'+STRIP_ID+'[data-state="BOOT_SLOW"] .pmpBootPanel{background:#fff3de}';(d.head||d.documentElement).appendChild(st);return st}
 function ensureStrip(){if(hidden)return null;let d=document;if(!d||!d.body)return null;ensureStyle(d);let x=d.getElementById(STRIP_ID);if(!x){x=d.createElement('div');x.id=STRIP_ID;d.body.appendChild(x)}x.setAttribute('data-pmp-boot-status-strip-owner','expanded_detail');return x}
 function paint(status){if(hidden)return;let x=ensureStrip();if(!x)return;x.setAttribute('data-state',status.state);let lines=(status.detail_lines||[]).map(s=>'<div class="pmpBootLine">'+esc(s)+'</div>').join('');x.innerHTML='<span class="pmpBootTitle">App Orchestrator working…</span><div class="pmpBootPanel">'+lines+'</div>'}
 function hide(reason){if(hidden)return;hidden=true;let receipt=lastReceipt||makeReceipt(lastState||compute(),reason||'hidden');receipt.hidden_at=now();receipt.hide_reason=reason||'hidden';put(RECEIPT_KEY,receipt);try{let x=document.getElementById(STRIP_ID);if(x)x.remove()}catch(e){}try{let st=document.getElementById(STYLE_ID);if(st)st.remove()}catch(e){} }
-function makeReceipt(status,reason){return{type:'PMP_BOOT_STATUS_STRIP_OWNER_V1_RECEIPT',version:V,owner:OWNER,at:now(),mode:'passive_boot_status_strip_expanded_detail_only',reason:reason||'status',state:status.state,label:status.label,detail_label:status.detail_label,doing:status.doing,elapsed_ms:status.elapsed_ms,checks:status.checks,steps:status.steps,passive_only:true,route_change:false,bank_rebuild:false,level_reorder:false,resident_change:false,storage_migration:false,rule:status.rule}}
-function tick(reason){let status=compute();lastState=status;put(STATUS_KEY,status);paint(status);let receipt=makeReceipt(status,reason||'tick');lastReceipt=receipt;put(RECEIPT_KEY,receipt);if(status.state==='APP_READY'&&!readySeen){readySeen=true;setTimeout(()=>hide('app_ready_auto_hide_'+READY_HIDE_MS+'ms'),READY_HIDE_MS)}return receipt}
+function makeReceipt(status,reason){return{type:'PMP_BOOT_STATUS_STRIP_OWNER_V1_RECEIPT',version:V,owner:OWNER,at:now(),mode:'passive_boot_status_strip_auto_clear_on_app_visible_only',reason:reason||'status',state:status.state,label:status.label,detail_label:status.detail_label,doing:status.doing,elapsed_ms:status.elapsed_ms,checks:status.checks,steps:status.steps,passive_only:true,route_change:false,bank_rebuild:false,level_reorder:false,resident_change:false,storage_migration:false,rule:status.rule}}
+function tick(reason){let status=compute();lastState=status;put(STATUS_KEY,status);let receipt=makeReceipt(status,reason||'tick');lastReceipt=receipt;put(RECEIPT_KEY,receipt);if(status.checks&&status.checks.visible_app_anchor){readySeen=true;hide('app_visible_anchor_immediate_clear');return receipt}paint(status);if((status.state==='INNER_APP_LOADED'||status.state==='APP_VISIBLE')&&!readySeen){readySeen=true;setTimeout(()=>hide('app_ready_auto_hide_'+READY_HIDE_MS+'ms'),READY_HIDE_MS)}return receipt}
 function bindFrameLoad(){try{let f=document.getElementById('app');if(f&&!f.__pmpBootStatusStripOwnerBound){f.__pmpBootStatusStripOwnerBound=true;f.addEventListener('load',()=>tick('inner_frame_load'),false)}}catch(e){}}
 function start(){bindFrameLoad();tick('start');[90,270,630,990,1530,2100,2700,3600,5400,7200,9000].forEach(ms=>setTimeout(()=>tick('scheduled_'+ms),ms));let fast=setInterval(()=>{tick('watch');if(hidden||Date.now()-bootAt>12000)clearInterval(fast)},180)}
-window.PMPBootStatusStripOwnerV1={version:V,owner:OWNER,mode:'passive_boot_status_strip_expanded_detail_only',scan:compute,tick,hide,getLastReceipt:()=>lastReceipt,rule:'Passive visual/status layer only. No route change, no Bank rebuild, no level reorder, no Resident change, no storage migration.'};
+window.PMPBootStatusStripOwnerV1={version:V,owner:OWNER,mode:'passive_boot_status_strip_auto_clear_on_app_visible_only',scan:compute,tick,hide,getLastReceipt:()=>lastReceipt,rule:'Passive visual/status layer only. No route change, no Bank rebuild, no level reorder, no Resident change, no storage migration.'};
 try{start()}catch(e){put(RECEIPT_KEY,{type:'PMP_BOOT_STATUS_STRIP_OWNER_V1_RECEIPT',version:V,owner:OWNER,at:now(),status:'ERROR',error:String(e&&e.message||e),passive_only:true})}
 })();
