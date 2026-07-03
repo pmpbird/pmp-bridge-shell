@@ -1,0 +1,7 @@
+{
+  "type": "PMP_ACTIVE_PATH_ATLAS_FINAL_FREEZE_NOOP_NOTE_V1",
+  "created_at": "2026-07-03T02:06:45Z",
+  "note": "Final freeze records have been written. No route, registry, app code, storage owner, or active path code was changed by these records.",
+  "repo": "pmpbird/pmp-bridge-shell",
+  "frozen_registry_version": "1.5.4-active-path-discovery-hardproof-merged"
+}
