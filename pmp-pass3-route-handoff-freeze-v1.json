@@ -1,0 +1,65 @@
+{
+  "type": "PMP_PASS3_ROUTE_GUARDIAN_TO_APP_ORCHESTRATOR_FREEZE_V1",
+  "version": "1.0.0",
+  "status": "FROZEN",
+  "frozen_at": "2026-07-03T13:55:00Z",
+  "pass": 3,
+  "pass_name": "Route Guardian -> App Orchestrator Handoff",
+  "scope": "Active path handoff gate only. This does not freeze the whole repo or certify later passes.",
+  "frozen_chain": [
+    "pmp-app-current.html",
+    "pmp-current-map-v10.json",
+    "pmp-route-guardian-current-loader-v16.html",
+    "pmp-current-reload-owner-v27.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v26.html",
+    "pmp-app-orchestrator-v1.js"
+  ],
+  "locked_meaning": [
+    "Stable door reads current map v10 before older maps.",
+    "Current map v10 names Route Guardian v16 as current route guardian loader.",
+    "Route Guardian v16 opens current reload owner v27 after Run App.",
+    "Current reload owner v27 opens current inner app v26.",
+    "App Orchestrator v1.0.4 loads inside the current app and passively proves the handoff.",
+    "Pass 3 does not rebuild banks, reorder levels, migrate storage, delete files, or take over ownership."
+  ],
+  "proof_summary": {
+    "smoke_test": {
+      "type": "PMP_COPY_SMOKE_TEST_PROOF_V1",
+      "version": "1.5.4-active-path-live-proof-reader",
+      "built_at": "2026-07-03T13:48:43.624Z",
+      "current_inner": "pmp-current-inner-cleanbug-rgcontrols-v26.html",
+      "route_guardian_observed": "pmp-route-guardian-current-loader-v16.html",
+      "current_reload_observed": "pmp-current-reload-owner-v27.html",
+      "app_orchestrator_version": "1.0.4-pass3-route-handoff-proof",
+      "blank_screen_warning": "none_obvious",
+      "missing_expected_count": 0,
+      "external_file_count": 0,
+      "legacy_file_count": 0,
+      "unknown_file_count": 0,
+      "active_file_count": 128,
+      "visual_user_confirmation": "looks good"
+    },
+    "active_path_discovery": {
+      "type": "PMP_ACTIVE_PATH_DISCOVERY_REPORT_V1",
+      "version": "1.0.2-active-path-discovery-machine-classified",
+      "started_at": "2026-07-03T13:50:41.168Z",
+      "finished_at": "2026-07-03T13:51:02.339Z",
+      "scanned_count": 209,
+      "reachable_count": 193,
+      "atlas_count": 194,
+      "hard_missing_count": 0,
+      "live_runtime_missing_count": 0,
+      "direct_current_missing_count": 0,
+      "fallback_or_recovery_missing_count": 0,
+      "legacy_or_test_missing_count": 0,
+      "freeze_gate_pass": true
+    }
+  },
+  "freeze_rule": "Do not continue modifying Pass 3. Only reopen if a break-class defect appears in the route handoff chain.",
+  "next_pass": {
+    "pass": 4,
+    "name": "Boot Status Strip",
+    "intent": "Make startup visibly understandable without taking ownership of the app.",
+    "rule": "Passive visual/status layer only. No route change, no Bank rebuild, no level reorder, no Resident change, no storage migration."
+  }
+}
