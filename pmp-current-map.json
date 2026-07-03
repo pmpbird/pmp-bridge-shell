@@ -2,22 +2,22 @@
   "type": "PMP_CURRENT_APP_MAP",
   "app_name": "PMP Current",
   "app_version": "PMP-CURRENT-1",
-  "updated_at": "2026-07-02T18:48:00Z",
+  "updated_at": "2026-07-03T00:03:30Z",
   "route_guardian_loader": {
     "path": "pmp-route-guardian-current-loader-v15.html",
-    "label": "PMP Route Guardian v15 active deep Atlas",
-    "cache_key": "pmp-route-guardian-current-loader-v15-active-deep-atlas-20260702B",
+    "label": "PMP Route Guardian v15 hardproof Atlas",
+    "cache_key": "pmp-route-guardian-current-loader-v15-hardproof-atlas-20260703A",
     "status": "current"
   },
   "current_app": {
     "path": "pmp-current-reload-owner-v27.html",
-    "label": "PMP Current Reload Owner v27 active deep Atlas",
-    "cache_key": "pmp-current-v27-active-deep-atlas-20260702B",
+    "label": "PMP Current Reload Owner v27 hardproof Atlas",
+    "cache_key": "pmp-current-v27-hardproof-atlas-20260703A",
     "status": "current"
   },
   "user_facing_rule": "Only show PMP Current / PMP-CURRENT-1 as the app version.",
   "home_screen_rule": "Install pmp-app-current.html once. It is a stable map-driven door and should change as little as possible.",
-  "update_rule": "Stable door opens Route Guardian v15, which opens the active deep Atlas current app.",
+  "update_rule": "Stable door opens Route Guardian v15, which opens the hardproof Atlas current app.",
   "fallback_app": {
     "path": "pmp-current-inner-cleanbug-rgcontrols-v23.html",
     "cache_key": "fallback-pmp-current-v23-bank-order-cache-refresh-20260629A"
