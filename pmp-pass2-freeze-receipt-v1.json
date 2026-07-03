@@ -1,0 +1,68 @@
+{
+  "type": "PMP_PASS2_FREEZE_RECEIPT_V1",
+  "version": "1.0.0-pass2-freeze",
+  "owner": "pmp-pass2-freeze-receipt-v1",
+  "frozen": true,
+  "frozen_at": "2026-07-03T13:25:00Z",
+  "scope": "active_path_only",
+  "pass": "Pass 2",
+  "name": "Authority Rules + Bug Watch + Active Bugs Found + Safe Writer Current Return",
+  "status": "frozen_after_user_confirmed_working",
+  "frozen_route": {
+    "outer_door": "pmp-app-current.html",
+    "route_guardian": "pmp-route-guardian-current-loader-v16.html",
+    "reload_owner": "pmp-current-reload-owner-v27.html",
+    "current_inner": "pmp-current-inner-cleanbug-rgcontrols-v26.html",
+    "inner_stack": [
+      "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "pmp-home-single-v6.html"
+    ]
+  },
+  "frozen_support_files": [
+    "pmp-authority-rules-v1.js",
+    "pmp-active-bug-found-contract-v1.js",
+    "pmp-bug-watch-passive-capture-v1.js",
+    "pmp-safe-writer-current-return-fix-v1.js",
+    "pmp-pass2-atlas-adapter-v2.js",
+    "pmp-current-map-v10.json",
+    "pmp-route-guardian-current-loader-v16.html"
+  ],
+  "last_smoke_test": {
+    "type": "PMP_COPY_SMOKE_TEST_PROOF_V1",
+    "current_inner": "pmp-current-inner-cleanbug-rgcontrols-v26.html",
+    "mount_registry_loaded": true,
+    "app_orchestrator_loaded": true,
+    "registry_storage_present": true,
+    "registry_snapshot_present": true,
+    "missing_expected_count": 0,
+    "external_file_count": 0,
+    "legacy_file_count": 0,
+    "unknown_file_count": 0,
+    "blank_screen_warning": "none_obvious"
+  },
+  "last_active_path_discovery": {
+    "type": "PMP_ACTIVE_PATH_DISCOVERY_REPORT_V1",
+    "started_at": "2026-07-03T13:22:13.003Z",
+    "finished_at": "2026-07-03T13:22:51.664Z",
+    "scanned_count": 195,
+    "reachable_count": 181,
+    "atlas_count": 194,
+    "hard_missing_count": 0,
+    "live_runtime_missing_count": 0,
+    "direct_current_missing_count": 0,
+    "fallback_or_recovery_missing_count": 0,
+    "legacy_or_test_missing_count": 0,
+    "dead_reference_count": 14,
+    "freeze_gate_pass": true
+  },
+  "user_visual_check": "confirmed_working",
+  "pass2_lock_statement": "Pass 2 is frozen for the active path after smoke proof, active path discovery, Safe Writer return repair, and user confirmation.",
+  "known_non_blocking_notes": [
+    "Dead references remain recorded for later classification.",
+    "Freeze is active path only, not whole repo cleanup.",
+    "Pass 3 should start from this frozen route."
+  ],
+  "next_pass": "Pass 3 - Route Guardian to App Orchestrator handoff"
+}
