@@ -2,15 +2,15 @@
   "type": "PMP_CURRENT_APP_MAP",
   "app_name": "PMP Current",
   "app_version": "PMP-CURRENT-1",
-  "updated_at": "2026-07-03T16:25:00Z",
+  "updated_at": "2026-07-03T16:55:00Z",
   "route_guardian_loader": {
     "path": "pmp-route-guardian-current-loader-v17.html",
-    "cache_key": "pmp-route-guardian-current-loader-v17-preframe-only-20260703K",
+    "cache_key": "pmp-route-guardian-current-loader-v17-preframe-fuller-code-20260703L",
     "status": "current"
   },
   "current_app": {
     "path": "pmp-current-reload-owner-v27.html",
-    "cache_key": "pmp-current-v27-preframe-only-world-safe-20260703K",
+    "cache_key": "pmp-current-v27-preframe-fuller-code-world-safe-20260703L",
     "status": "current"
   },
   "fallback_app": {
