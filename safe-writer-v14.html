@@ -31,7 +31,7 @@ const PACKET_KEY='pmp_clean_connection_packets_v5';
 const CORPUS_KEY='pmp_corpus_inbox_v1';
 const AUTO_KEY='pmp_auto_update_request_v20';
 const CURRENT_RETURN_PATH='pmp-current-reload-owner-v27.html';
-const CURRENT_RETURN_KEY='safe-writer-return-pass2-v26-20260703C';
+const CURRENT_RETURN_KEY='safe-writer-return-pass2-v26-20260703D';
 function $(id){return document.getElementById(id)}
 function now(){return new Date().toISOString()}
 function read(k,f){try{let v=localStorage.getItem(k);return v?JSON.parse(v):f}catch(e){return f}}
@@ -43,6 +43,7 @@ function returnHash(){let q=new URLSearchParams(location.search);let h=q.get('ha
 function backTarget(){return CURRENT_RETURN_PATH+'?fresh='+CURRENT_RETURN_KEY+'-'+Date.now()+returnHash()}
 function goTop(url){try{window.top.location.href=url}catch(e){location.href=url}}
 function backToControl(){goTop(backTarget())}
+try{window.addEventListener('pageshow',function(){if(window.top!==window&&/auto_return=1/.test(location.search))setTimeout(function(){backToControl()},500)})}catch(e){}
 function safeWriterBank(){let keys=['pmp_code_safety_bank_v1','pmp_safe_writer_last_good_v3',AUTO_KEY];let out={};keys.forEach(k=>{let v=localStorage.getItem(k)||'';let parsed=null;try{parsed=v?JSON.parse(v):null}catch(e){parsed=v||null}out[k]={exists:!!v,size:v.length,value:k===AUTO_KEY?parsed:undefined}});return out}
 function context(){let pkt=selectedPacket();return{type:'PMP_SAFE_WRITER_RESIDENT_CONTEXT_V14',built_at:now(),tool:'Safe Writer',tool_role:'protected app edits and Safe Update Transaction',entry_url:location.href,back_target:backTarget(),return_rule:'Always return through the top window to the current reload owner, never inside an old inner shell.',tool_frame_text:frameText(),local_storage_status:safeWriterBank(),selected_packet:pkt?{id:pkt.id,name:pkt.name,quality:pkt.quality,official:!!pkt.official}:null,corpus_status:{selected_packet_sent:corpusHasPacket(pkt),corpus_has_any_content:!!(localStorage.getItem(CORPUS_KEY)||'').trim()},safe_boundary:'Resident can guide and copy handoff only. Safe Writer still performs protected edits/transactions.'}}
 function answer(q){let ctx=context();let auto=ctx.local_storage_status[AUTO_KEY];let a='I am inside Safe Writer v14. I can see the Safe Writer frame, safety-bank status, automatic update request, selected packet context, and Corpus status. ';a+='Back target is '+ctx.back_target+'. ';if(auto&&auto.exists)a+='I see an Automatic App Update request staged from Control Room. ';else a+='I do not see an Automatic App Update request yet. ';if(ctx.selected_packet)a+='Selected packet: '+ctx.selected_packet.name+' quality '+ctx.selected_packet.quality+'. ';a+='Next: use Safe Writer only for protected app edits or promotion through Safe Update Transaction.';return{type:'PMP_SAFE_WRITER_RESIDENT_RESPONSE_V14',built_at:now(),question:q||'',resident_answer:a,context:ctx,next:'Use Safe Writer for protected edits only; copy handoff if you want ChatGPT to inspect the state.'}}
