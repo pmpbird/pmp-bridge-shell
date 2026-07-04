@@ -1,8 +1,8 @@
 {
-  "type": "PMP_LATEST_APP_POINTER_V5",
-  "latest": "pmp-route-guardian-current-loader-v14.html",
-  "last_good": "pmp-current-inner-cleanbug-rgcontrols-v6.html",
-  "last_good_route_guardian": "pmp-route-guardian-current-loader-v14.html",
+  "type": "PMP_LATEST_APP_POINTER_V6",
+  "latest": "pmp-app-current.html",
+  "last_good": "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+  "last_good_route_guardian": "pmp-route-guardian-current-loader-v19.html",
   "last_good_saves": [
     {
       "name": "Stable Dashboard — Reset Cycles Works",
@@ -11,12 +11,10 @@
       "saved_at": "2026-06-20T00:00:00-07:00"
     }
   ],
-  "minimum_good_version": "v14",
-  "updated_at": "2026-06-20T12:24:00-07:00",
+  "minimum_good_version": "v19",
+  "updated_at": "2026-07-04T00:00:00-07:00",
   "health_required": true,
   "fallback_enabled": true,
-  "blocked_detours": [
-    "safe-writer"
-  ],
-  "meaning": "Permanent launchers open Route Guardian as latest. Last Good recovery uses exact stable current app targets, not the Route Guardian loader, so named saves do not loop through the wrong door. This pointer change does not prove app wiring, hook validation, full transfer, current-clean, frozen, or best-in-world."
+  "blocked_detours": [],
+  "meaning": "Permanent launchers open the current app shell first. The current shell loads the newest current map and then opens the current Route Guardian loader. This pointer change also lets the discovery ZIP exporter load from the outer current app shell."
 }
