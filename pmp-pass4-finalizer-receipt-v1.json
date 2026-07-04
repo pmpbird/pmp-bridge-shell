@@ -1,0 +1,116 @@
+{
+  "type": "PMP_PASS4_FINALIZER_RECEIPT_V1",
+  "version": "1.0.0-pass4-finalizer-preframe-boot-code-screen",
+  "created_at": "2026-07-03T17:15:00Z",
+  "scope": "active_path_only",
+  "pass": "Pass 4",
+  "name": "Boot Status Strip / Preframe Boot Code Screen",
+  "status": "finalizer_static_pass_live_proof_required_before_freeze",
+  "locked_design": {
+    "name": "preframe_boot_code_screen",
+    "rule": "Show boot code before the World/app iframe is loaded, remove the boot panel, then set the World/app iframe src.",
+    "single_visual_header": true,
+    "duplicate_app_orchestrator_strip_suppressed": true,
+    "old_external_boot_overlay_active": false,
+    "external_boot_overlay_files_kept_as_legacy_inspect_only": [
+      "pmp-boot-status-strip-owner-v1.js",
+      "pmp-boot-shell-console-owner-v1.js",
+      "pmp-boot-code-panel-v1.js"
+    ],
+    "no_delete_performed": true,
+    "no_route_change_from_app_runtime": true,
+    "no_bank_rebuild": true,
+    "no_storage_migration": true,
+    "no_level_reorder": true,
+    "no_resident_change": true
+  },
+  "active_route_static_lock": [
+    {
+      "role": "current_map",
+      "file": "pmp-current-map-v10.json",
+      "sha": "bdfa1e0b772a05cadce3089fbb4661240e50dda3",
+      "points_to_route_guardian": "pmp-route-guardian-current-loader-v17.html",
+      "points_to_current_reload_owner": "pmp-current-reload-owner-v27.html",
+      "cache_key": "pmp-current-v27-pass4-finalizer-preframe-world-safe-20260703M"
+    },
+    {
+      "role": "current_reload_owner",
+      "file": "pmp-current-reload-owner-v27.html",
+      "sha": "098d0df5bae41ee0a705405753489bac3f849cad",
+      "loads": "pmp-current-inner-cleanbug-rgcontrols-v26.html",
+      "cache_key": "v27-pass4-finalizer-preframe-world-safe-20260703M"
+    },
+    {
+      "role": "preframe_boot_shell",
+      "file": "pmp-current-inner-cleanbug-rgcontrols-v26.html",
+      "sha": "0d68ab29414963d8d741ad428335475122bc42ba",
+      "design": "inline preframe boot screen; no pmp-boot-code-panel-v1.js script load",
+      "clear_before_world_iframe_src": true,
+      "world_frame": "pmp-current-inner-cleanbug-rgcontrols-v23.html"
+    },
+    {
+      "role": "app_orchestrator",
+      "file": "pmp-app-orchestrator-v1.js",
+      "sha": "ddd141c207e647a6bffaeb17974a22056123f36c",
+      "version": "1.0.5-pass4-preframe-visual-suppression",
+      "visual_suppression_key": "PMP_BOOT_PANEL_SUPPRESS"
+    },
+    {
+      "role": "atlas_adapter",
+      "file": "pmp-pass2-atlas-adapter-v2.js",
+      "sha": "750f95dd0bb054c463033afbe73ac80412468b88",
+      "version": "2.0.9-pass4-final-preframe-boot-atlas",
+      "active_files_include": [
+        "pmp-route-guardian-current-loader-v17.html",
+        "pmp-current-reload-owner-v27.html",
+        "pmp-current-inner-cleanbug-rgcontrols-v26.html"
+      ],
+      "legacy_not_active": [
+        "pmp-boot-status-strip-owner-v1.js",
+        "pmp-boot-shell-console-owner-v1.js",
+        "pmp-boot-code-panel-v1.js",
+        "pmp-route-guardian-current-loader-v16.html",
+        "pmp-current-inner-cleanbug-rgcontrols-v25.html"
+      ]
+    }
+  ],
+  "repo_static_smoke_test": {
+    "pass": true,
+    "checks": {
+      "map_points_to_v17": true,
+      "map_points_to_v27": true,
+      "v27_loads_v26_with_finalizer_cache_key": true,
+      "v26_has_inline_preframe_boot_panel": true,
+      "v26_sets_PMP_BOOT_PANEL_SUPPRESS_true": true,
+      "v26_does_not_load_pmp_boot_code_panel_v1_js": true,
+      "v26_clears_boot_before_world_iframe_src": true,
+      "app_orchestrator_suppresses_duplicate_strip_when_PMP_BOOT_PANEL_SUPPRESS_true": true,
+      "atlas_marks_old_external_boot_overlay_files_legacy_not_active": true
+    }
+  },
+  "repo_static_active_path_discovery": {
+    "pass": true,
+    "checks": {
+      "expected_active_route": [
+        "pmp-app-current.html",
+        "pmp-current-map-v10.json",
+        "pmp-route-guardian-current-loader-v17.html",
+        "pmp-current-reload-owner-v27.html",
+        "pmp-current-inner-cleanbug-rgcontrols-v26.html",
+        "pmp-current-inner-cleanbug-rgcontrols-v23.html"
+      ],
+      "old_external_boot_overlay_active": false,
+      "legacy_files_not_deleted": true
+    }
+  },
+  "live_browser_proof_required_before_freeze": {
+    "required": true,
+    "reason": "The repo-side finalizer can verify source and active-route intent, but only the iPhone browser can prove live runtime screen clearing, localStorage receipts, and active path discovery counts.",
+    "needed_from_user": [
+      "PMP_COPY_SMOKE_TEST_PROOF_V1 after this finalizer",
+      "PMP_ACTIVE_PATH_DISCOVERY_REPORT_V1 after this finalizer"
+    ],
+    "freeze_gate": "Do not freeze Pass 4 until both live reports are pasted and clean."
+  },
+  "next_if_live_proof_passes": "Freeze Pass 4 and begin Pass 5: Mount Registry + Diagnostics bottom tab."
+}
