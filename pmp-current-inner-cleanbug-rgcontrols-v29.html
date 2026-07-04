@@ -18,21 +18,21 @@ iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#f3ded4
 <iframe id="app" title="PMP Current Inner v23"></iframe>
 <pre id="boot"></pre>
 <script>window.PMP_APP_ORCHESTRATOR_BOOT_DELAY_MS=4300;window.PMP_BOOT_PANEL_SUPPRESS=true;</script>
-<script src="pmp-app-orchestrator-v1.js?fresh=app-orchestrator-pass5-root-align-zip-20260704F"></script>
+<script src="pmp-app-orchestrator-v1.js?fresh=app-orchestrator-pass5-stable-20260704I"></script>
 <script>try{if(window.PMPAppOrchestratorV1)window.top.PMPAppOrchestratorV1=window.PMPAppOrchestratorV1}catch(e){}</script>
-<script src="pmp-pass2-atlas-adapter-v2.js?fresh=pass2-atlas-pass5-root-align-zip-20260704F"></script>
-<script src="pmp-mount-registry-v1.js?fresh=mount-registry-pass5-root-align-zip-20260704F"></script>
-<script src="pmp-authority-rules-v1.js?fresh=authority-rules-pass5-zip-20260704F"></script>
-<script src="pmp-active-bug-found-contract-v1.js?fresh=active-bug-found-contract-zip-20260704F"></script>
-<script src="pmp-bug-watch-passive-capture-v1.js?fresh=bug-watch-passive-capture-zip-20260704F"></script>
-<script src="pmp-safe-writer-current-return-fix-v1.js?fresh=safe-writer-current-return-hook-zip-20260704F"></script>
-<script src="pmp-phase8-atlas-marker-v1.js?fresh=phase8-atlas-marker-pass5-zip-20260704F"></script>
-<script src="pmp-pass1r-version-aligner-v1.js?fresh=active-path-aligner-pass5-zip-20260704F"></script>
-<script src="pmp-pass1w-live-proof-reader-v1.js?fresh=live-proof-reader-pass5-zip-20260704F"></script>
-<script src="pmp-active-path-discovery-machine-v1.js?fresh=active-path-discovery-pass5-root-aligned-zip-output-20260704F"></script>
-<script src="pmp-continuous-run-bank-order-frame-loader-v1.js?fresh=direct-frame-owner-loader-v102-master-bank-tab-zip-20260704F"></script>
+<script src="pmp-pass2-atlas-adapter-v2.js?fresh=pass2-atlas-pass5-stable-20260704I"></script>
+<script src="pmp-mount-registry-v1.js?fresh=mount-registry-pass5-stable-20260704I"></script>
+<script src="pmp-authority-rules-v1.js?fresh=authority-rules-pass5-stable-20260704I"></script>
+<script src="pmp-active-bug-found-contract-v1.js?fresh=active-bug-found-contract-stable-20260704I"></script>
+<script src="pmp-bug-watch-passive-capture-v1.js?fresh=bug-watch-passive-capture-stable-20260704I"></script>
+<script src="pmp-safe-writer-current-return-fix-v1.js?fresh=safe-writer-current-return-hook-stable-20260704I"></script>
+<script src="pmp-phase8-atlas-marker-v1.js?fresh=phase8-atlas-marker-pass5-stable-20260704I"></script>
+<script src="pmp-pass1r-version-aligner-v1.js?fresh=active-path-aligner-pass5-stable-20260704I"></script>
+<script src="pmp-pass1w-live-proof-reader-v1.js?fresh=live-proof-reader-pass5-stable-20260704I"></script>
+<script src="pmp-active-path-discovery-machine-v1.js?fresh=active-path-discovery-pass5-v20-aligned-20260704I"></script>
+<script src="pmp-continuous-run-bank-order-frame-loader-v1.js?fresh=direct-frame-owner-loader-v102-master-bank-tab-stable-20260704I"></script>
 <script>
-const KEY='20260704F';
+const KEY='20260704I';
 const PRE_MS=4300;
 const LINE_MS=18;
 const start=Date.now();
@@ -44,32 +44,28 @@ let printed=0;
 function goodHash(x){return /^#(world|bridge|library|workshop|control|bank)$/i.test(String(x||''))}
 function ts(){return ((Date.now()-start)/1000).toFixed(1)+'s'}
 function push(s){q.push('['+ts()+'] '+s);if(!pump){pump=true;setInterval(()=>{if(!q.length||!boot)return;printed++;boot.textContent+=(boot.textContent?'\n':'')+q.shift()},LINE_MS)}}
-function clearPreframe(reason){try{let b=document.getElementById('boot');if(b)b.remove()}catch(e){}try{let old=document.getElementById('pmpAppOrchestratorBootStatusStripV1');if(old)old.remove()}catch(e){}try{let st=document.getElementById('pmpAppOrchestratorBootStatusStripV1Style');if(st)st.remove()}catch(e){}try{localStorage.setItem('pmp_preframe_boot_clear_v1',JSON.stringify({reason,version:KEY,wrapper:'pmp-current-inner-cleanbug-rgcontrols-v29.html',printed_lines:printed,pass:'Pass 5 root alignment + Discovery ZIP export',at:new Date().toISOString()}))}catch(e){}}
+function clearPreframe(reason){try{let b=document.getElementById('boot');if(b)b.remove()}catch(e){}try{let old=document.getElementById('pmpAppOrchestratorBootStatusStripV1');if(old)old.remove()}catch(e){}try{let st=document.getElementById('pmpAppOrchestratorBootStatusStripV1Style');if(st)st.remove()}catch(e){}try{localStorage.setItem('pmp_preframe_boot_clear_v1',JSON.stringify({reason,version:KEY,wrapper:'pmp-current-inner-cleanbug-rgcontrols-v29.html',printed_lines:printed,pass:'Pass 5 stable v20 alignment',at:new Date().toISOString()}))}catch(e){}}
 function block(label,items){push(':: '+label);items.forEach((x,i)=>push('  '+String(i+1).padStart(2,'0')+' '+x))}
-push('$ pmp boot --pass=5 --task=active-path-truth-alignment --mode=passive');
-push('Pass 4 remains frozen; Pass 5 only aligns proof/classification language.');
-push('Discovery Report now exports a ZIP instead of oversized paste text.');
-push('route behavior unchanged: v19 -> v28 -> v29 -> v23 -> v4 -> v3 -> home v6.');
+push('$ pmp boot --pass=5 --task=stable-active-path-alignment --mode=passive');
+push('No new wrappers. Current route is held at v20 -> v28 -> v29 -> v23 -> v4 -> v3 -> home v6.');
+push('Discovery Report exports a ZIP; exporter is support, not route authority.');
 block('CURRENT BOOT ROOT',[
-'pmp-app-current.html','pmp-current-map-v11.json','pmp-current-map-v10.json','pmp-route-guardian-current-loader-v19.html','pmp-current-reload-owner-v28.html','pmp-current-inner-cleanbug-rgcontrols-v29.html','pmp-current-inner-cleanbug-rgcontrols-v23.html','pmp-current-inner-cleanbug-rgcontrols-v4.html','pmp-current-inner-cleanbug-rgcontrols-v3.html','pmp-home-single-v6.html'
+'pmp-app-current.html','pmp-current-map-v11.json','pmp-current-map-v10.json','pmp-route-guardian-current-loader-v20.html','pmp-current-reload-owner-v28.html','pmp-current-inner-cleanbug-rgcontrols-v29.html','pmp-current-inner-cleanbug-rgcontrols-v23.html','pmp-current-inner-cleanbug-rgcontrols-v4.html','pmp-current-inner-cleanbug-rgcontrols-v3.html','pmp-home-single-v6.html'
 ]);
 block('HISTORIC REFERENCES NOT BOOT ROOT',[
-'pmp-current-map-v9.json','pmp-current-map.json','pmp-route-guardian-current-loader-v15.html','pmp-route-guardian-current-loader-v17.html','pmp-route-guardian-current-loader-v18.html','pmp-current-reload-owner-v27.html','pmp-current-inner-cleanbug-rgcontrols-v24.html','pmp-current-inner-cleanbug-rgcontrols-v26.html'
+'pmp-current-map-v9.json','pmp-current-map.json','pmp-route-guardian-current-loader-v15.html','pmp-route-guardian-current-loader-v17.html','pmp-route-guardian-current-loader-v18.html','pmp-route-guardian-current-loader-v19.html','pmp-current-reload-owner-v27.html','pmp-current-inner-cleanbug-rgcontrols-v24.html','pmp-current-inner-cleanbug-rgcontrols-v26.html'
 ]);
 block('LOAD REQUESTS',[
-'pmp-app-orchestrator-v1.js','pmp-pass2-atlas-adapter-v2.js','pmp-mount-registry-v1.js','pmp-authority-rules-v1.js','pmp-active-bug-found-contract-v1.js','pmp-bug-watch-passive-capture-v1.js','pmp-safe-writer-current-return-fix-v1.js','pmp-phase8-atlas-marker-v1.js','pmp-pass1r-version-aligner-v1.js','pmp-pass1w-live-proof-reader-v1.js','pmp-active-path-discovery-machine-v1.js version 1.0.4 ZIP export','pmp-continuous-run-bank-order-frame-loader-v1.js'
+'pmp-app-orchestrator-v1.js','pmp-pass2-atlas-adapter-v2.js','pmp-mount-registry-v1.js','pmp-authority-rules-v1.js','pmp-active-bug-found-contract-v1.js','pmp-bug-watch-passive-capture-v1.js','pmp-safe-writer-current-return-fix-v1.js','pmp-phase8-atlas-marker-v1.js','pmp-pass1r-version-aligner-v1.js','pmp-pass1w-live-proof-reader-v1.js','pmp-active-path-discovery-machine-v1.js version 1.0.5','pmp-continuous-run-bank-order-frame-loader-v1.js'
 ]);
 block('PASSIVE LOCKS',[
-'route_change OFF','bank_rebuild OFF','storage_migration OFF','indexeddb_mutation OFF','level_reorder OFF','resident_change OFF','authority_rewrite OFF','mount_mutation OFF','delete_tools OFF','iframe_world_overlay OFF'
+'route_change OFF','bank_rebuild OFF','storage_migration OFF','indexeddb_mutation OFF','level_reorder OFF','resident_change OFF','authority_rewrite OFF','mount_mutation OFF','iframe_world_overlay OFF'
 ]);
 block('PASS 5 SUCCESS GATE',[
 'hard_missing_count 0','live_runtime_missing_count 0','direct_current_missing_count 0','historic_reference_current_boot_root_count 0','freeze_gate.pass true','dead references remain non-blocking','old paths allowed only as reachable support','copy discovery report ZIP after reload'
 ]);
-block('FINAL HANDOFF',[
-'scripts requested with 20260704F','discovery machine root aligned','zip export enabled','panel pointer-events none','iframe src still blank during preframe','clear boot panel before World frame','load v23 World frame','repeat clear after frame load','ready for Discovery Report ZIP proof'
-]);
 const h=goodHash(location.hash)?location.hash:'#bank';
-setTimeout(()=>{push('CLEAR preframe boot panel before World iframe src');setTimeout(()=>{clearPreframe('before_world_iframe_src');setTimeout(()=>{frame.src='pmp-current-inner-cleanbug-rgcontrols-v23.html?fresh=v29-pass5-root-alignment-zip-world-safe-20260704F-'+Date.now()+h},80)},180)},PRE_MS);
+setTimeout(()=>{push('CLEAR preframe boot panel before World iframe src');setTimeout(()=>{clearPreframe('before_world_iframe_src');setTimeout(()=>{frame.src='pmp-current-inner-cleanbug-rgcontrols-v23.html?fresh=v29-pass5-stable-v20-world-safe-20260704I-'+Date.now()+h},80)},180)},PRE_MS);
 frame.addEventListener('load',()=>clearPreframe('frame_loaded_world_safe'));
 [PRE_MS+450,PRE_MS+900,PRE_MS+1500,PRE_MS+2200].forEach(ms=>setTimeout(()=>clearPreframe('repeat_world_safe_'+ms),ms));
 </script>
