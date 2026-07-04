@@ -1,0 +1,105 @@
+{
+  "type": "PMP_PASS4_FREEZE_RECEIPT_V1",
+  "version": "1.0.0-pass4-freeze-clean-boot-route-guardian-app-orchestrator",
+  "pass": "Pass 4",
+  "name": "Boot Status / App Orchestrator Boot Code Panel",
+  "owner": "pmp-pass4-freeze-receipt-v1",
+  "mode": "freeze_receipt_only",
+  "rule": "Records Pass 4 freeze only. No fixing, moving, deleting, Bank rebuild, route change, storage overwrite, or IndexedDB write.",
+  "freeze_basis": {
+    "user_command": "Freeze pass 4",
+    "visual_confirmation": "User stated the app looks fine before requesting freeze.",
+    "active_path_discovery_report": {
+      "type": "PMP_ACTIVE_PATH_DISCOVERY_REPORT_V1",
+      "version": "1.0.2-active-path-discovery-machine-classified",
+      "owner": "pmp-active-path-discovery-machine-v1",
+      "started_at": "2026-07-04T01:34:21.771Z",
+      "finished_at": "2026-07-04T01:34:39.692Z",
+      "mode": "passive_discovery_only",
+      "hard_missing_count": 0,
+      "live_runtime_missing_count": 0,
+      "direct_current_missing_count": 0,
+      "fallback_or_recovery_missing_count": 0,
+      "legacy_or_test_missing_count": 0,
+      "dead_reference_count": 14,
+      "freeze_gate_pass": true
+    },
+    "smoke_test_status": {
+      "latest_smoke_type": "PMP_COPY_SMOKE_TEST_PROOF_V1",
+      "latest_smoke_version": "1.5.5-active-path-live-proof-reader-orchestrator-receipt",
+      "latest_observed_current_href_contains": "pmp-current-reload-owner-v28.html?fresh=rg19-pass4-route-guardian-v19-current-20260704C-pmp-current-v28-pass4-dense-preframe-v29-no-overlay-20260704D",
+      "blank_screen_warning": "none_obvious",
+      "mount_registry_loaded": true,
+      "app_orchestrator_loaded": true
+    }
+  },
+  "frozen_behavior": {
+    "route_guardian": "Clean current launcher door; no visible code block required on Route Guardian page.",
+    "app_orchestrator": "Visible boot-code proof appears during startup only and does not cover or trap the World/app screen.",
+    "boot_panel": "Dense pre-frame line stream; clears before inner app handoff/world cover.",
+    "app_screen": "Normal app interaction confirmed by user before freeze."
+  },
+  "frozen_live_path": [
+    "pmp-app-current.html",
+    "pmp-route-guardian-current-loader-v19.html",
+    "pmp-current-reload-owner-v28.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v29.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+    "pmp-home-single-v6.html"
+  ],
+  "current_maps_and_support": [
+    "pmp-current-map-v10.json",
+    "pmp-current-map-v11.json",
+    "pmp-mount-registry-v1.js",
+    "pmp-app-orchestrator-v1.js",
+    "pmp-pass1w-live-proof-reader-v1.js",
+    "pmp-active-path-discovery-machine-v1.js"
+  ],
+  "freeze_counts": {
+    "scanned_count": 196,
+    "reachable_count": 182,
+    "atlas_count": 197,
+    "hard_missing_count": 0,
+    "live_runtime_missing_count": 0,
+    "direct_current_missing_count": 0,
+    "fallback_or_recovery_missing_count": 0,
+    "legacy_or_test_missing_count": 0,
+    "dead_reference_count": 14
+  },
+  "non_blocking_dead_references": {
+    "classification": "non_blocking_old_or_support_references_after_active_path_gate_pass",
+    "paths": [
+      "pmp-clean-v13.html",
+      "PDF.js",
+      "bridge-contextual-menu.html",
+      "cloudflare-worker.js",
+      "corpus-workbench.html",
+      "local-storage-manager.html",
+      "lossless-certification-system.html",
+      "project-connection-workbench.html",
+      "proof-ledger-system.html",
+      "worker.js",
+      "category-map.json",
+      "current.json",
+      "record-ledger.json",
+      "packet.json"
+    ]
+  },
+  "locks": {
+    "scope": "active_path_only",
+    "no_bank_rebuild": true,
+    "no_storage_migration": true,
+    "no_indexeddb_write": true,
+    "no_route_change_after_freeze": true,
+    "no_core_identity_change": true,
+    "no_shell_rule_imprint_on_core": true,
+    "no_blind_deletion": true
+  },
+  "next_pass_gate": {
+    "status": "Pass 4 frozen",
+    "rule": "Future work starts as a new pass and must not silently modify the frozen Pass 4 behavior.",
+    "recommended_next_move": "Start Pass 5 only after naming the next target."
+  }
+}
