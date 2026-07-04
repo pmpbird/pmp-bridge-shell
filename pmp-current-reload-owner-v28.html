@@ -19,31 +19,32 @@ iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#f3ded4
 <script src="pmp-reload-world-from-map-v1.js?fresh=v28-reload-map-pass5-discovery-root-aligner-20260704E"></script>
 <script>
 const frame=document.getElementById('a');
-const ZIP_PATH='pmp-active-path-discovery-zip-export-v2.js';
-function addZipToAtlas(r){
+const ACTIVE_ALIGN_PATHS=['pmp-route-guardian-current-loader-v20.html','pmp-active-path-discovery-zip-export-v2.js'];
+function addPathToAtlas(r,path){
   if(!r||typeof r!=='object')return r;
   r.repo_file_classification=r.repo_file_classification||{};
   let a=r.repo_file_classification.ACTIVE_CURRENT_APP||[];
-  if(a.indexOf(ZIP_PATH)<0)a=a.concat([ZIP_PATH]);
+  if(a.indexOf(path)<0)a=a.concat([path]);
   r.repo_file_classification.ACTIVE_CURRENT_APP=a;
-  if(Array.isArray(r.files)&&!r.files.some(x=>x&&x.path===ZIP_PATH))r.files=r.files.concat([{path:ZIP_PATH,bucket:'ACTIVE_CURRENT_APP',group:'active_current_app'}]);
-  if(Array.isArray(r.slots)&&!r.slots.some(x=>x&&x.id==='active_current_app_discovery_zip_export_v2'))r.slots=r.slots.concat([{id:'active_current_app_discovery_zip_export_v2',bucket:'ACTIVE_CURRENT_APP',owner:'Active Path Discovery ZIP Exporter v2',parent:'Active Path Discovery',selectors:[],files:[ZIP_PATH],policy:'export oversized discovery report as zip only'}]);
+  if(Array.isArray(r.files)&&!r.files.some(x=>x&&x.path===path))r.files=r.files.concat([{path,bucket:'ACTIVE_CURRENT_APP',group:'active_current_app'}]);
+  if(Array.isArray(r.slots)){let id=('active_current_app_'+path).toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');if(!r.slots.some(x=>x&&x.id===id))r.slots=r.slots.concat([{id,bucket:'ACTIVE_CURRENT_APP',owner:'Active Path File Owner',parent:'active_path_atlas',selectors:[],files:[path],policy:'active path alignment'}]);}
   return r;
 }
+function addAlignedPaths(r){ACTIVE_ALIGN_PATHS.forEach(p=>addPathToAtlas(r,p));return r;}
 function patchChildAtlas(){
   try{
     const w=frame.contentWindow;
-    if(!w||!w.PMPMountRegistryV1||w.PMPMountRegistryV1.__discoveryZipAtlasAlignedV2)return;
+    if(!w||!w.PMPMountRegistryV1||w.PMPMountRegistryV1.__routeV20AtlasAligned)return;
     const m=w.PMPMountRegistryV1;
     const oldRegistry=m.registry;
-    if(typeof oldRegistry==='function')m.registry=function(){return addZipToAtlas(oldRegistry.apply(this,arguments))};
+    if(typeof oldRegistry==='function')m.registry=function(){return addAlignedPaths(oldRegistry.apply(this,arguments))};
     const oldScan=m.scan;
-    if(typeof oldScan==='function')m.scan=function(){let out=oldScan.apply(this,arguments);try{if(out&&out.registry)addZipToAtlas(out.registry)}catch(e){}return out};
-    m.__discoveryZipAtlasAlignedV2=true;
-    try{w.localStorage.setItem('pmp_discovery_zip_atlas_alignment_v2',JSON.stringify({type:'PMP_DISCOVERY_ZIP_ATLAS_ALIGNMENT_V2',path:ZIP_PATH,owner:'pmp-current-reload-owner-v28.html',at:new Date().toISOString()}))}catch(e){}
+    if(typeof oldScan==='function')m.scan=function(){let out=oldScan.apply(this,arguments);try{if(out&&out.registry)addAlignedPaths(out.registry)}catch(e){}return out};
+    m.__routeV20AtlasAligned=true;
+    try{w.localStorage.setItem('pmp_route_v20_atlas_alignment_v1',JSON.stringify({type:'PMP_ROUTE_V20_ATLAS_ALIGNMENT_V1',paths:ACTIVE_ALIGN_PATHS,owner:'pmp-current-reload-owner-v28.html',at:new Date().toISOString()}))}catch(e){}
   }catch(e){}
 }
-frame.src='pmp-current-inner-cleanbug-rgcontrols-v29.html?fresh=v29-pass5-discovery-zip-v2-atlas-aligned-20260704G-'+Date.now()+(location.hash||'#bank');
+frame.src='pmp-current-inner-cleanbug-rgcontrols-v29.html?fresh=v29-pass5-route-v20-atlas-aligned-20260704H-'+Date.now()+(location.hash||'#bank');
 const patchTimer=setInterval(patchChildAtlas,80);
 [120,240,360,600,900,1300,1800,2500,3400,4300,5200,6500].forEach(t=>setTimeout(patchChildAtlas,t));
 setTimeout(()=>clearInterval(patchTimer),8000);
