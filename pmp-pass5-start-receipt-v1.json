@@ -1,0 +1,59 @@
+{
+  "type": "PMP_PASS5_START_RECEIPT_V1",
+  "version": "1.0.0-pass5-active-path-truth-alignment-start",
+  "pass": "Pass 5",
+  "name": "Active Path Truth Alignment",
+  "owner": "pmp-pass5-start-receipt-v1",
+  "mode": "start_receipt_only",
+  "rule": "Starts Pass 5 only. No Bank rebuild, no storage migration, no IndexedDB write, no live route behavior change, no deletion.",
+  "started_at": "2026-07-04T01:40:00Z",
+  "prior_freeze": {
+    "pass": "Pass 4",
+    "receipt": "pmp-pass4-freeze-receipt-v1.json",
+    "status": "frozen"
+  },
+  "target": {
+    "name": "Active Path Truth Alignment",
+    "goal": "Make proof/diagnostic machines classify the frozen live path as the current boot root and stop treating old v9/v15/v27/v24 route names as current boot root authority.",
+    "frozen_live_path": [
+      "pmp-app-current.html",
+      "pmp-route-guardian-current-loader-v19.html",
+      "pmp-current-reload-owner-v28.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v29.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "pmp-home-single-v6.html"
+    ],
+    "current_map_support": [
+      "pmp-current-map-v11.json",
+      "pmp-current-map-v10.json"
+    ]
+  },
+  "allowed_scope": {
+    "proof_layer": true,
+    "classification_layer": true,
+    "receipts": true,
+    "route_behavior_change": false,
+    "bank_rebuild": false,
+    "storage_migration": false,
+    "indexeddb_write": false,
+    "blind_deletion": false,
+    "crosswalk_parallel_plan": false
+  },
+  "first_patch_plan": {
+    "file": "pmp-active-path-discovery-machine-v1.js",
+    "purpose": "Align hardcoded current boot root seed/classification with Pass 4 frozen path v19/v28/v29 while preserving passive discovery behavior.",
+    "risk": "low_to_medium",
+    "reason": "The last proof passed, but the discovery machine still hardcoded old ROOT entries including v9/v15/v27/v24 as current_boot_root."
+  },
+  "success_gate": {
+    "active_path_discovery_required": true,
+    "hard_missing_count": 0,
+    "live_runtime_missing_count": 0,
+    "direct_current_missing_count": 0,
+    "freeze_gate_pass": true,
+    "old_paths_may_remain_as_reachable_support": true,
+    "old_paths_must_not_be_current_boot_root_authority": true
+  }
+}
