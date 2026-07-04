@@ -14,9 +14,9 @@ iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#f3ded4
 </head>
 <body>
 <iframe id="a" title="PMP Current App"></iframe>
-<script src="pmp-pass1w-live-proof-reader-v1.js?fresh=orchestrator-receipt-20260704E"></script>
-<script src="pmp-current-screen-pointer-v1.js?fresh=v28-pointer-pass5-discovery-root-aligner-20260704E"></script>
-<script src="pmp-reload-world-from-map-v1.js?fresh=v28-reload-map-pass5-discovery-root-aligner-20260704E"></script>
+<script src="pmp-pass1w-live-proof-reader-v1.js?fresh=orchestrator-receipt-20260704I"></script>
+<script src="pmp-current-screen-pointer-v1.js?fresh=v28-pointer-pass5-stable-20260704I"></script>
+<script src="pmp-reload-world-from-map-v1.js?fresh=v28-reload-map-pass5-stable-20260704I"></script>
 <script>
 const frame=document.getElementById('a');
 const ACTIVE_ALIGN_PATHS=['pmp-route-guardian-current-loader-v20.html','pmp-active-path-discovery-zip-export-v2.js'];
@@ -44,7 +44,7 @@ function patchChildAtlas(){
     try{w.localStorage.setItem('pmp_route_v20_atlas_alignment_v1',JSON.stringify({type:'PMP_ROUTE_V20_ATLAS_ALIGNMENT_V1',paths:ACTIVE_ALIGN_PATHS,owner:'pmp-current-reload-owner-v28.html',at:new Date().toISOString()}))}catch(e){}
   }catch(e){}
 }
-frame.src='pmp-current-inner-cleanbug-rgcontrols-v29.html?fresh=v29-pass5-route-v20-atlas-aligned-20260704H-'+Date.now()+(location.hash||'#bank');
+frame.src='pmp-current-inner-cleanbug-rgcontrols-v29.html?fresh=v29-pass5-stable-v20-aligned-20260704I-'+Date.now()+(location.hash||'#bank');
 const patchTimer=setInterval(patchChildAtlas,80);
 [120,240,360,600,900,1300,1800,2500,3400,4300,5200,6500].forEach(t=>setTimeout(patchChildAtlas,t));
 setTimeout(()=>clearInterval(patchTimer),8000);
