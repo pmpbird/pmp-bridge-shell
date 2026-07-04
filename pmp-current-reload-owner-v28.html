@@ -19,7 +19,34 @@ iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#f3ded4
 <script src="pmp-reload-world-from-map-v1.js?fresh=v28-reload-map-pass5-discovery-root-aligner-20260704E"></script>
 <script>
 const frame=document.getElementById('a');
-frame.src='pmp-current-inner-cleanbug-rgcontrols-v29.html?fresh=v29-pass5-discovery-root-aligner-world-safe-20260704E-'+Date.now()+(location.hash||'#bank');
+const ZIP_PATH='pmp-active-path-discovery-zip-export-v1.js';
+function addZipToAtlas(r){
+  if(!r||typeof r!=='object')return r;
+  r.repo_file_classification=r.repo_file_classification||{};
+  let a=r.repo_file_classification.ACTIVE_CURRENT_APP||[];
+  if(a.indexOf(ZIP_PATH)<0)a=a.concat([ZIP_PATH]);
+  r.repo_file_classification.ACTIVE_CURRENT_APP=a;
+  if(Array.isArray(r.files)&&!r.files.some(x=>x&&x.path===ZIP_PATH))r.files=r.files.concat([{path:ZIP_PATH,bucket:'ACTIVE_CURRENT_APP',group:'active_current_app'}]);
+  if(Array.isArray(r.slots)&&!r.slots.some(x=>x&&x.id==='active_current_app_discovery_zip_export'))r.slots=r.slots.concat([{id:'active_current_app_discovery_zip_export',bucket:'ACTIVE_CURRENT_APP',owner:'Active Path Discovery ZIP Exporter',parent:'Active Path Discovery',selectors:[],files:[ZIP_PATH],policy:'export oversized discovery report as zip only'}]);
+  return r;
+}
+function patchChildAtlas(){
+  try{
+    const w=frame.contentWindow;
+    if(!w||!w.PMPMountRegistryV1||w.PMPMountRegistryV1.__discoveryZipAtlasAligned)return;
+    const m=w.PMPMountRegistryV1;
+    const oldRegistry=m.registry;
+    if(typeof oldRegistry==='function')m.registry=function(){return addZipToAtlas(oldRegistry.apply(this,arguments))};
+    const oldScan=m.scan;
+    if(typeof oldScan==='function')m.scan=function(){let out=oldScan.apply(this,arguments);try{if(out&&out.registry)addZipToAtlas(out.registry)}catch(e){}return out};
+    m.__discoveryZipAtlasAligned=true;
+    try{w.localStorage.setItem('pmp_discovery_zip_atlas_alignment_v1',JSON.stringify({type:'PMP_DISCOVERY_ZIP_ATLAS_ALIGNMENT_V1',path:ZIP_PATH,owner:'pmp-current-reload-owner-v28.html',at:new Date().toISOString()}))}catch(e){}
+  }catch(e){}
+}
+frame.src='pmp-current-inner-cleanbug-rgcontrols-v29.html?fresh=v29-pass5-discovery-zip-atlas-aligned-20260704F-'+Date.now()+(location.hash||'#bank');
+const patchTimer=setInterval(patchChildAtlas,80);
+[120,240,360,600,900,1300,1800,2500,3400,4300,5200,6500].forEach(t=>setTimeout(patchChildAtlas,t));
+setTimeout(()=>clearInterval(patchTimer),8000);
 </script>
 </body>
 </html>
