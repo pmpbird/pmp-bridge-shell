@@ -14,18 +14,16 @@ iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#f3ded4
 </head>
 <body>
 <iframe id="a" title="PMP Current App"></iframe>
-<script src="pmp-pass1w-live-proof-reader-v1.js?fresh=orchestrator-receipt-20260705O"></script>
-<script src="pmp-current-screen-pointer-v1.js?fresh=v28-pointer-pass7-rg-first-reload-20260705O"></script>
-<script src="pmp-reload-world-from-map-v1.js?fresh=v28-reload-current-v11-20260705O"></script>
-<script src="pmp-launcher-reload-current-v2-guard.js?fresh=launcher-reload-rg-first-20260705O"></script>
-<script src="pmp-active-path-discovery-zip-export-v2.js?fresh=discovery-ui-owner-lock-v24-20260705O"></script>
+<script src="pmp-pass1w-live-proof-reader-v1.js?fresh=orchestrator-receipt-20260705P"></script>
+<script src="pmp-current-screen-pointer-v1.js?fresh=v28-pointer-visible-rg-checkpoint-20260705P"></script>
+<script src="pmp-reload-world-from-map-v1.js?fresh=reload-current-rg-first-visible-20260705P"></script>
+<script src="pmp-launcher-reload-current-v2-guard.js?fresh=launcher-reload-rg-first-visible-20260705P"></script>
+<script src="pmp-active-path-discovery-zip-export-v2.js?fresh=discovery-ui-owner-lock-v24-20260705P"></script>
 <script>
 const frame=document.getElementById('a');
-const ACTIVE_ALIGN_PATHS=['pmp-route-guardian-current-loader-v20.html','pmp-active-path-discovery-zip-export-v2.js','pmp-launcher-reload-current-v2-guard.js'];
+const ACTIVE_ALIGN_PATHS=['pmp-route-guardian-current-loader-v20.html','pmp-active-path-discovery-zip-export-v2.js','pmp-launcher-reload-current-v2-guard.js','pmp-reload-world-from-map-v1.js'];
 const STAMP_IDS=['pmpCurrentPathStampV1','pmpCurrentPathStampFloatingV1','pmpCurrentPathStampFooterV1','pmpCurrentPathControlFooterV1'];
-function clearPathStamps(){
-  try{[window,frame.contentWindow].forEach(w=>{try{STAMP_IDS.forEach(id=>{let x=w.document.getElementById(id);if(x)x.remove()})}catch(e){}})}catch(e){}
-}
+function clearPathStamps(){try{[window,frame.contentWindow].forEach(w=>{try{STAMP_IDS.forEach(id=>{let x=w.document.getElementById(id);if(x)x.remove()})}catch(e){}})}catch(e){}}
 function addPathToAtlas(r,path){
   if(!r||typeof r!=='object')return r;
   r.repo_file_classification=r.repo_file_classification||{};
@@ -33,25 +31,13 @@ function addPathToAtlas(r,path){
   if(a.indexOf(path)<0)a=a.concat([path]);
   r.repo_file_classification.ACTIVE_CURRENT_APP=a;
   if(Array.isArray(r.files)&&!r.files.some(x=>x&&x.path===path))r.files=r.files.concat([{path,bucket:'ACTIVE_CURRENT_APP',group:path==='pmp-active-path-discovery-zip-export-v2.js'?'support_proof_exporter':'active_current_app',route_authority:false}]);
-  if(Array.isArray(r.slots)){let id=('active_current_app_'+path).toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');if(!r.slots.some(x=>x&&x.id===id))r.slots=r.slots.concat([{id,bucket:'ACTIVE_CURRENT_APP',owner:path==='pmp-active-path-discovery-zip-export-v2.js'?'Active Path Discovery ZIP Exporter':(path==='pmp-launcher-reload-current-v2-guard.js'?'Launcher Reload Current Guard':'Active Path File Owner'),parent:'active_path_atlas',selectors:[],files:[path],policy:path==='pmp-launcher-reload-current-v2-guard.js'?'Owns launcher Reload Current click routing. Returns to Route Guardian v20 first.':'support/current path alignment'}]);}
+  if(Array.isArray(r.slots)){let id=('active_current_app_'+path).toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');if(!r.slots.some(x=>x&&x.id===id))r.slots=r.slots.concat([{id,bucket:'ACTIVE_CURRENT_APP',owner:path==='pmp-active-path-discovery-zip-export-v2.js'?'Active Path Discovery ZIP Exporter':(path==='pmp-launcher-reload-current-v2-guard.js'?'Launcher Reload Current Guard':(path==='pmp-reload-world-from-map-v1.js'?'Reload Current Bridge':'Active Path File Owner')),parent:'active_path_atlas',selectors:[],files:[path],policy:path==='pmp-active-path-discovery-zip-export-v2.js'?'Support proof exporter only. Not route authority.':'Reload handlers return to Route Guardian v20 first.'}]);}
   return r;
 }
 function addAlignedPaths(r){ACTIVE_ALIGN_PATHS.forEach(p=>addPathToAtlas(r,p));return r;}
-function patchChildAtlas(){
-  try{
-    const w=frame.contentWindow;
-    if(!w||!w.PMPMountRegistryV1||w.PMPMountRegistryV1.__routeV20AtlasAligned)return;
-    const m=w.PMPMountRegistryV1;
-    const oldRegistry=m.registry;
-    if(typeof oldRegistry==='function')m.registry=function(){return addAlignedPaths(oldRegistry.apply(this,arguments))};
-    const oldScan=m.scan;
-    if(typeof oldScan==='function')m.scan=function(){let out=oldScan.apply(this,arguments);try{if(out&&out.registry)addAlignedPaths(out.registry)}catch(e){}return out};
-    m.__routeV20AtlasAligned=true;
-    try{w.localStorage.setItem('pmp_route_v20_atlas_alignment_v1',JSON.stringify({type:'PMP_ROUTE_V20_ATLAS_ALIGNMENT_V1',paths:ACTIVE_ALIGN_PATHS,owner:'pmp-current-reload-owner-v28.html',at:new Date().toISOString()}))}catch(e){}
-  }catch(e){}
-}
+function patchChildAtlas(){try{const w=frame.contentWindow;if(!w||!w.PMPMountRegistryV1||w.PMPMountRegistryV1.__routeV20AtlasAligned)return;const m=w.PMPMountRegistryV1;const oldRegistry=m.registry;if(typeof oldRegistry==='function')m.registry=function(){return addAlignedPaths(oldRegistry.apply(this,arguments))};const oldScan=m.scan;if(typeof oldScan==='function')m.scan=function(){let out=oldScan.apply(this,arguments);try{if(out&&out.registry)addAlignedPaths(out.registry)}catch(e){}return out};m.__routeV20AtlasAligned=true;try{w.localStorage.setItem('pmp_route_v20_atlas_alignment_v1',JSON.stringify({type:'PMP_ROUTE_V20_ATLAS_ALIGNMENT_V1',paths:ACTIVE_ALIGN_PATHS,owner:'pmp-current-reload-owner-v28.html',at:new Date().toISOString()}))}catch(e){}}catch(e){}}
 function installHelpers(){try{clearPathStamps();if(window.PMPLauncherReloadCurrentV2Guard&&window.PMPLauncherReloadCurrentV2Guard.scan)window.PMPLauncherReloadCurrentV2Guard.scan();if(window.PMPActivePathDiscoveryZipExportV2&&window.PMPActivePathDiscoveryZipExportV2.install)window.PMPActivePathDiscoveryZipExportV2.install()}catch(e){}}
-frame.src='pmp-current-inner-cleanbug-rgcontrols-v29.html?fresh=v29-pass7-rg-first-reload-20260705O-'+Date.now()+(location.hash||'#bank');
+frame.src='pmp-current-inner-cleanbug-rgcontrols-v29.html?fresh=v29-visible-rg-checkpoint-20260705P-'+Date.now()+(location.hash||'#bank');
 const patchTimer=setInterval(()=>{patchChildAtlas();installHelpers()},80);
 [120,240,360,600,900,1300,1800,2500,3400,4300,5200,6500].forEach(t=>setTimeout(()=>{patchChildAtlas();installHelpers()},t));
 setTimeout(()=>clearInterval(patchTimer),8000);
