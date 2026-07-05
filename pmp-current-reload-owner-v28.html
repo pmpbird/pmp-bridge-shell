@@ -14,11 +14,10 @@ iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#f3ded4
 </head>
 <body>
 <iframe id="a" title="PMP Current App"></iframe>
-<script src="pmp-pass1w-live-proof-reader-v1.js?fresh=orchestrator-receipt-20260705D"></script>
-<script src="pmp-current-screen-pointer-v1.js?fresh=v28-pointer-pass7-dropdown-discovery-20260705D"></script>
-<script src="pmp-reload-world-from-map-v1.js?fresh=v28-reload-current-v11-20260705D"></script>
-<script src="pmp-active-path-discovery-machine-v1.js?fresh=active-path-discovery-compact-proof-20260705D"></script>
-<script src="pmp-active-path-discovery-zip-export-v2.js?fresh=discovery-dropdown-menu-v23-20260705D"></script>
+<script src="pmp-pass1w-live-proof-reader-v1.js?fresh=orchestrator-receipt-20260705E"></script>
+<script src="pmp-current-screen-pointer-v1.js?fresh=v28-pointer-pass7-discovery-noflicker-20260705E"></script>
+<script src="pmp-reload-world-from-map-v1.js?fresh=v28-reload-current-v11-20260705E"></script>
+<script src="pmp-active-path-discovery-zip-export-v2.js?fresh=discovery-dropdown-menu-v23-noflicker-20260705E"></script>
 <script>
 const frame=document.getElementById('a');
 const ACTIVE_ALIGN_PATHS=['pmp-route-guardian-current-loader-v20.html','pmp-active-path-discovery-zip-export-v2.js'];
@@ -46,12 +45,12 @@ function patchChildAtlas(){
     try{w.localStorage.setItem('pmp_route_v20_atlas_alignment_v1',JSON.stringify({type:'PMP_ROUTE_V20_ATLAS_ALIGNMENT_V1',paths:ACTIVE_ALIGN_PATHS,owner:'pmp-current-reload-owner-v28.html',at:new Date().toISOString()}))}catch(e){}
   }catch(e){}
 }
-function installDiscoveryCopy(){try{if(window.PMPActivePathDiscoveryMachineV1&&window.PMPActivePathDiscoveryMachineV1.mount)window.PMPActivePathDiscoveryMachineV1.mount();if(window.PMPActivePathDiscoveryZipExportV2&&window.PMPActivePathDiscoveryZipExportV2.install)window.PMPActivePathDiscoveryZipExportV2.install()}catch(e){}}
-frame.src='pmp-current-inner-cleanbug-rgcontrols-v29.html?fresh=v29-pass7-dropdown-discovery-20260705D-'+Date.now()+(location.hash||'#bank');
-const patchTimer=setInterval(()=>{patchChildAtlas();installDiscoveryCopy()},80);
-[120,240,360,600,900,1300,1800,2500,3400,4300,5200,6500].forEach(t=>setTimeout(()=>{patchChildAtlas();installDiscoveryCopy()},t));
+function installDiscoveryMenu(){try{if(window.PMPActivePathDiscoveryZipExportV2&&window.PMPActivePathDiscoveryZipExportV2.install)window.PMPActivePathDiscoveryZipExportV2.install()}catch(e){}}
+frame.src='pmp-current-inner-cleanbug-rgcontrols-v29.html?fresh=v29-pass7-discovery-noflicker-20260705E-'+Date.now()+(location.hash||'#bank');
+const patchTimer=setInterval(()=>{patchChildAtlas();installDiscoveryMenu()},80);
+[120,240,360,600,900,1300,1800,2500,3400,4300,5200,6500].forEach(t=>setTimeout(()=>{patchChildAtlas();installDiscoveryMenu()},t));
 setTimeout(()=>clearInterval(patchTimer),8000);
-setInterval(installDiscoveryCopy,2000);
+setInterval(installDiscoveryMenu,2000);
 </script>
 </body>
 </html>
