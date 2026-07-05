@@ -26,8 +26,8 @@ function addPathToAtlas(r,path){
   let a=r.repo_file_classification.ACTIVE_CURRENT_APP||[];
   if(a.indexOf(path)<0)a=a.concat([path]);
   r.repo_file_classification.ACTIVE_CURRENT_APP=a;
-  if(Array.isArray(r.files)&&!r.files.some(x=>x&&x.path===path))r.files=r.files.concat([{path,bucket:'ACTIVE_CURRENT_APP',group:'active_current_app'}]);
-  if(Array.isArray(r.slots)){let id=('active_current_app_'+path).toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');if(!r.slots.some(x=>x&&x.id===id))r.slots=r.slots.concat([{id,bucket:'ACTIVE_CURRENT_APP',owner:'Active Path File Owner',parent:'active_path_atlas',selectors:[],files:[path],policy:'active path alignment'}]);}
+  if(Array.isArray(r.files)&&!r.files.some(x=>x&&x.path===path))r.files=r.files.concat([{path,bucket:'ACTIVE_CURRENT_APP',group:path==='pmp-active-path-discovery-zip-export-v2.js'?'support_proof_exporter':'active_current_app',route_authority:path!=='pmp-active-path-discovery-zip-export-v2.js'}]);
+  if(Array.isArray(r.slots)){let id=('active_current_app_'+path).toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');if(!r.slots.some(x=>x&&x.id===id))r.slots=r.slots.concat([{id,bucket:'ACTIVE_CURRENT_APP',owner:path==='pmp-active-path-discovery-zip-export-v2.js'?'Active Path Discovery ZIP Exporter':'Active Path File Owner',parent:'active_path_atlas',selectors:[],files:[path],policy:path==='pmp-active-path-discovery-zip-export-v2.js'?'Support proof exporter only. Not route authority.':'active path alignment'}]);}
   return r;
 }
 function addAlignedPaths(r){ACTIVE_ALIGN_PATHS.forEach(p=>addPathToAtlas(r,p));return r;}
@@ -44,7 +44,7 @@ function patchChildAtlas(){
     try{w.localStorage.setItem('pmp_route_v20_atlas_alignment_v1',JSON.stringify({type:'PMP_ROUTE_V20_ATLAS_ALIGNMENT_V1',paths:ACTIVE_ALIGN_PATHS,owner:'pmp-current-reload-owner-v28.html',at:new Date().toISOString()}))}catch(e){}
   }catch(e){}
 }
-frame.src='pmp-current-inner-cleanbug-rgcontrols-v29.html?fresh=v29-pass5-stable-v20-aligned-20260704I-'+Date.now()+(location.hash||'#bank');
+frame.src='pmp-current-inner-cleanbug-rgcontrols-v29.html?fresh=v29-pass7-section-owner-boundary-20260704P-'+Date.now()+(location.hash||'#bank');
 const patchTimer=setInterval(patchChildAtlas,80);
 [120,240,360,600,900,1300,1800,2500,3400,4300,5200,6500].forEach(t=>setTimeout(patchChildAtlas,t));
 setTimeout(()=>clearInterval(patchTimer),8000);
