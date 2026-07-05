@@ -1,28 +1,18 @@
 (()=>{
 'use strict';
-const V='1.7.0-pass7-v11-v28-top-window-only';
-const KEY='pmp_launcher_reload_current_bridge_v1_receipt',LAST='pmp_reload_current_last_active_page_v1';
-const DEFAULT_CURRENT='pmp-current-reload-owner-v28.html';
-const MAPS=['pmp-current-map-v11.json','pmp-current-map-v10.json'];
+const V='1.8.0-route-guardian-first-only';
+const KEY='pmp_launcher_reload_current_bridge_v1_receipt';
+const RG='pmp-route-guardian-current-loader-v20.html';
 function T(){try{return top||window}catch(e){return window}}
 function save(v){try{T().localStorage.setItem(KEY,JSON.stringify(v,null,2))}catch(e){}return v}
-function read(k){try{return JSON.parse(T().localStorage.getItem(k)||'null')}catch(e){return null}}
-function put(k,v){try{T().localStorage.setItem(k,JSON.stringify(v,null,2))}catch(e){}return v}
-function txt(x){return String((x&&x.textContent)||x&&x.value||'').replace(/\s+/g,' ').trim()}
-function clean(s){return String(s||'').replace(/[^a-z0-9]+/gi,' ').trim().toLowerCase()}
-function ok(p){return /^#(world|bridge|library|workshop|control|bank)$/i.test(String(p||''))}
-function safePath(path){path=String(path||DEFAULT_CURRENT).trim().replace(/^\/+,'');return /^[a-zA-Z0-9._\/-]+\.html$/.test(path)?path:DEFAULT_CURRENT}
+function text(x){return String((x&&x.textContent)||x&&x.value||'').replace(/\s+/g,' ').trim()}
+function page(){try{return /^#(world|bridge|library|workshop|control|bank)$/i.test(T().location.hash)?T().location.hash:'#control'}catch(e){return'#control'}}
+function reloadCurrent(e,b){try{if(e){e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation()}let url=RG+'?from=legacy-launcher-reload&autoRun=1&fresh='+encodeURIComponent(V)+'-'+Date.now()+page();save({type:'PMP_LAUNCHER_RELOAD_CURRENT_BRIDGE_V1_RECEIPT',version:V,status:'ROUTE_GUARDIAN_FIRST_ONLY',pressed_text:text(b),launch_url:url,at:new Date().toISOString(),rule:'Legacy reload bridge only returns to Route Guardian v20. No direct current-owner route.'});T().location.replace(url)}catch(err){save({type:'PMP_LAUNCHER_RELOAD_CURRENT_BRIDGE_V1_RECEIPT',version:V,status:'ERROR',error:String(err),at:new Date().toISOString()})}return false}
+function norm(x){return text(x).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
+function isReload(b){let s=norm(b),o=String(b&&b.getAttribute&&b.getAttribute('onclick')||'').toLowerCase();return s==='reload'||s==='reload current'||s.includes('reload current')||o.includes('reloadapp')||b&&b.getAttribute&&b.getAttribute('data-launcher-reload-current')}
 function docs(d,a,n){a=a||[];n=n||0;if(!d||n>12)return a;try{a.push(d);d.querySelectorAll('iframe,frame').forEach(f=>{try{let q=f.contentDocument||(f.contentWindow&&f.contentWindow.document);if(q)docs(q,a,n+1)}catch(e){}})}catch(e){}return a}
-function pageFrom(d){try{let h=d.defaultView.location.hash;if(ok(h))return h.toLowerCase()}catch(e){}try{let x=d.querySelector('.screen.on,.on.screen');if(x&&x.id&&ok('#'+x.id))return '#'+x.id.toLowerCase()}catch(e){}try{let b=txt(d.body).slice(0,2200);if(/Control Room|Code Safety|Safe Writer/i.test(b))return'#control';if(/Bank Project|Master Bank|Continuous Run Bank|Connections Bank|Staging Transfer Store/i.test(b))return'#bank';if(/Workshop/i.test(b))return'#workshop';if(/Library/i.test(b))return'#library';if(/Bridge|Connections/i.test(b))return'#bridge';if(/World|PMP World/i.test(b))return'#world'}catch(e){}return''}
-function visibleLauncher(d){try{let b=txt(d.body).slice(0,3000);return /Launcher/i.test(b)&&(/PMP Current ready|Clean PMP Current|PMP World/i.test(b))}catch(e){return false}}
-function remember(){let arr=docs(T().document).reverse(),best='';for(const d of arr){let p=pageFrom(d);if(p){best=p;break}}if(best&&ok(best)&&best!=='#world')put(LAST,{page:best,at:Date.now(),source:'scan'});return best||'#world'}
-function currentPageForReload(button){let live=remember(),last=read(LAST);if(last&&ok(last.page)&&Date.now()-Number(last.at||0)<600000){try{if(button&&button.ownerDocument&&visibleLauncher(button.ownerDocument))return last.page}catch(e){}if(live==='#world'&&last.page!=='#world')return last.page}return ok(live)?live:'#world'}
-async function latest(){let lastErr=null;for(const p of MAPS){try{let r=await fetch(p+'?launcherReload='+encodeURIComponent(V)+'-'+Date.now(),{cache:'no-store',headers:{'Cache-Control':'no-cache'}});if(!r.ok)throw Error(p+' '+r.status);let j=await r.json(),a=j.current_app||{};return{path:safePath(a.path),key:String(a.cache_key||j.updated_at||V),map_path:p,map_updated_at:j.updated_at,map_current_app:a}}catch(e){lastErr=e}}return{path:DEFAULT_CURRENT,key:V,map_error:String(lastErr&&lastErr.message||lastErr||'no map')}}
-async function reloadCurrent(e,b){try{if(e){e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation()}b=b||(e&&e.currentTarget)||null;let pg=currentPageForReload(b),target=await latest();let snap={type:'PMP_RELOAD_CURRENT_LIVE_SNAPSHOT_V12',version:V,at:new Date().toISOString(),made_at:Date.now(),page:pg,pressed_text:txt(b)};try{T().localStorage.setItem('pmp_reload_current_live_snapshot_v12',JSON.stringify(snap,null,2));T().localStorage.setItem('pmp_reload_current_live_snapshot_v12_last_kept',JSON.stringify(snap,null,2))}catch(x){}let url=target.path+'?from=launcher-panel-reload&fresh='+encodeURIComponent(V)+'-'+encodeURIComponent(target.key)+'-'+Date.now()+pg;save({type:'PMP_LAUNCHER_RELOAD_CURRENT_BRIDGE_V1_RECEIPT',version:V,status:'CURRENT_MAP_V11_TO_V28_TOP_WINDOW',snapshot:snap,target,launch_url:url,at:new Date().toISOString(),rule:'Launcher Reload Current must use current map v11/v10 and current reload owner v28. It must not call v9, v27, v18, or old pass4 routes.'});try{T().location.replace(url)}catch(x){window.location.replace(url)}}catch(err){save({type:'PMP_LAUNCHER_RELOAD_CURRENT_BRIDGE_V1_RECEIPT',version:V,status:'ERROR',error:String(err),at:new Date().toISOString()})}return false}
-function isReload(b){let s=clean(txt(b)),o=String(b.getAttribute&&b.getAttribute('onclick')||'').toLowerCase();return s==='reload'||s==='reload current'||s==='reload app'||s.includes('reload current')||o.includes('reloadapp')||b.getAttribute&&b.getAttribute('data-launcher-reload-current')}
-function patch(d){try{let w=d.defaultView;if(w){w.reloadApp=function(){return reloadCurrent(null,null)}}[...d.querySelectorAll('button,a,[role="button"],input,[data-launcher-reload-current]')].forEach(b=>{if(!isReload(b)||b.__pmpReloadBridgeV17)return;b.__pmpReloadBridgeV17=1;try{b.onclick=null;b.removeAttribute('onclick');if(clean(txt(b))==='reload')b.textContent='Reload Current';b.setAttribute('data-launcher-reload-current','1')}catch(e){}b.addEventListener('click',ev=>reloadCurrent(ev,b),true)})}catch(e){}}
-function scan(){try{remember();let old=T().document.getElementById('pmpOwnerReloadCurrentButtonV1');if(old)old.remove()}catch(e){}try{docs(T().document).forEach(patch)}catch(e){}}
+function patch(d){try{let w=d.defaultView;if(w)w.reloadApp=function(){return reloadCurrent(null,null)};d.querySelectorAll('button,a,[role="button"],input,[data-launcher-reload-current]').forEach(b=>{if(!isReload(b)||b.__pmpLegacyReloadRG)return;b.__pmpLegacyReloadRG=1;try{b.onclick=null;b.removeAttribute('onclick');b.setAttribute('data-launcher-reload-current','1');if(norm(b)==='reload')b.textContent='Reload Current'}catch(e){}b.addEventListener('click',ev=>reloadCurrent(ev,b),true)})}catch(e){}}
+function scan(){try{docs(T().document).forEach(patch)}catch(e){try{patch(document)}catch(x){}}}
 T().PMPLauncherReloadCurrentBridgeV1={version:V,scan,reloadCurrent,key:KEY};
-addEventListener('load',()=>[80,300,900,2000,5000,9000].forEach(t=>setTimeout(scan,t)));
-setInterval(scan,500);scan();
+addEventListener('load',scan);setInterval(scan,500);scan();
 })();
