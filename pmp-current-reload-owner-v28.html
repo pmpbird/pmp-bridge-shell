@@ -14,10 +14,10 @@ iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#f3ded4
 </head>
 <body>
 <iframe id="a" title="PMP Current App"></iframe>
-<script src="pmp-pass1w-live-proof-reader-v1.js?fresh=orchestrator-receipt-20260705E"></script>
-<script src="pmp-current-screen-pointer-v1.js?fresh=v28-pointer-pass7-discovery-noflicker-20260705E"></script>
-<script src="pmp-reload-world-from-map-v1.js?fresh=v28-reload-current-v11-20260705E"></script>
-<script src="pmp-active-path-discovery-zip-export-v2.js?fresh=discovery-dropdown-menu-v23-noflicker-20260705E"></script>
+<script src="pmp-pass1w-live-proof-reader-v1.js?fresh=orchestrator-receipt-20260705F"></script>
+<script src="pmp-current-screen-pointer-v1.js?fresh=v28-pointer-pass7-discovery-owner-lock-20260705F"></script>
+<script src="pmp-reload-world-from-map-v1.js?fresh=v28-reload-current-v11-20260705F"></script>
+<script src="pmp-active-path-discovery-zip-export-v2.js?fresh=discovery-ui-owner-lock-v24-20260705F"></script>
 <script>
 const frame=document.getElementById('a');
 const ACTIVE_ALIGN_PATHS=['pmp-route-guardian-current-loader-v20.html','pmp-active-path-discovery-zip-export-v2.js'];
@@ -46,11 +46,11 @@ function patchChildAtlas(){
   }catch(e){}
 }
 function installDiscoveryMenu(){try{if(window.PMPActivePathDiscoveryZipExportV2&&window.PMPActivePathDiscoveryZipExportV2.install)window.PMPActivePathDiscoveryZipExportV2.install()}catch(e){}}
-frame.src='pmp-current-inner-cleanbug-rgcontrols-v29.html?fresh=v29-pass7-discovery-noflicker-20260705E-'+Date.now()+(location.hash||'#bank');
+frame.src='pmp-current-inner-cleanbug-rgcontrols-v29.html?fresh=v29-pass7-discovery-owner-lock-20260705F-'+Date.now()+(location.hash||'#bank');
 const patchTimer=setInterval(()=>{patchChildAtlas();installDiscoveryMenu()},80);
 [120,240,360,600,900,1300,1800,2500,3400,4300,5200,6500].forEach(t=>setTimeout(()=>{patchChildAtlas();installDiscoveryMenu()},t));
 setTimeout(()=>clearInterval(patchTimer),8000);
-setInterval(installDiscoveryMenu,2000);
+setInterval(installDiscoveryMenu,1000);
 </script>
 </body>
 </html>
