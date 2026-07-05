@@ -14,11 +14,11 @@ iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#f3ded4
 </head>
 <body>
 <iframe id="a" title="PMP Current App"></iframe>
-<script src="pmp-pass1w-live-proof-reader-v1.js?fresh=orchestrator-receipt-20260705I"></script>
-<script src="pmp-current-screen-pointer-v1.js?fresh=v28-pointer-pass7-path-overlay-20260705I"></script>
-<script src="pmp-reload-world-from-map-v1.js?fresh=v28-reload-current-v11-20260705I"></script>
-<script src="pmp-active-path-discovery-zip-export-v2.js?fresh=discovery-ui-owner-lock-v24-20260705I"></script>
-<script src="pmp-current-path-stamp-v1.js?fresh=current-path-stamp-overlay-20260705I"></script>
+<script src="pmp-pass1w-live-proof-reader-v1.js?fresh=orchestrator-receipt-20260705J"></script>
+<script src="pmp-current-screen-pointer-v1.js?fresh=v28-pointer-pass7-path-footer-20260705J"></script>
+<script src="pmp-reload-world-from-map-v1.js?fresh=v28-reload-current-v11-20260705J"></script>
+<script src="pmp-active-path-discovery-zip-export-v2.js?fresh=discovery-ui-owner-lock-v24-20260705J"></script>
+<script src="pmp-current-path-stamp-v1.js?fresh=current-path-stamp-footer-20260705J"></script>
 <script>
 const frame=document.getElementById('a');
 const ACTIVE_ALIGN_PATHS=['pmp-route-guardian-current-loader-v20.html','pmp-active-path-discovery-zip-export-v2.js','pmp-current-path-stamp-v1.js'];
@@ -29,7 +29,7 @@ function addPathToAtlas(r,path){
   if(a.indexOf(path)<0)a=a.concat([path]);
   r.repo_file_classification.ACTIVE_CURRENT_APP=a;
   if(Array.isArray(r.files)&&!r.files.some(x=>x&&x.path===path))r.files=r.files.concat([{path,bucket:'ACTIVE_CURRENT_APP',group:path==='pmp-active-path-discovery-zip-export-v2.js'?'support_proof_exporter':'active_current_app',route_authority:path!=='pmp-active-path-discovery-zip-export-v2.js'}]);
-  if(Array.isArray(r.slots)){let id=('active_current_app_'+path).toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');if(!r.slots.some(x=>x&&x.id===id))r.slots=r.slots.concat([{id,bucket:'ACTIVE_CURRENT_APP',owner:path==='pmp-active-path-discovery-zip-export-v2.js'?'Active Path Discovery ZIP Exporter':(path==='pmp-current-path-stamp-v1.js'?'Current Path Stamp':'Active Path File Owner'),parent:'active_path_atlas',selectors:[],files:[path],policy:path==='pmp-active-path-discovery-zip-export-v2.js'?'Support proof exporter only. Not route authority.':(path==='pmp-current-path-stamp-v1.js'?'Passive overlay only. Not a Control Room card. Not route authority.':'active path alignment')}]);}
+  if(Array.isArray(r.slots)){let id=('active_current_app_'+path).toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');if(!r.slots.some(x=>x&&x.id===id))r.slots=r.slots.concat([{id,bucket:'ACTIVE_CURRENT_APP',owner:path==='pmp-active-path-discovery-zip-export-v2.js'?'Active Path Discovery ZIP Exporter':(path==='pmp-current-path-stamp-v1.js'?'Current Path Stamp':'Active Path File Owner'),parent:'active_path_atlas',selectors:[],files:[path],policy:path==='pmp-active-path-discovery-zip-export-v2.js'?'Support proof exporter only. Not route authority.':(path==='pmp-current-path-stamp-v1.js'?'Control Room footer only. Not a top card. Not route authority.':'active path alignment')}]);}
   return r;
 }
 function addAlignedPaths(r){ACTIVE_ALIGN_PATHS.forEach(p=>addPathToAtlas(r,p));return r;}
@@ -47,7 +47,7 @@ function patchChildAtlas(){
   }catch(e){}
 }
 function installHelpers(){try{if(window.PMPActivePathDiscoveryZipExportV2&&window.PMPActivePathDiscoveryZipExportV2.install)window.PMPActivePathDiscoveryZipExportV2.install();if(window.PMPCurrentPathStampV1&&window.PMPCurrentPathStampV1.install)window.PMPCurrentPathStampV1.install()}catch(e){}}
-frame.src='pmp-current-inner-cleanbug-rgcontrols-v29.html?fresh=v29-pass7-path-overlay-20260705I-'+Date.now()+(location.hash||'#bank');
+frame.src='pmp-current-inner-cleanbug-rgcontrols-v29.html?fresh=v29-pass7-path-footer-20260705J-'+Date.now()+(location.hash||'#bank');
 const patchTimer=setInterval(()=>{patchChildAtlas();installHelpers()},80);
 [120,240,360,600,900,1300,1800,2500,3400,4300,5200,6500].forEach(t=>setTimeout(()=>{patchChildAtlas();installHelpers()},t));
 setTimeout(()=>clearInterval(patchTimer),8000);
