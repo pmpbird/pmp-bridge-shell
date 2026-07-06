@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const V='1.5.5-pass4-current-path-atlas-v19-v28-v29';
+const V='1.5.6-pass7-v21-v29-atlas-minimal';
 const OWNER='pmp-mount-registry-v1';
 const K={registry:'pmp_mount_registry_v1',receipt:'pmp_mount_registry_v1_receipt',snapshot:'pmp_mount_registry_live_snapshot_v1',missing:'pmp_mount_registry_missing_expected_v1'};
 function list(s){return Array.from(new Set(String(s||'').trim().split(/\s+/).filter(Boolean)))}
@@ -10,25 +10,15 @@ const ACTIVE_CURRENT_APP=list(`
 pmp-app-current.html
 pmp-current-map-v11.json
 pmp-current-map-v10.json
-pmp-route-guardian-current-loader-v19.html
-pmp-route-guardian-current-loader-v18.html
-pmp-route-guardian-current-loader-v17.html
-pmp-route-guardian-current-loader-v15.html
-pmp-current-reload-owner-v28.html
-pmp-current-reload-owner-v27.html
+pmp-route-guardian-current-loader-v21.html
+pmp-current-reload-owner-v29.html
 pmp-current-inner-cleanbug-rgcontrols-v29.html
-pmp-current-inner-cleanbug-rgcontrols-v26.html
-pmp-current-inner-cleanbug-rgcontrols-v24.html
 pmp-current-inner-cleanbug-rgcontrols-v23.html
 pmp-current-inner-cleanbug-rgcontrols-v4.html
 pmp-current-inner-cleanbug-rgcontrols-v3.html
 pmp-home-single-v6.html
-pmp-active-page-tracker-v1.js
-pmp-launcher-reload-current-bridge-v1.js
-pmp-current-screen-pointer-v1.js
-pmp-launcher-panel-reload-button-v1.js
-pmp-reload-current-final-wire-v1.js
-pmp-current-map-v9.json
+pmp-launcher-reload-current-v2-guard.js
+pmp-active-path-discovery-zip-export-v2.js
 pmp-reload-world-from-map-v1.js
 pmp-app-orchestrator-v1.js
 pmp-mount-registry-v1.js
@@ -42,90 +32,28 @@ pmp-bug-watch-passive-capture-v1.js
 pmp-safe-writer-current-return-fix-v1.js
 pmp-phase8-atlas-marker-v1.js
 pmp-continuous-run-bank-order-frame-loader-v1.js
-pmp-continuous-run-level-ui-scope-v1.js
-pmp-bank-mode1-hide-unchecked-v1.js
-pmp-bank-screen-owner-v1.js
-pmp-bank-zero-loading-flash-guard-v1.js
-pmp-master-bank-tab-v1.js
 pmp-master-bank-inventory-router-v1.js
 pmp-continuous-run-state-bank-v1.js
 pmp-continuous-run-dashboard-stable-v1.js
-pmp-continuous-run-bank-transfer-store-v2.js
-pmp-continuous-run-bank-verify-receipt-fix-v1.js
-pmp-continuous-run-bank-zip-importer-v1.js
-pmp-continuous-run-bank-must-source-zip-v1.js
-pmp-bank-project-registry-v1.js
-pmp-bank-scoped-test-data-cleaner-v1.js
-pmp-continuous-run-single-line-hold-v1.js
-pmp-continuous-run-bank-stable-status-owner-v1.js
-pmp-bug-bank-storage-migration-v1.js
-pmp-bug-bank-owner-v1.js
-pmp-bug-bank-black-row-style-v1.js
-pmp-bug-bank-family-view-v1.js
-pmp-bug-bank-visual-detectors-v1.js
-pmp-bug-bank-current-active-cleaner-v1.js
-pmp-bug-bank-legacy-overflow-active-blocker-v1.js
-pmp-bug-bank-fix-active-stabilizer-v1.js
-pmp-helper-bank-live-inspector-v2.js
-pmp-connections-bank-packet-delete-v1.js
-pmp-connections-bank-packet-name-v1.js
-pmp-connections-bank-inventory-off-v1.js
-pmp-connections-copy-output-fix-v1.js
-pmp-connections-request-prompt-schema-v1.js
-pmp-connections-request-prompt-complete-v1.js
-pmp-p15-builder-fix-v2.js
-pmp-p15-units-restore-v1.js
-pmp-p15-proof-section-v1.js
-pmp-p15-continuous-runner-stable-v1.js
-pmp-phase1-migrate-v1.js
-pmp-private-backup-lite-v1.js
-pmp-layout-guard-v1.js
-pmp-source-text-reader-level3-v1.js
-pmp-source-reference-gate-level4-v1.js
-pmp-level10-random-source-certification-v1.js
-pmp-level11-startup-certification-guard-v1.js
-pmp-level16-source-bound-startup-enforcement-v1.js
-pmp-level17-source-mismatch-resident-block-test-v1.js
-pmp-level18-source-recertification-required-gate-v1.js
-pmp-level19-recertification-recovery-proof-v1.js
-pmp-level20-certification-chain-summary-lock-v1.js
-pmp-level21-one-tap-full-chain-retest-lock-v1.js
-pmp-level22-exportable-certification-receipt-v1.js
-pmp-level23-export-receipt-integrity-check-v1.js
-pmp-level24-tampered-receipt-rejection-test-v1.js
-pmp-level25-receipt-bundle-v1.js
-pmp-level26-portable-packet-integrity-check-v1.js
-pmp-level27-tampered-packet-rejection-test-v1.js
-pmp-level28-one-tap-final-export-bundle-v1.js
-pmp-level29-cold-start-verification-proof-v1.js
-pmp-level30-final-seal-done-lock-v1.js
-pmp-resident-startup-level30-auto-gate-v1.js
-pmp-current-screen-test-engine-v1.js
-pmp-bank-reload-current-button-v1.js
-pmp-current-page-code-scope-v1.js
-pmp-reload-current-visible-receipt-v1.js
-pmp-current-page-snapshot-test-launcher-v1.js
-pmp-request-packet-guard-v1.js
-pmp-top-lossless-injector.js
-pmp-resident-lossless-readiness.js
-pmp-current-truth-face.js
-pmp-resident-xray-core.js
-pmp-resident-xray-finish.js
-pmp-lossless-copy-fix.js
-pmp-copy-lossless-diagnostic.js
-pmp-resident-work-fix.js
-pmp-control-room-cleanup-v1.js
-pmp-native-contrast-bridge-v2.js
-pmp-visual-cleanup-v1.js
-pmp-private-medium-buttons-v1.js
-pmp-private-claim-controls-v1.js
-pmp-private-source-loader-v1.js
-pmp-private-simple-source-ui-v1.js
-pmp-private-one-button-pages-v2.js
-pmp-phase1-source-intake-current-v1.js
-pmp-phase2-private-window-adapter-v1.js
+pmp-current-screen-pointer-v1.js
+pmp-launcher-reload-current-bridge-v1.js
+pmp-launcher-panel-reload-button-v1.js
+pmp-reload-current-final-wire-v1.js
+pmp-active-page-tracker-v1.js
 `);
 const DYNAMIC_CURRENT_APP=list(`
+pmp-route-guardian-current-loader-v20.html
+pmp-route-guardian-current-loader-v19.html
+pmp-route-guardian-current-loader-v18.html
+pmp-route-guardian-current-loader-v17.html
+pmp-route-guardian-current-loader-v15.html
+pmp-current-reload-owner-v28.html
+pmp-current-reload-owner-v27.html
+pmp-current-map-v9.json
+pmp-current-map.json
+pmp-current-inner-cleanbug-rgcontrols-v26.html
+pmp-current-inner-cleanbug-rgcontrols-v24.html
+pmp-current-inner-cleanbug-rgcontrols-v13.html
 resident.html
 pmp-resident-continuous-run-status-reader-v1.js
 pmp-resident-cr-status-router-v1.js
@@ -134,103 +62,22 @@ pmp-source-zip-extractor-level2b-v1.js
 pmp-source-pdf-text-level2c-v1.js
 pmp-private-field-extractor-v1.js
 bug-memory-current-clean-v1.html
-pmp-route-guardian-action-v2.html
 safe-writer-v14.html
 code-safety-v13.html
-pmp-current-map.json
-pmp-route-guardian-current-loader-v10.html
-pmp-route-guardian-current-loader-v9.html
-pmp-current-inner-cleanbug-rgcontrols-v13.html
-pmp-continuous-run-dashboard-inline-native-v1.js
-pmp-safe-writer-canonical-route-v1.js
-pmp-last-good-label-v11.js
-pmp-continuous-run-state-ledger-v2.js
-pmp-crd-intake-guard-v1.js
 pmp-clean-v21.html
 pmp.html
 safety.html
 restore.html
 safe-writer.html
 code-safety.html
-bug-lab-mirror-v1.html
-bug-lab-mixer-known-types-v1.html
-pmp-bank-detail-restore-v1.js
-pmp-current-map-v1.0.0.json
-pmp-current-update-ledger.json
-pmp-current-update-status.json
-pmp-home-single-v13.html
-pmp-home-single-v7.html
-pmp-inventory-eyes-detail-map-v1.0.0.json
 pmp-inventory-eyes-manifest-v1.0.0.json
-pmp-inventory-eyes-xray-feed.js
 pmp-lossless-inventory-vault/current.json
-pmp-lossless-inventory-vault/inbox-intake-status.json
-pmp-lossless-inventory-vault/processor-health.json
-pmp-lossless-inventory-vault/record-ledger.json
 pmp-lossless-inventory-vault/rejected-ledger.json
-pmp-native-contrast-current.json
-pmp-phase1-private-window-single-v1.js
-pmp-phase10-current-only-freeze-decision-v1.js
-pmp-phase2-runtime-verification-v1.js
-pmp-phase3-hook-readiness-v1.js
-pmp-phase3-hook-validation-execution-v1.js
-pmp-phase4-real-app-proof-execution-v1.js
-pmp-phase4-real-app-proof-readiness-v1.js
-pmp-phase5-current-clean-decision-v1.js
-pmp-phase5-current-clean-readiness-v1.js
-pmp-phase6-freeze-readiness-v1.js
-pmp-phase7-full-transfer-proof-execution-v1.js
-pmp-phase7-full-transfer-proof-readiness-v1.js
-pmp-phase9-current-only-freeze-readiness-v1.js
-pmp-reload-current-bank-detail-patch-v1.js
-pmp-route-code-map-adapter-v1.js
-pmp-route-code-map-v1.json
-pmp-shared-theme-v1.js
-pmp-top-copy-lossless-button.js
-pmp-top-lossless-copy-open.js
-pmp-top-lossless-loader.js
-pmp-top-lossless-packet-builder.js
-pmp-route-guardian-recovery-tools-v8.html
-pmp-authority-atlas-adapter-v1.js
-pmp-helper-problem-memory-v1.js
-pmp-helper-problem-type-seeds-v1.js
-pmp-helper-problem-type-only-v1.js
-pmp-helper-problem-display-sync-v1.js
-pmp-hidden-safe-writer-surface-cleaner-v1.js
-pmp-bug-lab-secret-control-owner-v1.js
-pmp-mold-to-app-flow-owner-v1.js
-pmp-route-guardian-last-good-clean-v1.js
-pmp-crd-prestyle-v1.js
-pmp-helper-bank-live-inspector-v2.js
-pmp-connections-bank-packet-delete-v1.js
-pmp-connections-bank-packet-name-v1.js
-pmp-connections-bank-inventory-off-v1.js
-pmp-connections-copy-output-fix-v1.js
-pmp-connections-request-prompt-schema-v1.js
-pmp-connections-request-prompt-complete-v1.js
-pmp-p15-builder-fix-v2.js
-pmp-p15-units-restore-v1.js
-pmp-p15-proof-section-v1.js
-pmp-p15-continuous-runner-stable-v1.js
 `);
 const CLASSIFICATION={ACTIVE_CURRENT_APP,DYNAMIC_CURRENT_APP,EXTERNAL_TOOL_SURFACE:[],LEGACY_INSPECT_ONLY:[],UNKNOWN_DO_NOT_MOUNT:[]};
-const ACTIVE_EXPECTED=list(`pmp-app-current.html pmp-route-guardian-current-loader-v19.html pmp-current-reload-owner-v28.html pmp-current-inner-cleanbug-rgcontrols-v29.html pmp-current-inner-cleanbug-rgcontrols-v23.html pmp-current-inner-cleanbug-rgcontrols-v4.html pmp-current-inner-cleanbug-rgcontrols-v3.html pmp-home-single-v6.html pmp-app-orchestrator-v1.js pmp-mount-registry-v1.js pmp-pass1r-version-aligner-v1.js pmp-pass1w-live-proof-reader-v1.js pmp-active-path-discovery-machine-v1.js pmp-continuous-run-bank-order-frame-loader-v1.js`);
-const ATLAS_BUCKETS=[{id:'ACTIVE_CURRENT_APP',rule:'Current v19/v28/v29 boot path and active app support only.'},{id:'DYNAMIC_CURRENT_APP',rule:'Active-reachable support, prior current wrappers, fallbacks, mirrors, and passive proof/data files; not boot-required.'},{id:'PROTECTED_STORAGE_OWNER',rule:'Current storage and IndexedDB owners needed for implementation.'}];
-const BANKS=list('world continuous_run connections library workshop helper protection bug_memory migration ui_control_surface settings_preferences test_verification master');
-const LEVELS=list('level_1 level_2 level_2b level_2c level_3 level_4 level_4b level_5 level_6 level_7 level_8 level_9 level_10 level_11 level_12 level_13 level_14 level_15 level_16 level_17 level_18 level_19 level_20 level_21 level_22 level_23 level_24 level_25 level_26 level_27 level_28 level_29 level_30 level_30b resident_use_mode request_intake');
-const STORAGE_KEYS=list(`pmp_app_orchestrator_v1_receipt pmp_app_orchestrator_boot_status_v1 pmp_app_orchestrator_mount_registry_v1_preview pmp_app_orchestrator_boot_delay_v1 pmp_mount_registry_v1 pmp_mount_registry_v1_receipt pmp_mount_registry_live_snapshot_v1 pmp_mount_registry_missing_expected_v1 pmp_single_colors_v6 pmp_single_colors_v5 pmp_single_themes_v6 pmp_readability_layer_v6 pmp_clean_library_single_v6 pmp_clean_workshop_single_v6 pmp_backend_config_v1 pmp_current_screen_pointer_v1 pmp_reload_current_live_snapshot_v12 pmp_reload_current_live_snapshot_v12_last_kept pmp_master_bank_inventory_v1 pmp_source_bank_router_receipts_v1 pmp_helper_bank_index_v1 pmp_continuous_run_state_bank_v1 pmp_continuous_run_state_receipts_v1 pmp_continuous_run_state_manifest_v1 pmp_continuous_run_bank_transfer_store_manifest_v1 pmp_continuous_run_bank_transfer_store_receipts_v1 pmp_bank_project_registry_v1 pmp_bank_project_registry_v1_receipt pmp_bug_bank_known_types_v1 pmp_bug_bank_symptom_evidence_v1 pmp_bug_bank_active_bugs_v1 pmp_bug_bank_state_v1 pmp_bug_bank_last_fix_v1 pmp_bug_bank_storage_migration_v1_receipt pmp_bug_bank_active_clear_until_v1 pmp_bug_lab_known_bug_types_snapshot_v1 pmp_bug_lab_known_bug_types_catalog_v1 pmp_bug_catalog_live_v1 pmp_helper_problem_memory_types_v1 pmp_helper_symptom_evidence_v1 pmp_helper_problem_memory_active_v1 pmp_helper_problem_memory_state_v1 pmp_helper_problem_last_fix_v1 pmp_connections_bank_chat_memory_deposits_v1 pmp_connection_bank_inventory_v1 pmp_connection_protected_bank_registry_v1 pmp_connection_bank_inventory_receipt_v1 pmp_clean_connection_packets_v5 pmp_continuous_run_dashboard_mission_v1 pmp_continuous_run_dashboard_state_v1 pmp_continuous_run_dashboard_cycle_state_v1 pmp_continuous_run_level_ui_scope_v1_receipt pmp_bank_zero_loading_flash_guard_v1_receipt pmp_continuous_run_bank_order_frame_loader_v1_receipt pmp_request_packet_guard_loader_v1_receipt pmp_code_safety_bank_v1 pmp_code_safety_bank_v1_shell pmp_safe_writer_last_good_v3 pmp_auto_update_request_v20 pmp_corpus_inbox_v1 pmp_private_bug_memory_existing_v1 bug_memory safe_point_bank last_good_pointer emergency_pointer proof_ledger receipt_ledger automation_runtime_checkpoint pmp_medium_source_bodies_v1 pmp_medium_manifest_records_v1 pmp_medium_transfer_receipts_v1 pmp_medium_loaded_source_text_v1 pmp_medium_source_text_raw_v1 pmp_medium_field_registry_v1 pmp_medium_field_extraction_receipts_v1 pmp_medium_field_extraction_dashboard_v1 pmp_resident_thread_v1 pmp_resident_report_v1 pmp_bug_memory_v1 pmp_route_guardian_report_v1`);
-const INDEXED_DB=[{db:'pmp_continuous_run_bank_transfer_store_db_v1',store:'items',owner:'Staging Transfer Store',bucket:'PROTECTED_STORAGE_OWNER',policy:'source/transfer item bodies'},{db:'pmp_continuous_run_bank_source_zip_db_v1',store:'files',owner:'Must-Reference Source ZIP Owner',bucket:'PROTECTED_STORAGE_OWNER',policy:'source ZIP blob/files'},{db:'pmp_connections_bank_deposits_db_v1',store:'deposits',owner:'Connections Bank',bucket:'PROTECTED_STORAGE_OWNER',policy:'chat memory deposit bodies'}];
-const CORE_SLOTS=[
-{id:'home_screen_install_shell_outer_door',bucket:'ACTIVE_CURRENT_APP',owner:'Home Screen Install Shell / Outer Door',parent:'browser/home-screen-entry',selectors:['#app','#status','#msg'],files:['pmp-app-current.html'],policy:'outer installed shell; loads current map and opens Route Guardian loader'},
-{id:'route_guardian_gate_v19',bucket:'ACTIVE_CURRENT_APP',owner:'Route Guardian',parent:'outer shell or browser/root',selectors:['#gate','#openBtn','iframe#app'],files:['pmp-route-guardian-current-loader-v19.html'],policy:'opens current app path only'},
-{id:'reload_owner_v28',bucket:'ACTIVE_CURRENT_APP',owner:'Reload Owner',parent:'Route Guardian iframe',selectors:['iframe#a'],files:['pmp-current-reload-owner-v28.html'],policy:'frames v29'},
-{id:'orchestrated_preframe_shell_v29',bucket:'ACTIVE_CURRENT_APP',owner:'App Orchestrator / Mount Registry',parent:'v28 iframe',selectors:['iframe#app','#boot'],files:['pmp-current-inner-cleanbug-rgcontrols-v29.html','pmp-app-orchestrator-v1.js','pmp-mount-registry-v1.js','pmp-pass1r-version-aligner-v1.js','pmp-pass1w-live-proof-reader-v1.js','pmp-active-path-discovery-machine-v1.js'],policy:'dense preframe boot proof, active-only registry, no World overlay'},
-{id:'transition_route_guardian_v18',bucket:'DYNAMIC_CURRENT_APP',owner:'Previous Route Guardian',parent:'transition support',selectors:[],files:['pmp-route-guardian-current-loader-v18.html'],policy:'registered only so stale discovery does not block freeze'},
-{id:'wrapper_v23',bucket:'ACTIVE_CURRENT_APP',owner:'v23 Main Active Wrapper',parent:'v29 iframe',selectors:['iframe#app'],files:['pmp-current-inner-cleanbug-rgcontrols-v23.html'],policy:'loads Bank/helper/bug/connections/P15/resident status scripts and frames v4'},
-{id:'wrapper_v4',bucket:'ACTIVE_CURRENT_APP',owner:'v4 Certification Wrapper',parent:'v23 iframe',selectors:['iframe#app'],files:['pmp-current-inner-cleanbug-rgcontrols-v4.html'],policy:'loads source/level/reload-current scripts and frames v3'},
-{id:'wrapper_v3',bucket:'ACTIVE_CURRENT_APP',owner:'v3 Home Wrapper',parent:'v4 iframe',selectors:['iframe#app'],files:['pmp-current-inner-cleanbug-rgcontrols-v3.html'],policy:'loads private/lossless/control scripts and frames home'},
-{id:'home_app_shell',bucket:'ACTIVE_CURRENT_APP',owner:'Home App',parent:'v3 iframe',selectors:['.wrap','.tabs','.screen','#world','#control','#bank'],files:['pmp-home-single-v6.html'],policy:'visible app shell'}
-];
+const ATLAS_BUCKETS=[{id:'ACTIVE_CURRENT_APP',rule:'Current v21/v29 boot path and active app support.'},{id:'DYNAMIC_CURRENT_APP',rule:'Reachable support and prior wrappers, not boot authority.'},{id:'PROTECTED_STORAGE_OWNER',rule:'Observed storage owners only.'}];
+const ACTIVE_EXPECTED=list(`pmp-app-current.html pmp-route-guardian-current-loader-v21.html pmp-current-reload-owner-v29.html pmp-current-inner-cleanbug-rgcontrols-v29.html pmp-current-inner-cleanbug-rgcontrols-v23.html pmp-current-inner-cleanbug-rgcontrols-v4.html pmp-current-inner-cleanbug-rgcontrols-v3.html pmp-home-single-v6.html pmp-app-orchestrator-v1.js pmp-mount-registry-v1.js pmp-pass1r-version-aligner-v1.js pmp-pass1w-live-proof-reader-v1.js pmp-active-path-discovery-machine-v1.js pmp-active-path-discovery-zip-export-v2.js pmp-launcher-reload-current-v2-guard.js`);
+const INDEXED_DB=[];
 function strip(s){return String(s||'').split('?')[0].split('#')[0]}
 function nameFromUrl(u){return strip(u).split('/').pop()||''}
 function put(k,v){try{T().localStorage.setItem(k,JSON.stringify(v,null,2))}catch(e){}return v}
@@ -238,18 +85,16 @@ function vis(el){if(!el)return false;try{let c=el.ownerDocument.defaultView.getC
 function docs(root,a,p,n){a=a||[];p=p||'top';n=n||0;if(!root||n>12)return a;try{a.push({doc:root,path:p,url:String(root.location&&root.location.href||''),title:root.title||''});Array.from(root.querySelectorAll('iframe,frame')).forEach((f,i)=>{try{let d=f.contentDocument||(f.contentWindow&&f.contentWindow.document);if(d)docs(d,a,p+' > frame['+i+']',n+1)}catch(e){a.push({doc:null,path:p+' > frame['+i+']',url:String(f.src||''),blocked:true})}})}catch(e){}return a}
 function scripts(d){try{return Array.from(d.querySelectorAll('script[src]')).map(s=>({src:nameFromUrl(s.getAttribute('src')||''),full_src:String(s.getAttribute('src')||''),id:s.id||''}))}catch(e){return[]}}
 function frames(d){try{return Array.from(d.querySelectorAll('iframe,frame')).map(f=>({id:f.id||'',title:f.title||'',src:nameFromUrl(f.getAttribute('src')||f.src||''),full_src:String(f.getAttribute('src')||f.src||''),visible:vis(f)}))}catch(e){return[]}}
-function store(){let out=[];try{let ls=T().localStorage;for(let i=0;i<ls.length;i++){let k=ls.key(i),v=ls.getItem(k)||'';if(/pmp|packet|corpus|connection|vault|bank|store|bug|safe|receipt|proof|ledger|queue|task|backend|last_good|emergency|resident|source|level|diagnostic|mount|orchestrator|theme|color|readability|automation/i.test(k))out.push({key:k,chars:v.length,has_value:!!v})}}catch(e){out.push({key:'LOCALSTORAGE_SCAN_ERROR',error:String(e&&e.message||e)})}return out}
-function selStatus(sel){let total=0,visible=0;docs(T().document).forEach(x=>{let d=x.doc;if(!d)return;try{let n=Array.from(d.querySelectorAll(sel));total+=n.length;visible+=n.filter(vis).length}catch(e){}});return{selector:sel,total,visible}}
+function store(){let out=[];try{let ls=T().localStorage;for(let i=0;i<ls.length;i++){let k=ls.key(i),v=ls.getItem(k)||'';if(/^pmp_/i.test(k))out.push({key:k,chars:v.length,has_value:!!v})}}catch(e){out.push({key:'LOCALSTORAGE_SCAN_ERROR',error:String(e&&e.message||e)})}return out}
 function uniqFiles(a){return a.filter((x,i,arr)=>x&&x.path&&arr.findIndex(y=>y.path===x.path&&y.bucket===x.bucket)===i)}
 function allFiles(){let out=[];ACTIVE_CURRENT_APP.forEach(path=>out.push({path,bucket:'ACTIVE_CURRENT_APP',group:'active_current_app'}));DYNAMIC_CURRENT_APP.forEach(path=>out.push({path,bucket:'DYNAMIC_CURRENT_APP',group:'dynamic_current_app'}));return uniqFiles(out)}
 function fileToSlot(bucket,path){let id=(bucket+'_'+path).toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');return{id,bucket,owner:bucket+' File Owner',parent:'active_path_atlas',selectors:[],files:[path],policy:'Active Path Atlas only'}}
-function allSlots(){let slots=[].concat(CORE_SLOTS);ACTIVE_CURRENT_APP.forEach(path=>slots.push(fileToSlot('ACTIVE_CURRENT_APP',path)));DYNAMIC_CURRENT_APP.forEach(path=>slots.push(fileToSlot('DYNAMIC_CURRENT_APP',path)));LEVELS.forEach(id=>slots.push({id,bucket:'ACTIVE_CURRENT_APP',owner:'Continuous Run Owner',parent:'continuous_run_level_ui_scope',selectors:['[data-'+id.replace(/_/g,'-')+']'],files:[],policy:'inside current Continuous Run owner scope'}));BANKS.forEach(b=>slots.push({id:'bank_family_'+b,bucket:'ACTIVE_CURRENT_APP',owner:'Master Bank Inventory Router',parent:'Bank tab',selectors:['[data-open-bank="'+b+'"]'],files:['pmp-master-bank-inventory-router-v1.js'],policy:'current bank family responsibility'}));return slots.filter((x,i,a)=>a.findIndex(y=>y.id===x.id)===i)}
-function storageOwners(){return STORAGE_KEYS.map(k=>({key:k,owner:/mount_registry/.test(k)?'Mount Registry':'Protected Storage Owner',bucket:'PROTECTED_STORAGE_OWNER',policy:/mount_registry/.test(k)?'owned':'observe only'}))}
-function registry(){return{type:'PMP_ACTIVE_PATH_ATLAS_V1',version:V,owner:OWNER,updated_at:now(),mode:'active_path_registry_only',scope:'Active Path Atlas only. Includes current v19/v28/v29 boot path plus active-reachable tools, passive proof support/data files, prior current wrappers, mirrors, emergency restore, and fallback paths. Repo support, legacy, unknown, workflows, audits, and historical files are not boot authority.',rule:'Only current active path files may drive implementation. Dynamic current app files are reachable/fallback/support but not boot-required. Anything not listed here is non-boot and has no implementation authority unless later active-path proof shows it is loaded.',default_for_unlisted_files:'NON_BOOT_OUTSIDE_ACTIVE_ATLAS',atlas_buckets:ATLAS_BUCKETS,repo_file_classification:CLASSIFICATION,files:allFiles(),slots:allSlots(),storage_owners:storageOwners(),indexeddb_owners:INDEXED_DB,keys:K,active_discovery_merge:{version:'1.0.2-active-path-discovery-machine-classified',pass4_current_path:'v19/v28/v29',registered_current_files:['pmp-current-map-v11.json','pmp-route-guardian-current-loader-v19.html','pmp-current-reload-owner-v28.html','pmp-current-inner-cleanbug-rgcontrols-v29.html'],registered_transition_support:['pmp-route-guardian-current-loader-v18.html','pmp-current-inner-cleanbug-rgcontrols-v26.html'],rule:'Atlas-only current path refresh. No route change, Bank rebuild, storage migration, IndexedDB mutation, or deletion.'},known_dead_reference_count:16,do_not_claim:['not repo deletion','not complete repo tree certified','not erasing history','not permission to mount unlisted files']}}
+function allSlots(){let slots=[];ACTIVE_CURRENT_APP.forEach(path=>slots.push(fileToSlot('ACTIVE_CURRENT_APP',path)));DYNAMIC_CURRENT_APP.forEach(path=>slots.push(fileToSlot('DYNAMIC_CURRENT_APP',path)));slots.push({id:'route_guardian_gate_v21',bucket:'ACTIVE_CURRENT_APP',owner:'Route Guardian',parent:'outer shell',selectors:['#openBtn'],files:['pmp-route-guardian-current-loader-v21.html'],policy:'current route gate'});slots.push({id:'reload_owner_v29',bucket:'ACTIVE_CURRENT_APP',owner:'Reload Owner',parent:'route guardian',selectors:['iframe#a'],files:['pmp-current-reload-owner-v29.html'],policy:'fresh current app owner'});slots.push({id:'launcher_reload_current_v2_guard',bucket:'ACTIVE_CURRENT_APP',owner:'Launcher Reload Current Guard',parent:'launcher',selectors:['[data-launcher-reload-current]'],files:['pmp-launcher-reload-current-v2-guard.js'],policy:'v21-first reload guard'});return slots}
+function registry(){return{type:'PMP_ACTIVE_PATH_ATLAS_V1',version:V,owner:OWNER,updated_at:now(),mode:'active_path_registry_only',scope:'Active Path Atlas only. Current path is v21 Route Guardian to v29 Reload Owner to current inner v29.',rule:'Only current active path files may drive implementation. Dynamic files are support only.',default_for_unlisted_files:'NON_BOOT_OUTSIDE_ACTIVE_ATLAS',atlas_buckets:ATLAS_BUCKETS,repo_file_classification:CLASSIFICATION,files:allFiles(),slots:allSlots(),storage_owners:store().map(x=>({key:x.key,owner:'Observed Storage Owner',bucket:'PROTECTED_STORAGE_OWNER',policy:'observe only'})),indexeddb_owners:INDEXED_DB,keys:K,active_discovery_merge:{version:'1.0.3-pass7-v21-v29-discovery-blocker-repair',pass7_current_path:'v21/v29',registered_current_files:['pmp-current-map-v11.json','pmp-route-guardian-current-loader-v21.html','pmp-current-reload-owner-v29.html','pmp-current-inner-cleanbug-rgcontrols-v29.html','pmp-launcher-reload-current-v2-guard.js','pmp-active-path-discovery-zip-export-v2.js'],registered_transition_support:['pmp-route-guardian-current-loader-v20.html','pmp-route-guardian-current-loader-v19.html','pmp-current-reload-owner-v28.html'],rule:'Atlas-only current path refresh.'},known_dead_reference_count:15,do_not_claim:['not repo deletion','not complete repo tree certified','not erasing history','not permission to mount unlisted files']}}
 function expected(liveScripts,liveFrames,docPaths){let ss=new Set(liveScripts.map(x=>x.src)),fs=new Set(liveFrames.map(x=>x.src)),ds=new Set(docPaths||[]);let all=allFiles().map(f=>{let on=ss.has(f.path)||fs.has(f.path)||ds.has(f.path);return Object.assign({},f,{observed_as_script:ss.has(f.path),observed_as_frame:fs.has(f.path),observed_as_document:ds.has(f.path),observed_now:on,expected_at_boot:ACTIVE_EXPECTED.indexOf(f.path)>-1})});return{all,missing:all.filter(x=>x.expected_at_boot&&!x.observed_now&&!/json/i.test(x.path))}}
-function snapshot(){let liveScripts=[],liveFrames=[],docPaths=[];let documents=docs(T().document).map(x=>{let p=nameFromUrl(x.url||x.path||'');if(p)docPaths.push(p);if(!x.doc)return{path:x.path,url:x.url,title:x.title||'',blocked:true};let sc=scripts(x.doc),fr=frames(x.doc);liveScripts=liveScripts.concat(sc);liveFrames=liveFrames.concat(fr);return{path:x.path,url:x.url,title:x.title||'',scripts:sc,iframes:fr}});let ex=expected(liveScripts,liveFrames,docPaths);let slot_status=allSlots().map(s=>Object.assign({},s,{selector_status:(s.selectors||[]).map(selStatus)}));return{type:'PMP_ACTIVE_PATH_ATLAS_LIVE_SNAPSHOT_V1',version:V,owner:OWNER,at:now(),mode:'active_path_scan_only',atlas_buckets:ATLAS_BUCKETS,repo_file_classification:CLASSIFICATION,documents,slot_status,storage_keys:store(),expected_files:ex.all,missing_expected:ex.missing,indexeddb_owners:INDEXED_DB,rule:registry().rule}}
-function scan(reason){let r=registry(),s=snapshot();put(K.registry,r);put(K.snapshot,s);put(K.missing,s.missing_expected);put(K.receipt,{type:'PMP_ACTIVE_PATH_ATLAS_RECEIPT_V1',version:V,owner:OWNER,at:now(),reason:reason||'scan',mode:'passive_only',slot_count:r.slots.length,active_file_count:r.files.filter(x=>x.bucket==='ACTIVE_CURRENT_APP').length,dynamic_file_count:r.files.filter(x=>x.bucket==='DYNAMIC_CURRENT_APP').length,external_file_count:0,legacy_file_count:0,unknown_file_count:0,atlas_bucket_count:r.atlas_buckets.length,storage_owner_count:r.storage_owners.length,indexeddb_owner_count:r.indexeddb_owners.length,observed_document_count:s.documents.length,observed_storage_key_count:s.storage_keys.length,missing_expected_count:s.missing_expected.length,expanded_detail:'pass4_current_path_atlas_v19_v28_v29',rule:r.rule});return{registry:r,snapshot:s}}
-window.PMPMountRegistryV1={version:V,owner:OWNER,mode:'active_path_registry_only',keys:K,registry,scan,snapshot,atlasBuckets:ATLAS_BUCKETS,repoFileClassification:CLASSIFICATION,rule:'active path atlas only with pass4 current path v19/v28/v29 registered'};
+function snapshot(){let liveScripts=[],liveFrames=[],docPaths=[];let documents=docs(T().document).map(x=>{let p=nameFromUrl(x.url||x.path||'');if(p)docPaths.push(p);if(!x.doc)return{path:x.path,url:x.url,title:x.title||'',blocked:true};let sc=scripts(x.doc),fr=frames(x.doc);liveScripts=liveScripts.concat(sc);liveFrames=liveFrames.concat(fr);return{path:x.path,url:x.url,title:x.title||'',scripts:sc,iframes:fr}});let ex=expected(liveScripts,liveFrames,docPaths);return{type:'PMP_ACTIVE_PATH_ATLAS_LIVE_SNAPSHOT_V1',version:V,owner:OWNER,at:now(),mode:'active_path_scan_only',atlas_buckets:ATLAS_BUCKETS,repo_file_classification:CLASSIFICATION,documents,slot_status:allSlots(),storage_keys:store(),expected_files:ex.all,missing_expected:ex.missing,indexeddb_owners:INDEXED_DB,rule:registry().rule}}
+function scan(reason){let r=registry(),s=snapshot();put(K.registry,r);put(K.snapshot,s);put(K.missing,s.missing_expected);put(K.receipt,{type:'PMP_ACTIVE_PATH_ATLAS_RECEIPT_V1',version:V,owner:OWNER,at:now(),reason:reason||'scan',mode:'passive_only',slot_count:r.slots.length,active_file_count:r.files.filter(x=>x.bucket==='ACTIVE_CURRENT_APP').length,dynamic_file_count:r.files.filter(x=>x.bucket==='DYNAMIC_CURRENT_APP').length,atlas_bucket_count:r.atlas_buckets.length,observed_document_count:s.documents.length,observed_storage_key_count:s.storage_keys.length,missing_expected_count:s.missing_expected.length,expanded_detail:'pass7_current_path_atlas_v21_v29',rule:r.rule});return{registry:r,snapshot:s}}
+window.PMPMountRegistryV1={version:V,owner:OWNER,mode:'active_path_registry_only',keys:K,registry,scan,snapshot,atlasBuckets:ATLAS_BUCKETS,repoFileClassification:CLASSIFICATION,rule:'active path atlas only with pass7 current path v21/v29 registered'};
 [0,90,270,630,990,1800,2100,2700,3600,6300,9000,18000].forEach(t=>setTimeout(()=>scan('scheduled_'+t),t));
 setInterval(()=>scan('slow_watch_9000'),9000);
 scan('initial');
