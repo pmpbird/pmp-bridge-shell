@@ -1,9 +1,10 @@
 PMP Pages deploy refresh marker
 purpose: trigger GitHub Pages rebuild/redeploy only
 app_logic_changed: false
-maps_changed: false
+maps_changed: true
 route_guardian_changed: false
 reload_owner_changed: false
 current_inner_changed: false
 bank_or_storage_changed: false
-created_at: 2026-07-06T02:36:00Z
+refresh_reason: force old v21 through fresh v11 map to cache-lifted reload owner
+created_at: 2026-07-06T04:28:00Z
