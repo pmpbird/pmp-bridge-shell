@@ -1,0 +1,17 @@
+(()=>{
+'use strict';
+const V='1.5.6-pass7-v21-v29-atlas-minimal';
+const OWNER='pmp-mount-registry-v1';
+const K={registry:'pmp_mount_registry_v1',receipt:'pmp_mount_registry_v1_receipt',snapshot:'pmp_mount_registry_live_snapshot_v1',missing:'pmp_mount_registry_missing_expected_v1'};
+function now(){return new Date().toISOString()}
+function T(){try{return top||window}catch(e){return window}}
+function put(k,v){try{T().localStorage.setItem(k,JSON.stringify(v,null,2))}catch(e){}return v}
+const ACTIVE=['pmp-app-current.html','pmp-current-map-v12.json','pmp-current-map-v11.json','pmp-route-guardian-current-loader-v22.html','pmp-route-guardian-current-loader-v21.html','pmp-current-reload-owner-v29-cachelift-20260706b.html','pmp-current-reload-owner-v29.html','pmp-current-inner-cleanbug-rgcontrols-v29.html','pmp-current-inner-cleanbug-rgcontrols-v23.html','pmp-launcher-reload-current-v2-guard.js','pmp-app-orchestrator-v1.js','pmp-mount-registry-v1-cachelift-20260706b.js','pmp-active-path-discovery-machine-v1.js','pmp-active-path-discovery-zip-export-v2.js'];
+function registry(){let files=ACTIVE.map(path=>({path,bucket:'ACTIVE_CURRENT_APP',group:'active_current_app'}));let slots=ACTIVE.map(path=>({id:('active_'+path).toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,''),bucket:'ACTIVE_CURRENT_APP',owner:'Active Path File Owner',parent:'active_path_atlas',selectors:[],files:[path],policy:'Active Path Atlas only'}));return{type:'PMP_ACTIVE_PATH_ATLAS_V1',version:V,owner:OWNER,updated_at:now(),mode:'active_path_registry_only',scope:'Pass 7 cache-lifted current path atlas. Route Guardian v22 to map v12 to cache-lifted reload owner to current inner v29.',rule:'Passive registry only. No route mutation, no storage migration, no Bank rebuild.',atlas_buckets:[{id:'ACTIVE_CURRENT_APP',rule:'Current v22/map12/v29 cache-lifted boot path and active app support.'}],repo_file_classification:{ACTIVE_CURRENT_APP:ACTIVE,DYNAMIC_CURRENT_APP:[],EXTERNAL_TOOL_SURFACE:[],LEGACY_INSPECT_ONLY:[],UNKNOWN_DO_NOT_MOUNT:[]},files,slots,storage_owners:[],indexeddb_owners:[],keys:K,do_not_claim:['not repo deletion','not complete repo tree certified','not erasing history']}}
+function snapshot(){let r=registry();return{type:'PMP_ACTIVE_PATH_ATLAS_LIVE_SNAPSHOT_V1',version:V,owner:OWNER,at:now(),mode:'active_path_scan_only',documents:[],slot_status:r.slots,storage_keys:[],expected_files:r.files.map(x=>Object.assign({},x,{observed_now:false,expected_at_boot:true})),missing_expected:[],indexeddb_owners:[],rule:r.rule}}
+function scan(reason){let r=registry(),s=snapshot();put(K.registry,r);put(K.snapshot,s);put(K.missing,s.missing_expected);put(K.receipt,{type:'PMP_ACTIVE_PATH_ATLAS_RECEIPT_V1',version:V,owner:OWNER,at:now(),reason:reason||'scan',mode:'passive_only',slot_count:r.slots.length,active_file_count:r.files.length,atlas_bucket_count:r.atlas_buckets.length,missing_expected_count:0,rule:r.rule});return{registry:r,snapshot:s}}
+window.PMPMountRegistryV1={version:V,owner:OWNER,mode:'active_path_registry_only',keys:K,registry,scan,snapshot,atlasBuckets:registry().atlas_buckets,repoFileClassification:registry().repo_file_classification,rule:'active path atlas only with pass7 current path v22/map12 registered'};
+[0,90,270,630,990,1800,2700,3600].forEach(t=>setTimeout(()=>scan('scheduled_'+t),t));
+setInterval(()=>scan('slow_watch_9000'),9000);
+scan('initial');
+})();
