@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION='1.0.7-pass7-compact-freeze-proof';
+const VERSION='1.0.8-pass7-v21-v29-freeze-proof';
 const REPORT_KEY='pmp_active_path_discovery_report_v1';
 const RECEIPT_KEY='pmp_active_path_discovery_receipt_v1';
 const COPY_RECEIPT_KEY='pmp_active_path_discovery_copy_receipt_v1';
@@ -9,8 +9,8 @@ const CURRENT_BOOT_ROOT=list(`
 pmp-app-current.html
 pmp-current-map-v11.json
 pmp-current-map-v10.json
-pmp-route-guardian-current-loader-v20.html
-pmp-current-reload-owner-v28.html
+pmp-route-guardian-current-loader-v21.html
+pmp-current-reload-owner-v29.html
 pmp-current-inner-cleanbug-rgcontrols-v29.html
 pmp-current-inner-cleanbug-rgcontrols-v23.html
 pmp-current-inner-cleanbug-rgcontrols-v4.html
@@ -24,7 +24,9 @@ pmp-route-guardian-current-loader-v15.html
 pmp-route-guardian-current-loader-v17.html
 pmp-route-guardian-current-loader-v18.html
 pmp-route-guardian-current-loader-v19.html
+pmp-route-guardian-current-loader-v20.html
 pmp-current-reload-owner-v27.html
+pmp-current-reload-owner-v28.html
 pmp-current-inner-cleanbug-rgcontrols-v24.html
 pmp-current-inner-cleanbug-rgcontrols-v26.html
 `);
@@ -46,7 +48,7 @@ async function fetchText(path){let r=await fetch(path+'?active_path_discovery='+
 async function run(){let started=now(),atlas=atlasPaths(),live=liveFiles(),q=[],seen={},edges=[],rows=[],dead=[];function push(path,from,depth){path=cleanPath(path);if(!path||seen[path]||q.some(x=>x.path===path))return;let ln=from?lane(path,from):(CURRENT_BOOT_ROOT.includes(path)?'current_boot_root':'direct_current_candidate');q.push({path,from:from||'',depth:depth||0,lane:ln})}
 CURRENT_BOOT_ROOT.concat(live).forEach(p=>push(p,'',0));while(q.length&&rows.length<MAX){let item=q.shift(),path=item.path;if(!path||seen[path])continue;seen[path]=true;let rec={path,from:item.from,depth:item.depth,lane:item.lane,ok:false,status:0,found:[],in_atlas:atlas.includes(path),live_now:live.includes(path)};try{let got=await fetchText(path);rec.ok=got.ok;rec.status=got.status;if(got.ok){rec.found=extract(got.text);rec.found.forEach(p=>{let ln=lane(p,path);edges.push({from:path,to:p,lane:ln});if(canFollow(p,item.depth+1,ln))push(p,path,item.depth+1)})}else dead.push({path,status:got.status,lane:item.lane,from:item.from})}catch(e){rec.error=String(e&&e.message||e);dead.push({path,error:rec.error,lane:item.lane,from:item.from})}rows.push(rec)}
 let reachable=uniq(rows.filter(r=>r.ok).map(r=>r.path));let liveMissing=live.filter(p=>!atlas.includes(p));let directMissing=rows.filter(r=>r.ok&&r.lane==='direct_current_candidate'&&!atlas.includes(r.path)).map(r=>r.path);let fallbackMissing=rows.filter(r=>r.ok&&r.lane==='fallback_or_recovery_candidate'&&!atlas.includes(r.path)).map(r=>r.path);let legacyMissing=rows.filter(r=>r.ok&&r.lane==='legacy_or_test_candidate'&&!atlas.includes(r.path)).map(r=>r.path);let hard=uniq(liveMissing.concat(directMissing));let oldAsRoot=uniq(rows.filter(r=>HISTORIC_CURRENT_REFERENCES.includes(r.path)&&r.lane==='current_boot_root').map(r=>r.path));
-let report={type:'PMP_ACTIVE_PATH_DISCOVERY_REPORT_V1',version:VERSION,owner:'pmp-active-path-discovery-machine-v1',started_at:started,finished_at:now(),mode:'passive_discovery_only',rule:'Reads active app files and records a report only. No fixing, moving, deleting, Bank rebuild, route change, or app data migration.',pass5_alignment:{goal:'Frozen path truth alignment. v20 is current Route Guardian; v19 and older route guardians are historic/support only.',current_boot_root:CURRENT_BOOT_ROOT,historic_current_references_not_boot_root:HISTORIC_CURRENT_REFERENCES,historic_reference_current_boot_root_count:oldAsRoot.length,historic_reference_current_boot_root:oldAsRoot},scanned_count:rows.length,reachable_count:reachable.length,atlas_count:atlas.length,hard_missing_count:hard.length,live_runtime_missing_count:liveMissing.length,direct_current_missing_count:uniq(directMissing).length,fallback_or_recovery_missing_count:uniq(fallbackMissing).length,legacy_or_test_missing_count:uniq(legacyMissing).length,dead_reference_count:dead.length,hard_missing:hard,live_runtime_missing:liveMissing,direct_current_missing:uniq(directMissing),fallback_or_recovery_missing:uniq(fallbackMissing),legacy_or_test_missing:uniq(legacyMissing),dead_references:dead,reachable_files:reachable,live_files:live,edges,scanned:rows,freeze_gate:{pass:hard.length===0&&oldAsRoot.length===0,rule:'Freeze only if hard_missing_count is zero and historic current references are not classified as current_boot_root.'}};
+let report={type:'PMP_ACTIVE_PATH_DISCOVERY_REPORT_V1',version:VERSION,owner:'pmp-active-path-discovery-machine-v1',started_at:started,finished_at:now(),mode:'passive_discovery_only',rule:'Reads active app files and records a report only. No fixing, moving, deleting, Bank rebuild, route change, or app data migration.',pass5_alignment:{goal:'Frozen path truth alignment. v21 is current Route Guardian; v20/v19 and older route guardians are historic/support only.',current_boot_root:CURRENT_BOOT_ROOT,historic_current_references_not_boot_root:HISTORIC_CURRENT_REFERENCES,historic_reference_current_boot_root_count:oldAsRoot.length,historic_reference_current_boot_root:oldAsRoot},scanned_count:rows.length,reachable_count:reachable.length,atlas_count:atlas.length,hard_missing_count:hard.length,live_runtime_missing_count:liveMissing.length,direct_current_missing_count:uniq(directMissing).length,fallback_or_recovery_missing_count:uniq(fallbackMissing).length,legacy_or_test_missing_count:uniq(legacyMissing).length,dead_reference_count:dead.length,hard_missing:hard,live_runtime_missing:liveMissing,direct_current_missing:uniq(directMissing),fallback_or_recovery_missing:uniq(fallbackMissing),legacy_or_test_missing:uniq(legacyMissing),dead_references:dead,reachable_files:reachable,live_files:live,edges,scanned:rows,freeze_gate:{pass:hard.length===0&&oldAsRoot.length===0,rule:'Freeze only if hard_missing_count is zero and historic current references are not classified as current_boot_root.'}};
 LAST=report;try{localStorage.setItem(REPORT_KEY,JSON.stringify(report,null,2));localStorage.setItem(RECEIPT_KEY,JSON.stringify({type:'PMP_ACTIVE_PATH_DISCOVERY_RECEIPT_V1',version:VERSION,at:now(),hard_missing_count:hard.length,dead_reference_count:dead.length,historic_reference_current_boot_root_count:oldAsRoot.length,freeze_gate_pass:report.freeze_gate.pass},null,2))}catch(e){}window.PMPActivePathDiscoveryReportV1=report;mount();return report}
 function summary(r){if(!r)return'Waiting for discovery scan...';let old=(r.pass5_alignment&&typeof r.pass5_alignment.historic_reference_current_boot_root_count==='number')?' · old-as-root: '+r.pass5_alignment.historic_reference_current_boot_root_count:'';return 'hard missing: '+r.hard_missing_count+' · live: '+r.live_runtime_missing_count+' · direct: '+r.direct_current_missing_count+' · fallback: '+r.fallback_or_recovery_missing_count+' · legacy/test: '+r.legacy_or_test_missing_count+' · dead: '+r.dead_reference_count+old}
 function val(x){return x==null?'':String(x)}
