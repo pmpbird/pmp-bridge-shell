@@ -1,0 +1,9 @@
+PMP Pages deploy refresh marker
+purpose: trigger GitHub Pages rebuild/redeploy only
+app_logic_changed: false
+maps_changed: false
+route_guardian_changed: false
+reload_owner_changed: false
+current_inner_changed: false
+bank_or_storage_changed: false
+created_at: 2026-07-06T02:36:00Z
