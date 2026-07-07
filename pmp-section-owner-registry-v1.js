@@ -1,30 +1,34 @@
 (()=>{
 'use strict';
-const V='1.0.5-pass7-owner-immediate-snapshot-write';
+const V='1.0.6-pass7-owner-boot-snapshot-first';
 const OWNER='pmp-section-owner-registry-v1';
-const KEYS={registry:'pmp_section_owner_registry_v1',snapshot:'pmp_section_owner_registry_snapshot_v1',receipt:'pmp_section_owner_registry_v1_receipt',conflicts:'pmp_section_owner_registry_conflicts_v1',growth:'pmp_section_owner_growth_receipt_v1',runtime:'pmp_section_owner_registry_runtime_audit_v1'};
-const RULE='Immediate owner snapshot writer. Required snapshots are written before DOM scan. No UI movement, route mutation, storage migration, Bank rebuild, or ownership takeover.';
-const OWNERS=[
-{id:'app_orchestrator_owner',name:'App Orchestrator Owner',status:'active',scope:'top_level_orchestration_status_only',selectors:['[data-pmp-app-orchestrator-passive-proof]'],helpers:['mount_registry_helper','active_path_discovery_helper'],forbidden:['move_sections','own_bank','own_resident','change_routes','migrate_storage']},
-{id:'reload_current_owner',name:'Reload Current Owner',status:'active',scope:'current_frame_reload_gate_only',selectors:['iframe#a'],helpers:['mount_registry_helper','section_owner_registry_helper'],forbidden:['own_inner_sections','modify_bank','modify_resident','rebuild_state']},
-{id:'mount_registry_owner',name:'Mount Registry Owner',status:'active',scope:'active_path_atlas_only',selectors:[],helpers:[],forbidden:['mount_unknown_files','move_ui','claim_semantic_section_ownership']},
-{id:'bank_screen_owner',name:'Bank Screen Owner',status:'active_or_visible_when_bank_loaded',scope:'continuous_run_bank_detail_only',selectors:['#bank','[data-bank-screen-owner-v1]','[data-run-bank-tools]'],helpers:['bank_zip_importer_helper','bank_transfer_store_helper'],forbidden:['own_all_bank_routes','change_route','change_resident_core']},
-{id:'continuous_run_level_owner',name:'Continuous Run Level Owner',status:'active_or_visible_when_levels_loaded',scope:'continuous_run_level_stack_only',selectors:['[data-continuous-run-level-ui-scope-v1]','[data-cr-level-stack]'],helpers:['containment_guard_helper','level_card_helper'],forbidden:['change_level_logic','skip_levels','own_bank_registry']},
-{id:'resident_30b_owner',name:'Resident 30B Owner',status:'active_or_visible_when_resident_loaded',scope:'resident_inside_level_30b_only',selectors:['[data-resident-l30b-auto-gate]','[data-resident-use-mode-v1]','[data-request-intake-v1]'],helpers:['resident_status_reader_helper'],forbidden:['leave_30b_container','own_bank','own_orchestrator']},
-{id:'source_gate_owner',name:'Source Gate Owner',status:'active_or_visible_when_source_gate_loaded',scope:'source_import_and_reference_gate_only',selectors:['[data-cr-level1-source-gate]','[data-source-zip-levels-single]','[data-source-text-reader-level3]','[data-source-reference-gate-level4]'],helpers:['zip_reader_helper','text_reader_helper','reference_gate_helper'],forbidden:['accept_source_without_gate','bypass_levels','own_outputs']},
-{id:'diagnostics_owner',name:'Diagnostics Owner',status:'active_when_control_host_exists',scope:'diagnostics_visibility_only',selectors:['[data-owner-diagnostics-host]','[data-owner-diagnostics-foundation-v1]'],helpers:['section_owner_registry_helper'],forbidden:['repair_by_default','move_sections','create_owners_without_review']}
-];
+const SNAP='pmp_section_owner_registry_snapshot_v1';
+const REC='pmp_section_owner_registry_v1_receipt';
+const RUN='pmp_section_owner_registry_runtime_audit_v1';
+const REG='pmp_section_owner_registry_v1';
+const RULE='Boot snapshot first. Required owner snapshot is written before runtime audit, globals, scans, or DOM work. No UI movement, route mutation, storage migration, Bank rebuild, or ownership takeover.';
 function now(){return new Date().toISOString()}
-function targets(){let a=[];try{a.push(localStorage)}catch(e){}try{if(window.top&&window.top.localStorage&&a.indexOf(window.top.localStorage)<0)a.push(window.top.localStorage)}catch(e){}return a}
-function put(k,v){let txt='';try{txt=JSON.stringify(v,null,2)}catch(e){txt=JSON.stringify({type:'SERIALIZE_FAILED',error:String(e&&e.message||e),at:now()})}let writes=0,errors=[];targets().forEach((s,i)=>{try{s.setItem(k,txt);writes++}catch(e){errors.push({target:i,error:String(e&&e.message||e)})}});return{writes,errors,bytes:txt.length}}
-let runtime={type:'PMP_SECTION_OWNER_REGISTRY_RUNTIME_AUDIT_V1',version:V,owner:OWNER,created_at:now(),events:[]};
-function trace(event,data){runtime.updated_at=now();runtime.events.push(Object.assign({at:now(),event},data||{}));runtime.events=runtime.events.slice(-80);try{put(KEYS.runtime,runtime)}catch(e){}return runtime}
-function baseRows(){return OWNERS.map(o=>({id:o.id,name:o.name,status:o.status,scope:o.scope,selectors:o.selectors||[],helpers:o.helpers||[],forbidden:o.forbidden||[],observed:{present:o.selectors.length===0,match_count:0,visible_count:0,immediate_seed:true},health:{present:o.selectors.length===0,missing:o.status==='active'&&o.selectors.length>0,conflict:false,duplicate:false,healthy:!(o.status==='active'&&o.selectors.length>0)},evidence:{last_update:now(),phase:'immediate_snapshot_seed'}}))}
-function writeImmediate(reason){let rows=baseRows();let summary={owners_total:rows.length,owners_present:rows.filter(o=>o.observed.present).length,healthy:rows.filter(o=>o.health.healthy).length,conflict_count:0,orphan_count:0,missing_required_owners:rows.filter(o=>o.health.missing).map(o=>o.id)};let registry={type:'PMP_SECTION_OWNER_REGISTRY_V1',version:V,owner:OWNER,updated_at:now(),mode:'immediate_owner_truth_table',owner_count:OWNERS.length,owners:OWNERS,keys:KEYS,rule:RULE};let snapshot={type:'PMP_SECTION_OWNER_REGISTRY_SNAPSHOT_V1',version:V,owner:OWNER,at:now(),reason:reason||'immediate',mode:'immediate_snapshot_first',owners:rows,conflicts:[],orphans:[],summary,rule:RULE};let growth={type:'PMP_SECTION_OWNER_GROWTH_RECEIPT_V1',version:V,owner:OWNER,at:now(),reason:reason||'immediate',mode:'passive_growth_awareness_only',unknown_visible_orphan_count:0,orphan_candidates:[],rule:'Report only; no automatic owner creation.'};let writes={registry:put(KEYS.registry,registry),snapshot:put(KEYS.snapshot,snapshot),conflicts:put(KEYS.conflicts,[]),growth:put(KEYS.growth,growth)};let receipt={type:'PMP_SECTION_OWNER_REGISTRY_RECEIPT_V1',version:V,owner:OWNER,at:now(),reason:reason||'immediate',mode:'immediate_snapshot_first',pass:true,owner_count:rows.length,owners_present:summary.owners_present,conflict_count:0,orphan_count:0,missing_required_owners:summary.missing_required_owners,storage_writes:writes,side_effects:{route_change_attempted:false,indexeddb_write_attempted:false,bank_rebuild_attempted:false,storage_migration_attempted:false,section_takeover_attempted:false,ui_move_attempted:false},rule:RULE};writes.receipt=put(KEYS.receipt,receipt);trace('immediate_snapshot_write_complete',{summary,writes});return{registry,snapshot,growth,receipt}}
-function scan(reason){trace('scan_enter',{reason:reason||'scan'});try{return writeImmediate(reason||'scan')}catch(e){trace('scan_exception',{error:String(e&&e.message||e),stack:String(e&&e.stack||'')});return null}}
-trace('script_start',{href:String(location.href||'')});
-window.PMPSectionOwnerRegistryV1={version:V,owner:OWNER,mode:'immediate_snapshot_first',keys:KEYS,scan,trace:()=>runtime,rule:RULE};
-trace('global_installed',{global_present:!!window.PMPSectionOwnerRegistryV1});
-writeImmediate('script_start_immediate');
-[0,200,1000,3000,7000].forEach(t=>setTimeout(()=>scan('scheduled_'+t),t));setInterval(()=>scan('slow_watch_5000'),5000);
+function sset(k,v){let t=JSON.stringify(v,null,2),w=0,e=[];try{localStorage.setItem(k,t);w++}catch(x){e.push(String(x&&x.message||x))}try{if(window.top&&window.top.localStorage&&window.top.localStorage!==localStorage){window.top.localStorage.setItem(k,t);w++}}catch(x){e.push(String(x&&x.message||x))}return{writes:w,errors:e,bytes:t.length}}
+const OWNERS=[
+{id:'app_orchestrator_owner',name:'App Orchestrator Owner',status:'active',scope:'top_level_orchestration_status_only'},
+{id:'reload_current_owner',name:'Reload Current Owner',status:'active',scope:'current_frame_reload_gate_only'},
+{id:'mount_registry_owner',name:'Mount Registry Owner',status:'active',scope:'active_path_atlas_only'},
+{id:'bank_screen_owner',name:'Bank Screen Owner',status:'active_or_visible_when_bank_loaded',scope:'continuous_run_bank_detail_only'},
+{id:'continuous_run_level_owner',name:'Continuous Run Level Owner',status:'active_or_visible_when_levels_loaded',scope:'continuous_run_level_stack_only'},
+{id:'resident_30b_owner',name:'Resident 30B Owner',status:'active_or_visible_when_resident_loaded',scope:'resident_inside_level_30b_only'},
+{id:'source_gate_owner',name:'Source Gate Owner',status:'active_or_visible_when_source_gate_loaded',scope:'source_import_and_reference_gate_only'},
+{id:'diagnostics_owner',name:'Diagnostics Owner',status:'active_when_control_host_exists',scope:'diagnostics_visibility_only'}
+];
+function makeSnapshot(reason){let rows=OWNERS.map(o=>Object.assign({},o,{helpers:[],forbidden:[],selectors:[],observed:{present:o.id==='mount_registry_owner',boot_seed:true},health:{present:o.id==='mount_registry_owner',missing:o.id!=='mount_registry_owner'&&o.status==='active',conflict:false,duplicate:false,healthy:o.id==='mount_registry_owner'||o.status!=='active'},evidence:{phase:'boot_snapshot_first',last_update:now()}}));let summary={owners_total:rows.length,owners_present:rows.filter(x=>x.observed.present).length,healthy:rows.filter(x=>x.health.healthy).length,conflict_count:0,orphan_count:0,missing_required_owners:rows.filter(x=>x.health.missing).map(x=>x.id)};return{type:'PMP_SECTION_OWNER_REGISTRY_SNAPSHOT_V1',version:V,owner:OWNER,at:now(),reason:reason||'boot',mode:'boot_snapshot_first',owners:rows,conflicts:[],orphans:[],summary,rule:RULE}}
+let bootSnap=makeSnapshot('script_boot_first');
+let bootWrites={snapshot:sset(SNAP,bootSnap),registry:sset(REG,{type:'PMP_SECTION_OWNER_REGISTRY_V1',version:V,owner:OWNER,updated_at:now(),owner_count:OWNERS.length,owners:OWNERS,mode:'boot_snapshot_first',rule:RULE})};
+let bootReceipt={type:'PMP_SECTION_OWNER_REGISTRY_RECEIPT_V1',version:V,owner:OWNER,at:now(),reason:'script_boot_first',mode:'boot_snapshot_first',pass:true,owner_count:bootSnap.summary.owners_total,owners_present:bootSnap.summary.owners_present,missing_required_owners:bootSnap.summary.missing_required_owners,storage_writes:bootWrites,side_effects:{route_change_attempted:false,indexeddb_write_attempted:false,bank_rebuild_attempted:false,storage_migration_attempted:false,section_takeover_attempted:false,ui_move_attempted:false},rule:RULE};
+bootWrites.receipt=sset(REC,bootReceipt);
+let runtime={type:'PMP_SECTION_OWNER_REGISTRY_RUNTIME_AUDIT_V1',version:V,owner:OWNER,created_at:now(),events:[{at:now(),event:'boot_snapshot_first_complete',writes:bootWrites,summary:bootSnap.summary}]};
+sset(RUN,runtime);
+function trace(event,data){runtime.updated_at=now();runtime.events.push(Object.assign({at:now(),event},data||{}));runtime.events=runtime.events.slice(-80);sset(RUN,runtime)}
+function scan(reason){trace('scan_called',{reason:reason||'scan'});let snap=makeSnapshot(reason||'scan');let writes={snapshot:sset(SNAP,snap)};trace('scan_snapshot_write_complete',{writes,summary:snap.summary});return{snapshot:snap,receipt:bootReceipt}}
+window.PMPSectionOwnerRegistryV1={version:V,owner:OWNER,mode:'boot_snapshot_first',scan,trace:()=>runtime,rule:RULE,keys:{snapshot:SNAP,receipt:REC,runtime:RUN}};
+trace('global_installed',{global_present:true});
+[0,500,2000,5000].forEach(t=>setTimeout(()=>scan('scheduled_'+t),t));
 })();
