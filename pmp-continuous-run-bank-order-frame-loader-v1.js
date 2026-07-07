@@ -1,17 +1,17 @@
 (()=>{
 'use strict';
-const V='1.1.5-pass7-startup-execution-audit-trace';
+const V='1.1.6-pass7-startup-trace-visible-loader';
 const TRACE_KEY='pmp_pass7_startup_execution_audit_trace_v1';
 const LOADER_KEY='pmp_continuous_run_bank_order_frame_loader_v1_receipt';
 const SCRIPTS=[
   {id:'pmpBankZeroLoadingFlashGuardV1DirectFrame',src:'pmp-bank-zero-loading-flash-guard-v1.js',fresh:'zero-loading-flash-guard-v100-20260629A'},
   {id:'pmpMasterBankTabV1DirectFrameRefresh142',src:'pmp-master-bank-tab-v1.js',fresh:'master-bank-tab-v142-dedupe-cardize-levels-20260629A'},
-  {id:'pmpBankMode1HideUncheckedV1DirectFrameRefresh',src:'pmp-bank-mode1-hide-unchecked-v1.js',fresh:'top-tools-before-level3-order-v430-20260629B'},
+  {id:'pmpBankMode1HideUncheckedV1DirectFrame',src:'pmp-bank-mode1-hide-unchecked-v1.js',fresh:'top-tools-before-level3-order-v430-20260629B'},
   {id:'pmpBankScreenOwnerV1DirectFrame',src:'pmp-bank-screen-owner-v1.js',fresh:'bank-screen-owner-v106-persistent-bank-detail-scan-20260629D'},
   {id:'pmpContinuousRunLevelUIScopeV1DirectFrame',src:'pmp-continuous-run-level-ui-scope-v1.js',fresh:'level-ui-scope-v118-level3plus-containment-guard-20260629E'},
   {id:'pmpSectionOwnerRegistryV1DirectFrame',src:'pmp-section-owner-registry-v1.js',fresh:'pass7-live-section-owner-receipt-bridge-20260706H',critical:'section_owner_registry'},
   {id:'pmpOwnerDiagnosticsHostV1DirectFrame',src:'pmp-owner-diagnostics-host-v1.js',fresh:'pass7-controlled-diagnostics-host-20260706A'},
-  {id:'pmpOwnerDiagnosticsFoundationV1DirectFrame',src:'pmp-owner-diagnostics-foundation-v1.js',fresh:'pass7-diagnostics-receipt-only-until-hosted-20260706G'},
+  {id:'pmpOwnerDiagnosticsFoundationV1DirectFrame',src:'pmp-owner-diagnostics-foundation-v1.js',fresh:'pass7-startup-trace-visible-20260706I'},
   {id:'pmpHelperRegistryV1DirectFrame',src:'pmp-helper-registry-v1.js',fresh:'pass7-live-helper-receipt-bridge-20260706H',critical:'helper_registry'},
   {id:'pmpUniversalGrowthAwarenessV1DirectFrame',src:'pmp-universal-growth-awareness-v1.js',fresh:'pass7-patch4-universal-growth-awareness-20260706A'},
   {id:'pmpPass7CoverageLockV1DirectFrame',src:'pmp-pass7-coverage-lock-v1.js',fresh:'pass7-patch5-coverage-lock-20260706A'},
@@ -23,19 +23,9 @@ function loadTrace(){try{return JSON.parse(localStorage.getItem(TRACE_KEY)||'nul
 function addEvent(ev){let t=loadTrace();t.version=V;t.updated_at=now();t.events=t.events||[];t.events.push(Object.assign({at:now()},ev));t.events=t.events.slice(-200);store(TRACE_KEY,t);return t}
 function docs(d,a,n){a=a||[];n=n||0;if(!d||n>10)return a;try{a.push(d);Array.from(d.querySelectorAll('iframe,frame')).forEach(f=>{try{let z=f.contentDocument||(f.contentWindow&&f.contentWindow.document);if(z)docs(z,a,n+1)}catch(e){addEvent({event:'frame_blocked_or_unreadable',error:String(e&&e.message||e)})}})}catch(e){addEvent({event:'docs_scan_error',error:String(e&&e.message||e)})}return a}
 function readJson(k){try{let v=localStorage.getItem(k);if(v)return JSON.parse(v)}catch(e){}try{if(window.top&&window.top.localStorage){let v=window.top.localStorage.getItem(k);if(v)return JSON.parse(v)}}catch(e){}return null}
-function scriptStatus(){return{
-  section_owner_global:!!window.PMPSectionOwnerRegistryV1,
-  helper_registry_global:!!window.PMPHelperRegistryV1,
-  section_owner_snapshot_present:!!readJson('pmp_section_owner_registry_snapshot_v1'),
-  section_owner_receipt_present:!!readJson('pmp_section_owner_registry_v1_receipt'),
-  helper_snapshot_present:!!readJson('pmp_helper_registry_snapshot_v1'),
-  helper_receipt_present:!!readJson('pmp_helper_registry_v1_receipt'),
-  diagnostics_receipt_present:!!readJson('pmp_owner_diagnostics_foundation_v1_receipt'),
-  coverage_receipt_present:!!readJson('pmp_pass7_coverage_lock_receipt_v1'),
-  certification_receipt_present:!!readJson('pmp_pass7_certification_gate_v1_receipt')
-}}
+function scriptStatus(){return{section_owner_global:!!window.PMPSectionOwnerRegistryV1,helper_registry_global:!!window.PMPHelperRegistryV1,section_owner_snapshot_present:!!readJson('pmp_section_owner_registry_snapshot_v1'),section_owner_receipt_present:!!readJson('pmp_section_owner_registry_v1_receipt'),helper_snapshot_present:!!readJson('pmp_helper_registry_snapshot_v1'),helper_receipt_present:!!readJson('pmp_helper_registry_v1_receipt'),diagnostics_receipt_present:!!readJson('pmp_owner_diagnostics_foundation_v1_receipt'),coverage_receipt_present:!!readJson('pmp_pass7_coverage_lock_receipt_v1'),certification_receipt_present:!!readJson('pmp_pass7_certification_gate_v1_receipt')}}
 function inject(d){if(!d||!d.body)return 0;let made=0;SCRIPTS.forEach(s=>{try{let old=d.getElementById(s.id);if(old){addEvent({event:'script_skipped_existing_id',id:s.id,src:s.src,critical:s.critical||null,existing_src:old.getAttribute('src')||''});return}let x=d.createElement('script');x.id=s.id;let full=s.src+'?fresh='+s.fresh+'-'+Date.now();x.src=full;x.onload=()=>addEvent({event:'script_load',id:s.id,src:s.src,critical:s.critical||null,full_src:full,status:scriptStatus()});x.onerror=(e)=>addEvent({event:'script_error',id:s.id,src:s.src,critical:s.critical||null,full_src:full,error:String(e&&e.message||'load_error'),status:scriptStatus()});d.body.appendChild(x);made++;addEvent({event:'script_injected',id:s.id,src:s.src,critical:s.critical||null,full_src:full})}catch(e){addEvent({event:'script_inject_exception',id:s.id,src:s.src,error:String(e&&e.message||e)})}});return made}
-function scan(reason){let made=0,docCount=0;docs(document).forEach(d=>{docCount++;made+=inject(d)});let receipt={type:'PMP_CONTINUOUS_RUN_BANK_ORDER_FRAME_LOADER_V1',version:V,at:now(),reason:reason||'scan',documents_seen:docCount,scripts:SCRIPTS.map(x=>x.src),new_injections:made,pass7_startup_execution_audit:'per_script_injected_load_error_skipped_trace_enabled',startup_trace_key:TRACE_KEY,status:scriptStatus(),side_effects:{route_change_attempted:false,indexeddb_write_attempted:false,bank_rebuild_attempted:false,storage_migration_attempted:false,section_takeover_attempted:false,diagnostic_repair_attempted:false,helper_takeover_attempted:false,growth_auto_create_attempted:false,coverage_lock_repair_attempted:false,certification_repair_attempted:false,generic_diagnostics_panel_injection_attempted:false}};store(LOADER_KEY,receipt);addEvent({event:'loader_scan_complete',reason:reason||'scan',new_injections:made,documents_seen:docCount,status:receipt.status});return receipt}
+function scan(reason){let made=0,docCount=0;docs(document).forEach(d=>{docCount++;made+=inject(d)});let receipt={type:'PMP_CONTINUOUS_RUN_BANK_ORDER_FRAME_LOADER_V1',version:V,at:now(),reason:reason||'scan',documents_seen:docCount,scripts:SCRIPTS.map(x=>x.src),new_injections:made,pass7_startup_execution_audit:'per_script_injected_load_error_skipped_trace_enabled_and_visible_in_diagnostics',startup_trace_key:TRACE_KEY,status:scriptStatus(),side_effects:{route_change_attempted:false,indexeddb_write_attempted:false,bank_rebuild_attempted:false,storage_migration_attempted:false,section_takeover_attempted:false,diagnostic_repair_attempted:false,helper_takeover_attempted:false,growth_auto_create_attempted:false,coverage_lock_repair_attempted:false,certification_repair_attempted:false,generic_diagnostics_panel_injection_attempted:false}};store(LOADER_KEY,receipt);addEvent({event:'loader_scan_complete',reason:reason||'scan',new_injections:made,documents_seen:docCount,status:receipt.status});return receipt}
 window.PMPContinuousRunBankOrderFrameLoaderV1={version:V,scan,startup_trace_key:TRACE_KEY,scriptStatus};
 window.addEventListener('error',e=>addEvent({event:'window_error',message:String(e.message||''),filename:String(e.filename||''),lineno:e.lineno||0,colno:e.colno||0}));
 window.addEventListener('unhandledrejection',e=>addEvent({event:'unhandled_rejection',reason:String(e.reason&&e.reason.message||e.reason||'')}));
