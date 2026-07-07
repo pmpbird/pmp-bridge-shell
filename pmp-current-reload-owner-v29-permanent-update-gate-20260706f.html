@@ -6,12 +6,14 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#f3ded4">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="msapplication-navbutton-color" content="#f3ded4">
 <title>PMP Current Reload Owner v29</title>
-<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3ded4}iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#f3ded4}</style>
+<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3ded4;color-scheme:light}iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#f3ded4}</style>
 </head>
 <body>
 <iframe id="a" title="PMP Current App"></iframe>
-<script src="pmp-pass75-theme-restore-lock-v1.js?fresh=pass75-release-only-theme-restore-lock-20260707B"></script>
+<script src="pmp-pass75-theme-restore-lock-v1.js?fresh=pass75-mobile-chrome-theme-restore-20260707C"></script>
 <script src="pmp-pass1w-live-proof-reader-v1.js?fresh=orchestrator-20260705X"></script>
 <script src="pmp-current-screen-pointer-v1.js?fresh=pointer-20260705X"></script>
 <script src="pmp-reload-world-from-map-v1.js?fresh=rg21-20260705X"></script>
@@ -20,16 +22,16 @@
 <script>
 'use strict';
 const frame=document.getElementById('a');
-const PMP_AUTO_FRESH_LOADER_VERSION='1.1.0-pass75-run-app-orchestrator-release-only';
-const PMP_AUTO_FRESH_BASE='v29-owner29-pass75-runtime-platform-20260707F';
+const PMP_AUTO_FRESH_LOADER_VERSION='1.1.1-pass75-mobile-chrome-theme-restore';
+const PMP_AUTO_FRESH_BASE='v29-owner29-pass75-runtime-platform-20260707G';
 const PMP_MOUNT_REGISTRY_CACHELIFT_SRC='pmp-mount-registry-v1-cachelift-20260706b.js?fresh=mount-registry-pass7-final-gap-fixed-20260706D';
-const PMP_THEME_RESTORE_LOCK_SRC='pmp-pass75-theme-restore-lock-v1.js?fresh=pass75-release-only-theme-restore-lock-20260707B';
+const PMP_THEME_RESTORE_LOCK_SRC='pmp-pass75-theme-restore-lock-v1.js?fresh=pass75-mobile-chrome-theme-restore-20260707C';
 const PMP_LIVE_UPDATE_MARKER='pmp-reload-current-live-update-marker-v1.json';
 let pmpLiveUpdateLastRevision=null;
 function fallbackSrc(){return 'pmp-current-inner-cleanbug-rgcontrols-v29.html?fresh='+PMP_AUTO_FRESH_BASE+'-'+Date.now()+'#control'}
 function liveSrc(rev){return 'pmp-current-inner-cleanbug-rgcontrols-v29.html?fresh=live-update-gate-'+encodeURIComponent(String(rev||'revision'))+'-'+Date.now()+'#control'}
 function pmpAutoFreshReceipt(src,status,extra){
-  let receipt=Object.assign({type:'PMP_AUTO_FRESH_LOADER_V1_RECEIPT',version:PMP_AUTO_FRESH_LOADER_VERSION,owner:'pmp-current-reload-owner-v29',owner_file:'pmp-current-reload-owner-v29-permanent-update-gate-20260706f.html',owner_identity:'permanent-update-gate-20260706f',mode:'pass75_runtime_platform_gate_before_inner_app',route_target:'pmp-current-inner-cleanbug-rgcontrols-v29.html',current_inner_src:src,fresh_marker_base:PMP_AUTO_FRESH_BASE,mount_registry_injection_src:PMP_MOUNT_REGISTRY_CACHELIFT_SRC,theme_restore_lock_src:PMP_THEME_RESTORE_LOCK_SRC,live_update_marker:PMP_LIVE_UPDATE_MARKER,live_update_poll_ms:5000,fresh_marker_is_live_timestamped:/fresh=[^#&]+-\d+/.test(src),runtime_platform_gate:'pmp-pass75-reload-runtime-platform-gate-v1.js',runtime_platform_position:'between_reload_owner_and_route_guardian',runtime_theme_isolated:true,theme_restore_lock:'release_only',small_updates_should_not_require_manual_map_cache_lift:true,map_change_required_only_when_route_filename_changes:true,auto_fresh_loader_status:status||'runtime_platform_waiting',side_effects:{route_change_attempted:false,indexeddb_write_attempted:false,bank_rebuild_attempted:false,storage_migration_attempted:false,section_takeover_attempted:false},built_at:new Date().toISOString(),pass:true},extra||{});
+  let receipt=Object.assign({type:'PMP_AUTO_FRESH_LOADER_V1_RECEIPT',version:PMP_AUTO_FRESH_LOADER_VERSION,owner:'pmp-current-reload-owner-v29',owner_file:'pmp-current-reload-owner-v29-permanent-update-gate-20260706f.html',owner_identity:'permanent-update-gate-20260706f',mode:'pass75_runtime_platform_gate_before_inner_app',route_target:'pmp-current-inner-cleanbug-rgcontrols-v29.html',current_inner_src:src,fresh_marker_base:PMP_AUTO_FRESH_BASE,mount_registry_injection_src:PMP_MOUNT_REGISTRY_CACHELIFT_SRC,theme_restore_lock_src:PMP_THEME_RESTORE_LOCK_SRC,live_update_marker:PMP_LIVE_UPDATE_MARKER,live_update_poll_ms:5000,fresh_marker_is_live_timestamped:/fresh=[^#&]+-\d+/.test(src),runtime_platform_gate:'pmp-pass75-reload-runtime-platform-gate-v1.js',runtime_platform_position:'between_reload_owner_and_route_guardian',runtime_theme_isolated:true,theme_restore_lock:'mobile_chrome_release_only',small_updates_should_not_require_manual_map_cache_lift:true,map_change_required_only_when_route_filename_changes:true,auto_fresh_loader_status:status||'runtime_platform_waiting',side_effects:{route_change_attempted:false,indexeddb_write_attempted:false,bank_rebuild_attempted:false,storage_migration_attempted:false,section_takeover_attempted:false},built_at:new Date().toISOString(),pass:true},extra||{});
   try{localStorage.setItem('pmp_auto_fresh_loader_v1_receipt',JSON.stringify(receipt,null,2))}catch(e){}
   try{window.PMPAutoFreshLoaderV1={version:PMP_AUTO_FRESH_LOADER_VERSION,last:()=>receipt,receipt:receipt}}catch(e){}
   try{if(window.top)window.top.PMPAutoFreshLoaderV1=window.PMPAutoFreshLoaderV1}catch(e){}
