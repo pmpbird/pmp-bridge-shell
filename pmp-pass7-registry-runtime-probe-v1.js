@@ -1,0 +1,17 @@
+(()=>{
+'use strict';
+const V='1.0.0-pass7-registry-runtime-probe';
+const KEY='pmp_pass7_registry_runtime_probe_v1';
+const RULE='One-time/slow passive runtime probe. Calls existing registry scan functions if present and records whether required snapshots/receipts appear. No repair, no route mutation, no storage migration, no Bank rebuild, no ownership takeover.';
+function now(){return new Date().toISOString()}
+function T(){try{return window.top||window}catch(e){return window}}
+function stores(){let out=[];try{if(localStorage)out.push(localStorage)}catch(e){}try{if(T().localStorage&&out.indexOf(T().localStorage)<0)out.push(T().localStorage)}catch(e){}return out}
+function get(k){for(let s of stores()){try{let v=s.getItem(k);if(v)return JSON.parse(v)}catch(e){}}return null}
+function put(k,v){let text=JSON.stringify(v,null,2),n=0,errors=[];stores().forEach(s=>{try{s.setItem(k,text);n++}catch(e){errors.push(String(e&&e.message||e))}});return{writes:n,errors}}
+function g(name){try{return window[name]||T()[name]||null}catch(e){return null}}
+function callScan(name,label){let obj=g(name),out={label,global_present:!!obj,scan_present:!!(obj&&typeof obj.scan==='function'),called:false,result_type:null,error:null};try{if(obj&&typeof obj.scan==='function'){out.called=true;let r=obj.scan('runtime_probe_'+label);out.result_type=r&&typeof r;out.result_keys=r&&Object.keys(r)||[]}}catch(e){out.error=String(e&&e.stack||e&&e.message||e)}return out}
+function status(){return{section_owner_global:!!g('PMPSectionOwnerRegistryV1'),helper_registry_global:!!g('PMPHelperRegistryV1'),section_owner_snapshot_present:!!get('pmp_section_owner_registry_snapshot_v1'),section_owner_receipt_present:!!get('pmp_section_owner_registry_v1_receipt'),helper_snapshot_present:!!get('pmp_helper_registry_snapshot_v1'),helper_receipt_present:!!get('pmp_helper_registry_v1_receipt'),owner_runtime_audit_present:!!get('pmp_section_owner_registry_runtime_audit_v1'),helper_runtime_audit_present:!!get('pmp_helper_registry_runtime_audit_v1')}}
+function scan(reason){let before=status();let ownerCall=callScan('PMPSectionOwnerRegistryV1','section_owner');let mid=status();let helperCall=callScan('PMPHelperRegistryV1','helper_registry');let after=status();let receipt={type:'PMP_PASS7_REGISTRY_RUNTIME_PROBE_V1',version:V,owner:'pmp-pass7-registry-runtime-probe-v1',at:now(),reason:reason||'scan',mode:'passive_probe_only',before,ownerCall,mid,helperCall,after,diagnosis:after.section_owner_snapshot_present&&after.helper_snapshot_present?'registries_scan_and_write_snapshots':(!before.section_owner_global||!before.helper_registry_global?'registry_globals_missing':'registry_globals_present_but_snapshot_write_missing'),side_effects:{repair_attempted:false,route_change_attempted:false,indexeddb_write_attempted:false,bank_rebuild_attempted:false,storage_migration_attempted:false,section_takeover_attempted:false,helper_takeover_attempted:false},rule:RULE};receipt.storage_write=put(KEY,receipt);return receipt}
+window.PMPPass7RegistryRuntimeProbeV1={version:V,scan,status,rule:RULE};
+[0,250,1000,3000,7000,12000].forEach(t=>setTimeout(()=>scan('scheduled_'+t),t));setInterval(()=>scan('slow_watch_8000'),8000);scan('initial');
+})();
