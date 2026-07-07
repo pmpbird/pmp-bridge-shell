@@ -1,0 +1,16 @@
+/* PMP Pass 7.5 Service Worker */
+'use strict';
+const PMP_SW_VERSION='1.0.0-pass75-runtime-platform';
+const PMP_CACHE_PREFIX='pmp-runtime-cache-';
+const PMP_CACHE_NAME=PMP_CACHE_PREFIX+PMP_SW_VERSION;
+const NEVER_CACHE=[/receipt/i,/diagnostics/i,/snapshot/i,/runtime_audit/i,/startup_execution_audit/i,/\.json(?:\?|$)/i];
+const CACHE_ALLOWED=[/pmp-home-single-v6\.html/i,/\.css(?:\?|$)/i,/\.js(?:\?|$)/i,/manifest/i];
+let counters={fetches:0,cache_hits:0,network_fetches:0,cache_misses:0,old_caches_deleted:0,last_event:null,last_error:null};
+function now(){return new Date().toISOString()}
+function report(type,extra){counters.last_event={type,at:now(),extra:extra||{}};self.clients.matchAll({type:'window',includeUncontrolled:true}).then(clients=>{clients.forEach(c=>{try{c.postMessage({type:'PMP_SERVICE_WORKER_REPORT_V1',version:PMP_SW_VERSION,at:now(),event:type,counters,extra:extra||{}})}catch(e){}})}).catch(()=>{});}
+function never(url){return NEVER_CACHE.some(r=>r.test(url))}
+function allowed(url){return CACHE_ALLOWED.some(r=>r.test(url))&&!never(url)}
+self.addEventListener('install',event=>{report('install_start');self.skipWaiting();event.waitUntil(caches.open(PMP_CACHE_NAME).then(()=>report('install_complete',{cache:PMP_CACHE_NAME})).catch(e=>{counters.last_error=String(e&&e.message||e);report('install_error',{error:counters.last_error})}))});
+self.addEventListener('activate',event=>{report('activate_start');event.waitUntil((async()=>{let keys=await caches.keys();for(let k of keys){if(k.indexOf(PMP_CACHE_PREFIX)===0&&k!==PMP_CACHE_NAME){await caches.delete(k);counters.old_caches_deleted++}}await self.clients.claim();report('activate_complete',{cache:PMP_CACHE_NAME,old_caches_deleted:counters.old_caches_deleted})})().catch(e=>{counters.last_error=String(e&&e.message||e);report('activate_error',{error:counters.last_error})}))});
+self.addEventListener('message',event=>{let msg=event.data||{};if(msg.type==='PMP_SW_STATUS_REQUEST'){report('status_response',{cache:PMP_CACHE_NAME});try{event.source&&event.source.postMessage({type:'PMP_SERVICE_WORKER_STATUS_V1',version:PMP_SW_VERSION,at:now(),cache:PMP_CACHE_NAME,counters})}catch(e){}}if(msg.type==='PMP_SW_CLEAR_RUNTIME_CACHE'){event.waitUntil((async()=>{let keys=await caches.keys();let deleted=[];for(let k of keys){if(k.indexOf(PMP_CACHE_PREFIX)===0){await caches.delete(k);deleted.push(k)}}counters.old_caches_deleted+=deleted.length;report('clear_runtime_cache_complete',{deleted})})())}});
+self.addEventListener('fetch',event=>{const req=event.request;const url=req.url;counters.fetches++;if(req.method!=='GET'||never(url)){counters.network_fetches++;event.respondWith(fetch(req));return}if(allowed(url)){event.respondWith((async()=>{let cache=await caches.open(PMP_CACHE_NAME);let hit=await cache.match(req);if(hit){counters.cache_hits++;report('cache_hit',{url});return hit}counters.cache_misses++;let res=await fetch(req,{cache:'no-store'});counters.network_fetches++;try{if(res&&res.ok)await cache.put(req,res.clone())}catch(e){counters.last_error=String(e&&e.message||e);report('cache_put_error',{url,error:counters.last_error})}report('network_then_cache',{url});return res})().catch(e=>{counters.last_error=String(e&&e.message||e);report('fetch_error',{url,error:counters.last_error});return fetch(req)}));return}counters.network_fetches++;event.respondWith(fetch(req));});
