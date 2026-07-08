@@ -1,0 +1,22 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="theme-color" content="#f3ded4"><meta name="apple-mobile-web-app-status-bar-style" content="default"><title>PMP Current Reload Owner v30</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3ded4;color-scheme:light}iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#f3ded4}</style></head><body><iframe id="a" title="PMP Current App"></iframe><script src="pmp-safe-area-surface-fill-v1.js?fresh=safe-area-surface-fill-20260708B"></script><script src="pmp-pass1w-live-proof-reader-v1.js?fresh=orchestrator-20260705X"></script><script src="pmp-current-screen-pointer-v1.js?fresh=pointer-20260705X"></script><script src="pmp-reload-world-from-map-v1.js?fresh=rg21-20260705X"></script><script src="pmp-active-path-discovery-zip-export-v2.js?fresh=discovery-owner-v30-20260708A"></script><script src="pmp-pass75-reload-runtime-platform-gate-v1.js?fresh=pass75-safe-area-container-only-20260707I"></script><script>
+'use strict';
+const frame=document.getElementById('a');
+const BASE='v30-reload-owner-direct-boot-surface-20260708A';
+const INNER='pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html';
+const MARKER='pmp-reload-current-live-update-marker-v1.json';
+const MOUNT='pmp-mount-registry-v1-cachelift-20260706b.js?fresh=mount-registry-pass7-final-gap-fixed-20260706D';
+const SURFACE='pmp-safe-area-surface-fill-v1.js?fresh=safe-area-surface-fill-20260708B';
+let last=null;
+function inner(rev){return INNER+'?fresh='+(rev?'v30-lane-'+encodeURIComponent(rev):BASE)+'-'+Date.now()+'#control'}
+function receipt(src,status,extra){let r=Object.assign({type:'PMP_AUTO_FRESH_LOADER_V1_RECEIPT',version:'1.2.0-v30-direct-boot-surface-lane',owner:'pmp-current-reload-owner-v30',mode:'v30_direct_boot_surface_new_reload_owner_and_inner_filename',current_inner_src:src,current_inner_file:INNER,reload_owner_file:'pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html',status:status,built_at:new Date().toISOString(),pass:true},extra||{});try{localStorage.setItem('pmp_auto_fresh_loader_v1_receipt',JSON.stringify(r,null,2));window.PMPAutoFreshLoaderV1={receipt:r,last:()=>r}}catch(e){}return r}
+function inject(id,src){try{let d=frame.contentDocument||(frame.contentWindow&&frame.contentWindow.document);if(!d||d.getElementById(id))return;let s=d.createElement('script');s.id=id;s.src=src;(d.head||d.documentElement).appendChild(s)}catch(e){}}
+function mount(){inject('pmpMountRegistryCachelift20260706b',MOUNT)}
+function surface(){inject('pmpSafeAreaSurfaceFillV1Frame',SURFACE)}
+async function readMarker(reason){let r=await fetch(MARKER+'?fresh='+Date.now(),{cache:'no-store'});let m=await r.json();return String(m.revision||m.updated_at||m.version||'')}
+async function start(){try{let rev=await readMarker('start');last=rev;let src=inner(rev);receipt(src,'marker_loaded',{revision:rev});frame.src=src}catch(e){let src=inner('');receipt(src,'fallback',{error:String(e&&e.message||e)});frame.src=src}}
+async function check(){try{let rev=await readMarker('interval');if(rev&&rev!==last){last=rev;let src=inner(rev);receipt(src,'refreshed',{revision:rev});frame.src=src}}catch(e){}}
+frame.addEventListener('load',()=>{[20,80,180,360,800,1500,2600,4200,6500].forEach(t=>setTimeout(surface,t));[30,120,360,800,1500,2600,4200,6500].forEach(t=>setTimeout(mount,t))});
+function install(){surface();mount();try{if(window.PMPActivePathDiscoveryZipExportV2&&window.PMPActivePathDiscoveryZipExportV2.install)window.PMPActivePathDiscoveryZipExportV2.install()}catch(e){}}
+function afterRuntime(){start();[200,600,1200,2200,3600,5200].forEach(t=>setTimeout(install,t));setInterval(install,1200);setInterval(check,5000)}
+try{if(window.PMPPass75ReloadRuntimePlatformGateV1&&window.PMPPass75ReloadRuntimePlatformGateV1.run){receipt('','runtime_gate_displayed');window.PMPPass75ReloadRuntimePlatformGateV1.run(afterRuntime)}else{receipt('','runtime_gate_missing');afterRuntime()}}catch(e){receipt('','runtime_gate_error',{error:String(e&&e.message||e)});afterRuntime()}
+</script></body></html>
