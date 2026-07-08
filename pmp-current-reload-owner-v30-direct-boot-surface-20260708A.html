@@ -4,6 +4,8 @@ const frame=document.getElementById('a'),panel=document.getElementById('receiptP
 const DIAG=new URLSearchParams(location.search).get('diagnostics')==='reload-owner';
 const BASE='v30-reload-owner-diagnostic-only-20260708D',INNER='pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html',MARKER='pmp-reload-current-live-update-marker-v1.json',MOUNT='pmp-mount-registry-v1-cachelift-20260706b.js?fresh=mount-registry-pass7-final-gap-fixed-20260706D',SURFACE='pmp-safe-area-surface-fill-v1.js?fresh=safe-area-surface-fill-20260708B';
 const PAUSE_MS=DIAG?4500:0;let last=null,lastReceipt=null,started=false;
+setTimeout(()=>{try{cover.classList.add('hide')}catch(e){}},900);
+setTimeout(()=>{try{cover.classList.add('hide')}catch(e){}},1600);
 if(DIAG)panel.classList.add('show');
 function inner(rev){return INNER+'?fresh='+(rev?'v30-diagnostic-only-'+encodeURIComponent(rev):BASE)+'-'+Date.now()+'#control'}
 function writeTop(k,v){try{localStorage.setItem(k,JSON.stringify(v,null,2))}catch(e){}try{if(window.top&&window.top.localStorage)window.top.localStorage.setItem(k,JSON.stringify(v,null,2))}catch(e){}}
@@ -12,7 +14,7 @@ function inject(id,src){try{let d=frame.contentDocument||(frame.contentWindow&&f
 function mount(){inject('pmpMountRegistryCachelift20260706b',MOUNT)}function surface(){inject('pmpSafeAreaSurfaceFillV1Frame',SURFACE)}
 async function readMarker(){let r=await fetch(MARKER+'?fresh='+Date.now(),{cache:'no-store'});let m=await r.json();return String(m.revision||m.updated_at||m.version||'')}
 async function start(){if(started)return;started=true;try{let rev=await readMarker();last=rev;let src=inner(rev);receipt(src,DIAG?'marker_loaded_waiting_before_inner':'marker_loaded_silent',{revision:rev});setTimeout(()=>{receipt(src,'loading_inner_after_reload_owner',{revision:rev});panel.classList.remove('show');frame.src=src},PAUSE_MS)}catch(e){let src=inner('');receipt(src,'fallback_after_reload_owner',{error:String(e&&e.message||e)});setTimeout(()=>{panel.classList.remove('show');frame.src=src},PAUSE_MS)}}
-async function check(){try{let rev=await readMarker();if(rev&&rev!==last){last=rev;let src=inner(rev);receipt(src,'refreshed',{revision:rev});cover.classList.remove('hide');frame.src=src}}catch(e){}}
+async function check(){try{let rev=await readMarker();if(rev&&rev!==last){last=rev;let src=inner(rev);receipt(src,'refreshed',{revision:rev});cover.classList.remove('hide');setTimeout(()=>cover.classList.add('hide'),900);frame.src=src}}catch(e){}}
 frame.addEventListener('load',()=>{[20,80,180,360,800,1500,2600,4200,6500].forEach(t=>setTimeout(surface,t));[30,120,360,800,1500,2600,4200,6500].forEach(t=>setTimeout(mount,t));setTimeout(()=>cover.classList.add('hide'),450);setTimeout(()=>cover.classList.add('hide'),1400)});
 function install(){surface();mount();try{if(window.PMPActivePathDiscoveryZipExportV2&&window.PMPActivePathDiscoveryZipExportV2.install)window.PMPActivePathDiscoveryZipExportV2.install()}catch(e){}}
 function afterRuntime(){start();[200,600,1200,2200,3600,5200].forEach(t=>setTimeout(install,t));setInterval(install,1200);setInterval(check,5000)}
