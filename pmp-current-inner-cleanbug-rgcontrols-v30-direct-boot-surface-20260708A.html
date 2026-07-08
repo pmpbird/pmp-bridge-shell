@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#07101c">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#f3ded4">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>PMP Current Inner v30 Direct Boot Surface</title>
 <style>
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3ded4;color-scheme:light}
 iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#f3ded4}
-#boot{position:fixed;inset:0;z-index:20;background:#07101c;color:#dfffe4;border:0;border-radius:0;box-shadow:none;padding:calc(env(safe-area-inset-top,0px) + 12px) 12px calc(env(safe-area-inset-bottom,0px) + 12px);box-sizing:border-box;font:760 6.25px/.96 "SFMono-Regular","SF Mono",Menlo,Consolas,monospace;white-space:pre-wrap;overflow:hidden;pointer-events:none}
-#boot:before{content:"App Orchestrator working…";display:block;margin:0 0 7px;padding:7px 10px;border-radius:999px;background:#f8fbff;color:#07101c;border:2px solid #07101c;font:950 12px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,.20)}
+#boot{position:fixed;left:14px;right:14px;top:calc(env(safe-area-inset-top,0px) + 18px);bottom:calc(env(safe-area-inset-bottom,0px) + 22px);z-index:20;background:#07101c;color:#dfffe4;border:0;border-radius:24px;box-shadow:0 10px 28px rgba(0,0,0,.18);padding:16px 13px 16px;box-sizing:border-box;font:760 6.25px/.96 "SFMono-Regular","SF Mono",Menlo,Consolas,monospace;white-space:pre-wrap;overflow:hidden;pointer-events:none}
+#boot:before{content:"App Orchestrator working…";display:block;margin:0 0 10px;padding:8px 10px;border-radius:999px;background:#f8fbff;color:#07101c;border:2px solid #07101c;font:950 12px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,.20)}
 </style>
 </head>
 <body>
@@ -22,7 +22,7 @@ iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#f3ded4
 'use strict';
 window.PMP_APP_ORCHESTRATOR_BOOT_DELAY_MS=4300;
 window.PMP_BOOT_PANEL_SUPPRESS=true;
-const KEY='20260708A-v30-direct-boot-surface-new-filename';
+const KEY='20260708A-v30-direct-boot-surface-new-filename-bg-margin';
 const PRE_MS=4300,LINE_MS=18,start=Date.now(),boot=document.getElementById('boot'),frame=document.getElementById('app');
 let q=[],pump=false,printed=0;
 function goodHash(x){return /^#(world|bridge|library|workshop|control|bank)$/i.test(String(x||''))}
@@ -30,10 +30,10 @@ function ts(){return ((Date.now()-start)/1000).toFixed(1)+'s'}
 function push(s){q.push('['+ts()+'] '+s);if(!pump){pump=true;setInterval(()=>{if(!q.length||!boot)return;printed++;boot.textContent+=(boot.textContent?'\n':'')+q.shift()},LINE_MS)}}
 function setTheme(color,style){try{let m=document.querySelector('meta[name="theme-color"]');if(m)m.content=color}catch(e){}try{let s=document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');if(s)s.content=style}catch(e){}}
 function clearPreframe(reason){try{let b=document.getElementById('boot');if(b)b.remove()}catch(e){}setTheme('#f3ded4','default');try{localStorage.setItem('pmp_preframe_boot_clear_v1',JSON.stringify({reason,version:KEY,wrapper:'pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html',new_filename:true,printed_lines:printed,at:new Date().toISOString()}))}catch(e){}}
-function receipt(reason){let r={type:'PMP_CURRENT_INNER_V30_DIRECT_BOOT_SURFACE_RECEIPT',version:KEY,owner:'pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html',at:new Date().toISOString(),reason,boot_surface:{inset:'0',border:'0',border_radius:'0',safe_area_padding:true,background:'#07101c'},app_surface:{background:'#f3ded4'},side_effects:{route_change_attempted:false,bank_rebuild_attempted:false,indexeddb_write_attempted:false,storage_migration_attempted:false},pass:true};try{localStorage.setItem('pmp_current_inner_v30_direct_boot_surface_receipt',JSON.stringify(r,null,2))}catch(e){}return r}
+function receipt(reason){let r={type:'PMP_CURRENT_INNER_V30_DIRECT_BOOT_SURFACE_RECEIPT',version:KEY,owner:'pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html',at:new Date().toISOString(),reason,boot_surface:{background:'#07101c',outer_background_visible:true,outer_background:'#f3ded4',border_radius:'24px',safe_area_padding:true},app_surface:{background:'#f3ded4'},side_effects:{route_change_attempted:false,bank_rebuild_attempted:false,indexeddb_write_attempted:false,storage_migration_attempted:false},pass:true};try{localStorage.setItem('pmp_current_inner_v30_direct_boot_surface_receipt',JSON.stringify(r,null,2))}catch(e){}return r}
 push('$ pmp boot --pass=7.5 --source=v30-new-filename');
 push('V30 new filename active: bypasses cached v29 wrapper.');
-push('Boot panel is full-screen. No tan margin strip should be visible.');
+push('Boot panel keeps PMP background visible around console.');
 receipt('boot_start');
 </script>
 <script src="pmp-app-orchestrator-v1.js?fresh=app-orchestrator-pass7-receipt-aware-20260705A"></script>
@@ -52,7 +52,7 @@ receipt('boot_start');
 <script>
 'use strict';
 const h=goodHash(location.hash)?location.hash:'#bank';
-setTimeout(()=>{push('CLEAR full-screen boot panel before app iframe src');setTimeout(()=>{clearPreframe('before_world_iframe_src');setTimeout(()=>{frame.src='pmp-current-inner-cleanbug-rgcontrols-v23.html?fresh=v30-direct-boot-surface-20260708A-'+Date.now()+h;receipt('inner_app_frame_src_set')},80)},180)},PRE_MS);
+setTimeout(()=>{push('CLEAR boot panel before app iframe src');setTimeout(()=>{clearPreframe('before_world_iframe_src');setTimeout(()=>{frame.src='pmp-current-inner-cleanbug-rgcontrols-v23.html?fresh=v30-direct-boot-surface-20260708A-'+Date.now()+h;receipt('inner_app_frame_src_set')},80)},180)},PRE_MS);
 frame.addEventListener('load',()=>{clearPreframe('frame_loaded_world_safe');receipt('inner_frame_loaded')});
 [PRE_MS+450,PRE_MS+900,PRE_MS+1500,PRE_MS+2200].forEach(ms=>setTimeout(()=>clearPreframe('repeat_world_safe_'+ms),ms));
 </script>
