@@ -9,35 +9,69 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>PMP Current Inner v30 Direct Boot Surface</title>
 <style>
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3ded4;color-scheme:light}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3ded4;color-scheme:light;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#07101c}
 iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#f3ded4}
-#boot{position:fixed;left:14px;right:14px;top:calc(env(safe-area-inset-top,0px) + 18px);bottom:calc(env(safe-area-inset-bottom,0px) + 22px);z-index:20;background:#07101c;color:#dfffe4;border:0;border-radius:24px;box-shadow:0 10px 28px rgba(0,0,0,.18);padding:16px 13px 16px;box-sizing:border-box;font:760 6.25px/.96 "SFMono-Regular","SF Mono",Menlo,Consolas,monospace;white-space:pre-wrap;overflow:hidden;pointer-events:none}
-#boot:before{content:"App Orchestrator working…";display:block;margin:0 0 10px;padding:8px 10px;border-radius:999px;background:#f8fbff;color:#07101c;border:2px solid #07101c;font:950 12px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,.20)}
+#boot{position:fixed;inset:0;z-index:20;background:#f3ded4;color:#07101c;display:grid;place-items:center;padding:calc(env(safe-area-inset-top,0px) + 16px) 16px calc(env(safe-area-inset-bottom,0px) + 16px);box-sizing:border-box;overflow:auto}
+.bootCard{width:min(560px,100%);background:#fff;border:3px solid #07101c;border-radius:26px;box-shadow:0 10px 28px rgba(0,0,0,.18);padding:16px;display:grid;gap:12px;box-sizing:border-box}
+.bootBadge{display:inline-flex;align-items:center;justify-content:center;width:max-content;max-width:100%;background:#acd1fb;border:2px solid #07101c;border-radius:999px;padding:7px 10px;font-size:12px;font-weight:950}
+.bootTitle{margin:0;font-size:28px;line-height:1.02;letter-spacing:0;font-weight:950}
+.bootSub{margin:0;font-size:13px;line-height:1.35;font-weight:800;opacity:.78}
+.bootChecklist{display:grid;gap:8px;margin:2px 0}.bootItem{display:grid;grid-template-columns:24px 1fr auto;gap:8px;align-items:center;border:2px solid #07101c;border-radius:14px;background:#fff;padding:9px 10px;font-size:13px;font-weight:900}.bootDot{width:16px;height:16px;border-radius:999px;background:#acd1fb;border:2px solid #07101c}.bootItem[data-ready="true"] .bootDot{background:#7ee09b}.bootItem small{font-size:11px;font-weight:950;opacity:.68;text-transform:uppercase}.bootActions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.bootActions .wide{grid-column:1/-1}button{background:#acd1fb;border:2px solid #07101c;border-radius:14px;padding:11px 10px;font:inherit;font-weight:950;color:#07101c}.dark{background:#172234;color:#eef4fb}.soft{background:#fff3de}.bootDetails{display:none;border:2px solid #07101c;border-radius:16px;overflow:hidden;background:#07101c;color:#f8fbff}.bootDetails.show{display:block}.bootDetailsHead{background:#172234;color:#eef4fb;padding:8px 10px;font-size:12px;font-weight:950}.bootLog{display:block;margin:0;white-space:pre-wrap;max-height:120px;overflow:auto;padding:9px 10px;font:750 10px/1.25 "SFMono-Regular","SF Mono",Menlo,Consolas,monospace}.bootNote{margin:0;font-size:11px;line-height:1.3;font-weight:800;opacity:.72;text-align:center}@media(max-width:390px){.bootTitle{font-size:24px}.bootActions{grid-template-columns:1fr}.bootActions .wide{grid-column:auto}}
 </style>
 </head>
 <body>
-<iframe id="app" title="PMP Current Inner v23"></iframe>
-<pre id="boot"></pre>
+<iframe id="app" title="PMP Current Inner v30"></iframe>
+<div id="boot" role="status" aria-live="polite">
+  <section class="bootCard" aria-label="App Orchestrator launch gate">
+    <div class="bootBadge">App Orchestrator</div>
+    <h1 class="bootTitle">Checking PMP before entry</h1>
+    <p class="bootSub">This launch gate verifies the startup chain, keeps the reports copyable, then opens the app.</p>
+    <div class="bootChecklist">
+      <div class="bootItem" id="bootRoute" data-ready="true"><span class="bootDot"></span><span>Route handoff</span><small>ready</small></div>
+      <div class="bootItem" id="bootRuntime"><span class="bootDot"></span><span>Runtime surface</span><small>checking</small></div>
+      <div class="bootItem" id="bootOrchestrator"><span class="bootDot"></span><span>App Orchestrator proof</span><small>checking</small></div>
+      <div class="bootItem" id="bootEntry"><span class="bootDot"></span><span>PMP entry</span><small>pending</small></div>
+    </div>
+    <div class="bootActions">
+      <button class="wide" id="enterNowBtn" type="button">Enter PMP</button>
+      <button id="copyStartupBtn" type="button">Copy Startup Report</button>
+      <button id="copyOrchBtn" type="button">Copy Orchestrator Report</button>
+      <button class="dark wide" id="showBootBtn" type="button">Show Boot Details</button>
+    </div>
+    <div class="bootDetails" id="bootDetails"><div class="bootDetailsHead">Boot Details</div><pre class="bootLog" id="bootLog"></pre></div>
+    <p class="bootNote" id="bootNote">No route changes, Bank rebuild, storage migration, or ownership takeover.</p>
+  </section>
+</div>
 <script>
 'use strict';
 window.PMP_APP_ORCHESTRATOR_BOOT_DELAY_MS=4300;
 window.PMP_BOOT_PANEL_SUPPRESS=true;
-const KEY='20260708A-v30-direct-boot-surface-new-filename-bg-margin';
-const PRE_MS=4300,LINE_MS=18,start=Date.now(),boot=document.getElementById('boot'),frame=document.getElementById('app');
+const KEY='20260708A-v30-app-orchestrator-launch-gate';
+const PRE_MS=4300,LINE_MS=18,start=Date.now(),boot=document.getElementById('boot'),bootLog=document.getElementById('bootLog'),frame=document.getElementById('app');
 let q=[],pump=false,printed=0;
 function goodHash(x){return /^#(world|bridge|library|workshop|control|bank)$/i.test(String(x||''))}
 function ts(){return ((Date.now()-start)/1000).toFixed(1)+'s'}
-function push(s){q.push('['+ts()+'] '+s);if(!pump){pump=true;setInterval(()=>{if(!q.length||!boot)return;printed++;boot.textContent+=(boot.textContent?'\n':'')+q.shift()},LINE_MS)}}
+function setReady(id,label){try{let x=document.getElementById(id);if(x){x.setAttribute('data-ready','true');let s=x.querySelector('small');if(s)s.textContent=label||'ready'}}catch(e){}}
+function setNote(s){try{document.getElementById('bootNote').textContent=s}catch(e){}}
+function push(s){q.push('['+ts()+'] '+s);if(!pump){pump=true;setInterval(()=>{if(!q.length||!bootLog)return;printed++;bootLog.textContent+=(bootLog.textContent?'\n':'')+q.shift();bootLog.scrollTop=bootLog.scrollHeight},LINE_MS)}}
 function setTheme(color,style){try{let m=document.querySelector('meta[name="theme-color"]');if(m)m.content=color}catch(e){}try{let s=document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');if(s)s.content=style}catch(e){}}
-function clearPreframe(reason){try{let b=document.getElementById('boot');if(b)b.remove()}catch(e){}setTheme('#f3ded4','default');try{localStorage.setItem('pmp_preframe_boot_clear_v1',JSON.stringify({reason,version:KEY,wrapper:'pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html',new_filename:true,printed_lines:printed,at:new Date().toISOString()}))}catch(e){}}
-function receipt(reason){let r={type:'PMP_CURRENT_INNER_V30_DIRECT_BOOT_SURFACE_RECEIPT',version:KEY,owner:'pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html',at:new Date().toISOString(),reason,boot_surface:{background:'#07101c',outer_background_visible:true,outer_background:'#f3ded4',border_radius:'24px',safe_area_padding:true},app_surface:{background:'#f3ded4'},side_effects:{route_change_attempted:false,bank_rebuild_attempted:false,indexeddb_write_attempted:false,storage_migration_attempted:false},pass:true};try{localStorage.setItem('pmp_current_inner_v30_direct_boot_surface_receipt',JSON.stringify(r,null,2))}catch(e){}return r}
-push('$ pmp boot --pass=7.5 --source=v30-new-filename');
-push('V30 new filename active: bypasses cached v29 wrapper.');
-push('Boot panel keeps PMP background visible around console.');
+function readJson(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}}
+function writeClip(obj,btn){let text=JSON.stringify(obj,null,2);try{navigator.clipboard.writeText(text);if(btn){let old=btn.textContent;btn.textContent='Copied';setTimeout(()=>btn.textContent=old,1100)}}catch(e){push('Copy failed: '+String(e&&e.message||e))}}
+function startupReport(reason){return{type:'PMP_APP_ORCHESTRATOR_LAUNCH_GATE_STARTUP_REPORT_V1',version:KEY,owner:'pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html',at:new Date().toISOString(),reason:reason||'manual_copy',printed_lines:printed,route_guardian:readJson('pmp_route_guardian_v22_receipt'),reload_owner:readJson('pmp_auto_fresh_loader_v1_receipt'),runtime_gate:readJson('pmp_pass75_reload_runtime_platform_gate_v1_receipt'),app_orchestrator:readJson('pmp_app_orchestrator_v1_receipt'),pass7_owner_helper:readJson('pmp_pass7_certification_decision_v1')||readJson('pmp_owner_diagnostics_foundation_v1_model'),side_effects:{route_change_attempted:false,bank_rebuild_attempted:false,indexeddb_write_attempted:false,storage_migration_attempted:false,ownership_takeover_attempted:false}}}
+function clearPreframe(reason){try{let b=document.getElementById('boot');if(b)b.remove()}catch(e){}setTheme('#f3ded4','default');try{localStorage.setItem('pmp_preframe_boot_clear_v1',JSON.stringify({reason,version:KEY,wrapper:'pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html',new_filename:true,launch_gate:true,printed_lines:printed,at:new Date().toISOString()}))}catch(e){}}
+function receipt(reason){let r={type:'PMP_CURRENT_INNER_V30_DIRECT_BOOT_SURFACE_RECEIPT',version:KEY,owner:'pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html',at:new Date().toISOString(),reason,boot_surface:{kind:'app_orchestrator_launch_gate',background:'#f3ded4',card:'#ffffff',accent:'#acd1fb',ink:'#07101c',details_panel:'compact_expandable'},app_surface:{background:'#f3ded4'},side_effects:{route_change_attempted:false,bank_rebuild_attempted:false,indexeddb_write_attempted:false,storage_migration_attempted:false},pass:true};try{localStorage.setItem('pmp_current_inner_v30_direct_boot_surface_receipt',JSON.stringify(r,null,2))}catch(e){}return r}
+function copyStartup(btn){writeClip(startupReport('copy_startup_report'),btn)}
+function copyOrchestrator(btn){let r=readJson('pmp_app_orchestrator_v1_receipt')||startupReport('copy_orchestrator_report_fallback');writeClip(r,btn)}
+function launchFromButton(){if(window.PMPInnerV30EnterNow)window.PMPInnerV30EnterNow('manual_enter_button');else{push('Enter requested; startup is still wiring the app frame.');setNote('Enter requested. PMP will open as soon as the app frame is ready.')}}
+try{document.getElementById('copyStartupBtn').onclick=function(){copyStartup(this)};document.getElementById('copyOrchBtn').onclick=function(){copyOrchestrator(this)};document.getElementById('enterNowBtn').onclick=launchFromButton;document.getElementById('showBootBtn').onclick=function(){let d=document.getElementById('bootDetails');let open=d&&d.classList.toggle('show');this.textContent=open?'Hide Boot Details':'Show Boot Details'}}catch(e){}
+push('$ pmp app-orchestrator --launch-gate');
+push('Launch gate uses PMP app colors, not Runtime Platform styling.');
+push('Startup reports are available before entering PMP.');
+setReady('bootRuntime','ready');
 receipt('boot_start');
 </script>
-<script src="pmp-app-orchestrator-v1.js?fresh=app-orchestrator-pass7-receipt-aware-20260705A"></script>
-<script>try{if(window.PMPAppOrchestratorV1)window.top.PMPAppOrchestratorV1=window.PMPAppOrchestratorV1}catch(e){}</script>
+<script src="pmp-app-orchestrator-v1.js?fresh=app-orchestrator-launch-gate-20260708B"></script>
+<script>try{if(window.PMPAppOrchestratorV1){window.top.PMPAppOrchestratorV1=window.PMPAppOrchestratorV1;setReady('bootOrchestrator','ready');push('App Orchestrator proof script loaded.')}}catch(e){push('App Orchestrator top handoff note: '+String(e&&e.message||e))}</script>
 <script src="pmp-pass2-atlas-adapter-v2.js?fresh=pass2-atlas-pass5-stable-20260704I"></script>
 <script src="pmp-mount-registry-v1.js?fresh=mount-registry-pass7-v21-v29-atlas-minimal-20260706B"></script>
 <script src="pmp-authority-rules-v1.js?fresh=authority-rules-pass5-stable-20260704I"></script>
@@ -52,7 +86,10 @@ receipt('boot_start');
 <script>
 'use strict';
 const h=goodHash(location.hash)?location.hash:'#bank';
-setTimeout(()=>{push('CLEAR boot panel before app iframe src');setTimeout(()=>{clearPreframe('before_world_iframe_src');setTimeout(()=>{frame.src='pmp-current-inner-cleanbug-rgcontrols-v23.html?fresh=v30-direct-boot-surface-20260708A-'+Date.now()+h;receipt('inner_app_frame_src_set')},80)},180)},PRE_MS);
+let entered=false;
+function launchInner(reason){if(entered)return;entered=true;setReady('bootEntry','entering');push('ENTER PMP: '+reason);setNote('Opening PMP now.');setTimeout(()=>{clearPreframe('before_world_iframe_src_'+reason);setTimeout(()=>{frame.src='pmp-current-inner-cleanbug-rgcontrols-v23.html?fresh=v30-direct-boot-surface-20260708A-'+Date.now()+h;receipt('inner_app_frame_src_set_'+reason)},80)},120)}
+window.PMPInnerV30EnterNow=launchInner;
+setTimeout(()=>launchInner('timer_ready'),PRE_MS);
 frame.addEventListener('load',()=>{clearPreframe('frame_loaded_world_safe');receipt('inner_frame_loaded')});
 [PRE_MS+450,PRE_MS+900,PRE_MS+1500,PRE_MS+2200].forEach(ms=>setTimeout(()=>clearPreframe('repeat_world_safe_'+ms),ms));
 </script>
