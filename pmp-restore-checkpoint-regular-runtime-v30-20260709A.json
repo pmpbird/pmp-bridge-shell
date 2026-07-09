@@ -1,0 +1,42 @@
+{
+  "type": "PMP_RESTORE_CHECKPOINT_V1",
+  "version": "regular-runtime-v30-20260709A",
+  "created_at": "2026-07-09T22:40:00Z",
+  "purpose": "Known-good restore checkpoint after rolling back the risky v31 boot-surface path.",
+  "status": "REGULAR_RUNTIME_RESTORED",
+  "active_route": {
+    "map": "pmp-current-map-v12.json",
+    "route_guardian": "pmp-route-guardian-current-loader-v22.html",
+    "current_app": "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html",
+    "current_inner": "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+    "fallback_app": "pmp-current-inner-cleanbug-rgcontrols-v23.html"
+  },
+  "active_cache_key": "pmp-current-reload-owner-v30-rollback-regular-app-orchestrator-20260709A",
+  "do_not_use_as_active_route": [
+    "pmp-current-inner-cleanbug-rgcontrols-v31-pass8-certification-20260709A.html"
+  ],
+  "rollback_truth": {
+    "v31_boot_surface_active": "no",
+    "regular_runtime_visible_again": "yes",
+    "pass8_certification_closed": "no",
+    "next_pass8_attempt_must_be_background_only": "yes"
+  },
+  "safety_rules": {
+    "no_boot_surface_replacement": "required",
+    "no_runtime_replacement": "required",
+    "no_route_change": "required",
+    "no_bank_rebuild": "required",
+    "no_indexeddb_write": "required",
+    "no_storage_migration": "required",
+    "no_ownership_takeover": "required",
+    "pass8_certification_visual_surface": "forbidden"
+  },
+  "side_effects": {
+    "route_change": "not_attempted",
+    "bank_rebuild": "not_attempted",
+    "indexeddb_write": "not_attempted",
+    "storage_migration": "not_attempted",
+    "ownership_takeover": "not_attempted",
+    "panel_mount": "not_attempted"
+  }
+}
