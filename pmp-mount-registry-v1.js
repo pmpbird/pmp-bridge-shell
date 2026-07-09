@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const V='1.6.2-v30-live-atlas-support-cluster2-20260709A';
+const V='1.6.3-v30-live-atlas-support-cluster3-20260709A';
 const OWNER='pmp-mount-registry-v1';
 const K={registry:'pmp_mount_registry_v1',receipt:'pmp_mount_registry_v1_receipt',snapshot:'pmp_mount_registry_live_snapshot_v1',missing:'pmp_mount_registry_missing_expected_v1'};
 function list(s){return Array.from(new Set(String(s||'').trim().split(/\s+/).filter(Boolean)))}
@@ -136,6 +136,24 @@ pmp-route-code-map-v1.json
 pmp-route-guardian-action-v2.html
 pmp-top-lossless-injector.js
 pmp-visual-cleanup-v1.js
+pmp-lossless-inventory-vault/current.json
+pmp-native-contrast-current.json
+pmp-phase1-private-window-single-v1.js
+pmp-phase10-current-only-freeze-decision-v1.js
+pmp-phase2-runtime-verification-v1.js
+pmp-phase3-hook-readiness-v1.js
+pmp-phase3-hook-validation-execution-v1.js
+pmp-phase4-real-app-proof-execution-v1.js
+pmp-phase4-real-app-proof-readiness-v1.js
+pmp-phase5-current-clean-decision-v1.js
+pmp-phase5-current-clean-readiness-v1.js
+pmp-phase6-freeze-readiness-v1.js
+pmp-phase7-full-transfer-proof-execution-v1.js
+pmp-phase7-full-transfer-proof-readiness-v1.js
+pmp-phase9-current-only-freeze-readiness-v1.js
+pmp-private-field-extractor-v1.js
+pmp-route-code-map-adapter-v1.js
+pmp-top-lossless-loader.js
 `);
 const HISTORIC=list(`
 pmp-current-map-v11.json pmp-current-map-v10.json pmp-current-map-v9.json pmp-current-map.json
@@ -155,7 +173,7 @@ function row(path,bucket){return{path,bucket,group:bucket.toLowerCase()}}
 function sid(bucket,path){return(bucket+'_'+path).toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'')}
 function slot(bucket,path){return{id:sid(bucket,path),bucket,owner:bucket+' File Owner',parent:'active_path_atlas',selectors:[],files:[path],policy:'Atlas record only; no route mutation.'}}
 function currentFiles(){return uniq(STATIC_CURRENT.concat(liveFiles()))}
-function registry(){let active=currentFiles(),support=uniq(SUPPORT_REACHABLE),historic=uniq(HISTORIC),live=liveFiles(),files=active.map(p=>row(p,'ACTIVE_CURRENT_APP')).concat(support.map(p=>row(p,'SUPPORT_REACHABLE'))).concat(historic.map(p=>row(p,'HISTORIC_SUPPORT_ONLY')));let classification={ACTIVE_CURRENT_APP:active,SUPPORT_REACHABLE:support,LIVE_RUNTIME_OBSERVED:live,HISTORIC_SUPPORT_ONLY:historic,EXTERNAL_TOOL_SURFACE:[],UNKNOWN_DO_NOT_MOUNT:[]};return{type:'PMP_ACTIVE_PATH_ATLAS_V1',version:V,owner:OWNER,updated_at:now(),mode:'active_path_registry_only',scope:'v30 current-chain atlas with reachable support merge.',rule:'Passive atlas only. Records current and reachable support paths for discovery and App Orchestrator. No route mutation, no Bank rebuild, no storage migration.',default_for_unlisted_files:'NON_BOOT_OUTSIDE_ACTIVE_ATLAS',atlas_buckets:BUCKETS,repo_file_classification:classification,files,slots:files.map(f=>slot(f.bucket,f.path)),storage_owners:[],indexeddb_owners:[],keys:K,active_discovery_merge:{version:'1.1.0-v30-current-chain-atlas-support-20260709A',current_route:'pmp-app-current.html -> route guardian v22 -> map v12 -> reload owner v30 -> current inner v30',active_count:active.length,support_count:support.length,historic_count:historic.length,live_runtime_observed_count:live.length}}}
+function registry(){let active=currentFiles(),support=uniq(SUPPORT_REACHABLE),historic=uniq(HISTORIC),live=liveFiles(),files=active.map(p=>row(p,'ACTIVE_CURRENT_APP')).concat(support.map(p=>row(p,'SUPPORT_REACHABLE'))).concat(historic.map(p=>row(p,'HISTORIC_SUPPORT_ONLY')));let classification={ACTIVE_CURRENT_APP:active,SUPPORT_REACHABLE:support,LIVE_RUNTIME_OBSERVED:live,HISTORIC_SUPPORT_ONLY:historic,EXTERNAL_TOOL_SURFACE:[],UNKNOWN_DO_NOT_MOUNT:[]};return{type:'PMP_ACTIVE_PATH_ATLAS_V1',version:V,owner:OWNER,updated_at:now(),mode:'active_path_registry_only',scope:'v30 current-chain atlas with reachable support merge.',rule:'Passive atlas only. Records current and reachable support paths for discovery and App Orchestrator. No route mutation, no Bank rebuild, no storage migration.',default_for_unlisted_files:'NON_BOOT_OUTSIDE_ACTIVE_ATLAS',atlas_buckets:BUCKETS,repo_file_classification:classification,files,slots:files.map(f=>slot(f.bucket,f.path)),storage_owners:[],indexeddb_owners:[],keys:K,active_discovery_merge:{version:'1.1.1-v30-support-boundary-discovery-20260709A',current_route:'pmp-app-current.html -> route guardian v22 -> map v12 -> reload owner v30 -> current inner v30',active_count:active.length,support_count:support.length,historic_count:historic.length,live_runtime_observed_count:live.length}}}
 function snapshot(){let r=registry();return{type:'PMP_ACTIVE_PATH_ATLAS_LIVE_SNAPSHOT_V1',version:V,owner:OWNER,at:now(),mode:'active_path_scan_only',atlas_buckets:BUCKETS,repo_file_classification:r.repo_file_classification,documents:[],slot_status:r.slots,storage_keys:[],expected_files:r.files.map(x=>Object.assign({},x,{observed_now:r.repo_file_classification.LIVE_RUNTIME_OBSERVED.indexOf(x.path)>=0,expected_at_boot:x.bucket==='ACTIVE_CURRENT_APP'})),missing_expected:[],indexeddb_owners:[],rule:r.rule}}
 function scan(reason){let r=registry(),s=snapshot();put(K.registry,r);put(K.snapshot,s);put(K.missing,s.missing_expected);put(K.receipt,{type:'PMP_ACTIVE_PATH_ATLAS_RECEIPT_V1',version:V,owner:OWNER,at:now(),reason:reason||'scan',mode:'passive_only',slot_count:r.slots.length,active_file_count:r.repo_file_classification.ACTIVE_CURRENT_APP.length,support_file_count:r.repo_file_classification.SUPPORT_REACHABLE.length,historic_file_count:r.repo_file_classification.HISTORIC_SUPPORT_ONLY.length,live_runtime_observed_count:r.repo_file_classification.LIVE_RUNTIME_OBSERVED.length,atlas_file_count:r.files.length,atlas_bucket_count:r.atlas_buckets.length,missing_expected_count:0,current_route:r.active_discovery_merge.current_route,rule:r.rule,side_effects:{route_change:'not_attempted',bank_rebuild:'not_attempted',storage_migration:'not_attempted',ownership_takeover:'not_attempted'}});return{registry:r,snapshot:s}}
 window.PMPMountRegistryV1={version:V,owner:OWNER,mode:'active_path_registry_only',keys:K,registry,scan,snapshot,atlasBuckets:BUCKETS,rule:'v30 current path atlas with reachable support merge'};
