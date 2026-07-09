@@ -1,8 +1,8 @@
 (()=>{
 'use strict';
-const V='1.2.3-stable-orchestrator-report-copy-held-details-20260709A';
+const V='1.2.4-stable-orchestrator-report-copy-classified-helpers-20260709A';
 const OWNER='pmp-app-orchestrator-v1';
-const HELPER_RULES_SRC='pmp-pass8-helper-rules-v1.js?fresh=pass8-helper-rules-self-exclude-20260709A';
+const HELPER_RULES_SRC='pmp-pass8-helper-rules-v1.js?fresh=pass8-helper-rules-classified-held-scripts-20260709A';
 const KEYS={receipt:'pmp_app_orchestrator_v1_receipt',status:'pmp_app_orchestrator_boot_status_v1',mounts:'pmp_app_orchestrator_mount_registry_v1_preview',helperRules:'pmp_pass8_helper_rules_receipt_v1',helperRulesUnknown:'pmp_pass8_unknown_helpers_v1',copyAttempt:'pmp_app_orchestrator_copy_attempt_v1'};
 const EXPECTED={map:'pmp-current-map-v12.json',guardian:'pmp-route-guardian-current-loader-v22.html',current:'pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html',inner:'pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html'};
 let last=null;
