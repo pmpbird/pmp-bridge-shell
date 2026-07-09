@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const V='1.6.1-v30-live-atlas-support-merge-20260709A';
+const V='1.6.2-v30-live-atlas-support-cluster2-20260709A';
 const OWNER='pmp-mount-registry-v1';
 const K={registry:'pmp_mount_registry_v1',receipt:'pmp_mount_registry_v1_receipt',snapshot:'pmp_mount_registry_live_snapshot_v1',missing:'pmp_mount_registry_missing_expected_v1'};
 function list(s){return Array.from(new Set(String(s||'').trim().split(/\s+/).filter(Boolean)))}
@@ -119,6 +119,23 @@ pmp-source-text-reader-level3-v1.js
 pmp-source-zip-extractor-level2b-v1.js
 pmp-source-zip-reader-level2-v1.js
 safe-writer-v14.html
+bug-lab-mirror-v1.html
+bug-lab-mixer-known-types-v1.html
+pmp-control-room-cleanup-v1.js
+pmp-current-truth-face.js
+pmp-lossless-copy-fix.js
+pmp-native-contrast-bridge-v2.js
+pmp-phase1-source-intake-current-v1.js
+pmp-phase2-private-window-adapter-v1.js
+pmp-private-claim-controls-v1.js
+pmp-private-medium-buttons-v1.js
+pmp-private-one-button-pages-v2.js
+pmp-private-simple-source-ui-v1.js
+pmp-private-source-loader-v1.js
+pmp-route-code-map-v1.json
+pmp-route-guardian-action-v2.html
+pmp-top-lossless-injector.js
+pmp-visual-cleanup-v1.js
 `);
 const HISTORIC=list(`
 pmp-current-map-v11.json pmp-current-map-v10.json pmp-current-map-v9.json pmp-current-map.json
