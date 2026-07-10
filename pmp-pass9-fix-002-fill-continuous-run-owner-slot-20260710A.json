@@ -1,0 +1,48 @@
+{
+  "type": "PMP_PASS9_FIX_RECEIPT",
+  "fix_id": "PASS9_FIX_002_FILL_CONTINUOUS_RUN_OWNER_SLOT",
+  "version": "20260710A",
+  "status": "IMPLEMENTED_NEEDS_VISUAL_TEST",
+  "created_at": "2026-07-10T00:00:00.000Z",
+  "trigger": "User screenshot showed Continuous Run Owner loading... and Bank Delete Tools, but no Run State Summary / ZIP / Staging / Registry content in the slot.",
+  "diagnosis": {
+    "problem": "Continuous Run Owner detection was reading the first Bank h1/h2 instead of the actual data-bank-detail-title, so it saw Bank instead of Continuous Run Bank and did not fill the owner slot.",
+    "visible_evidence": [
+      "Continuous Run Bank opened.",
+      "Bank Owner slot existed and showed Continuous Run Owner loading...",
+      "Bank Delete Tools showed below the slot.",
+      "Continuous Run Owner content did not appear."
+    ]
+  },
+  "updated_file": {
+    "path": "pmp-bank-screen-owner-v1.js",
+    "old_version": "1.0.6-persistent-bank-detail-scan",
+    "new_version": "1.0.7-pass9-fill-continuous-run-owner-slot-20260710A",
+    "new_content_sha": "8900d126005da287b2324762bcdb28e18b3b091b"
+  },
+  "what_changed": [
+    "Continuous Run Owner now checks data-bank-detail-title first, not the first Bank h1/h2.",
+    "Continuous Run Owner fills only the Bank Owner provided data-continuous-run-owner-slot-v1 / data-run-bank-tools slot.",
+    "The pending message Continuous Run Owner loading... is removed when the owner content fills the slot.",
+    "Bank Delete Tools with data-bank-scope=continuous_run are moved into the Continuous Run owner slot and duplicates are removed.",
+    "Continuous Run Level UI Scope is called after the owner slot is filled so levels can stack in the correct place."
+  ],
+  "what_did_not_change": [
+    "No Bank rebuild.",
+    "No IndexedDB clearing.",
+    "No storage migration.",
+    "No route replacement.",
+    "No broad DOM sweep.",
+    "No repeated remover loop."
+  ],
+  "runtime_receipt_expected": "pmp_bank_screen_owner_v1_receipt",
+  "expected_visual_result_after_refresh": [
+    "Continuous Run Owner loading... should disappear.",
+    "Run State Summary should appear inside Continuous Run Bank.",
+    "Lossless Slots ZIP Import should appear.",
+    "Staging Transfer Store should appear.",
+    "Bank Project Registry should appear.",
+    "Bank Delete Tools should be inside the Continuous Run owner slot rather than floating outside the owner stack."
+  ],
+  "certification_status": "not_certified"
+}
