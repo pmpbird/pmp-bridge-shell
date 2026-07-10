@@ -1,0 +1,41 @@
+{
+  "type": "PMP_RESTORE_CHECKPOINT_V1",
+  "version": "diagnostics-tab-stable-20260709A",
+  "created_at": "2026-07-09T23:20:00Z",
+  "purpose": "Known-good checkpoint after permanent Diagnostics tab became stable and usable.",
+  "status": "DIAGNOSTICS_TAB_STABLE",
+  "active_route": {
+    "map": "pmp-current-map-v12.json",
+    "route_guardian": "pmp-route-guardian-current-loader-v22.html",
+    "current_app": "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html",
+    "current_inner": "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html"
+  },
+  "stable_components": {
+    "diagnostics_owner": "pmp-diagnostics-owner-v1.js / 1.0.4-lowered-overlay-no-peek-20260709A",
+    "diagnostics_bottom_tab_forcer": "pmp-diagnostics-bottom-tab-forcer-v1.js / 1.0.4-single-active-tab-state-20260709A",
+    "safe_area_loader": "pmp-safe-area-surface-fill-v1.js / 1.0.7-safe-area-single-active-diagnostics-tab-20260709A"
+  },
+  "verified_behavior_from_user": {
+    "diagnostics_tab_visible": "yes",
+    "diagnostics_tab_opens": "yes",
+    "other_tabs_still_work": "yes",
+    "single_active_blue_tab": "yes",
+    "diagnostics_cards_render_horizontally": "yes",
+    "old_black_panels_hidden": "yes"
+  },
+  "architecture_truth": {
+    "diagnostics_are_permanent": "yes",
+    "diagnostics_are_not_pass_numbered": "yes",
+    "startup_reports_are_rescue_only": "yes",
+    "normal_reports_live_in_diagnostics": "yes"
+  },
+  "side_effects": {
+    "route_change": "not_attempted",
+    "boot_surface_replacement": "not_attempted",
+    "runtime_surface_replacement": "not_attempted",
+    "bank_rebuild": "not_attempted",
+    "indexeddb_write": "not_attempted",
+    "storage_migration": "not_attempted",
+    "ownership_takeover": "not_attempted"
+  }
+}
