@@ -1,0 +1,240 @@
+{
+  "type": "PMP_PASS9_GLITCH_LEDGER_RUN",
+  "run_id": "PASS9_GLITCH_LEDGER_RUN_001",
+  "version": "20260710A",
+  "status": "OPEN_GLITCH_LEDGER_NOT_FIXED",
+  "created_at": "2026-07-10T00:00:00.000Z",
+  "purpose": "Identify active and likely visual glitches for Pass 9 before applying source repairs.",
+  "source_plan_basis": {
+    "pass9_name": "Bank Owner / Continuous Run Owner Split",
+    "core_problem": "Fix the Bank / Continuous Run ownership confusion behind the current visual glitch.",
+    "locked_rule": "Bank Owner owns Bank shell. Continuous Run Owner owns Continuous Run content. Level 3+ must not visually appear until Bank Owner ready, Bank tab/home/buttons ready, Continuous Run opener exists, ordered panel stack ready, and readiness gate passes.",
+    "important_correction": "This ledger supersedes any overly optimistic Pass 9 acceptance/certification language. Pass 9 is not close to finished."
+  },
+  "known_stable_fixes_before_this_run": [
+    {
+      "id": "STABLE_001",
+      "description": "Bank loads again after Bank Owner dependency bridge exposes APIs across same-origin frames.",
+      "source": "pmp-bank-owner-dependency-bridge-v1.js",
+      "version": "1.0.0-bank-owner-cross-frame-dependencies-20260710A",
+      "status": "keep"
+    },
+    {
+      "id": "STABLE_002",
+      "description": "Legacy Control diagnostics visible host was disabled at source.",
+      "source": "pmp-owner-diagnostics-host-v1.js",
+      "version": "1.0.2-receipt-only-no-visible-host-20260710A",
+      "status": "keep"
+    },
+    {
+      "id": "STABLE_003",
+      "description": "Legacy owner diagnostics foundation was made receipt-only and no longer renders Control diagnostics.",
+      "source": "pmp-owner-diagnostics-foundation-v1.js",
+      "version": "1.1.2-receipt-only-no-control-render-20260710A",
+      "status": "keep"
+    },
+    {
+      "id": "STABLE_004",
+      "description": "Control room cleanup no longer renders visible diagnostic proof buttons.",
+      "source": "pmp-control-room-cleanup-v1.js",
+      "version": "1.4.1-receipt-api-only-no-control-diagnostics-buttons-20260710A",
+      "status": "keep"
+    }
+  ],
+  "glitches": [
+    {
+      "id": "P9G-001",
+      "title": "Bank Owner still directly mounts Continuous Run content",
+      "severity": "critical",
+      "status": "open_confirmed_by_source",
+      "source_files": [
+        "pmp-master-bank-tab-v1.js"
+      ],
+      "evidence": [
+        "topHTML() builds Run State Summary, Lossless Slots ZIP Import, Staging Transfer Store, and Bank Project Registry inside the Bank owner file.",
+        "lvlHTML() builds Level 1 / Level 2 sequence inside the Bank owner file.",
+        "ensure(s,on) inserts top sequence before data-run-bank-tools and level sequence after data-run-bank-tools.",
+        "openBank(d,'continuous_run') toggles data-run-bank-tools and calls ensure(s,true)."
+      ],
+      "why_it_is_a_pass9_glitch": "Pass 9 says Bank Owner owns Bank shell and may hand a Continuous Run slot to Continuous Run Owner; it may not own/mount Continuous Run panel stack content directly.",
+      "expected_fix_direction": "Create or activate a Continuous Run Owner content slot. Bank Owner should create only a legal slot/handoff surface and selected bank state. Continuous Run Owner should mount/move/order Continuous Run panels inside that slot.",
+      "do_not_fix_by": [
+        "hiding random panels",
+        "deleting Continuous Run panels",
+        "Bank rebuild",
+        "repeating DOM removers"
+      ]
+    },
+    {
+      "id": "P9G-002",
+      "title": "Continuous Run content has two competing painters",
+      "severity": "critical",
+      "status": "open_confirmed_by_source",
+      "source_files": [
+        "pmp-master-bank-tab-v1.js",
+        "pmp-bank-screen-owner-v1.js"
+      ],
+      "evidence": [
+        "pmp-master-bank-tab-v1.js builds/places Continuous Run top sequence, Level 1/2, run state detail, and helper bank area.",
+        "pmp-bank-screen-owner-v1.js paints data-bank-screen-owner-v1 under data-run-bank-tools with Run State Summary, Lossless Slots ZIP Import, Staging Transfer Store, and Bank Project Registry.",
+        "Both sources contain Run State Summary / ZIP / Staging / Registry concepts."
+      ],
+      "why_it_is_a_pass9_glitch": "Two owners can produce duplicate panels, order drift, flicker, or one owner undoing the other. Pass 9 requires one Continuous Run Owner for Continuous Run content.",
+      "expected_fix_direction": "Choose the real Continuous Run Owner. Convert the other source to shell/handoff or compatibility-only. Preserve content but remove duplicate authority.",
+      "do_not_fix_by": [
+        "visual dedupe only",
+        "mutation observer cleanup as the primary fix",
+        "deleting user data"
+      ]
+    },
+    {
+      "id": "P9G-003",
+      "title": "Readiness gate is incomplete for Level 3+ early-visual rule",
+      "severity": "critical",
+      "status": "open_likely_by_source",
+      "source_files": [
+        "pmp-master-bank-tab-v1.js",
+        "pmp-continuous-run-level-ui-scope-v1.js",
+        "pmp-bank-screen-owner-v1.js"
+      ],
+      "evidence": [
+        "pmp-master-bank-tab-v1.js bankReady(d) only checks Bank buttons, non-loading text, and data-open-bank='continuous_run'.",
+        "Pass 9 readiness requires Bank Owner ready, Bank tab/home/buttons ready, Continuous Run opener exists, ordered panel stack ready, and readiness gate passes before Level 3+ visual content appears.",
+        "No current source inspected in this run proves a single full readiness gate owns that entire chain."
+      ],
+      "why_it_is_a_pass9_glitch": "The current glitch is not solved until Level 3+ does not appear or flash before Bank readiness and ordered Continuous Run stack readiness.",
+      "expected_fix_direction": "Build or wire a Continuous Run readiness gate that explicitly reports bank_owner_ready, bank_buttons_ready, continuous_run_opener_ready, continuous_run_slot_ready, ordered_panel_stack_ready, and level3plus_allowed.",
+      "do_not_fix_by": [
+        "assuming hidden class is enough",
+        "timed delays only",
+        "global hide all Level 3 content"
+      ]
+    },
+    {
+      "id": "P9G-004",
+      "title": "Bank Owner has an active paint readiness loop",
+      "severity": "high",
+      "status": "open_confirmed_by_source",
+      "source_files": [
+        "pmp-master-bank-tab-v1.js"
+      ],
+      "evidence": [
+        "startPaintReadiness(d) runs setInterval every 250ms until Bank ready or 20 seconds.",
+        "paint(d,true) can be called repeatedly during startup.",
+        "We already saw repeated remover/repair loops cause flicker in this pass."
+      ],
+      "why_it_is_a_pass9_glitch": "Even if this loop is inside Bank Owner, it can still create visual instability if Continuous Run panels are also being inserted or moved during readiness. Pass 9 needs controlled ownership, not race-driven repaint. ",
+      "expected_fix_direction": "After ownership split, replace broad repaint loop with state-gated one-shot or event-based readiness handoff. Do not remove until Bank startup has a safe replacement.",
+      "do_not_fix_by": [
+        "turning off Bank paint loop before replacement readiness exists",
+        "adding another repaint helper"
+      ]
+    },
+    {
+      "id": "P9G-005",
+      "title": "Legacy loader still injects Pass 7 owner/helper scripts repeatedly",
+      "severity": "medium_high",
+      "status": "open_risk_confirmed_by_source",
+      "source_files": [
+        "pmp-continuous-run-bank-order-frame-loader-v1.js"
+      ],
+      "evidence": [
+        "Loader injects pmp-owner-diagnostics-host-v1.js, pmp-owner-diagnostics-foundation-v1.js, section owner registry, helper registry, runtime probe, coverage lock, and certification gate.",
+        "Loader runs scan on load and every 900ms.",
+        "Some scripts are now receipt-only, but the loader still creates continuous script/probe pressure."
+      ],
+      "why_it_is_a_pass9_glitch": "This can reintroduce old visible diagnostics or helper scans unless all loaded scripts are source-safe. It is not the main Bank / Continuous Run glitch, but it is a stability risk during Pass 9.",
+      "expected_fix_direction": "Keep current receipt-only patches. Later, once Pass 9 owners are stable, narrow the loader to only required runtime proof scripts or reduce scan cadence. Do not touch before the core Bank/Continuous Run split unless it causes a visible glitch."
+    },
+    {
+      "id": "P9G-006",
+      "title": "Bank Owner dependency bridge is a temporary boundary patch, not final architecture",
+      "severity": "medium",
+      "status": "open_known_debt",
+      "source_files": [
+        "pmp-master-bank-tab-v1.js",
+        "pmp-bank-owner-dependency-bridge-v1.js"
+      ],
+      "evidence": [
+        "pmp-master-bank-tab-v1.js R/RB/ST/LZ/SZ/PR lookup APIs on window only.",
+        "pmp-bank-owner-dependency-bridge-v1.js copies APIs across same-origin frames so Bank owner can see them."
+      ],
+      "why_it_is_a_pass9_glitch": "The bridge is currently safe and working, but Pass 9 final architecture should not depend on helpers compensating for owner dependency lookup if the owner can be made frame-aware directly.",
+      "expected_fix_direction": "After the main ownership split is stable, either keep the bridge as an official dependency boundary or make Bank Owner lookups explicitly frame-aware. Do not change now unless it regresses."
+    },
+    {
+      "id": "P9G-007",
+      "title": "Bad helper patterns have been identified but remain important guardrails",
+      "severity": "medium",
+      "status": "contained",
+      "source_files": [
+        "pmp-bank-native-load-order-repair-v1.js",
+        "pmp-bank-continuous-run-probe-bridge-v1.js",
+        "pmp-bank-load-diagnostic-visible-run-v1.js",
+        "pmp-control-diagnostics-migration-v1.js",
+        "pmp-control-legacy-diagnostics-quarantine-v1.js"
+      ],
+      "evidence": [
+        "Native repair loop caused Bank flicker and was disabled.",
+        "Probe bridge addressed the wrong problem and was disabled.",
+        "Visible diagnostic button interceptor interfered and was disabled.",
+        "Control migration/quarantine hid or moved too broadly and were disabled."
+      ],
+      "why_it_is_a_pass9_glitch": "Any future fix that resembles these patterns can recreate flicker or ownership fights.",
+      "expected_fix_direction": "All future fixes must be source-owner repairs or receipt-only diagnostics, not repeated DOM repair loops."
+    },
+    {
+      "id": "P9G-008",
+      "title": "No complete runtime visual proof has been captured for current stable Bank -> Continuous Run path",
+      "severity": "high",
+      "status": "open_missing_evidence",
+      "source_files": [
+        "pmp-diagnostics-owner-v1.js",
+        "pmp-bank-continuous-run-owner-split-diagnostic-v1.js"
+      ],
+      "evidence": [
+        "Diagnostics includes Bank / Continuous Run Visual State, but the current stable runtime still needs a fresh run with Continuous Run Bank open.",
+        "Prior reports did not fully exercise Continuous Run detail content in the now-stable state."
+      ],
+      "why_it_is_a_pass9_glitch": "Glitch ledger needs real observed runtime proof for what appears early, wrong, duplicate, missing, or stable.",
+      "expected_fix_direction": "Run the visual diagnostic only after a source-level Continuous Run Owner split plan is clear, or run it now as observation-only before changes."
+    }
+  ],
+  "immediate_fix_order_recommendation": [
+    {
+      "order": 1,
+      "target": "P9G-001 and P9G-002",
+      "move": "Define the real Continuous Run Owner boundary and stop Bank Owner from directly mounting Continuous Run content beyond a legal slot."
+    },
+    {
+      "order": 2,
+      "target": "P9G-003",
+      "move": "Add/readiness-gate proof before allowing Level 3+ visual appearance."
+    },
+    {
+      "order": 3,
+      "target": "P9G-004",
+      "move": "Replace race-like Bank paint loop only after safe readiness handoff exists."
+    },
+    {
+      "order": 4,
+      "target": "P9G-008",
+      "move": "Run Bank / Continuous Run Visual State on the repaired owner split to verify no early Level 3+, no duplicates, no flicker."
+    }
+  ],
+  "do_not_do": [
+    "Do not call Pass 9 close or certified.",
+    "Do not add another repeating DOM remover.",
+    "Do not rebuild Bank.",
+    "Do not clear IndexedDB or storage.",
+    "Do not route-replace the app.",
+    "Do not hide all Level 3+ globally without an owner readiness gate.",
+    "Do not make Control or Diagnostics cleanup the focus of Pass 9 now; current real target is Bank / Continuous Run owner split."
+  ],
+  "run_001_decision": {
+    "pass9_finished": false,
+    "pass9_close_to_finished": false,
+    "primary_open_glitch": "Bank Owner is still directly mounting Continuous Run content and competing with the Continuous Run/Bank Screen owner path.",
+    "next_best_move": "Design and implement Pass 9 Fix 001: Continuous Run Owner Slot Contract. Bank Owner creates only slot + selected bank state; Continuous Run Owner owns content stack inside slot."
+  }
+}
