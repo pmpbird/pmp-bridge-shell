@@ -1,0 +1,110 @@
+{
+  "type": "PMP_PASS9_OWNER_HELPER_ACCEPTANCE_AUDIT",
+  "version": "20260710A",
+  "status": "PASS9_ACCEPTANCE_AUDIT_PASSED_PENDING_FINAL_CERTIFICATION",
+  "created_at": "2026-07-10T00:00:00.000Z",
+  "basis": "Static source audit plus user visual verification that Bank works and Control legacy Diagnostics card is gone.",
+  "user_verified_observations": [
+    "Bank works again under Bank Owner dependency bridge.",
+    "Control Room legacy diagnostics blocks were removed after source-level patches.",
+    "Plain Diagnostics card is gone after disabling pmp-owner-diagnostics-host-v1 visible host."
+  ],
+  "audit_checks": {
+    "bank_owner_owns_bank_shell_home_list": {
+      "status": "pass_with_dependency_bridge",
+      "owner_file": "pmp-master-bank-tab-v1.js",
+      "owner_version": "1.4.4-bank-paint-readiness-loop",
+      "evidence": "make(d) creates #bank, data-bank-home, data-bank-buttons, and data-bank-detail-wrap; tab(d) adds Bank bottom tab; paint/open functions remain native Bank owner path.",
+      "note": "The Bank owner still uses same-frame API lookups internally; pmp-bank-owner-dependency-bridge-v1 exposes dependencies across frames without owning UI."
+    },
+    "bank_owner_dependency_boundary": {
+      "status": "pass",
+      "bridge_file": "pmp-bank-owner-dependency-bridge-v1.js",
+      "bridge_version": "1.0.0-bank-owner-cross-frame-dependencies-20260710A",
+      "evidence": "Bridge exposes existing Bank APIs across same-origin parent/iframe windows and calls Bank owner scan; it does not repaint Bank, create Bank DOM, intercept buttons, rebuild Bank, or write IndexedDB/storage.",
+      "classification": "dependency bridge only, not UI owner"
+    },
+    "continuous_run_owner_scope": {
+      "status": "pass_for_current_scope",
+      "owner_file": "pmp-bank-screen-owner-v1.js",
+      "owner_version": "1.0.6-persistent-bank-detail-scan",
+      "evidence": "Owner detects Continuous Run detail context and inserts data-bank-screen-owner-v1 under data-run-bank-tools; removeWrong removes stray screen-owner content outside the intended host.",
+      "limitation": "Full Continuous Run detail visual path still needs a dedicated run-state/open-detail check before final Pass 9 certification."
+    },
+    "control_room_owns_control_tools_only": {
+      "status": "pass_after_source_cleanup",
+      "evidence_files": [
+        "pmp-owner-diagnostics-host-v1.js 1.0.2-receipt-only-no-visible-host-20260710A",
+        "pmp-owner-diagnostics-foundation-v1.js 1.1.2-receipt-only-no-control-render-20260710A",
+        "pmp-control-room-cleanup-v1.js 1.4.1-receipt-api-only-no-control-diagnostics-buttons-20260710A"
+      ],
+      "evidence": "Legacy Control diagnostics sources are receipt/API-only and should not render visible diagnostic blocks/buttons/cards in Control Room. User verified the plain Diagnostics card is gone."
+    },
+    "diagnostics_tab_owns_visible_diagnostics": {
+      "status": "pass",
+      "files": [
+        "pmp-diagnostics-owner-v1.js 1.0.9-baked-bank-load-diagnostic-20260710A",
+        "pmp-diagnostics-bottom-tab-forcer-v1.js 1.0.4-single-active-tab-state-20260709A"
+      ],
+      "evidence": "Diagnostics Owner owns Diagnostics screen content; bottom tab forcer owns Diagnostics bottom tab active state. Legacy sources now defer visible diagnostics to modern Diagnostics tab."
+    },
+    "helpers_do_not_repaint_or_compete": {
+      "status": "pass_for_known_high_risk_helpers",
+      "disabled_or_rejected": [
+        "pmp-bank-native-load-order-repair-v1.js 1.0.2-disabled-flicker-rollback-20260710A",
+        "pmp-bank-continuous-run-probe-bridge-v1.js 1.0.1-disabled-rollback-20260710A",
+        "pmp-bank-load-diagnostic-visible-run-v1.js 1.0.1-disabled-rollback-20260710A",
+        "pmp-control-diagnostics-migration-v1.js 1.0.1-disabled-unhide-only-20260710A",
+        "pmp-control-legacy-diagnostics-quarantine-v1.js 1.0.1-disabled-rollback-20260710A"
+      ],
+      "evidence": "Known helper approaches that caused flicker, interception, broad hiding, or wrong-surface ownership are disabled or rejected."
+    },
+    "no_legacy_diagnostics_host_active_in_control": {
+      "status": "pass_user_verified",
+      "source_file": "pmp-owner-diagnostics-host-v1.js",
+      "source_version": "1.0.2-receipt-only-no-visible-host-20260710A",
+      "evidence": "Visible host creation is disabled at source. User reported: 'Okay it’s gone'."
+    },
+    "no_destructive_actions": {
+      "status": "pass",
+      "confirmed_not_used": [
+        "Bank rebuild",
+        "IndexedDB clearing",
+        "storage migration",
+        "route replacement",
+        "Control broad migration",
+        "repeating repaint helper",
+        "repeating standalone card remover"
+      ]
+    }
+  },
+  "blockers": [],
+  "non_blocking_open_items": [
+    {
+      "item": "Run a final visual no-regression window after refresh/navigation.",
+      "reason": "Certification should wait until user confirms Bank, Control, and Diagnostics remain stable after normal tab switching."
+    },
+    {
+      "item": "Open Continuous Run Bank detail and run the Bank / Continuous Run Visual State diagnostic if needed.",
+      "reason": "Current audit passes ownership boundaries but has not freshly observed Continuous Run detail content visible in the current stable runtime."
+    }
+  ],
+  "certification_decision": {
+    "pass9_acceptance_audit": "passed",
+    "pass9_certified": false,
+    "why_not_certified_yet": "Needs final no-regression visual confirmation from the stable runtime after refresh/tab-switching, especially Bank, Control, Diagnostics, and optionally Continuous Run detail.",
+    "next_step": "Ask user to refresh and do final visual confirmation. If stable, create Pass 9 certification receipt."
+  },
+  "do_not_restore": [
+    "native Bank repaint repair loop",
+    "Bank probe bridge",
+    "visible diagnostic button interceptor",
+    "Control diagnostics migration",
+    "Control legacy diagnostics quarantine",
+    "standalone Diagnostics-card repeating remover",
+    "Bank rebuild",
+    "IndexedDB clearing",
+    "storage migration",
+    "route replacement"
+  ]
+}
