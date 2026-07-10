@@ -1,0 +1,77 @@
+{
+  "type": "PMP_PASS9_FIX_RECEIPT",
+  "fix_id": "PASS9_FIX_001_BANK_OWNER_SLOT_CONTRACT",
+  "version": "20260710A",
+  "status": "IMPLEMENTED_NEEDS_VISUAL_TEST",
+  "created_at": "2026-07-10T00:00:00.000Z",
+  "target_glitches": [
+    "P9G-001 Bank Owner still directly mounts Continuous Run content",
+    "P9G-002 Continuous Run content has two competing painters",
+    "P9G-003 Readiness gate incomplete for Level 3+ early-visual rule"
+  ],
+  "updated_file": {
+    "path": "pmp-master-bank-tab-v1.js",
+    "old_version": "1.4.4-bank-paint-readiness-loop",
+    "new_version": "1.4.5-pass9-bank-owner-slot-contract-20260710A",
+    "new_content_sha": "1f7586da4e3d9d9287cd23d3c7add28cfd776741"
+  },
+  "what_changed": [
+    "Bank Owner now owns Bank shell, Bank home, Bank list, detail wrapper, selected/open bank state, and a legal Continuous Run owner slot.",
+    "Bank Owner no longer creates topHTML Continuous Run panels for Run State Summary, Lossless ZIP Import, Staging Store, or Bank Project Registry.",
+    "Bank Owner no longer creates lvlHTML Level 1 / Level 2 panels.",
+    "Bank Owner exposes data-run-bank-tools plus data-continuous-run-owner-slot-v1 as the Continuous Run owner slot.",
+    "Bank Owner calls existing Continuous Run owner scripts when the slot is ready instead of painting Continuous Run content itself.",
+    "Old Bank-owned Continuous Run nodes are removed only by exact legacy selectors inside the Bank detail context."
+  ],
+  "what_did_not_change": [
+    "No Bank rebuild.",
+    "No IndexedDB clearing.",
+    "No storage migration.",
+    "No route replacement.",
+    "No broad Control or Bank DOM sweep.",
+    "No repeating standalone diagnostics-card remover.",
+    "No helper repaint loop re-enabled."
+  ],
+  "owner_contract_after_fix": {
+    "bank_owner": [
+      "Bank tab",
+      "Bank screen shell",
+      "Bank home",
+      "Master Bank Inventory",
+      "Bank list/buttons",
+      "Router receipts",
+      "Bank detail wrapper",
+      "Back button",
+      "Selected/open bank state",
+      "Continuous Run owner slot only"
+    ],
+    "continuous_run_owner": [
+      "Run State Summary",
+      "Lossless ZIP Import",
+      "Staging Transfer Store",
+      "Bank Project Registry",
+      "Continuous Run levels",
+      "Level 3+ containment",
+      "Resident 30B contained tools",
+      "Continuous Run content order inside slot"
+    ]
+  },
+  "receipts_written_at_runtime": [
+    "pmp_master_bank_tab_v1_receipt",
+    "pmp_pass9_bank_owner_slot_contract_v1_receipt"
+  ],
+  "test_required": {
+    "result_needed": "User visual confirmation after refresh.",
+    "steps": [
+      "Refresh app.",
+      "Open Bank.",
+      "Confirm Master Bank Inventory loads.",
+      "Open Continuous Run Bank.",
+      "Confirm Continuous Run content appears inside the slot.",
+      "Confirm there are no duplicate Run State Summary / ZIP / Staging / Registry panels.",
+      "Confirm Level 3+ content does not flash outside the Continuous Run level stack.",
+      "Switch Bank -> Control -> Diagnostics -> Bank and confirm no flicker."
+    ]
+  },
+  "certification_status": "not_certified"
+}
