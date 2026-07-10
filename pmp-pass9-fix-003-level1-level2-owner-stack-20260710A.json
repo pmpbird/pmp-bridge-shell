@@ -1,0 +1,40 @@
+{
+  "type": "PMP_PASS9_FIX_RECEIPT",
+  "fix_id": "PASS9_FIX_003_LEVEL1_LEVEL2_OWNER_STACK",
+  "version": "20260710A",
+  "status": "IMPLEMENTED_NEEDS_VISUAL_TEST",
+  "created_at": "2026-07-10T00:00:00.000Z",
+  "correction": "Level 3+ gating was not the next fix. Level 1 and Level 2 must be visibly owned and ordered first.",
+  "updated_file": {
+    "path": "pmp-bank-screen-owner-v1.js",
+    "old_version": "1.0.7-pass9-fill-continuous-run-owner-slot-20260710A",
+    "new_version": "1.0.8-pass9-level1-level2-owner-stack-20260710A",
+    "new_content_sha": "925f64be3bfcbc24db945eb9ed78ad398c8a8f31"
+  },
+  "what_changed": [
+    "Continuous Run Owner now visibly includes Level 1 — Must-Reference Source ZIP Gate / Import.",
+    "Continuous Run Owner now visibly includes Level 2 — Source ZIP Reader.",
+    "Level 1 has a source ZIP file input and Import Must-Reference Source ZIP button.",
+    "Level 2 has Read ZIP, Extract PDFs, and Extract Text buttons.",
+    "Run State Summary next text now points to Level 1 / Level 2 before Level 3+ work.",
+    "Runtime receipt now reports CONTINUOUS_RUN_OWNER_LEVEL1_LEVEL2_STACK_READY."
+  ],
+  "what_did_not_change": [
+    "No Level 3+ gating was added yet.",
+    "No Bank rebuild.",
+    "No IndexedDB clearing.",
+    "No storage migration.",
+    "No route replacement.",
+    "No broad DOM sweep."
+  ],
+  "expected_visual_result_after_refresh": [
+    "Run State Summary appears.",
+    "Lossless Slots ZIP Import appears.",
+    "Staging Transfer Store appears.",
+    "Bank Project Registry appears.",
+    "Level 1 appears before Level 2.",
+    "Level 2 appears before any Level 3+ section.",
+    "No Level 3+ certification claim is made yet."
+  ],
+  "next_after_visual_pass": "Then run a specific Level 1 / Level 2 order and duplicate check before Level 3+ gating."
+}
