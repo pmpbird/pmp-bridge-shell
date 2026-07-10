@@ -1,0 +1,92 @@
+{
+  "type": "PMP_RESTORE_CHECKPOINT_PASS9_BANK_CONTROL_DIAGNOSTICS_STABLE",
+  "version": "20260710A",
+  "status": "PASS9_WORKING_POINT_NOT_CERTIFIED",
+  "created_at": "2026-07-10T00:00:00.000Z",
+  "user_verified": true,
+  "user_verification_text": "Okay it’s gone",
+  "scope": "Bank owner dependency boundary, Control legacy diagnostics source cleanup, Diagnostics tab stability",
+  "current_pass9_status": {
+    "pass9_certified": false,
+    "bank_working": true,
+    "control_legacy_diagnostics_removed": true,
+    "flicker_active": false,
+    "diagnostics_tab_expected_stable": true,
+    "remaining_required_work": "Run a Pass 9 owner/helper acceptance audit before certification."
+  },
+  "stable_files": {
+    "pmp_safe_area_surface_fill_v1": {
+      "path": "pmp-safe-area-surface-fill-v1.js",
+      "version": "1.0.30-remove-exact-leftover-control-diagnostics-card-20260710A",
+      "role": "stable loader; keeps Bank Owner dependency bridge and diagnostics stack loaded; no broad migration or repaint helper"
+    },
+    "pmp_bank_owner_dependency_bridge_v1": {
+      "path": "pmp-bank-owner-dependency-bridge-v1.js",
+      "version": "1.0.0-bank-owner-cross-frame-dependencies-20260710A",
+      "role": "exposes existing Bank APIs across same-origin parent/iframe windows so real Bank Owner can see dependencies; does not own UI"
+    },
+    "pmp_owner_diagnostics_host_v1": {
+      "path": "pmp-owner-diagnostics-host-v1.js",
+      "version": "1.0.2-receipt-only-no-visible-host-20260710A",
+      "role": "legacy Pass 7 Diagnostics host is receipt-only; must not create visible Diagnostics card in Control"
+    },
+    "pmp_owner_diagnostics_foundation_v1": {
+      "path": "pmp-owner-diagnostics-foundation-v1.js",
+      "version": "1.1.2-receipt-only-no-control-render-20260710A",
+      "role": "legacy Pass 7 owner diagnostics is receipt-only; visible diagnostics belong to modern Diagnostics tab"
+    },
+    "pmp_control_room_cleanup_v1": {
+      "path": "pmp-control-room-cleanup-v1.js",
+      "version": "1.4.1-receipt-api-only-no-control-diagnostics-buttons-20260710A",
+      "role": "keeps passive proof APIs; no longer renders legacy diagnostic buttons in Control Room"
+    },
+    "pmp_diagnostics_owner_v1": {
+      "path": "pmp-diagnostics-owner-v1.js",
+      "version": "1.0.9-baked-bank-load-diagnostic-20260710A",
+      "role": "modern Diagnostics content owner"
+    },
+    "pmp_diagnostics_bottom_tab_forcer_v1": {
+      "path": "pmp-diagnostics-bottom-tab-forcer-v1.js",
+      "version": "1.0.4-single-active-tab-state-20260709A",
+      "role": "modern Diagnostics bottom tab owner"
+    },
+    "pmp_bank_load_guardian_v1": {
+      "path": "pmp-bank-load-guardian-v1.js",
+      "version": "1.0.3-includes-native-load-order-repair-receipt-20260710A",
+      "role": "Bank Load Diagnostic / guardian report source"
+    },
+    "pmp_bank_home_visibility_guard_v1": {
+      "path": "pmp-bank-home-visibility-guard-v1.js",
+      "version": "1.0.0-bank-home-visible-before-paint-20260710A",
+      "role": "Bank-side visibility guard retained from stable state"
+    }
+  },
+  "disabled_or_rejected_paths": {
+    "native_bank_repaint_repair_loop": "rejected because it caused Bank flicker / owner-helper contention",
+    "bank_probe_bridge": "rejected because Bank problem was not the probe path",
+    "visible_bank_load_diagnostic_runner": "rejected because click interception/timing interfered with Bank loading",
+    "control_diagnostics_migration": "rejected because broad hiding/moving broke tabs",
+    "control_legacy_diagnostics_quarantine": "rejected because broad Control hiding hid normal Control Room content",
+    "standalone_diagnostics_repeated_remover": "rejected because it fought the real source and caused flicker"
+  },
+  "pass9_interpretation": {
+    "bank_fix_classification": "owner dependency boundary fix",
+    "control_fix_classification": "legacy diagnostics source rendered receipt-only, not DOM sweep",
+    "diagnostics_policy": "visible diagnostics belong to the modern Diagnostics tab only",
+    "helper_policy": "helpers must not repaint, rebuild, intercept, or compete with section owners"
+  },
+  "do_not_restore": [
+    "continuous native Bank repair loop",
+    "Bank probe bridge",
+    "visible diagnostic button interceptor",
+    "Control diagnostics migration",
+    "Control legacy diagnostics quarantine",
+    "broad visible Control DOM hider",
+    "repeating standalone Diagnostics-card remover",
+    "Bank rebuild",
+    "IndexedDB clearing",
+    "storage migration",
+    "route replacement"
+  ],
+  "next_best_move": "Run Pass 9 owner/helper acceptance audit from this working point before any certification claim."
+}
