@@ -1,0 +1,30 @@
+(()=>{
+'use strict';
+const V='1.0.0-visible-bank-load-diagnostic-runner-20260710A';
+const OWNER='pmp-bank-load-diagnostic-visible-run-v1';
+const RECEIPT='pmp_bank_load_diagnostic_visible_run_v1_receipt';
+const KEYS={
+ loadReport:'pmp_bank_load_guardian_v1_report',
+ loadReceipt:'pmp_bank_load_guardian_v1_receipt',
+ homeReport:'pmp_bank_home_visibility_guard_v1_report',
+ homeReceipt:'pmp_bank_home_visibility_guard_v1_receipt',
+ nativeReport:'pmp_bank_native_load_order_repair_v1_report',
+ nativeReceipt:'pmp_bank_native_load_order_repair_v1_receipt'
+};
+function T(){try{return window.top||window}catch(e){return window}}
+function now(){return new Date().toISOString()}
+function read(k){try{return JSON.parse(T().localStorage.getItem(k)||'null')}catch(e){return null}}
+function put(k,v){try{T().localStorage.setItem(k,JSON.stringify(v,null,2))}catch(e){}return v}
+function copyText(text){let ok='not_confirmed';try{let d=document,ta=d.createElement('textarea');ta.value=String(text||'');ta.setAttribute('readonly','readonly');ta.style.position='fixed';ta.style.left='12px';ta.style.top='12px';ta.style.width='2px';ta.style.height='2px';ta.style.opacity='0.01';ta.style.zIndex='2147483647';ta.style.fontSize='16px';d.body.appendChild(ta);ta.focus();ta.select();ta.setSelectionRange(0,ta.value.length);ok=d.execCommand&&d.execCommand('copy')?'copied':'not_confirmed';ta.remove()}catch(e){}try{if(ok!=='copied'&&navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(String(text||''));ok='copied'}}catch(e){}return ok}
+function api(name){try{return T()[name]||window[name]||null}catch(e){return null}}
+function docs(d,out,depth){out=out||[];depth=depth||0;if(!d||depth>10)return out;try{out.push(d);Array.from(d.querySelectorAll('iframe,frame')).forEach(f=>{try{let fd=f.contentDocument||(f.contentWindow&&f.contentWindow.document);if(fd)docs(fd,out,depth+1)}catch(e){}})}catch(e){}return out}
+function bundle(reason){let b={type:'PMP_BANK_LOAD_DIAGNOSTIC_VISIBLE_RUN_V1_BUNDLE',version:V,owner:OWNER,at:now(),reason:reason||'bundle',load_guardian_report:read(KEYS.loadReport),load_guardian_receipt:read(KEYS.loadReceipt),home_visibility_guard_report:read(KEYS.homeReport),home_visibility_guard_receipt:read(KEYS.homeReceipt),native_load_order_repair_report:read(KEYS.nativeReport),native_load_order_repair_receipt:read(KEYS.nativeReceipt),side_effects:{route_change:'not_attempted',bank_rebuild:'not_attempted',bank_records_change:'not_attempted',indexeddb_write:'not_attempted',storage_migration:'not_attempted',bank_dom_patch:'not_attempted_by_visible_diagnostic_runner'}};put(RECEIPT,b);return b}
+function setPre(d,b){try{let screen=d.getElementById('pmpDiagnosticsScreenV1');let pre=screen&&screen.querySelector('pre');if(pre)pre.textContent=JSON.stringify(b,null,2)}catch(e){}}
+function ensureStatus(d){let btn=d.getElementById('pmpBankLoadRun');if(!btn)return null;let s=d.getElementById('pmpBankLoadVisibleRunStatus');if(!s){s=d.createElement('p');s.id='pmpBankLoadVisibleRunStatus';s.style.fontWeight='950';s.style.border='2px solid var(--line,#07101c)';s.style.borderRadius='14px';s.style.padding='10px';s.style.background='var(--card,#fff)';btn.insertAdjacentElement('afterend',s)}return s}
+function visibleStatusFromBundle(b){let r=b&&b.load_guardian_report||{}, nr=b&&b.native_load_order_repair_receipt||{}, hr=b&&b.home_visibility_guard_receipt||{};return 'Run complete — report refreshed. Bank shell: '+String(r.bank_shell_visible)+' · inventory: '+String(r.bank_inventory_visible)+' · blank: '+String(r.blank_bank_shell_detected)+' · native repair: '+String(nr.status||'not_run')+' · home guard: '+String(hr.status||'not_run')}
+function runVisible(d){let btn=d.getElementById('pmpBankLoadRun'),status=ensureStatus(d);if(btn)btn.textContent='Running Bank Load Check…';if(status)status.textContent='Running now…';let lg=api('PMPBankLoadGuardianV1');try{if(lg&&typeof lg.run==='function')lg.run('visible_diagnostics_button')}catch(e){}let hg=api('PMPBankHomeVisibilityGuardV1');try{if(hg&&typeof hg.run==='function')hg.run('visible_diagnostics_button_status_check')}catch(e){}let b=bundle('visible_run_button');setPre(d,b);if(status)status.textContent=visibleStatusFromBundle(b);if(btn)btn.textContent='Run complete — report refreshed';return b}
+function install(){docs(T().document).forEach(d=>{try{if(d.__pmpBankLoadVisibleRunBoundV1)return;d.__pmpBankLoadVisibleRunBoundV1=true;d.addEventListener('click',e=>{let t=e.target&&e.target.closest&&e.target.closest('#pmpBankLoadRun,#pmpBankLoadCopyReport');if(!t)return;if(t.id==='pmpBankLoadRun'){e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();runVisible(d)}else if(t.id==='pmpBankLoadCopyReport'){e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();let b=bundle('copy_bank_load_report_visible_runner');let ok=copyText(JSON.stringify(b,null,2));t.textContent=ok==='copied'?'Copied full Bank Load Report':'Report ready';setPre(d,b)}} ,true)}catch(e){}});return true}
+function run(){install();return put(RECEIPT,{type:'PMP_BANK_LOAD_DIAGNOSTIC_VISIBLE_RUN_V1_RECEIPT',version:V,owner:OWNER,at:now(),status:'VISIBLE_RUNNER_READY',rule:'Diagnostics-only runner. Makes Bank Load Guardian Check visibly update status and report. Does not patch Bank, rebuild Bank, write IndexedDB, migrate storage, or change routes.',side_effects:{route_change:'not_attempted',bank_rebuild:'not_attempted',bank_records_change:'not_attempted',indexeddb_write:'not_attempted',storage_migration:'not_attempted',bank_dom_patch:'not_attempted'}})}
+window.PMPBankLoadDiagnosticVisibleRunV1={version:V,owner:OWNER,run,bundle,runVisible,rule:'Diagnostics-only visible runner for Bank Load Diagnostic buttons.'};try{T().PMPBankLoadDiagnosticVisibleRunV1=window.PMPBankLoadDiagnosticVisibleRunV1}catch(e){};
+[150,400,900,1600,3000].forEach(t=>setTimeout(run,t));setInterval(run,2500);
+})();
