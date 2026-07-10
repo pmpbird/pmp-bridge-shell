@@ -1,0 +1,12 @@
+{
+  "type": "PMP_PASS9_VISUAL_CONFIRMATION",
+  "version": "20260710A",
+  "confirmed_at": "2026-07-10T00:00:00.000Z",
+  "confirmed_by_user": true,
+  "user_text": "They are there now",
+  "confirmed_fix": "PASS9_FIX_003_LEVEL1_LEVEL2_OWNER_STACK",
+  "status": "VISUAL_PASS_FOR_LEVEL1_LEVEL2_PRESENT",
+  "meaning": "Continuous Run Owner stack now visibly includes Level 1 and Level 2 after Run State Summary path was restored.",
+  "not_certified": true,
+  "next_fix": "PASS9_FIX_004_LEVEL3PLUS_READINESS_GATE"
+}
