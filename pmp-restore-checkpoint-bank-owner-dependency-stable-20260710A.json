@@ -1,0 +1,80 @@
+{
+  "type": "PMP_RESTORE_CHECKPOINT_BANK_OWNER_DEPENDENCY_STABLE",
+  "version": "20260710A",
+  "status": "BANK_WORKING_UNDER_OWNER_DEPENDENCY_BRIDGE",
+  "created_at": "2026-07-10T00:00:00.000Z",
+  "user_verified": true,
+  "user_verification_text": "It seems to be working fine",
+  "stable_files": {
+    "pmp_safe_area_surface_fill_v1": {
+      "path": "pmp-safe-area-surface-fill-v1.js",
+      "version": "1.0.27-load-bank-owner-dependency-bridge-20260710A",
+      "role": "stable loader; loads diagnostics, Bank guards, and Bank Owner dependency bridge"
+    },
+    "pmp_bank_owner_dependency_bridge_v1": {
+      "path": "pmp-bank-owner-dependency-bridge-v1.js",
+      "version": "1.0.0-bank-owner-cross-frame-dependencies-20260710A",
+      "role": "dependency bridge only; exposes existing Bank APIs across same-origin parent/iframe windows so the real Bank Owner can see them"
+    },
+    "pmp_bank_load_guardian_v1": {
+      "path": "pmp-bank-load-guardian-v1.js",
+      "version": "1.0.3-includes-native-load-order-repair-receipt-20260710A",
+      "role": "Bank Load Diagnostic / guardian report source"
+    },
+    "pmp_bank_home_visibility_guard_v1": {
+      "path": "pmp-bank-home-visibility-guard-v1.js",
+      "version": "1.0.0-bank-home-visible-before-paint-20260710A",
+      "role": "Bank-side visibility guard retained from previous stable state"
+    },
+    "pmp_diagnostics_owner_v1": {
+      "path": "pmp-diagnostics-owner-v1.js",
+      "version": "1.0.9-baked-bank-load-diagnostic-20260710A",
+      "role": "Diagnostics content owner with Bank Load Diagnostic baked in"
+    },
+    "pmp_diagnostics_bottom_tab_forcer_v1": {
+      "path": "pmp-diagnostics-bottom-tab-forcer-v1.js",
+      "version": "1.0.4-single-active-tab-state-20260709A",
+      "role": "Diagnostics bottom tab owner"
+    }
+  },
+  "disabled_or_rolled_back_files": {
+    "pmp_bank_native_load_order_repair_v1": {
+      "path": "pmp-bank-native-load-order-repair-v1.js",
+      "version": "1.0.2-disabled-flicker-rollback-20260710A",
+      "reason": "disabled because repaint/helper repair loop caused Bank flicker and owner/helper contention"
+    },
+    "pmp_bank_continuous_run_probe_bridge_v1": {
+      "path": "pmp-bank-continuous-run-probe-bridge-v1.js",
+      "version": "1.0.1-disabled-rollback-20260710A",
+      "reason": "disabled because the Bank problem was not the probe path"
+    },
+    "pmp_bank_load_diagnostic_visible_run_v1": {
+      "path": "pmp-bank-load-diagnostic-visible-run-v1.js",
+      "version": "1.0.1-disabled-rollback-20260710A",
+      "reason": "disabled because click interception/timing may have interfered with Bank loading"
+    },
+    "pmp_control_diagnostics_migration_v1": {
+      "path": "pmp-control-diagnostics-migration-v1.js",
+      "version": "1.0.1-disabled-unhide-only-20260710A",
+      "reason": "disabled because broad migration/hiding broke tabs"
+    }
+  },
+  "pass9_interpretation": {
+    "classification": "owner dependency boundary fix",
+    "bank_owner": "pmp-master-bank-tab-v1.js remains the real Bank Owner for Bank tab, shell, home, inventory list, detail wrapper, and open-bank state",
+    "bridge_role": "pmp-bank-owner-dependency-bridge-v1 only makes existing APIs visible across same-origin frames; it does not own or repaint Bank UI",
+    "helpers_policy": "helpers must not repaint, rebuild, intercept, or compete with Bank Owner for the Bank home/list surface"
+  },
+  "do_not_restore": [
+    "continuous native Bank repair loop",
+    "probe bridge",
+    "visible diagnostic button interceptor",
+    "Control diagnostics migration",
+    "broad Bank DOM repair helper",
+    "Bank rebuild",
+    "IndexedDB clearing",
+    "storage migration",
+    "route replacement"
+  ],
+  "restore_rule": "If Bank breaks again, restore to the loader plus Bank Owner dependency bridge state recorded here before adding any new helper. Do not re-enable repaint helpers or click interceptors."
+}
