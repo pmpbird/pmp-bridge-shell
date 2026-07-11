@@ -1,24 +1,25 @@
-# A-002 Scope Lock
+# A-002 Final Scope Lock
 
-P0, P1, P2, and P3 are complete within their recorded tested scopes.
+A-002 P0 through P7 are complete and passed at the full exercised A-002 scope.
 
-P3 changed only:
+Final receipt: `audit/a002-final-receipt.json`
 
-- `pmp-current-screen-pointer-v1.js`
-- `pmp-reload-world-from-map-v1.js`
-- `pmp-launcher-reload-current-bridge-v1.js`
-- `pmp-launcher-reload-current-v2-guard.js`
+Locked facts:
 
-P4 is not authorized by this file.
+- sole destination truth: `pmp-current-map-v12.json`
+- authority census: 65 objects, 0 independent authorities, 0 unresolved
+- live runtime: 37 passed, 0 failed
+- rollback required: no
+- merge authorized: no
+- A-003 executed: no
 
-Forbidden until a separate P4 instruction:
+Forbidden without a separate explicit instruction:
 
-- Safe Writer return mutation;
-- Safe Writer page mutation;
-- Code Safety route mutation;
-- canonical Safe Writer route mutation;
-- Route Guardian Action mutation;
-- inner-v2 tool-return mutation;
-- storage, cache, IndexedDB, or Bank clearing;
-- merge to main;
-- live-runtime certification claims not supported by a browser exercise.
+- merge PR #38 into main;
+- enable auto-merge;
+- mark the PR ready for review if that is meant to authorize merge;
+- begin A-003 runtime source-byte enforcement;
+- claim the overall project’s Pass 1 is complete;
+- clear storage, caches, IndexedDB, Bank data, or user content.
+
+Current boundary: `STOP_BEFORE_MERGE_AND_A003`.
