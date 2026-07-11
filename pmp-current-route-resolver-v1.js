@@ -2,7 +2,7 @@
 'use strict';
 
 var MAP_PATH='pmp-current-map-v12.json';
-var RESOLVER_VERSION='PMP_CURRENT_ROUTE_RESOLVER_V1_20260711A';
+var RESOLVER_VERSION='PMP_CURRENT_ROUTE_RESOLVER_V1_20260711B';
 var HANDOFF_TYPE='PMP_ROUTE_HANDOFF_V1';
 var MAP_TYPE='PMP_CURRENT_APP_MAP';
 var CONTRACT_TYPE='PMP_ROUTE_CONTRACT_V1';
@@ -56,7 +56,7 @@ function validateMap(map){
   if(map.type!==MAP_TYPE)throw new RouteError('MAP_TYPE_INVALID','Current Map type is invalid.',{expected:MAP_TYPE,actual:map.type});
   if(!map.route_contract||map.route_contract.type!==CONTRACT_TYPE)throw new RouteError('CONTRACT_INVALID','Current Map route contract is missing or invalid.');
   if(map.route_contract.sole_authority!==MAP_PATH)throw new RouteError('AUTHORITY_INVALID','Current Map does not name itself as sole route authority.',{actual:map.route_contract.sole_authority});
-  if(map.route_contract.resolver!== 'pmp-current-route-resolver-v1.js')throw new RouteError('RESOLVER_CONTRACT_INVALID','Current Map resolver contract does not match this resolver.',{actual:map.route_contract.resolver});
+  if(map.route_contract.resolver!=='pmp-current-route-resolver-v1.js')throw new RouteError('RESOLVER_CONTRACT_INVALID','Current Map resolver contract does not match this resolver.',{actual:map.route_contract.resolver});
   if(map.route_contract.failure_mode!=='fail_closed'||map.route_contract.implicit_fallbacks!==false)throw new RouteError('FAILURE_POLICY_INVALID','Current Map must require fail-closed routing with no implicit fallbacks.');
   if(!map.route_epoch||!map.app_version)throw new RouteError('MAP_IDENTITY_INCOMPLETE','Current Map version or route epoch is missing.');
   assertLocalRouteNode(map.entry,'entry',['.html']);
@@ -104,9 +104,14 @@ function normalizeHash(hash,map){
 function buildUrl(handoff,params,hash){
   if(!handoff||handoff.type!==HANDOFF_TYPE)throw new RouteError('HANDOFF_INVALID','A valid map-issued route handoff is required.');
   var query=[];
+  var safeParams={};
   params=params||{};
-  Object.keys(params).sort().forEach(function(k){
-    var v=params[k];
+  Object.keys(params).forEach(function(k){safeParams[k]=params[k]});
+  if(!own(safeParams,'handoff_role'))safeParams.handoff_role=handoff.role;
+  if(!own(safeParams,'route_authority'))safeParams.route_authority=handoff.map_path;
+  if(!own(safeParams,'route_guardian_policy'))safeParams.route_guardian_policy='current_map';
+  Object.keys(safeParams).sort().forEach(function(k){
+    var v=safeParams[k];
     if(v===undefined||v===null)return;
     query.push(encodeURIComponent(k)+'='+encodeURIComponent(String(v)));
   });
