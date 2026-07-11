@@ -1,5 +1,5 @@
 {
-  "type": "PMP_A002_NO_CODE_CHANGE_PROOF_V2",
+  "type": "PMP_A002_NO_CODE_CHANGE_PROOF_V3",
   "allowed_paths_prefix": "audit/",
   "actual_changed_files": [
     "audit/a002-a001-identity-reconciliation-plan.json",
@@ -13,6 +13,7 @@
     "audit/a002-plan.json",
     "audit/a002-pr-ready.json",
     "audit/a002-preexecution-patch-plan.json",
+    "audit/a002-preexecution-receipt.json",
     "audit/a002-preexecution-summary.md",
     "audit/a002-review-boundary.md",
     "audit/a002-rollback-ledger.json",
@@ -21,7 +22,7 @@
     "audit/a002-scope-lock.md",
     "audit/a002-stop-line.md"
   ],
-  "changed_file_count": 18,
+  "changed_file_count": 19,
   "all_paths_under_audit": true,
   "runtime_files_changed": 0,
   "application_files_changed": 0,
