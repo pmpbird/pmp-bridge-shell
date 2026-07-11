@@ -1,0 +1,298 @@
+{
+  "type": "PMP_A002_PREEXECUTION_PATCH_PLAN_V1",
+  "repair_id": "A-002",
+  "status": "PREPARED_NOT_EXECUTED",
+  "baseline": {
+    "branch": "main",
+    "commit": "5dd049de1500ea427fa2cf395687239a19706115"
+  },
+  "goal": "Make pmp-current-map-v12.json the sole source of application destination truth while preserving the visible app, Bank data, user content, current screen restoration, and recovery evidence.",
+  "non_goals": [
+    "No source-byte hash enforcement; that remains A-003.",
+    "No Bank rebuild or migration.",
+    "No storage, IndexedDB, user-content, or cache clearing.",
+    "No feature redesign or visual redesign.",
+    "No merge to main during preparation.",
+    "No deletion of historic evidence."
+  ],
+  "authority_contract": {
+    "sole_authority_file": "pmp-current-map-v12.json",
+    "permitted_bootstrap_constants": [
+      "pmp-current-map-v12.json",
+      "pmp-current-route-resolver-v1.js"
+    ],
+    "bootstrap_rule": "The canonical map path and resolver mechanism may be fixed. They may not contain alternate app destinations. Every application, tool, recovery, fallback, and historic-forward destination must come from the map.",
+    "planned_map_sections": [
+      "route_contract",
+      "entry",
+      "route_guardian",
+      "current_app",
+      "runtime_chain",
+      "tool_routes",
+      "recovery_routes",
+      "historic_policy",
+      "allowed_hashes",
+      "route_epoch"
+    ],
+    "resolver_behavior": [
+      "Fetch only pmp-current-map-v12.json with cache:no-store.",
+      "Validate type, route-contract version, required roles, local relative HTML/JS/JSON paths, and allowed hash.",
+      "Issue an immutable in-memory route handoff containing map path, map version, route epoch, role, destination, cache key, and allowed hash.",
+      "Never consult v11, v10, v9, unversioned maps, localStorage route pointers, saved spots, move ledger, filenames, or hard-coded fallback destinations.",
+      "Fail closed to a copyable diagnostic when the map or required role is missing or invalid.",
+      "Do not clear or rewrite user data."
+    ]
+  },
+  "preconditions": [
+    {
+      "id": "P0-A001-SUPPLEMENT",
+      "required": true,
+      "condition": "The 13-entry A-001 supplemental identity receipt passes with zero unresolved identities.",
+      "evidence_plan": "audit/a002-a001-identity-reconciliation-plan.json",
+      "stop_on_failure": true
+    },
+    {
+      "id": "P0-BASELINE-UNCHANGED",
+      "required": true,
+      "condition": "main still resolves to baseline commit 5dd049de1500ea427fa2cf395687239a19706115 or a new baseline identity freeze is performed.",
+      "stop_on_failure": true
+    },
+    {
+      "id": "P0-ROLLBACK-READY",
+      "required": true,
+      "condition": "Every proposed mutation has a preimage blob SHA and rollback action in audit/a002-rollback-ledger.json.",
+      "stop_on_failure": true
+    }
+  ],
+  "execution_phases": [
+    {
+      "phase": "P0",
+      "name": "Identity reconciliation and baseline lock",
+      "mutation_class": "AUDIT_ONLY",
+      "files": [
+        "audit/a001-supplements/a001-a002-route-authority-supplement-v1.json",
+        "audit/a001-supplements/a001-a002-route-authority-supplement-receipt-v1.json"
+      ],
+      "actions": [
+        "Verify all 13 exact identities at the pinned baseline.",
+        "Link the supplement to A-001 PASS-003 without modifying the A-001 branch.",
+        "Record combined source-identity coverage with zero unresolved."
+      ],
+      "gate": "P0 must pass before any runtime source file is edited."
+    },
+    {
+      "phase": "P1",
+      "name": "Create canonical map contract and strict resolver",
+      "mutation_class": "ROUTE_MECHANISM_AND_CANONICAL_MAP",
+      "files": [
+        "pmp-current-route-resolver-v1.js",
+        "pmp-current-map-v12.json",
+        "pmp-app-current.html",
+        "pmp-route-guardian-current-loader-v22.html"
+      ],
+      "actions": [
+        "Add the shared resolver as a mechanism-only file with no alternate destination constants.",
+        "Expand Current Map v12 to name the full current runtime chain, tools, recovery routes, and historic policy.",
+        "Change the stable app entry so it loads the guardian path obtained from Current Map v12.",
+        "Change Route Guardian v22 so it reads Current Map v12 only, removes v11/v10 and hard-coded v29 fallbacks, and fails closed when the map is invalid."
+      ],
+      "gate_tests": [
+        "Map v12 available: stable entry opens the map-declared guardian.",
+        "Map v12 missing or invalid: no old map, guardian, Reload Owner, or app target opens.",
+        "No destination string other than the map and resolver bootstrap exists in the entry or guardian.",
+        "No Bank, storage, IndexedDB, user-content, or cache clearing occurs."
+      ],
+      "rollback_group": "RG-P1"
+    },
+    {
+      "phase": "P2",
+      "name": "Convert current boot and wrapper chain to map-issued handoffs",
+      "mutation_class": "CURRENT_CHAIN_DELEGATION",
+      "files": [
+        "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html",
+        "pmp-reload-current-live-update-marker-v1.json",
+        "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+        "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+        "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+        "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+        "pmp-home-single-v6.html"
+      ],
+      "actions": [
+        "Reload Owner obtains current_app and the first runtime_chain destination from the resolver instead of hard-coding inner v30.",
+        "The live-update marker becomes revision/cache-bust data only; any marker target must be removed or required to match the map but may not select a path.",
+        "Each wrapper requests the next runtime_chain role from the same map-issued handoff instead of embedding the next filename.",
+        "Inner v3 obtains Home, Bug Memory, Resident, and Route Guardian Action destinations from map tool/base roles.",
+        "Home v6 obtains its historical payload URL from the map contract while leaving byte-hash enforcement to A-003."
+      ],
+      "gate_tests": [
+        "The complete visible app reaches Home through the same current chain and preserves the requested hash.",
+        "Removing or corrupting any runtime_chain role fails closed at that role without consulting a historical route.",
+        "The marker revision can refresh bytes but cannot change the destination.",
+        "Current screen, user content, Bank state, IndexedDB, and localStorage data remain intact.",
+        "No runtime hash-certification claim is made."
+      ],
+      "rollback_group": "RG-P2"
+    },
+    {
+      "phase": "P3",
+      "name": "Converge every active Reload Current path",
+      "mutation_class": "ACTIVE_RELOAD_CONVERGENCE",
+      "files": [
+        "pmp-current-screen-pointer-v1.js",
+        "pmp-reload-world-from-map-v1.js",
+        "pmp-launcher-reload-current-bridge-v1.js",
+        "pmp-launcher-reload-current-v2-guard.js"
+      ],
+      "actions": [
+        "Remove all v9, v27, v20, v21, v11, and v10 route selection.",
+        "Preserve current-screen snapshot capture and restoration.",
+        "Make every Reload Current control call one canonical resolver-backed reload API.",
+        "Route through the map-declared guardian/current app only."
+      ],
+      "gate_tests": [
+        "Reload Current from World, Bridge, Library, Workshop, Control, and Bank returns to the same screen through Current Map v12.",
+        "No active reload trace fetches v11, v10, v9, unversioned map, or directly names an old guardian/owner.",
+        "Rapid repeated clicks remain guarded and do not duplicate navigation.",
+        "No saved content or Bank data changes."
+      ],
+      "rollback_group": "RG-P3"
+    },
+    {
+      "phase": "P4",
+      "name": "Convert tool returns and manual route actions",
+      "mutation_class": "TOOL_ROUTE_DELEGATION",
+      "files": [
+        "pmp-safe-writer-current-return-fix-v1.js",
+        "safe-writer-v14.html",
+        "code-safety-v13.html",
+        "pmp-safe-writer-canonical-route-v1.js",
+        "pmp-route-guardian-action-v2.html",
+        "pmp-current-inner-cleanbug-rgcontrols-v2.html"
+      ],
+      "actions": [
+        "Read Safe Writer, Code Safety, Bug Memory, Resident, route-action, and return destinations from map tool_routes.",
+        "Remove stale return=current-v27 and missing pmp-clean-v13.html contracts.",
+        "Return to the map-declared current app while preserving the requested screen hash.",
+        "Keep in-shell Safe Writer behavior where already used; path ownership still comes from the map."
+      ],
+      "gate_tests": [
+        "Open and return from Safe Writer without visiting v27.",
+        "Open and return from Code Safety without requesting pmp-clean-v13.html.",
+        "Route Guardian actions return through the canonical map path.",
+        "Tool workspaces and staged content remain unchanged."
+      ],
+      "rollback_group": "RG-P4"
+    },
+    {
+      "phase": "P5",
+      "name": "Remove independent authority from Last Good and recovery",
+      "mutation_class": "RECOVERY_POLICY_DELEGATION",
+      "files": [
+        "pmp-route-guardian-last-good-clean-v1.js",
+        "pmp-current-inner-cleanbug-rgcontrols-v16.html",
+        "pmp-route-guardian-last-good-v3-button-v1.js",
+        "pmp-route-guardian-last-good-v1.html",
+        "pmp-route-guardian-last-good-v18.html",
+        "pmp-route-guardian-recovery-tools-v8.html",
+        "pmp-move-ledger-candidate-follow-v1.html",
+        "pmp-route-guardian-current-loader-v14.html",
+        "pmp-current-inner-cleanbug-rgcontrols-v9.html",
+        "pmp-current-inner-cleanbug-rgcontrols-v13.html"
+      ],
+      "actions": [
+        "Preserve saved spots and move-ledger evidence but remove their ability to execute arbitrary local HTML directly.",
+        "Treat saved paths as candidates requiring an explicit Current Map recovery allowlist entry.",
+        "Make Last Good and Recovery Tools destinations map-defined.",
+        "Convert historic current-before hard-codes into map roles or evidence-only values.",
+        "Make Route Guardian v14 and old inner recovery wrappers delegate to the canonical map or display inactive evidence."
+      ],
+      "gate_tests": [
+        "Saved spots and move ledger remain readable and unchanged.",
+        "A saved arbitrary path cannot execute unless allowed by Current Map recovery policy.",
+        "Last Good returns to the map-declared current app.",
+        "Recovery failure never promotes v9, v13, v14, v16, or another historical target as current authority."
+      ],
+      "rollback_group": "RG-P5"
+    },
+    {
+      "phase": "P6",
+      "name": "Neutralize historic maps, guardians, owners, and wrappers",
+      "mutation_class": "HISTORIC_AUTHORITY_QUARANTINE",
+      "files": [
+        "pmp-current-map-v11.json",
+        "pmp-current-map-v10.json",
+        "pmp-current-map-v9.json",
+        "pmp-current-map.json",
+        "pmp-route-guardian-current-loader-v15.html",
+        "pmp-route-guardian-current-loader-v17.html",
+        "pmp-route-guardian-current-loader-v18.html",
+        "pmp-route-guardian-current-loader-v19.html",
+        "pmp-route-guardian-current-loader-v20.html",
+        "pmp-route-guardian-current-loader-v21.html",
+        "pmp-current-reload-owner-v27.html",
+        "pmp-current-reload-owner-v28.html",
+        "pmp-current-reload-owner-v29.html",
+        "pmp-current-reload-owner-v29-cachelift-20260706b.html",
+        "pmp-current-reload-owner-v29-permanent-update-gate-20260706f.html",
+        "pmp-current-inner-cleanbug-rgcontrols-v24.html",
+        "pmp-current-inner-cleanbug-rgcontrols-v26.html",
+        "pmp-current-inner-cleanbug-rgcontrols-v29.html",
+        "pmp-route-guardian-v1.js"
+      ],
+      "actions": [
+        "Remove current status claims from old map data and mark it historic evidence only.",
+        "Convert directly opened old guardians and Reload Owners into map-delegating forwarders or fail-closed historic notices.",
+        "Ensure old wrappers cannot independently launch an application chain.",
+        "Retain files and evidence; do not delete history."
+      ],
+      "gate_tests": [
+        "Directly opening each historic guardian/owner/wrapper cannot launch an old current route.",
+        "No production actor fetches an old map.",
+        "Historic files remain inspectable as evidence.",
+        "Current Map v12 remains the only object containing current destination truth."
+      ],
+      "rollback_group": "RG-P6"
+    },
+    {
+      "phase": "P7",
+      "name": "Transport, saturation, and certification audit",
+      "mutation_class": "TEST_AND_EVIDENCE_ONLY_UNLESS_A_NEW_DEFECT_IS_AUTHORIZED",
+      "files": [
+        "pmp-service-worker-cache-governor-v1.js",
+        "audit/a002-postpatch-route-authority-audit.json",
+        "audit/a002-route-test-matrix.json",
+        "audit/a002-final-receipt.json"
+      ],
+      "actions": [
+        "Verify network-first service-worker behavior does not promote stale route files.",
+        "Repeat the 65-object authority census against patched sources.",
+        "Require every former authority to be canonical-map data, map executor, map delegate, influence-only, evidence-only, inactive, disabled, or proven absent.",
+        "Issue A-002 pass receipt only when zero independent route authorities remain."
+      ],
+      "gate_tests": [
+        "Zero independent current, fallback, reload, tool-return, recovery, saved-route, candidate, or historic route selectors remain.",
+        "Current Map unavailable causes fail-closed behavior everywhere.",
+        "All six screen hashes survive normal and Reload Current flows.",
+        "No user data, Bank data, IndexedDB, or staged tool content is lost.",
+        "A-003 hash enforcement is not claimed."
+      ],
+      "rollback_group": "RG-P7"
+    }
+  ],
+  "execution_rules": [
+    "Execute one phase at a time in order.",
+    "Commit each phase separately so it can be reverted independently.",
+    "Run the phase gate before beginning the next phase.",
+    "On any gate failure, stop immediately and invoke the matching rollback group.",
+    "Do not merge the draft PR while any phase is untested, unresolved, or rolled back incompletely.",
+    "Do not clear caches or storage to make a test pass; stale-state behavior must be observed and handled safely."
+  ],
+  "authorization": {
+    "plan_prepared": true,
+    "identity_reconciliation_executed": false,
+    "runtime_patch_executed": false,
+    "route_behavior_change_authorized": false,
+    "merge_authorized": false
+  },
+  "decision": "A002_PREEXECUTION_PLAN_READY_STOP_BEFORE_PATCH_EXECUTION"
+}

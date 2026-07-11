@@ -1,0 +1,94 @@
+{
+  "type": "PMP_A002_ROUTE_TEST_MATRIX_V1",
+  "repair_id": "A-002",
+  "phase": "P7",
+  "status": "PASS",
+  "tested_head": "8437cadaa88428a90cb424829e70349fdad3a57e",
+  "tested_runtime_head": "d8af5303d472a567eb31852e9c7009a385fbc3be",
+  "workflow": {
+    "name": "A-002 Live Runtime Matrix",
+    "run_id": 29150243463,
+    "job_id": 86538473100,
+    "conclusion": "success",
+    "artifact_id": 8247957279,
+    "artifact_name": "a002-live-runtime-results",
+    "artifact_digest": "sha256:9e687eeaf37063f08dde822272bff976fb2b4d8dab0985a896901cfbd26c9d64",
+    "artifact_created_at": "2026-07-11T11:01:36Z"
+  },
+  "result": {
+    "type": "PMP_A002_LIVE_RUNTIME_RESULT_V1",
+    "tests_total": 37,
+    "tests_passed": 37,
+    "tests_failed": 0,
+    "fatal_error": null
+  },
+  "groups": {
+    "current_map_contract": {
+      "passed": 1,
+      "checks": ["sole authority is pmp-current-map-v12.json", "implicit fallbacks are false", "P6 historic policy is enforced"]
+    },
+    "historic_maps": {
+      "passed": 4,
+      "files": ["pmp-current-map-v11.json", "pmp-current-map-v10.json", "pmp-current-map-v9.json", "pmp-current-map.json"],
+      "checks": ["evidence-only", "non-executable", "no current_app destination truth"]
+    },
+    "stable_entry": {
+      "passed": 1,
+      "check": "pmp-app-current.html receives the map-declared Guardian v22 handoff"
+    },
+    "current_chain_and_reload": {
+      "passed": 12,
+      "screens": {
+        "world": {"home_hash": "#world", "reload_hash": "#world"},
+        "bridge": {"home_hash": "#bridge", "reload_hash": "#bridge"},
+        "library": {"home_hash": "#library", "reload_hash": "#library"},
+        "workshop": {"home_hash": "#workshop", "reload_hash": "#workshop"},
+        "control": {"home_hash": "#control", "reload_hash": "#control"},
+        "bank": {"home_hash": "#bank", "reload_hash": "#bank"}
+      },
+      "checks": ["full wrapper chain reaches Home", "final Home hash equals immutable requested screen", "Reload Current returns through current_app"]
+    },
+    "tools": {
+      "passed": 2,
+      "checks": ["Safe Writer returns through Current Map current_app", "Code Safety returns through Current Map current_app"]
+    },
+    "recovery": {
+      "passed": 2,
+      "checks": ["arbitrary candidate is blocked", "exact Current Map candidate may be viewed but is not promoted"]
+    },
+    "historic_bookmarks": {
+      "passed": 14,
+      "files": [
+        "pmp-route-guardian-current-loader-v15.html",
+        "pmp-route-guardian-current-loader-v17.html",
+        "pmp-route-guardian-current-loader-v18.html",
+        "pmp-route-guardian-current-loader-v19.html",
+        "pmp-route-guardian-current-loader-v20.html",
+        "pmp-route-guardian-current-loader-v21.html",
+        "pmp-current-reload-owner-v27.html",
+        "pmp-current-reload-owner-v28.html",
+        "pmp-current-reload-owner-v29.html",
+        "pmp-current-reload-owner-v29-cachelift-20260706b.html",
+        "pmp-current-reload-owner-v29-permanent-update-gate-20260706f.html",
+        "pmp-current-inner-cleanbug-rgcontrols-v24.html",
+        "pmp-current-inner-cleanbug-rgcontrols-v26.html",
+        "pmp-current-inner-cleanbug-rgcontrols-v29.html"
+      ],
+      "check": "each directly opened historic bookmark forwards to Current Map current_app and preserves #library"
+    },
+    "service_worker": {
+      "passed": 1,
+      "version": "1.1.0-a002-p7-reliable-status-handshake",
+      "checks": ["live MessagePort status response", "network-first HTML", "network-first JavaScript", "network-first JSON"]
+    }
+  },
+  "source_verification": {
+    "workflow": "Packet 015 corrected current runtime source",
+    "run_id": 29150243412,
+    "verify_job_id": 86538473002,
+    "receipt_job_id": 86538483878,
+    "verify_conclusion": "success",
+    "receipt_conclusion": "success"
+  },
+  "decision": "PASS_LIVE_RUNTIME_37_OF_37"
+}

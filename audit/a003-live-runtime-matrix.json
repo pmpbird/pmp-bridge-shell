@@ -1,0 +1,93 @@
+{
+  "type": "PMP_A003_LIVE_RUNTIME_MATRIX_V1",
+  "repair_id": "A-003",
+  "status": "PASS",
+  "tested_head": "f2ed35ff4a9c7b764e6bf60d5a15be04e4c974dd",
+  "workflow": {
+    "name": "A-003 Final Certification",
+    "run_id": 29160312887,
+    "job_id": 86564162398,
+    "conclusion": "success",
+    "artifact_id": 8250630872,
+    "artifact_name": "a003-final-live-result",
+    "artifact_digest": "sha256:098cf19bbd3f9f989d2e6e289d20531cdd3d196e9bd42b19875c7552081ab108"
+  },
+  "result": {
+    "type": "PMP_A003_LIVE_RUNTIME_RESULT_V1",
+    "tests_total": 47,
+    "tests_passed": 47,
+    "tests_failed": 0,
+    "fatal_error": null,
+    "request_count": 4201
+  },
+  "groups": {
+    "bootstrap_and_controller": {
+      "passed": 5,
+      "checks": [
+        "Root bootstrap verifies manifest, worker, resolver, map, and Guardian target identities.",
+        "Integrity Service Worker reaches ENFORCED state.",
+        "Only the integrity worker remains registered.",
+        "Manifest responses are verified.",
+        "Current Map bytes are verified before consumption."
+      ]
+    },
+    "external_and_unlisted_sources": {
+      "passed": 2,
+      "checks": [
+        "Verified local HTML receives exact external script SRI and anonymous CORS attributes.",
+        "An unlisted executable source is blocked with HTTP 412."
+      ]
+    },
+    "verified_cache_and_mismatch_policy": {
+      "passed": 3,
+      "checks": [
+        "A valid response warms the verified cache.",
+        "Offline use succeeds only from a cache entry whose bytes still match the expected digest.",
+        "A network digest mismatch never falls back to verified cache."
+      ]
+    },
+    "direct_tamper_attacks": {
+      "passed": 6,
+      "checks": [
+        "Tampered Current Map is rejected.",
+        "Tampered Guardian navigation is blocked before Guardian code executes.",
+        "Tampered manifest blocks bootstrap.",
+        "Tampered integrity worker blocks bootstrap.",
+        "Tampered resolver blocks bootstrap.",
+        "Tampered historical Home is blocked before document.write."
+      ]
+    },
+    "six_screen_current_chain": {
+      "passed": 12,
+      "screens": ["world", "bridge", "library", "workshop", "control", "bank"],
+      "checks_per_screen": [
+        "The integrity-controlled current chain reaches Home with the exact requested hash.",
+        "Historical Home SHA-256 verification passes before restoration."
+      ]
+    },
+    "tools_and_recovery": {
+      "passed": 4,
+      "checks": [
+        "Safe Writer returns through Current Map under integrity enforcement.",
+        "Code Safety returns through Current Map under integrity enforcement.",
+        "Arbitrary recovery candidate remains blocked.",
+        "Allowlisted recovery candidate remains review-only and cannot promote current authority."
+      ]
+    },
+    "historic_forwarders": {
+      "passed": 14,
+      "check": "Every retained historic Guardian, Reload Owner, and inner wrapper forwards through the integrity-controlled Current Map path."
+    },
+    "worker_non_replacement": {
+      "passed": 1,
+      "check": "Guardian and historic pages do not replace the integrity Service Worker."
+    }
+  },
+  "historical_tamper_evidence": {
+    "expected_sha256": "ceeff001b76284578b3a4283d5dd0885e72a4e176f71b48090a88e7747ba9eb4",
+    "tampered_sha256": "1be598b11a438d1113a5471cfd3a83cc3a45de7656dc9b59b4213ed8ce5575a8",
+    "status": "rollback_failed_closed",
+    "action": "navigation_blocked_no_unverified_fallback_consulted"
+  },
+  "decision": "PASS_A003_ADVERSARIAL_LIVE_MATRIX_47_OF_47"
+}

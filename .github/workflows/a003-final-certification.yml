@@ -1,0 +1,87 @@
+name: A-003 Final Certification
+
+on:
+  push:
+    branches:
+      - agent/a002-current-map-single-authority
+    paths:
+      - '.github/workflows/a003-final-certification.yml'
+      - 'tools/run_a003_live_final.py'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/a003-final-certification.yml'
+      - 'tools/run_a003_live_final.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  repository-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run exact repository gate
+        run: |
+          set +e
+          python3 tools/test_a003_integrity.py --output a003-repository-test-result.json 2>&1 | tee a003-repository-test-console.log
+          code=${PIPESTATUS[0]}
+          exit $code
+      - name: Upload repository result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a003-final-repository-result
+          path: |
+            a003-repository-test-result.json
+            a003-repository-test-console.log
+          if-no-files-found: error
+
+  adversarial-live-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Run final adversarial matrix
+        env:
+          A003_RESULT_PATH: a003-live-runtime-results.json
+        run: |
+          set +e
+          python3 tools/run_a003_live_final.py 2>&1 | tee a003-live-runtime-console.log
+          code=${PIPESTATUS[0]}
+          exit $code
+      - name: Upload live result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a003-final-live-result
+          path: |
+            a003-live-runtime-results.json
+            a003-live-runtime-console.log
+            a003-live-runtime-effective.cjs
+          if-no-files-found: error

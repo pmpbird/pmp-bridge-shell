@@ -1,0 +1,11 @@
+{
+  "total_objects": 65,
+  "declared_current_chain": 11,
+  "active_competing_mutators": 5,
+  "conditional_recovery_and_tool_claims": 15,
+  "historic_or_fallback_claims": 19,
+  "influence_observer_disabled_or_non_authority": 13,
+  "broken_absent_claims": 2,
+  "sum": 65,
+  "unclassified": 0
+}

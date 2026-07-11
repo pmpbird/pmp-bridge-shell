@@ -1,0 +1,22 @@
+{
+  "type": "PMP_A002_EXECUTION_PROGRESS_RECEIPT_V5",
+  "repair_id": "A-002",
+  "baseline_commit": "5dd049de1500ea427fa2cf395687239a19706115",
+  "completed_phases": [
+    {"phase":"P0","status":"PASS"},
+    {"phase":"P1","status":"PASS","tests":"11/11"},
+    {"phase":"P2","status":"PASS","tests":"16/16"},
+    {"phase":"P3","status":"PASS","tests":"17/17"},
+    {"phase":"P4","status":"PASS","tests":"17/17"},
+    {"phase":"P5","status":"PASS","tests":"18/18"},
+    {"phase":"P6","status":"PASS","tests":"21/21"},
+    {"phase":"P7","status":"PASS_AT_FULL_A002_EXERCISED_SCOPE","live_tests":"37/37"}
+  ],
+  "final_receipt_id": "PMP-A002-5dd049de-PASS-FULL-001",
+  "final_receipt_path": "audit/a002-final-receipt.json",
+  "current_stop_line": "STOP_BEFORE_MERGE_AND_A003",
+  "overall_project_pass_1_complete": false,
+  "A003_executed": false,
+  "merge_authorized": false,
+  "decision": "A002_PASS_STOP_BEFORE_MERGE_AND_A003"
+}

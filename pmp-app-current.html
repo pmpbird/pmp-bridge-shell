@@ -1,1 +1,65 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="PMP"><meta name="theme-color" content="#f3ded4"><title>PMP Current</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3ded4}iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#f3ded4}</style></head><body><iframe id="app" title="PMP Current"></iframe><script>document.getElementById('app').src='pmp-route-guardian-current-loader-v22.html?fresh=current-launcher-rg22-map12-cachelift-20260706b-'+Date.now()+'#control';</script></body></html>
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PMP">
+<meta name="theme-color" content="#f3ded4">
+<title>PMP Current</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3ded4}iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#f3ded4}pre{position:fixed;inset:18px;display:none;box-sizing:border-box;margin:0;padding:16px;overflow:auto;white-space:pre-wrap;background:#102033;color:#eaffef;border:3px solid #07101c;border-radius:18px;font:700 12px/1.4 monospace;user-select:text;-webkit-user-select:text}.boot{position:fixed;inset:0;display:grid;place-items:center;padding:18px;background:#f3ded4;color:#07101c;font:900 16px/1.35 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-align:center}.boot.hidden{display:none}
+</style>
+</head>
+<body>
+<div id="boot" class="boot">Verifying runtime source bytes…</div>
+<iframe id="app" title="PMP Current"></iframe>
+<pre id="routeDiagnostic" aria-live="polite"></pre>
+<script>
+'use strict';
+(async function(){
+  const ROOT_VERSION='1.0.0-a003-bootstrap-root';
+  const ROOT_TRUST_ANCHOR='pmp-app-current.html';
+  const MANIFEST_PATH='pmp-runtime-integrity-manifest-v1.json';
+  const MANIFEST_SHA256='570c6db93da497758c6b18f53fa1e3c2b08cb1fdff761c9e54d97b87914e54d0';
+  const RESOLVER_PATH='pmp-current-route-resolver-v1.js';
+  const INTEGRITY_SW_PATH='pmp-integrity-service-worker-v1.js';
+  const frame=document.getElementById('app'),diagnosticBox=document.getElementById('routeDiagnostic'),bootBox=document.getElementById('boot');
+  function hex(buffer){return Array.from(new Uint8Array(buffer)).map(v=>v.toString(16).padStart(2,'0')).join('')}
+  async function sha256(data){return hex(await crypto.subtle.digest('SHA-256',data))}
+  function receipt(status,extra){const value=Object.assign({type:'PMP_A003_BOOTSTRAP_RECEIPT_V1',version:ROOT_VERSION,at:new Date().toISOString(),status,root_trust_anchor:ROOT_TRUST_ANCHOR,root_truth:'The bootstrap document cannot verify its own bytes before execution; it verifies every downstream protected source.',manifest_path:MANIFEST_PATH,manifest_sha256:MANIFEST_SHA256,side_effects:{storage_schema_changed:false,indexeddb_changed:false,bank_changed:false,user_content_changed:false,cache_storage_cleared:false}},extra||{});try{localStorage.setItem('pmp_a003_bootstrap_receipt_v1',JSON.stringify(value,null,2))}catch(e){}return value}
+  function showDiagnostic(error,context){try{frame.removeAttribute('src')}catch(e){}bootBox.classList.add('hidden');diagnosticBox.style.display='block';const diagnostic={type:'PMP_RUNTIME_INTEGRITY_BOOTSTRAP_FAILURE_V1',version:ROOT_VERSION,at:new Date().toISOString(),context:String(context||'bootstrap'),code:String(error&&error.code||'A003_BOOTSTRAP_ERROR'),message:String(error&&error.message||error),details:error&&error.details||null,root_trust_anchor:ROOT_TRUST_ANCHOR,manifest_path:MANIFEST_PATH,expected_manifest_sha256:MANIFEST_SHA256,action:'application_launch_blocked_no_unverified_fallback'};diagnosticBox.textContent=JSON.stringify(diagnostic,null,2);receipt('FAIL_CLOSED',{diagnostic});return diagnostic}
+  function fail(code,message,details){const e=new Error(message||code);e.code=code;e.details=details||null;return e}
+  async function fetchBytes(path){let response;try{response=await fetch(path+'?pmp_a003_bootstrap_verify='+encodeURIComponent(String(Date.now())),{cache:'no-store',credentials:'same-origin'})}catch(error){throw fail('BOOTSTRAP_FETCH_FAILED','Bootstrap source fetch failed.',{path,error:String(error&&error.message||error)})}if(!response.ok)throw fail('BOOTSTRAP_HTTP_FAILED','Bootstrap source request failed.',{path,status:response.status});return{response,bytes:await response.arrayBuffer()}}
+  function validateManifest(manifest){if(!manifest||manifest.type!=='PMP_RUNTIME_INTEGRITY_MANIFEST_V1'||manifest.algorithm!=='SHA-256'||manifest.unlisted_executable_policy!=='FAIL_CLOSED')throw fail('MANIFEST_CONTRACT_INVALID','Runtime integrity manifest contract is invalid.');if(!Array.isArray(manifest.records)||!manifest.records.length)throw fail('MANIFEST_EMPTY','Runtime integrity manifest has no records.');const roots=Array.isArray(manifest.root_trust_anchors)?manifest.root_trust_anchors:[];if(!roots.some(r=>r&&r.path===ROOT_TRUST_ANCHOR))throw fail('MANIFEST_ROOT_MISMATCH','Runtime integrity manifest root trust anchor is invalid.');return manifest}
+  function indexManifest(manifest){const index={};manifest.records.forEach(record=>{if(!record||typeof record.path!=='string'||!/^[0-9a-f]{64}$/.test(String(record.sha256_hex||'')))throw fail('MANIFEST_RECORD_INVALID','Runtime integrity manifest contains an invalid record.',{record});if(index[record.path])throw fail('MANIFEST_RECORD_DUPLICATE','Runtime integrity manifest contains a duplicate path.',{path:record.path});index[record.path]=record});return index}
+  async function loadManifest(){if(!/^[0-9a-f]{64}$/.test(MANIFEST_SHA256))throw fail('MANIFEST_DIGEST_NOT_SEALED','Bootstrap manifest digest has not been sealed.');const got=await fetchBytes(MANIFEST_PATH),actual=await sha256(got.bytes);if(actual!==MANIFEST_SHA256)throw fail('MANIFEST_DIGEST_MISMATCH','Runtime integrity manifest bytes do not match the bootstrap digest.',{expected:MANIFEST_SHA256,actual});let manifest;try{manifest=JSON.parse(new TextDecoder().decode(got.bytes))}catch(error){throw fail('MANIFEST_JSON_INVALID','Runtime integrity manifest is not valid JSON.',{error:String(error&&error.message||error)})}validateManifest(manifest);return{manifest,index:indexManifest(manifest),actual}}
+  async function verifyPath(path,index){const record=index[path];if(!record)throw fail('UNLISTED_BOOTSTRAP_SOURCE','Bootstrap source is not listed in the integrity manifest.',{path});const got=await fetchBytes(path),actual=await sha256(got.bytes);if(actual!==record.sha256_hex)throw fail('BOOTSTRAP_SOURCE_DIGEST_MISMATCH','Bootstrap source bytes do not match the integrity manifest.',{path,expected:record.sha256_hex,actual});return{path,record,bytes:got.bytes,response:got.response,sha256_hex:actual}}
+  async function loadVerifiedScript(verified){return new Promise((resolve,reject)=>{const text=new TextDecoder().decode(verified.bytes)+'\n//# sourceURL='+verified.path;const blob=new Blob([text],{type:'text/javascript'}),url=URL.createObjectURL(blob),script=document.createElement('script');script.src=url;script.onload=()=>{URL.revokeObjectURL(url);script.remove();resolve()};script.onerror=()=>{URL.revokeObjectURL(url);script.remove();reject(fail('VERIFIED_SCRIPT_EXECUTION_FAILED','Verified resolver script could not execute.',{path:verified.path}))};document.head.appendChild(script)})}
+  async function waitActivated(registration){let worker=registration.installing||registration.waiting||registration.active;if(worker&&worker.state==='activated')return worker;if(!worker)throw fail('INTEGRITY_WORKER_MISSING','Integrity Service Worker registration returned no worker.');return new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(fail('INTEGRITY_WORKER_ACTIVATION_TIMEOUT','Integrity Service Worker activation timed out.')),15000);worker.addEventListener('statechange',()=>{if(worker.state==='activated'){clearTimeout(timer);resolve(worker)}else if(worker.state==='redundant'){clearTimeout(timer);reject(fail('INTEGRITY_WORKER_REDUNDANT','Integrity Service Worker became redundant.'))}})})}
+  async function waitController(){const good=()=>navigator.serviceWorker.controller&&new URL(navigator.serviceWorker.controller.scriptURL).pathname.endsWith('/'+INTEGRITY_SW_PATH);if(good())return navigator.serviceWorker.controller;return new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(fail('INTEGRITY_CONTROLLER_TIMEOUT','Integrity Service Worker did not take control.')),12000);function changed(){if(good()){clearTimeout(timer);navigator.serviceWorker.removeEventListener('controllerchange',changed);resolve(navigator.serviceWorker.controller)}}navigator.serviceWorker.addEventListener('controllerchange',changed);changed()})}
+  async function registerIntegrityWorker(index){if(!('serviceWorker'in navigator))throw fail('SERVICE_WORKER_UNSUPPORTED','This browser does not support Service Workers.');const verified=await verifyPath(INTEGRITY_SW_PATH,index),url=new URL(INTEGRITY_SW_PATH,location.href);url.searchParams.set('manifest_path',MANIFEST_PATH);url.searchParams.set('manifest_sha256',MANIFEST_SHA256);url.searchParams.set('root_anchor',ROOT_TRUST_ANCHOR);url.searchParams.set('expected_sw_sha256',verified.sha256_hex);url.searchParams.set('a003',verified.sha256_hex.slice(0,16));const registration=await navigator.serviceWorker.register(url.pathname+url.search,{scope:'./',updateViaCache:'none'});try{await registration.update()}catch(e){}await waitActivated(registration);let controller;try{controller=await waitController()}catch(error){const key='pmp_a003_controller_reload_once';if(sessionStorage.getItem(key)!=='1'){sessionStorage.setItem(key,'1');receipt('RELOADING_FOR_INTEGRITY_CONTROL',{worker_sha256:verified.sha256_hex});location.reload();await new Promise(()=>{})}throw error}sessionStorage.removeItem('pmp_a003_controller_reload_once');return{registration,controller,verified}}
+  async function workerStatus(){return new Promise((resolve,reject)=>{const controller=navigator.serviceWorker.controller;if(!controller)return reject(fail('INTEGRITY_CONTROLLER_MISSING','Integrity Service Worker controller is missing.'));const timer=setTimeout(()=>reject(fail('INTEGRITY_STATUS_TIMEOUT','Integrity Service Worker status timed out.')),7000),channel=new MessageChannel();channel.port1.onmessage=event=>{clearTimeout(timer);const data=event.data||{},r=data.receipt||{};if(data.type!=='PMP_RUNTIME_INTEGRITY_STATUS_RESPONSE'||r.state!=='ENFORCED'||r.manifest_sha256!==MANIFEST_SHA256)return reject(fail('INTEGRITY_STATUS_INVALID','Integrity Service Worker is not enforcing the sealed manifest.',{status:data}));resolve(r)};controller.postMessage({type:'PMP_RUNTIME_INTEGRITY_STATUS_REQUEST',from:'stable_entry',at:new Date().toISOString()},[channel.port2])})}
+  try{
+    receipt('STARTING');
+    const loadedManifest=await loadManifest();
+    bootBox.textContent='Verifying integrity worker…';
+    const worker=await registerIntegrityWorker(loadedManifest.index);
+    const status=await workerStatus();
+    bootBox.textContent='Verifying route resolver…';
+    const verifiedResolver=await verifyPath(RESOLVER_PATH,loadedManifest.index);
+    const bootstrap=Object.freeze({type:'PMP_RUNTIME_INTEGRITY_BOOTSTRAP_V1',version:ROOT_VERSION,enforced:true,rootTrustAnchor:ROOT_TRUST_ANCHOR,manifestPath:MANIFEST_PATH,manifestSha256:MANIFEST_SHA256,manifest:loadedManifest.manifest,workerStatus:status,record:path=>loadedManifest.index[path]||null,verifyPath:path=>verifyPath(path,loadedManifest.index)});
+    window.PMPRuntimeIntegrityBootstrap=bootstrap;
+    await loadVerifiedScript(verifiedResolver);
+    const resolver=window.PMPCurrentRouteResolver;if(!resolver)throw fail('RESOLVER_UNAVAILABLE','Verified Current Route Resolver did not initialize.');
+    bootBox.textContent='Verifying Current Map…';
+    const loaded=await resolver.load(),handoff=resolver.resolve(loaded.map,'route_guardian'),hash=resolver.normalizeHash(location.hash,loaded.map),launchUrl=resolver.buildUrl(handoff,{fresh:'current-entry-'+handoff.route_epoch+'-'+Date.now(),map_version:handoff.map_version,route_epoch:handoff.route_epoch},hash);
+    const finalReceipt=receipt('PASS',{worker_version:status.version,worker_sha256:worker.verified.sha256_hex,resolver_sha256:verifiedResolver.sha256_hex,map_sha256:loaded.map_sha256,map_path:handoff.map_path,map_version:handoff.map_version,route_epoch:handoff.route_epoch,role:handoff.role,target:handoff.path,target_sha256:handoff.source_sha256,launch_url:launchUrl,rule:'The root trust anchor verified the sealed manifest, integrity worker, resolver, map, and target identity before application routing.'});
+    try{localStorage.setItem('pmp_current_entry_route_handoff_receipt_v1',JSON.stringify(finalReceipt,null,2))}catch(e){}
+    bootBox.classList.add('hidden');frame.src=launchUrl;
+  }catch(error){showDiagnostic(error,'stable_entry_integrity_bootstrap')}
+})();
+</script>
+</body>
+</html>

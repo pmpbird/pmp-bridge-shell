@@ -1,0 +1,105 @@
+{
+  "type": "PMP_A002_P2_EXECUTION_V1",
+  "repair_id": "A-002",
+  "phase": "P2",
+  "status": "PASS",
+  "baseline_commit": "5dd049de1500ea427fa2cf395687239a19706115",
+  "phase_base_commit": "c78a8a7974f4919412a62565a3fce11f68d40d4f",
+  "source_head_commit": "267d02ef531b385746e5e496b39a94c06b057615",
+  "prerequisite": {
+    "phase": "P1",
+    "status": "PASS_AT_SOURCE_AND_SIMULATED_BROWSER_CONTRACT_SCOPE",
+    "gate_path": "audit/a002-p1-gate.json",
+    "tests_passed": 11,
+    "tests_failed": 0
+  },
+  "mutations": [
+    {
+      "path": "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html",
+      "preimage_git_blob_sha": "68292821851d216ed2b2b2a4440eb39b4a7a4ccc",
+      "postimage_git_blob_sha": "520cbea77f80326758f9514aa036974e531c2dad",
+      "job": "Resolve inner-v30 and live-update marker roles through Current Map; reject destination-bearing markers; fail closed instead of hard-coded fallback."
+    },
+    {
+      "path": "pmp-reload-current-live-update-marker-v1.json",
+      "preimage_git_blob_sha": "0beb4569ae7b2db6fb6914b62810d27c1b90f0dd",
+      "postimage_git_blob_sha": "3dcfb62b7240ff69f2db54af37755869f2ebd795",
+      "job": "Reduce marker authority to revision and cache-bust data only; remove target selection."
+    },
+    {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+      "preimage_git_blob_sha": "f73761dfc870f96b58abb7313447a68ce1bc8cf3",
+      "postimage_git_blob_sha": "b5a9bdb75dd765fc6844e26b4fdd7342a106b2a2",
+      "job": "Derive startup-chain proof and inner-v23 destination from Current Map while preserving launch-gate and App Orchestrator augmentation behavior."
+    },
+    {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+      "preimage_git_blob_sha": "b3aa0f35534fec19172b12502272e35cd6859c86",
+      "postimage_git_blob_sha": "ac5ca32dca84771a1361b9392a77ef6bbae1fd52",
+      "job": "Resolve inner-v4 through Current Map while preserving existing reload-snapshot and screen-hash logic."
+    },
+    {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+      "preimage_git_blob_sha": "40bfb0ea5b57f07ede8a857a299b974754a68778",
+      "postimage_git_blob_sha": "b472097aaa98a12c8efa3a4b39980ef75a23c949",
+      "job": "Resolve inner-v3 through Current Map while preserving request-packet guard injection and screen restoration."
+    },
+    {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "preimage_git_blob_sha": "db6f2165099f99f78c06473a494999b01e68478d",
+      "postimage_git_blob_sha": "06e172bc25928c1a558f6074c35939079ed3ff31",
+      "job": "Resolve Home, Bug Memory, Route Guardian Action, and Resident through Current Map while retaining Bank, bridge, vault, and interface logic."
+    },
+    {
+      "path": "pmp-home-single-v6.html",
+      "preimage_git_blob_sha": "7da7288fefead6124f57eb2e56a95b7b4e2acfc6",
+      "postimage_git_blob_sha": "555ba25bf74e8e5b8ea715989ce135943f463f92",
+      "job": "Derive historical Home payload commit and repository path from Current Map; retain document replacement behavior and A-003 boundary."
+    }
+  ],
+  "phase_diff": {
+    "commit_count": 9,
+    "changed_file_count": 7,
+    "unexpected_files": [],
+    "files": [
+      "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html",
+      "pmp-reload-current-live-update-marker-v1.json",
+      "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "pmp-home-single-v6.html"
+    ]
+  },
+  "gate": {
+    "path": "audit/a002-p2-gate.json",
+    "git_blob_sha": "b2301d1976f430350f6ef657f3dc89a36c184940",
+    "status": "PASS_AT_SOURCE_AND_SIMULATED_ROUTE_CONTRACT_SCOPE",
+    "tests_passed": 16,
+    "tests_failed": 0,
+    "live_mobile_browser_exercised": false,
+    "local_checkout_exercised": false
+  },
+  "effects": {
+    "runtime_chain_files_changed": 7,
+    "storage_schema_changes": 0,
+    "storage_clear_operations": 0,
+    "indexeddb_changes": 0,
+    "bank_rebuilds": 0,
+    "user_content_changes": 0,
+    "cache_clear_operations": 0,
+    "historic_file_deletions": 0,
+    "visual_redesign": false
+  },
+  "corrections_during_phase": [
+    "Removed a malformed no-op expression from the initial Home payload validator before gate issuance.",
+    "Changed inner-v30 API publication to merge with the external App Orchestrator object and preserve augmentation timing."
+  ],
+  "rollback_group": "RG-P2",
+  "rollback_ready": true,
+  "rollback_required": false,
+  "p3_eligible": true,
+  "p3_executed": false,
+  "merge_authorized": false,
+  "decision": "PASS_P2_CURRENT_CHAIN_MAP_DELEGATION_STOP_BEFORE_P3"
+}

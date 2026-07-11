@@ -5,6 +5,7 @@ from pathlib import Path
 
 R = Path(__file__).resolve().parents[1]
 
+
 def load(p): return json.loads((R / p).read_text(encoding='utf-8'))
 def read(p): return (R / p).read_text(encoding='utf-8')
 def need(c, m):
@@ -20,6 +21,9 @@ plan = load('automation/plans/packet-01-5.v1.json')
 state = load('automation/state/active-plan.json')
 usage = load('automation/state/usage-ledger.json')
 room = read('pmp-automated-plan-room-v1.js')
+native_match = read('pmp-automated-plan-native-match-v1.js')
+legacy_wrapper = read('pmp-current-inner-cleanbug-rgcontrols-v6.html')
+current_map = load('pmp-current-map-v12.json')
 workflow = read('.github/workflows/automated_plan_foundation.yml')
 
 backends = {'github_models_free', 'local_ollama'}
@@ -80,7 +84,7 @@ all_false(policy['execution_defaults'], ['execution_enabled','autonomous_trigger
 
 fields(plan, contract['schema_registry']['plan']['required_fields'], 'plan')
 need(plan['plan_id'] == 'packet_01_5' and plan['plan_version'] == '1.0.0', 'plan identity/version changed')
-need(plan['user_facing_main_entry'] == 'Automated Plan', 'wrong main label')
+need(plan['user_facing_main_entry'] == 'Automated Plan', 'historical plan entry identity changed')
 need(plan['plan_status'] == 'registered_not_compiled' and plan['execution_enabled'] is False, 'plan falsely executable')
 need(plan['continuity']['last_completed_boundary'] == 'pass_002', 'Pass 002 checkpoint lost')
 need(plan['continuity']['next_declared_boundary'] == 'pass_003', 'Pass 003 next boundary lost')
@@ -115,11 +119,16 @@ need(usage['estimate']['sample_count'] == 0, 'invented sample count')
 need(usage['estimate']['estimated_remaining_passes_today'] is None, 'invented pass estimate')
 need(usage['estimate']['claim'] == 'not_enough_data', 'usage claim not truthful')
 
-need("const MAIN_LABEL='Automated Plan'" in room, 'generic room label missing')
-need('pmpAutomatedPlanEntryV1' in room and 'pmpAutomatedPlanOverlayV1' in room, 'room or entry missing')
-need('var(--floor' in room and 'var(--line' in room, 'theme variables not inherited')
-need('Packet 01.5' not in room and 'packet_01_5' not in room, 'packet identity leaked to interface source')
-need(policy['interface']['control_room_entry_count'] == 1, 'more than one entry allowed')
+# The old UI assertion is formally retired; verify the superseding owner and authority boundary instead.
+need('Continuous Run Dashboard' in room, 'superseding Continuous Run Dashboard label missing')
+need('pmpAutomatedPlanEntryV1' in room, 'shared historical entry anchor missing')
+need('Continuous Run Dashboard' in native_match, 'native matcher not aligned to superseding owner')
+need('Packet 01.5' not in room and 'packet_01_5' not in room, 'packet identity leaked to superseding interface source')
+need('pmp-automated-plan-room-v1.js' in legacy_wrapper, 'legacy v6 wrapper no longer preserves historical loader')
+need(current_map['app_version'] == 'PMP-CURRENT-1-A003', 'current map is not A-003')
+need(current_map['route_contract']['runtime_integrity_required'] is True, 'current runtime integrity is not required')
+need(current_map['current_app']['path'] != 'pmp-current-inner-cleanbug-rgcontrols-v6.html', 'retired wrapper still owns current app authority')
+need(policy['interface']['control_room_entry_count'] == 1, 'historical foundation allowed more than one entry')
 all_false(policy['interface'], ['separate_color_palette_allowed','separate_contrast_system_allowed'], 'interface')
 
 compact = workflow.replace(' ', '').lower()
@@ -133,4 +142,24 @@ for token in ['OPENAI_API_KEY','api.openai.com','"paid_api_allowed": true','"pai
     need(token not in combined, f'prohibited token found: {token}')
 
 all_false(contract['foundation_boundary'], ['execution_enabled','autonomous_trigger_enabled','merge_authority_granted','pass_003_started'], 'foundation_boundary')
-print(json.dumps({'type':'PMP_AUTOMATED_PLAN_UNIVERSAL_CONTRACT_VERIFICATION','result':'PASS','active_plan_id':state['active_plan_id'],'last_completed_boundary':'pass_002','next_unit':'pass_003','resume_strategy':'exact_checkpoint','backends':sorted(backends),'backend_redesign_required':False,'usage_measurement_status':'not_started','usage_estimate':None,'spending_ceiling_usd':0,'model_authority':'proposal_only','execution_enabled':False,'pass_003_started':False}, indent=2))
+print(json.dumps({
+    'type':'PMP_AUTOMATED_PLAN_UNIVERSAL_CONTRACT_RETIREMENT_VERIFICATION_V1',
+    'result':'PASS',
+    'historical_contract_preserved':True,
+    'superseding_ui_owner':'Continuous Run Dashboard',
+    'legacy_v6_current_authority':False,
+    'current_app':current_map['current_app']['path'],
+    'runtime_integrity_required':True,
+    'active_plan_id':state['active_plan_id'],
+    'last_completed_boundary':'pass_002',
+    'next_unit':'pass_003',
+    'resume_strategy':'exact_checkpoint',
+    'backends':sorted(backends),
+    'backend_redesign_required':False,
+    'usage_measurement_status':'not_started',
+    'usage_estimate':None,
+    'spending_ceiling_usd':0,
+    'model_authority':'proposal_only',
+    'execution_enabled':False,
+    'pass_003_started':False
+}, indent=2))

@@ -1,0 +1,82 @@
+{
+  "type": "PMP_A002_P1_EXECUTION_V1",
+  "repair_id": "A-002",
+  "phase": "P1",
+  "status": "PASS",
+  "baseline_commit": "5dd049de1500ea427fa2cf395687239a19706115",
+  "phase_base_commit": "6944364b49d52836ab30cfd5b08e0905cd1b348d",
+  "source_head_commit": "b9ae9d4145c85a3e92e727c5443d3b01e1641c1f",
+  "prerequisite": {
+    "phase": "P0",
+    "status": "PASS",
+    "receipt_id": "PMP-A001-5dd049de-SUPPLEMENT-A002-PASS-004",
+    "unresolved_identities": 0
+  },
+  "mutations": [
+    {
+      "path": "pmp-current-route-resolver-v1.js",
+      "action": "ADD",
+      "preimage_git_blob_sha": null,
+      "postimage_git_blob_sha": "0c9bafee16fbdfef04356eddced7def3386365e1",
+      "job": "Mechanism-only Current Map validator and route-handoff issuer; no alternate destination constants."
+    },
+    {
+      "path": "pmp-current-map-v12.json",
+      "action": "MODIFY",
+      "preimage_git_blob_sha": "cfbbba5bd0d15da03b6b31258a1f5ca13bd5ab0d",
+      "postimage_git_blob_sha": "8003daa8fbf74f5d222b536e58db7701a9fae025",
+      "job": "Declare the sole-authority route contract, full destination registry, fail-closed policy, allowed hashes, and A-003 boundary."
+    },
+    {
+      "path": "pmp-app-current.html",
+      "action": "MODIFY",
+      "preimage_git_blob_sha": "2d6400099da8906954ca9ffd01bc3c8b5f09c05d",
+      "postimage_git_blob_sha": "777538c0d40277431f1515331932acb6bc721428",
+      "job": "Consume the map-issued route_guardian handoff and render a fail-closed diagnostic when the resolver or map is unavailable."
+    },
+    {
+      "path": "pmp-route-guardian-current-loader-v22.html",
+      "action": "MODIFY",
+      "preimage_git_blob_sha": "c7f10d77a345544d4eb8c0bee8d34017fe876153",
+      "postimage_git_blob_sha": "4976246e37d8256a18aac2976ab24d6f25bb6956",
+      "job": "Consume only the map-issued current_app handoff; remove v11/v10 and hard-coded Reload Owner fallback selection."
+    }
+  ],
+  "phase_diff": {
+    "commit_count": 4,
+    "changed_file_count": 4,
+    "unexpected_files": [],
+    "files": [
+      "pmp-current-route-resolver-v1.js",
+      "pmp-current-map-v12.json",
+      "pmp-app-current.html",
+      "pmp-route-guardian-current-loader-v22.html"
+    ]
+  },
+  "gate": {
+    "path": "audit/a002-p1-gate.json",
+    "git_blob_sha": "0a6fc71c6f88176cc2e14115863c70de22a46c0d",
+    "status": "PASS_AT_SOURCE_AND_SIMULATED_BROWSER_CONTRACT_SCOPE",
+    "tests_passed": 11,
+    "tests_failed": 0,
+    "live_mobile_browser_exercised": false
+  },
+  "effects": {
+    "runtime_route_mechanism_files_changed": 4,
+    "storage_schema_changes": 0,
+    "storage_clear_operations": 0,
+    "indexeddb_changes": 0,
+    "bank_changes": 0,
+    "user_content_changes": 0,
+    "cache_clear_operations": 0,
+    "visual_feature_redesign": false,
+    "historic_files_deleted": 0
+  },
+  "rollback_group": "RG-P1",
+  "rollback_ready": true,
+  "rollback_required": false,
+  "p2_eligible": true,
+  "p2_executed": false,
+  "merge_authorized": false,
+  "decision": "PASS_P1_CURRENT_MAP_CONTRACT_AND_RESOLVER_STOP_BEFORE_P2"
+}

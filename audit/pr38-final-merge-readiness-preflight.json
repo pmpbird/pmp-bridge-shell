@@ -1,0 +1,146 @@
+{
+  "type": "PMP_PR38_FINAL_MERGE_READINESS_PREFLIGHT_V1",
+  "pr_number": 38,
+  "repository": "pmpbird/pmp-bridge-shell",
+  "status": "BLOCKED_NOT_MERGE_READY",
+  "observed_at": "2026-07-11T10:00:00-07:00",
+  "observed_pr_head": "b3931bfc957b78ad62b5017261898665bdabced3",
+  "base_branch": "main",
+  "base_sha": "5dd049de1500ea427fa2cf395687239a19706115",
+  "tested_a003_head": "f2ed35ff4a9c7b764e6bf60d5a15be04e4c974dd",
+  "pr_state": {
+    "open": true,
+    "draft": true,
+    "merged": false,
+    "mergeable": true,
+    "requested_reviewers": 0,
+    "requested_team_reviewers": 0,
+    "conversation_comments": 0
+  },
+  "passed_checks": [
+    {
+      "id": "PF-01",
+      "name": "Main baseline unchanged",
+      "result": "PASS",
+      "evidence": "main is identical to 5dd049de1500ea427fa2cf395687239a19706115"
+    },
+    {
+      "id": "PF-02",
+      "name": "Post-certification commit scope",
+      "result": "PASS",
+      "evidence": {
+        "commits_after_tested_head": 15,
+        "changed_files": 15,
+        "all_paths_under_audit": true,
+        "runtime_or_workflow_changes_after_tested_head": 0
+      }
+    },
+    {
+      "id": "PF-03",
+      "name": "A-003 deterministic seal unchanged",
+      "result": "PASS",
+      "evidence": {
+        "manifest_sha256": "570c6db93da497758c6b18f53fa1e3c2b08cb1fdff761c9e54d97b87914e54d0",
+        "runtime_source_set_sha256": "2efc5aa5f3ece5b1da94e162baf7f981a636ef5f23d9c6b3f2d8a348688172e2",
+        "manifest_version": "20260711A-A003-FINAL"
+      }
+    },
+    {
+      "id": "PF-04",
+      "name": "Authoritative A-003 checks on current PR head",
+      "result": "PASS",
+      "evidence": {
+        "workflow_run_id": 29160580309,
+        "repository_gate_job_id": 86564860094,
+        "repository_gate": "success",
+        "adversarial_live_gate_job_id": 86564860103,
+        "adversarial_live_gate": "success"
+      }
+    },
+    {
+      "id": "PF-05",
+      "name": "Integrity probe on current PR head",
+      "result": "PASS",
+      "evidence": {
+        "workflow_run_id": 29160580243,
+        "conclusion": "success"
+      }
+    },
+    {
+      "id": "PF-06",
+      "name": "Reviews and merge conflicts",
+      "result": "PASS",
+      "evidence": {
+        "mergeable": true,
+        "conversation_comments": 0,
+        "requested_reviewers": 0,
+        "requested_team_reviewers": 0
+      }
+    },
+    {
+      "id": "PF-07",
+      "name": "Rollback point",
+      "result": "PASS",
+      "evidence": {
+        "branch": "rollback/pr38-main-before-merge-20260711",
+        "commit": "5dd049de1500ea427fa2cf395687239a19706115"
+      }
+    }
+  ],
+  "blocking_checks": [
+    {
+      "id": "PF-B01",
+      "name": "Legacy A-002 Live Runtime Matrix is red",
+      "result": "BLOCK",
+      "workflow_run_id": 29160580295,
+      "job_id": 86564860024,
+      "artifact_id": 8250695325,
+      "artifact_digest": "sha256:0b992292147766d5428a877a119281c7cb0b63895274887011a80e108d21d83e",
+      "diagnosis": "The superseded A-002 harness expects the A-002 Current Map identity and fails immediately when it sees the intentional A-003 values app_version PMP-CURRENT-1-A003 and route_epoch A003-20260711A.",
+      "required_resolution": "Update the legacy matrix to recognize the certified A-003 contract or retire it from merge-triggering checks, then rerun it successfully."
+    },
+    {
+      "id": "PF-B02",
+      "name": "Automated Plan Foundation is red",
+      "result": "BLOCK",
+      "workflow_run_id": 29160580236,
+      "jobs": [
+        {
+          "job_id": 86564861708,
+          "name": "verify-foundation",
+          "conclusion": "failure",
+          "diagnosis": "The first foundation verification step failed; later foundation checks were skipped. Exact reconciliation remains open."
+        },
+        {
+          "job_id": 86564861723,
+          "name": "real-app-visual",
+          "conclusion": "failure",
+          "artifact_id": 8250697702,
+          "artifact_digest": "sha256:c0f5f8acc1cb3e4545f0117a6b0c6358c92b5c9ff47d11768abf1509c0c36129",
+          "diagnosis": "The legacy visual test asserts that the former Control Room frame exists and fails with: real app Control Room frame was not found."
+        }
+      ],
+      "required_resolution": "Reconcile the Automated Plan foundation and visual suite with the A-003 bootstrap/frame architecture, or formally remove obsolete assertions from merge-triggering checks, then rerun successfully."
+    }
+  ],
+  "merge_plan_if_blockers_are_closed": {
+    "pre_merge_freeze": "Freeze the then-current PR head and rerun this preflight.",
+    "merge_method": "Use a normal merge commit so the complete certified branch history and a single rollback boundary remain visible.",
+    "rollback": "Move main back to rollback/pr38-main-before-merge-20260711 only if the immediate post-merge verification fails; preserve the failed merge commit and evidence.",
+    "post_merge_verification": [
+      "Verify main contains the exact sealed manifest and deterministic runtime-source-set identities.",
+      "Run the 21-check repository gate and 47-check adversarial Chromium gate on main.",
+      "Cold-start all six screens and verify exact final hashes.",
+      "Verify Safe Writer, Code Safety, recovery review, fourteen historic forwarders, offline exact-hash cache, and tamper blocking.",
+      "Issue a post-merge receipt only after every check passes."
+    ]
+  },
+  "actions_not_taken": [
+    "PR was not marked ready for review.",
+    "PR was not merged.",
+    "Auto-merge was not enabled.",
+    "No runtime or manifest source was changed by this preflight."
+  ],
+  "next_boundary": "STOP_BEFORE_MERGE_AND_RECONCILE_RED_LEGACY_CHECKS",
+  "decision": "BLOCK_MERGE_UNTIL_ALL_MERGE_TRIGGERING_CHECKS_ARE_GREEN_OR_FORMALLY_RETIRED"
+}

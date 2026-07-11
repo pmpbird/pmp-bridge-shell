@@ -1,0 +1,541 @@
+{
+  "type": "PMP_A002_ROUTE_AUTHORITY_INVENTORY_V1",
+  "repair_id": "A-002",
+  "baseline": {
+    "branch": "main",
+    "commit": "5dd049de1500ea427fa2cf395687239a19706115"
+  },
+  "scope": "Top-level application routing and route-influencing objects reachable from the current chain or named recursively by current, fallback, reload, recovery, tool-return, service-worker, or historic route artifacts.",
+  "method": [
+    "Start at pmp-app-current.html and pmp-current-map-v12.json",
+    "Follow map, iframe, frame.src, location.href, location.replace, document.write, reload interception, fallback, recovery, and tool-return targets",
+    "Classify every reached object as authority, influence-only, observation-only, disabled, non-app-router, or broken absent claim",
+    "Stop recursion when the target was already classified or contained no application-route capability"
+  ],
+  "counts": {
+    "total_objects": 65,
+    "declared_current_chain": 11,
+    "active_competing_mutators": 5,
+    "conditional_recovery_and_tool_claims": 15,
+    "historic_or_fallback_claims": 19,
+    "influence_observer_disabled_or_non_authority": 13,
+    "broken_absent_claims": 2,
+    "unclassified": 0
+  },
+  "finding": "Current Map v12 is not the sole route authority. Multiple files independently choose paths, older maps, older Route Guardians, older Reload Owners, fixed inner wrappers, saved routes, recovery routes, tool-return routes, and cache-served bytes.",
+  "declared_current_chain": [
+    {
+      "path": "pmp-app-current.html",
+      "blob_sha": "2d6400099da8906954ca9ffd01bc3c8b5f09c05d",
+      "kind": "stable_entry",
+      "claim": "Hard-loads Route Guardian v22 rather than reading Current Map.",
+      "targets": ["pmp-route-guardian-current-loader-v22.html"],
+      "authority_status": "CURRENT_ENTRY_EXECUTOR",
+      "conflict": "The stable door embeds the guardian filename and therefore participates in route selection."
+    },
+    {
+      "path": "pmp-current-map-v12.json",
+      "blob_sha": "cfbbba5bd0d15da03b6b31258a1f5ca13bd5ab0d",
+      "kind": "route_map",
+      "claim": "Declares current Route Guardian, current Reload Owner, and fallback app.",
+      "targets": ["pmp-route-guardian-current-loader-v22.html", "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html", "pmp-current-inner-cleanbug-rgcontrols-v23.html"],
+      "authority_status": "DECLARED_CANONICAL_DATA",
+      "a002_target_state": "SOLE_PATH_SOURCE"
+    },
+    {
+      "path": "pmp-route-guardian-current-loader-v22.html",
+      "blob_sha": "c7f10d77a345544d4eb8c0bee8d34017fe876153",
+      "kind": "route_guardian",
+      "claim": "Reads v12, then v11, then v10; if all fail, hard-falls back to v29 permanent gate; sanitizes and launches target with top-window navigation.",
+      "targets": ["pmp-current-map-v12.json", "pmp-current-map-v11.json", "pmp-current-map-v10.json", "pmp-current-reload-owner-v29-permanent-update-gate-20260706f.html"],
+      "authority_status": "CURRENT_EXECUTOR_WITH_COMPETING_FALLBACKS",
+      "severity": "HARD_BLOCKER"
+    },
+    {
+      "path": "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html",
+      "blob_sha": "68292821851d216ed2b2b2a4440eb39b4a7a4ccc",
+      "kind": "reload_owner",
+      "claim": "Hard-codes inner v30 and polls the live-update marker; marker failure still loads the same hard-coded inner.",
+      "targets": ["pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html", "pmp-reload-current-live-update-marker-v1.json"],
+      "authority_status": "CURRENT_FIXED_TARGET_LOADER",
+      "severity": "HARD_BLOCKER"
+    },
+    {
+      "path": "pmp-reload-current-live-update-marker-v1.json",
+      "blob_sha": "0beb4569ae7b2db6fb6914b62810d27c1b90f0dd",
+      "kind": "live_update_marker",
+      "claim": "Declares an inner target and revision, but current Reload Owner reads only revision and ignores marker.target.",
+      "targets": ["pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html"],
+      "authority_status": "ROUTE_DATA_CLAIM_NOT_ENFORCED",
+      "severity": "MEDIUM"
+    },
+    {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+      "blob_sha": "f73761dfc870f96b58abb7313447a68ce1bc8cf3",
+      "kind": "inner_wrapper",
+      "claim": "Publishes a fixed current-chain declaration and hard-loads inner v23 after the launch gate.",
+      "targets": ["pmp-current-inner-cleanbug-rgcontrols-v23.html"],
+      "authority_status": "CURRENT_FIXED_TARGET_LOADER",
+      "severity": "HARD_BLOCKER"
+    },
+    {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+      "blob_sha": "b3aa0f35534fec19172b12502272e35cd6859c86",
+      "kind": "inner_wrapper",
+      "claim": "Is both map fallback and normal v30 destination; independently chooses hash and hard-loads inner v4.",
+      "targets": ["pmp-current-inner-cleanbug-rgcontrols-v4.html"],
+      "authority_status": "CURRENT_FIXED_TARGET_LOADER",
+      "severity": "HARD_BLOCKER"
+    },
+    {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+      "blob_sha": "40bfb0ea5b57f07ede8a857a299b974754a68778",
+      "kind": "inner_wrapper",
+      "claim": "Chooses restored hash, injects request guard, and hard-loads inner v3.",
+      "targets": ["pmp-current-inner-cleanbug-rgcontrols-v3.html"],
+      "authority_status": "CURRENT_FIXED_TARGET_LOADER",
+      "severity": "HARD_BLOCKER"
+    },
+    {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "blob_sha": "db6f2165099f99f78c06473a494999b01e68478d",
+      "kind": "inner_wrapper_and_tool_router",
+      "claim": "Hard-loads Home v6 and routes Bug Memory, Automatic App Update, Code Safety, and Resident to separate pages or overlays.",
+      "targets": ["pmp-home-single-v6.html", "bug-memory-current-clean-v1.html", "pmp-route-guardian-action-v2.html", "resident.html"],
+      "authority_status": "CURRENT_FIXED_TARGET_AND_TOOL_ROUTER",
+      "severity": "HARD_BLOCKER"
+    },
+    {
+      "path": "pmp-home-single-v6.html",
+      "blob_sha": "7da7288fefead6124f57eb2e56a95b7b4e2acfc6",
+      "kind": "document_restore_shim",
+      "claim": "Fetches historical Home bytes and replaces the current document with document.open/write/close.",
+      "targets": ["pmp-home-single-v6.html@7ac7213aeeeb8bb55692a4985e0fa80a547cff4e"],
+      "authority_status": "CURRENT_DOCUMENT_REPLACEMENT_AUTHORITY",
+      "severity": "HARD_BLOCKER"
+    },
+    {
+      "path": "pmp-home-single-v6.html@7ac7213aeeeb8bb55692a4985e0fa80a547cff4e",
+      "blob_sha": "8f04c9636cb3fac128db54fc5b058020cd23cffc",
+      "kind": "historical_runtime_payload",
+      "claim": "Becomes the live Home document when the restore shim succeeds.",
+      "targets": [],
+      "authority_status": "CURRENT_REMOTE_RUNTIME_PAYLOAD",
+      "severity": "HARD_BLOCKER"
+    }
+  ],
+  "active_competing_mutators": [
+    {
+      "path": "pmp-current-screen-pointer-v1.js",
+      "blob_sha": "74efdbf6053b5e331110eb1e47dd0abefc12e8b4",
+      "claim": "Loaded by current Reload Owner; reload reads Current Map v9 and falls back to Reload Owner v27, then calls location.replace.",
+      "targets": ["pmp-current-map-v9.json", "pmp-current-reload-owner-v27.html"],
+      "authority_status": "ACTIVE_COMPETING_ROUTE_AUTHORITY",
+      "severity": "CRITICAL"
+    },
+    {
+      "path": "pmp-reload-world-from-map-v1.js",
+      "blob_sha": "75de1a4cf0f3c60829f1cf1205876b01d49b0bee",
+      "claim": "Loaded by current Reload Owner; intercepts Reload Current and always navigates to Route Guardian v21 without reading Current Map.",
+      "targets": ["pmp-route-guardian-current-loader-v21.html"],
+      "authority_status": "ACTIVE_COMPETING_ROUTE_AUTHORITY",
+      "severity": "CRITICAL"
+    },
+    {
+      "path": "pmp-launcher-reload-current-bridge-v1.js",
+      "blob_sha": "b63e149847a9d6c08b5eab1ec58c6fec0c744263",
+      "claim": "Loaded by current inner v4; intercepts legacy reload controls and navigates to Route Guardian v20.",
+      "targets": ["pmp-route-guardian-current-loader-v20.html"],
+      "authority_status": "ACTIVE_COMPETING_ROUTE_AUTHORITY",
+      "severity": "CRITICAL"
+    },
+    {
+      "path": "pmp-route-guardian-last-good-clean-v1.js",
+      "blob_sha": "eb4aee6163ae168361f404dc37c2ec7adb78b3d6",
+      "claim": "Loaded by current inner v23; owns saved-route and move-ledger navigation, hard-codes inner v16 as current-before-last-good, and can open any validated local HTML route.",
+      "targets": ["pmp-current-inner-cleanbug-rgcontrols-v16.html", "pmp-route-guardian-recovery-tools-v8.html", "saved local HTML routes"],
+      "authority_status": "ACTIVE_RECOVERY_ROUTE_AUTHORITY",
+      "severity": "CRITICAL"
+    },
+    {
+      "path": "pmp-safe-writer-current-return-fix-v1.js",
+      "blob_sha": "5919199340d1dca357c7fd882bb7b3b029c16e5c",
+      "claim": "Loaded by current inner v30; intercepts Open Safe Writer and navigates top-level to Safe Writer v14 with a stale return=current-v27 contract.",
+      "targets": ["safe-writer-v14.html", "pmp-current-reload-owner-v27.html"],
+      "authority_status": "ACTIVE_TOOL_ROUTE_AUTHORITY",
+      "severity": "HIGH"
+    }
+  ],
+  "conditional_recovery_and_tool_claims": [
+    {
+      "path": "pmp-route-guardian-action-v2.html",
+      "blob_sha": "f4064748ee546b825c5314dc0dc371f994493b47",
+      "claim": "Reachable from current inner v3; can navigate to inner v2, Code Safety v13, or pmp-app-current.html.",
+      "targets": ["pmp-current-inner-cleanbug-rgcontrols-v2.html", "code-safety-v13.html", "pmp-app-current.html"],
+      "authority_status": "CONDITIONAL_TOOL_ROUTE_AUTHORITY"
+    },
+    {
+      "path": "pmp-route-guardian-v1.js",
+      "blob_sha": "054ff20dc4a09dc013bc8533c13f8ac20a31c4e6",
+      "claim": "Support-test guardian declares unversioned Current Map and inner v3 as expected truth, independent of Current Map v12.",
+      "targets": ["pmp-current-map.json", "pmp-current-inner-cleanbug-rgcontrols-v3.html"],
+      "authority_status": "CONDITIONAL_STALE_TRUTH_CLAIM"
+    },
+    {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v2.html",
+      "blob_sha": "749189da1047aeb7805534beb31cc0643cfe14c1",
+      "claim": "Manual Route Guardian action target; hard-loads Home v6 and routes Bug Memory and tool actions.",
+      "targets": ["pmp-home-single-v6.html", "bug-memory-current-clean-v1.html", "pmp-route-guardian-action-v2.html"],
+      "authority_status": "CONDITIONAL_FIXED_TARGET_LOADER"
+    },
+    {
+      "path": "safe-writer-v14.html",
+      "blob_sha": "f7d71894e9a8f2caf6fe11e77468537f0317da0c",
+      "claim": "Hard-codes its Back to Control route to Reload Owner v27.",
+      "targets": ["pmp-current-reload-owner-v27.html"],
+      "authority_status": "CONDITIONAL_STALE_RETURN_AUTHORITY"
+    },
+    {
+      "path": "code-safety-v13.html",
+      "blob_sha": "0347ff32b2ea149806ec74ee418ed0f8e827a772",
+      "claim": "Hard-codes Back to Control to missing pmp-clean-v13.html.",
+      "targets": ["pmp-clean-v13.html"],
+      "authority_status": "CONDITIONAL_BROKEN_RETURN_AUTHORITY"
+    },
+    {
+      "path": "pmp-safe-writer-canonical-route-v1.js",
+      "blob_sha": "64945b576e7a363d1b7bf7569eb7e9d68550ce3a",
+      "claim": "Loaded by inner v9/v13/v16; owns in-shell Safe Writer screen and routes to Code Safety v13.",
+      "targets": ["code-safety-v13.html", "#safe-writer", "#control"],
+      "authority_status": "CONDITIONAL_TOOL_ROUTE_AUTHORITY"
+    },
+    {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v16.html",
+      "blob_sha": "b2e2cfe58dc6b5fb5b9a23640dbb22a944f97ab3",
+      "claim": "Hard-coded Last Good current-before target; loads inner v4.",
+      "targets": ["pmp-current-inner-cleanbug-rgcontrols-v4.html"],
+      "authority_status": "CONDITIONAL_LAST_GOOD_LOADER"
+    },
+    {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v9.html",
+      "blob_sha": "ebe842dac1a42739c4eb76cd7158a4af4684f970",
+      "claim": "Last Good v18 current-before target; writes itself as current target and loads inner v4.",
+      "targets": ["pmp-current-inner-cleanbug-rgcontrols-v4.html"],
+      "authority_status": "CONDITIONAL_RECOVERY_LOADER"
+    },
+    {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v13.html",
+      "blob_sha": "865d83836681e5e79ae897305ed8c21d4dc19729",
+      "claim": "Route Guardian v14 hard fallback; loads inner v4.",
+      "targets": ["pmp-current-inner-cleanbug-rgcontrols-v4.html"],
+      "authority_status": "CONDITIONAL_FALLBACK_LOADER"
+    },
+    {
+      "path": "pmp-route-guardian-last-good-v3-button-v1.js",
+      "blob_sha": "43746ee336c8093080fc72608edf95d11b7a7e64",
+      "claim": "Loaded by inner v9; intercepts Last Good and navigates to Last Good v1 while writing v9 as current target.",
+      "targets": ["pmp-route-guardian-last-good-v1.html", "pmp-current-inner-cleanbug-rgcontrols-v9.html"],
+      "authority_status": "CONDITIONAL_RECOVERY_ROUTE_AUTHORITY"
+    },
+    {
+      "path": "pmp-route-guardian-last-good-v1.html",
+      "blob_sha": "f13a333c207bf31d1aab1bc5991fc07212f75f13",
+      "claim": "Meta-refresh forwarder to Last Good v18.",
+      "targets": ["pmp-route-guardian-last-good-v18.html"],
+      "authority_status": "CONDITIONAL_FORWARDER"
+    },
+    {
+      "path": "pmp-route-guardian-last-good-v18.html",
+      "blob_sha": "2cccc42414d8523086fe909451595523ab25ed47",
+      "claim": "Writes inner v9 as current-before-last-good and opens Recovery Tools v8.",
+      "targets": ["pmp-current-inner-cleanbug-rgcontrols-v9.html", "pmp-route-guardian-recovery-tools-v8.html"],
+      "authority_status": "CONDITIONAL_RECOVERY_AUTHORITY"
+    },
+    {
+      "path": "pmp-route-guardian-recovery-tools-v8.html",
+      "blob_sha": "127f249f9856a4ea9dda55643930438d93b329df",
+      "claim": "Selects routes from saved spots and move ledger, defaults back to Last Good v18, and can mark viewed routes as make-current requests.",
+      "targets": ["pmp-route-guardian-last-good-v18.html", "pmp-move-ledger-candidate-follow-v1.html", "saved and ledger routes"],
+      "authority_status": "CONDITIONAL_DYNAMIC_RECOVERY_AUTHORITY"
+    },
+    {
+      "path": "pmp-move-ledger-candidate-follow-v1.html",
+      "blob_sha": "2dfedf3030426a44611e13cb6958323a84571f3f",
+      "claim": "Loads arbitrary candidate route in an iframe, defaults previous route to Route Guardian v14, and writes make-current request pointers.",
+      "targets": ["candidate query route", "pmp-route-guardian-current-loader-v14.html"],
+      "authority_status": "CONDITIONAL_DYNAMIC_CANDIDATE_AUTHORITY"
+    },
+    {
+      "path": "pmp-route-guardian-current-loader-v14.html",
+      "blob_sha": "9a69eee8eb3641b13a809bb7c6b0f55a390aca1d",
+      "claim": "Reads Current Map v9 and hard-falls back to inner v13.",
+      "targets": ["pmp-current-map-v9.json", "pmp-current-inner-cleanbug-rgcontrols-v13.html"],
+      "authority_status": "CONDITIONAL_HISTORIC_ROUTE_GUARDIAN"
+    }
+  ],
+  "historic_or_fallback_claims": [
+    {
+      "path": "pmp-current-map-v11.json",
+      "blob_sha": "baf45d063df63812d8340134129b7fcc56f7dae0",
+      "claim": "Still labeled current; selects Route Guardian v21 and Reload Owner v29 cache-lift.",
+      "targets": ["pmp-route-guardian-current-loader-v21.html", "pmp-current-reload-owner-v29-cachelift-20260706b.html"],
+      "authority_status": "HISTORIC_MAP_STILL_CONSUMED"
+    },
+    {
+      "path": "pmp-current-map-v10.json",
+      "blob_sha": "724e2f8bbd0386364aed24dfc42bc45ec660282f",
+      "claim": "Still labeled current; selects Route Guardian v21 and Reload Owner v29.",
+      "targets": ["pmp-route-guardian-current-loader-v21.html", "pmp-current-reload-owner-v29.html"],
+      "authority_status": "HISTORIC_MAP_STILL_CONSUMED"
+    },
+    {
+      "path": "pmp-current-map-v9.json",
+      "blob_sha": "0ca16519a6ea4d05348ee9bb38c3958d8ff2260a",
+      "claim": "Marked historic_forward_only but current screen pointer and Route Guardian v14 still consume it; selects v20/v28.",
+      "targets": ["pmp-route-guardian-current-loader-v20.html", "pmp-current-reload-owner-v28.html"],
+      "authority_status": "HISTORIC_MAP_ACTIVELY_CONSUMED"
+    },
+    {
+      "path": "pmp-current-map.json",
+      "blob_sha": "f0e6321268de0ac9e90f427a9bfa381d816c791b",
+      "claim": "Unversioned map still labeled current and consumed by Route Guardian v1; selects v15/v27.",
+      "targets": ["pmp-route-guardian-current-loader-v15.html", "pmp-current-reload-owner-v27.html"],
+      "authority_status": "HISTORIC_UNVERSIONED_MAP"
+    },
+    {
+      "path": "pmp-route-guardian-current-loader-v21.html",
+      "blob_sha": "c6437d58be5b271c762649e65bcc765d817a81e5",
+      "claim": "Automatic bridge to v22; still an active destination of Reload World and older maps.",
+      "targets": ["pmp-route-guardian-current-loader-v22.html"],
+      "authority_status": "HISTORIC_FORWARDER_STILL_REACHABLE"
+    },
+    {
+      "path": "pmp-route-guardian-current-loader-v20.html",
+      "blob_sha": "33e5cfe59f4929887c366704580674b4d7610df8",
+      "claim": "Reads v11/v10 and falls back to Reload Owner v28; active destination of legacy reload bridge and map v9.",
+      "targets": ["pmp-current-map-v11.json", "pmp-current-map-v10.json", "pmp-current-reload-owner-v28.html"],
+      "authority_status": "HISTORIC_ROUTE_GUARDIAN_STILL_REACHABLE"
+    },
+    {
+      "path": "pmp-route-guardian-current-loader-v19.html",
+      "blob_sha": "6dbbc43d9e94547590573450c23107ab7ccef1cd",
+      "claim": "Reads v11/v10 and falls back to Reload Owner v28.",
+      "targets": ["pmp-current-map-v11.json", "pmp-current-map-v10.json", "pmp-current-reload-owner-v28.html"],
+      "authority_status": "HISTORIC_ROUTE_GUARDIAN"
+    },
+    {
+      "path": "pmp-route-guardian-current-loader-v18.html",
+      "blob_sha": "9fccb51bab0f2409e9aea37ba851e2d8e35927f7",
+      "claim": "Reads v10 and falls back to Reload Owner v27.",
+      "targets": ["pmp-current-map-v10.json", "pmp-current-reload-owner-v27.html"],
+      "authority_status": "HISTORIC_ROUTE_GUARDIAN"
+    },
+    {
+      "path": "pmp-route-guardian-current-loader-v17.html",
+      "blob_sha": "3a2f3a082324c0f153e7851e84729da1b4a3a589",
+      "claim": "Reads v10 and falls back to Reload Owner v27.",
+      "targets": ["pmp-current-map-v10.json", "pmp-current-reload-owner-v27.html"],
+      "authority_status": "HISTORIC_ROUTE_GUARDIAN"
+    },
+    {
+      "path": "pmp-route-guardian-current-loader-v15.html",
+      "blob_sha": "39d10a995776f9f9edf2410795d72103d01bcf23",
+      "claim": "Reads v9 and falls back to Reload Owner v27.",
+      "targets": ["pmp-current-map-v9.json", "pmp-current-reload-owner-v27.html"],
+      "authority_status": "HISTORIC_ROUTE_GUARDIAN"
+    },
+    {
+      "path": "pmp-current-reload-owner-v29-cachelift-20260706b.html",
+      "blob_sha": "00ea66027112d905829f5113d454cd30af58a84e",
+      "claim": "Map v11 target; hard-loads inner v29 and polls the live-update marker.",
+      "targets": ["pmp-current-inner-cleanbug-rgcontrols-v29.html", "pmp-reload-current-live-update-marker-v1.json"],
+      "authority_status": "HISTORIC_RELOAD_OWNER_STILL_REACHABLE"
+    },
+    {
+      "path": "pmp-current-reload-owner-v29-permanent-update-gate-20260706f.html",
+      "blob_sha": "78c0a8cd952d8f19f7415485f59a2cae0c0e1334",
+      "claim": "Hard-coded terminal fallback in Route Guardian v22; hard-loads inner v30 and polls marker.",
+      "targets": ["pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html", "pmp-reload-current-live-update-marker-v1.json"],
+      "authority_status": "CURRENT_CONDITIONAL_FALLBACK_RELOAD_OWNER"
+    },
+    {
+      "path": "pmp-current-reload-owner-v29.html",
+      "blob_sha": "95b817511dc5b452703549b715672d59f6807af2",
+      "claim": "Map v10 target; hard-loads inner v29.",
+      "targets": ["pmp-current-inner-cleanbug-rgcontrols-v29.html"],
+      "authority_status": "HISTORIC_RELOAD_OWNER_STILL_REACHABLE"
+    },
+    {
+      "path": "pmp-current-reload-owner-v28.html",
+      "blob_sha": "22763b3be62b43ab8b4e242ab749609bb5fa2fc0",
+      "claim": "Map v9 and old guardian target; hard-loads inner v29 and loads multiple reload interceptors.",
+      "targets": ["pmp-current-inner-cleanbug-rgcontrols-v29.html", "pmp-launcher-reload-current-v2-guard.js", "pmp-reload-world-from-map-v1.js"],
+      "authority_status": "HISTORIC_RELOAD_OWNER_STILL_REACHABLE"
+    },
+    {
+      "path": "pmp-current-reload-owner-v27.html",
+      "blob_sha": "62052bf3f03a70e0ecfdb9a09d2c6547330864c8",
+      "claim": "Historic forwarder that automatically redirects to Reload Owner v28; also a stale fallback in several tools.",
+      "targets": ["pmp-current-reload-owner-v28.html"],
+      "authority_status": "HISTORIC_FORWARDER_STILL_REACHABLE"
+    },
+    {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v29.html",
+      "blob_sha": "0d27404d18f67af00acf7e59dccbd96220ee302c",
+      "claim": "Historic v29 inner wrapper selected by v28/v29 Reload Owners.",
+      "targets": ["legacy inner chain"],
+      "authority_status": "HISTORIC_INNER_LOADER"
+    },
+    {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v26.html",
+      "blob_sha": "4d1a459be5205a527b14465d3b02eb8278e08060",
+      "claim": "Historic wrapper that hard-loads inner v23.",
+      "targets": ["pmp-current-inner-cleanbug-rgcontrols-v23.html"],
+      "authority_status": "HISTORIC_INNER_LOADER"
+    },
+    {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v24.html",
+      "blob_sha": "c094b466fa83ef39359f88ee84233026429202df",
+      "claim": "Historic wrapper that hard-loads inner v23.",
+      "targets": ["pmp-current-inner-cleanbug-rgcontrols-v23.html"],
+      "authority_status": "HISTORIC_INNER_LOADER"
+    },
+    {
+      "path": "pmp-launcher-reload-current-v2-guard.js",
+      "blob_sha": "c7845ae8f7aa44d7969fef2d3f1166b1e7df35b7",
+      "claim": "Loaded by Reload Owner v28; reads v12/v11/v10, forces Route Guardian v22, and navigates top-level.",
+      "targets": ["pmp-current-map-v12.json", "pmp-current-map-v11.json", "pmp-current-map-v10.json", "pmp-route-guardian-current-loader-v22.html"],
+      "authority_status": "HISTORIC_INTERCEPTOR_STILL_REACHABLE"
+    }
+  ],
+  "influence_observer_disabled_or_non_authority": [
+    {
+      "path": "pmp-pass75-reload-runtime-platform-gate-v1.js",
+      "blob_sha": "ccdc226c3947de5b678146cbbbe12c80acb0ecc8",
+      "classification": "TIMING_GATE_ONLY",
+      "reason": "Controls when Reload Owner callback begins but does not select a path itself."
+    },
+    {
+      "path": "pmp-service-worker-cache-governor-v1.js",
+      "blob_sha": "89bbd9338e7b93a68a5b2fece946d2d3de9a9ffd",
+      "classification": "CURRENT_TRANSPORT_INFLUENCE",
+      "reason": "Can determine which bytes are returned for route files through network-first/cache fallback, but does not choose destination path."
+    },
+    {
+      "path": "pmp-service-worker-v1.js",
+      "blob_sha": "f3aeec08434a8f7d80d062803ed7c81b225cdfc3",
+      "classification": "HISTORIC_TRANSPORT_INFLUENCE",
+      "reason": "Alternate service worker with cache deletion and fetch policy; route-byte influence only."
+    },
+    {
+      "path": "pmp-pass75-runtime-platform-v1.js",
+      "blob_sha": "ceb54a3d506acaceb360bc714bbce837f7a225cd",
+      "classification": "RUNTIME_PLATFORM_INFLUENCE",
+      "reason": "Can register pmp-service-worker-v1.js and schedule runtime scans; not a direct path selector."
+    },
+    {
+      "path": "pmp-active-path-discovery-machine-v1.js",
+      "blob_sha": "12c5fdac9979f792539e95d53ab11cc4c2abcc5b",
+      "classification": "OBSERVATION_ONLY",
+      "reason": "Scans and classifies route files; does not navigate or promote."
+    },
+    {
+      "path": "pmp-active-path-discovery-zip-export-v2.js",
+      "blob_sha": "163a902340c06d821568177e0a839d111b6cdbcc",
+      "classification": "OBSERVATION_EXPORT_ONLY",
+      "reason": "Runs discovery and exports reports; does not choose the app route."
+    },
+    {
+      "path": "pmp-bank-reload-current-button-v1.js",
+      "blob_sha": "1be54ee29a75fe633a4ec812ff8e6d3d107432b7",
+      "classification": "DISABLED",
+      "reason": "All route functions return false; only clears old reload snapshots."
+    },
+    {
+      "path": "pmp-reload-current-visible-receipt-v1.js",
+      "blob_sha": "8a0850fca19fb360c9d4460521462587d44d380c",
+      "classification": "EVIDENCE_ONLY",
+      "reason": "Displays or records reload proof; no independent route selection."
+    },
+    {
+      "path": "pmp-reload-current-button-handoff-proof-injector-v1.js",
+      "blob_sha": "30d79d9ad2c52e8d2386f188e56d389fdd61242f",
+      "classification": "EVIDENCE_ONLY",
+      "reason": "Patches proof output with handoff data; no path mutation."
+    },
+    {
+      "path": "pmp-current-page-snapshot-test-launcher-v1.js",
+      "blob_sha": "f760e7446c5fc309c71e86cd9dad54a7ab36b96c",
+      "classification": "TEST_ONLY",
+      "reason": "Test launcher, not production route authority."
+    },
+    {
+      "path": "pmp-current-screen-test-engine-v1.js",
+      "blob_sha": "7b54937aabdfcff1cc105c924299262c4465c945",
+      "classification": "TEST_ONLY",
+      "reason": "Tests current screen behavior; not production route authority."
+    },
+    {
+      "path": "pmp-master-bank-inventory-router-v1.js",
+      "blob_sha": "a25a533b680d937b5d47eb484dfc110fdb275461",
+      "classification": "NON_APP_ROUTER",
+      "reason": "Routes records among data banks only; it does not navigate the application."
+    },
+    {
+      "path": "pmp-resident-cr-status-router-v1.js",
+      "blob_sha": "93eff4449619b62caa9347638ea35435b70ff97d",
+      "classification": "NON_APP_ROUTER",
+      "reason": "Routes Resident questions to local status answers; it does not navigate the application."
+    }
+  ],
+  "broken_absent_claims": [
+    {
+      "path": "pmp-clean-v13.html",
+      "blob_sha": null,
+      "claimed_by": ["code-safety-v13.html"],
+      "classification": "BROKEN_ABSENT_ROUTE_TARGET",
+      "evidence": "Absent at baseline; Code Safety Back to Control points to it."
+    },
+    {
+      "path": "pmp-current-reload-current-live-update-marker-v1.json",
+      "blob_sha": null,
+      "claimed_by": ["authoritative recovery package naming"],
+      "classification": "BROKEN_ABSENT_ALIAS_OR_TYPO",
+      "evidence": "Absent at baseline. Actual current file is pmp-reload-current-live-update-marker-v1.json."
+    }
+  ],
+  "a001_dependency_discrepancy": {
+    "status": "OPEN",
+    "note": "A-002 discovered route-capable baseline files that were not present in the five A-001 identity shards. A-001 branch was not changed, per scope.",
+    "newly_discovered_exact_baseline_objects": [
+      ["pmp-reload-current-live-update-marker-v1.json", "0beb4569ae7b2db6fb6914b62810d27c1b90f0dd"],
+      ["pmp-current-reload-owner-v29-cachelift-20260706b.html", "00ea66027112d905829f5113d454cd30af58a84e"],
+      ["pmp-current-inner-cleanbug-rgcontrols-v16.html", "b2e2cfe58dc6b5fb5b9a23640dbb22a944f97ab3"],
+      ["pmp-route-guardian-recovery-tools-v8.html", "127f249f9856a4ea9dda55643930438d93b329df"],
+      ["pmp-safe-writer-canonical-route-v1.js", "64945b576e7a363d1b7bf7569eb7e9d68550ce3a"],
+      ["safe-writer-v14.html", "f7d71894e9a8f2caf6fe11e77468537f0317da0c"],
+      ["pmp-route-guardian-last-good-v18.html", "2cccc42414d8523086fe909451595523ab25ed47"],
+      ["pmp-move-ledger-candidate-follow-v1.html", "2dfedf3030426a44611e13cb6958323a84571f3f"],
+      ["pmp-route-guardian-current-loader-v14.html", "9a69eee8eb3641b13a809bb7c6b0f55a390aca1d"],
+      ["pmp-current-inner-cleanbug-rgcontrols-v9.html", "ebe842dac1a42739c4eb76cd7158a4af4684f970"],
+      ["pmp-current-inner-cleanbug-rgcontrols-v13.html", "865d83836681e5e79ae897305ed8c21d4dc19729"],
+      ["pmp-route-guardian-last-good-v3-button-v1.js", "43746ee336c8093080fc72608edf95d11b7a7e64"],
+      ["pmp-route-guardian-last-good-v1.html", "f13a333c207bf31d1aab1bc5991fc07212f75f13"],
+      ["safe-writer-v14.html", "f7d71894e9a8f2caf6fe11e77468537f0317da0c"]
+    ],
+    "effect_on_a002": "Inventory may proceed, but A-002 cannot be certified until inherited source-identity evidence is reconciled."
+  },
+  "hard_blockers": [
+    "Route Guardian v22 reads three maps and has a hard-coded terminal fallback.",
+    "Current Screen Pointer reloads through Current Map v9 and Reload Owner v27.",
+    "Reload World routes directly to Route Guardian v21.",
+    "Current launcher bridge routes directly to Route Guardian v20.",
+    "Reload Owner v30 and each inner wrapper hard-code the next path instead of consuming a map-issued handoff.",
+    "Home v6 replaces the live document with historical remote bytes.",
+    "Last Good and Recovery Tools can select saved or arbitrary local HTML routes outside Current Map.",
+    "Safe Writer and Code Safety contain stale or broken return routes.",
+    "Historic maps remain labeled current and are still consumed by live or reachable actors.",
+    "A-001 identity evidence does not cover all route-capable objects found during A-002."
+  ],
+  "decision": "A002_AUTHORITY_INVENTORY_COMPLETE_NO_CODE_MODIFIED_REPAIR_NOT_STARTED"
+}

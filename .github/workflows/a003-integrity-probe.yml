@@ -1,0 +1,149 @@
+name: A-003 Integrity Probe
+
+on:
+  push:
+    branches:
+      - agent/a002-current-map-single-authority
+    paths:
+      - 'tools/build_a003_integrity_manifest.py'
+      - '.github/workflows/a003-integrity-probe.yml'
+      - '.github/workflows/a003-runtime-integrity.yml'
+      - 'pmp-current-map-v12.json'
+      - '*.html'
+      - '*.js'
+      - '*.json'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'tools/build_a003_integrity_manifest.py'
+      - '.github/workflows/a003-integrity-probe.yml'
+      - '.github/workflows/a003-runtime-integrity.yml'
+      - 'pmp-current-map-v12.json'
+      - '*.html'
+      - '*.js'
+      - '*.json'
+  workflow_dispatch:
+
+concurrency:
+  group: a003-manifest-publisher-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build integrity probe
+        run: |
+          python3 tools/build_a003_integrity_manifest.py \
+            --output a003-generated-integrity-manifest.json \
+            --report a003-integrity-probe-report.json \
+            | tee a003-integrity-probe-console.log
+
+      - name: Finalize deterministic manifest contract
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          path = Path('a003-generated-integrity-manifest.json')
+          manifest = json.loads(path.read_text('utf-8'))
+          manifest.pop('source_commit', None)
+          manifest.pop('self_digest_for_generated_bytes', None)
+          identity = {
+              'records': [(r['path'], r['sha256_hex']) for r in manifest.get('records', [])],
+              'historical_records': [(r['path'], r.get('repository_ref'), r['sha256_hex']) for r in manifest.get('historical_records', [])],
+              'external_records': [(r['url'], r['sha256_hex']) for r in manifest.get('external_records', [])],
+              'root_trust_anchors': manifest.get('root_trust_anchors', []),
+              'policy': {
+                  'algorithm': manifest.get('algorithm'),
+                  'unlisted_executable_policy': manifest.get('unlisted_executable_policy'),
+                  'network_policy': manifest.get('network_policy')
+              }
+          }
+          canonical = json.dumps(identity, sort_keys=True, separators=(',', ':')).encode('utf-8')
+          manifest['version'] = '20260711A-A003-FINAL'
+          manifest['runtime_source_set_sha256'] = hashlib.sha256(canonical).hexdigest()
+          manifest['source_identity_rule'] = 'Deterministic digest of protected local, historical, external, root-anchor, and policy identities; audit/workflow-only commits do not alter this identity.'
+          path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + '\n', 'utf-8')
+          PY
+
+      - name: Validate generated JSON
+        run: |
+          python3 -m json.tool a003-generated-integrity-manifest.json >/dev/null
+          python3 -m json.tool a003-integrity-probe-report.json >/dev/null
+
+      - name: Commit exact manifest and atomic bootstrap seal
+        if: github.event_name == 'push'
+        run: |
+          cp a003-generated-integrity-manifest.json pmp-runtime-integrity-manifest-v1.json
+          manifest_sha="$(sha256sum pmp-runtime-integrity-manifest-v1.json | awk '{print $1}')"
+          manifest_bytes="$(wc -c < pmp-runtime-integrity-manifest-v1.json | tr -d ' ')"
+          runtime_set_sha="$(python3 -c "import json; print(json.load(open('pmp-runtime-integrity-manifest-v1.json'))['runtime_source_set_sha256'])")"
+          python3 - "$manifest_sha" "$manifest_bytes" "$runtime_set_sha" <<'PY'
+          import json
+          from pathlib import Path
+          import re
+          import sys
+
+          manifest_sha, manifest_bytes, runtime_set_sha = sys.argv[1:]
+          root = Path('pmp-app-current.html')
+          text = root.read_text('utf-8')
+          pattern = r"const MANIFEST_SHA256='(?:__A003_MANIFEST_SHA256__|[0-9a-f]{64})';"
+          replacement = f"const MANIFEST_SHA256='{manifest_sha}';"
+          updated, count = re.subn(pattern, replacement, text, count=1)
+          if count != 1:
+              raise SystemExit('Expected exactly one bootstrap manifest digest constant.')
+          root.write_text(updated, 'utf-8')
+          receipt = {
+              'type': 'PMP_A003_MANIFEST_SEAL_V1',
+              'repair_id': 'A-003',
+              'status': 'SEALED',
+              'manifest_path': 'pmp-runtime-integrity-manifest-v1.json',
+              'manifest_sha256': manifest_sha,
+              'manifest_bytes': int(manifest_bytes),
+              'manifest_version': '20260711A-A003-FINAL',
+              'runtime_source_set_sha256': runtime_set_sha,
+              'root_trust_anchor': 'pmp-app-current.html',
+              'root_self_verifiable': False,
+              'rule': 'The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.'
+          }
+          Path('audit/a003-manifest-seal.json').write_text(json.dumps(receipt, indent=2, sort_keys=True) + '\n', 'utf-8')
+          PY
+          python3 -m json.tool audit/a003-manifest-seal.json >/dev/null
+          if git diff --quiet -- pmp-runtime-integrity-manifest-v1.json pmp-app-current.html audit/a003-manifest-seal.json && git ls-files --error-unmatch pmp-runtime-integrity-manifest-v1.json >/dev/null 2>&1; then
+            echo 'Integrity manifest and bootstrap seal already match the deterministic runtime source set.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add pmp-runtime-integrity-manifest-v1.json pmp-app-current.html audit/a003-manifest-seal.json
+          git commit -m 'A-003 seal deterministic runtime integrity manifest into bootstrap [skip ci]'
+          git push origin HEAD:agent/a002-current-map-single-authority
+
+      - name: Upload probe artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a003-integrity-probe
+          path: |
+            a003-generated-integrity-manifest.json
+            a003-integrity-probe-report.json
+            a003-integrity-probe-console.log
+            audit/a003-manifest-seal.json
+          if-no-files-found: warn

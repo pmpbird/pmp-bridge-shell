@@ -1,0 +1,123 @@
+{
+  "type": "PMP_A002_A001_IDENTITY_RECONCILIATION_PLAN_V1",
+  "repair_id": "A-002",
+  "purpose": "Close the source-identity coverage gap discovered during the A-002 route-authority census before any route behavior changes.",
+  "baseline": {
+    "repository": "pmpbird/pmp-bridge-shell",
+    "branch": "main",
+    "commit": "5dd049de1500ea427fa2cf395687239a19706115"
+  },
+  "a001_lineage": {
+    "immutable_branch": "agent/a001-freeze-source-identity",
+    "manifest_path": "audit/pmp-active-source-identity-manifest-v1.json",
+    "manifest_blob_sha": "78e6e4016c209c0c268a4f0a1666db2d300b5912",
+    "accepted_receipt_id": "PMP-A001-5dd049de-PASS-003",
+    "accepted_receipt_hash": "4b49f2f3d16db6451a9abaafb2b3e147a591f7e3c09db314e2d04ce7b893b2b9",
+    "rule": "Do not rewrite, amend, force-push, or otherwise mutate the completed A-001 branch. Reconciliation is an additive supplement linked to the accepted receipt."
+  },
+  "gap_count": 13,
+  "supplement_entries": [
+    {
+      "path": "pmp-reload-current-live-update-marker-v1.json",
+      "git_blob_sha": "0beb4569ae7b2db6fb6914b62810d27c1b90f0dd",
+      "classification": "ACTIVE_ROUTE_DATA_CLAIM",
+      "discovery": "A-002 current Reload Owner trace"
+    },
+    {
+      "path": "pmp-current-reload-owner-v29-cachelift-20260706b.html",
+      "git_blob_sha": "00ea66027112d905829f5113d454cd30af58a84e",
+      "classification": "HISTORIC_RELOAD_OWNER_STILL_REACHABLE",
+      "discovery": "Current Map v11 fallback trace"
+    },
+    {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v16.html",
+      "git_blob_sha": "b2e2cfe58dc6b5fb5b9a23640dbb22a944f97ab3",
+      "classification": "ACTIVE_LAST_GOOD_TARGET",
+      "discovery": "Current Last Good owner trace"
+    },
+    {
+      "path": "pmp-route-guardian-recovery-tools-v8.html",
+      "git_blob_sha": "127f249f9856a4ea9dda55643930438d93b329df",
+      "classification": "CONDITIONAL_DYNAMIC_RECOVERY_AUTHORITY",
+      "discovery": "Last Good recovery trace"
+    },
+    {
+      "path": "pmp-safe-writer-canonical-route-v1.js",
+      "git_blob_sha": "64945b576e7a363d1b7bf7569eb7e9d68550ce3a",
+      "classification": "CONDITIONAL_TOOL_ROUTE_AUTHORITY",
+      "discovery": "Inner v9/v13/v16 script trace"
+    },
+    {
+      "path": "safe-writer-v14.html",
+      "git_blob_sha": "f7d71894e9a8f2caf6fe11e77468537f0317da0c",
+      "classification": "ACTIVE_TOOL_ROUTE_AND_STALE_RETURN_AUTHORITY",
+      "discovery": "Current Safe Writer return-fix trace"
+    },
+    {
+      "path": "pmp-route-guardian-last-good-v18.html",
+      "git_blob_sha": "2cccc42414d8523086fe909451595523ab25ed47",
+      "classification": "CONDITIONAL_RECOVERY_AUTHORITY",
+      "discovery": "Recovery Tools default-back trace"
+    },
+    {
+      "path": "pmp-move-ledger-candidate-follow-v1.html",
+      "git_blob_sha": "2dfedf3030426a44611e13cb6958323a84571f3f",
+      "classification": "CONDITIONAL_DYNAMIC_CANDIDATE_AUTHORITY",
+      "discovery": "Recovery Tools saved/move route trace"
+    },
+    {
+      "path": "pmp-route-guardian-current-loader-v14.html",
+      "git_blob_sha": "9a69eee8eb3641b13a809bb7c6b0f55a390aca1d",
+      "classification": "CONDITIONAL_HISTORIC_ROUTE_GUARDIAN",
+      "discovery": "Candidate Follow default previous-route trace"
+    },
+    {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v9.html",
+      "git_blob_sha": "ebe842dac1a42739c4eb76cd7158a4af4684f970",
+      "classification": "CONDITIONAL_RECOVERY_LOADER",
+      "discovery": "Last Good v18 current-before trace"
+    },
+    {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v13.html",
+      "git_blob_sha": "865d83836681e5e79ae897305ed8c21d4dc19729",
+      "classification": "CONDITIONAL_FALLBACK_LOADER",
+      "discovery": "Route Guardian v14 hard fallback trace"
+    },
+    {
+      "path": "pmp-route-guardian-last-good-v3-button-v1.js",
+      "git_blob_sha": "43746ee336c8093080fc72608edf95d11b7a7e64",
+      "classification": "CONDITIONAL_RECOVERY_ROUTE_AUTHORITY",
+      "discovery": "Inner v9 script trace"
+    },
+    {
+      "path": "pmp-route-guardian-last-good-v1.html",
+      "git_blob_sha": "f13a333c207bf31d1aab1bc5991fc07212f75f13",
+      "classification": "CONDITIONAL_FORWARDER",
+      "discovery": "Last Good v3 button target trace"
+    }
+  ],
+  "planned_artifacts": [
+    "audit/a001-supplements/a001-a002-route-authority-supplement-v1.json",
+    "audit/a001-supplements/a001-a002-route-authority-supplement-receipt-v1.json"
+  ],
+  "planned_receipt": {
+    "receipt_type": "PMP_SOURCE_IDENTITY_MANIFEST_SUPPLEMENT_RECEIPT_V1",
+    "planned_receipt_id": "PMP-A001-5dd049de-SUPPLEMENT-A002-PASS-004",
+    "previous_receipt_id": "PMP-A001-5dd049de-PASS-003",
+    "previous_receipt_hash": "4b49f2f3d16db6451a9abaafb2b3e147a591f7e3c09db314e2d04ce7b893b2b9",
+    "scope": "13 additive route-capable baseline identities discovered by A-002",
+    "expected_unresolved_count": 0
+  },
+  "reconciliation_tests": [
+    "Each of the 13 paths resolves at the pinned baseline commit to the recorded Git blob SHA.",
+    "The supplement contains 13 unique paths and no duplicates.",
+    "The supplement baseline exactly matches the accepted A-001 baseline.",
+    "The supplement links cryptographically and textually to PASS-003 without modifying PASS-003.",
+    "No source, route, runtime, storage, cache, IndexedDB, Bank, DOM, or app file is changed by reconciliation.",
+    "No unresolved identity remains in the combined A-001 manifest plus supplement view."
+  ],
+  "pass_condition": "All six reconciliation tests pass and unresolved_count equals zero.",
+  "failure_action": "Stop A-002. Do not create or apply a route patch. Record the mismatch and expand the supplement only after exact baseline evidence is obtained.",
+  "authorization_state": "PLANNED_NOT_EXECUTED",
+  "route_behavior_change_authorized": false
+}

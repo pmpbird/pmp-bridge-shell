@@ -5,10 +5,12 @@ on:
     paths:
       - 'automation/**'
       - 'audit/Automated_Plan_Foundation_Status_v1.md'
+      - 'audit/Automated_Plan_Foundation_Retirement_v1.md'
       - 'pmp-automated-plan-room-v1.js'
       - 'pmp-automated-plan-native-match-v1.js'
       - 'pmp-current-inner-cleanbug-rgcontrols-v6.html'
-      - 'pmp-current-map-v9.json'
+      - 'pmp-current-map-v12.json'
+      - 'pmp-app-current.html'
       - 'pmp-home-single-v6.html'
       - 'tools/verify_automated_plan_foundation_v1.py'
       - 'tools/verify_automated_plan_universal_contract_v1.py'
@@ -30,13 +32,13 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - name: Verify original identity, checkpoint, interface, and zero-cost foundation
+      - name: Verify preserved zero-cost foundation and formal UI retirement
         run: python3 tools/verify_automated_plan_foundation_v1.py
-      - name: Verify universal contracts, recovery, usage measurement, backend switching, and stop conditions
+      - name: Verify preserved universal contracts, recovery, usage, backend switching, and stop conditions
         run: python3 tools/verify_automated_plan_universal_contract_v1.py
-      - name: Verify native Control Room visual structure
+      - name: Verify superseding native visual owner and retired route boundary
         run: python3 tools/verify_automated_plan_visual_match_v1.py
-      - name: Check Automated Plan JavaScript syntax
+      - name: Check retained dashboard JavaScript syntax
         run: |
           node --check pmp-automated-plan-room-v1.js
           node --check pmp-automated-plan-native-match-v1.js
@@ -50,16 +52,16 @@ jobs:
         run: |
           npm install --no-save --silent playwright@1.53.1 > /tmp/npm-install.log 2>&1
           npx playwright install --with-deps chromium > /tmp/playwright-install.log 2>&1
-      - name: Start the real app locally
+      - name: Start the current A-003 app locally
         run: |
           python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/pmp-http.log 2>&1 &
           for i in $(seq 1 30); do
-            curl -fsS http://127.0.0.1:8000/pmp-current-inner-cleanbug-rgcontrols-v6.html >/dev/null && exit 0
+            curl -fsS http://127.0.0.1:8000/pmp-app-current.html >/dev/null && exit 0
             sleep 1
           done
           cat /tmp/pmp-http.log
           exit 1
-      - name: Test the real Control Room at multiple contrast profiles
+      - name: Test current app and retired Automated Plan route boundary
         env:
           PMP_BASE_URL: http://127.0.0.1:8000
         run: |
@@ -69,7 +71,7 @@ jobs:
             cat /tmp/automated-plan-real-app.log
             exit 1
           fi
-      - name: Preserve concise visual-test log for review
+      - name: Preserve concise retirement-compatibility log for review
         if: always()
         uses: actions/upload-artifact@v4
         with:

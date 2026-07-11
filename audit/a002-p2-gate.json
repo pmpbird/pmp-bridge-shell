@@ -1,0 +1,249 @@
+{
+  "type": "PMP_A002_P2_GATE_RESULT_V1",
+  "repair_id": "A-002",
+  "phase": "P2",
+  "status": "PASS_AT_SOURCE_AND_SIMULATED_ROUTE_CONTRACT_SCOPE",
+  "source_head_commit": "267d02ef531b385746e5e496b39a94c06b057615",
+  "phase_base_commit": "c78a8a7974f4919412a62565a3fce11f68d40d4f",
+  "tests": [
+    {
+      "id": "P2-G01",
+      "name": "P1 prerequisite",
+      "method": "P1 gate receipt inspection",
+      "result": "PASS",
+      "evidence": "audit/a002-p1-gate.json reports 11 passed and 0 failed"
+    },
+    {
+      "id": "P2-G02",
+      "name": "Exact P2 mutation scope",
+      "method": "Git compare from P1 status head to P2 source head",
+      "result": "PASS",
+      "evidence": {
+        "status": "ahead",
+        "commit_count": 9,
+        "changed_file_count": 7,
+        "unexpected_files": [],
+        "files": [
+          "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html",
+          "pmp-reload-current-live-update-marker-v1.json",
+          "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+          "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+          "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+          "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+          "pmp-home-single-v6.html"
+        ]
+      }
+    },
+    {
+      "id": "P2-G03",
+      "name": "Live-update marker cannot select a destination",
+      "method": "Final marker source inspection",
+      "result": "PASS",
+      "checks": [
+        "target field is absent",
+        "destination_selection is false",
+        "mode is revision_and_cache_bust_data_only",
+        "route_authority names Current Map"
+      ]
+    },
+    {
+      "id": "P2-G04",
+      "name": "Reload Owner consumes map roles only",
+      "method": "Final Reload Owner source inspection",
+      "result": "PASS",
+      "checks": [
+        "resolves runtime_chain.inner_v30",
+        "resolves runtime_chain.live_update_marker",
+        "builds inner URL from map handoff",
+        "rejects marker target field",
+        "rejects marker destination-selection policy changes",
+        "map or marker failure invokes failClosed without alternate inner route"
+      ]
+    },
+    {
+      "id": "P2-G05",
+      "name": "Inner-v30 chain proof and next hop are map-derived",
+      "method": "Final inner-v30 source inspection",
+      "result": "PASS",
+      "checks": [
+        "resolves route_guardian",
+        "resolves current_app",
+        "resolves runtime_chain.inner_v30",
+        "resolves runtime_chain.inner_v23",
+        "launches inner-v23 with resolver.buildUrl",
+        "missing handoff blocks entry"
+      ]
+    },
+    {
+      "id": "P2-G06",
+      "name": "App Orchestrator augmentation timing is preserved",
+      "method": "Inner-v30 and external App Orchestrator contract comparison",
+      "result": "PASS",
+      "checks": [
+        "inner-v30 publishes an API object synchronously before external script execution",
+        "inner-v30 merges launch-gate methods into an existing API object",
+        "external App Orchestrator may augment the same object",
+        "inner-v30 re-merges map-derived launch methods after map resolution"
+      ]
+    },
+    {
+      "id": "P2-G07",
+      "name": "Inner-v23 delegates to inner-v4",
+      "method": "Final inner-v23 source inspection",
+      "result": "PASS",
+      "checks": [
+        "resolves runtime_chain.inner_v4",
+        "uses resolver.buildUrl",
+        "preserves existing reload-snapshot and screen-hash selection",
+        "failure removes frame route and displays diagnostic"
+      ]
+    },
+    {
+      "id": "P2-G08",
+      "name": "Inner-v4 delegates to inner-v3",
+      "method": "Final inner-v4 source inspection",
+      "result": "PASS",
+      "checks": [
+        "resolves runtime_chain.inner_v3",
+        "uses resolver.buildUrl",
+        "preserves screen-hash restoration",
+        "preserves request-packet guard injection",
+        "failure removes frame route and displays diagnostic"
+      ]
+    },
+    {
+      "id": "P2-G09",
+      "name": "Inner-v3 delegates Home and current tools",
+      "method": "Final inner-v3 source inspection",
+      "result": "PASS",
+      "checks": [
+        "resolves runtime_chain.home_restore",
+        "resolves tool_routes.bug_memory",
+        "resolves tool_routes.route_guardian_action",
+        "resolves tool_routes.resident",
+        "all four URLs use resolver.buildUrl",
+        "route-not-ready and map failures fail closed"
+      ]
+    },
+    {
+      "id": "P2-G10",
+      "name": "Existing inner-v3 app behavior is retained",
+      "method": "Preimage/postimage structural comparison",
+      "result": "PASS",
+      "checks": [
+        "Bank inventory and protected registry logic retained",
+        "bridge toggle logic retained",
+        "vault-button behavior retained",
+        "resident overlay behavior retained",
+        "UI patch interval retained"
+      ]
+    },
+    {
+      "id": "P2-G11",
+      "name": "Home historical payload identity comes from Current Map",
+      "method": "Final Home restore source inspection",
+      "result": "PASS",
+      "checks": [
+        "reads historical_payloads.home_v6",
+        "validates 40-character commit identity",
+        "validates repository-local HTML path",
+        "constructs raw payload URL from map-declared commit and path",
+        "retains content validation and document.open/write/close",
+        "map or payload failure stops with diagnostic and no alternate payload"
+      ]
+    },
+    {
+      "id": "P2-G12",
+      "name": "Complete current-chain route graph is resolvable from the P1 map",
+      "method": "Current Map role registry and P2 consumer-role comparison",
+      "result": "PASS",
+      "graph": [
+        "current_app / runtime_chain.reload_owner",
+        "runtime_chain.inner_v30",
+        "runtime_chain.inner_v23",
+        "runtime_chain.inner_v4",
+        "runtime_chain.inner_v3",
+        "runtime_chain.home_restore",
+        "historical_payloads.home_v6"
+      ]
+    },
+    {
+      "id": "P2-G13",
+      "name": "Screen-hash and reload-snapshot continuity",
+      "method": "P2 consumer source inspection",
+      "result": "PASS",
+      "checks": [
+        "Reload Owner normalizes requested hash through Current Map",
+        "inner-v30 normalizes the handoff hash through Current Map",
+        "inner-v23 retains live-reload snapshot logic",
+        "inner-v4 retains snapshot fallback logic",
+        "inner-v3 supplies the map-normalized hash to Home"
+      ]
+    },
+    {
+      "id": "P2-G14",
+      "name": "No destructive data operation introduced",
+      "method": "Seven-file changed-source inspection",
+      "result": "PASS",
+      "checks": [
+        "no localStorage.clear",
+        "no indexedDB.deleteDatabase",
+        "no caches.delete",
+        "no Bank rebuild added",
+        "no user-content deletion added",
+        "no historical file deletion"
+      ]
+    },
+    {
+      "id": "P2-G15",
+      "name": "A-003 boundary remains truthful",
+      "method": "Map and Home receipt contract inspection",
+      "result": "PASS",
+      "evidence": "P2 consumes declared Git identities but does not enforce or claim runtime source-byte equality."
+    },
+    {
+      "id": "P2-G16",
+      "name": "Rollback readiness",
+      "method": "RG-P2 preimage and postimage comparison",
+      "result": "PASS",
+      "evidence": "All seven changed files have exact baseline blob preimages and final postimage blobs."
+    }
+  ],
+  "summary": {
+    "tests_total": 16,
+    "tests_passed": 16,
+    "tests_failed": 0,
+    "unexpected_source_files": 0,
+    "p2_chain_consumers_with_hard_coded_next_hop": 0,
+    "marker_destination_authority": 0
+  },
+  "environment_limitations": [
+    {
+      "limitation": "GitHub CLI unavailable in the execution container",
+      "effect": "No local authenticated checkout through gh"
+    },
+    {
+      "limitation": "Execution container has no external network resolution",
+      "effect": "Standard git clone could not reach github.com"
+    },
+    {
+      "limitation": "No live mobile browser or service-worker network session available",
+      "effect": "No claim of live end-to-end startup, Home rendering, or cache behavior"
+    }
+  ],
+  "scope_truth": {
+    "local_checkout_execution_tested": false,
+    "live_mobile_browser_exercised": false,
+    "service_worker_network_runtime_exercised": false,
+    "historical_payload_network_fetch_exercised": false,
+    "full_A002_certified": false,
+    "certified_scope": "P2 exact Git diff, final connected-source inspection, and simulated route-contract continuity",
+    "reason": "The gate proves delegation structure and fail-closed policy in repository source. Live runtime proof requires a later browser exercise."
+  },
+  "rollback_group": "RG-P2",
+  "rollback_required": false,
+  "p3_eligible": true,
+  "p3_executed": false,
+  "merge_authorized": false,
+  "decision": "PASS_P2_CURRENT_CHAIN_MAP_DELEGATION_STOP_BEFORE_P3"
+}

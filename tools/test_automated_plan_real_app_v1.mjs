@@ -2,129 +2,81 @@ import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
 
 const base = process.env.PMP_BASE_URL || 'http://127.0.0.1:8000';
+const current = 'pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html';
 const browser = await chromium.launch({ headless: true });
-const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+const context = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'allow' });
 const page = await context.newPage();
+page.setDefaultTimeout(30000);
 
 try {
-  await page.goto(`${base}/pmp-current-inner-cleanbug-rgcontrols-v6.html#control`, { waitUntil: 'domcontentloaded', timeout: 60000 });
+  const mapResponse = await page.request.get(`${base}/pmp-current-map-v12.json?automated-plan-retirement=${Date.now()}`);
+  assert.equal(mapResponse.ok(), true, 'current A-003 map could not be loaded');
+  const map = await mapResponse.json();
+  assert.equal(map.app_version, 'PMP-CURRENT-1-A003');
+  assert.equal(map.route_contract?.runtime_integrity_required, true);
+  assert.equal(map.current_app?.path, current);
+  assert.notEqual(map.current_app?.path, 'pmp-current-inner-cleanbug-rgcontrols-v6.html');
+  assert.equal(Object.values(map.runtime_chain || {}).some((item) => item?.path === 'pmp-current-inner-cleanbug-rgcontrols-v6.html'), false, 'retired v6 wrapper remains in current runtime chain');
 
-  let appFrame;
+  await page.goto(`${base}/pmp-app-current.html#control`, { waitUntil: 'domcontentloaded', timeout: 60000 });
+  await page.waitForFunction(() => {
+    try { return JSON.parse(localStorage.getItem('pmp_a003_bootstrap_receipt_v1') || 'null')?.status === 'PASS'; }
+    catch { return false; }
+  }, null, { timeout: 45000 });
+  await page.waitForFunction(() => {
+    const frame = document.querySelector('iframe');
+    return frame && /pmp-route-guardian-current-loader-v22\.html/.test(frame.getAttribute('src') || '');
+  }, null, { timeout: 30000 });
+
+  let guardian;
   for (let i = 0; i < 80; i += 1) {
+    guardian = page.frames().find((frame) => /pmp-route-guardian-current-loader-v22\.html/.test(frame.url()));
+    if (guardian) break;
+    await page.waitForTimeout(250);
+  }
+  assert.ok(guardian, 'current A-003 Route Guardian frame was not found');
+  await guardian.click('#openBtn', { force: true });
+  await page.waitForURL((url) => url.pathname.endsWith('/' + current) && url.hash === '#control', { timeout: 45000 });
+
+  let controlFrame;
+  for (let i = 0; i < 120; i += 1) {
     for (const frame of page.frames()) {
       try {
         if (await frame.locator('#control').count()) {
-          appFrame = frame;
+          controlFrame = frame;
           break;
         }
       } catch {}
     }
-    if (appFrame) break;
+    if (controlFrame) break;
     await page.waitForTimeout(250);
   }
-  assert.ok(appFrame, 'real app Control Room frame was not found');
+  assert.ok(controlFrame, 'current A-003 app Control Room frame was not found');
+  assert.equal(await controlFrame.locator('#control').count(), 1, 'current app must expose exactly one Control Room root');
+  assert.ok(await controlFrame.locator('#control .card').count(), 'current Control Room native card was not found');
+  assert.ok(await controlFrame.locator('#control button.big').count(), 'current Control Room native big controls were not found');
 
-  await appFrame.waitForSelector('#pmpAutomatedPlanEntryV1', { timeout: 30000 });
-  await page.waitForTimeout(1200);
+  const bootstrap = await page.evaluate(() => JSON.parse(localStorage.getItem('pmp_a003_bootstrap_receipt_v1')));
+  assert.equal(bootstrap.status, 'PASS');
+  assert.equal(bootstrap.target, 'pmp-route-guardian-current-loader-v22.html');
 
-  assert.equal(await appFrame.locator('#pmpAutomatedPlanEntryV1').count(), 1, 'Control Room must contain exactly one Automated Plan entry');
-  const entryText = (await appFrame.locator('#pmpAutomatedPlanEntryV1').innerText()).trim();
-  assert.match(entryText, /Automated Plan\s+Setup — execution is safely locked/);
-  assert.doesNotMatch(entryText, /Packet|01\.5|packet_01_5/i);
-
-  const buttonProperties = [
-    'backgroundColor', 'color', 'borderTopColor', 'borderTopWidth', 'borderTopStyle',
-    'borderRadius', 'fontFamily', 'fontSize', 'fontWeight', 'boxShadow',
-    'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft', 'width'
-  ];
-  const cardProperties = [
-    'backgroundColor', 'color', 'borderTopColor', 'borderTopWidth', 'borderTopStyle',
-    'borderRadius', 'boxShadow', 'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft'
-  ];
-  const miniProperties = [
-    'backgroundColor', 'color', 'borderTopColor', 'borderTopWidth', 'borderRadius',
-    'fontFamily', 'fontSize', 'fontWeight', 'boxShadow', 'paddingTop', 'paddingBottom'
-  ];
-  const subProperties = ['color', 'fontFamily', 'fontSize', 'fontWeight', 'lineHeight'];
-
-  async function computed(selector, properties) {
-    return appFrame.locator(selector).first().evaluate((node, props) => {
-      const style = getComputedStyle(node);
-      return Object.fromEntries(props.map((name) => [name, style[name]]));
-    }, properties);
-  }
-
-  async function assertNativeMatch(label) {
-    assert.deepEqual(
-      await computed('#pmpAutomatedPlanEntryV1', buttonProperties),
-      await computed('#control button.big:not(#pmpAutomatedPlanEntryV1)', buttonProperties),
-      `${label}: main entry does not match a native Control Room big button`
-    );
-    assert.deepEqual(
-      await computed('#pmpAutomatedPlanOverlayV1 .card', cardProperties),
-      await computed('#control > .card', cardProperties),
-      `${label}: Automated Plan card does not match the Control Room card`
-    );
-    assert.deepEqual(
-      await computed('#pmpAutomatedPlanOverlayV1 button.mini', miniProperties),
-      await computed('#colorPanel button.mini', miniProperties),
-      `${label}: Automated Plan small control does not match a native small control`
-    );
-    assert.deepEqual(
-      await computed('#pmpAutomatedPlanOverlayV1 .sub', subProperties),
-      await computed('#control > .card > .sub', subProperties),
-      `${label}: Automated Plan secondary text does not match native secondary text`
-    );
-  }
-
-  await appFrame.locator('#pmpAutomatedPlanEntryV1').click();
-  await appFrame.waitForSelector('#pmpAutomatedPlanOverlayV1', { timeout: 10000 });
-  await appFrame.waitForFunction(() => {
-    const legacy = document.getElementById('pmp-automated-plan-room-v1-style');
-    return Boolean(document.querySelector('#pmpAutomatedPlanOverlayV1 .wrap') && document.querySelector('#pmpAutomatedPlanOverlayV1 .card') && legacy && legacy.disabled);
-  }, null, { timeout: 10000 });
-
-  await assertNativeMatch('default live theme');
-
-  const profiles = [
-    {
-      name: 'high contrast',
-      vars: { '--a': '#f8d24a', '--floor': '#101010', '--card': '#202020', '--line': '#ffffff', '--text': '#ffffff', '--muted': '#f0f0f0', '--panel': '#050505', '--buttonText': '#101010', '--borderWidth': '4px', '--shadow': '0 0 0 #0000' }
-    },
-    {
-      name: 'soft contrast',
-      vars: { '--a': '#b9d9ff', '--floor': '#efe6de', '--card': '#fffaf6', '--line': '#4d5660', '--text': '#17202a', '--muted': '#45515c', '--panel': '#27313c', '--buttonText': '#17202a', '--borderWidth': '1px', '--shadow': '0 8px 20px #0002' }
-    }
-  ];
-
-  for (const profile of profiles) {
-    await appFrame.evaluate((vars) => {
-      for (const [key, value] of Object.entries(vars)) document.documentElement.style.setProperty(key, value, 'important');
-    }, profile.vars);
-    await page.waitForTimeout(500);
-    await assertNativeMatch(profile.name);
-  }
-
-  await appFrame.locator('#pmpAutomatedPlanOverlayV1 button.mini', { hasText: 'Details' }).click();
-  const detailsText = await appFrame.locator('#pmpAutomatedPlanDetailsV1').innerText();
-  assert.match(detailsText, /Internal plan\s+packet_01_5/);
-  assert.match(detailsText, /Last completed\s+pass_002/);
-  assert.match(detailsText, /Next unit\s+pass_003/);
-  assert.match(detailsText, /Zero-cost assurance\s+unverified — hosted execution blocked/);
-  assert.match(detailsText, /Execution enabled\s+no/);
-
-  await appFrame.locator('#pmpAutomatedPlanOverlayV1 button.big', { hasText: 'Back to Control Room' }).click();
-  await appFrame.waitForSelector('#pmpAutomatedPlanOverlayV1', { state: 'detached', timeout: 10000 });
+  const legacySource = await (await page.request.get(`${base}/pmp-current-inner-cleanbug-rgcontrols-v6.html?retirement-proof=${Date.now()}`)).text();
+  assert.match(legacySource, /pmp-automated-plan-room-v1\.js/);
+  assert.match(legacySource, /pmp-current-inner-cleanbug-rgcontrols-v4\.html/);
 
   console.log(JSON.stringify({
     result: 'PASS',
-    real_app: 'pmp-current-inner-cleanbug-rgcontrols-v6.html#control',
-    control_room_entry_count: 1,
-    native_style_profiles_tested: ['default live theme', ...profiles.map((p) => p.name)],
-    internal_plan: 'packet_01_5',
-    last_completed: 'pass_002',
-    next_unit: 'pass_003',
-    execution_enabled: false
+    verification: 'AUTOMATED_PLAN_UI_RETIREMENT_CURRENT_APP_COMPATIBILITY',
+    current_app: map.current_app.path,
+    current_hash: '#control',
+    current_control_room_found: true,
+    a003_bootstrap_status: bootstrap.status,
+    legacy_wrapper: 'pmp-current-inner-cleanbug-rgcontrols-v6.html',
+    legacy_wrapper_current_authority: false,
+    historical_foundation_entry: 'Automated Plan',
+    superseding_ui_owner: 'Continuous Run Dashboard',
+    execution_enabled: false,
+    pass_003_started: false
   }, null, 2));
 } finally {
   await browser.close();

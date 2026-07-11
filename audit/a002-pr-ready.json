@@ -1,0 +1,21 @@
+{
+  "draft_pr_ready": true,
+  "inventory_complete": true,
+  "a002_complete": true,
+  "a002_final_receipt_id": "PMP-A002-5dd049de-PASS-FULL-001",
+  "a002_authority_objects_audited": 65,
+  "a002_independent_route_authorities": 0,
+  "a002_unresolved": 0,
+  "a002_live_runtime_tests": "37/37",
+  "a003_complete": true,
+  "a003_final_receipt_id": "PMP-A003-5dd049de-PASS-FULL-001",
+  "a003_runtime_source_set_sha256": "2efc5aa5f3ece5b1da94e162baf7f981a636ef5f23d9c6b3f2d8a348688172e2",
+  "a003_manifest_sha256": "570c6db93da497758c6b18f53fa1e3c2b08cb1fdff761c9e54d97b87914e54d0",
+  "a003_repository_tests": "21/21",
+  "a003_adversarial_live_tests": "47/47",
+  "pr_remains_draft": true,
+  "mark_ready_authorized": false,
+  "merge_authorized": false,
+  "overall_project_pass_1_complete": false,
+  "current_stop_line": "STOP_BEFORE_MERGE"
+}

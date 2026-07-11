@@ -1,0 +1,35 @@
+{
+  "repair_id": "A-002",
+  "status": "PASS_AT_FULL_A002_EXERCISED_SCOPE",
+  "base_branch": "main",
+  "baseline_commit": "5dd049de1500ea427fa2cf395687239a19706115",
+  "goal": "Establish Current Map as the single routing authority.",
+  "phase_results": {
+    "P0": {"status":"PASS"},
+    "P1": {"status":"PASS","tests":"11/11"},
+    "P2": {"status":"PASS","tests":"16/16"},
+    "P3": {"status":"PASS","tests":"17/17"},
+    "P4": {"status":"PASS","tests":"17/17"},
+    "P5": {"status":"PASS","tests":"18/18"},
+    "P6": {"status":"PASS","tests":"21/21"},
+    "P7": {"status":"PASS","live_tests":"37/37"}
+  },
+  "final_evidence": {
+    "receipt": "audit/a002-final-receipt.json",
+    "gate": "audit/a002-p7-gate.json",
+    "route_matrix": "audit/a002-route-test-matrix.json",
+    "postpatch_census": "audit/a002-postpatch-route-authority-audit.json",
+    "independent_route_authorities": 0,
+    "unresolved": 0
+  },
+  "a003_follow_on": {
+    "status": "PASS_AT_FULL_A003_EXERCISED_SCOPE",
+    "receipt": "audit/a003-final-receipt.json",
+    "repository_tests": "21/21",
+    "adversarial_live_tests": "47/47"
+  },
+  "current_boundary": "STOP_BEFORE_MERGE",
+  "merge_authorized": false,
+  "overall_project_pass_1_complete": false,
+  "decision": "A002_AND_A003_PASS_STOP_BEFORE_MERGE"
+}

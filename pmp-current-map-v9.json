@@ -1,21 +1,11 @@
 {
-  "type": "PMP_CURRENT_APP_MAP",
-  "app_name": "PMP Current",
-  "app_version": "PMP-CURRENT-1",
-  "updated_at": "2026-07-05T02:55:00Z",
-  "historic_forward_only": true,
-  "route_guardian_loader": {
-    "path": "pmp-route-guardian-current-loader-v20.html",
-    "cache_key": "pmp-route-guardian-current-loader-v20-historic-v9-forward-20260705G",
-    "status": "historic_forward_to_current"
-  },
-  "current_app": {
-    "path": "pmp-current-reload-owner-v28.html",
-    "cache_key": "pmp-current-v28-pass7-discovery-owner-lock-20260705F",
-    "status": "current"
-  },
-  "fallback_app": {
-    "path": "pmp-current-inner-cleanbug-rgcontrols-v23.html",
-    "cache_key": "fallback-pmp-current-v23-bank-order-cache-refresh-20260704J"
-  }
+  "type": "PMP_HISTORIC_MAP_EVIDENCE_V1",
+  "historical_file": "pmp-current-map-v9.json",
+  "original_git_blob_sha": "0ca16519a6ea4d05348ee9bb38c3958d8ff2260a",
+  "status": "historic_evidence_only",
+  "canonical_map": "pmp-current-map-v12.json",
+  "executable": false,
+  "contains_current_destination_truth": false,
+  "retained_for": ["audit", "history", "rollback comparison"],
+  "rule": "This file cannot name or select a current application destination. Use the canonical Current Map."
 }

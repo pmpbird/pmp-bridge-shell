@@ -1,0 +1,32 @@
+{
+  "repair_id": "A-002",
+  "phase": "P7_FINAL_CERTIFICATION",
+  "status": "PASS_AT_FULL_A002_EXERCISED_SCOPE",
+  "receipt_id": "PMP-A002-5dd049de-PASS-FULL-001",
+  "final_receipt": "audit/a002-final-receipt.json",
+  "tested_head": "8437cadaa88428a90cb424829e70349fdad3a57e",
+  "authority_objects_audited": 65,
+  "independent_route_authorities": 0,
+  "unresolved": 0,
+  "live_runtime_tests_passed": 37,
+  "live_runtime_tests_failed": 0,
+  "live_runtime_run_id": 29150243463,
+  "source_verification_run_id": 29150243412,
+  "storage_changes": false,
+  "indexeddb_changes": false,
+  "bank_changes": false,
+  "user_content_deletions": false,
+  "cache_clearing": false,
+  "historic_file_deletions": false,
+  "rollback_required": false,
+  "A003_runtime_hash_enforcement": {
+    "status": "PASS_AT_FULL_A003_EXERCISED_SCOPE",
+    "receipt_id": "PMP-A003-5dd049de-PASS-FULL-001",
+    "repository_tests": "21/21",
+    "adversarial_live_tests": "47/47"
+  },
+  "overall_project_pass_1_complete": false,
+  "merge_authorized": false,
+  "current_stop_line": "STOP_BEFORE_MERGE",
+  "decision": "A002_AND_A003_PASS_STOP_BEFORE_MERGE"
+}

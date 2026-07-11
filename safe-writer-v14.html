@@ -13,7 +13,7 @@
 <div class="wrap">
   <div class="card">
     <h1>Safe Writer v14</h1>
-    <p class="sub">Resident is inside Safe Writer. This wrapper returns to the current app route and reads the Automatic App Update request.</p>
+    <p class="sub">Resident is inside Safe Writer. This wrapper returns through the Current Map current-app handoff and reads the Automatic App Update request.</p>
     <div class="grid"><button class="mini" onclick="toggleResident()">Resident</button><button class="mini" onclick="backToControl()">Back to Control</button></div>
     <div id="residentDock" class="residentDock hidden">
       <h2>Resident for Safe Writer</h2>
@@ -26,31 +26,36 @@
   </div>
   <iframe id="toolFrame" class="frame" src="safe-writer.html?inside=resident-v14"></iframe>
 </div>
+<script src="pmp-current-route-resolver-v1.js"></script>
 <script>
 const PACKET_KEY='pmp_clean_connection_packets_v5';
 const CORPUS_KEY='pmp_corpus_inbox_v1';
 const AUTO_KEY='pmp_auto_update_request_v20';
-const CURRENT_RETURN_PATH='pmp-current-reload-owner-v27.html';
-const CURRENT_RETURN_KEY='safe-writer-return-pass2-v26-20260703D';
+const ROUTE_RECEIPT_KEY='pmp_safe_writer_v14_route_receipt_v1';
+const resolver=window.PMPCurrentRouteResolver;
+let routeState=null;
 function $(id){return document.getElementById(id)}
 function now(){return new Date().toISOString()}
 function read(k,f){try{let v=localStorage.getItem(k);return v?JSON.parse(v):f}catch(e){return f}}
+function write(k,v){try{localStorage.setItem(k,JSON.stringify(v,null,2))}catch(e){}return v}
 function selectedPacket(){let arr=read(PACKET_KEY,[]);return arr[0]||null}
 function corpusHasPacket(pkt){let c=localStorage.getItem(CORPUS_KEY)||'';return !!(pkt&&c.includes('SOURCE: Connections / '+pkt.id))}
 function frameText(){try{let d=$('toolFrame').contentDocument;return (d&&d.body?d.body.innerText:'').slice(0,6000)}catch(e){return 'Frame text not readable: '+e.message}}
 function goodHash(x){return /^#(world|bridge|library|workshop|control|bank)$/i.test(String(x||''))}
-function returnHash(){let q=new URLSearchParams(location.search);let h=q.get('hash')||location.hash||'#control';return goodHash(h)?h:'#control'}
-function backTarget(){return CURRENT_RETURN_PATH+'?fresh='+CURRENT_RETURN_KEY+'-'+Date.now()+returnHash()}
+function returnHash(){let q=new URLSearchParams(location.search),h=q.get('return_hash')||q.get('hash')||location.hash||'#control';return goodHash(h)?h.toLowerCase():'#control'}
+async function loadRoute(){if(routeState)return routeState;if(!resolver)throw new Error('PMP Current Route Resolver did not load.');let loaded=await resolver.load(),tool=resolver.resolve(loaded.map,'tool_routes.safe_writer'),ret=resolver.resolve(loaded.map,'current_app');routeState={loaded,tool,ret};write(ROUTE_RECEIPT_KEY,{type:'PMP_SAFE_WRITER_V14_ROUTE_RECEIPT_V1',status:'MAP_ROLES_READY',tool_role:tool.role,tool_path:tool.path,return_role:ret.role,return_path:ret.path,map_path:ret.map_path,map_version:ret.map_version,route_epoch:ret.route_epoch,at:now()});return routeState}
+async function backTarget(){let s=await loadRoute(),h=resolver.normalizeHash(returnHash(),s.loaded.map);return resolver.buildUrl(s.ret,{from:'safe-writer-v14',fresh:'a002-p4-'+s.ret.route_epoch+'-'+Date.now(),map_version:s.ret.map_version,route_epoch:s.ret.route_epoch},h)}
 function goTop(url){try{window.top.location.href=url}catch(e){location.href=url}}
-function backToControl(){goTop(backTarget())}
+async function backToControl(){try{goTop(await backTarget())}catch(error){let d=resolver?resolver.diagnostic(error,'safe_writer_return'):{type:'PMP_ROUTE_FAIL_CLOSED_DIAGNOSTIC_V1',context:'safe_writer_return',message:String(error&&error.message||error),action:'navigation_blocked_no_fallback_consulted'};write(ROUTE_RECEIPT_KEY,{type:'PMP_SAFE_WRITER_V14_ROUTE_RECEIPT_V1',status:'FAIL_CLOSED',diagnostic:d,at:now()});$('residentOut').className='warn';$('residentOut').textContent=JSON.stringify(d,null,2)}return false}
 try{window.addEventListener('pageshow',function(){if(window.top!==window&&/auto_return=1/.test(location.search))setTimeout(function(){backToControl()},500)})}catch(e){}
-function safeWriterBank(){let keys=['pmp_code_safety_bank_v1','pmp_safe_writer_last_good_v3',AUTO_KEY];let out={};keys.forEach(k=>{let v=localStorage.getItem(k)||'';let parsed=null;try{parsed=v?JSON.parse(v):null}catch(e){parsed=v||null}out[k]={exists:!!v,size:v.length,value:k===AUTO_KEY?parsed:undefined}});return out}
-function context(){let pkt=selectedPacket();return{type:'PMP_SAFE_WRITER_RESIDENT_CONTEXT_V14',built_at:now(),tool:'Safe Writer',tool_role:'protected app edits and Safe Update Transaction',entry_url:location.href,back_target:backTarget(),return_rule:'Always return through the top window to the current reload owner, never inside an old inner shell.',tool_frame_text:frameText(),local_storage_status:safeWriterBank(),selected_packet:pkt?{id:pkt.id,name:pkt.name,quality:pkt.quality,official:!!pkt.official}:null,corpus_status:{selected_packet_sent:corpusHasPacket(pkt),corpus_has_any_content:!!(localStorage.getItem(CORPUS_KEY)||'').trim()},safe_boundary:'Resident can guide and copy handoff only. Safe Writer still performs protected edits/transactions.'}}
-function answer(q){let ctx=context();let auto=ctx.local_storage_status[AUTO_KEY];let a='I am inside Safe Writer v14. I can see the Safe Writer frame, safety-bank status, automatic update request, selected packet context, and Corpus status. ';a+='Back target is '+ctx.back_target+'. ';if(auto&&auto.exists)a+='I see an Automatic App Update request staged from Control Room. ';else a+='I do not see an Automatic App Update request yet. ';if(ctx.selected_packet)a+='Selected packet: '+ctx.selected_packet.name+' quality '+ctx.selected_packet.quality+'. ';a+='Next: use Safe Writer only for protected app edits or promotion through Safe Update Transaction.';return{type:'PMP_SAFE_WRITER_RESIDENT_RESPONSE_V14',built_at:now(),question:q||'',resident_answer:a,context:ctx,next:'Use Safe Writer for protected edits only; copy handoff if you want ChatGPT to inspect the state.'}}
+function safeWriterBank(){let keys=['pmp_code_safety_bank_v1','pmp_safe_writer_last_good_v3',AUTO_KEY];let out={};keys.forEach(k=>{let v=localStorage.getItem(k)||'',parsed=null;try{parsed=v?JSON.parse(v):null}catch(e){parsed=v||null}out[k]={exists:!!v,size:v.length,value:k===AUTO_KEY?parsed:undefined}});return out}
+function context(){let pkt=selectedPacket(),r=routeState;return{type:'PMP_SAFE_WRITER_RESIDENT_CONTEXT_V14',built_at:now(),tool:'Safe Writer',tool_role:'protected app edits and Safe Update Transaction',entry_url:location.href,route_authority:r&&r.ret?r.ret.map_path:'loading',return_role:r&&r.ret?r.ret.role:'current_app',return_path:r&&r.ret?r.ret.path:null,return_hash:returnHash(),return_rule:'Return through Current Map current_app handoff; never select an old Reload Owner.',tool_frame_text:frameText(),local_storage_status:safeWriterBank(),selected_packet:pkt?{id:pkt.id,name:pkt.name,quality:pkt.quality,official:!!pkt.official}:null,corpus_status:{selected_packet_sent:corpusHasPacket(pkt),corpus_has_any_content:!!(localStorage.getItem(CORPUS_KEY)||'').trim()},safe_boundary:'Resident can guide and copy handoff only. Safe Writer still performs protected edits/transactions.'}}
+function answer(q){let ctx=context(),auto=ctx.local_storage_status[AUTO_KEY],a='I am inside Safe Writer v14. I can see the Safe Writer frame, safety-bank status, automatic update request, selected packet context, and Corpus status. ';a+='Return role is '+ctx.return_role+' through '+String(ctx.route_authority)+'. ';if(auto&&auto.exists)a+='I see an Automatic App Update request staged from Control Room. ';else a+='I do not see an Automatic App Update request yet. ';if(ctx.selected_packet)a+='Selected packet: '+ctx.selected_packet.name+' quality '+ctx.selected_packet.quality+'. ';a+='Next: use Safe Writer only for protected app edits or promotion through Safe Update Transaction.';return{type:'PMP_SAFE_WRITER_RESIDENT_RESPONSE_V14',built_at:now(),question:q||'',resident_answer:a,context:ctx,next:'Use Safe Writer for protected edits only; copy handoff if you want ChatGPT to inspect the state.'}}
 function toggleResident(){let d=$('residentDock');d.classList.toggle('hidden');if(!d.classList.contains('hidden'))refreshContext()}
 function refreshContext(){$('residentOut').textContent=JSON.stringify({status:'CONTEXT_REFRESHED',context:context()},null,2)}
 function askResident(){$('residentOut').textContent=JSON.stringify(answer($('ask').value.trim()),null,2)}
 async function copyHandoff(){let out={type:'PMP_SAFE_WRITER_RESIDENT_HANDOFF_V14',message:$('ask').value.trim(),context:context()};try{await navigator.clipboard.writeText(JSON.stringify(out,null,2));$('residentOut').textContent='Safe Writer Resident handoff copied.'}catch(e){$('residentOut').textContent=JSON.stringify(out,null,2)}}
+loadRoute().catch(error=>{let d=resolver?resolver.diagnostic(error,'safe_writer_boot'):{type:'PMP_ROUTE_FAIL_CLOSED_DIAGNOSTIC_V1',context:'safe_writer_boot',message:String(error&&error.message||error),action:'navigation_blocked_no_fallback_consulted'};write(ROUTE_RECEIPT_KEY,{type:'PMP_SAFE_WRITER_V14_ROUTE_RECEIPT_V1',status:'FAIL_CLOSED',diagnostic:d,at:now()})});
 </script>
 </body>
 </html>

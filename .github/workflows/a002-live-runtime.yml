@@ -1,0 +1,71 @@
+name: A-002 Live Runtime Matrix
+
+on:
+  push:
+    branches:
+      - agent/a002-current-map-single-authority
+    paths-ignore:
+      - 'audit/**/*.json'
+      - 'audit/**/*.md'
+      - 'audit/**/*.marker'
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - 'audit/**/*.json'
+      - 'audit/**/*.md'
+      - 'audit/**/*.marker'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Start repository server
+        run: |
+          python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/a002-http.log 2>&1 &
+          echo $! > /tmp/a002-http.pid
+          for i in $(seq 1 30); do
+            curl -fsS http://127.0.0.1:8000/pmp-current-map-v12.json >/dev/null && exit 0
+            sleep 1
+          done
+          cat /tmp/a002-http.log
+          exit 1
+
+      - name: Run live runtime matrix
+        env:
+          A002_BASE_URL: http://127.0.0.1:8000/
+          A002_RESULT_PATH: a002-live-runtime-results.json
+        run: |
+          set +e
+          node audit/a002-live-runtime.cjs 2>&1 | tee a002-live-runtime-console.log
+          code=${PIPESTATUS[0]}
+          exit $code
+
+      - name: Upload live runtime result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a002-live-runtime-results
+          path: |
+            a002-live-runtime-results.json
+            a002-live-runtime-console.log
+            /tmp/a002-http.log
+          if-no-files-found: warn

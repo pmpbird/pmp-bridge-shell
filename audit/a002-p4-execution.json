@@ -1,0 +1,26 @@
+{
+  "type": "PMP_A002_P4_EXECUTION_V1",
+  "repair_id": "A-002",
+  "phase": "P4",
+  "status": "PASS",
+  "baseline_commit": "5dd049de1500ea427fa2cf395687239a19706115",
+  "phase_base_commit": "39be29dd276e7bbb9ff2ab8d13a4bd366237222d",
+  "source_head_commit": "ec855a6ad86d348154ebe6393e986eae3eb3bf65",
+  "mutations": [
+    {"path":"pmp-safe-writer-current-return-fix-v1.js","preimage_git_blob_sha":"5919199340d1dca357c7fd882bb7b3b029c16e5c","postimage_git_blob_sha":"45db6422099795b68552604e19570653efd28e49","job":"Open Safe Writer from Current Map tool role and declare current_app as return role."},
+    {"path":"safe-writer-v14.html","preimage_git_blob_sha":"f7d71894e9a8f2caf6fe11e77468537f0317da0c","postimage_git_blob_sha":"4748469fc4e2ec0e9acf670910d6d48ee224246f","job":"Return through Current Map current_app while preserving Resident, staged requests, packet/corpus context, and safety-bank reads."},
+    {"path":"code-safety-v13.html","preimage_git_blob_sha":"0347ff32b2ea149806ec74ee418ed0f8e827a772","postimage_git_blob_sha":"3b624558a79eb36baacf85c3a0f2b9575d9246c2","job":"Replace absent pmp-clean-v13 return with Current Map current_app while preserving Code Safety workspace and bank reads."},
+    {"path":"pmp-safe-writer-canonical-route-v1.js","preimage_git_blob_sha":"64945b576e7a363d1b7bf7569eb7e9d68550ce3a","postimage_git_blob_sha":"298b7f6fe63ddf5c1c885ef8b1043043e3497dc2","job":"Validate in-shell Safe Writer against Current Map and open Code Safety from the map tool role without changing editor or transaction behavior."},
+    {"path":"pmp-route-guardian-action-v2.html","preimage_git_blob_sha":"f4064748ee546b825c5314dc0dc371f994493b47","postimage_git_blob_sha":"209a1bb5a6d9b72b8fffa3e31d1eb038bfefd395","job":"Resolve inner action target, Code Safety, and current-app return through Current Map."},
+    {"path":"pmp-current-inner-cleanbug-rgcontrols-v2.html","preimage_git_blob_sha":"749189da1047aeb7805534beb31cc0643cfe14c1","postimage_git_blob_sha":"4d1c976f25b747882d1a4588efbff366a26cefbc","job":"Resolve Home, Bug Memory, and Route Guardian Action through Current Map."}
+  ],
+  "phase_diff": {"commit_count":6,"changed_file_count":6,"unexpected_files":[],"files":["pmp-safe-writer-current-return-fix-v1.js","safe-writer-v14.html","code-safety-v13.html","pmp-safe-writer-canonical-route-v1.js","pmp-route-guardian-action-v2.html","pmp-current-inner-cleanbug-rgcontrols-v2.html"]},
+  "effects": {"storage_schema_changes":0,"storage_clear_operations":0,"indexeddb_changes":0,"bank_rebuilds":0,"staged_tool_content_changes":0,"cache_clear_operations":0,"historic_file_deletions":0},
+  "rollback_group": "RG-P4",
+  "rollback_ready": true,
+  "rollback_required": false,
+  "p5_eligible": true,
+  "p5_executed": false,
+  "merge_authorized": false,
+  "decision": "PASS_P4_TOOL_ROUTE_DELEGATION_CONTINUE_TO_P5"
+}
