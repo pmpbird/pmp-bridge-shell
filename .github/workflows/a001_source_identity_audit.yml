@@ -1,7 +1,13 @@
 name: A-001 Source Identity Audit
 
-# Synchronization marker: workflow introduced before this commit.
 on:
+  push:
+    branches:
+      - agent/a001-freeze-source-identity
+    paths:
+      - 'audit/a001_source_identity_audit.py'
+      - 'audit/pmp-active-source-identity-manifest-v1.json'
+      - '.github/workflows/a001_source_identity_audit.yml'
   pull_request:
     branches: [main]
     paths:
