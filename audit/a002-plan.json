@@ -1,0 +1,1 @@
+{"repair_id":"A-002","status":"PLANNING_ONLY","base_branch":"main","depends_on":"A-001","goal":"Establish Current Map as the single routing authority.","constraints":["No runtime behavior changes","No route patches","No storage changes","No Bank rebuild","No app mutations until A-002 planning and evidence are complete"]}
