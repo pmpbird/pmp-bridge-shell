@@ -1,0 +1,67 @@
+{
+  "type": "PMP_A002_CURRENT_MAP_ENFORCEMENT_BOUNDARY_V1",
+  "repair_id": "A-002",
+  "baseline": {
+    "branch": "agent/a001-freeze-source-identity",
+    "main_source_commit": "5dd049de1500ea427fa2cf395687239a19706115"
+  },
+  "current_map": {
+    "path": "pmp-current-map-v12.json",
+    "git_blob_sha": "cfbbba5bd0d15da03b6b31258a1f5ca13bd5ab0d",
+    "sha256": "c2a89dbedc5dfbc1eeb56c6364cbb6a919d74691cf44602da65db85b30aa8e3b",
+    "expected_type": "PMP_CURRENT_APP_MAP",
+    "expected_version": "PMP-CURRENT-1"
+  },
+  "authorized_route_entries": {
+    "route_guardian_loader": "pmp-route-guardian-current-loader-v22.html",
+    "current_app": "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html",
+    "fallback_app": "pmp-current-inner-cleanbug-rgcontrols-v23.html"
+  },
+  "active_route_actors": [
+    {
+      "path": "pmp-route-guardian-current-loader-v22.html",
+      "finding": "Reads v12, then silently downgrades to v11/v10 and a hard-coded v29 target."
+    },
+    {
+      "path": "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html",
+      "finding": "Does not independently validate Current Map; marker failure silently continues."
+    },
+    {
+      "path": "pmp-current-screen-pointer-v1.js",
+      "finding": "Reads obsolete Current Map v9 and falls back to hard-coded Reload Owner v27."
+    },
+    {
+      "path": "pmp-reload-world-from-map-v1.js",
+      "finding": "Hard-codes obsolete Route Guardian v21."
+    },
+    {
+      "path": "pmp-route-guardian-last-good-clean-v1.js",
+      "finding": "Stores and opens hard-coded or arbitrary local route targets outside Current Map."
+    },
+    {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+      "finding": "Loads v23 through a hard-coded path even though v23 is the map-registered fallback target."
+    }
+  ],
+  "implementation_boundary": [
+    "Add one shared read-only Current Map validation API.",
+    "Validate exact map SHA-256, type, and expected version before navigation.",
+    "Allow navigation only to route_guardian_loader, current_app, or fallback_app entries from the validated map.",
+    "Record append-only PMP_CURRENT_MAP_ENFORCEMENT_RECEIPT_V1 evidence.",
+    "Require Route Guardian and Reload Owner to report the same map SHA and current target.",
+    "Make fallback activation explicit and map-governed; never silently downgrade."
+  ],
+  "forbidden": [
+    "changing Current Map contents or route targets",
+    "removing fallback",
+    "silent fallback",
+    "cache clearing",
+    "storage clearing or migration",
+    "IndexedDB clearing",
+    "Bank rebuild",
+    "broad visual patching",
+    "Pass 9 or Continuous Run Bank feature work"
+  ],
+  "status": "PRE_EXECUTION_BOUNDARY_LOCKED",
+  "a002_decision": "OPEN_NOT_YET_PASSED"
+}
