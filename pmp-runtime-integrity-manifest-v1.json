@@ -7750,9 +7750,9 @@
   ],
   "runtime_source_set_sha256": "2efc5aa5f3ece5b1da94e162baf7f981a636ef5f23d9c6b3f2d8a348688172e2",
   "self_digest_for_generated_bytes": {
-    "sha256_base64": "jRTFSDhPMPG0txd7jY+mjv3t3ZORfYbzEYqOOljCDUM=",
-    "sha256_hex": "8d14c548384f30f1b4b7177b8d8fa68efdeddd93917d86f3118a8e3a58c20d43",
-    "sri": "sha256-jRTFSDhPMPG0txd7jY+mjv3t3ZORfYbzEYqOOljCDUM="
+    "sha256_base64": "xlxjPaI6s2jDKT4mkOXDJ2GMkqgOucJF68mtW6CrwN0=",
+    "sha256_hex": "c65c633da23ab368c3293e2690e5c327618c92a80eb9c245ebc9ad5ba0abc0dd",
+    "sri": "sha256-xlxjPaI6s2jDKT4mkOXDJ2GMkqgOucJF68mtW6CrwN0="
   },
   "source_identity_rule": "Deterministic digest of protected local, historical, external, root-anchor, and policy identities; audit/workflow-only commits do not alter this identity.",
   "type": "PMP_RUNTIME_INTEGRITY_MANIFEST_V1",
