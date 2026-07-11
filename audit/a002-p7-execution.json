@@ -1,0 +1,91 @@
+{
+  "type": "PMP_A002_P7_EXECUTION_V1",
+  "repair_id": "A-002",
+  "phase": "P7",
+  "status": "PASS",
+  "baseline_commit": "5dd049de1500ea427fa2cf395687239a19706115",
+  "tested_runtime_head": "d8af5303d472a567eb31852e9c7009a385fbc3be",
+  "tested_head": "8437cadaa88428a90cb424829e70349fdad3a57e",
+  "source_changes": [
+    {
+      "path": "pmp-current-map-v12.json",
+      "pre_p7_git_blob_sha": "8003daa8fbf74f5d222b536e58db7701a9fae025",
+      "final_git_blob_sha": "655416f0ae7750a16ac15fb93a1ab62890491af7",
+      "job": "Synchronize final P5/P6 authority classifications and seal P7 live-runtime status without changing the tested route epoch."
+    },
+    {
+      "path": "pmp-current-route-resolver-v1.js",
+      "pre_p7_git_blob_sha": "0c9bafee16fbdfef04356eddced7def3386365e1",
+      "final_git_blob_sha": "7c119407b4f42d1b7436577110db4f04a5737802",
+      "job": "Attach explicit Current Map authority metadata and carry immutable requested_hash through runtime-chain handoffs."
+    },
+    {
+      "path": "pmp-pass75-reload-runtime-platform-gate-v1.js",
+      "final_git_blob_sha": "c84ab1f02e432505ccb33d36fed92bb5caea550c",
+      "job": "Auto-release the certified runtime gate during normal startup while preserving manual diagnostic mode."
+    },
+    {
+      "path": "pmp-service-worker-cache-governor-v1.js",
+      "final_git_blob_sha": "d49eb82efc2910fd13d2b1727f33d6c0a006b749",
+      "job": "Reply to live status requests through MessagePort or client source while preserving network-first transport policy."
+    },
+    {
+      "path": "pmp-home-single-v6.html",
+      "pre_p7_git_blob_sha": "555ba25bf74e8e5b8ea715989ce135943f463f92",
+      "final_git_blob_sha": "41ca3dd88f70abc12718d8228ff3004efd77b538",
+      "job": "Reassert the immutable map-issued requested screen after historical Home payload restoration."
+    },
+    {
+      "path": "audit/a002-live-runtime.cjs",
+      "final_git_blob_sha": "1ef18842c642df24f3e4078e61f4f560fdc74d24",
+      "job": "Execute the 37-check Chromium runtime matrix and preserve complete diagnostics on failure."
+    },
+    {
+      "path": ".github/workflows/a002-live-runtime.yml",
+      "final_git_blob_sha": "282b46a1133053dee2db9e85c243e79adcf10c50",
+      "job": "Run the Chromium matrix on runtime/test changes while ignoring audit-only receipt churn."
+    }
+  ],
+  "retained_failed_run_history": [
+    {"run_id": 29149445291, "result": "FAIL", "finding": "Initial harness exited before protected result output; diagnostic hardening required."},
+    {"run_id": 29149568089, "result": "FAIL", "finding": "Normal startup runtime gate did not release its callback."},
+    {"run_id": 29149642585, "result": "FAIL", "finding": "Service Worker status handshake timed out after 36 live checks passed."},
+    {"run_id": 29149881231, "result": "FAIL", "finding": "Strengthened hash assertion exposed mutable screen loss."},
+    {"run_id": 29150089910, "result": "FAIL", "finding": "Sealed-map run exposed historical Home payload changing Library to Bridge."}
+  ],
+  "successful_live_runtime": {
+    "run_id": 29150243463,
+    "job_id": 86538473100,
+    "head_sha": "8437cadaa88428a90cb424829e70349fdad3a57e",
+    "tests_total": 37,
+    "tests_passed": 37,
+    "tests_failed": 0,
+    "fatal_error": null,
+    "artifact_id": 8247957279,
+    "artifact_digest": "sha256:9e687eeaf37063f08dde822272bff976fb2b4d8dab0985a896901cfbd26c9d64"
+  },
+  "source_census": {
+    "path": "audit/a002-postpatch-route-authority-audit.json",
+    "original_objects": 65,
+    "independent_route_authorities": 0,
+    "unresolved": 0
+  },
+  "source_verification": {
+    "run_id": 29150243412,
+    "verify_job": "success",
+    "receipt_job": "success"
+  },
+  "effects": {
+    "storage_schema_changes": 0,
+    "storage_clear_operations": 0,
+    "indexeddb_changes": 0,
+    "bank_rebuilds": 0,
+    "user_content_deletions": 0,
+    "cache_clear_operations": 0,
+    "historic_file_deletions": 0
+  },
+  "a003_runtime_source_byte_enforcement": false,
+  "rollback_required": false,
+  "merge_authorized": false,
+  "decision": "PASS_P7_FULL_A002_EXERCISED_SCOPE_STOP_BEFORE_MERGE_AND_A003"
+}
