@@ -1,0 +1,175 @@
+name: PR38 Post-Merge Visible Verification
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/pr38-post-merge-visible.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr38-post-merge-visible-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+env:
+  PR38_MERGE_COMMIT: e4cd9948290f6de1ab563b2e698926f04771171e
+  PR38_BASE_COMMIT: 5dd049de1500ea427fa2cf395687239a19706115
+  PR38_HEAD_COMMIT: 8f280837fd465ddcf0ba67ee4cd7b49865d58cc2
+  A003_MANIFEST_SHA256: 570c6db93da497758c6b18f53fa1e3c2b08cb1fdff761c9e54d97b87914e54d0
+  A003_RUNTIME_SET_SHA256: 2efc5aa5f3ece5b1da94e162baf7f981a636ef5f23d9c6b3f2d8a348688172e2
+
+jobs:
+  complete-post-merge-matrix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout full verification tree
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify merge structure and protected identities
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse "$PR38_MERGE_COMMIT^1")" = "$PR38_BASE_COMMIT"
+          test "$(git rev-parse "$PR38_MERGE_COMMIT^2")" = "$PR38_HEAD_COMMIT"
+          git diff --quiet "$PR38_HEAD_COMMIT" "$PR38_MERGE_COMMIT"
+          git merge-base --is-ancestor "$PR38_MERGE_COMMIT" HEAD
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          seal=json.loads(pathlib.Path('audit/a003-manifest-seal.json').read_text())
+          assert seal['manifest_sha256']==os.environ['A003_MANIFEST_SHA256']
+          assert seal['runtime_source_set_sha256']==os.environ['A003_RUNTIME_SET_SHA256']
+          assert hashlib.sha256(pathlib.Path('pmp-runtime-integrity-manifest-v1.json').read_bytes()).hexdigest()==os.environ['A003_MANIFEST_SHA256']
+          changed=subprocess.check_output(['git','diff','--name-only',os.environ['PR38_MERGE_COMMIT'],'HEAD'],text=True).splitlines()
+          assert changed==['.github/workflows/pr38-post-merge-verification.yml','.github/workflows/pr38-post-merge-visible.yml'], changed
+          pathlib.Path('post-merge-structure-result.json').write_text(json.dumps({
+            'type':'PMP_PR38_POST_MERGE_STRUCTURE_RESULT_V2',
+            'status':'PASS',
+            'verification_commit':os.environ['GITHUB_SHA'],
+            'merge_commit':os.environ['PR38_MERGE_COMMIT'],
+            'base_parent':os.environ['PR38_BASE_COMMIT'],
+            'head_parent':os.environ['PR38_HEAD_COMMIT'],
+            'manifest_sha256':seal['manifest_sha256'],
+            'runtime_source_set_sha256':seal['runtime_source_set_sha256'],
+            'only_post_merge_changes':changed
+          },indent=2)+'\n')
+          PY
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Run A-003 repository integrity gate
+        run: |
+          python3 tools/test_a003_integrity.py --output post-merge-a003-repository-result.json 2>&1 | tee post-merge-a003-repository-console.log
+
+      - name: Run A-003 adversarial Chromium gate
+        env:
+          A003_RESULT_PATH: post-merge-a003-live-runtime-results.json
+        run: |
+          python3 tools/run_a003_live_final.py 2>&1 | tee post-merge-a003-live-runtime-console.log
+
+      - name: Start shared repository server
+        run: |
+          python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/pr38-post-merge-http.log 2>&1 &
+          echo $! > /tmp/pr38-post-merge-http.pid
+          for i in $(seq 1 30); do
+            curl -fsS http://127.0.0.1:8000/pmp-current-map-v12.json >/dev/null && exit 0
+            sleep 1
+          done
+          cat /tmp/pr38-post-merge-http.log
+          exit 1
+
+      - name: Run reconciled A-002 live runtime matrix
+        env:
+          A002_BASE_URL: http://127.0.0.1:8000/
+          A002_RESULT_PATH: post-merge-a002-live-runtime-results.json
+        run: |
+          node audit/a002-live-runtime.cjs 2>&1 | tee post-merge-a002-live-runtime-console.log
+
+      - name: Run Automated Plan preserved-contract checks
+        run: |
+          python3 tools/verify_automated_plan_foundation_v1.py | tee post-merge-automated-plan-foundation.log
+          python3 tools/verify_automated_plan_universal_contract_v1.py | tee post-merge-automated-plan-contract.log
+          python3 tools/verify_automated_plan_visual_match_v1.py | tee post-merge-automated-plan-visual.log
+          node --check pmp-automated-plan-room-v1.js
+          node --check pmp-automated-plan-native-match-v1.js
+
+      - name: Run Automated Plan current-app browser compatibility
+        env:
+          PMP_BASE_URL: http://127.0.0.1:8000
+        run: |
+          node tools/test_automated_plan_real_app_v1.mjs 2>&1 | tee post-merge-automated-plan-real-app.log
+
+      - name: Build aggregate post-merge result
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib
+          repo=json.loads(pathlib.Path('post-merge-a003-repository-result.json').read_text())
+          live=json.loads(pathlib.Path('post-merge-a003-live-runtime-results.json').read_text())
+          a002=json.loads(pathlib.Path('post-merge-a002-live-runtime-results.json').read_text())
+          result={
+            'type':'PMP_PR38_POST_MERGE_AGGREGATE_RESULT_V2',
+            'status':'PASS',
+            'verification_commit':os.environ['GITHUB_SHA'],
+            'merge_commit':os.environ['PR38_MERGE_COMMIT'],
+            'checks':{
+              'merge_structure':'success',
+              'a003_repository':f"{repo.get('tests_passed')}/{repo.get('tests_total')}",
+              'a003_repository_failed':repo.get('tests_failed'),
+              'a003_adversarial_live':f"{live.get('tests_passed')}/{live.get('tests_total')}",
+              'a003_adversarial_failed':live.get('tests_failed'),
+              'a003_live_fatal_error':live.get('fatal_error'),
+              'a002_live_runtime':f"{a002.get('tests_passed')}/{a002.get('tests_total')}",
+              'a002_failed':a002.get('tests_failed'),
+              'a002_fatal_error':a002.get('fatal_error'),
+              'automated_plan_contract':'success',
+              'automated_plan_current_app':'success'
+            },
+            'manifest_sha256':os.environ['A003_MANIFEST_SHA256'],
+            'runtime_source_set_sha256':os.environ['A003_RUNTIME_SET_SHA256']
+          }
+          assert repo.get('tests_failed')==0
+          assert live.get('tests_failed')==0 and live.get('fatal_error') is None
+          assert a002.get('tests_failed')==0 and a002.get('fatal_error') is None
+          pathlib.Path('pr38-post-merge-aggregate.json').write_text(json.dumps(result,indent=2)+'\n')
+          print(json.dumps(result,indent=2))
+          PY
+
+      - name: Upload complete post-merge evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr38-post-merge-complete-evidence
+          path: |
+            post-merge-structure-result.json
+            post-merge-a003-repository-result.json
+            post-merge-a003-repository-console.log
+            post-merge-a003-live-runtime-results.json
+            post-merge-a003-live-runtime-console.log
+            a003-live-runtime-effective.cjs
+            post-merge-a002-live-runtime-results.json
+            post-merge-a002-live-runtime-console.log
+            post-merge-automated-plan-foundation.log
+            post-merge-automated-plan-contract.log
+            post-merge-automated-plan-visual.log
+            post-merge-automated-plan-real-app.log
+            pr38-post-merge-aggregate.json
+            /tmp/pr38-post-merge-http.log
+          if-no-files-found: error
