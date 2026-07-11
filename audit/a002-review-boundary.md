@@ -1,20 +1,22 @@
 # A-002 Review Boundary
 
-P0, P1, and P2 are complete within their recorded tested scopes.
+P0, P1, P2, and P3 are complete within their recorded tested scopes.
 
-P2 review result:
+P3 review result:
 
-- Reload Owner resolves inner-v30 and the live-update marker through Current Map.
-- The marker is revision-only and cannot name a destination.
-- Inner-v30, inner-v23, inner-v4, and inner-v3 obtain their next runtime roles from Current Map.
-- Inner-v3 obtains Home, Bug Memory, Route Guardian Action, and Resident from Current Map.
-- Home obtains its historical payload commit and repository path from Current Map.
-- The P2 gate passed 16 of 16 source and simulated route-contract checks.
+- `pmp-current-screen-pointer-v1.js` owns the single canonical Reload Current API.
+- The canonical API captures the current screen and Bank detail snapshot, resolves Current Map, and navigates through the map-issued `current_app` handoff.
+- The map-declared Guardian role is resolved as policy evidence.
+- Reload World, Launcher Reload Bridge, and the v2 reload guard are delegate-only interceptors.
+- No active P3 source fetches v11, v10, v9, or the unversioned map.
+- No P3 source names an old Guardian, Reload Owner, or application fallback.
+- Rapid repeated calls share one busy lock and are recorded as duplicate-blocked.
+- The P3 gate passed 17 of 17 source and simulated reload-contract checks.
 
 Environment boundary:
 
-- No local authenticated checkout was available.
-- The container could not resolve github.com.
-- No live mobile-browser, service-worker network, or historical-payload network exercise was performed.
+- No live six-screen click-through was performed.
+- No live mobile-browser or service-worker network exercise was available.
+- Full A-002 certification is not claimed.
 
-P3 remains unexecuted and requires a separate explicit instruction.
+P4 remains unexecuted and requires a separate explicit instruction.
