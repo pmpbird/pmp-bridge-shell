@@ -23,6 +23,7 @@
   "cache_clearing": false,
   "p4_eligible": true,
   "p4_executed": false,
+  "current_stop_line": "STOP_BEFORE_P4",
   "next_permitted_action": "P4 tool returns and manual route actions only after separate explicit authorization",
   "merge_authorized": false,
   "decision": "PASS_P3_STOP_BEFORE_P4"
