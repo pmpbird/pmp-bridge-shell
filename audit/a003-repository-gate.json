@@ -1,0 +1,48 @@
+{
+  "type": "PMP_A003_REPOSITORY_GATE_V1",
+  "repair_id": "A-003",
+  "status": "PASS",
+  "tested_head": "f2ed35ff4a9c7b764e6bf60d5a15be04e4c974dd",
+  "workflow": {
+    "name": "A-003 Final Certification",
+    "run_id": 29160312887,
+    "job_id": 86564162395,
+    "conclusion": "success",
+    "artifact_id": 8250616332,
+    "artifact_name": "a003-final-repository-result",
+    "artifact_digest": "sha256:9232c90d2eb2b185ebd3ffa2d33a59e9db2392a480230b4d81dc32f8b7ad7372"
+  },
+  "result": {
+    "type": "PMP_A003_REPOSITORY_TEST_RESULT_V1",
+    "tests_total": 21,
+    "tests_passed": 21,
+    "tests_failed": 0,
+    "decision": "PASS_REPOSITORY_INTEGRITY_GATE"
+  },
+  "manifest": {
+    "path": "pmp-runtime-integrity-manifest-v1.json",
+    "version": "20260711A-A003-FINAL",
+    "sha256": "570c6db93da497758c6b18f53fa1e3c2b08cb1fdff761c9e54d97b87914e54d0",
+    "bytes": 367971,
+    "runtime_source_set_sha256": "2efc5aa5f3ece5b1da94e162baf7f981a636ef5f23d9c6b3f2d8a348688172e2",
+    "local_runtime_records": 697,
+    "current_map_paths": 42,
+    "external_sri_records": 3,
+    "historical_records": 1
+  },
+  "proved": [
+    "Manifest bytes match the seal and bootstrap digest.",
+    "The bootstrap root is explicit, excluded from self-enforcement, and truthfully classified as non-self-verifiable.",
+    "All 697 manifest records exactly match repository bytes, Git blob identities, and lengths.",
+    "The generated runtime set and manifest set are identical: no unlisted or stale records.",
+    "All 42 Current Map paths have exact records.",
+    "Current Map requires SHA-256 runtime integrity and fail-closed handling.",
+    "Historical Home Git-object bytes match the manifest and Current Map digest.",
+    "All three cross-origin script sources have exact SHA-256 SRI records and declared consumers.",
+    "No protected downstream source can register or replace the integrity Service Worker.",
+    "The worker blocks digest mismatches and unlisted executable sources.",
+    "The resolver requires manifest-backed role records.",
+    "No A-003 runtime file clears storage, deletes IndexedDB, rebuilds Bank data, or deletes user content."
+  ],
+  "decision": "PASS_A003_REPOSITORY_GATE"
+}
