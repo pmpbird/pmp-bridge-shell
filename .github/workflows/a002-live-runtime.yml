@@ -4,9 +4,17 @@ on:
   push:
     branches:
       - agent/a002-current-map-single-authority
+    paths-ignore:
+      - 'audit/**/*.json'
+      - 'audit/**/*.md'
+      - 'audit/**/*.marker'
   pull_request:
     branches:
       - main
+    paths-ignore:
+      - 'audit/**/*.json'
+      - 'audit/**/*.md'
+      - 'audit/**/*.marker'
   workflow_dispatch:
 
 permissions:
