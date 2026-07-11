@@ -26,7 +26,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Write latest folder
+      - name: Write latest folder only when source payload changes
         uses: actions/github-script@v7
         with:
           script: |
@@ -42,7 +42,9 @@ jobs:
             function ensure(filePath) { fs.mkdirSync(path.dirname(filePath), { recursive: true }); }
             function writeJson(filePath, data) { ensure(filePath); fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n'); }
             function readJson(filePath) { return JSON.parse(fs.readFileSync(filePath, 'utf8')); }
+            function readJsonIf(filePath) { try { return readJson(filePath); } catch { return null; } }
             function bodyHash(body) { return crypto.createHash('sha256').update(String(body || '')).digest('hex'); }
+            function canonical(data) { return JSON.stringify(data); }
             function payloadFrom(body) {
               const first = body.indexOf('{');
               if (first < 0) throw new Error('No JSON payload found.');
@@ -66,16 +68,29 @@ jobs:
             const payload = payloadFrom(comment.body || '');
             const report = payload.type === 'PMP_LOSSLESS_VAULT_WRITE_PACKET' ? payload.report : payload;
             if (!report || report.type !== 'PMP_LOSSLESS_REPORT_WITH_INVENTORY_EYES') throw new Error('Latest payload does not contain the expected report.');
+            const incomingBodyHash = bodyHash(comment.body || '');
+            const existingPacket = readJsonIf(`${LATEST}/packet.json`);
+            const existingReport = readJsonIf(`${LATEST}/report.json`);
+            const existingMeta = readJsonIf(`${LATEST}/metadata.json`);
+            if (existingPacket && existingReport && existingMeta &&
+                canonical(existingPacket) === canonical(payload) &&
+                canonical(existingReport) === canonical(report) &&
+                existingMeta.comment_id === comment.id &&
+                existingMeta.body_hash === incomingBodyHash) {
+              core.info('Vault latest payload is unchanged; preserving sealed bytes and skipping commit.');
+              return;
+            }
+            const sourceUpdatedAt = comment.updated_at || comment.created_at || payload.built_at || report.built_at || new Date().toISOString();
             const meta = {
               type: 'PMP_VAULT_LATEST_FOLDER_METADATA',
-              version: '1.1.0-edited-comment-trigger',
-              updated_at: new Date().toISOString(),
+              version: '1.2.0-stable-source-identity',
+              updated_at: sourceUpdatedAt,
               storage_policy: 'rewrite_four_latest_files_only',
               source_kind: 'github_issue_inbox_comment',
               issue: `https://github.com/${owner}/${repo}/issues/${issue_number}`,
               comment_url: comment.html_url || `https://github.com/${owner}/${repo}/issues/${issue_number}#issuecomment-${comment.id}`,
               comment_id: comment.id,
-              body_hash: bodyHash(comment.body || ''),
+              body_hash: incomingBodyHash,
               packet_path: `${LATEST}/packet.json`,
               report_path: `${LATEST}/report.json`,
               metadata_path: `${LATEST}/metadata.json`,
@@ -84,13 +99,13 @@ jobs:
               packet_built_at: payload.built_at || null,
               report_type: report.type,
               report_built_at: report.built_at || null,
-              note: 'This folder is rewritten when the Shortcut edits the fixed inbox comment. No per-run packet folders are created by this writer.'
+              note: 'This folder changes only when the fixed inbox comment payload identity changes. Reprocessing identical source data preserves byte identity.'
             };
             writeJson(`${LATEST}/packet.json`, payload);
             writeJson(`${LATEST}/report.json`, report);
             writeJson(`${LATEST}/metadata.json`, meta);
-            writeJson(`${LATEST}/mirror-status.json`, { type: 'PMP_VAULT_LATEST_FOLDER_STATUS', version: '1.1.0-edited-comment-trigger', status: 'latest_folder_rewritten', checked_at: meta.updated_at, comment_id: comment.id, storage_policy: meta.storage_policy });
-            const status = await exec.getExecOutput('git', ['status', '--porcelain']);
+            writeJson(`${LATEST}/mirror-status.json`, { type: 'PMP_VAULT_LATEST_FOLDER_STATUS', version: '1.2.0-stable-source-identity', status: 'latest_folder_rewritten', checked_at: sourceUpdatedAt, comment_id: comment.id, body_hash: incomingBodyHash, storage_policy: meta.storage_policy });
+            const status = await exec.getExecOutput('git', ['status', '--porcelain', LATEST]);
             if (!status.stdout.trim()) { core.info('No latest folder changes to commit.'); return; }
             await exec.exec('git', ['config', 'user.name', 'github-actions[bot]']);
             await exec.exec('git', ['config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com']);
