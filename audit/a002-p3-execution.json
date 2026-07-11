@@ -27,6 +27,14 @@
     "duplicate_guard_ms": 1500,
     "fallback_destinations": 0
   },
+  "gate": {
+    "path": "audit/a002-p3-gate.json",
+    "git_blob_sha": "b12e119d35f72f41202fb27c9a3d78e4cc56ec47",
+    "status": "PASS_AT_SOURCE_AND_SIMULATED_RELOAD_CONTRACT_SCOPE",
+    "tests_passed": 17,
+    "tests_failed": 0,
+    "live_six_screen_click_matrix_exercised": false
+  },
   "effects": {"storage_schema_changes":0,"storage_clear_operations":0,"indexeddb_changes":0,"bank_changes":0,"user_content_changes":0,"cache_clear_operations":0,"historic_file_deletions":0},
   "rollback_group": "RG-P3",
   "rollback_ready": true,
