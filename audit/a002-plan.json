@@ -1,13 +1,10 @@
 {
   "repair_id": "A-002",
-  "status": "P1_PASS_P2_NOT_EXECUTED",
+  "status": "P2_PASS_P3_NOT_EXECUTED",
   "base_branch": "main",
   "baseline_commit": "5dd049de1500ea427fa2cf395687239a19706115",
-  "depends_on": "A-001 PASS-003 plus PASS-004 additive supplement",
   "goal": "Establish Current Map as the single routing authority.",
   "inventory": {
-    "full_record": "audit/a002-route-authority-inventory.json",
-    "readable_summary": "audit/a002-route-authority-summary.md",
     "total_objects": 65,
     "unclassified": 0,
     "hard_blockers": 10,
@@ -15,33 +12,40 @@
   },
   "p0": {
     "status": "PASS",
-    "execution_record": "audit/a002-p0-execution.json",
     "receipt_id": "PMP-A001-5dd049de-SUPPLEMENT-A002-PASS-004",
-    "supplement_records": 13,
     "combined_unresolved_identities": 0
   },
   "p1": {
     "status": "PASS_AT_SOURCE_AND_SIMULATED_BROWSER_CONTRACT_SCOPE",
-    "execution_record": "audit/a002-p1-execution.json",
     "gate_record": "audit/a002-p1-gate.json",
-    "source_files_changed": 4,
-    "unexpected_source_files": 0,
     "tests_passed": 11,
+    "tests_failed": 0
+  },
+  "p2": {
+    "status": "PASS_AT_SOURCE_AND_SIMULATED_ROUTE_CONTRACT_SCOPE",
+    "execution_record": "audit/a002-p2-execution.json",
+    "gate_record": "audit/a002-p2-gate.json",
+    "source_files_changed": 7,
+    "unexpected_source_files": 0,
+    "tests_passed": 16,
     "tests_failed": 0,
+    "current_chain_map_delegated_through_home": true,
+    "marker_destination_authority": false,
     "live_mobile_browser_exercised": false,
-    "rollback_group": "RG-P1",
+    "local_checkout_exercised": false,
+    "rollback_group": "RG-P2",
     "rollback_required": false
   },
   "preexecution": {
     "patch_plan": "audit/a002-preexecution-patch-plan.json",
     "rollback_ledger": "audit/a002-rollback-ledger.json",
-    "next_phase": "P2",
-    "p2_eligible": true,
-    "p2_executed": false,
+    "next_phase": "P3",
+    "p3_eligible": true,
+    "p3_executed": false,
     "merge_authorized": false
   },
   "constraints": [
-    "Do not begin P2 without a separate explicit execution instruction",
+    "Do not begin P3 without a separate explicit execution instruction",
     "No storage clearing",
     "No cache clearing",
     "No IndexedDB changes",
@@ -49,5 +53,5 @@
     "Preserve A-003 runtime hash-enforcement boundary",
     "Execute future phases one at a time and stop on the first failed gate"
   ],
-  "decision": "PASS_P1_CURRENT_MAP_CONTRACT_AND_RESOLVER_STOP_BEFORE_P2"
+  "decision": "PASS_P2_CURRENT_CHAIN_MAP_DELEGATION_STOP_BEFORE_P3"
 }
