@@ -1,0 +1,244 @@
+name: Pass 1 App Orchestrator Transfer Package
+
+on:
+  push:
+    branches:
+      - agent/pass1-app-orchestrator-transfer-package
+    paths:
+      - '.github/workflows/pass1-app-orchestrator-transfer-package.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SOURCE_COMMIT: 903cd10808f2d4639dff82aa4595cc7b74417e7a
+      PACKAGE_NAME: CURRENT_USE_THIS_PMP_APP_ORCHESTRATOR_PASS1_CANONICAL_V1.zip
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Freeze exact stable source
+        run: |
+          set -euo pipefail
+          git cat-file -e "${SOURCE_COMMIT}^{commit}"
+          test "$(git rev-parse main 2>/dev/null || git rev-parse origin/main)" = "$SOURCE_COMMIT"
+          rm -rf staging dist
+          mkdir -p staging/APP_ORCHESTRATOR_REPOSITORY staging/PMP_APP_TRANSFER dist
+          git archive "$SOURCE_COMMIT" | tar -x -C staging/APP_ORCHESTRATOR_REPOSITORY
+          test -f staging/APP_ORCHESTRATOR_REPOSITORY/audit/pr38-post-merge-stable-receipt.json
+          cp staging/APP_ORCHESTRATOR_REPOSITORY/audit/pr38-post-merge-stable-receipt.json \
+             staging/PMP_APP_TRANSFER/PR38_STABLE_POST_MERGE_RECEIPT.json
+
+      - name: Write transfer metadata and verifier
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+
+          root = Path('staging')
+          transfer = root / 'PMP_APP_TRANSFER'
+          source_commit = '903cd10808f2d4639dff82aa4595cc7b74417e7a'
+
+          read_first = '''# PMP App / App Orchestrator — Canonical Pass 1 Transfer Package\n\nThis ZIP is the first canonical transfer package for the PMP App / App Orchestrator.\n\n## Source freeze\n\nThe repository snapshot under `APP_ORCHESTRATOR_REPOSITORY/` is an exact `git archive` of stable `main` commit:\n\n`903cd10808f2d4639dff82aa4595cc7b74417e7a`\n\nThat commit contains the final stable PR #38 post-merge receipt.\n\n## Project boundary\n\nThe Crosswalk Router project and its uploaded ZIP are separate future-integration work. They were not used as a source, dependency, or payload for this package.\n\n## Current pass\n\n- Overall project: Pass 1 — in progress\n- A-002: complete, merged, final-stable verified\n- A-003: complete, merged, final-stable verified\n- PR #38 delivery and stabilization: complete\n- App Orchestrator canonical transfer package: created and verified by this build\n- Next phase: Pass 1 final closure inventory and remaining-repair selection\n\n## Canonical rule\n\nEvery completed App Orchestrator work move must update the current canonical ZIP and rerun ZIP integrity verification before the move is complete.\n'''
+          (transfer / '00_READ_FIRST.md').write_text(read_first, encoding='utf-8')
+
+          objects = {
+              'SOURCE_IDENTITY.json': {
+                  'type': 'PMP_APP_ORCHESTRATOR_SOURCE_IDENTITY_V1',
+                  'repository': 'pmpbird/pmp-bridge-shell',
+                  'branch': 'main',
+                  'source_commit': source_commit,
+                  'source_mode': 'exact_git_archive',
+                  'source_receipt': 'audit/pr38-post-merge-stable-receipt.json',
+                  'source_status': 'FINAL_STABLE_POST_MERGE_EXERCISED_SCOPE_PASS'
+              },
+              'PASS_AND_PHASE_LEDGER.json': {
+                  'type': 'PMP_APP_ORCHESTRATOR_PASS_AND_PHASE_LEDGER_V1',
+                  'overall_project': {
+                      'pass': 'Pass 1',
+                      'phase': 'App Orchestrator repair program and transfer continuity',
+                      'status': 'IN_PROGRESS_NOT_DECLARED_COMPLETE'
+                  },
+                  'completed': [
+                      {'repair': 'A-002', 'phase': 'P0-P7', 'status': 'COMPLETE_MERGED_FINAL_STABLE_VERIFIED'},
+                      {'repair': 'A-003', 'phase': 'runtime source-byte enforcement and main reseal', 'status': 'COMPLETE_MERGED_FINAL_STABLE_VERIFIED'},
+                      {'delivery': 'PR #38', 'phase': 'normal merge, post-merge audit, stability repair, final receipt', 'status': 'COMPLETE'},
+                      {'transfer': 'A1', 'phase': 'first canonical App Orchestrator ZIP', 'status': 'BUILT_AND_VERIFIED_BY_WORKFLOW'}
+                  ],
+                  'current': {
+                      'pass': 'Pass 1',
+                      'phase': 'A2 — final Pass 1 closure inventory',
+                      'status': 'NEXT'
+                  }
+              },
+              'PROJECT_BOUNDARY.json': {
+                  'type': 'PMP_APP_ORCHESTRATOR_PROJECT_BOUNDARY_V1',
+                  'included_project': 'PMP App / App Orchestrator',
+                  'excluded_project': 'Crosswalk Router',
+                  'crosswalk_router_zip_used': False,
+                  'crosswalk_router_dependency_created': False,
+                  'rule': 'Crosswalk Router remains separate until a later explicitly authorized integration phase.'
+              },
+              'CANONICAL_PACKAGE_RULE.json': {
+                  'type': 'PMP_APP_ORCHESTRATOR_CANONICAL_PACKAGE_RULE_V1',
+                  'rule': 'Every completed App Orchestrator work move must be written into the current canonical ZIP and followed by ZIP integrity verification before the move is complete.',
+                  'canonical_filename': 'CURRENT_USE_THIS_PMP_APP_ORCHESTRATOR_PASS1_CANONICAL_V1.zip',
+                  'base_source_commit': source_commit
+              },
+              'PASS1_CLOSURE_STATUS.json': {
+                  'type': 'PMP_APP_ORCHESTRATOR_PASS1_CLOSURE_STATUS_V1',
+                  'overall_pass': 'Pass 1',
+                  'status': 'IN_PROGRESS_NOT_DECLARED_COMPLETE',
+                  'completed_boundaries': ['A-002', 'A-003', 'PR38 delivery', 'post-merge stability repair', 'canonical transfer package creation'],
+                  'next_boundary': 'Run final Pass 1 closure inventory against repository repair ledgers and receipts; select and execute any remaining repair before closure certification.',
+                  'pass2_started': False
+              }
+          }
+          for name, obj in objects.items():
+              (transfer / name).write_text(json.dumps(obj, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+
+          verifier = r'''#!/usr/bin/env python3
+          from __future__ import annotations
+          import hashlib, json, sys, zipfile
+          from pathlib import PurePosixPath
+
+          def sha256(data: bytes) -> str:
+              return hashlib.sha256(data).hexdigest()
+
+          path = sys.argv[1]
+          errors = []
+          with zipfile.ZipFile(path, 'r') as zf:
+              names = zf.namelist()
+              if len(names) != len(set(names)):
+                  errors.append('duplicate member names')
+              for name in names:
+                  p = PurePosixPath(name)
+                  if p.is_absolute() or '..' in p.parts:
+                      errors.append(f'unsafe path: {name}')
+              manifest = json.loads(zf.read('PMP_APP_TRANSFER/PACKAGE_MANIFEST.json'))
+              for record in manifest['files']:
+                  name = record['path']
+                  if name not in names:
+                      errors.append(f'missing: {name}')
+                  elif sha256(zf.read(name)) != record['sha256']:
+                      errors.append(f'hash mismatch: {name}')
+              for line in zf.read('PMP_APP_TRANSFER/SHA256SUMS.txt').decode().splitlines():
+                  digest, name = line.split('  ', 1)
+                  if name not in names or sha256(zf.read(name)) != digest:
+                      errors.append(f'checksum mismatch: {name}')
+              if any(name.lower().endswith('.zip') and 'crosswalk' in name.lower() for name in names):
+                  errors.append('Crosswalk Router ZIP contamination detected')
+          result = {
+              'status': 'PASS' if not errors else 'FAIL',
+              'errors': errors,
+              'checks_failed': len(errors)
+          }
+          print(json.dumps(result, indent=2, sort_keys=True))
+          raise SystemExit(0 if not errors else 1)
+          '''
+          verifier = '\n'.join(line[10:] if line.startswith('          ') else line for line in verifier.splitlines()) + '\n'
+          (transfer / 'verify_package.py').write_text(verifier, encoding='utf-8')
+          PY
+
+      - name: Build manifest, checksums, and deterministic ZIP
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, json, os, stat, zipfile
+
+          staging = Path('staging')
+          transfer = staging / 'PMP_APP_TRANSFER'
+          package = Path('dist/CURRENT_USE_THIS_PMP_APP_ORCHESTRATOR_PASS1_CANONICAL_V1.zip')
+
+          payload = []
+          for path in sorted(p for p in staging.rglob('*') if p.is_file()):
+              rel = path.relative_to(staging).as_posix()
+              if rel in {'PMP_APP_TRANSFER/PACKAGE_MANIFEST.json', 'PMP_APP_TRANSFER/SHA256SUMS.txt'}:
+                  continue
+              data = path.read_bytes()
+              payload.append({'path': rel, 'bytes': len(data), 'sha256': hashlib.sha256(data).hexdigest()})
+
+          manifest = {
+              'type': 'PMP_APP_ORCHESTRATOR_CANONICAL_PACKAGE_MANIFEST_V1',
+              'package': package.name,
+              'source_commit': '903cd10808f2d4639dff82aa4595cc7b74417e7a',
+              'manifest_rule': 'Manifest and checksum files exclude recursive self-reference.',
+              'files': payload
+          }
+          manifest_path = transfer / 'PACKAGE_MANIFEST.json'
+          manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+
+          checksum_targets = sorted(p for p in staging.rglob('*') if p.is_file() and p != transfer / 'SHA256SUMS.txt')
+          sums = []
+          for path in checksum_targets:
+              rel = path.relative_to(staging).as_posix()
+              sums.append(f"{hashlib.sha256(path.read_bytes()).hexdigest()}  {rel}")
+          (transfer / 'SHA256SUMS.txt').write_text('\n'.join(sums) + '\n', encoding='utf-8')
+
+          fixed = (2026, 7, 11, 0, 0, 0)
+          with zipfile.ZipFile(package, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zf:
+              for path in sorted(p for p in staging.rglob('*') if p.is_file()):
+                  rel = path.relative_to(staging).as_posix()
+                  info = zipfile.ZipInfo(rel, fixed)
+                  info.compress_type = zipfile.ZIP_DEFLATED
+                  info.create_system = 3
+                  mode = 0o755 if path.name == 'verify_package.py' else 0o644
+                  info.external_attr = (stat.S_IFREG | mode) << 16
+                  zf.writestr(info, path.read_bytes())
+          PY
+
+      - name: Verify complete package
+        run: |
+          set -euo pipefail
+          python3 staging/PMP_APP_TRANSFER/verify_package.py "dist/${PACKAGE_NAME}" | tee dist/package-verification.json
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, json, zipfile
+          package = Path('dist/CURRENT_USE_THIS_PMP_APP_ORCHESTRATOR_PASS1_CANONICAL_V1.zip')
+          digest = hashlib.sha256(package.read_bytes()).hexdigest()
+          Path(str(package) + '.sha256').write_text(f'{digest}  {package.name}\n', encoding='utf-8')
+          with zipfile.ZipFile(package, 'r') as zf:
+              names = zf.namelist()
+              report = {
+                  'type': 'PMP_APP_ORCHESTRATOR_CANONICAL_PACKAGE_BUILD_REPORT_V1',
+                  'status': 'PASS',
+                  'overall_project_pass': 'Pass 1',
+                  'phase': 'Transfer Package A1',
+                  'package': package.name,
+                  'package_sha256': digest,
+                  'package_bytes': package.stat().st_size,
+                  'member_count': len(names),
+                  'unique_member_names': len(names) == len(set(names)),
+                  'source_commit': '903cd10808f2d4639dff82aa4595cc7b74417e7a',
+                  'crosswalk_router_archive_included': False,
+                  'next_phase': 'A2 — final Pass 1 closure inventory'
+              }
+          Path('dist/package-build-report.json').write_text(json.dumps(report, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          print(json.dumps(report, indent=2, sort_keys=True))
+          PY
+
+      - name: Upload canonical package
+        uses: actions/upload-artifact@v4
+        with:
+          name: pmp-app-orchestrator-pass1-canonical-v1
+          path: |
+            dist/CURRENT_USE_THIS_PMP_APP_ORCHESTRATOR_PASS1_CANONICAL_V1.zip
+            dist/CURRENT_USE_THIS_PMP_APP_ORCHESTRATOR_PASS1_CANONICAL_V1.zip.sha256
+            dist/package-build-report.json
+            dist/package-verification.json
+          if-no-files-found: error
+          retention-days: 90
