@@ -1,0 +1,12 @@
+{
+  "generated_from_commit": "88a8d5f2cbce386c04f5127487e6e2c02ec0249c",
+  "manifest_bytes": 368014,
+  "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
+  "manifest_sha256": "724646d2b09948f75e46872fd2ef2092286d791fa0bcccfe0d41360bf58681b8",
+  "repair_id": "A-003",
+  "root_self_verifiable": false,
+  "root_trust_anchor": "pmp-app-current.html",
+  "rule": "The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for every downstream protected source manifest.",
+  "status": "SEALED",
+  "type": "PMP_A003_MANIFEST_SEAL_V1"
+}

@@ -7749,11 +7749,11 @@
     }
   ],
   "self_digest_for_generated_bytes": {
-    "sha256_base64": "BbCMwFXULK1d4NwxvDIWSU/sjcXxmuhHd+TC6B5Hk+o=",
-    "sha256_hex": "05b08cc055d42cad5de0dc31bc3216494fec8dc5f19ae84777e4c2e81e4793ea",
-    "sri": "sha256-BbCMwFXULK1d4NwxvDIWSU/sjcXxmuhHd+TC6B5Hk+o="
+    "sha256_base64": "kIJ1HneEBh1AikNnFXJg17DWnb8QDZaA5vxuraGGRxU=",
+    "sha256_hex": "9082751e7784061d408a4367157260d7b0d69dbf100d9680e6fc6eada1864715",
+    "sri": "sha256-kIJ1HneEBh1AikNnFXJg17DWnb8QDZaA5vxuraGGRxU="
   },
-  "source_commit": "e95c562d9402967fa20e4bb6de0a212e96fbdc2a",
+  "source_commit": "88a8d5f2cbce386c04f5127487e6e2c02ec0249c",
   "type": "PMP_RUNTIME_INTEGRITY_MANIFEST_V1",
   "unlisted_executable_policy": "FAIL_CLOSED",
   "version": "20260711A-A003-PROBE"
