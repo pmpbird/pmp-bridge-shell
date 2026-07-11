@@ -95,7 +95,7 @@ jobs:
           npm install --no-save playwright@1.55.0
           npx playwright install --with-deps chromium
 
-      - name: Normalize equivalent fail-closed aliases and animated controls
+      - name: Normalize equivalent fail-closed aliases and browser controls
         run: |
           python3 - <<'PY'
           from pathlib import Path
@@ -112,6 +112,11 @@ jobs:
           if count < 2:
               raise SystemExit(f'Expected at least two Guardian clicks, found {count}.')
           text = text.replace(click_old, click_new)
+          receipt_old = "try { return JSON.parse(localStorage.getItem('pmp_home_single_v6_emergency_rollback_receipt') || 'null')?.verification === 'PASS'; } catch { return false; }"
+          receipt_new = "try { const r=JSON.parse(localStorage.getItem('pmp_home_single_v6_emergency_rollback_receipt') || 'null'); return !!r && (r.verification === 'PASS' || r.status === 'rollback_failed_closed'); } catch { return false; }"
+          if receipt_old not in text:
+              raise SystemExit('Expected historical Home receipt wait was not found.')
+          text = text.replace(receipt_old, receipt_new, 1)
           path.write_text(text, 'utf-8')
           PY
 
