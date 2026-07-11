@@ -1,24 +1,25 @@
-# A-002 Review Boundary
+# A-002 Final Review Boundary
 
-P0, P1, P2, and P3 are complete within their recorded tested scopes.
+A-002 has passed at its full exercised scope.
 
-P3 review result:
+## Proven
 
-- `pmp-current-screen-pointer-v1.js` owns the single canonical Reload Current API.
-- The canonical API captures current screen and Bank detail snapshot state.
-- Current Map issues the `current_app` navigation target; the Guardian role is resolved as policy evidence.
-- Reload World, Launcher Reload Bridge, and the v2 reload guard are delegate-only interceptors.
-- No active P3 source fetches v11, v10, v9, or the unversioned map.
-- No P3 source names an old Guardian, Reload Owner, or application fallback.
-- Rapid repeated calls share one busy lock and are recorded as duplicate-blocked.
-- The P3 gate passed 17 of 17 source and simulated reload-contract checks.
+- Current Map v12 is the sole destination-truth object.
+- The full current wrapper chain reaches Home.
+- World, Bridge, Library, Workshop, Control, and Bank preserve their exact final Home hash and Reload Current hash.
+- Safe Writer and Code Safety return through Current Map.
+- Arbitrary recovery candidates are blocked; allowlisted review cannot promote current authority.
+- Four historic JSON maps are evidence-only.
+- Fourteen historic HTML bookmarks forward through Current Map rather than launching old chains.
+- The live Service Worker reports network-first HTML, JavaScript, and JSON behavior.
+- The original 65-object census has zero independent route authorities and zero unresolved objects.
 
-Environment boundary:
+Live result: 37 passed, 0 failed.
 
-- No live six-screen click-through was performed.
-- No live mobile-browser or service-worker network exercise was available.
-- Full A-002 certification is not claimed.
+## Separate boundaries
 
-Current stop line: `STOP_BEFORE_P4`.
+- A-003 runtime source-byte hash enforcement is not included or claimed.
+- The overall project’s Pass 1 is not complete merely because A-002 is complete.
+- Merge is not authorized.
 
-P4 remains unexecuted and requires a separate explicit instruction.
+Current boundary: `STOP_BEFORE_MERGE_AND_A003`.
