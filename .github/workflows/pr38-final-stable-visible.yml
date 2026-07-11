@@ -1,0 +1,200 @@
+name: PR38 Final Stable Certification
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/pr38-final-stable-visible.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr38-final-stable-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+env:
+  STABLE_MAIN_COMMIT: ce7ae45a62962026586a1b93618e92f318ec7e4e
+  PR38_MERGE_COMMIT: e4cd9948290f6de1ab563b2e698926f04771171e
+  A003_MANIFEST_SHA256: 570c6db93da497758c6b18f53fa1e3c2b08cb1fdff761c9e54d97b87914e54d0
+  A003_RUNTIME_SET_SHA256: 2efc5aa5f3ece5b1da94e162baf7f981a636ef5f23d9c6b3f2d8a348688172e2
+
+jobs:
+  complete-stable-matrix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout full verification tree
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify stable-main ancestry, identities, and workflow-only delta
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor "$PR38_MERGE_COMMIT" "$STABLE_MAIN_COMMIT"
+          git merge-base --is-ancestor "$STABLE_MAIN_COMMIT" HEAD
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          seal=json.loads(pathlib.Path('audit/a003-manifest-seal.json').read_text())
+          assert seal['status']=='SEALED'
+          assert seal['sealed_branch']=='main'
+          assert seal['manifest_sha256']==os.environ['A003_MANIFEST_SHA256']
+          assert seal['runtime_source_set_sha256']==os.environ['A003_RUNTIME_SET_SHA256']
+          assert hashlib.sha256(pathlib.Path('pmp-runtime-integrity-manifest-v1.json').read_bytes()).hexdigest()==os.environ['A003_MANIFEST_SHA256']
+          changed=subprocess.check_output(['git','diff','--name-only',os.environ['STABLE_MAIN_COMMIT'],'HEAD'],text=True).splitlines()
+          assert changed==['.github/workflows/pr38-final-stable-visible.yml'], changed
+          expected={
+            'pmp-lossless-inventory-vault/latest/metadata.json':'2f788f0def2a521eac74ff4263b319f7b841b94d',
+            'pmp-lossless-inventory-vault/latest/mirror-status.json':'a60729528e75a90cdff30475c9ebcbeee4dc8ef7',
+            'pmp-lossless-inventory-vault/record-ledger.json':'58b4e8fd2dd1b9a44b6df89393464c1b4fa7d94a'
+          }
+          for path, blob in expected.items():
+              actual=subprocess.check_output(['git','hash-object',path],text=True).strip()
+              assert actual==blob,(path,actual,blob)
+          pathlib.Path('/tmp/pr38-final-stable-structure.json').write_text(json.dumps({
+            'type':'PMP_PR38_FINAL_STABLE_STRUCTURE_RESULT_V1',
+            'status':'PASS',
+            'stable_main_commit':os.environ['STABLE_MAIN_COMMIT'],
+            'pr38_merge_commit':os.environ['PR38_MERGE_COMMIT'],
+            'manifest_sha256':seal['manifest_sha256'],
+            'runtime_source_set_sha256':seal['runtime_source_set_sha256'],
+            'vault_blob_identities':expected,
+            'branch_only_delta':changed
+          },indent=2)+'\n')
+          PY
+
+      - name: Verify vault stability workflow contract
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          latest=Path('.github/workflows/pmp-vault-latest-folder-writer.yml').read_text()
+          ledger=Path('.github/workflows/pmp-vault-record-ledger-latest-only.yml').read_text()
+          publisher=Path('.github/workflows/a003-integrity-probe.yml').read_text()
+          assert "Vault latest payload is unchanged; preserving sealed bytes and skipping commit." in latest
+          assert "existingMeta.body_hash === incomingBodyHash" in latest
+          assert "comment.updated_at || comment.created_at" in latest
+          assert "already semantically compact; preserving sealed bytes and skipping commit" in ledger
+          assert "delete existingSemantic.updated_at" in ledger
+          assert "- main" in publisher
+          assert "'**/*.json'" in publisher
+          assert 'HEAD:${GITHUB_REF_NAME}' in publisher
+          print('PMP_VAULT_STABILITY_CONTRACT_PASS')
+          PY
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Run A-003 repository integrity gate
+        run: |
+          set -o pipefail
+          python3 tools/test_a003_integrity.py --output final-stable-a003-repository-result.json 2>&1 | tee final-stable-a003-repository-console.log
+
+      - name: Run A-003 adversarial Chromium gate
+        env:
+          A003_RESULT_PATH: final-stable-a003-live-runtime-results.json
+        run: |
+          set -o pipefail
+          python3 tools/run_a003_live_final.py 2>&1 | tee final-stable-a003-live-runtime-console.log
+
+      - name: Start shared repository server
+        run: |
+          python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/pr38-final-stable-http.log 2>&1 &
+          for i in $(seq 1 30); do
+            curl -fsS http://127.0.0.1:8000/pmp-current-map-v12.json >/dev/null && exit 0
+            sleep 1
+          done
+          cat /tmp/pr38-final-stable-http.log
+          exit 1
+
+      - name: Run reconciled A-002 live runtime matrix
+        env:
+          A002_BASE_URL: http://127.0.0.1:8000/
+          A002_RESULT_PATH: final-stable-a002-live-runtime-results.json
+        run: |
+          set -o pipefail
+          node audit/a002-live-runtime.cjs 2>&1 | tee final-stable-a002-live-runtime-console.log
+
+      - name: Run Automated Plan preserved-contract checks
+        run: |
+          set -o pipefail
+          python3 tools/verify_automated_plan_foundation_v1.py | tee final-stable-automated-plan-foundation.log
+          python3 tools/verify_automated_plan_universal_contract_v1.py | tee final-stable-automated-plan-contract.log
+          python3 tools/verify_automated_plan_visual_match_v1.py | tee final-stable-automated-plan-visual.log
+          node --check pmp-automated-plan-room-v1.js
+          node --check pmp-automated-plan-native-match-v1.js
+
+      - name: Run Automated Plan current-app browser compatibility
+        env:
+          PMP_BASE_URL: http://127.0.0.1:8000
+        run: |
+          set -o pipefail
+          node tools/test_automated_plan_real_app_v1.mjs 2>&1 | tee final-stable-automated-plan-real-app.log
+
+      - name: Build final stable aggregate
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib
+          repo=json.loads(pathlib.Path('final-stable-a003-repository-result.json').read_text())
+          live=json.loads(pathlib.Path('final-stable-a003-live-runtime-results.json').read_text())
+          a002=json.loads(pathlib.Path('final-stable-a002-live-runtime-results.json').read_text())
+          assert repo.get('tests_passed')==21 and repo.get('tests_failed')==0
+          assert live.get('tests_passed')==47 and live.get('tests_failed')==0 and live.get('fatal_error') is None
+          assert a002.get('tests_passed')==41 and a002.get('tests_failed')==0 and a002.get('fatal_error') is None
+          result={
+            'type':'PMP_PR38_FINAL_STABLE_AGGREGATE_RESULT_V1',
+            'status':'PASS',
+            'verification_commit':os.environ['GITHUB_SHA'],
+            'stable_main_commit':os.environ['STABLE_MAIN_COMMIT'],
+            'pr38_merge_commit':os.environ['PR38_MERGE_COMMIT'],
+            'checks':{
+              'stable_structure':'success',
+              'vault_stability_contract':'success',
+              'a003_repository':'21/21',
+              'a003_adversarial_live':'47/47',
+              'a002_live_runtime':'41/41',
+              'automated_plan_contract':'success',
+              'automated_plan_current_app':'success'
+            },
+            'manifest_sha256':os.environ['A003_MANIFEST_SHA256'],
+            'runtime_source_set_sha256':os.environ['A003_RUNTIME_SET_SHA256']
+          }
+          pathlib.Path('pr38-final-stable-aggregate.json').write_text(json.dumps(result,indent=2)+'\n')
+          print(json.dumps(result,indent=2))
+          PY
+
+      - name: Upload complete final stable evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr38-final-stable-complete-evidence
+          path: |
+            /tmp/pr38-final-stable-structure.json
+            final-stable-a003-repository-result.json
+            final-stable-a003-repository-console.log
+            final-stable-a003-live-runtime-results.json
+            final-stable-a003-live-runtime-console.log
+            a003-live-runtime-effective.cjs
+            final-stable-a002-live-runtime-results.json
+            final-stable-a002-live-runtime-console.log
+            final-stable-automated-plan-foundation.log
+            final-stable-automated-plan-contract.log
+            final-stable-automated-plan-visual.log
+            final-stable-automated-plan-real-app.log
+            pr38-final-stable-aggregate.json
+            /tmp/pr38-final-stable-http.log
+          if-no-files-found: error
