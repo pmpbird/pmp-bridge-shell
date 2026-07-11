@@ -1,0 +1,64 @@
+{
+  "type": "PMP_A002_FINAL_RECEIPT_V1",
+  "receipt_id": "PMP-A002-5dd049de-PASS-FULL-001",
+  "receipt_hash": "574b12ab11dc17f148a77666570d9e353ded5058cafe9f2ddbfe76f8532d1659",
+  "repair_id": "A-002",
+  "baseline_commit": "5dd049de1500ea427fa2cf395687239a19706115",
+  "tested_head": "8437cadaa88428a90cb424829e70349fdad3a57e",
+  "status": "PASS_AT_FULL_A002_EXERCISED_SCOPE",
+  "phase_results": {
+    "P0": "PASS",
+    "P1": "PASS",
+    "P2": "PASS",
+    "P3": "PASS",
+    "P4": "PASS",
+    "P5": "PASS",
+    "P6": "PASS",
+    "P7": "PASS"
+  },
+  "source_census": {
+    "objects": 65,
+    "independent_route_authorities": 0,
+    "unresolved": 0,
+    "sole_destination_truth": "pmp-current-map-v12.json"
+  },
+  "live_runtime": {
+    "tests_total": 37,
+    "tests_passed": 37,
+    "tests_failed": 0,
+    "run_id": 29150243463,
+    "job_id": 86538473100,
+    "artifact_id": 8247957279,
+    "artifact_digest": "sha256:9e687eeaf37063f08dde822272bff976fb2b4d8dab0985a896901cfbd26c9d64"
+  },
+  "source_verification": {
+    "run_id": 29150243412,
+    "verify": "success",
+    "receipt": "success"
+  },
+  "defects_discovered_and_closed": [
+    "Normal startup runtime gate did not release after certification.",
+    "Service Worker status handshake did not support MessagePort reply.",
+    "Runtime screen identity could be mutated between wrappers.",
+    "Historical Home payload could replace the map-issued final screen hash.",
+    "Current Map contained stale post-P5/P6 phase metadata."
+  ],
+  "safety": {
+    "storage_cleared": false,
+    "indexeddb_deleted": false,
+    "bank_rebuilt": false,
+    "user_content_deleted": false,
+    "cache_cleared": false,
+    "historic_files_deleted": false,
+    "rollback_required": false
+  },
+  "scope_truth": {
+    "A002_complete": true,
+    "overall_project_pass_1_complete": false,
+    "A003_runtime_source_byte_enforcement": false,
+    "merge_authorized": false,
+    "meaning": "This is an unrestricted pass for the complete exercised A-002 routing-authority scope only. It is not an overall project-pass completion, an A-003 byte-integrity certification, or permission to merge."
+  },
+  "next_boundary": "STOP_BEFORE_MERGE_AND_A003",
+  "decision": "A002_PASS_STOP_BEFORE_MERGE_AND_A003"
+}
