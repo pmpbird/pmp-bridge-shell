@@ -1,16 +1,20 @@
 # A-002 Review Boundary
 
-P0 and P1 are complete within their tested scope.
+P0, P1, and P2 are complete within their recorded tested scopes.
 
-P1 review result:
+P2 review result:
 
-- Current Map v12 declares the sole-authority contract.
-- The resolver validates one fixed map and issues immutable handoffs.
-- The stable entry requests only the `route_guardian` role.
-- Route Guardian requests only the `current_app` role.
-- Old-map and hard-coded app fallback selection was removed from the P1 entry/guardian layer.
-- The P1 gate passed 11 of 11 source and simulated contract tests.
+- Reload Owner resolves inner-v30 and the live-update marker through Current Map.
+- The marker is revision-only and cannot name a destination.
+- Inner-v30, inner-v23, inner-v4, and inner-v3 obtain their next runtime roles from Current Map.
+- Inner-v3 obtains Home, Bug Memory, Route Guardian Action, and Resident from Current Map.
+- Home obtains its historical payload commit and repository path from Current Map.
+- The P2 gate passed 16 of 16 source and simulated route-contract checks.
 
-Live mobile-browser and service-worker network execution were not exercised by this gate.
+Environment boundary:
 
-P2 remains unexecuted and requires separate explicit authorization.
+- No local authenticated checkout was available.
+- The container could not resolve github.com.
+- No live mobile-browser, service-worker network, or historical-payload network exercise was performed.
+
+P3 remains unexecuted and requires a separate explicit instruction.
