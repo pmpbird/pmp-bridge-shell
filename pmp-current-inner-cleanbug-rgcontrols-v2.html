@@ -11,10 +11,11 @@
 <style>
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#52b5df}
 iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#52b5df}
+pre{position:fixed;inset:16px;display:none;overflow:auto;white-space:pre-wrap;background:#102033;color:#eaffef;border:3px solid #07101c;border-radius:18px;padding:14px;box-sizing:border-box;font:700 11px/1.4 monospace;z-index:2147483647}
 </style>
 </head>
 <body>
-<iframe id="app" src="pmp-home-single-v6.html?fresh=current-cleanbug-rgcontrols-v2#world"></iframe>
+<iframe id="app"></iframe><pre id="routeDiagnostic"></pre>
 <script src="pmp-top-lossless-injector.js?fresh=cleanbug-rgcontrols-v2"></script>
 <script src="pmp-resident-lossless-readiness.js?fresh=cleanbug-rgcontrols-v2"></script>
 <script src="pmp-current-truth-face.js?fresh=cleanbug-rgcontrols-v2"></script>
@@ -23,41 +24,23 @@ iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#52b5df
 <script src="pmp-lossless-copy-fix.js?fresh=cleanbug-rgcontrols-v2"></script>
 <script src="pmp-copy-lossless-diagnostic.js?fresh=cleanbug-rgcontrols-v2"></script>
 <script src="pmp-resident-work-fix.js?fresh=cleanbug-rgcontrols-v2"></script>
+<script src="pmp-current-route-resolver-v1.js"></script>
 <script>
-const F=document.getElementById('app');
+'use strict';
+const F=document.getElementById('app'),resolver=window.PMPCurrentRouteResolver;let routeState=null,routeFailed=false;
+function goodHash(h){return /^#(world|bridge|library|workshop|control|bank)$/i.test(String(h||''))}
+function requestedHash(){let q=new URLSearchParams(location.search),h=q.get('hash')||location.hash||'#world';return goodHash(h)?String(h).toLowerCase():'#world'}
+function failClosed(error,context){routeFailed=true;const d=resolver?resolver.diagnostic(error,context||'inner_v2'):{type:'PMP_ROUTE_FAIL_CLOSED_DIAGNOSTIC_V1',context:context||'inner_v2',message:String(error&&error.message||error),action:'navigation_blocked_no_fallback_consulted'};try{F.removeAttribute('src')}catch(e){}const p=document.getElementById('routeDiagnostic');p.style.display='block';p.textContent=JSON.stringify(d,null,2);try{localStorage.setItem('pmp_inner_v2_route_fail_closed_v1',JSON.stringify(d,null,2))}catch(e){}return d}
+async function routes(){if(routeState)return routeState;if(!resolver)throw new Error('PMP Current Route Resolver did not load.');let loaded=await resolver.load(),home=resolver.resolve(loaded.map,'runtime_chain.home_restore'),bug=resolver.resolve(loaded.map,'tool_routes.bug_memory'),action=resolver.resolve(loaded.map,'tool_routes.route_guardian_action');routeState={loaded,home,bug,action};return routeState}
 function inside(){try{return{w:F.contentWindow,d:F.contentDocument||F.contentWindow.document}}catch(e){return{}}}
-function bugUrl(){return 'bug-memory-current-clean-v1.html?fresh=open-'+Date.now()}
-function actionUrl(kind){return 'pmp-route-guardian-action-v2.html?action='+encodeURIComponent(kind)+'&from=current-inner-rgcontrols-v2&fresh='+Date.now()}
-function goBug(){location.href=bugUrl();return false}
-function goAction(kind){location.href=actionUrl(kind);return false}
+async function bugUrl(){let s=await routes();return resolver.buildUrl(s.bug,{fresh:'a002-p4-'+s.bug.route_epoch+'-'+Date.now(),from:'current-inner-rgcontrols-v2',map_version:s.bug.map_version,route_epoch:s.bug.route_epoch},'')}
+async function actionUrl(kind){let s=await routes();return resolver.buildUrl(s.action,{action:String(kind),from:'current-inner-rgcontrols-v2',hash:requestedHash(),fresh:'a002-p4-'+s.action.route_epoch+'-'+Date.now(),map_version:s.action.map_version,route_epoch:s.action.route_epoch},'')}
+async function goBug(){try{location.href=await bugUrl()}catch(e){failClosed(e,'inner_v2_bug_memory')}return false}
+async function goAction(kind){try{location.href=await actionUrl(kind)}catch(e){failClosed(e,'inner_v2_route_guardian_action')}return false}
 function textOf(x){return (x&&x.textContent||'').replace(/\s+/g,' ').trim()}
-function patch(){
-  const o=inside(),w=o.w,d=o.d;if(!w||!d)return;
-  const oldShow=typeof w.showSecret==='function'?w.showSecret:null;
-  if(!w.__pmpRgControlsV2){
-    w.__pmpRgControlsV2=true;
-    w.showSecret=function(name){if(String(name)==='Bug Memory')return goBug();if(oldShow)return oldShow.apply(this,arguments)};
-    w.automaticAppUpdate=function(){return goAction('appUpdate')};
-  }
-  if(!d.documentElement.dataset.pmpRgControlsV2Delegate){
-    d.documentElement.dataset.pmpRgControlsV2Delegate='1';
-    d.addEventListener('click',function(e){
-      const b=e.target&&e.target.closest&&e.target.closest('button');if(!b)return;
-      const t=textOf(b);
-      if(t==='Bug Memory'){e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();return goBug()}
-      if(t.includes('Automatic App Update')){e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();return goAction('appUpdate')}
-      if(t.includes('Open Code Safety')){e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();return goAction('codeSafety')}
-    },true);
-  }
-  Array.from(d.querySelectorAll('button')).forEach(b=>{
-    const t=textOf(b);
-    if(t==='Bug Memory')b.onclick=function(e){if(e)e.preventDefault();return goBug()};
-    if(t.includes('Automatic App Update')){b.onclick=function(e){if(e)e.preventDefault();return goAction('appUpdate')};const s=b.querySelector('small');if(s)s.textContent='Route Guardian first, then current check'}
-    if(t.includes('Open Code Safety')){b.onclick=function(e){if(e)e.preventDefault();return goAction('codeSafety')};const s=b.querySelector('small');if(s)s.textContent='Route Guardian first, then Code Safety'}
-  });
-}
-F.addEventListener('load',()=>{setTimeout(patch,100);setTimeout(patch,700);setTimeout(patch,1800)});
-setInterval(patch,1000);
+function patch(){const o=inside(),w=o.w,d=o.d;if(!w||!d||routeFailed)return;const oldShow=typeof w.showSecret==='function'?w.showSecret:null;if(!w.__pmpRgControlsV2Map){w.__pmpRgControlsV2Map=true;w.showSecret=function(name){if(String(name)==='Bug Memory')return goBug();if(oldShow)return oldShow.apply(this,arguments)};w.automaticAppUpdate=function(){return goAction('appUpdate')}}if(!d.documentElement.dataset.pmpRgControlsV2MapDelegate){d.documentElement.dataset.pmpRgControlsV2MapDelegate='1';d.addEventListener('click',function(e){const b=e.target&&e.target.closest&&e.target.closest('button');if(!b)return;const t=textOf(b);if(t==='Bug Memory'){e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();return goBug()}if(t.includes('Automatic App Update')){e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();return goAction('appUpdate')}if(t.includes('Open Code Safety')){e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();return goAction('codeSafety')}},true)}Array.from(d.querySelectorAll('button')).forEach(b=>{const t=textOf(b);if(t==='Bug Memory')b.onclick=function(e){if(e)e.preventDefault();return goBug()};if(t.includes('Automatic App Update')){b.onclick=function(e){if(e)e.preventDefault();return goAction('appUpdate')};const s=b.querySelector('small');if(s)s.textContent='Current Map Route Guardian action first'}if(t.includes('Open Code Safety')){b.onclick=function(e){if(e)e.preventDefault();return goAction('codeSafety')};const s=b.querySelector('small');if(s)s.textContent='Current Map Code Safety route'}})}
+F.addEventListener('load',()=>{setTimeout(patch,100);setTimeout(patch,700);setTimeout(patch,1800)});setInterval(patch,1000);
+(async()=>{try{let s=await routes(),h=resolver.normalizeHash(requestedHash(),s.loaded.map),url=resolver.buildUrl(s.home,{fresh:'a002-p4-'+s.home.route_epoch+'-'+Date.now(),from:'current-inner-rgcontrols-v2',map_version:s.home.map_version,route_epoch:s.home.route_epoch},h);F.src=url;try{localStorage.setItem('pmp_inner_v2_route_handoff_v1',JSON.stringify({type:'PMP_INNER_V2_ROUTE_HANDOFF_V1',home_role:s.home.role,home_path:s.home.path,bug_role:s.bug.role,bug_path:s.bug.path,action_role:s.action.role,action_path:s.action.path,map_path:s.home.map_path,map_version:s.home.map_version,route_epoch:s.home.route_epoch,hash:h,at:new Date().toISOString()},null,2))}catch(e){}}catch(e){failClosed(e,'inner_v2_boot')}})();
 </script>
 </body>
 </html>
