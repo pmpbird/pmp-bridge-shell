@@ -7,6 +7,7 @@ on:
     paths:
       - 'tools/build_a003_integrity_manifest.py'
       - '.github/workflows/a003-integrity-probe.yml'
+      - '.github/workflows/a003-runtime-integrity.yml'
       - 'pmp-current-map-v12.json'
       - '*.html'
       - '*.js'
@@ -17,11 +18,16 @@ on:
     paths:
       - 'tools/build_a003_integrity_manifest.py'
       - '.github/workflows/a003-integrity-probe.yml'
+      - '.github/workflows/a003-runtime-integrity.yml'
       - 'pmp-current-map-v12.json'
       - '*.html'
       - '*.js'
       - '*.json'
   workflow_dispatch:
+
+concurrency:
+  group: a003-manifest-publisher-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: write
