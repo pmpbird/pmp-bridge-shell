@@ -2,7 +2,7 @@
 'use strict';
 
 var MAP_PATH='pmp-current-map-v12.json';
-var RESOLVER_VERSION='PMP_CURRENT_ROUTE_RESOLVER_V1_20260711B';
+var RESOLVER_VERSION='PMP_CURRENT_ROUTE_RESOLVER_V1_20260711C';
 var HANDOFF_TYPE='PMP_ROUTE_HANDOFF_V1';
 var MAP_TYPE='PMP_CURRENT_APP_MAP';
 var CONTRACT_TYPE='PMP_ROUTE_CONTRACT_V1';
@@ -20,6 +20,7 @@ RouteError.prototype.constructor=RouteError;
 function own(o,k){return !!o&&Object.prototype.hasOwnProperty.call(o,k)}
 function freeze(o){try{return Object.freeze(o)}catch(e){return o}}
 function cloneJson(v){return JSON.parse(JSON.stringify(v))}
+function isScreenHash(v){return /^#[a-z0-9-]+$/.test(String(v||''))}
 
 function isLocalPath(path,extensions){
   path=String(path||'').trim();
@@ -45,7 +46,7 @@ function validateHashes(map){
   var seen={};
   map.allowed_hashes.forEach(function(hash){
     hash=String(hash||'');
-    if(!/^#[a-z0-9-]+$/.test(hash))throw new RouteError('HASH_INVALID','Current Map contains an invalid screen hash.',{hash:hash});
+    if(!isScreenHash(hash))throw new RouteError('HASH_INVALID','Current Map contains an invalid screen hash.',{hash:hash});
     if(seen[hash])throw new RouteError('HASH_DUPLICATE','Current Map contains a duplicate screen hash.',{hash:hash});
     seen[hash]=true;
   });
@@ -101,21 +102,35 @@ function normalizeHash(hash,map){
   return map.allowed_hashes.indexOf(hash)!==-1?hash:String(map.default_hash||map.allowed_hashes[0]);
 }
 
+function inheritedRuntimeHash(handoff){
+  if(String(handoff&&handoff.role||'').indexOf('runtime_chain.')!==0)return '';
+  try{
+    var current=new URL(global.location.href);
+    if(current.searchParams.get('route_authority')!==MAP_PATH)return '';
+    var inherited=current.searchParams.get('requested_hash')||'';
+    return isScreenHash(inherited)?inherited:'';
+  }catch(e){return ''}
+}
+
 function buildUrl(handoff,params,hash){
   if(!handoff||handoff.type!==HANDOFF_TYPE)throw new RouteError('HANDOFF_INVALID','A valid map-issued route handoff is required.');
   var query=[];
   var safeParams={};
   params=params||{};
   Object.keys(params).forEach(function(k){safeParams[k]=params[k]});
+  var effectiveHash=String(hash||'');
+  var inherited=inheritedRuntimeHash(handoff);
+  if(inherited)effectiveHash=inherited;
   if(!own(safeParams,'handoff_role'))safeParams.handoff_role=handoff.role;
   if(!own(safeParams,'route_authority'))safeParams.route_authority=handoff.map_path;
   if(!own(safeParams,'route_guardian_policy'))safeParams.route_guardian_policy='current_map';
+  if(effectiveHash&&!own(safeParams,'requested_hash'))safeParams.requested_hash=effectiveHash;
   Object.keys(safeParams).sort().forEach(function(k){
     var v=safeParams[k];
     if(v===undefined||v===null)return;
     query.push(encodeURIComponent(k)+'='+encodeURIComponent(String(v)));
   });
-  return handoff.path+(query.length?'?'+query.join('&'):'')+String(hash||'');
+  return handoff.path+(query.length?'?'+query.join('&'):'')+effectiveHash;
 }
 
 async function load(){
