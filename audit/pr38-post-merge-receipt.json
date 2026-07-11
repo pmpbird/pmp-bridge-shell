@@ -1,0 +1,116 @@
+{
+  "type": "PMP_PR38_POST_MERGE_RECEIPT_V1",
+  "receipt_id": "PMP-PR38-e4cd9948-POSTMERGE-PASS-001",
+  "receipt_hash": "0f625403360b748a022461cecc00e8faff2b62307f33f91360234d6ece0b60cf",
+  "receipt_hash_basis": "SHA-256 of receipt_id|merge_commit|verification_commit|artifact_digest|manifest_sha256|runtime_source_set_sha256|repository_pass_count|adversarial_pass_count|a002_pass_count",
+  "status": "PASS_AT_FULL_POST_MERGE_EXERCISED_SCOPE",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "pull_request": 38,
+  "merge": {
+    "method": "merge",
+    "merge_commit": "e4cd9948290f6de1ab563b2e698926f04771171e",
+    "base_parent": "5dd049de1500ea427fa2cf395687239a19706115",
+    "head_parent": "8f280837fd465ddcf0ba67ee4cd7b49865d58cc2",
+    "tree_matches_pr_head": true,
+    "merged_at": "2026-07-11T18:11:48Z"
+  },
+  "post_merge_main": {
+    "verification_workflow_commit": "dfcf421c29b7c1cfcdc13f805aca5926189d32cd",
+    "changes_after_merge_before_receipt": [
+      ".github/workflows/pr38-post-merge-verification.yml"
+    ],
+    "protected_runtime_changes_after_merge": 0
+  },
+  "verification": {
+    "disposable_pr": 39,
+    "branch": "agent/pr38-post-merge-verification",
+    "branch_head": "171f87bc41befdb3bc691b8c780f4b2debe4ec62",
+    "tested_synthetic_merge_commit": "f7491cc2a8f94e84b075e9a89062c750d7f0d276",
+    "workflow": "PR38 Post-Merge Visible Verification",
+    "workflow_run_id": 29163465177,
+    "job_id": 86572454373,
+    "conclusion": "success",
+    "artifact_id": 8251498463,
+    "artifact_name": "pr38-post-merge-complete-evidence",
+    "artifact_digest": "sha256:7341cefcda1e5e42287c90e3b8a7613ebe495fbd74874b17149e89a0473e0c91",
+    "artifact_scope": "Complete merge-structure, repository-integrity, adversarial-browser, A-002 live-runtime, and Automated Plan compatibility evidence."
+  },
+  "results": {
+    "merge_structure": "PASS",
+    "a003_repository_gate": {
+      "tests_total": 21,
+      "tests_passed": 21,
+      "tests_failed": 0,
+      "status": "PASS"
+    },
+    "a003_adversarial_live_gate": {
+      "tests_total": 47,
+      "tests_passed": 47,
+      "tests_failed": 0,
+      "fatal_error": null,
+      "status": "PASS"
+    },
+    "a002_live_runtime_matrix": {
+      "tests_total": 41,
+      "tests_passed": 41,
+      "tests_failed": 0,
+      "fatal_error": null,
+      "status": "PASS"
+    },
+    "automated_plan_preserved_contract": "PASS",
+    "automated_plan_current_app_compatibility": "PASS",
+    "aggregate": "PASS"
+  },
+  "integrity": {
+    "manifest_sha256": "570c6db93da497758c6b18f53fa1e3c2b08cb1fdff761c9e54d97b87914e54d0",
+    "runtime_source_set_sha256": "2efc5aa5f3ece5b1da94e162baf7f981a636ef5f23d9c6b3f2d8a348688172e2",
+    "protected_runtime_identity_unchanged": true,
+    "manifest_identity_unchanged": true
+  },
+  "safety": {
+    "rollback_required": false,
+    "rollback_branch": "rollback/pr38-main-before-merge-20260711",
+    "rollback_commit": "5dd049de1500ea427fa2cf395687239a19706115",
+    "storage_cleared": false,
+    "indexeddb_deleted_or_migrated": false,
+    "bank_rebuilt": false,
+    "user_content_deleted": false,
+    "historic_files_deleted": false
+  },
+  "phase_and_pass_ledger": {
+    "overall_project": {
+      "pass": "Pass 1",
+      "status": "IN_PROGRESS_NOT_DECLARED_COMPLETE",
+      "truth": "A-002 and A-003 are complete and merged, but they do not by themselves certify all remaining Pass 1 repairs."
+    },
+    "A002": {
+      "phase": "P7 final certification",
+      "pass": "final A-002 exercised-scope pass",
+      "status": "COMPLETE_MERGED_POST_MERGE_VERIFIED"
+    },
+    "A003": {
+      "phase": "P6 final receipt boundary",
+      "pass": "final A-003 exercised-scope pass",
+      "status": "COMPLETE_MERGED_POST_MERGE_VERIFIED"
+    },
+    "PR38_delivery": {
+      "phase": "Merge and post-merge certification",
+      "pass_1": "Merge complete",
+      "pass_2": "Complete post-merge verification complete",
+      "pass_3": "Post-merge receipt issued",
+      "status": "COMPLETE"
+    }
+  },
+  "certification_truth": {
+    "PR38_merge_complete": true,
+    "post_merge_verification_complete": true,
+    "A002_and_A003_post_merge_verified": true,
+    "overall_project_pass_1_complete": false,
+    "bootstrap_root_self_verifiable": false,
+    "compromised_origin_server_fully_solved": false,
+    "service_worker_registration_TOCTOU_fully_eliminated": false,
+    "verification_tree_truth": "The tested synthetic merge tree differs from current main only by branch-only verification workflow source. Protected runtime bytes are identical to main."
+  },
+  "next_boundary": "CLOSE_DISPOSABLE_PR39_THEN_SELECT_NEXT_PASS_1_REPAIR",
+  "decision": "PASS_PR38_POST_MERGE_RECEIPT_ISSUED"
+}
