@@ -1,0 +1,175 @@
+{
+  "type": "PMP_PR38_FINAL_MERGE_READINESS_PREFLIGHT_V2",
+  "pr_number": 38,
+  "repository": "pmpbird/pmp-bridge-shell",
+  "status": "PASS_MERGE_READY_STOP_BEFORE_MERGE",
+  "observed_at": "2026-07-11T11:06:35-07:00",
+  "checked_source_head": "45959fe2e15d800a186c490f7f0138cf7fa48a3a",
+  "source_freeze_branch": "freeze/pr38-merge-ready-source-20260711",
+  "base_branch": "main",
+  "base_sha": "5dd049de1500ea427fa2cf395687239a19706115",
+  "tested_a003_runtime_head": "f2ed35ff4a9c7b764e6bf60d5a15be04e4c974dd",
+  "pr_state_at_source_freeze": {
+    "open": true,
+    "draft": true,
+    "merged": false,
+    "mergeable": true,
+    "requested_reviewers": 0,
+    "requested_team_reviewers": 0,
+    "conversation_comments": 0
+  },
+  "passed_checks": [
+    {
+      "id": "PF2-01",
+      "name": "Main baseline unchanged",
+      "result": "PASS",
+      "evidence": "main is identical to 5dd049de1500ea427fa2cf395687239a19706115"
+    },
+    {
+      "id": "PF2-02",
+      "name": "A-003 deterministic seal unchanged",
+      "result": "PASS",
+      "evidence": {
+        "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
+        "manifest_version": "20260711A-A003-FINAL",
+        "manifest_sha256": "570c6db93da497758c6b18f53fa1e3c2b08cb1fdff761c9e54d97b87914e54d0",
+        "runtime_source_set_sha256": "2efc5aa5f3ece5b1da94e162baf7f981a636ef5f23d9c6b3f2d8a348688172e2",
+        "status": "SEALED"
+      }
+    },
+    {
+      "id": "PF2-03",
+      "name": "Post-certification protected runtime scope",
+      "result": "PASS",
+      "evidence": {
+        "commits_after_a003_tested_head": 23,
+        "protected_runtime_source_changes": 0,
+        "manifest_map_resolver_worker_home_changes": 0,
+        "changed_scope": [
+          "audit evidence",
+          "test harnesses",
+          "verification scripts",
+          "one legacy-check workflow"
+        ],
+        "truth": "No protected application runtime byte changed after A-003 certification."
+      }
+    },
+    {
+      "id": "PF2-04",
+      "name": "Reconciled A-002 live runtime matrix",
+      "result": "PASS",
+      "evidence": {
+        "workflow_run_id": 29162683600,
+        "job_id": 86570328769,
+        "conclusion": "success",
+        "tests_total": 41,
+        "tests_passed": 41,
+        "tests_failed": 0,
+        "fatal_error": null,
+        "artifact_id": 8251271554,
+        "artifact_digest": "sha256:50df8858855c10f167415881193d483f1bbd507ba3e4b9eea1487c38f830ef02",
+        "compatibility": "A-002 sole-route-authority checks executed under A-003 runtime-integrity enforcement"
+      }
+    },
+    {
+      "id": "PF2-05",
+      "name": "Automated Plan Foundation formal retirement reconciliation",
+      "result": "PASS",
+      "evidence": {
+        "workflow_run_id": 29162683553,
+        "verify_foundation_job_id": 86570344194,
+        "verify_foundation_conclusion": "success",
+        "real_app_visual_job_id": 86570344189,
+        "real_app_visual_conclusion": "success",
+        "artifact_id": 8251265981,
+        "artifact_digest": "sha256:64b3f7c4d54a7731a384c8a03344010f26ac26b4c8bb4c08adb385585005133a",
+        "retirement_record": "audit/Automated_Plan_Foundation_Retirement_v1.md",
+        "truth": "The old v6 Automated Plan current-app UI assertion is retired; its non-executable zero-cost contract remains preserved, and the current A-003 app compatibility test passes."
+      }
+    },
+    {
+      "id": "PF2-06",
+      "name": "Authoritative A-003 final certification on reconciled head",
+      "result": "PASS",
+      "evidence": {
+        "workflow_run_id": 29162683551,
+        "repository_gate_job_id": 86570328431,
+        "repository_gate_conclusion": "success",
+        "repository_artifact_id": 8251258111,
+        "repository_artifact_digest": "sha256:b1db13a0b676229bc956c0f5eb4be25fe36bb127fe2b11ddc5a3e26c6a08ad26",
+        "adversarial_live_job_id": 86570328411,
+        "adversarial_live_conclusion": "success",
+        "live_artifact_id": 8251275296,
+        "live_artifact_digest": "sha256:9b38ac153fbb77dd6fec7f629cd7fb17f93ad3baad96882238ae73d7217b1802"
+      }
+    },
+    {
+      "id": "PF2-07",
+      "name": "Integrity probe and companion checks",
+      "result": "PASS",
+      "evidence": {
+        "integrity_probe_run_id": 29162683563,
+        "integrity_probe_conclusion": "success",
+        "packet_015_run_id": 29162683547,
+        "packet_015_conclusion": "success"
+      }
+    },
+    {
+      "id": "PF2-08",
+      "name": "Reviews, comments, and merge conflicts",
+      "result": "PASS",
+      "evidence": {
+        "mergeable": true,
+        "conversation_comments": 0,
+        "requested_reviewers": 0,
+        "requested_team_reviewers": 0
+      }
+    },
+    {
+      "id": "PF2-09",
+      "name": "Rollback and source freeze",
+      "result": "PASS",
+      "evidence": {
+        "pre_merge_main_rollback_branch": "rollback/pr38-main-before-merge-20260711",
+        "pre_merge_main_rollback_commit": "5dd049de1500ea427fa2cf395687239a19706115",
+        "merge_ready_source_freeze_branch": "freeze/pr38-merge-ready-source-20260711",
+        "merge_ready_source_freeze_commit": "45959fe2e15d800a186c490f7f0138cf7fa48a3a"
+      }
+    }
+  ],
+  "resolved_roadblocks": [
+    {
+      "former_blocker": "Legacy A-002 Live Runtime Matrix",
+      "resolution": "Updated the legacy harness to verify A-002 sole-route authority under the certified A-003 integrity bootstrap and Service Worker without replacing the worker.",
+      "result": "PASS_41_OF_41"
+    },
+    {
+      "former_blocker": "Automated Plan Foundation",
+      "resolution": "Formally retired obsolete v6/current-app UI assertions while preserving and re-verifying the disabled zero-cost foundation contract; added current A-003 app browser compatibility coverage.",
+      "result": "PASS_BOTH_JOBS"
+    }
+  ],
+  "merge_plan": {
+    "required_authorization": "A separate explicit user instruction to merge PR #38.",
+    "recommended_method": "Normal merge commit, preserving the complete certified branch history and one visible rollback boundary.",
+    "immediate_post_merge_verification": [
+      "Confirm main contains the exact sealed manifest and runtime-source-set identities.",
+      "Run the 21-check repository integrity gate and 47-check adversarial Chromium gate on main.",
+      "Run the reconciled 41-check A-002 live runtime matrix on main.",
+      "Run the Automated Plan preserved-contract and current-app retirement compatibility jobs on main.",
+      "Cold-start all six screens and verify exact final hashes.",
+      "Verify Safe Writer, Code Safety, recovery review, fourteen historic forwarders, exact verified-cache offline behavior, and tamper blocking.",
+      "Issue a post-merge receipt only after every check passes."
+    ],
+    "rollback_rule": "If immediate post-merge verification fails, preserve the failed merge evidence and restore main to rollback/pr38-main-before-merge-20260711."
+  },
+  "actions_not_taken": [
+    "PR was not marked ready for review.",
+    "PR was not merged.",
+    "Auto-merge was not enabled.",
+    "No protected runtime or manifest source was changed by this final preflight receipt."
+  ],
+  "merge_authorized": false,
+  "next_boundary": "STOP_BEFORE_MERGE",
+  "decision": "MERGE_READY_AWAIT_EXPLICIT_MERGE_AUTHORIZATION"
+}
