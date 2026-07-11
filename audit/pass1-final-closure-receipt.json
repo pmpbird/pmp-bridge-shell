@@ -1,0 +1,77 @@
+{
+  "a001_merge_commit": "253111b76be2c8e93629000f9d68c3b9132ba87b",
+  "base_main_commit": "253111b76be2c8e93629000f9d68c3b9132ba87b",
+  "certification": {
+    "artifact_digest": "sha256:cc139b4b32b46ca164d24604610f74c3c6133c5e0c47b18a861ce53588ec0dee",
+    "artifact_id": 8253267732,
+    "artifact_name": "app-orchestrator-pass1-final-closure-evidence-v2",
+    "conclusion": "success",
+    "job_id": 86589463752,
+    "run_id": 29169986064,
+    "tested_head": "da290a16182d0bf9acbeca3411baab6a4219ce74",
+    "workflow": "App Orchestrator Pass 1 Final Closure V2"
+  },
+  "certification_boundaries": {
+    "bootstrap_root_self_verifiable": false,
+    "compromised_origin_server_fully_solved": false,
+    "meaning": "Pass 1 closes at the exercised App Orchestrator scope. It does not expand A-003 beyond its stated root-trust and Service Worker registration boundaries.",
+    "service_worker_registration_TOCTOU_fully_eliminated": false
+  },
+  "closure_pull_request": 43,
+  "decision": "PASS1_CLOSURE_RECEIPT_ISSUED_PENDING_INDEPENDENT_RECEIPT_VERIFICATION_AND_MERGE",
+  "effectivity": {
+    "pending_merge_at_creation": true,
+    "rule": "This receipt becomes authoritative when this exact receipt and its independently verified closure workflow are merged into main."
+  },
+  "integrity": {
+    "manifest_sha256": "570c6db93da497758c6b18f53fa1e3c2b08cb1fdff761c9e54d97b87914e54d0",
+    "protected_runtime_identity_unchanged": true,
+    "runtime_source_set_sha256": "2efc5aa5f3ece5b1da94e162baf7f981a636ef5f23d9c6b3f2d8a348688172e2"
+  },
+  "next_boundary": "MERGE_PR43_THEN_REBUILD_AND_VERIFY_CANONICAL_PASS1_CLOSED_ZIP",
+  "phase_and_pass": {
+    "overall_project_pass": "Pass 1",
+    "pass1_complete": true,
+    "pass2_started": false,
+    "phase": "A2 — Final Pass 1 closure inventory, final repair, and certification"
+  },
+  "receipt_id": "PMP-APP-ORCH-PASS1-253111b7-CLOSED-001",
+  "receipt_sha256": "4c1abb7f7d176ae172c3556b47d078a325ec8b1b8c650d0bd0554a34d2e0fa4c",
+  "repair_inventory": {
+    "a001_original_receipt": "PMP-A001-5dd049de-PASS-003",
+    "a001_pr": 36,
+    "a001_supplement_receipt": "PMP-A001-5dd049de-SUPPLEMENT-A002-PASS-004",
+    "delivery_pr": 38,
+    "remaining_repair_found": "A-001 canonical evidence integration",
+    "repair_executed": true,
+    "stability_repair_pr": 40,
+    "superseded_a002_pr": 37,
+    "superseded_a002_pr_closed_unmerged": true
+  },
+  "repository": "pmpbird/pmp-bridge-shell",
+  "results": {
+    "a001_integrated_records": 212,
+    "a001_unresolved": 0,
+    "a002_live_runtime": "41/41",
+    "a003_adversarial_live": "47/47",
+    "a003_repository": "21/21",
+    "aggregate": "PASS",
+    "automated_plan_current_app_compatibility": "PASS",
+    "automated_plan_preserved_contract": "PASS",
+    "crosswalk_router_boundary": "SEPARATE",
+    "protected_runtime_identity": "UNCHANGED",
+    "superseded_repair_prs": "CLOSED"
+  },
+  "safety": {
+    "bank_rebuilt": false,
+    "crosswalk_router_content_imported": false,
+    "historic_files_deleted": false,
+    "indexeddb_deleted_or_migrated": false,
+    "rollback_required": false,
+    "storage_cleared": false,
+    "user_content_deleted": false,
+    "vault_packet_or_report_deleted": false
+  },
+  "status": "PASS1_FORMALLY_CLOSED_AT_EXERCISED_SCOPE",
+  "type": "PMP_APP_ORCHESTRATOR_PASS1_FINAL_CLOSURE_RECEIPT_V1"
+}
