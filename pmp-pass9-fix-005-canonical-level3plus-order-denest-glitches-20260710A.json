@@ -1,0 +1,73 @@
+{
+  "type": "PMP_PASS9_FIX_RECEIPT",
+  "fix_id": "PASS9_FIX_005_CANONICAL_LEVEL3PLUS_ORDER_DENEST_GLITCHES",
+  "version": "20260710A",
+  "status": "IMPLEMENTED_NEEDS_VISUAL_TEST",
+  "created_at": "2026-07-10T00:00:00.000Z",
+  "trigger": "User uploaded video showing Level 30B / 29 / 28 appearing too early and level cards apparently nested under the wrong section.",
+  "diagnosis": {
+    "problem": "Fix 004 made Level 3+ visible but allowed real legacy level nodes to mix with placeholder cards. Some legacy level nodes appeared in the wrong order or nested under the wrong parent.",
+    "observed_glitches": [
+      "Level 30B appeared too early after Level 4.",
+      "Level 29 and Level 28 appeared before Levels 5-27.",
+      "Some cards looked nested under the wrong level section.",
+      "Ordering was not canonical even though visibility was restored."
+    ]
+  },
+  "updated_file": {
+    "path": "pmp-continuous-run-level-ui-scope-v1.js",
+    "old_version": "1.0.19-pass9-level3plus-always-present-readiness-state-20260710A",
+    "new_version": "1.0.20-pass9-canonical-level-order-denest-20260710A",
+    "new_content_sha": "383203865a2a84507e787d7e59d138d22dc6167e"
+  },
+  "what_changed": [
+    "Level 3+ now uses canonical shell cards for each ordered level from 3 through 30B.",
+    "Real legacy level nodes are moved into the matching canonical shell instead of being allowed to define order by their original DOM position.",
+    "Heading-text detection was added for legacy cards that do not expose the expected data selector.",
+    "Nested legacy cards are de-nested into their matching canonical level shell where possible.",
+    "Loose or duplicate level-like nodes outside the canonical stack are contained as duplicates only, not because they are unready.",
+    "The receipt now reports CANONICAL_LEVEL3PLUS_ORDER_READY."
+  ],
+  "expected_visual_order": [
+    "Level 3",
+    "Level 4",
+    "Level 4B",
+    "Level 5",
+    "Level 6",
+    "Level 7",
+    "Level 8",
+    "Level 9",
+    "Level 10",
+    "Level 11",
+    "Level 12",
+    "Level 13",
+    "Level 14",
+    "Level 15",
+    "Level 16",
+    "Level 17",
+    "Level 18",
+    "Level 19",
+    "Level 20",
+    "Level 21",
+    "Level 22",
+    "Level 23",
+    "Level 24",
+    "Level 25",
+    "Level 26",
+    "Level 27",
+    "Level 28",
+    "Level 29",
+    "Level 30",
+    "Level 30B"
+  ],
+  "what_did_not_change": [
+    "No Bank rebuild.",
+    "No IndexedDB clearing.",
+    "No storage migration.",
+    "No route replacement.",
+    "No broad DOM sweep.",
+    "No certification claim."
+  ],
+  "runtime_receipt_expected": "pmp_continuous_run_level_ui_scope_v1_receipt",
+  "certification_status": "not_certified"
+}
