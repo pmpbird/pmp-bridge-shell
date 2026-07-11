@@ -1,0 +1,71 @@
+{
+  "type": "PMP_A003_FINAL_RECEIPT_V1",
+  "receipt_id": "PMP-A003-5dd049de-PASS-FULL-001",
+  "receipt_hash": "4d747d88ef3c900b33ad18a101d3cbadc41e7b3d05cba2102dcad187ae9eb56a",
+  "receipt_hash_basis": "SHA-256 of receipt_id|tested_head|runtime_source_set_sha256|manifest_sha256|repository_pass_count|live_pass_count",
+  "repair_id": "A-003",
+  "baseline_commit": "5dd049de1500ea427fa2cf395687239a19706115",
+  "tested_head": "f2ed35ff4a9c7b764e6bf60d5a15be04e4c974dd",
+  "status": "PASS_AT_FULL_A003_EXERCISED_SCOPE",
+  "manifest": {
+    "path": "pmp-runtime-integrity-manifest-v1.json",
+    "version": "20260711A-A003-FINAL",
+    "sha256": "570c6db93da497758c6b18f53fa1e3c2b08cb1fdff761c9e54d97b87914e54d0",
+    "runtime_source_set_sha256": "2efc5aa5f3ece5b1da94e162baf7f981a636ef5f23d9c6b3f2d8a348688172e2",
+    "local_records": 697,
+    "current_map_paths": 42,
+    "external_sri_records": 3,
+    "historical_records": 1
+  },
+  "repository_gate": {
+    "tests_total": 21,
+    "tests_passed": 21,
+    "tests_failed": 0,
+    "run_id": 29160312887,
+    "job_id": 86564162395,
+    "artifact_id": 8250616332,
+    "artifact_digest": "sha256:9232c90d2eb2b185ebd3ffa2d33a59e9db2392a480230b4d81dc32f8b7ad7372"
+  },
+  "adversarial_live_gate": {
+    "tests_total": 47,
+    "tests_passed": 47,
+    "tests_failed": 0,
+    "fatal_error": null,
+    "run_id": 29160312887,
+    "job_id": 86564162398,
+    "artifact_id": 8250630872,
+    "artifact_digest": "sha256:098cf19bbd3f9f989d2e6e289d20531cdd3d196e9bd42b19875c7552081ab108"
+  },
+  "proved": [
+    "The root bootstrap carries and verifies the exact sealed manifest digest before downstream routing.",
+    "All covered local runtime bytes, Current Map targets, historical Home bytes, and external script identities are exact and complete for the exercised source set.",
+    "The integrity Service Worker verifies covered bytes before response and blocks unlisted executable sources.",
+    "One-byte tampering of the manifest, integrity worker, resolver, Current Map, Guardian, cached source, and historical Home fails closed.",
+    "A digest mismatch never falls back to a previously verified cache response.",
+    "Offline fallback is allowed only for cached bytes that still match the exact expected digest.",
+    "External scripts receive exact SHA-256 SRI after the containing local document is verified.",
+    "All six current screens, tools, recovery paths, and fourteen historic forwarders remain functional under enforcement.",
+    "No protected downstream component can replace the integrity Service Worker."
+  ],
+  "safety": {
+    "storage_cleared": false,
+    "indexeddb_deleted": false,
+    "indexeddb_migrated": false,
+    "bank_rebuilt": false,
+    "user_content_deleted": false,
+    "historic_files_deleted": false,
+    "rollback_required": false
+  },
+  "certification_truth": {
+    "A003_complete": true,
+    "A002_complete": true,
+    "overall_project_pass_1_complete": false,
+    "merge_authorized": false,
+    "root_trust_anchor_self_verifiable": false,
+    "compromised_origin_server_fully_solved": false,
+    "service_worker_registration_TOCTOU_fully_eliminated": false,
+    "meaning": "This is an unrestricted pass for the complete exercised A-003 repository and browser runtime source-byte enforcement scope. The explicit bootstrap root cannot verify its own pre-execution bytes, and browser Service Worker registration lacks native SRI; signed or immutable deployment controls are required to eliminate a malicious-origin swap during that narrow registration interval."
+  },
+  "next_boundary": "STOP_BEFORE_MERGE",
+  "decision": "A003_PASS_STOP_BEFORE_MERGE"
+}
