@@ -25,7 +25,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Keep latest ledger record only
+      - name: Keep latest ledger record only when semantic content changes
         uses: actions/github-script@v7
         with:
           script: |
@@ -39,6 +39,7 @@ jobs:
             function readJson(filePath) {
               return JSON.parse(fs.readFileSync(filePath, 'utf8'));
             }
+            function canonical(data) { return JSON.stringify(data); }
             if (!fs.existsSync(ledgerPath)) {
               core.info('No record-ledger.json found.');
               return;
@@ -47,7 +48,7 @@ jobs:
             const records = Array.isArray(ledger.records) ? ledger.records : [];
             const latest = ledger.latest_record || records[records.length - 1] || null;
             const processed = ledger.total_records_processed || records.length || (latest ? 1 : 0);
-            const compact = {
+            const semantic = {
               type: ledger.type || 'PMP_VAULT_RECORD_LEDGER',
               version: '3.0.0-latest-only-compacted',
               purpose: 'Latest compact record only. Older ledger entries are kept only by Git history.',
@@ -60,8 +61,17 @@ jobs:
               },
               total_records_processed: processed,
               latest_record: latest,
-              records: latest ? [latest] : [],
-              updated_at: new Date().toISOString()
+              records: latest ? [latest] : []
+            };
+            const existingSemantic = { ...ledger };
+            delete existingSemantic.updated_at;
+            if (canonical(existingSemantic) === canonical(semantic)) {
+              core.info('record-ledger.json is already semantically compact; preserving sealed bytes and skipping commit.');
+              return;
+            }
+            const compact = {
+              ...semantic,
+              updated_at: (latest && (latest.report_built_at || latest.packet_built_at)) || new Date().toISOString()
             };
             writeJson(ledgerPath, compact);
             const status = await exec.getExecOutput('git', ['status', '--porcelain', ledgerPath]);
