@@ -19,9 +19,14 @@
   "cache_clearing": false,
   "historic_file_deletions": false,
   "rollback_required": false,
-  "A003_runtime_hash_enforcement_claimed": false,
+  "A003_runtime_hash_enforcement": {
+    "status": "PASS_AT_FULL_A003_EXERCISED_SCOPE",
+    "receipt_id": "PMP-A003-5dd049de-PASS-FULL-001",
+    "repository_tests": "21/21",
+    "adversarial_live_tests": "47/47"
+  },
   "overall_project_pass_1_complete": false,
   "merge_authorized": false,
-  "current_stop_line": "STOP_BEFORE_MERGE_AND_A003",
-  "decision": "A002_PASS_STOP_BEFORE_MERGE_AND_A003"
+  "current_stop_line": "STOP_BEFORE_MERGE",
+  "decision": "A002_AND_A003_PASS_STOP_BEFORE_MERGE"
 }
