@@ -1,0 +1,55 @@
+name: A-003 Integrity Probe
+
+on:
+  push:
+    branches:
+      - agent/a002-current-map-single-authority
+    paths:
+      - 'tools/build_a003_integrity_manifest.py'
+      - '.github/workflows/a003-integrity-probe.yml'
+      - 'pmp-current-map-v12.json'
+      - '*.html'
+      - '*.js'
+      - '*.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build integrity probe
+        run: |
+          python3 tools/build_a003_integrity_manifest.py \
+            --output a003-generated-integrity-manifest.json \
+            --report a003-integrity-probe-report.json \
+            | tee a003-integrity-probe-console.log
+
+      - name: Validate generated JSON
+        run: |
+          python3 -m json.tool a003-generated-integrity-manifest.json >/dev/null
+          python3 -m json.tool a003-integrity-probe-report.json >/dev/null
+
+      - name: Upload probe artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a003-integrity-probe
+          path: |
+            a003-generated-integrity-manifest.json
+            a003-integrity-probe-report.json
+            a003-integrity-probe-console.log
+          if-no-files-found: error
