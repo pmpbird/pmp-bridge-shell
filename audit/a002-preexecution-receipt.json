@@ -1,39 +1,25 @@
 {
-  "type": "PMP_A002_PREEXECUTION_PACKET_RECEIPT_V1",
+  "type": "PMP_A002_EXECUTION_PROGRESS_RECEIPT_V2",
   "repair_id": "A-002",
   "baseline_commit": "5dd049de1500ea427fa2cf395687239a19706115",
-  "artifacts": [
+  "completed_phases": [
     {
-      "path": "audit/a002-a001-identity-reconciliation-plan.json",
-      "git_blob_sha": "41376e07dfa6c3e693b0e4e2d529abcdbf1b7d4b",
-      "status": "PREPARED_NOT_EXECUTED"
+      "phase": "P0",
+      "status": "PASS",
+      "receipt_id": "PMP-A001-5dd049de-SUPPLEMENT-A002-PASS-004"
     },
     {
-      "path": "audit/a002-preexecution-patch-plan.json",
-      "git_blob_sha": "072f9432b76a267659d32eb47f6b62d19bca0064",
-      "status": "PREPARED_NOT_EXECUTED"
-    },
-    {
-      "path": "audit/a002-rollback-ledger.json",
-      "git_blob_sha": "329701004e8f49c328b5714432a580a82b765f35",
-      "status": "PREPARED_NOT_USED"
-    },
-    {
-      "path": "audit/a002-preexecution-summary.md",
-      "git_blob_sha": "0776ce12ff9cb3f9bc7139a87bd9a482eb27b731",
-      "status": "READABLE_CONTROL_SHEET"
+      "phase": "P1",
+      "status": "PASS_AT_SOURCE_AND_SIMULATED_BROWSER_CONTRACT_SCOPE",
+      "execution_record": "audit/a002-p1-execution.json",
+      "gate_record": "audit/a002-p1-gate.json",
+      "tests_passed": 11,
+      "tests_failed": 0
     }
   ],
-  "identity_gap_entries": 13,
-  "execution_phases": 8,
-  "rollback_groups": 8,
-  "runtime_files_changed": 0,
-  "route_files_changed": 0,
-  "application_files_changed": 0,
-  "identity_reconciliation_executed": false,
-  "route_patch_executed": false,
+  "current_stop_line": "STOP_BEFORE_P2",
+  "p2_executed": false,
+  "runtime_hash_enforcement_claimed": false,
   "merge_authorized": false,
-  "next_permitted_action": "P0 identity supplement only after explicit authorization",
-  "decision": "PASS_PREEXECUTION_PACKET_COMPLETE_STOP_BEFORE_EXECUTION",
-  "created_at": "2026-07-11T00:00:00-07:00"
+  "decision": "P0_PASS_P1_PASS_STOP_BEFORE_P2"
 }
