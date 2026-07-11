@@ -6,8 +6,8 @@ copy of the committed browser harness that:
 1. reads historical Home verification evidence from window/embedded/localStorage;
 2. accepts BOOTSTRAP_HTTP_FAILED as the earlier equivalent fail-closed code when
    bootstrap-protected resolver or worker bytes are tampered;
-3. serves historical tamper bytes from the repository's exact Git object with clean
-   response headers and reads the fail-closed receipt from window or localStorage.
+3. injects exact Git-object historical bytes plus one tamper byte through a pre-document
+   fetch override, then reads the fail-closed receipt from window or localStorage.
 """
 from __future__ import annotations
 
@@ -60,11 +60,22 @@ def main() -> int:
       const headers = {...response.headers(), 'access-control-allow-origin':'*', 'cache-control':'no-store'};
       await route.fulfill({status:200, headers, body});
     });"""
-    route_new = """    await historicalContext.route('https://raw.githubusercontent.com/pmpbird/pmp-bridge-shell/7ac7213aeeeb8bb55692a4985e0fa80a547cff4e/pmp-home-single-v6.html*', async route => {
-      const original = execFileSync('git', ['show', '7ac7213aeeeb8bb55692a4985e0fa80a547cff4e:pmp-home-single-v6.html'], {cwd:ROOT});
-      const body = Buffer.concat([original, Buffer.from('\\n<!-- A003 HISTORICAL TAMPER -->')]);
-      await route.fulfill({status:200, headers:{'content-type':'text/html; charset=utf-8','access-control-allow-origin':'*','cache-control':'no-store'}, body});
-    });"""
+    route_new = """    const historicalTarget = 'https://raw.githubusercontent.com/pmpbird/pmp-bridge-shell/7ac7213aeeeb8bb55692a4985e0fa80a547cff4e/pmp-home-single-v6.html';
+    const historicalOriginal = execFileSync('git', ['show', '7ac7213aeeeb8bb55692a4985e0fa80a547cff4e:pmp-home-single-v6.html'], {cwd:ROOT});
+    const historicalTamperedBase64 = Buffer.concat([historicalOriginal, Buffer.from('\\n<!-- A003 HISTORICAL TAMPER -->')]).toString('base64');
+    await historicalContext.addInitScript(({target, payload}) => {
+      const originalFetch = window.fetch.bind(window);
+      window.fetch = async function(input, init) {
+        const url = typeof input === 'string' ? input : (input && input.url) || String(input);
+        if (String(url).startsWith(target)) {
+          const binary = atob(payload);
+          const bytes = new Uint8Array(binary.length);
+          for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+          return new Response(bytes, {status:200, headers:{'content-type':'text/html; charset=utf-8','access-control-allow-origin':'*','cache-control':'no-store'}});
+        }
+        return originalFetch(input, init);
+      };
+    }, {target:historicalTarget, payload:historicalTamperedBase64});"""
     if route_old not in text:
         raise SystemExit("Expected historical tamper route was not found.")
     text = text.replace(route_old, route_new, 1)
