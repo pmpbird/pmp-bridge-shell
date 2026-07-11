@@ -1,7 +1,16 @@
 # A-002 Review Boundary
 
-Review question: Does this inventory correctly identify every object that can currently choose, mutate, forward, restore, cache-influence, or claim the PMP application route?
+P0 and P1 are complete within their tested scope.
 
-This review does not authorize implementation.
+P1 review result:
 
-The next permitted artifact, after inventory acceptance, is a pre-execution A-002 patch plan plus rollback ledger. No route code may change before that artifact exists.
+- Current Map v12 declares the sole-authority contract.
+- The resolver validates one fixed map and issues immutable handoffs.
+- The stable entry requests only the `route_guardian` role.
+- Route Guardian requests only the `current_app` role.
+- Old-map and hard-coded app fallback selection was removed from the P1 entry/guardian layer.
+- The P1 gate passed 11 of 11 source and simulated contract tests.
+
+Live mobile-browser and service-worker network execution were not exercised by this gate.
+
+P2 remains unexecuted and requires separate explicit authorization.
