@@ -1,38 +1,48 @@
 {
-  "type": "PMP_A002_NO_CODE_CHANGE_PROOF_V4",
-  "allowed_paths_prefix": "audit/",
-  "actual_changed_files": [
-    "audit/a001-supplements/a001-a002-route-authority-supplement-receipt-v1.json",
-    "audit/a001-supplements/a001-a002-route-authority-supplement-v1.json",
-    "audit/a002-a001-identity-reconciliation-plan.json",
-    "audit/a002-authority-counts.json",
-    "audit/a002-complete.marker",
-    "audit/a002-final-status.json",
-    "audit/a002-hard-blockers.json",
-    "audit/a002-inventory-index.md",
-    "audit/a002-inventory-receipt.json",
-    "audit/a002-no-code-change-proof.json",
-    "audit/a002-p0-execution.json",
-    "audit/a002-plan.json",
-    "audit/a002-pr-ready.json",
-    "audit/a002-preexecution-patch-plan.json",
-    "audit/a002-preexecution-receipt.json",
-    "audit/a002-preexecution-summary.md",
-    "audit/a002-review-boundary.md",
-    "audit/a002-rollback-ledger.json",
-    "audit/a002-route-authority-inventory.json",
-    "audit/a002-route-authority-summary.md",
-    "audit/a002-scope-lock.md",
-    "audit/a002-stop-line.md"
-  ],
-  "changed_file_count": 22,
-  "all_paths_under_audit": true,
-  "p0_identity_reconciliation_executed": true,
-  "p0_status": "PASS",
-  "runtime_files_changed": 0,
-  "application_files_changed": 0,
-  "route_files_changed": 0,
-  "storage_files_changed": 0,
-  "bank_files_changed": 0,
-  "decision": "P0_AUDIT_ONLY_PASS_NO_ROUTE_BEHAVIOR_CHANGED"
+  "type": "PMP_A002_PHASE_SCOPE_PROOF_V5",
+  "branch": "agent/a002-current-map-single-authority",
+  "baseline_commit": "5dd049de1500ea427fa2cf395687239a19706115",
+  "p0": {
+    "status": "PASS",
+    "audit_only": true,
+    "receipt_id": "PMP-A001-5dd049de-SUPPLEMENT-A002-PASS-004"
+  },
+  "p1": {
+    "status": "PASS_AT_SOURCE_AND_SIMULATED_BROWSER_CONTRACT_SCOPE",
+    "phase_base_commit": "6944364b49d52836ab30cfd5b08e0905cd1b348d",
+    "source_head_commit": "b9ae9d4145c85a3e92e727c5443d3b01e1641c1f",
+    "planned_source_files": [
+      "pmp-current-route-resolver-v1.js",
+      "pmp-current-map-v12.json",
+      "pmp-app-current.html",
+      "pmp-route-guardian-current-loader-v22.html"
+    ],
+    "actual_source_files": [
+      "pmp-current-route-resolver-v1.js",
+      "pmp-current-map-v12.json",
+      "pmp-app-current.html",
+      "pmp-route-guardian-current-loader-v22.html"
+    ],
+    "unexpected_source_files": [],
+    "source_file_count": 4,
+    "tests_passed": 11,
+    "tests_failed": 0
+  },
+  "forbidden_effects": {
+    "storage_schema_changes": 0,
+    "storage_clear_operations": 0,
+    "indexeddb_changes": 0,
+    "bank_changes": 0,
+    "user_content_changes": 0,
+    "cache_clear_operations": 0,
+    "historic_file_deletions": 0,
+    "p2_source_changes": 0
+  },
+  "scope_truth": {
+    "live_mobile_browser_exercised": false,
+    "service_worker_network_runtime_exercised": false,
+    "full_A002_certified": false,
+    "A003_hash_enforcement_claimed": false
+  },
+  "decision": "P0_PASS_P1_PASS_WITHIN_TESTED_SCOPE_STOP_BEFORE_P2"
 }
