@@ -1,5 +1,11 @@
 # A-002 Audit and Pre-Execution Files
 
+## A-001 supplemental reconciliation
+
+- `a001-supplements/a001-a002-route-authority-supplement-v1.json` — 13 exact baseline route-capable identities discovered during A-002
+- `a001-supplements/a001-a002-route-authority-supplement-receipt-v1.json` — linked PASS-004 receipt preserving A-001 PASS-003
+- `a002-p0-execution.json` — P0 execution result and no-side-effect boundary
+
 ## Authority inventory
 
 - `a002-plan.json` — current phase status and constraints
@@ -20,9 +26,9 @@
 ## Safety and review controls
 
 - `a002-scope-lock.md` — implementation prohibition
-- `a002-stop-line.md` — stop before execution
-- `a002-review-boundary.md` — review question and permitted next artifact/action
+- `a002-stop-line.md` — stop before route execution
+- `a002-review-boundary.md` — review question and permitted next action
 - `a002-no-code-change-proof.json` — changed-file scope proof
-- `a002-final-status.json` — preparation status
+- `a002-final-status.json` — current P0-pass status
 - `a002-pr-ready.json` — draft-review marker
 - `a002-complete.marker` — inventory completion marker
