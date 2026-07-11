@@ -1,21 +1,15 @@
 (()=>{
 'use strict';
-const V='1.0.3-rg21';
-const RG='pmp-route-guardian-current-loader-v21.html';
+const V='1.1.0-a002-current-map-sole-truth';
 let busy=false,last=0;
+function T(){try{return window.top||window}catch(e){return window}}
 function page(){try{return /^#(world|bridge|library|workshop|control|bank)$/i.test(location.hash)?location.hash:'#control'}catch(e){return'#control'}}
-function go(e){
- if(e){e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation()}
- let n=Date.now();if(busy||n-last<1200)return false;busy=true;last=n;
- let url=RG+'?from=reload-current&fresh='+V+'-'+Date.now()+page();
- try{localStorage.setItem('pmp_reload_current_v1_receipt',JSON.stringify({type:'PMP_RELOAD_CURRENT_V1_RECEIPT',version:V,target:RG,launch_url:url,at:new Date().toISOString()},null,2))}catch(x){}
- try{(window.top||window).location.href=url}catch(x){location.href=url}
- return false;
-}
+function store(k,v){try{T().localStorage.setItem(k,JSON.stringify(v,null,2))}catch(e){}}
+async function go(e){if(e){e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation()}let n=Date.now();if(busy||n-last<1200)return false;busy=true;last=n;let gate=T().PMPCurrentMapEnforcementV1||window.PMPCurrentMapEnforcementV1;try{if(!gate)throw new Error('current_map_enforcement_gate_missing');let ctx=await gate.load(),guardian=gate.target(ctx,'route_guardian_loader'),current=gate.target(ctx,'current_app'),fallback=gate.target(ctx,'fallback_app');gate.assertRegistered(ctx,guardian);let rec=await gate.append('reload_world','PASS_ROUTE_GUARDIAN_TARGET_AUTHORIZED',{map_path:ctx.map_path,map_sha:ctx.map_sha,guardian_target:guardian,reload_target:current,fallback_target:fallback,actor_agreement:null,runtime_route:guardian,test_results:['map_sha_match','route_guardian_target_registered'],details:{source:'reload_current_button',blocked_before_navigation:false}});let url=guardian+'?from=reload-current&a002_parent='+encodeURIComponent(rec.receipt_id)+'&fresh='+encodeURIComponent(ctx.map.route_guardian_loader.cache_key)+'-'+Date.now()+page();store('pmp_reload_current_v1_receipt',{type:'PMP_RELOAD_CURRENT_V1_RECEIPT',version:V,target:guardian,map_path:ctx.map_path,map_sha:ctx.map_sha,launch_url:url,enforcement_receipt_id:rec.receipt_id,at:new Date().toISOString(),certification_authority:false});try{T().location.href=url}catch(x){location.href=url}}catch(err){try{if(gate)await gate.append('reload_world','FAIL_BLOCKED_BEFORE_NAVIGATION',{map_path:gate.map_path,map_sha:null,guardian_target:null,reload_target:null,fallback_target:null,actor_agreement:false,test_results:[String(err&&err.message||err)],details:{blocked_before_navigation:true}})}catch(x){}store('pmp_reload_current_v1_receipt',{type:'PMP_RELOAD_CURRENT_V1_RECEIPT',version:V,status:'BLOCKED',error:String(err&&err.message||err),launch_url:null,at:new Date().toISOString()});busy=false;return false}return false}
 function t(x){return String((x&&x.textContent)||x&&x.value||'').toLowerCase().trim()}
 function is(b){let s=t(b),o=String(b&&b.getAttribute&&b.getAttribute('onclick')||'').toLowerCase();return s==='reload'||s==='reload current'||s.includes('reload current')||o.includes('reloadapp')||b&&b.getAttribute&&b.getAttribute('data-launcher-reload-current')}
 function docs(d,a,n){a=a||[];n=n||0;if(!d||n>8)return a;try{a.push(d);d.querySelectorAll('iframe').forEach(f=>{try{if(f.contentDocument)docs(f.contentDocument,a,n+1)}catch(e){}})}catch(e){}return a}
-function patch(d){try{let w=d.defaultView;if(w)w.reloadApp=function(){return go(null)};d.querySelectorAll('button,a,input,[role="button"],[data-launcher-reload-current]').forEach(b=>{if(is(b)){b.setAttribute('data-launcher-reload-current','1');b.onclick=function(e){return go(e)}}});if(!d.__reloadWorldMap){d.__reloadWorldMap=1;d.addEventListener('click',e=>{let b=e.target&&e.target.closest&&e.target.closest('button,a,input,[role="button"]');if(is(b))return go(e)},true)}}catch(e){}}
-function scan(){try{docs(top.document).forEach(patch)}catch(e){patch(document)}}
+function patch(d){try{let w=d.defaultView;if(w)w.reloadApp=function(){return go(null)};d.querySelectorAll('button,a,input,[role="button"],[data-launcher-reload-current]').forEach(b=>{if(is(b)){b.setAttribute('data-launcher-reload-current','1');b.onclick=function(e){return go(e)}}});if(!d.__reloadWorldMapA002){d.__reloadWorldMapA002=1;d.addEventListener('click',e=>{let b=e.target&&e.target.closest&&e.target.closest('button,a,input,[role="button"]');if(is(b))return go(e)},true)}}catch(e){}}
+function scan(){try{docs(T().document).forEach(patch)}catch(e){patch(document)}}
 addEventListener('load',scan);setInterval(scan,500);scan();
 })();
