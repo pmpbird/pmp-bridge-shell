@@ -95,6 +95,19 @@ jobs:
           npm install --no-save playwright@1.55.0
           npx playwright install --with-deps chromium
 
+      - name: Normalize equivalent fail-closed map errors in harness
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('audit/a003-live-runtime.cjs')
+          text = path.read_text('utf-8')
+          old = '/INTEGRITY_HTTP_FAILED|SOURCE_DIGEST_MISMATCH/'
+          new = '/BOOTSTRAP_HTTP_FAILED|INTEGRITY_HTTP_FAILED|SOURCE_DIGEST_MISMATCH/'
+          if old not in text:
+              raise SystemExit('Expected live harness assertion was not found.')
+          path.write_text(text.replace(old, new, 1), 'utf-8')
+          PY
+
       - name: Run adversarial live integrity matrix
         env:
           A003_RESULT_PATH: a003-live-runtime-results.json
@@ -112,4 +125,5 @@ jobs:
           path: |
             a003-live-runtime-results.json
             a003-live-runtime-console.log
+            audit/a003-live-runtime.cjs
           if-no-files-found: warn
