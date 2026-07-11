@@ -1,0 +1,66 @@
+name: A-001 Source Identity Audit
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'audit/a001_source_identity_audit.py'
+      - 'audit/pmp-active-source-identity-manifest-v1.json'
+      - '.github/workflows/a001_source_identity_audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out full repository history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate manifest twice
+        id: generate
+        shell: bash
+        run: |
+          set +e
+          mkdir -p audit/a001-output/run1 audit/a001-output/run2
+          python audit/a001_source_identity_audit.py \
+            --baseline 5dd049de1500ea427fa2cf395687239a19706115 \
+            --planning-manifest audit/pmp-active-source-identity-manifest-v1.json \
+            --output audit/a001-output/run1/pmp-active-source-identity-manifest-v2.json \
+            --summary audit/a001-output/run1/a001-summary.json
+          code1=$?
+          python audit/a001_source_identity_audit.py \
+            --baseline 5dd049de1500ea427fa2cf395687239a19706115 \
+            --planning-manifest audit/pmp-active-source-identity-manifest-v1.json \
+            --output audit/a001-output/run2/pmp-active-source-identity-manifest-v2.json \
+            --summary audit/a001-output/run2/a001-summary.json
+          code2=$?
+          cmp audit/a001-output/run1/pmp-active-source-identity-manifest-v2.json \
+              audit/a001-output/run2/pmp-active-source-identity-manifest-v2.json
+          deterministic=$?
+          cp audit/a001-output/run1/pmp-active-source-identity-manifest-v2.json audit/a001-output/pmp-active-source-identity-manifest-v2.json
+          cp audit/a001-output/run1/a001-summary.json audit/a001-output/a001-summary.json
+          printf '{"run1_exit":%s,"run2_exit":%s,"deterministic_cmp_exit":%s}\n' "$code1" "$code2" "$deterministic" > audit/a001-output/a001-execution.json
+          echo "run1_exit=$code1" >> "$GITHUB_OUTPUT"
+          echo "run2_exit=$code2" >> "$GITHUB_OUTPUT"
+          echo "deterministic_cmp_exit=$deterministic" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Upload A-001 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: a001-source-identity-evidence
+          path: audit/a001-output/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Enforce A-001 gates
+        shell: bash
+        run: |
+          test "${{ steps.generate.outputs.run1_exit }}" = "0"
+          test "${{ steps.generate.outputs.run2_exit }}" = "0"
+          test "${{ steps.generate.outputs.deterministic_cmp_exit }}" = "0"
