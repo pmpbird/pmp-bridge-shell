@@ -1,0 +1,38 @@
+{
+  "type": "PMP_A002_P3_EXECUTION_V1",
+  "repair_id": "A-002",
+  "phase": "P3",
+  "status": "PASS",
+  "baseline_commit": "5dd049de1500ea427fa2cf395687239a19706115",
+  "phase_base_commit": "0ea8e1ff8491eae5f441beab7c719fe4c580dc40",
+  "source_head_commit": "12b5cf4d813a8dc182de47d58b6de3388d07037f",
+  "mutations": [
+    {"path":"pmp-current-screen-pointer-v1.js","preimage_git_blob_sha":"74efdbf6053b5e331110eb1e47dd0abefc12e8b4","postimage_git_blob_sha":"63fb82dc7f4c21cd8894dc3846df545a71761628","job":"Own the single canonical resolver-backed Reload Current API, snapshot capture/restoration, duplicate guard, Current Map current_app handoff, and fail-closed receipt."},
+    {"path":"pmp-reload-world-from-map-v1.js","preimage_git_blob_sha":"75de1a4cf0f3c60829f1cf1205876b01d49b0bee","postimage_git_blob_sha":"64770d3720ee42c488aa37d17e084094478bdc36","job":"Detect Reload Current controls and delegate only to the canonical API."},
+    {"path":"pmp-launcher-reload-current-bridge-v1.js","preimage_git_blob_sha":"b63e149847a9d6c08b5eab1ec58c6fec0c744263","postimage_git_blob_sha":"f784f95a93af07ac122cfbd31608f0e287ff7a15","job":"Delegate launcher/bridge reload controls only to the canonical API."},
+    {"path":"pmp-launcher-reload-current-v2-guard.js","preimage_git_blob_sha":"c7845ae8f7aa44d7969fef2d3f1166b1e7df35b7","postimage_git_blob_sha":"91bcd354606263411c1bba0582bc68b6c3cfa7ae","job":"Guard and normalize reload controls while delegating destination authority to the canonical API."}
+  ],
+  "phase_diff": {
+    "commit_count": 4,
+    "changed_file_count": 4,
+    "unexpected_files": [],
+    "files": ["pmp-current-screen-pointer-v1.js","pmp-reload-world-from-map-v1.js","pmp-launcher-reload-current-bridge-v1.js","pmp-launcher-reload-current-v2-guard.js"]
+  },
+  "canonical_reload_contract": {
+    "owner": "pmp-current-screen-pointer-v1.js",
+    "api": "PMPReloadCurrentCanonicalV1",
+    "map_role_used_for_navigation": "current_app",
+    "guardian_role_resolved_for_policy_evidence": true,
+    "snapshot_key": "pmp_reload_current_live_snapshot_v12",
+    "duplicate_guard_ms": 1500,
+    "fallback_destinations": 0
+  },
+  "effects": {"storage_schema_changes":0,"storage_clear_operations":0,"indexeddb_changes":0,"bank_changes":0,"user_content_changes":0,"cache_clear_operations":0,"historic_file_deletions":0},
+  "rollback_group": "RG-P3",
+  "rollback_ready": true,
+  "rollback_required": false,
+  "p4_eligible": true,
+  "p4_executed": false,
+  "merge_authorized": false,
+  "decision": "PASS_P3_ACTIVE_RELOAD_CONVERGENCE_STOP_BEFORE_P4"
+}
