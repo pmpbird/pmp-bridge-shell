@@ -1,17 +1,18 @@
-# Stop Line
+# A-002 Final Stop Line
 
-A-002 authority inventory is complete.
+A-002 is complete and passed at its full exercised scope.
 
-P0 identity reconciliation passed through receipt `PMP-A001-5dd049de-SUPPLEMENT-A002-PASS-004`.
+Final evidence:
 
-P1 Current Map contract and resolver passed within source-and-simulated-browser-contract scope.
+- 65 authority objects audited
+- 0 independent route authorities
+- 0 unresolved objects
+- 37 of 37 live Chromium checks passed
+- independent source-verification and receipt jobs passed
+- final receipt: `PMP-A002-5dd049de-PASS-FULL-001`
 
-P2 current Reload Owner, marker, wrapper chain, and Home delegation passed within source-and-simulated-route-contract scope.
+This is an A-002 routing-authority pass. It does not mean the overall project’s Pass 1 is complete.
 
-P3 Active Reload Current convergence passed within source-and-simulated-reload-contract scope.
+Current stop line: `STOP_BEFORE_MERGE_AND_A003`.
 
-Current stop line: `STOP_BEFORE_P4`.
-
-P4 has not been executed.
-
-Do not change Safe Writer, Code Safety, Route Guardian Action, canonical Safe Writer routes, or inner-v2 tool-return behavior without a separate explicit P4 execution instruction.
+Do not merge PR #38 and do not begin A-003 runtime source-byte enforcement without a separate explicit instruction.
