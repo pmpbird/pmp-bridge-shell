@@ -1,1 +1,206 @@
-{"type":"PMP_CURRENT_APP_MAP","app_name":"PMP Current","app_version":"PMP-CURRENT-1","updated_at":"2026-07-09T22:32:00Z","route_guardian_loader":{"path":"pmp-route-guardian-current-loader-v22.html","cache_key":"pmp-route-guardian-current-loader-v22-8-no-auto-selection-20260709A","status":"current"},"current_app":{"path":"pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html","cache_key":"pmp-current-reload-owner-v30-rollback-regular-app-orchestrator-20260709A","status":"current"},"fallback_app":{"path":"pmp-current-inner-cleanbug-rgcontrols-v23.html","cache_key":"fallback-pmp-current-v23-bank-order-cache-refresh-20260704J"}}
+{
+  "type": "PMP_CURRENT_APP_MAP",
+  "schema_version": 2,
+  "app_name": "PMP Current",
+  "app_version": "PMP-CURRENT-1-A002-P1",
+  "updated_at": "2026-07-11T00:00:00-07:00",
+  "route_epoch": "A002-P1-20260711A",
+  "route_contract": {
+    "type": "PMP_ROUTE_CONTRACT_V1",
+    "sole_authority": "pmp-current-map-v12.json",
+    "resolver": "pmp-current-route-resolver-v1.js",
+    "handoff_type": "PMP_ROUTE_HANDOFF_V1",
+    "failure_mode": "fail_closed",
+    "implicit_fallbacks": false,
+    "authority_rule": "Only this map may name application, tool, recovery, fallback, and historic-forward destinations. Consumers may validate and execute a map-issued handoff but may not invent or consult alternate destinations.",
+    "a003_boundary": "This contract identifies paths and versions only. Runtime source-byte hash enforcement remains A-003."
+  },
+  "default_hash": "#control",
+  "allowed_hashes": [
+    "#world",
+    "#bridge",
+    "#library",
+    "#workshop",
+    "#control",
+    "#bank"
+  ],
+  "entry": {
+    "path": "pmp-app-current.html",
+    "cache_key": "pmp-app-current-a002-p1-map-authority-20260711A",
+    "status": "current"
+  },
+  "route_guardian": {
+    "path": "pmp-route-guardian-current-loader-v22.html",
+    "cache_key": "pmp-route-guardian-v22-a002-p1-map-only-20260711A",
+    "status": "current"
+  },
+  "route_guardian_loader": {
+    "path": "pmp-route-guardian-current-loader-v22.html",
+    "cache_key": "pmp-route-guardian-v22-a002-p1-map-only-20260711A",
+    "status": "legacy_field_alias_of_route_guardian"
+  },
+  "current_app": {
+    "path": "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html",
+    "cache_key": "pmp-current-reload-owner-v30-rollback-regular-app-orchestrator-20260709A",
+    "status": "current"
+  },
+  "runtime_chain": {
+    "reload_owner": {
+      "path": "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html",
+      "cache_key": "pmp-current-reload-owner-v30-rollback-regular-app-orchestrator-20260709A",
+      "status": "current"
+    },
+    "inner_v30": {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+      "cache_key": "pmp-current-inner-v30-direct-boot-surface-20260708A",
+      "status": "current"
+    },
+    "inner_v23": {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+      "cache_key": "pmp-current-inner-v23-bank-order-cache-refresh-20260704J",
+      "status": "current_chain"
+    },
+    "inner_v4": {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+      "cache_key": "pmp-current-inner-v4",
+      "status": "current_chain"
+    },
+    "inner_v3": {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "cache_key": "pmp-current-inner-v3",
+      "status": "current_chain"
+    },
+    "home_restore": {
+      "path": "pmp-home-single-v6.html",
+      "cache_key": "pmp-home-single-v6-restore-shim",
+      "status": "current_chain"
+    },
+    "live_update_marker": {
+      "path": "pmp-reload-current-live-update-marker-v1.json",
+      "cache_key": "pmp-reload-current-live-update-marker-v1",
+      "status": "revision_data_only"
+    }
+  },
+  "historical_payloads": {
+    "home_v6": {
+      "repository_path": "pmp-home-single-v6.html",
+      "commit": "7ac7213aeeeb8bb55692a4985e0fa80a547cff4e",
+      "git_blob_sha": "8f04c9636cb3fac128db54fc5b058020cd23cffc",
+      "status": "current_historical_payload_identity",
+      "a003_boundary": "Identity is declared here; runtime byte verification is not enforced by A-002."
+    }
+  },
+  "tool_routes": {
+    "bug_memory": {
+      "path": "bug-memory-current-clean-v1.html",
+      "cache_key": "bug-memory-current-clean-v1",
+      "status": "current_tool"
+    },
+    "route_guardian_action": {
+      "path": "pmp-route-guardian-action-v2.html",
+      "cache_key": "pmp-route-guardian-action-v2",
+      "status": "current_tool"
+    },
+    "resident": {
+      "path": "resident.html",
+      "cache_key": "resident-current",
+      "status": "current_tool"
+    },
+    "safe_writer": {
+      "path": "safe-writer-v14.html",
+      "cache_key": "safe-writer-v14",
+      "status": "current_tool"
+    },
+    "code_safety": {
+      "path": "code-safety-v13.html",
+      "cache_key": "code-safety-v13",
+      "status": "current_tool"
+    },
+    "inner_action_target": {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v2.html",
+      "cache_key": "pmp-current-inner-v2",
+      "status": "conditional_tool_target"
+    }
+  },
+  "recovery_routes": {
+    "last_good_owner": {
+      "path": "pmp-route-guardian-last-good-clean-v1.js",
+      "cache_key": "pmp-route-guardian-last-good-clean-v1",
+      "status": "current_recovery_controller"
+    },
+    "last_good_inner_v16": {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v16.html",
+      "cache_key": "pmp-current-inner-v16",
+      "status": "allowed_recovery_candidate"
+    },
+    "last_good_button_v3": {
+      "path": "pmp-route-guardian-last-good-v3-button-v1.js",
+      "cache_key": "pmp-route-guardian-last-good-v3-button-v1",
+      "status": "conditional_recovery_control"
+    },
+    "last_good_forwarder_v1": {
+      "path": "pmp-route-guardian-last-good-v1.html",
+      "cache_key": "pmp-route-guardian-last-good-v1",
+      "status": "conditional_recovery_forwarder"
+    },
+    "last_good_v18": {
+      "path": "pmp-route-guardian-last-good-v18.html",
+      "cache_key": "pmp-route-guardian-last-good-v18",
+      "status": "conditional_recovery_page"
+    },
+    "recovery_tools_v8": {
+      "path": "pmp-route-guardian-recovery-tools-v8.html",
+      "cache_key": "pmp-route-guardian-recovery-tools-v8",
+      "status": "conditional_recovery_page"
+    },
+    "candidate_follow": {
+      "path": "pmp-move-ledger-candidate-follow-v1.html",
+      "cache_key": "pmp-move-ledger-candidate-follow-v1",
+      "status": "candidate_review_only"
+    },
+    "guardian_v14": {
+      "path": "pmp-route-guardian-current-loader-v14.html",
+      "cache_key": "pmp-route-guardian-v14",
+      "status": "historic_recovery_delegate_pending_p5"
+    },
+    "inner_v9": {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v9.html",
+      "cache_key": "pmp-current-inner-v9",
+      "status": "historic_recovery_candidate_pending_p5"
+    },
+    "inner_v13": {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v13.html",
+      "cache_key": "pmp-current-inner-v13",
+      "status": "historic_recovery_candidate_pending_p5"
+    }
+  },
+  "historic_routes": {
+    "map_v11": {"path": "pmp-current-map-v11.json", "status": "historic_evidence_pending_p6"},
+    "map_v10": {"path": "pmp-current-map-v10.json", "status": "historic_evidence_pending_p6"},
+    "map_v9": {"path": "pmp-current-map-v9.json", "status": "historic_evidence_pending_p6"},
+    "map_unversioned": {"path": "pmp-current-map.json", "status": "historic_evidence_pending_p6"},
+    "guardian_v15": {"path": "pmp-route-guardian-current-loader-v15.html", "status": "historic_delegate_pending_p6"},
+    "guardian_v17": {"path": "pmp-route-guardian-current-loader-v17.html", "status": "historic_delegate_pending_p6"},
+    "guardian_v18": {"path": "pmp-route-guardian-current-loader-v18.html", "status": "historic_delegate_pending_p6"},
+    "guardian_v19": {"path": "pmp-route-guardian-current-loader-v19.html", "status": "historic_delegate_pending_p6"},
+    "guardian_v20": {"path": "pmp-route-guardian-current-loader-v20.html", "status": "historic_delegate_pending_p6"},
+    "guardian_v21": {"path": "pmp-route-guardian-current-loader-v21.html", "status": "historic_delegate_pending_p6"},
+    "reload_owner_v27": {"path": "pmp-current-reload-owner-v27.html", "status": "historic_delegate_pending_p6"},
+    "reload_owner_v28": {"path": "pmp-current-reload-owner-v28.html", "status": "historic_delegate_pending_p6"},
+    "reload_owner_v29": {"path": "pmp-current-reload-owner-v29.html", "status": "historic_delegate_pending_p6"},
+    "reload_owner_v29_cachelift": {"path": "pmp-current-reload-owner-v29-cachelift-20260706b.html", "status": "historic_delegate_pending_p6"},
+    "reload_owner_v29_permanent_gate": {"path": "pmp-current-reload-owner-v29-permanent-update-gate-20260706f.html", "status": "historic_delegate_pending_p6"},
+    "inner_v24": {"path": "pmp-current-inner-cleanbug-rgcontrols-v24.html", "status": "historic_delegate_pending_p6"},
+    "inner_v26": {"path": "pmp-current-inner-cleanbug-rgcontrols-v26.html", "status": "historic_delegate_pending_p6"},
+    "inner_v29": {"path": "pmp-current-inner-cleanbug-rgcontrols-v29.html", "status": "historic_delegate_pending_p6"}
+  },
+  "historic_policy": {
+    "status": "declared_not_yet_enforced_until_p6",
+    "rule": "Historic files remain inspectable evidence. They may not become current through implicit fallback. Direct delegation or quarantine is implemented in P6.",
+    "delete_history": false
+  },
+  "known_broken_absent_claims": {
+    "pmp-clean-v13.html": "absent_do_not_route",
+    "pmp-current-reload-current-live-update-marker-v1.json": "absent_alias_do_not_route"
+  }
+}
