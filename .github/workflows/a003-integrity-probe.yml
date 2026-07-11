@@ -11,6 +11,16 @@ on:
       - '*.html'
       - '*.js'
       - '*.json'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'tools/build_a003_integrity_manifest.py'
+      - '.github/workflows/a003-integrity-probe.yml'
+      - 'pmp-current-map-v12.json'
+      - '*.html'
+      - '*.js'
+      - '*.json'
   workflow_dispatch:
 
 permissions:
