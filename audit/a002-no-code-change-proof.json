@@ -1,7 +1,9 @@
 {
-  "type": "PMP_A002_NO_CODE_CHANGE_PROOF_V3",
+  "type": "PMP_A002_NO_CODE_CHANGE_PROOF_V4",
   "allowed_paths_prefix": "audit/",
   "actual_changed_files": [
+    "audit/a001-supplements/a001-a002-route-authority-supplement-receipt-v1.json",
+    "audit/a001-supplements/a001-a002-route-authority-supplement-v1.json",
     "audit/a002-a001-identity-reconciliation-plan.json",
     "audit/a002-authority-counts.json",
     "audit/a002-complete.marker",
@@ -10,6 +12,7 @@
     "audit/a002-inventory-index.md",
     "audit/a002-inventory-receipt.json",
     "audit/a002-no-code-change-proof.json",
+    "audit/a002-p0-execution.json",
     "audit/a002-plan.json",
     "audit/a002-pr-ready.json",
     "audit/a002-preexecution-patch-plan.json",
@@ -22,12 +25,14 @@
     "audit/a002-scope-lock.md",
     "audit/a002-stop-line.md"
   ],
-  "changed_file_count": 19,
+  "changed_file_count": 22,
   "all_paths_under_audit": true,
+  "p0_identity_reconciliation_executed": true,
+  "p0_status": "PASS",
   "runtime_files_changed": 0,
   "application_files_changed": 0,
   "route_files_changed": 0,
   "storage_files_changed": 0,
   "bank_files_changed": 0,
-  "decision": "AUDIT_AND_PREEXECUTION_PLANNING_ONLY"
+  "decision": "P0_AUDIT_ONLY_PASS_NO_ROUTE_BEHAVIOR_CHANGED"
 }
