@@ -1,0 +1,272 @@
+name: PR38 Post-Merge Verification
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/pr38-post-merge-verification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr38-post-merge-verification-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  PR38_MERGE_COMMIT: e4cd9948290f6de1ab563b2e698926f04771171e
+  PR38_BASE_COMMIT: 5dd049de1500ea427fa2cf395687239a19706115
+  PR38_HEAD_COMMIT: 8f280837fd465ddcf0ba67ee4cd7b49865d58cc2
+  A003_MANIFEST_SHA256: 570c6db93da497758c6b18f53fa1e3c2b08cb1fdff761c9e54d97b87914e54d0
+  A003_RUNTIME_SET_SHA256: 2efc5aa5f3ece5b1da94e162baf7f981a636ef5f23d9c6b3f2d8a348688172e2
+
+jobs:
+  merge-structure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout full main history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify merge parents and unchanged merged tree
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse "$PR38_MERGE_COMMIT^1")" = "$PR38_BASE_COMMIT"
+          test "$(git rev-parse "$PR38_MERGE_COMMIT^2")" = "$PR38_HEAD_COMMIT"
+          git diff --quiet "$PR38_HEAD_COMMIT" "$PR38_MERGE_COMMIT"
+          git merge-base --is-ancestor "$PR38_MERGE_COMMIT" HEAD
+          changed="$(git diff --name-only "$PR38_MERGE_COMMIT" HEAD)"
+          test "$changed" = ".github/workflows/pr38-post-merge-verification.yml"
+          python3 - <<'PY'
+          import json, hashlib, pathlib, os
+          seal=json.loads(pathlib.Path('audit/a003-manifest-seal.json').read_text())
+          assert seal['manifest_sha256']==os.environ['A003_MANIFEST_SHA256']
+          assert seal['runtime_source_set_sha256']==os.environ['A003_RUNTIME_SET_SHA256']
+          manifest=pathlib.Path('pmp-runtime-integrity-manifest-v1.json').read_bytes()
+          assert hashlib.sha256(manifest).hexdigest()==os.environ['A003_MANIFEST_SHA256']
+          print(json.dumps({
+            'type':'PMP_PR38_POST_MERGE_STRUCTURE_RESULT_V1',
+            'result':'PASS',
+            'verification_commit':os.environ['GITHUB_SHA'],
+            'merge_commit':os.environ['PR38_MERGE_COMMIT'],
+            'base_parent':os.environ['PR38_BASE_COMMIT'],
+            'head_parent':os.environ['PR38_HEAD_COMMIT'],
+            'manifest_sha256':seal['manifest_sha256'],
+            'runtime_source_set_sha256':seal['runtime_source_set_sha256'],
+            'post_merge_non_runtime_change':'.github/workflows/pr38-post-merge-verification.yml'
+          },indent=2))
+          PY
+
+  a003-repository-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run exact repository gate
+        run: |
+          set +e
+          python3 tools/test_a003_integrity.py --output post-merge-a003-repository-result.json 2>&1 | tee post-merge-a003-repository-console.log
+          code=${PIPESTATUS[0]}
+          exit $code
+      - name: Upload repository result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr38-post-merge-a003-repository
+          path: |
+            post-merge-a003-repository-result.json
+            post-merge-a003-repository-console.log
+          if-no-files-found: error
+
+  a003-adversarial-live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Run final adversarial matrix
+        env:
+          A003_RESULT_PATH: post-merge-a003-live-runtime-results.json
+        run: |
+          set +e
+          python3 tools/run_a003_live_final.py 2>&1 | tee post-merge-a003-live-runtime-console.log
+          code=${PIPESTATUS[0]}
+          exit $code
+      - name: Upload live result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr38-post-merge-a003-live
+          path: |
+            post-merge-a003-live-runtime-results.json
+            post-merge-a003-live-runtime-console.log
+            a003-live-runtime-effective.cjs
+          if-no-files-found: error
+
+  a002-live-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Start repository server
+        run: |
+          python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/pr38-a002-http.log 2>&1 &
+          for i in $(seq 1 30); do
+            curl -fsS http://127.0.0.1:8000/pmp-current-map-v12.json >/dev/null && exit 0
+            sleep 1
+          done
+          cat /tmp/pr38-a002-http.log
+          exit 1
+      - name: Run reconciled live runtime matrix
+        env:
+          A002_BASE_URL: http://127.0.0.1:8000/
+          A002_RESULT_PATH: post-merge-a002-live-runtime-results.json
+        run: |
+          set +e
+          node audit/a002-live-runtime.cjs 2>&1 | tee post-merge-a002-live-runtime-console.log
+          code=${PIPESTATUS[0]}
+          exit $code
+      - name: Upload A-002 result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr38-post-merge-a002-live
+          path: |
+            post-merge-a002-live-runtime-results.json
+            post-merge-a002-live-runtime-console.log
+            /tmp/pr38-a002-http.log
+          if-no-files-found: error
+
+  automated-plan-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify preserved zero-cost foundation and formal UI retirement
+        run: python3 tools/verify_automated_plan_foundation_v1.py
+      - name: Verify preserved universal contracts and stop conditions
+        run: python3 tools/verify_automated_plan_universal_contract_v1.py
+      - name: Verify superseding native visual owner and retired route boundary
+        run: python3 tools/verify_automated_plan_visual_match_v1.py
+      - name: Check retained dashboard JavaScript syntax
+        run: |
+          node --check pmp-automated-plan-room-v1.js
+          node --check pmp-automated-plan-native-match-v1.js
+
+  automated-plan-current-app:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install headless browser test dependency
+        run: |
+          npm install --no-save --silent playwright@1.53.1 > /tmp/npm-install.log 2>&1
+          npx playwright install --with-deps chromium > /tmp/playwright-install.log 2>&1
+      - name: Start the current A-003 app locally
+        run: |
+          python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/pr38-automated-plan-http.log 2>&1 &
+          for i in $(seq 1 30); do
+            curl -fsS http://127.0.0.1:8000/pmp-app-current.html >/dev/null && exit 0
+            sleep 1
+          done
+          cat /tmp/pr38-automated-plan-http.log
+          exit 1
+      - name: Test current app and retired Automated Plan route boundary
+        env:
+          PMP_BASE_URL: http://127.0.0.1:8000
+        run: |
+          node tools/test_automated_plan_real_app_v1.mjs 2>&1 | tee post-merge-automated-plan-real-app.log
+      - name: Upload current-app compatibility result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr38-post-merge-automated-plan
+          path: |
+            post-merge-automated-plan-real-app.log
+            /tmp/pr38-automated-plan-http.log
+          if-no-files-found: error
+
+  aggregate:
+    if: always()
+    needs:
+      - merge-structure
+      - a003-repository-gate
+      - a003-adversarial-live
+      - a002-live-runtime
+      - automated-plan-contract
+      - automated-plan-current-app
+    runs-on: ubuntu-latest
+    steps:
+      - name: Write aggregate result
+        env:
+          MERGE_STRUCTURE: ${{ needs.merge-structure.result }}
+          A003_REPOSITORY: ${{ needs.a003-repository-gate.result }}
+          A003_LIVE: ${{ needs.a003-adversarial-live.result }}
+          A002_LIVE: ${{ needs.a002-live-runtime.result }}
+          AUTOMATED_PLAN_CONTRACT: ${{ needs.automated-plan-contract.result }}
+          AUTOMATED_PLAN_APP: ${{ needs.automated-plan-current-app.result }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          checks={
+            'merge_structure':os.environ['MERGE_STRUCTURE'],
+            'a003_repository':os.environ['A003_REPOSITORY'],
+            'a003_adversarial_live':os.environ['A003_LIVE'],
+            'a002_live_runtime':os.environ['A002_LIVE'],
+            'automated_plan_contract':os.environ['AUTOMATED_PLAN_CONTRACT'],
+            'automated_plan_current_app':os.environ['AUTOMATED_PLAN_APP']
+          }
+          passed=all(v=='success' for v in checks.values())
+          result={
+            'type':'PMP_PR38_POST_MERGE_AGGREGATE_RESULT_V1',
+            'status':'PASS' if passed else 'FAIL',
+            'verification_commit':os.environ['GITHUB_SHA'],
+            'merge_commit':os.environ['PR38_MERGE_COMMIT'],
+            'checks':checks,
+            'manifest_sha256':os.environ['A003_MANIFEST_SHA256'],
+            'runtime_source_set_sha256':os.environ['A003_RUNTIME_SET_SHA256']
+          }
+          open('pr38-post-merge-aggregate.json','w').write(json.dumps(result,indent=2)+'\n')
+          print(json.dumps(result,indent=2))
+          raise SystemExit(0 if passed else 1)
+          PY
+      - name: Upload aggregate result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr38-post-merge-aggregate
+          path: pr38-post-merge-aggregate.json
+          if-no-files-found: error
