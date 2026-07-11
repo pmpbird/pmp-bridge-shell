@@ -1,1 +1,1 @@
-{"run1_exit":1,"run2_exit":1,"deterministic_cmp_exit":2}
+{"baseline_commit":"5dd049de1500ea427fa2cf395687239a19706115","identity_shards":5,"manifest_blob_sha":"78e6e4016c209c0c268a4f0a1666db2d300b5912","method":"connector_verified_repository_identity_resolution","repository_identity_records":195,"historical_identity_records":1,"external_pinned_records":1,"proven_absent_records":2,"total_manifest_records":199,"unresolved_records":0,"test_decision":"PASS","scope_decision":"A-002_BLOCKED_DO_NOT_BEGIN","forbidden_effects_observed":[]}
