@@ -1,9 +1,9 @@
 {
   "repair_id": "A-002",
-  "status": "PREEXECUTION_PACKET_COMPLETE_PATCH_NOT_EXECUTED",
+  "status": "P0_IDENTITY_RECONCILIATION_PASSED_P1_NOT_EXECUTED",
   "base_branch": "main",
   "baseline_commit": "5dd049de1500ea427fa2cf395687239a19706115",
-  "depends_on": "A-001 plus additive 13-entry identity supplement",
+  "depends_on": "A-001 PASS-003 plus PASS-004 additive supplement",
   "goal": "Establish Current Map as the single routing authority.",
   "inventory": {
     "full_record": "audit/a002-route-authority-inventory.json",
@@ -11,7 +11,16 @@
     "total_objects": 65,
     "unclassified": 0,
     "hard_blockers": 10,
-    "a001_dependency_discrepancy": "RECONCILIATION_PLAN_PREPARED_NOT_EXECUTED"
+    "a001_dependency_discrepancy": "CLOSED_BY_P0_PASS"
+  },
+  "p0": {
+    "status": "PASS",
+    "execution_record": "audit/a002-p0-execution.json",
+    "supplement": "audit/a001-supplements/a001-a002-route-authority-supplement-v1.json",
+    "supplement_receipt": "audit/a001-supplements/a001-a002-route-authority-supplement-receipt-v1.json",
+    "receipt_id": "PMP-A001-5dd049de-SUPPLEMENT-A002-PASS-004",
+    "supplement_records": 13,
+    "combined_unresolved_identities": 0
   },
   "preexecution": {
     "identity_reconciliation_plan": "audit/a002-a001-identity-reconciliation-plan.json",
@@ -19,18 +28,21 @@
     "rollback_ledger": "audit/a002-rollback-ledger.json",
     "readable_control_sheet": "audit/a002-preexecution-summary.md",
     "execution_phases": 8,
+    "next_phase": "P1",
+    "p1_eligible": true,
+    "p1_executed": false,
     "route_behavior_change_authorized": false,
     "merge_authorized": false
   },
   "constraints": [
-    "No runtime behavior changes during preparation",
-    "No route patches during preparation",
+    "No runtime behavior changed during P0",
+    "No route patches during P0",
     "No storage changes",
     "No cache clearing",
     "No IndexedDB changes",
     "No Bank rebuild",
-    "Do not execute P1 until P0 identity reconciliation passes with zero unresolved",
-    "Execute future phases one at a time and stop on the first failed gate"
+    "Execute future phases one at a time and stop on the first failed gate",
+    "P1 requires a separate explicit execution instruction"
   ],
-  "decision": "PREEXECUTION_READY_STOP_BEFORE_IDENTITY_SUPPLEMENT_OR_ROUTE_PATCH_EXECUTION"
+  "decision": "P0_PASS_A001_GAP_CLOSED_STOP_BEFORE_P1_ROUTE_PATCH"
 }
