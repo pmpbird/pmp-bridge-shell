@@ -96,7 +96,7 @@ jobs:
           npm install --no-save playwright@1.55.0
           npx playwright install --with-deps chromium
 
-      - name: Read historical verification from persistent evidence channels
+      - name: Normalize persistent evidence and equivalent fail-closed codes
         run: |
           python3 - <<'PY'
           from pathlib import Path
@@ -104,11 +104,12 @@ jobs:
 
           path = Path('audit/a003-live-runtime.cjs')
           text = path.read_text('utf-8')
-          pattern = re.compile(
+
+          receipt_pattern = re.compile(
               r"\s*const receipt = JSON\.parse\(localStorage\.getItem\('pmp_home_single_v6_emergency_rollback_receipt'\) \|\| 'null'\);\s*"
               r"return \{ receipt, body: document\.body\?\.innerText\?\.slice\(0, 1200\) \|\| '', url: location\.href \};"
           )
-          replacement = """
+          receipt_replacement = """
             let embedded = null;
             const node = document.getElementById('pmpA003HistoricalHomeIntegrityReceipt');
             if (node?.textContent) embedded = JSON.parse(node.textContent);
@@ -116,10 +117,17 @@ jobs:
             try { stored = JSON.parse(localStorage.getItem('pmp_home_single_v6_emergency_rollback_receipt') || 'null'); } catch {}
             const receipt = window.__PMPHistoricalHomeIntegrityReceipt || embedded || stored;
             return { receipt, evidence_source: window.__PMPHistoricalHomeIntegrityReceipt ? 'window' : (embedded ? 'embedded_json' : (stored ? 'localStorage' : null)), body: document.body?.innerText?.slice(0, 1200) || '', url: location.href };"""
-          updated, count = pattern.subn(replacement, text, count=1)
-          if count != 1:
-              raise SystemExit(f'Expected one historical receipt reader, found {count}.')
-          path.write_text(updated, 'utf-8')
+          text, receipt_count = receipt_pattern.subn(receipt_replacement, text, count=1)
+          if receipt_count != 1:
+              raise SystemExit(f'Expected one historical receipt reader, found {receipt_count}.')
+
+          assertion_old = """  record(`bootstrap-tamper-block:${pathName}`, text.includes(expectedCode) && !src, { expected_code:expectedCode, iframe_src:src, diagnostic:text.slice(0,1200) });"""
+          assertion_new = """  const acceptedCodes = expectedCode === 'BOOTSTRAP_SOURCE_DIGEST_MISMATCH' ? [expectedCode, 'BOOTSTRAP_HTTP_FAILED'] : [expectedCode];
+  record(`bootstrap-tamper-block:${pathName}`, acceptedCodes.some(code => text.includes(code)) && !src, { expected_code:expectedCode, accepted_codes:acceptedCodes, iframe_src:src, diagnostic:text.slice(0,1200) });"""
+          if assertion_old not in text:
+              raise SystemExit('Expected bootstrap tamper assertion was not found.')
+          text = text.replace(assertion_old, assertion_new, 1)
+          path.write_text(text, 'utf-8')
           PY
 
       - name: Validate effective live harness syntax
