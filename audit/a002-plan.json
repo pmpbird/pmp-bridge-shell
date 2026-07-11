@@ -1,9 +1,9 @@
 {
   "repair_id": "A-002",
-  "status": "AUTHORITY_INVENTORY_COMPLETE_REPAIR_NOT_STARTED",
+  "status": "PREEXECUTION_PACKET_COMPLETE_PATCH_NOT_EXECUTED",
   "base_branch": "main",
   "baseline_commit": "5dd049de1500ea427fa2cf395687239a19706115",
-  "depends_on": "A-001",
+  "depends_on": "A-001 plus additive 13-entry identity supplement",
   "goal": "Establish Current Map as the single routing authority.",
   "inventory": {
     "full_record": "audit/a002-route-authority-inventory.json",
@@ -11,16 +11,26 @@
     "total_objects": 65,
     "unclassified": 0,
     "hard_blockers": 10,
-    "a001_dependency_discrepancy": "OPEN"
+    "a001_dependency_discrepancy": "RECONCILIATION_PLAN_PREPARED_NOT_EXECUTED"
+  },
+  "preexecution": {
+    "identity_reconciliation_plan": "audit/a002-a001-identity-reconciliation-plan.json",
+    "patch_plan": "audit/a002-preexecution-patch-plan.json",
+    "rollback_ledger": "audit/a002-rollback-ledger.json",
+    "readable_control_sheet": "audit/a002-preexecution-summary.md",
+    "execution_phases": 8,
+    "route_behavior_change_authorized": false,
+    "merge_authorized": false
   },
   "constraints": [
-    "No runtime behavior changes",
-    "No route patches",
+    "No runtime behavior changes during preparation",
+    "No route patches during preparation",
     "No storage changes",
     "No cache clearing",
     "No IndexedDB changes",
     "No Bank rebuild",
-    "No app mutations until an A-002 repair patch and rollback ledger are separately prepared"
+    "Do not execute P1 until P0 identity reconciliation passes with zero unresolved",
+    "Execute future phases one at a time and stop on the first failed gate"
   ],
-  "decision": "INVENTORY_ACCEPTED_FOR_PLANNING_ONLY_A002_IMPLEMENTATION_NOT_AUTHORIZED"
+  "decision": "PREEXECUTION_READY_STOP_BEFORE_IDENTITY_SUPPLEMENT_OR_ROUTE_PATCH_EXECUTION"
 }
