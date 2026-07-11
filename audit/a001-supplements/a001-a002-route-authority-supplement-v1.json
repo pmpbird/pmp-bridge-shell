@@ -1,0 +1,168 @@
+{
+  "type": "PMP_ACTIVE_SOURCE_IDENTITY_MANIFEST_SUPPLEMENT_V1",
+  "repair_id": "A-001",
+  "discovered_during": "A-002",
+  "repo": "pmpbird/pmp-bridge-shell",
+  "baseline": {
+    "branch": "main",
+    "commit": "5dd049de1500ea427fa2cf395687239a19706115"
+  },
+  "lineage": {
+    "previous_manifest_path": "audit/pmp-active-source-identity-manifest-v1.json",
+    "previous_manifest_git_blob_sha": "78e6e4016c209c0c268a4f0a1666db2d300b5912",
+    "previous_manifest_sha256": "b67f7f19905bed987265ceebb8b0028c63de0f181dabd96e1ec1c68852cc7dca",
+    "previous_receipt_id": "PMP-A001-5dd049de-PASS-003",
+    "previous_receipt_hash": "4b49f2f3d16db6451a9abaafb2b3e147a591f7e3c09db314e2d04ce7b893b2b9",
+    "immutability_rule": "Original A-001 branch and PASS-003 remain unchanged; this is additive evidence only."
+  },
+  "scope": "Exact baseline identities for 13 route-capable files discovered by the A-002 authority census. No route or runtime mutation.",
+  "records": [
+    {
+      "path": "pmp-reload-current-live-update-marker-v1.json",
+      "git_blob_sha": "0beb4569ae7b2db6fb6914b62810d27c1b90f0dd",
+      "identity_state": "EXACT_BASELINE_BLOB_RESOLVED",
+      "authority_activity_class": "ACTIVE_ROUTE_DATA_CLAIM",
+      "discovered_by": "A-002 current Reload Owner trace",
+      "repository_ref": "5dd049de1500ea427fa2cf395687239a19706115"
+    },
+    {
+      "path": "pmp-current-reload-owner-v29-cachelift-20260706b.html",
+      "git_blob_sha": "00ea66027112d905829f5113d454cd30af58a84e",
+      "identity_state": "EXACT_BASELINE_BLOB_RESOLVED",
+      "authority_activity_class": "HISTORIC_RELOAD_OWNER_STILL_REACHABLE",
+      "discovered_by": "Current Map v11 fallback trace",
+      "repository_ref": "5dd049de1500ea427fa2cf395687239a19706115"
+    },
+    {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v16.html",
+      "git_blob_sha": "b2e2cfe58dc6b5fb5b9a23640dbb22a944f97ab3",
+      "identity_state": "EXACT_BASELINE_BLOB_RESOLVED",
+      "authority_activity_class": "ACTIVE_LAST_GOOD_TARGET",
+      "discovered_by": "Current Last Good owner trace",
+      "repository_ref": "5dd049de1500ea427fa2cf395687239a19706115"
+    },
+    {
+      "path": "pmp-route-guardian-recovery-tools-v8.html",
+      "git_blob_sha": "127f249f9856a4ea9dda55643930438d93b329df",
+      "identity_state": "EXACT_BASELINE_BLOB_RESOLVED",
+      "authority_activity_class": "CONDITIONAL_DYNAMIC_RECOVERY_AUTHORITY",
+      "discovered_by": "Last Good recovery trace",
+      "repository_ref": "5dd049de1500ea427fa2cf395687239a19706115"
+    },
+    {
+      "path": "pmp-safe-writer-canonical-route-v1.js",
+      "git_blob_sha": "64945b576e7a363d1b7bf7569eb7e9d68550ce3a",
+      "identity_state": "EXACT_BASELINE_BLOB_RESOLVED",
+      "authority_activity_class": "CONDITIONAL_TOOL_ROUTE_AUTHORITY",
+      "discovered_by": "Inner v9/v13/v16 script trace",
+      "repository_ref": "5dd049de1500ea427fa2cf395687239a19706115"
+    },
+    {
+      "path": "safe-writer-v14.html",
+      "git_blob_sha": "f7d71894e9a8f2caf6fe11e77468537f0317da0c",
+      "identity_state": "EXACT_BASELINE_BLOB_RESOLVED",
+      "authority_activity_class": "ACTIVE_TOOL_ROUTE_AND_STALE_RETURN_AUTHORITY",
+      "discovered_by": "Current Safe Writer return-fix trace",
+      "repository_ref": "5dd049de1500ea427fa2cf395687239a19706115"
+    },
+    {
+      "path": "pmp-route-guardian-last-good-v18.html",
+      "git_blob_sha": "2cccc42414d8523086fe909451595523ab25ed47",
+      "identity_state": "EXACT_BASELINE_BLOB_RESOLVED",
+      "authority_activity_class": "CONDITIONAL_RECOVERY_AUTHORITY",
+      "discovered_by": "Recovery Tools default-back trace",
+      "repository_ref": "5dd049de1500ea427fa2cf395687239a19706115"
+    },
+    {
+      "path": "pmp-move-ledger-candidate-follow-v1.html",
+      "git_blob_sha": "2dfedf3030426a44611e13cb6958323a84571f3f",
+      "identity_state": "EXACT_BASELINE_BLOB_RESOLVED",
+      "authority_activity_class": "CONDITIONAL_DYNAMIC_CANDIDATE_AUTHORITY",
+      "discovered_by": "Recovery Tools saved/move route trace",
+      "repository_ref": "5dd049de1500ea427fa2cf395687239a19706115"
+    },
+    {
+      "path": "pmp-route-guardian-current-loader-v14.html",
+      "git_blob_sha": "9a69eee8eb3641b13a809bb7c6b0f55a390aca1d",
+      "identity_state": "EXACT_BASELINE_BLOB_RESOLVED",
+      "authority_activity_class": "CONDITIONAL_HISTORIC_ROUTE_GUARDIAN",
+      "discovered_by": "Candidate Follow default previous-route trace",
+      "repository_ref": "5dd049de1500ea427fa2cf395687239a19706115"
+    },
+    {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v9.html",
+      "git_blob_sha": "ebe842dac1a42739c4eb76cd7158a4af4684f970",
+      "identity_state": "EXACT_BASELINE_BLOB_RESOLVED",
+      "authority_activity_class": "CONDITIONAL_RECOVERY_LOADER",
+      "discovered_by": "Last Good v18 current-before trace",
+      "repository_ref": "5dd049de1500ea427fa2cf395687239a19706115"
+    },
+    {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v13.html",
+      "git_blob_sha": "865d83836681e5e79ae897305ed8c21d4dc19729",
+      "identity_state": "EXACT_BASELINE_BLOB_RESOLVED",
+      "authority_activity_class": "CONDITIONAL_FALLBACK_LOADER",
+      "discovered_by": "Route Guardian v14 hard fallback trace",
+      "repository_ref": "5dd049de1500ea427fa2cf395687239a19706115"
+    },
+    {
+      "path": "pmp-route-guardian-last-good-v3-button-v1.js",
+      "git_blob_sha": "43746ee336c8093080fc72608edf95d11b7a7e64",
+      "identity_state": "EXACT_BASELINE_BLOB_RESOLVED",
+      "authority_activity_class": "CONDITIONAL_RECOVERY_ROUTE_AUTHORITY",
+      "discovered_by": "Inner v9 script trace",
+      "repository_ref": "5dd049de1500ea427fa2cf395687239a19706115"
+    },
+    {
+      "path": "pmp-route-guardian-last-good-v1.html",
+      "git_blob_sha": "f13a333c207bf31d1aab1bc5991fc07212f75f13",
+      "identity_state": "EXACT_BASELINE_BLOB_RESOLVED",
+      "authority_activity_class": "CONDITIONAL_FORWARDER",
+      "discovered_by": "Last Good v3 button target trace",
+      "repository_ref": "5dd049de1500ea427fa2cf395687239a19706115"
+    }
+  ],
+  "counts": {
+    "supplement_records": 13,
+    "unique_paths": 13,
+    "unresolved_records": 0,
+    "combined_exact_repository_blob_identities": 208,
+    "combined_total_manifest_records": 212
+  },
+  "tests": [
+    {
+      "name": "Pinned baseline remains current main",
+      "pass": true,
+      "status": "IDENTICAL",
+      "ahead_by": 0,
+      "behind_by": 0
+    },
+    {
+      "name": "All supplement paths are unique",
+      "pass": true
+    },
+    {
+      "name": "Every supplement record has an exact Git blob SHA",
+      "pass": true
+    },
+    {
+      "name": "Supplement baseline matches A-001 PASS-003 baseline",
+      "pass": true
+    },
+    {
+      "name": "Original A-001 branch and receipt remain unchanged",
+      "pass": true
+    },
+    {
+      "name": "Combined unresolved identity count is zero",
+      "pass": true,
+      "unresolved_count": 0
+    },
+    {
+      "name": "No runtime, route, app, storage, cache, IndexedDB, Bank, DOM, or visual mutation occurred",
+      "pass": true
+    }
+  ],
+  "decision": "PASS_A001_SUPPLEMENT_A002_SOURCE_IDENTITY_GAP_CLOSED_ROUTE_PATCH_STILL_NOT_EXECUTED",
+  "supplement_sha256": "cf7c019650dc34fdb65ad79380e35bdb3ef579282d96b2eb95c8c85fdc8b92a0"
+}
