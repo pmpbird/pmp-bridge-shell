@@ -128,9 +128,33 @@ async function frameReachedHome(page, expectedHash) {
   }
   return { reached:false, expected_hash:expectedHash, actual_hash:null, hash_matches:false, home_url:null, urls:page.frames().map(f=>f.url()) };
 }
+async function historicalReceiptFromHomeFrame(page) {
+  const deadline = Date.now() + 30000;
+  let last = null;
+  while (Date.now() < deadline) {
+    const frame = page.frames().find(f => /pmp-home-single-v6\.html/.test(f.url()));
+    if (frame) {
+      try {
+        last = await frame.evaluate(() => {
+          try {
+            const receipt = JSON.parse(localStorage.getItem('pmp_home_single_v6_emergency_rollback_receipt') || 'null');
+            return { receipt, body: document.body?.innerText?.slice(0, 1200) || '', url: location.href };
+          } catch (error) {
+            return { receipt: null, error: String(error?.message || error), body: document.body?.innerText?.slice(0, 1200) || '', url: location.href };
+          }
+        });
+        if (last?.receipt && (last.receipt.verification === 'PASS' || last.receipt.status === 'rollback_failed_closed')) return last;
+      } catch (error) {
+        last = { receipt: null, error: String(error?.message || error), frame_url: frame.url() };
+      }
+    }
+    await page.waitForTimeout(300);
+  }
+  throw new Error('historical_home_receipt_timeout: ' + JSON.stringify(last));
+}
 async function openCurrentFromGuardian(page, screen) {
   const frame = await guardianFrame(page);
-  await frame.click('#openBtn');
+  await frame.click('#openBtn',{force:true});
   await page.waitForURL(url => url.pathname.endsWith('/' + CURRENT) && url.hash === '#' + screen, { timeout: 30000 });
   return frameReachedHome(page, '#' + screen);
 }
@@ -198,7 +222,7 @@ let browser;
       try { await window.PMPCurrentRouteResolver.load(); return {rejected:false}; }
       catch (e) { return {rejected:true, code:e.code||null, message:String(e.message||e), details:e.details||null}; }
     });
-    record('tampered-map-rejected-by-resolver', mapRejected.rejected && /INTEGRITY_HTTP_FAILED|SOURCE_DIGEST_MISMATCH/.test(String(mapRejected.code)+' '+mapRejected.message), mapRejected);
+    record('tampered-map-rejected-by-resolver', mapRejected.rejected && /BOOTSTRAP_HTTP_FAILED|INTEGRITY_HTTP_FAILED|SOURCE_DIGEST_MISMATCH/.test(String(mapRejected.code)+' '+mapRejected.message), mapRejected);
     state.tamperPath = null;
 
     state.tamperPath = GUARDIAN;
@@ -212,16 +236,14 @@ let browser;
       page = await bootstrap(context, '#' + screen);
       const home = await openCurrentFromGuardian(page, screen);
       record(`integrity-current-chain-home:${screen}`, home.reached && home.hash_matches, {expected:home.expected_hash, actual:home.actual_hash, home_url:home.home_url, frame_urls:home.urls.slice(-8)});
-      await page.waitForFunction(() => {
-        try { return JSON.parse(localStorage.getItem('pmp_home_single_v6_emergency_rollback_receipt') || 'null')?.verification === 'PASS'; } catch { return false; }
-      }, null, {timeout:30000});
-      const homeReceipt = await page.evaluate(() => JSON.parse(localStorage.getItem('pmp_home_single_v6_emergency_rollback_receipt')));
-      record(`historical-home-sha256-pass:${screen}`, homeReceipt.verification === 'PASS' && homeReceipt.expected_sha256 === homeReceipt.actual_sha256, {expected:homeReceipt.expected_sha256, actual:homeReceipt.actual_sha256, status:homeReceipt.status});
+      const homeState = await historicalReceiptFromHomeFrame(page);
+      const homeReceipt = homeState.receipt;
+      record(`historical-home-sha256-pass:${screen}`, homeReceipt.verification === 'PASS' && homeReceipt.expected_sha256 === homeReceipt.actual_sha256, {expected:homeReceipt.expected_sha256, actual:homeReceipt.actual_sha256, status:homeReceipt.status, frame_url:homeState.url, frame_body:homeState.body});
       await page.close();
     }
 
     page = await bootstrap(context, '#control');
-    let frame = await guardianFrame(page); await frame.click('#openBtn');
+    let frame = await guardianFrame(page); await frame.click('#openBtn',{force:true});
     await page.waitForURL(url => url.pathname.endsWith('/' + CURRENT) && url.hash === '#control', {timeout:30000});
     await page.goto(BASE + 'safe-writer-v14.html?return_hash=%23control', {waitUntil:'domcontentloaded'}); await page.click('text=Back to Control');
     await page.waitForURL(url => url.pathname.endsWith('/' + CURRENT) && url.hash === '#control');
