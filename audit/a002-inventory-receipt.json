@@ -1,0 +1,21 @@
+{
+  "type": "PMP_A002_AUTHORITY_INVENTORY_RECEIPT_V1",
+  "repair_id": "A-002",
+  "baseline_commit": "5dd049de1500ea427fa2cf395687239a19706115",
+  "inventory_path": "audit/a002-route-authority-inventory.json",
+  "summary_path": "audit/a002-route-authority-summary.md",
+  "total_objects": 65,
+  "unclassified": 0,
+  "hard_blockers": 10,
+  "test_results": [
+    "PASS recursive authority census has no unclassified objects",
+    "PASS current, competing, conditional, historic, influence-only, non-authority, disabled, and broken claims separated",
+    "PASS exact baseline blob identities recorded for present objects",
+    "PASS no runtime or application source files changed",
+    "BLOCK A-001 dependency identity discrepancy remains open"
+  ],
+  "side_effect_class": "audit_files_only",
+  "forbidden_effects_observed": [],
+  "decision": "A002_AUTHORITY_INVENTORY_COMPLETE_IMPLEMENTATION_NOT_AUTHORIZED",
+  "created_at": "2026-07-11T00:00:00-07:00"
+}
