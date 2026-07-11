@@ -1,0 +1,61 @@
+{
+  "type": "PMP_A003_ROLLBACK_LEDGER_V1",
+  "repair_id": "A-003",
+  "status": "READY",
+  "branch": "agent/a002-current-map-single-authority",
+  "starting_head": "40a84f54494c05619f303f71ce74bde510898639",
+  "rollback_order": ["RG-A003-P6", "RG-A003-P5", "RG-A003-P4", "RG-A003-P3", "RG-A003-P2", "RG-A003-P1", "RG-A003-P0"],
+  "groups": {
+    "RG-A003-P0": {
+      "scope": "Audit plan, rollback ledger, manifest generator, and probe workflow.",
+      "rollback": "Remove only A-003 audit/generator/probe additions."
+    },
+    "RG-A003-P1": {
+      "scope": "Generated probe artifacts and inventory evidence.",
+      "rollback": "Remove committed P1 evidence; retain failed workflow artifacts externally."
+    },
+    "RG-A003-P2": {
+      "scope": "Bootstrap, integrity Service Worker, resolver, map, and historical Home enforcement changes.",
+      "preimages": {
+        "pmp-app-current.html": "777538c0d40277431f1515331932acb6bc721428",
+        "pmp-current-map-v12.json": "655416f0ae7750a16ac15fb93a1ab62890491af7",
+        "pmp-current-route-resolver-v1.js": "7c119407b4f42d1b7436577110db4f04a5737802",
+        "pmp-home-single-v6.html": "41ca3dd88f70abc12718d8228ff3004efd77b538"
+      },
+      "new_files": [
+        "pmp-integrity-service-worker-v1.js",
+        "pmp-runtime-integrity-manifest-v1.json"
+      ],
+      "rollback": "Restore all listed preimages and delete only the two new A-003 runtime files."
+    },
+    "RG-A003-P3": {
+      "scope": "Final generated manifest and bootstrap manifest digest seal.",
+      "rollback": "Restore the P2 bootstrap pre-seal version and remove the final manifest."
+    },
+    "RG-A003-P4": {
+      "scope": "Repository integrity tests and workflow.",
+      "rollback": "Remove A-003 test scripts/workflow only."
+    },
+    "RG-A003-P5": {
+      "scope": "Live Chromium tests and defect fixes discovered by the live matrix.",
+      "rollback": "Reverse only the failed P5 defect-fix commits in reverse order, then rerun the last passing earlier gate."
+    },
+    "RG-A003-P6": {
+      "scope": "Final receipts, PR metadata, and stop-line updates.",
+      "rollback": "Restore pre-P6 audit metadata; do not change tested runtime bytes."
+    }
+  },
+  "never_clear": [
+    "localStorage",
+    "IndexedDB",
+    "Cache Storage wholesale",
+    "Bank data",
+    "user content",
+    "saved spots",
+    "move ledger",
+    "Safe Writer staged content",
+    "Code Safety data"
+  ],
+  "failed_evidence_policy": "Retain failed manifests, workflow artifacts, browser logs, and diagnostics.",
+  "merge_authorized": false
+}
