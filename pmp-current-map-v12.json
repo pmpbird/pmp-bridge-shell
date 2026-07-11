@@ -1,10 +1,10 @@
 {
   "type": "PMP_CURRENT_APP_MAP",
-  "schema_version": 2,
+  "schema_version": 3,
   "app_name": "PMP Current",
-  "app_version": "PMP-CURRENT-1-A002-P7",
-  "updated_at": "2026-07-11T03:55:00-07:00",
-  "route_epoch": "A002-P7-20260711A",
+  "app_version": "PMP-CURRENT-1-A003",
+  "updated_at": "2026-07-11T08:45:00-07:00",
+  "route_epoch": "A003-20260711A",
   "route_contract": {
     "type": "PMP_ROUTE_CONTRACT_V1",
     "sole_authority": "pmp-current-map-v12.json",
@@ -13,7 +13,28 @@
     "failure_mode": "fail_closed",
     "implicit_fallbacks": false,
     "authority_rule": "Only this map may name application, tool, recovery, fallback, and historic-forward destinations. Consumers may validate and execute a map-issued handoff but may not invent or consult alternate destinations.",
-    "a003_boundary": "This contract identifies paths and versions only. Runtime source-byte hash enforcement remains A-003."
+    "runtime_integrity_required": true,
+    "integrity_manifest": "pmp-runtime-integrity-manifest-v1.json",
+    "integrity_service_worker": "pmp-integrity-service-worker-v1.js",
+    "root_trust_anchor": "pmp-app-current.html",
+    "integrity_algorithm": "SHA-256",
+    "unlisted_executable_policy": "fail_closed",
+    "verified_offline_policy": "exact_digest_match_only",
+    "source_execution_rule": "Covered HTML, JavaScript, JSON, module, worker, and WebAssembly bytes must match the integrity manifest before the response may execute or be consumed."
+  },
+  "runtime_integrity": {
+    "type": "PMP_RUNTIME_INTEGRITY_CONTRACT_V1",
+    "status": "REQUIRED",
+    "manifest": "pmp-runtime-integrity-manifest-v1.json",
+    "service_worker": "pmp-integrity-service-worker-v1.js",
+    "root_trust_anchor": "pmp-app-current.html",
+    "root_truth": "The bootstrap document is the sole source that cannot verify itself before execution; it must verify every downstream protected source.",
+    "algorithm": "SHA-256",
+    "manifest_record_rule": "Every Current Map destination must have an exact manifest record.",
+    "external_script_rule": "Cross-origin scripts require exact SHA-256 Subresource Integrity and anonymous CORS.",
+    "historical_payload_rule": "Historical Home bytes must match the exact SHA-256 declared in this map before document.write.",
+    "unlisted_executable_policy": "FAIL_CLOSED",
+    "offline_policy": "Only a previously verified cached response with the same expected digest may be used."
   },
   "default_hash": "#control",
   "allowed_hashes": [
@@ -26,59 +47,59 @@
   ],
   "entry": {
     "path": "pmp-app-current.html",
-    "cache_key": "pmp-app-current-a002-p1-map-authority-20260711A",
-    "status": "current"
+    "cache_key": "pmp-app-current-a003-integrity-bootstrap-20260711A",
+    "status": "root_trust_anchor"
   },
   "route_guardian": {
     "path": "pmp-route-guardian-current-loader-v22.html",
-    "cache_key": "pmp-route-guardian-v22-a002-p1-map-only-20260711A",
-    "status": "current"
+    "cache_key": "pmp-route-guardian-v22-a003-integrity-required-20260711A",
+    "status": "current_integrity_required"
   },
   "route_guardian_loader": {
     "path": "pmp-route-guardian-current-loader-v22.html",
-    "cache_key": "pmp-route-guardian-v22-a002-p1-map-only-20260711A",
+    "cache_key": "pmp-route-guardian-v22-a003-integrity-required-20260711A",
     "status": "legacy_field_alias_of_route_guardian"
   },
   "current_app": {
     "path": "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html",
-    "cache_key": "pmp-current-reload-owner-v30-rollback-regular-app-orchestrator-20260709A",
-    "status": "current"
+    "cache_key": "pmp-current-reload-owner-v30-a003-integrity-20260711A",
+    "status": "current_integrity_required"
   },
   "runtime_chain": {
     "reload_owner": {
       "path": "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html",
-      "cache_key": "pmp-current-reload-owner-v30-rollback-regular-app-orchestrator-20260709A",
-      "status": "current"
+      "cache_key": "pmp-current-reload-owner-v30-a003-integrity-20260711A",
+      "status": "current_integrity_required"
     },
     "inner_v30": {
       "path": "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
-      "cache_key": "pmp-current-inner-v30-direct-boot-surface-20260708A",
-      "status": "current"
+      "cache_key": "pmp-current-inner-v30-a003-integrity-20260711A",
+      "status": "current_integrity_required"
     },
     "inner_v23": {
       "path": "pmp-current-inner-cleanbug-rgcontrols-v23.html",
-      "cache_key": "pmp-current-inner-v23-bank-order-cache-refresh-20260704J",
-      "status": "current_chain_map_delegate"
+      "cache_key": "pmp-current-inner-v23-a003-integrity-20260711A",
+      "status": "current_chain_map_delegate_integrity_required"
     },
     "inner_v4": {
       "path": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
-      "cache_key": "pmp-current-inner-v4",
-      "status": "current_chain_map_delegate"
+      "cache_key": "pmp-current-inner-v4-a003-integrity-20260711A",
+      "status": "current_chain_map_delegate_integrity_required"
     },
     "inner_v3": {
       "path": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
-      "cache_key": "pmp-current-inner-v3",
-      "status": "current_chain_map_delegate"
+      "cache_key": "pmp-current-inner-v3-a003-integrity-20260711A",
+      "status": "current_chain_map_delegate_integrity_required"
     },
     "home_restore": {
       "path": "pmp-home-single-v6.html",
-      "cache_key": "pmp-home-single-v6-restore-shim",
-      "status": "current_chain_map_delegate"
+      "cache_key": "pmp-home-single-v6-a003-verified-restore-shim",
+      "status": "current_chain_map_delegate_integrity_required"
     },
     "live_update_marker": {
       "path": "pmp-reload-current-live-update-marker-v1.json",
-      "cache_key": "pmp-reload-current-live-update-marker-v1",
-      "status": "revision_data_only_no_destination_authority"
+      "cache_key": "pmp-reload-current-live-update-marker-v1-a003-integrity",
+      "status": "revision_data_only_integrity_required"
     }
   },
   "historical_payloads": {
@@ -86,117 +107,118 @@
       "repository_path": "pmp-home-single-v6.html",
       "commit": "7ac7213aeeeb8bb55692a4985e0fa80a547cff4e",
       "git_blob_sha": "8f04c9636cb3fac128db54fc5b058020cd23cffc",
-      "status": "current_historical_payload_identity",
-      "a003_boundary": "Identity is declared here; runtime byte verification is not enforced by A-002."
+      "sha256": "ceeff001b76284578b3a4283d5dd0885e72a4e176f71b48090a88e7747ba9eb4",
+      "sri": "sha256-zu/wAbdihFeLOkKD1d0IhecqThdvcbSAkKiOd0e6nrQ=",
+      "status": "runtime_sha256_enforced_before_document_write"
     }
   },
   "tool_routes": {
     "bug_memory": {
       "path": "bug-memory-current-clean-v1.html",
-      "cache_key": "bug-memory-current-clean-v1",
-      "status": "current_tool_map_owned"
+      "cache_key": "bug-memory-current-clean-v1-a003",
+      "status": "current_tool_map_owned_integrity_required"
     },
     "route_guardian_action": {
       "path": "pmp-route-guardian-action-v2.html",
-      "cache_key": "pmp-route-guardian-action-v2",
-      "status": "current_tool_map_owned"
+      "cache_key": "pmp-route-guardian-action-v2-a003",
+      "status": "current_tool_map_owned_integrity_required"
     },
     "resident": {
       "path": "resident.html",
-      "cache_key": "resident-current",
-      "status": "current_tool_map_owned"
+      "cache_key": "resident-current-a003",
+      "status": "current_tool_map_owned_integrity_required"
     },
     "safe_writer": {
       "path": "safe-writer-v14.html",
-      "cache_key": "safe-writer-v14",
-      "status": "current_tool_map_owned"
+      "cache_key": "safe-writer-v14-a003",
+      "status": "current_tool_map_owned_integrity_required"
     },
     "code_safety": {
       "path": "code-safety-v13.html",
-      "cache_key": "code-safety-v13",
-      "status": "current_tool_map_owned"
+      "cache_key": "code-safety-v13-a003",
+      "status": "current_tool_map_owned_integrity_required"
     },
     "inner_action_target": {
       "path": "pmp-current-inner-cleanbug-rgcontrols-v2.html",
-      "cache_key": "pmp-current-inner-v2",
-      "status": "conditional_tool_target_map_owned"
+      "cache_key": "pmp-current-inner-v2-a003",
+      "status": "conditional_tool_target_map_owned_integrity_required"
     }
   },
   "recovery_routes": {
     "last_good_owner": {
       "path": "pmp-route-guardian-last-good-clean-v1.js",
-      "cache_key": "pmp-route-guardian-last-good-clean-v1",
-      "status": "current_recovery_controller_map_owned"
+      "cache_key": "pmp-route-guardian-last-good-clean-v1-a003",
+      "status": "current_recovery_controller_map_owned_integrity_required"
     },
     "last_good_inner_v16": {
       "path": "pmp-current-inner-cleanbug-rgcontrols-v16.html",
-      "cache_key": "pmp-current-inner-v16",
-      "status": "inactive_recovery_evidence_candidate"
+      "cache_key": "pmp-current-inner-v16-a003",
+      "status": "inactive_recovery_evidence_candidate_integrity_required"
     },
     "last_good_button_v3": {
       "path": "pmp-route-guardian-last-good-v3-button-v1.js",
-      "cache_key": "pmp-route-guardian-last-good-v3-button-v1",
-      "status": "recovery_control_map_delegate"
+      "cache_key": "pmp-route-guardian-last-good-v3-button-v1-a003",
+      "status": "recovery_control_map_delegate_integrity_required"
     },
     "last_good_forwarder_v1": {
       "path": "pmp-route-guardian-last-good-v1.html",
-      "cache_key": "pmp-route-guardian-last-good-v1",
-      "status": "recovery_forwarder_map_delegate"
+      "cache_key": "pmp-route-guardian-last-good-v1-a003",
+      "status": "recovery_forwarder_map_delegate_integrity_required"
     },
     "last_good_v18": {
       "path": "pmp-route-guardian-last-good-v18.html",
-      "cache_key": "pmp-route-guardian-last-good-v18",
-      "status": "recovery_evidence_page_map_delegate"
+      "cache_key": "pmp-route-guardian-last-good-v18-a003",
+      "status": "recovery_evidence_page_map_delegate_integrity_required"
     },
     "recovery_tools_v8": {
       "path": "pmp-route-guardian-recovery-tools-v8.html",
-      "cache_key": "pmp-route-guardian-recovery-tools-v8",
-      "status": "recovery_policy_page_map_owned"
+      "cache_key": "pmp-route-guardian-recovery-tools-v8-a003",
+      "status": "recovery_policy_page_map_owned_integrity_required"
     },
     "candidate_follow": {
       "path": "pmp-move-ledger-candidate-follow-v1.html",
-      "cache_key": "pmp-move-ledger-candidate-follow-v1",
-      "status": "allowlisted_candidate_review_only"
+      "cache_key": "pmp-move-ledger-candidate-follow-v1-a003",
+      "status": "allowlisted_candidate_review_only_integrity_required"
     },
     "guardian_v14": {
       "path": "pmp-route-guardian-current-loader-v14.html",
-      "cache_key": "pmp-route-guardian-v14",
-      "status": "historic_recovery_map_delegate"
+      "cache_key": "pmp-route-guardian-v14-a003",
+      "status": "historic_recovery_map_delegate_integrity_required"
     },
     "inner_v9": {
       "path": "pmp-current-inner-cleanbug-rgcontrols-v9.html",
-      "cache_key": "pmp-current-inner-v9",
-      "status": "inactive_recovery_evidence"
+      "cache_key": "pmp-current-inner-v9-a003",
+      "status": "inactive_recovery_evidence_integrity_required"
     },
     "inner_v13": {
       "path": "pmp-current-inner-cleanbug-rgcontrols-v13.html",
-      "cache_key": "pmp-current-inner-v13",
-      "status": "inactive_recovery_evidence"
+      "cache_key": "pmp-current-inner-v13-a003",
+      "status": "inactive_recovery_evidence_integrity_required"
     }
   },
   "historic_routes": {
-    "map_v11": {"path": "pmp-current-map-v11.json", "status": "historic_evidence_only"},
-    "map_v10": {"path": "pmp-current-map-v10.json", "status": "historic_evidence_only"},
-    "map_v9": {"path": "pmp-current-map-v9.json", "status": "historic_evidence_only"},
-    "map_unversioned": {"path": "pmp-current-map.json", "status": "historic_evidence_only"},
-    "guardian_v15": {"path": "pmp-route-guardian-current-loader-v15.html", "status": "historic_current_map_forwarder"},
-    "guardian_v17": {"path": "pmp-route-guardian-current-loader-v17.html", "status": "historic_current_map_forwarder"},
-    "guardian_v18": {"path": "pmp-route-guardian-current-loader-v18.html", "status": "historic_current_map_forwarder"},
-    "guardian_v19": {"path": "pmp-route-guardian-current-loader-v19.html", "status": "historic_current_map_forwarder"},
-    "guardian_v20": {"path": "pmp-route-guardian-current-loader-v20.html", "status": "historic_current_map_forwarder"},
-    "guardian_v21": {"path": "pmp-route-guardian-current-loader-v21.html", "status": "historic_current_map_forwarder"},
-    "reload_owner_v27": {"path": "pmp-current-reload-owner-v27.html", "status": "historic_current_map_forwarder"},
-    "reload_owner_v28": {"path": "pmp-current-reload-owner-v28.html", "status": "historic_current_map_forwarder"},
-    "reload_owner_v29": {"path": "pmp-current-reload-owner-v29.html", "status": "historic_current_map_forwarder"},
-    "reload_owner_v29_cachelift": {"path": "pmp-current-reload-owner-v29-cachelift-20260706b.html", "status": "historic_current_map_forwarder"},
-    "reload_owner_v29_permanent_gate": {"path": "pmp-current-reload-owner-v29-permanent-update-gate-20260706f.html", "status": "historic_current_map_forwarder"},
-    "inner_v24": {"path": "pmp-current-inner-cleanbug-rgcontrols-v24.html", "status": "historic_current_map_forwarder"},
-    "inner_v26": {"path": "pmp-current-inner-cleanbug-rgcontrols-v26.html", "status": "historic_current_map_forwarder"},
-    "inner_v29": {"path": "pmp-current-inner-cleanbug-rgcontrols-v29.html", "status": "historic_current_map_forwarder"}
+    "map_v11": {"path": "pmp-current-map-v11.json", "status": "historic_evidence_only_integrity_required"},
+    "map_v10": {"path": "pmp-current-map-v10.json", "status": "historic_evidence_only_integrity_required"},
+    "map_v9": {"path": "pmp-current-map-v9.json", "status": "historic_evidence_only_integrity_required"},
+    "map_unversioned": {"path": "pmp-current-map.json", "status": "historic_evidence_only_integrity_required"},
+    "guardian_v15": {"path": "pmp-route-guardian-current-loader-v15.html", "status": "historic_current_map_forwarder_integrity_required"},
+    "guardian_v17": {"path": "pmp-route-guardian-current-loader-v17.html", "status": "historic_current_map_forwarder_integrity_required"},
+    "guardian_v18": {"path": "pmp-route-guardian-current-loader-v18.html", "status": "historic_current_map_forwarder_integrity_required"},
+    "guardian_v19": {"path": "pmp-route-guardian-current-loader-v19.html", "status": "historic_current_map_forwarder_integrity_required"},
+    "guardian_v20": {"path": "pmp-route-guardian-current-loader-v20.html", "status": "historic_current_map_forwarder_integrity_required"},
+    "guardian_v21": {"path": "pmp-route-guardian-current-loader-v21.html", "status": "historic_current_map_forwarder_integrity_required"},
+    "reload_owner_v27": {"path": "pmp-current-reload-owner-v27.html", "status": "historic_current_map_forwarder_integrity_required"},
+    "reload_owner_v28": {"path": "pmp-current-reload-owner-v28.html", "status": "historic_current_map_forwarder_integrity_required"},
+    "reload_owner_v29": {"path": "pmp-current-reload-owner-v29.html", "status": "historic_current_map_forwarder_integrity_required"},
+    "reload_owner_v29_cachelift": {"path": "pmp-current-reload-owner-v29-cachelift-20260706b.html", "status": "historic_current_map_forwarder_integrity_required"},
+    "reload_owner_v29_permanent_gate": {"path": "pmp-current-reload-owner-v29-permanent-update-gate-20260706f.html", "status": "historic_current_map_forwarder_integrity_required"},
+    "inner_v24": {"path": "pmp-current-inner-cleanbug-rgcontrols-v24.html", "status": "historic_current_map_forwarder_integrity_required"},
+    "inner_v26": {"path": "pmp-current-inner-cleanbug-rgcontrols-v26.html", "status": "historic_current_map_forwarder_integrity_required"},
+    "inner_v29": {"path": "pmp-current-inner-cleanbug-rgcontrols-v29.html", "status": "historic_current_map_forwarder_integrity_required"}
   },
   "historic_policy": {
-    "status": "enforced_by_a002_p6",
-    "rule": "Historic JSON maps are evidence-only. Historic HTML bookmarks may only delegate through the canonical Current Map and cannot launch their former chains.",
+    "status": "enforced_by_a002_p6_and_a003_integrity",
+    "rule": "Historic JSON maps are evidence-only. Historic HTML bookmarks may only delegate through the canonical Current Map and cannot launch their former chains. All retained historic bytes are covered by the runtime integrity manifest.",
     "delete_history": false,
     "old_map_destination_truth": false,
     "historic_forwarders_use_current_map": true
@@ -214,5 +236,6 @@
     "P5": "PASS_AT_SOURCE_AND_SIMULATED_RECOVERY_POLICY_SCOPE",
     "P6": "PASS_AT_SOURCE_AND_SIMULATED_HISTORIC_FORWARD_SCOPE",
     "P7": "PASS_LIVE_RUNTIME_37_OF_37"
-  }
+  },
+  "a003_status": "RUNTIME_SOURCE_BYTE_INTEGRITY_REQUIRED"
 }
