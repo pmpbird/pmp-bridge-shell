@@ -3,15 +3,20 @@ name: A-003 Integrity Probe
 on:
   push:
     branches:
+      - main
       - agent/a002-current-map-single-authority
     paths:
       - 'tools/build_a003_integrity_manifest.py'
       - '.github/workflows/a003-integrity-probe.yml'
       - '.github/workflows/a003-runtime-integrity.yml'
       - 'pmp-current-map-v12.json'
-      - '*.html'
-      - '*.js'
-      - '*.json'
+      - '**/*.html'
+      - '**/*.htm'
+      - '**/*.js'
+      - '**/*.mjs'
+      - '**/*.json'
+      - '**/*.wasm'
+      - '**/*.css'
   pull_request:
     branches:
       - main
@@ -20,9 +25,13 @@ on:
       - '.github/workflows/a003-integrity-probe.yml'
       - '.github/workflows/a003-runtime-integrity.yml'
       - 'pmp-current-map-v12.json'
-      - '*.html'
-      - '*.js'
-      - '*.json'
+      - '**/*.html'
+      - '**/*.htm'
+      - '**/*.js'
+      - '**/*.mjs'
+      - '**/*.json'
+      - '**/*.wasm'
+      - '**/*.css'
   workflow_dispatch:
 
 concurrency:
@@ -88,7 +97,7 @@ jobs:
           python3 -m json.tool a003-generated-integrity-manifest.json >/dev/null
           python3 -m json.tool a003-integrity-probe-report.json >/dev/null
 
-      - name: Commit exact manifest and atomic bootstrap seal
+      - name: Commit exact manifest and atomic bootstrap seal to the active branch
         if: github.event_name == 'push'
         run: |
           cp a003-generated-integrity-manifest.json pmp-runtime-integrity-manifest-v1.json
@@ -121,6 +130,7 @@ jobs:
               'runtime_source_set_sha256': runtime_set_sha,
               'root_trust_anchor': 'pmp-app-current.html',
               'root_self_verifiable': False,
+              'sealed_branch': '${{ github.ref_name }}',
               'rule': 'The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.'
           }
           Path('audit/a003-manifest-seal.json').write_text(json.dumps(receipt, indent=2, sort_keys=True) + '\n', 'utf-8')
@@ -134,7 +144,7 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add pmp-runtime-integrity-manifest-v1.json pmp-app-current.html audit/a003-manifest-seal.json
           git commit -m 'A-003 seal deterministic runtime integrity manifest into bootstrap [skip ci]'
-          git push origin HEAD:agent/a002-current-map-single-authority
+          git push origin "HEAD:${GITHUB_REF_NAME}"
 
       - name: Upload probe artifacts
         if: always()
