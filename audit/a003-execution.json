@@ -1,0 +1,103 @@
+{
+  "type": "PMP_A003_EXECUTION_V1",
+  "repair_id": "A-003",
+  "status": "PASS_AT_FULL_EXERCISED_SCOPE",
+  "baseline_commit": "5dd049de1500ea427fa2cf395687239a19706115",
+  "a002_frozen_head": "40a84f54494c05619f303f71ce74bde510898639",
+  "tested_head": "f2ed35ff4a9c7b764e6bf60d5a15be04e4c974dd",
+  "trust_model": {
+    "root_trust_anchor": "pmp-app-current.html",
+    "root_self_verifiable": false,
+    "manifest": "pmp-runtime-integrity-manifest-v1.json",
+    "manifest_sha256": "570c6db93da497758c6b18f53fa1e3c2b08cb1fdff761c9e54d97b87914e54d0",
+    "runtime_source_set_sha256": "2efc5aa5f3ece5b1da94e162baf7f981a636ef5f23d9c6b3f2d8a348688172e2",
+    "algorithm": "SHA-256",
+    "service_worker": "pmp-integrity-service-worker-v1.js",
+    "worker_version": "1.1.0-a003-runtime-integrity-sri",
+    "unlisted_executable_policy": "FAIL_CLOSED",
+    "offline_policy": "MATCHING_VERIFIED_CACHE_ONLY",
+    "external_script_policy": "VERIFIED_LOCAL_DOCUMENT_THEN_EXACT_SRI",
+    "historical_payload_policy": "SHA256_BEFORE_DOCUMENT_WRITE"
+  },
+  "runtime_changes": [
+    {
+      "path": "pmp-app-current.html",
+      "job": "Act as the explicit bootstrap root; verify the sealed manifest, integrity worker, resolver, Current Map, and Guardian target before routing."
+    },
+    {
+      "path": "pmp-runtime-integrity-manifest-v1.json",
+      "job": "Hold exact SHA-256, Git blob, length, class, and policy records for the complete protected runtime set."
+    },
+    {
+      "path": "pmp-integrity-service-worker-v1.js",
+      "job": "Verify covered bytes before response; block unlisted executable sources; enforce exact verified-cache fallback and external SRI."
+    },
+    {
+      "path": "pmp-current-route-resolver-v1.js",
+      "job": "Require enforced integrity state and manifest-backed role records; place expected source hashes in route handoffs."
+    },
+    {
+      "path": "pmp-current-map-v12.json",
+      "job": "Require A-003 integrity, declare the manifest/worker/root contract, and carry the historical Home SHA-256."
+    },
+    {
+      "path": "pmp-route-guardian-current-loader-v22.html",
+      "job": "Require the already active integrity controller and refuse to install or accept a replacement worker."
+    },
+    {
+      "path": "pmp-home-single-v6.html",
+      "job": "Verify the historical Git-object payload SHA-256 before document.write and preserve verification evidence in the restored document."
+    },
+    {
+      "path": "pmp-pass75-runtime-platform-v1.js",
+      "job": "Observe the integrity controller without registering, replacing, updating, or promoting another Service Worker."
+    }
+  ],
+  "repository_gate": {
+    "run_id": 29160312887,
+    "job_id": 86564162395,
+    "tests_passed": 21,
+    "tests_failed": 0,
+    "artifact_id": 8250616332,
+    "artifact_digest": "sha256:9232c90d2eb2b185ebd3ffa2d33a59e9db2392a480230b4d81dc32f8b7ad7372"
+  },
+  "live_gate": {
+    "run_id": 29160312887,
+    "job_id": 86564162398,
+    "tests_passed": 47,
+    "tests_failed": 0,
+    "fatal_error": null,
+    "artifact_id": 8250630872,
+    "artifact_digest": "sha256:098cf19bbd3f9f989d2e6e289d20531cdd3d196e9bd42b19875c7552081ab108"
+  },
+  "retained_failed_runs": [
+    {"run_id": 29158943656, "finding": "Harness expected a later resolver error name although the map was already blocked with HTTP 412."},
+    {"run_id": 29159028720, "finding": "Playwright required stability for an intentionally animated Guardian button."},
+    {"run_id": 29159103024, "finding": "Historical verification receipt wait used the wrong page context."},
+    {"run_id": 29159180682, "finding": "Historical Home visibly restored, but evidence was not read from the nested frame."},
+    {"run_id": 29159337588, "finding": "The restored Home removed the shim's storage-only verification receipt."},
+    {"run_id": 29159692777, "finding": "A brittle workflow-time harness rewrite did not match the committed source."},
+    {"run_id": 29159741490, "finding": "Resolver tampering was correctly blocked by an earlier equivalent fail-closed layer."},
+    {"run_id": 29160090140, "finding": "All 46 recorded assertions passed; the final historical attack still polled localStorage only."},
+    {"run_id": 29160201670, "finding": "Network-route interception did not affect the Home shim's in-page fetch."}
+  ],
+  "defects_closed": [
+    "A protected Pass 7.5 script could replace the integrity Service Worker; it is now observer-only.",
+    "Historical verification evidence did not survive document restoration; it now survives in window state, embedded JSON, and localStorage.",
+    "Manifest identity depended on audit/workflow commit SHA and a pre-finalization self-digest; it is now deterministic from the protected runtime set.",
+    "Manifest publisher races could seal stale protected bytes; concurrency and watched inputs now drive the latest atomic seal."
+  ],
+  "effects": {
+    "storage_schema_changes": 0,
+    "storage_clear_operations": 0,
+    "indexeddb_deletions": 0,
+    "indexeddb_migrations": 0,
+    "bank_rebuilds": 0,
+    "user_content_deletions": 0,
+    "historic_file_deletions": 0,
+    "merge_operations": 0
+  },
+  "rollback_required": false,
+  "merge_authorized": false,
+  "decision": "PASS_A003_STOP_BEFORE_MERGE"
+}
