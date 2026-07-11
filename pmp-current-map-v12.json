@@ -3,7 +3,7 @@
   "schema_version": 2,
   "app_name": "PMP Current",
   "app_version": "PMP-CURRENT-1-A002-P7",
-  "updated_at": "2026-07-11T03:30:00-07:00",
+  "updated_at": "2026-07-11T03:55:00-07:00",
   "route_epoch": "A002-P7-20260711A",
   "route_contract": {
     "type": "PMP_ROUTE_CONTRACT_V1",
@@ -213,6 +213,6 @@
     "P4": "PASS_AT_SOURCE_AND_SIMULATED_TOOL_ROUTE_SCOPE",
     "P5": "PASS_AT_SOURCE_AND_SIMULATED_RECOVERY_POLICY_SCOPE",
     "P6": "PASS_AT_SOURCE_AND_SIMULATED_HISTORIC_FORWARD_SCOPE",
-    "P7": "IN_PROGRESS_LIVE_RUNTIME_REQUIRED"
+    "P7": "PASS_LIVE_RUNTIME_37_OF_37"
   }
 }
