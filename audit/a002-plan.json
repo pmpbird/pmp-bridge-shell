@@ -22,9 +22,14 @@
     "independent_route_authorities": 0,
     "unresolved": 0
   },
-  "current_boundary": "STOP_BEFORE_MERGE_AND_A003",
+  "a003_follow_on": {
+    "status": "PASS_AT_FULL_A003_EXERCISED_SCOPE",
+    "receipt": "audit/a003-final-receipt.json",
+    "repository_tests": "21/21",
+    "adversarial_live_tests": "47/47"
+  },
+  "current_boundary": "STOP_BEFORE_MERGE",
   "merge_authorized": false,
-  "A003_executed": false,
   "overall_project_pass_1_complete": false,
-  "decision": "A002_PASS_STOP_BEFORE_MERGE_AND_A003"
+  "decision": "A002_AND_A003_PASS_STOP_BEFORE_MERGE"
 }
