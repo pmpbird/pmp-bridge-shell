@@ -50,14 +50,31 @@ function record(name, pass, detail = {}) {
 async function waitForCanonical(page) {
   await page.waitForFunction(() => window.PMPReloadCurrentCanonicalV1 && typeof window.PMPReloadCurrentCanonicalV1.reload === 'function', null, { timeout: 25000 });
 }
-async function frameReachedHome(page) {
+async function frameReachedHome(page, expectedHash) {
   const deadline = Date.now() + 25000;
   while (Date.now() < deadline) {
     const urls = page.frames().map(f => f.url());
-    if (urls.some(u => /pmp-home-single-v6\.html|raw\.githubusercontent\.com/.test(u))) return { reached: true, urls };
+    const homeUrl = urls.find(u => /pmp-home-single-v6\.html/.test(u));
+    if (homeUrl) {
+      let actualHash = '';
+      try { actualHash = new URL(homeUrl).hash; } catch {}
+      return { reached: true, hash_matches: actualHash === expectedHash, expected_hash: expectedHash, actual_hash: actualHash, home_url: homeUrl, urls };
+    }
     await page.waitForTimeout(500);
   }
-  return { reached: false, urls: page.frames().map(f => f.url()) };
+  return { reached: false, hash_matches: false, expected_hash: expectedHash, actual_hash: null, home_url: null, urls: page.frames().map(f => f.url()) };
+}
+async function waitForActivated(worker) {
+  if (!worker) throw new Error('service worker object missing');
+  if (worker.state === 'activated') return worker;
+  await new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error('service worker activation timeout')), 15000);
+    worker.addEventListener('statechange', () => {
+      if (worker.state === 'activated') { clearTimeout(timer); resolve(); }
+      if (worker.state === 'redundant') { clearTimeout(timer); reject(new Error('service worker became redundant')); }
+    });
+  });
+  return worker;
 }
 
 async function runMatrix(page) {
@@ -77,15 +94,16 @@ async function runMatrix(page) {
   record('stable-entry-map-guardian-handoff', true, { url: page.url() });
 
   for (const screen of SCREENS) {
-    await page.goto(BASE + CURRENT + '#' + screen, { waitUntil: 'domcontentloaded' });
+    const expectedHash = '#' + screen;
+    await page.goto(BASE + CURRENT + expectedHash, { waitUntil: 'domcontentloaded' });
     await waitForCanonical(page);
-    const home = await frameReachedHome(page);
-    record(`current-chain-home:${screen}`, home.reached, { frame_urls: home.urls.slice(-8) });
+    const home = await frameReachedHome(page, expectedHash);
+    record(`current-chain-home:${screen}`, home.reached && home.hash_matches, { expected_hash: home.expected_hash, actual_hash: home.actual_hash, home_url: home.home_url, frame_urls: home.urls.slice(-8) });
 
     await page.evaluate(async s => {
       await window.PMPReloadCurrentCanonicalV1.reload(null, { source: 'a002-p7-live', page: '#' + s, pressed_text: 'Reload Current' });
     }, screen).catch(() => {});
-    await page.waitForURL(url => url.pathname.endsWith('/' + CURRENT) && url.hash === '#' + screen, { timeout: 25000 });
+    await page.waitForURL(url => url.pathname.endsWith('/' + CURRENT) && url.hash === expectedHash, { timeout: 25000 });
     await page.waitForFunction(() => {
       try {
         const r = JSON.parse(localStorage.getItem('pmp_reload_current_canonical_v1_receipt') || 'null');
@@ -93,7 +111,7 @@ async function runMatrix(page) {
       } catch { return false; }
     });
     const receipt = await page.evaluate(() => JSON.parse(localStorage.getItem('pmp_reload_current_canonical_v1_receipt')));
-    record(`reload-current:${screen}`, receipt.page === '#' + screen && receipt.target_role === 'current_app' && receipt.map_path === 'pmp-current-map-v12.json', { target: receipt.target_path, page: receipt.page });
+    record(`reload-current:${screen}`, receipt.page === expectedHash && receipt.target_role === 'current_app' && receipt.map_path === 'pmp-current-map-v12.json', { target: receipt.target_path, page: receipt.page });
   }
 
   await page.goto(BASE + 'safe-writer-v14.html?return_hash=%23control', { waitUntil: 'domcontentloaded' });
@@ -124,9 +142,20 @@ async function runMatrix(page) {
 
   await page.goto(BASE + 'pmp-app-current.html', { waitUntil: 'domcontentloaded' });
   const sw = await page.evaluate(async () => {
+    const registrations = await navigator.serviceWorker.getRegistrations();
+    await Promise.all(registrations.map(r => r.unregister()));
     const reg = await navigator.serviceWorker.register('/pmp-service-worker-cache-governor-v1.js?live=' + Date.now());
-    await navigator.serviceWorker.ready;
-    const worker = reg.active || reg.waiting || reg.installing;
+    let worker = reg.installing || reg.waiting || reg.active;
+    if (!worker) throw new Error('service worker registration returned no worker');
+    if (worker.state !== 'activated') {
+      await new Promise((resolve, reject) => {
+        const timer = setTimeout(() => reject(new Error('service worker activation timeout')), 15000);
+        worker.addEventListener('statechange', () => {
+          if (worker.state === 'activated') { clearTimeout(timer); resolve(); }
+          if (worker.state === 'redundant') { clearTimeout(timer); reject(new Error('service worker became redundant')); }
+        });
+      });
+    }
     return await new Promise((resolve, reject) => {
       const timer = setTimeout(() => reject(new Error('service worker status timeout')), 10000);
       const channel = new MessageChannel();
@@ -134,7 +163,7 @@ async function runMatrix(page) {
       worker.postMessage({ type: 'PMP_SW_STATUS_REQUEST' }, [channel.port2]);
     });
   });
-  record('service-worker-live-status', sw?.type === 'PMP_SW_STATUS_RESPONSE' && sw?.receipt?.network_first_html === true && sw?.receipt?.network_first_js === true && sw?.receipt?.network_first_json === true, sw);
+  record('service-worker-live-status', sw?.type === 'PMP_SW_STATUS_RESPONSE' && sw?.receipt?.network_first_html === true && sw?.receipt?.network_first_js === true && sw?.receipt?.network_first_json === true && sw?.receipt?.reply_channel === 'message_port', sw);
 }
 
 (async () => {
