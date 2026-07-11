@@ -1,0 +1,52 @@
+{
+  "type": "PMP_PASS_REVALIDATION_GATE_INSTALL_RECEIPT",
+  "gate_id": "PASS_REVALIDATION_GATE_001",
+  "version": "20260710A",
+  "status": "INSTALLED_RECEIPT_ONLY_NEEDS_RUNTIME_REFRESH",
+  "created_at": "2026-07-10T00:00:00.000Z",
+  "purpose": "Revalidate Passes 1-8 against live source/runtime before trusting Pass 9 or continuing visual fixes.",
+  "installed_files": [
+    {
+      "path": "pmp-pass-revalidation-gate-001-v1.js",
+      "role": "receipt-only live audit",
+      "runtime_receipt": "pmp_pass_revalidation_gate_001_v1_receipt"
+    },
+    {
+      "path": "pmp-continuous-run-bank-order-frame-loader-v1.js",
+      "role": "loads the revalidation audit without visual UI",
+      "new_version": "1.3.2-pass-revalidation-gate-001-receipt-audit",
+      "new_content_sha": "648e34bb25b35f9634cbad03442bfa84eea1535a"
+    }
+  ],
+  "audit_checks": [
+    "Pass 1 route/current path",
+    "Pass 2 startup chain / launcher continuity",
+    "Pass 3 App Orchestrator as conductor",
+    "Pass 4 Mount Registry / legal slots",
+    "Pass 5 Diagnostics observes without controlling surfaces",
+    "Pass 6 Safety / no destructive writes",
+    "Pass 7 one owner per visible section",
+    "Pass 8 helpers mapped and contained"
+  ],
+  "classification_values": [
+    "complete",
+    "provisional",
+    "failed",
+    "missing_proof"
+  ],
+  "side_effects": {
+    "visual_patch": "not_attempted",
+    "dom_move": "not_attempted",
+    "dom_hide": "not_attempted",
+    "bank_rebuild": "not_attempted",
+    "indexeddb_write": "not_attempted",
+    "storage_migration": "not_attempted",
+    "route_change": "not_attempted"
+  },
+  "expected_runtime_receipts_after_refresh": [
+    "pmp_pass_revalidation_gate_001_v1_receipt",
+    "pmp_pass_revalidation_gate_001_v1_trace",
+    "pmp_continuous_run_bank_order_frame_loader_v1_receipt"
+  ],
+  "decision_rule": "If any pass is provisional, failed, or missing_proof, do not certify Pass 9. Build Owner/Helper Conflict Map next."
+}
