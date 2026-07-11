@@ -45,7 +45,11 @@ jobs:
         env:
           A002_BASE_URL: http://127.0.0.1:8000/
           A002_RESULT_PATH: a002-live-runtime-results.json
-        run: node audit/a002-live-runtime.cjs
+        run: |
+          set +e
+          node audit/a002-live-runtime.cjs 2>&1 | tee a002-live-runtime-console.log
+          code=${PIPESTATUS[0]}
+          exit $code
 
       - name: Upload live runtime result
         if: always()
@@ -54,5 +58,6 @@ jobs:
           name: a002-live-runtime-results
           path: |
             a002-live-runtime-results.json
+            a002-live-runtime-console.log
             /tmp/a002-http.log
           if-no-files-found: warn
