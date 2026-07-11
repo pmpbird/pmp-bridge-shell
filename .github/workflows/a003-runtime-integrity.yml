@@ -37,6 +37,10 @@ on:
       - '*.json'
   workflow_dispatch:
 
+concurrency:
+  group: a003-integrity-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
