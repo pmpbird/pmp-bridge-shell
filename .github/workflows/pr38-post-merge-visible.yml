@@ -47,7 +47,7 @@ jobs:
           assert hashlib.sha256(pathlib.Path('pmp-runtime-integrity-manifest-v1.json').read_bytes()).hexdigest()==os.environ['A003_MANIFEST_SHA256']
           changed=subprocess.check_output(['git','diff','--name-only',os.environ['PR38_MERGE_COMMIT'],'HEAD'],text=True).splitlines()
           assert changed==['.github/workflows/pr38-post-merge-verification.yml','.github/workflows/pr38-post-merge-visible.yml'], changed
-          pathlib.Path('post-merge-structure-result.json').write_text(json.dumps({
+          pathlib.Path('/tmp/post-merge-structure-result.json').write_text(json.dumps({
             'type':'PMP_PR38_POST_MERGE_STRUCTURE_RESULT_V2',
             'status':'PASS',
             'verification_commit':os.environ['GITHUB_SHA'],
@@ -77,12 +77,14 @@ jobs:
 
       - name: Run A-003 repository integrity gate
         run: |
+          set -o pipefail
           python3 tools/test_a003_integrity.py --output post-merge-a003-repository-result.json 2>&1 | tee post-merge-a003-repository-console.log
 
       - name: Run A-003 adversarial Chromium gate
         env:
           A003_RESULT_PATH: post-merge-a003-live-runtime-results.json
         run: |
+          set -o pipefail
           python3 tools/run_a003_live_final.py 2>&1 | tee post-merge-a003-live-runtime-console.log
 
       - name: Start shared repository server
@@ -101,10 +103,12 @@ jobs:
           A002_BASE_URL: http://127.0.0.1:8000/
           A002_RESULT_PATH: post-merge-a002-live-runtime-results.json
         run: |
+          set -o pipefail
           node audit/a002-live-runtime.cjs 2>&1 | tee post-merge-a002-live-runtime-console.log
 
       - name: Run Automated Plan preserved-contract checks
         run: |
+          set -o pipefail
           python3 tools/verify_automated_plan_foundation_v1.py | tee post-merge-automated-plan-foundation.log
           python3 tools/verify_automated_plan_universal_contract_v1.py | tee post-merge-automated-plan-contract.log
           python3 tools/verify_automated_plan_visual_match_v1.py | tee post-merge-automated-plan-visual.log
@@ -115,6 +119,7 @@ jobs:
         env:
           PMP_BASE_URL: http://127.0.0.1:8000
         run: |
+          set -o pipefail
           node tools/test_automated_plan_real_app_v1.mjs 2>&1 | tee post-merge-automated-plan-real-app.log
 
       - name: Build aggregate post-merge result
@@ -145,9 +150,9 @@ jobs:
             'manifest_sha256':os.environ['A003_MANIFEST_SHA256'],
             'runtime_source_set_sha256':os.environ['A003_RUNTIME_SET_SHA256']
           }
-          assert repo.get('tests_failed')==0
-          assert live.get('tests_failed')==0 and live.get('fatal_error') is None
-          assert a002.get('tests_failed')==0 and a002.get('fatal_error') is None
+          assert repo.get('tests_passed')==21 and repo.get('tests_failed')==0
+          assert live.get('tests_passed')==47 and live.get('tests_failed')==0 and live.get('fatal_error') is None
+          assert a002.get('tests_passed')==41 and a002.get('tests_failed')==0 and a002.get('fatal_error') is None
           pathlib.Path('pr38-post-merge-aggregate.json').write_text(json.dumps(result,indent=2)+'\n')
           print(json.dumps(result,indent=2))
           PY
@@ -158,7 +163,7 @@ jobs:
         with:
           name: pr38-post-merge-complete-evidence
           path: |
-            post-merge-structure-result.json
+            /tmp/post-merge-structure-result.json
             post-merge-a003-repository-result.json
             post-merge-a003-repository-console.log
             post-merge-a003-live-runtime-results.json
