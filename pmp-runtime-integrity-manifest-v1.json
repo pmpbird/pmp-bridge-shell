@@ -7748,12 +7748,13 @@
       "rule": "This is the only application bootstrap source excluded from downstream manifest self-enforcement."
     }
   ],
+  "runtime_source_set_sha256": "2efc5aa5f3ece5b1da94e162baf7f981a636ef5f23d9c6b3f2d8a348688172e2",
   "self_digest_for_generated_bytes": {
-    "sha256_base64": "CFq3Gp0UMZ6GRdEHT+67lnBXbMRcZjlxfLrka/TM2Nk=",
-    "sha256_hex": "085ab71a9d14319e8645d1074feebb9670576cc45c6639717cbae46bf4ccd8d9",
-    "sri": "sha256-CFq3Gp0UMZ6GRdEHT+67lnBXbMRcZjlxfLrka/TM2Nk="
+    "sha256_base64": "pgi/3zGQDOHgCgTP6qHruiuz1E0oQN2OvykuCCny6nM=",
+    "sha256_hex": "a608bfdf31900ce1e00a04cfeaa1ebba2bb3d44d2840dd8ebf292e0829f2ea73",
+    "sri": "sha256-pgi/3zGQDOHgCgTP6qHruiuz1E0oQN2OvykuCCny6nM="
   },
-  "source_commit": "5ffd3c81b1dd7a4562031288d61279035f80d655",
+  "source_identity_rule": "Deterministic digest of protected local, historical, external, root-anchor, and policy identities; audit/workflow-only commits do not alter this identity.",
   "type": "PMP_RUNTIME_INTEGRITY_MANIFEST_V1",
   "unlisted_executable_policy": "FAIL_CLOSED",
   "version": "20260711A-A003-FINAL"
