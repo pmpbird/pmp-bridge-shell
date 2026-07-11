@@ -1,0 +1,10 @@
+{
+  "repair_id": "A-002",
+  "phase": "AUTHORITY_INVENTORY",
+  "status": "COMPLETE",
+  "implementation_started": false,
+  "runtime_changes": false,
+  "route_changes": false,
+  "next_permitted_artifact": "pre-execution patch plan and rollback ledger",
+  "next_permitted_execution": false
+}
