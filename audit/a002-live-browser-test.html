@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>A-002 Live Browser Test</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;margin:0;padding:16px;background:#f3ded4;color:#07101c}button{border:2px solid #07101c;border-radius:14px;padding:12px;font:inherit;font-weight:900;background:#acd1fb}pre{white-space:pre-wrap;background:#07101c;color:#f8fbff;border-radius:14px;padding:12px;min-height:240px}iframe{width:100%;height:420px;border:2px solid #07101c;border-radius:14px;background:#fff;margin-top:12px}
+</style>
+</head>
+<body>
+<h1>A-002 Live Browser Test</h1>
+<p>Runs only against the current branch files. It appends route-validation receipts but does not clear storage, cache, IndexedDB, Bank, or app data.</p>
+<button id="run">Run A-002 live tests</button>
+<pre id="out">Ready.</pre>
+<div id="frames"></div>
+<script>
+'use strict';
+const LEDGER='pmp_current_map_enforcement_receipt_v1_ledger';
+const EXPECTED_SHA='c2a89dbedc5dfbc1eeb56c6364cbb6a919d74691cf44602da65db85b30aa8e3b';
+const out=document.getElementById('out'),frames=document.getElementById('frames'),button=document.getElementById('run');
+function now(){return new Date().toISOString()}
+function ledger(){try{let x=JSON.parse(localStorage.getItem(LEDGER)||'[]');return Array.isArray(x)?x:[]}catch(e){return[]}}
+function log(x){out.textContent+=(out.textContent?'\n':'')+x;out.scrollTop=out.scrollHeight}
+function docs(d,a,n){a=a||[];n=n||0;if(!d||n>8)return a;try{a.push(d);d.querySelectorAll('iframe,frame').forEach(f=>{try{let x=f.contentDocument||(f.contentWindow&&f.contentWindow.document);if(x)docs(x,a,n+1)}catch(e){}})}catch(e){}return a}
+function clickControls(frame,runGuardian){try{docs(frame.contentDocument).forEach(d=>{if(runGuardian){let b=d.getElementById('openBtn');if(b&&!b.dataset.a002TestClicked){b.dataset.a002TestClicked='1';b.click()}}d.querySelectorAll('[data-run]').forEach(b=>{if(!b.dataset.a002TestClicked){b.dataset.a002TestClicked='1';b.click()}})})}catch(e){}}
+function newReceipts(start){return ledger().slice(start)}
+async function runCase(name,query,timeout,check){let start=ledger().length,frame=document.createElement('iframe');frame.sandbox='allow-scripts allow-same-origin';frame.title=name;frame.src='../pmp-route-guardian-current-loader-v22.html?'+query+'&fresh=a002-live-test-'+Date.now()+'#control';frames.appendChild(frame);let began=Date.now(),clicked=false;return new Promise(resolve=>{let timer=setInterval(()=>{try{clickControls(frame,true);clicked=true}catch(e){}let rows=newReceipts(start),result=check(rows,frame);if(result&&result.done){clearInterval(timer);resolve({name,pass:!!result.pass,detail:result.detail||null,receipts:rows.map(r=>({actor:r.actor,decision:r.decision,map_sha:r.map_sha,handoff_id:r.handoff_id,receipt_id:r.receipt_id}))});return}if(Date.now()-began>timeout){clearInterval(timer);resolve({name,pass:false,detail:'timeout',receipts:rows.map(r=>({actor:r.actor,decision:r.decision,map_sha:r.map_sha,handoff_id:r.handoff_id,receipt_id:r.receipt_id}))})}},350)})}
+function failedGuardian(rows,needle){let r=rows.find(x=>x.actor==='route_guardian'&&x.decision==='FAIL_BLOCKED_BEFORE_NAVIGATION');if(!r)return{done:false};let hit=(r.test_results||[]).some(x=>String(x).includes(needle));return{done:true,pass:hit,detail:r.test_results}}
+function normalAgreement(rows){let g=rows.find(x=>x.actor==='route_guardian'&&x.decision==='PASS_CURRENT_TARGET_AUTHORIZED');if(!g)return{done:false};let r=rows.find(x=>x.actor==='reload_owner'&&x.decision==='PASS_ROUTE_ACTOR_AGREEMENT'&&x.handoff_id===g.handoff_id);let i=rows.find(x=>x.actor==='inner_v30'&&x.decision==='PASS_EXPLICIT_FALLBACK_TARGET_AUTHORIZED'&&x.handoff_id===g.handoff_id);let f=rows.find(x=>x.actor==='inner_v30_fallback_activation'&&x.decision==='PASS_EXPLICIT_FALLBACK_ACTIVATION'&&x.handoff_id===g.handoff_id);if(!r||!i||!f)return{done:false};let same=[g,r,i,f].every(x=>x.map_sha===EXPECTED_SHA)&&g.reload_target===r.reload_target&&g.fallback_target===r.fallback_target&&r.actor_agreement===true&&i.actor_agreement===true&&f.actor_agreement===true;return{done:true,pass:same,detail:{handoff_id:g.handoff_id,map_sha:g.map_sha,actors:[g.actor,r.actor,i.actor,f.actor]}}}
+async function run(){button.disabled=true;frames.innerHTML='';out.textContent='Started '+now();let results=[];results.push(await runCase('tampered map','a002_test=tampered_map',8000,(rows)=>failedGuardian(rows,'map_sha_mismatch')));log(JSON.stringify(results[results.length-1],null,2));results.push(await runCase('unregistered target','a002_test=unregistered_target',8000,(rows)=>failedGuardian(rows,'unregistered_route_target')));log(JSON.stringify(results[results.length-1],null,2));results.push(await runCase('normal actor agreement','a002_test=normal',30000,normalAgreement));log(JSON.stringify(results[results.length-1],null,2));let report={type:'PMP_A002_LIVE_BROWSER_TEST_RESULT_V1',at:now(),map_sha:EXPECTED_SHA,pass:results.every(x=>x.pass),results,side_effects:{route_targets_changed:false,cache_cleared:false,storage_cleared:false,indexeddb_cleared:false,bank_rebuilt:false}};localStorage.setItem('pmp_a002_live_browser_test_result_v1',JSON.stringify(report,null,2));log('\nFINAL\n'+JSON.stringify(report,null,2));button.disabled=false}
+button.onclick=run;
+</script>
+</body>
+</html>
