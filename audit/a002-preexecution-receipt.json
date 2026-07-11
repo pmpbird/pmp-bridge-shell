@@ -1,5 +1,5 @@
 {
-  "type": "PMP_A002_EXECUTION_PROGRESS_RECEIPT_V2",
+  "type": "PMP_A002_EXECUTION_PROGRESS_RECEIPT_V3",
   "repair_id": "A-002",
   "baseline_commit": "5dd049de1500ea427fa2cf395687239a19706115",
   "completed_phases": [
@@ -11,15 +11,24 @@
     {
       "phase": "P1",
       "status": "PASS_AT_SOURCE_AND_SIMULATED_BROWSER_CONTRACT_SCOPE",
-      "execution_record": "audit/a002-p1-execution.json",
       "gate_record": "audit/a002-p1-gate.json",
       "tests_passed": 11,
       "tests_failed": 0
+    },
+    {
+      "phase": "P2",
+      "status": "PASS_AT_SOURCE_AND_SIMULATED_ROUTE_CONTRACT_SCOPE",
+      "execution_record": "audit/a002-p2-execution.json",
+      "gate_record": "audit/a002-p2-gate.json",
+      "tests_passed": 16,
+      "tests_failed": 0,
+      "source_files_changed": 7
     }
   ],
-  "current_stop_line": "STOP_BEFORE_P2",
-  "p2_executed": false,
+  "current_stop_line": "STOP_BEFORE_P3",
+  "p3_executed": false,
+  "live_mobile_browser_exercised": false,
   "runtime_hash_enforcement_claimed": false,
   "merge_authorized": false,
-  "decision": "P0_PASS_P1_PASS_STOP_BEFORE_P2"
+  "decision": "P0_PASS_P1_PASS_P2_PASS_STOP_BEFORE_P3"
 }
