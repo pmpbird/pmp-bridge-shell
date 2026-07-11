@@ -1,10 +1,18 @@
 {
   "repair_id": "A-002",
-  "phase": "AUTHORITY_INVENTORY",
+  "phase": "PREEXECUTION_PLANNING",
   "status": "COMPLETE",
+  "identity_reconciliation_executed": false,
   "implementation_started": false,
   "runtime_changes": false,
   "route_changes": false,
-  "next_permitted_artifact": "pre-execution patch plan and rollback ledger",
-  "next_permitted_execution": false
+  "preexecution_artifacts": [
+    "audit/a002-a001-identity-reconciliation-plan.json",
+    "audit/a002-preexecution-patch-plan.json",
+    "audit/a002-rollback-ledger.json",
+    "audit/a002-preexecution-summary.md"
+  ],
+  "next_permitted_action": "Execute P0 identity supplement only after explicit authorization",
+  "next_permitted_route_execution": false,
+  "decision": "STOP_BEFORE_PATCH_EXECUTION"
 }
