@@ -1,0 +1,111 @@
+name: A-003 Runtime Source-Byte Integrity
+
+on:
+  push:
+    branches:
+      - agent/a002-current-map-single-authority
+    paths:
+      - '.github/workflows/a003-runtime-integrity.yml'
+      - 'tools/test_a003_integrity.py'
+      - 'audit/a003-live-runtime.cjs'
+      - 'pmp-app-current.html'
+      - 'pmp-current-map-v12.json'
+      - 'pmp-current-route-resolver-v1.js'
+      - 'pmp-integrity-service-worker-v1.js'
+      - 'pmp-runtime-integrity-manifest-v1.json'
+      - 'pmp-route-guardian-current-loader-v22.html'
+      - 'pmp-home-single-v6.html'
+      - '*.html'
+      - '*.js'
+      - '*.json'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/a003-runtime-integrity.yml'
+      - 'tools/test_a003_integrity.py'
+      - 'audit/a003-live-runtime.cjs'
+      - 'pmp-app-current.html'
+      - 'pmp-current-map-v12.json'
+      - 'pmp-current-route-resolver-v1.js'
+      - 'pmp-integrity-service-worker-v1.js'
+      - 'pmp-runtime-integrity-manifest-v1.json'
+      - 'pmp-route-guardian-current-loader-v22.html'
+      - 'pmp-home-single-v6.html'
+      - '*.html'
+      - '*.js'
+      - '*.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  repository-integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run repository integrity gate
+        run: |
+          set +e
+          python3 tools/test_a003_integrity.py --output a003-repository-test-result.json 2>&1 | tee a003-repository-test-console.log
+          code=${PIPESTATUS[0]}
+          exit $code
+
+      - name: Upload repository gate result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a003-repository-integrity-result
+          path: |
+            a003-repository-test-result.json
+            a003-repository-test-console.log
+          if-no-files-found: warn
+
+  live-runtime-integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Run adversarial live integrity matrix
+        env:
+          A003_RESULT_PATH: a003-live-runtime-results.json
+        run: |
+          set +e
+          node audit/a003-live-runtime.cjs 2>&1 | tee a003-live-runtime-console.log
+          code=${PIPESTATUS[0]}
+          exit $code
+
+      - name: Upload live integrity result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a003-live-runtime-integrity-result
+          path: |
+            a003-live-runtime-results.json
+            a003-live-runtime-console.log
+          if-no-files-found: warn
