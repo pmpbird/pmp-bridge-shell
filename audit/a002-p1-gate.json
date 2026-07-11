@@ -1,0 +1,150 @@
+{
+  "type": "PMP_A002_P1_GATE_RESULT_V1",
+  "repair_id": "A-002",
+  "phase": "P1",
+  "status": "PASS_AT_SOURCE_AND_SIMULATED_BROWSER_CONTRACT_SCOPE",
+  "source_head_commit": "b9ae9d4145c85a3e92e727c5443d3b01e1641c1f",
+  "phase_base_commit": "6944364b49d52836ab30cfd5b08e0905cd1b348d",
+  "tests": [
+    {
+      "id": "P1-G01",
+      "name": "P0 identity prerequisite",
+      "method": "receipt verification",
+      "result": "PASS",
+      "evidence": "PMP-A001-5dd049de-SUPPLEMENT-A002-PASS-004; zero unresolved identities"
+    },
+    {
+      "id": "P1-G02",
+      "name": "Exact P1 mutation scope",
+      "method": "Git compare from P0 head to P1 source head",
+      "result": "PASS",
+      "evidence": {
+        "status": "ahead",
+        "commit_count": 4,
+        "changed_file_count": 4,
+        "unexpected_files": [],
+        "files": [
+          "pmp-current-route-resolver-v1.js",
+          "pmp-current-map-v12.json",
+          "pmp-app-current.html",
+          "pmp-route-guardian-current-loader-v22.html"
+        ]
+      }
+    },
+    {
+      "id": "P1-G03",
+      "name": "Resolver JavaScript syntax",
+      "method": "node --check",
+      "result": "PASS"
+    },
+    {
+      "id": "P1-G04",
+      "name": "Current Map JSON syntax",
+      "method": "JSON parser",
+      "result": "PASS"
+    },
+    {
+      "id": "P1-G05",
+      "name": "Resolver valid-map load and immutable handoff",
+      "method": "Node VM with mocked same-origin fetch",
+      "result": "PASS",
+      "checks": [
+        "valid map accepted",
+        "current_app handoff issued",
+        "map path fixed to pmp-current-map-v12.json",
+        "query parameters deterministically sorted",
+        "invalid screen hash normalized through map policy"
+      ]
+    },
+    {
+      "id": "P1-G06",
+      "name": "Resolver fail-closed behavior",
+      "method": "Node VM negative-path simulation",
+      "result": "PASS",
+      "checks": [
+        "implicit_fallbacks=true rejected with FAILURE_POLICY_INVALID",
+        "map fetch failure rejected with MAP_FETCH_FAILED",
+        "diagnostic action equals navigation_blocked_no_fallback_consulted"
+      ]
+    },
+    {
+      "id": "P1-G07",
+      "name": "Actual expanded map role resolution",
+      "method": "Parse the P1 map and resolve representative roles through the P1 resolver",
+      "result": "PASS",
+      "roles": [
+        "route_guardian",
+        "current_app",
+        "tool_routes.safe_writer",
+        "recovery_routes.recovery_tools_v8"
+      ]
+    },
+    {
+      "id": "P1-G08",
+      "name": "Stable entry has no destination authority",
+      "method": "source inspection",
+      "result": "PASS",
+      "checks": [
+        "loads only the mechanism resolver",
+        "requests role route_guardian",
+        "sets iframe source only from resolver.buildUrl map handoff",
+        "resolver/map failure removes iframe source and renders diagnostic",
+        "contains no hard-coded guardian, Reload Owner, wrapper, tool, recovery, or historic destination path"
+      ]
+    },
+    {
+      "id": "P1-G09",
+      "name": "Route Guardian has one-map current-app authority",
+      "method": "source inspection",
+      "result": "PASS",
+      "checks": [
+        "loads the same mechanism resolver",
+        "requests role current_app",
+        "normal launch and diagnostics use resolver.buildUrl handoffs",
+        "failure invokes failClosed and does not navigate",
+        "no v11, v10, v9, unversioned map, old guardian, or hard-coded Reload Owner fallback is consulted"
+      ]
+    },
+    {
+      "id": "P1-G10",
+      "name": "No destructive side effects introduced",
+      "method": "P1 changed-source inspection",
+      "result": "PASS",
+      "checks": [
+        "no localStorage.clear",
+        "no indexedDB.deleteDatabase",
+        "no caches.delete",
+        "no Bank mutation",
+        "no user-content mutation",
+        "no historic file deletion"
+      ]
+    },
+    {
+      "id": "P1-G11",
+      "name": "A-003 boundary preserved",
+      "method": "contract inspection",
+      "result": "PASS",
+      "evidence": "P1 declares route identities and handoffs but does not claim runtime source-byte hash enforcement."
+    }
+  ],
+  "summary": {
+    "tests_total": 11,
+    "tests_passed": 11,
+    "tests_failed": 0,
+    "unexpected_source_files": 0,
+    "independent_fallbacks_remaining_in_p1_entry_and_guardian": 0
+  },
+  "scope_truth": {
+    "live_mobile_browser_exercised": false,
+    "service_worker_network_runtime_exercised": false,
+    "current_reload_owner_and_wrapper_chain_converted": false,
+    "reason": "P1 is limited to the canonical map contract, mechanism resolver, stable entry, and Route Guardian. Live end-to-end chain conversion begins at P2 and full runtime certification remains later.",
+    "certified_scope": "P1 source structure plus resolver/map contract simulation only"
+  },
+  "rollback_group": "RG-P1",
+  "rollback_required": false,
+  "p2_eligible": true,
+  "p2_executed": false,
+  "merge_authorized": false,
+  "decision": "PASS_P1_CURRENT_MAP_CONTRACT_AND_RESOLVER_STOP_BEFORE_P2"
+}
