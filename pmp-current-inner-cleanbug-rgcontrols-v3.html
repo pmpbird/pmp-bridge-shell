@@ -19,10 +19,12 @@ bootShellColors();
 <style>
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--floor,#f3ded4)}
 iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:var(--floor,#f3ded4)}
+pre#pmpRouteDiagnosticV3{position:fixed;inset:16px;display:none;overflow:auto;white-space:pre-wrap;background:#102033;color:#eaffef;border:3px solid #07101c;border-radius:18px;padding:14px;box-sizing:border-box;font:700 11px/1.4 monospace;z-index:2147483647}
 </style>
 </head>
 <body>
 <iframe id="app"></iframe>
+<pre id="pmpRouteDiagnosticV3"></pre>
 <script src="pmp-top-lossless-injector.js?fresh=rgcontrols-v3-private-medium"></script>
 <script src="pmp-resident-lossless-readiness.js?fresh=rgcontrols-v3-private-medium"></script>
 <script src="pmp-current-truth-face.js?fresh=rgcontrols-v3-private-medium"></script>
@@ -41,13 +43,18 @@ iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:var(--f
 <script src="pmp-private-one-button-pages-v2.js?fresh=rgcontrols-v3-one-button-pages-v2"></script>
 <script src="pmp-phase1-source-intake-current-v1.js?fresh=phase1-private-window-loader-v1"></script>
 <script src="pmp-phase2-private-window-adapter-v1.js?fresh=phase7-transfer-adapter-v10"></script>
+<script src="pmp-current-route-resolver-v1.js"></script>
 <script>
 const F=document.getElementById('app');
-const startHash=(location.hash&&location.hash!=='#world')?location.hash:'#world';
-F.src='pmp-home-single-v6.html?fresh=current-rgcontrols-v3-private-window-phase1-'+Date.now()+startHash;
+const resolver=window.PMPCurrentRouteResolver;
+let ROUTE_MAP=null,ROUTES=null,ROUTE_FAILED=false;
+function routeFailClosed(error,context){ROUTE_FAILED=true;const d=resolver?resolver.diagnostic(error,context||'inner_v3'):{type:'PMP_ROUTE_FAIL_CLOSED_DIAGNOSTIC_V1',context:context||'inner_v3',code:'RESOLVER_UNAVAILABLE',message:String(error&&error.message||error),action:'navigation_blocked_no_fallback_consulted'};try{F.removeAttribute('src')}catch(e){}const p=document.getElementById('pmpRouteDiagnosticV3');p.style.display='block';p.textContent=JSON.stringify(d,null,2);try{localStorage.setItem('pmp_inner_v3_route_fail_closed_v1',JSON.stringify(d,null,2))}catch(e){}return d}
+async function initializeRoutes(){if(!resolver)throw new Error('PMP Current Route Resolver did not load.');const loaded=await resolver.load();ROUTE_MAP=loaded.map;ROUTES={home:resolver.resolve(loaded.map,'runtime_chain.home_restore'),bug:resolver.resolve(loaded.map,'tool_routes.bug_memory'),action:resolver.resolve(loaded.map,'tool_routes.route_guardian_action'),resident:resolver.resolve(loaded.map,'tool_routes.resident')};const startHash=resolver.normalizeHash(location.hash,loaded.map);const homeUrl=resolver.buildUrl(ROUTES.home,{fresh:'current-rgcontrols-v3-map-handoff-'+ROUTES.home.route_epoch+'-'+Date.now(),map_version:ROUTES.home.map_version,route_epoch:ROUTES.home.route_epoch},startHash);F.src=homeUrl;try{localStorage.setItem('pmp_inner_v3_route_handoffs_v1',JSON.stringify({type:'PMP_INNER_V3_ROUTE_HANDOFFS_V1',at:new Date().toISOString(),map_path:loaded.map_path,map_version:loaded.map.app_version,route_epoch:loaded.map.route_epoch,home:ROUTES.home.path,bug:ROUTES.bug.path,action:ROUTES.action.path,resident:ROUTES.resident.path,hash:startHash},null,2))}catch(e){}}
+function requireRoute(name){if(ROUTE_FAILED)throw new Error('route_state_failed');if(!resolver||!ROUTE_MAP||!ROUTES||!ROUTES[name])throw new Error('route_'+name+'_not_ready');return ROUTES[name]}
 function inside(){try{return{w:F.contentWindow,d:F.contentDocument||F.contentWindow.document}}catch(e){return{}}}
-function bugUrl(){return 'bug-memory-current-clean-v1.html?fresh=open-certified-native-contrast-'+Date.now()+'&contrast=2'}
-function actionUrl(kind){return 'pmp-route-guardian-action-v2.html?action='+encodeURIComponent(kind)+'&from=current-inner-rgcontrols-v3&fresh='+Date.now()}
+function bugUrl(){const h=requireRoute('bug');return resolver.buildUrl(h,{fresh:'open-certified-native-contrast-'+Date.now(),contrast:2,map_version:h.map_version,route_epoch:h.route_epoch},'')}
+function actionUrl(kind){const h=requireRoute('action');return resolver.buildUrl(h,{action:String(kind),from:'current-inner-rgcontrols-v3',fresh:Date.now(),map_version:h.map_version,route_epoch:h.route_epoch},'')}
+function residentUrl(){const h=requireRoute('resident');return resolver.buildUrl(h,{embedded:'live-current-control',fresh:Date.now(),map_version:h.map_version,route_epoch:h.route_epoch},'')}
 function textOf(x){return (x&&x.textContent||'').replace(/\s+/g,' ').trim()}
 const BANK_INVENTORY_OWNER='pmp-bridge-connections-owner-v3';
 const BANK_INVENTORY_KEY='pmp_connection_bank_inventory_v1';
@@ -169,7 +176,7 @@ function installDeepResidentOverlay(w,d){
     try{if(typeof w.go==='function')w.go('control')}catch(e){}
     const existing=d.getElementById('pmpDeepResidentOverlayCurrentV1');if(existing)existing.remove();
     const overlay=d.createElement('div');overlay.id='pmpDeepResidentOverlayCurrentV1';overlay.style.position='fixed';overlay.style.inset='0';overlay.style.zIndex='999999';overlay.style.background='var(--floor,var(--background,#f3ded4))';overlay.style.overflow='hidden';
-    const frame=d.createElement('iframe');frame.id='pmpDeepResidentFrameCurrentV1';frame.title='Resident Intelligence';frame.src='resident.html?embedded=live-current-control&fresh='+Date.now();frame.style.position='fixed';frame.style.inset='0';frame.style.width='100%';frame.style.height='100%';frame.style.border='0';frame.style.background='var(--floor,var(--background,#f3ded4))';
+    const frame=d.createElement('iframe');frame.id='pmpDeepResidentFrameCurrentV1';frame.title='Resident Intelligence';try{frame.src=residentUrl()}catch(e){routeFailClosed(e,'inner_v3_resident');return false}frame.style.position='fixed';frame.style.inset='0';frame.style.width='100%';frame.style.height='100%';frame.style.border='0';frame.style.background='var(--floor,var(--background,#f3ded4))';
     overlay.appendChild(frame);d.body.appendChild(overlay);
     frame.onload=function(){wireResidentFrame(frame);setTimeout(()=>wireResidentFrame(frame),300);setTimeout(()=>wireResidentFrame(frame),900)};
     const timer=w.setInterval(function(){if(!d.getElementById('pmpDeepResidentOverlayCurrentV1')){w.clearInterval(timer);return}wireResidentFrame(frame)},600);
@@ -200,10 +207,11 @@ function patch(){
   }
   Array.from(d.querySelectorAll('button')).forEach(b=>{const t=textOf(b);if(t==='Bug Memory')b.onclick=function(e){if(e)e.preventDefault();return goBug()};if(t.includes('Automatic App Update'))b.onclick=function(e){if(e)e.preventDefault();return goAction('appUpdate')};if(t.includes('Open Code Safety'))b.onclick=function(e){if(e)e.preventDefault();return goAction('codeSafety')}});
 }
-function goBug(){location.href=bugUrl();return false}
-function goAction(kind){location.href=actionUrl(kind);return false}
+function goBug(){try{location.href=bugUrl()}catch(e){routeFailClosed(e,'inner_v3_bug_memory')}return false}
+function goAction(kind){try{location.href=actionUrl(kind)}catch(e){routeFailClosed(e,'inner_v3_route_guardian_action')}return false}
 F.addEventListener('load',()=>{setTimeout(patch,100);setTimeout(patch,700);setTimeout(patch,1800)});
 setInterval(patch,800);
+initializeRoutes().catch(e=>routeFailClosed(e,'inner_v3_initialize'));
 </script>
 </body>
 </html>
