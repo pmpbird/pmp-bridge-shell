@@ -17,8 +17,8 @@
 
 ## P2 current runtime chain delegation
 
-- `a002-p2-execution.json` — seven exact P2 preimages, postimages, corrections, and rollback binding
-- `a002-p2-gate.json` — 16-test P2 source and simulated route-contract gate
+- `a002-p2-execution.json`
+- `a002-p2-gate.json`
 - `pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html`
 - `pmp-reload-current-live-update-marker-v1.json`
 - `pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html`
@@ -26,6 +26,15 @@
 - `pmp-current-inner-cleanbug-rgcontrols-v4.html`
 - `pmp-current-inner-cleanbug-rgcontrols-v3.html`
 - `pmp-home-single-v6.html`
+
+## P3 Active Reload Current convergence
+
+- `a002-p3-execution.json` — four exact P3 preimages/postimages and canonical reload contract
+- `a002-p3-gate.json` — 17-test P3 source and simulated six-screen reload gate
+- `pmp-current-screen-pointer-v1.js` — canonical reload API owner
+- `pmp-reload-world-from-map-v1.js` — delegate-only interceptor
+- `pmp-launcher-reload-current-bridge-v1.js` — delegate-only interceptor
+- `pmp-launcher-reload-current-v2-guard.js` — delegate-only guard
 
 ## Authority inventory
 
@@ -46,9 +55,9 @@
 
 ## Current safety and review controls
 
-- `a002-scope-lock.md` — current lock before P3
-- `a002-stop-line.md` — current stop before P3
-- `a002-review-boundary.md` — P2 tested-scope boundary
+- `a002-scope-lock.md` — current lock before P4
+- `a002-stop-line.md` — current stop before P4
+- `a002-review-boundary.md` — P3 tested-scope boundary
 - `a002-no-code-change-proof.json` — phase-scope and forbidden-effect proof
 - `a002-final-status.json`
 - `a002-pr-ready.json`
