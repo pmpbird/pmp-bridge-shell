@@ -1,0 +1,40 @@
+{
+  "type": "PMP_APP_ORCHESTRATOR_PASS1_FINAL_CLOSURE_PLAN_V1",
+  "overall_project_pass": "Pass 1",
+  "phase": "A2 — Final Pass 1 closure inventory and certification",
+  "base_main_commit": "253111b76be2c8e93629000f9d68c3b9132ba87b",
+  "completed_repairs": {
+    "A-001": {
+      "status": "EVIDENCE_INTEGRATED_IN_MAIN",
+      "merge_pr": 36,
+      "merge_commit": "253111b76be2c8e93629000f9d68c3b9132ba87b",
+      "runtime_change": false
+    },
+    "A-002": {
+      "status": "COMPLETE_MERGED_FINAL_STABLE_VERIFIED",
+      "final_receipt": "audit/a002-final-receipt.json"
+    },
+    "A-003": {
+      "status": "COMPLETE_MERGED_FINAL_STABLE_VERIFIED",
+      "final_receipt": "audit/a003-final-receipt.json"
+    }
+  },
+  "superseded_drafts": {
+    "36": "MERGED_AS_A001_AUDIT_ONLY_EVIDENCE",
+    "37": "CLOSED_UNMERGED_SUPERSEDED_BY_PR38"
+  },
+  "remaining_repair_found": "A-001 canonical evidence integration",
+  "remaining_repair_executed": true,
+  "closure_gates": [
+    "A-001 exact manifest, shard, historical, external, absence, supplement, and baseline identities",
+    "A-002 live runtime matrix 41/41",
+    "A-003 repository integrity gate 21/21",
+    "A-003 adversarial Chromium gate 47/47",
+    "Automated Plan preserved-contract and current-app compatibility",
+    "PR #38 final stable receipt and vault-stability identities",
+    "No open superseded A-001/A-002 repair drafts",
+    "No destructive storage, IndexedDB, Bank, user-content, vault-packet, or historic-file action",
+    "Crosswalk Router remains outside the App Orchestrator project boundary"
+  ],
+  "decision_before_certification": "RUN_COMPLETE_MATRIX_DO_NOT_DECLARE_PASS1_CLOSED_UNTIL_ALL_GATES_PASS"
+}
