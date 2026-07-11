@@ -1,5 +1,6 @@
 name: A-001 Source Identity Audit
 
+# Synchronization marker: workflow introduced before this commit.
 on:
   pull_request:
     branches: [main]
