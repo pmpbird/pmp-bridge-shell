@@ -1,0 +1,54 @@
+name: Pass 1 App Orchestrator Transfer Package PR
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/pass1-app-orchestrator-transfer-package-pr.yml'
+      - 'tools/build_pass1_app_orchestrator_package.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Verify stable main identity
+        run: |
+          set -euo pipefail
+          git cat-file -e '903cd10808f2d4639dff82aa4595cc7b74417e7a^{commit}'
+          test "$(git rev-parse origin/main)" = '903cd10808f2d4639dff82aa4595cc7b74417e7a'
+
+      - name: Build and verify canonical package
+        run: |
+          set -euo pipefail
+          python3 tools/build_pass1_app_orchestrator_package.py --output-dir dist | tee dist-build-console.log
+          python3 -m json.tool dist/package-build-report.json >/dev/null
+          python3 -m json.tool dist/package-verification.json >/dev/null
+
+      - name: Upload canonical package
+        uses: actions/upload-artifact@v4
+        with:
+          name: pmp-app-orchestrator-pass1-canonical-v1
+          path: |
+            dist/CURRENT_USE_THIS_PMP_APP_ORCHESTRATOR_PASS1_CANONICAL_V1.zip
+            dist/CURRENT_USE_THIS_PMP_APP_ORCHESTRATOR_PASS1_CANONICAL_V1.zip.sha256
+            dist/package-build-report.json
+            dist/package-verification.json
+            dist-build-console.log
+          if-no-files-found: error
+          retention-days: 90
