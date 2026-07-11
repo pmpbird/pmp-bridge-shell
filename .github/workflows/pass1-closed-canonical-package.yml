@@ -1,0 +1,55 @@
+name: Pass 1 Closed Canonical App Orchestrator Package
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/pass1-closed-canonical-package.yml'
+      - 'tools/build_pass1_closed_canonical_package.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Verify exact closed Pass 1 main source
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse origin/main)" = 'e7ba1b9384303abbbc67d3e9b0522e51bec65493'
+          git cat-file -e 'e7ba1b9384303abbbc67d3e9b0522e51bec65493^{commit}'
+          git show 'e7ba1b9384303abbbc67d3e9b0522e51bec65493:audit/pass1-final-closure-receipt.json' | python3 -m json.tool >/dev/null
+
+      - name: Build and verify closed canonical package
+        run: |
+          set -euo pipefail
+          python3 tools/build_pass1_closed_canonical_package.py --output-dir dist | tee dist-build-console.log
+          python3 -m json.tool dist/package-build-report.json >/dev/null
+          python3 -m json.tool dist/package-verification.json >/dev/null
+
+      - name: Upload closed canonical package
+        uses: actions/upload-artifact@v4
+        with:
+          name: pmp-app-orchestrator-pass1-closed-canonical-v2
+          path: |
+            dist/CURRENT_USE_THIS_PMP_APP_ORCHESTRATOR_PASS1_CLOSED_CANONICAL_V2.zip
+            dist/CURRENT_USE_THIS_PMP_APP_ORCHESTRATOR_PASS1_CLOSED_CANONICAL_V2.zip.sha256
+            dist/package-build-report.json
+            dist/package-verification.json
+            dist-build-console.log
+          if-no-files-found: error
+          retention-days: 90
