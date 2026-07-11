@@ -1,18 +1,16 @@
 {
   "repair_id": "A-002",
-  "phase": "PREEXECUTION_PLANNING",
-  "status": "COMPLETE",
-  "identity_reconciliation_executed": false,
+  "phase": "P0_IDENTITY_RECONCILIATION",
+  "status": "PASS",
+  "identity_reconciliation_executed": true,
+  "identity_reconciliation_receipt_id": "PMP-A001-5dd049de-SUPPLEMENT-A002-PASS-004",
+  "combined_unresolved_identities": 0,
   "implementation_started": false,
   "runtime_changes": false,
   "route_changes": false,
-  "preexecution_artifacts": [
-    "audit/a002-a001-identity-reconciliation-plan.json",
-    "audit/a002-preexecution-patch-plan.json",
-    "audit/a002-rollback-ledger.json",
-    "audit/a002-preexecution-summary.md"
-  ],
-  "next_permitted_action": "Execute P0 identity supplement only after explicit authorization",
+  "application_changes": false,
+  "next_permitted_action": "P1 canonical map contract and strict resolver only after separate explicit authorization",
   "next_permitted_route_execution": false,
-  "decision": "STOP_BEFORE_PATCH_EXECUTION"
+  "merge_authorized": false,
+  "decision": "P0_PASS_STOP_BEFORE_P1_ROUTE_PATCH"
 }
