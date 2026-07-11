@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - agent/a002-current-map-single-authority
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
