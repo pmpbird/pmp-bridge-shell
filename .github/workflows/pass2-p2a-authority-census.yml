@@ -1,0 +1,170 @@
+name: Pass 2 P2-A Authority Census
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/pass2-p2a-authority-census.yml'
+      - 'tools/build_pass2_authority_inventory.py'
+      - 'audit/pass2/p2a-scope-lock.json'
+      - 'audit/pass2/p2a-status.md'
+      - 'audit/pass2/p2a-receipt.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: pass2-p2a-authority-census-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+env:
+  PASS1_CLOSED_MAIN: e7ba1b9384303abbbc67d3e9b0522e51bec65493
+  PASS1_RECEIPT_ID: PMP-APP-ORCH-PASS1-253111b7-CLOSED-001
+  RUNTIME_MANIFEST_SHA256: 570c6db93da497758c6b18f53fa1e3c2b08cb1fdff761c9e54d97b87914e54d0
+  RUNTIME_SOURCE_SET_SHA256: 2efc5aa5f3ece5b1da94e162baf7f981a636ef5f23d9c6b3f2d8a348688172e2
+  GH_TOKEN: ${{ github.token }}
+
+jobs:
+  verify-p2a:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify Pass 1 closed baseline and audit-only scope
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse origin/main)" = "$PASS1_CLOSED_MAIN"
+          git merge-base --is-ancestor "$PASS1_CLOSED_MAIN" HEAD
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          receipt=json.loads(pathlib.Path('audit/pass1-final-closure-receipt.json').read_text())
+          assert receipt['receipt_id']==os.environ['PASS1_RECEIPT_ID']
+          assert receipt['status']=='PASS1_FORMALLY_CLOSED_AT_EXERCISED_SCOPE'
+          assert receipt['phase_and_pass']['pass2_started'] is False
+          assert hashlib.sha256(pathlib.Path('pmp-runtime-integrity-manifest-v1.json').read_bytes()).hexdigest()==os.environ['RUNTIME_MANIFEST_SHA256']
+          manifest=json.loads(pathlib.Path('pmp-runtime-integrity-manifest-v1.json').read_text())
+          assert manifest['runtime_source_set_sha256']==os.environ['RUNTIME_SOURCE_SET_SHA256']
+          allowed={
+            '.github/workflows/pass2-p2a-authority-census.yml',
+            'tools/build_pass2_authority_inventory.py',
+            'audit/pass2/p2a-scope-lock.json',
+            'audit/pass2/p2a-status.md',
+            'audit/pass2/p2a-receipt.json'
+          }
+          changed=set(subprocess.check_output(['git','diff','--name-only',os.environ['PASS1_CLOSED_MAIN'],'HEAD'],text=True).splitlines())
+          assert changed <= allowed, sorted(changed-allowed)
+          assert {'tools/build_pass2_authority_inventory.py','audit/pass2/p2a-scope-lock.json','audit/pass2/p2a-status.md'} <= changed
+          pathlib.Path('/tmp/pass2-p2a-scope-result.json').write_text(json.dumps({
+            'type':'PMP_PASS2_P2A_SCOPE_RESULT_V1','status':'PASS',
+            'base_main_commit':os.environ['PASS1_CLOSED_MAIN'],'changed_paths':sorted(changed),
+            'runtime_source_changed':False
+          },indent=2)+'\n')
+          PY
+
+      - name: Build exact actor census and blocker freeze
+        run: |
+          set -euo pipefail
+          python3 tools/build_pass2_authority_inventory.py --repo . --output-dir /tmp/pass2-p2a | tee /tmp/pass2-p2a-console.log
+
+      - name: Verify census counts and historical mismatch
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, pathlib
+          root=pathlib.Path('/tmp/pass2-p2a')
+          inventory=json.loads((root/'pass2-p2a-active-actor-inventory.json').read_text())
+          recon=json.loads((root/'pass2-p2a-source-reconciliation.json').read_text())
+          blockers=json.loads((root/'pass2-p2a-hard-blockers.json').read_text())
+          verification=json.loads((root/'pass2-p2a-verification.json').read_text())
+          assert inventory['counts']=={
+            'protected_runtime_records':697,
+            'executable_actor_candidates':576,
+            'runtime_data_records':121,
+            'current_map_declared_paths':43,
+            'integrity_errors':0
+          }
+          assert len(inventory['actors'])==576
+          assert all(row['source_identity']=='runtime_manifest_exact_sha256' for row in inventory['actors'])
+          assert recon['a001_plus_supplement_candidates']==208
+          assert recon['counts']=={'changed_blob':51,'not_in_runtime_manifest':5,'same_blob':152}
+          assert blockers['blocker_count']==5
+          assert {row['id'] for row in blockers['blockers']}=={'P2-B01','P2-B02','P2-B03','P2-B04','P2-B05'}
+          assert verification['status']=='PASS'
+          assert verification['decision']=='P2A_SCOPE_AND_CENSUS_COMPLETE_START_P2B'
+          pathlib.Path('/tmp/pass2-p2a-aggregate.json').write_text(json.dumps({
+            'type':'PMP_PASS2_P2A_AGGREGATE_V1','status':'PASS',
+            'overall_project_pass':'Pass 2','phase':'P2-A',
+            'pass2_complete':False,'pass3_started':False,
+            'counts':inventory['counts'],'reconciliation':recon['counts'],
+            'hard_blockers':5,
+            'decision':'P2A_COMPLETE_READY_FOR_P2B',
+            'next_phase':'P2-B — actor authorization gate architecture and forbidden-action fixtures'
+          },indent=2)+'\n')
+          PY
+
+      - name: Run A-003 repository regression
+        run: |
+          set -o pipefail
+          python3 tools/test_a003_integrity.py --output /tmp/pass2-p2a-a003-repository-result.json 2>&1 | tee /tmp/pass2-p2a-a003-repository-console.log
+          python3 - <<'PY'
+          import json, pathlib
+          result=json.loads(pathlib.Path('/tmp/pass2-p2a-a003-repository-result.json').read_text())
+          assert result.get('tests_passed')==21
+          assert result.get('tests_failed')==0
+          PY
+
+      - name: Verify P2-A receipt when present
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, pathlib, urllib.request
+          path=pathlib.Path('audit/pass2/p2a-receipt.json')
+          result={'type':'PMP_PASS2_P2A_RECEIPT_VERIFICATION_V1','receipt_present':path.is_file(),'receipt_verified':False}
+          if path.is_file():
+              receipt=json.loads(path.read_text())
+              assert receipt['status']=='P2A_COMPLETE_PASS2_IN_PROGRESS'
+              assert receipt['base_main_commit']==os.environ['PASS1_CLOSED_MAIN']
+              assert receipt['results']['protected_runtime_records']==697
+              assert receipt['results']['executable_actor_candidates']==576
+              assert receipt['results']['runtime_data_records']==121
+              assert receipt['results']['current_map_declared_paths']==43
+              assert receipt['results']['integrity_errors']==0
+              assert receipt['results']['a001_a002_candidates']==208
+              assert receipt['results']['hard_blockers']==5
+              run_id=receipt['certification']['run_id']
+              req=urllib.request.Request(
+                f"https://api.github.com/repos/{os.environ['GITHUB_REPOSITORY']}/actions/runs/{run_id}/artifacts",
+                headers={'Authorization':f"Bearer {os.environ['GH_TOKEN']}",'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'})
+              with urllib.request.urlopen(req) as response: artifacts=json.load(response)['artifacts']
+              match=[a for a in artifacts if a['name']=='pass2-p2a-authority-census-evidence']
+              assert match and match[0]['digest']==receipt['certification']['artifact_digest']
+              result.update({'receipt_verified':True,'receipt_id':receipt['receipt_id']})
+          pathlib.Path('/tmp/pass2-p2a-receipt-verification.json').write_text(json.dumps(result,indent=2)+'\n')
+          print(json.dumps(result,indent=2))
+          PY
+
+      - name: Upload P2-A evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass2-p2a-authority-census-evidence
+          path: |
+            /tmp/pass2-p2a-scope-result.json
+            /tmp/pass2-p2a/pass2-p2a-active-actor-inventory.json
+            /tmp/pass2-p2a/pass2-p2a-source-reconciliation.json
+            /tmp/pass2-p2a/pass2-p2a-hard-blockers.json
+            /tmp/pass2-p2a/pass2-p2a-verification.json
+            /tmp/pass2-p2a-aggregate.json
+            /tmp/pass2-p2a-console.log
+            /tmp/pass2-p2a-a003-repository-result.json
+            /tmp/pass2-p2a-a003-repository-console.log
+            /tmp/pass2-p2a-receipt-verification.json
+          if-no-files-found: error
+          retention-days: 90
