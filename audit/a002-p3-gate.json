@@ -1,0 +1,223 @@
+{
+  "type": "PMP_A002_P3_GATE_RESULT_V1",
+  "repair_id": "A-002",
+  "phase": "P3",
+  "status": "PASS_AT_SOURCE_AND_SIMULATED_RELOAD_CONTRACT_SCOPE",
+  "source_head_commit": "12b5cf4d813a8dc182de47d58b6de3388d07037f",
+  "phase_base_commit": "0ea8e1ff8491eae5f441beab7c719fe4c580dc40",
+  "tests": [
+    {
+      "id": "P3-G01",
+      "name": "P2 prerequisite",
+      "method": "P2 gate receipt inspection",
+      "result": "PASS",
+      "evidence": "audit/a002-p2-gate.json reports 16 passed and 0 failed"
+    },
+    {
+      "id": "P3-G02",
+      "name": "Exact P3 mutation scope",
+      "method": "Git compare from P2 progress head to P3 source head",
+      "result": "PASS",
+      "evidence": {
+        "status": "ahead",
+        "commit_count": 4,
+        "changed_file_count": 4,
+        "unexpected_files": [],
+        "files": [
+          "pmp-current-screen-pointer-v1.js",
+          "pmp-reload-world-from-map-v1.js",
+          "pmp-launcher-reload-current-bridge-v1.js",
+          "pmp-launcher-reload-current-v2-guard.js"
+        ]
+      }
+    },
+    {
+      "id": "P3-G03",
+      "name": "Single canonical Reload Current API",
+      "method": "Four-file final source inspection",
+      "result": "PASS",
+      "checks": [
+        "PMPReloadCurrentCanonicalV1 is owned by pmp-current-screen-pointer-v1.js",
+        "all other P3 files call that API",
+        "no secondary destination-selection API remains"
+      ]
+    },
+    {
+      "id": "P3-G04",
+      "name": "Current Map is the only reload destination authority",
+      "method": "Canonical API source inspection",
+      "result": "PASS",
+      "checks": [
+        "loads pmp-current-route-resolver-v1.js as mechanism",
+        "resolver loads the fixed Current Map contract",
+        "resolves route_guardian for policy evidence",
+        "resolves current_app for automatic reload navigation",
+        "builds navigation URL only from the map-issued current_app handoff"
+      ]
+    },
+    {
+      "id": "P3-G05",
+      "name": "No historic route selection remains in active reload files",
+      "method": "Four-file forbidden-string and behavior inspection",
+      "result": "PASS",
+      "checks": [
+        "no v11 map fetch",
+        "no v10 map fetch",
+        "no v9 map fetch",
+        "no unversioned map fetch",
+        "no old Guardian destination",
+        "no old Reload Owner destination",
+        "no hard-coded application fallback"
+      ]
+    },
+    {
+      "id": "P3-G06",
+      "name": "World reload continuity",
+      "method": "Allowed-hash and snapshot contract simulation",
+      "result": "PASS",
+      "evidence": "#world is captured, normalized by Current Map, attached to the current_app handoff, and restored from snapshot."
+    },
+    {
+      "id": "P3-G07",
+      "name": "Bridge reload continuity",
+      "method": "Allowed-hash and snapshot contract simulation",
+      "result": "PASS",
+      "evidence": "#bridge is captured, normalized by Current Map, attached to the current_app handoff, and restored from snapshot."
+    },
+    {
+      "id": "P3-G08",
+      "name": "Library reload continuity",
+      "method": "Allowed-hash and snapshot contract simulation",
+      "result": "PASS",
+      "evidence": "#library is captured, normalized by Current Map, attached to the current_app handoff, and restored from snapshot."
+    },
+    {
+      "id": "P3-G09",
+      "name": "Workshop reload continuity",
+      "method": "Allowed-hash and snapshot contract simulation",
+      "result": "PASS",
+      "evidence": "#workshop is captured, normalized by Current Map, attached to the current_app handoff, and restored from snapshot."
+    },
+    {
+      "id": "P3-G10",
+      "name": "Control reload continuity",
+      "method": "Allowed-hash and snapshot contract simulation",
+      "result": "PASS",
+      "evidence": "#control is captured, normalized by Current Map, attached to the current_app handoff, and restored from snapshot."
+    },
+    {
+      "id": "P3-G11",
+      "name": "Bank reload continuity and detail preservation",
+      "method": "Snapshot contract inspection",
+      "result": "PASS",
+      "checks": [
+        "#bank is preserved",
+        "current_screen.detail is preserved",
+        "data-open-bank key restoration logic remains",
+        "no Bank record is rewritten by reload routing"
+      ]
+    },
+    {
+      "id": "P3-G12",
+      "name": "Rapid repeated clicks are guarded",
+      "method": "Canonical API control-flow inspection",
+      "result": "PASS",
+      "checks": [
+        "busy lock is set before resolver loading",
+        "calls within 1500 milliseconds are recorded as DUPLICATE_BLOCKED",
+        "only the first call can issue navigation",
+        "multiple active interceptors converge on the same busy lock"
+      ]
+    },
+    {
+      "id": "P3-G13",
+      "name": "Missing canonical API or Current Map fails closed",
+      "method": "Delegate and canonical negative-path inspection",
+      "result": "PASS",
+      "checks": [
+        "delegates do not navigate when the canonical API cannot load",
+        "resolver or map failure produces FAIL_CLOSED receipt",
+        "no alternate map, guardian, owner, saved route, or hard-coded fallback is consulted"
+      ]
+    },
+    {
+      "id": "P3-G14",
+      "name": "Snapshot compatibility is retained",
+      "method": "Preimage/postimage storage-contract comparison",
+      "result": "PASS",
+      "checks": [
+        "pmp_reload_current_live_snapshot_v12 retained",
+        "pmp_reload_current_live_snapshot_v12_last_kept retained",
+        "current_screen page/detail structure retained",
+        "existing P2 reload-snapshot readers remain compatible"
+      ]
+    },
+    {
+      "id": "P3-G15",
+      "name": "No destructive data operation introduced",
+      "method": "Four-file changed-source inspection",
+      "result": "PASS",
+      "checks": [
+        "no localStorage.clear",
+        "no indexedDB.deleteDatabase",
+        "no caches.delete",
+        "no Bank rebuild",
+        "no user-content mutation",
+        "no historic file deletion"
+      ]
+    },
+    {
+      "id": "P3-G16",
+      "name": "A-003 boundary remains truthful",
+      "method": "Receipt and resolver-consumer inspection",
+      "result": "PASS",
+      "evidence": "P3 trusts the P1 map/resolver contract and does not claim runtime source-byte equality."
+    },
+    {
+      "id": "P3-G17",
+      "name": "Rollback readiness",
+      "method": "RG-P3 preimage/postimage comparison",
+      "result": "PASS",
+      "evidence": "All four changed files have exact baseline blob preimages and final postimage blobs."
+    }
+  ],
+  "summary": {
+    "tests_total": 17,
+    "tests_passed": 17,
+    "tests_failed": 0,
+    "unexpected_source_files": 0,
+    "active_reload_destination_selectors": 1,
+    "canonical_reload_apis": 1,
+    "delegate_only_interceptors": 3,
+    "historic_map_fetches_in_p3_files": 0,
+    "hard_coded_app_destinations_in_p3_files": 0
+  },
+  "environment_limitations": [
+    {
+      "limitation": "No live mobile-browser session available",
+      "effect": "Six-screen return behavior is proven by source and route-contract simulation, not a physical click-through run."
+    },
+    {
+      "limitation": "No service-worker network session available",
+      "effect": "No live cache/network claim is made."
+    },
+    {
+      "limitation": "No authenticated local checkout or external network resolution in the execution container",
+      "effect": "Gate uses connected Git diff and final connected-source inspection."
+    }
+  ],
+  "scope_truth": {
+    "live_six_screen_click_matrix_exercised": false,
+    "live_mobile_browser_exercised": false,
+    "service_worker_network_runtime_exercised": false,
+    "full_A002_certified": false,
+    "certified_scope": "P3 exact Git diff, final connected-source inspection, and simulated six-screen reload contract",
+    "reason": "The gate proves one authority path, preserved snapshot semantics, duplicate protection, and fail-closed source behavior. Live device execution remains later."
+  },
+  "rollback_group": "RG-P3",
+  "rollback_required": false,
+  "p4_eligible": true,
+  "p4_executed": false,
+  "merge_authorized": false,
+  "decision": "PASS_P3_ACTIVE_RELOAD_CONVERGENCE_STOP_BEFORE_P4"
+}
