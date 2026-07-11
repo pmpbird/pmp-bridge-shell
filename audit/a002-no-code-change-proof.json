@@ -1,53 +1,41 @@
 {
-  "type": "PMP_A002_PHASE_SCOPE_PROOF_V7",
+  "type": "PMP_A002_PHASE_SCOPE_PROOF_V8",
   "branch": "agent/a002-current-map-single-authority",
   "baseline_commit": "5dd049de1500ea427fa2cf395687239a19706115",
   "completed_phases": {
     "P0": "PASS",
-    "P1": "PASS_AT_SOURCE_AND_SIMULATED_BROWSER_CONTRACT_SCOPE",
-    "P2": "PASS_AT_SOURCE_AND_SIMULATED_ROUTE_CONTRACT_SCOPE",
-    "P3": "PASS_AT_SOURCE_AND_SIMULATED_RELOAD_CONTRACT_SCOPE"
+    "P1": "PASS",
+    "P2": "PASS",
+    "P3": "PASS",
+    "P4": "PASS",
+    "P5": "PASS",
+    "P6": "PASS",
+    "P7": "PASS_LIVE_RUNTIME_37_OF_37"
   },
-  "p3": {
-    "phase_base_commit": "0ea8e1ff8491eae5f441beab7c719fe4c580dc40",
-    "source_head_commit": "12b5cf4d813a8dc182de47d58b6de3388d07037f",
-    "planned_source_files": [
-      "pmp-current-screen-pointer-v1.js",
-      "pmp-reload-world-from-map-v1.js",
-      "pmp-launcher-reload-current-bridge-v1.js",
-      "pmp-launcher-reload-current-v2-guard.js"
-    ],
-    "actual_source_files": [
-      "pmp-current-screen-pointer-v1.js",
-      "pmp-reload-world-from-map-v1.js",
-      "pmp-launcher-reload-current-bridge-v1.js",
-      "pmp-launcher-reload-current-v2-guard.js"
-    ],
-    "unexpected_source_files": [],
-    "source_file_count": 4,
-    "tests_passed": 17,
-    "tests_failed": 0,
-    "canonical_reload_apis": 1,
-    "delegate_only_interceptors": 3,
-    "historic_map_fetches": 0,
-    "hard_coded_app_destinations": 0
+  "final_scope": {
+    "tested_head": "8437cadaa88428a90cb424829e70349fdad3a57e",
+    "authority_objects_audited": 65,
+    "independent_route_authorities": 0,
+    "unresolved": 0,
+    "live_tests_passed": 37,
+    "live_tests_failed": 0
   },
   "forbidden_effects": {
     "storage_schema_changes": 0,
     "storage_clear_operations": 0,
     "indexeddb_changes": 0,
     "bank_rebuilds": 0,
-    "user_content_changes": 0,
+    "user_content_deletions": 0,
     "cache_clear_operations": 0,
     "historic_file_deletions": 0,
-    "p4_source_changes": 0
+    "merge_operations": 0,
+    "A003_hash_enforcement_changes": 0
   },
   "scope_truth": {
-    "live_six_screen_click_matrix_exercised": false,
-    "live_mobile_browser_exercised": false,
-    "service_worker_network_runtime_exercised": false,
-    "full_A002_certified": false,
-    "A003_hash_enforcement_claimed": false
+    "A002_complete": true,
+    "overall_project_pass_1_complete": false,
+    "A003_hash_enforcement_claimed": false,
+    "merge_authorized": false
   },
-  "decision": "P0_PASS_P1_PASS_P2_PASS_P3_PASS_WITHIN_TESTED_SCOPE_STOP_BEFORE_P4"
+  "decision": "A002_PASS_STOP_BEFORE_MERGE_AND_A003"
 }
