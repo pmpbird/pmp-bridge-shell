@@ -1,0 +1,128 @@
+{
+  "type": "PMP_A002_REPOSITORY_TEST_RESULT_V1",
+  "repair_id": "A-002",
+  "baseline": {
+    "main_source_commit": "5dd049de1500ea427fa2cf395687239a19706115",
+    "stacked_base_branch": "agent/a001-freeze-source-identity"
+  },
+  "current_map": {
+    "path": "pmp-current-map-v12.json",
+    "git_blob_sha": "cfbbba5bd0d15da03b6b31258a1f5ca13bd5ab0d",
+    "sha256": "c2a89dbedc5dfbc1eeb56c6364cbb6a919d74691cf44602da65db85b30aa8e3b",
+    "content_changed": false
+  },
+  "source_identity_changes": [
+    {
+      "path": "pmp-current-map-enforcement-v1.js",
+      "source_sha_before": null,
+      "source_sha_after": "ec3b6557a1b00c8083bac585084f76c06ed6b8b3",
+      "change": "new shared read-only Current Map validation and receipt gate"
+    },
+    {
+      "path": "pmp-route-guardian-current-loader-v22.html",
+      "source_sha_before": "c7f10d77a345544d4eb8c0bee8d34017fe876153",
+      "source_sha_after": "b149f424fb095c938a1008551e0d947a0a945063",
+      "change": "removed v11/v10 and hard-coded v29 downgrade; exact v12 validation before navigation"
+    },
+    {
+      "path": "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html",
+      "source_sha_before": "68292821851d216ed2b2b2a4440eb39b4a7a4ccc",
+      "source_sha_after": "a65087a11b2d710678e3fb9fb7fbbefb49142fac",
+      "change": "independent map validation, one-time guardian handoff agreement, explicit map fallback"
+    },
+    {
+      "path": "pmp-current-screen-pointer-v1.js",
+      "source_sha_before": "74efdbf6053b5e331110eb1e47dd0abefc12e8b4",
+      "source_sha_after": "ae1b13c3d93bb254cec6725b6a2bd471e456b9a0",
+      "change": "removed obsolete v9/v27 routing; reload returns through map-registered guardian"
+    },
+    {
+      "path": "pmp-reload-world-from-map-v1.js",
+      "source_sha_before": "75de1a4cf0f3c60829f1cf1205876b01d49b0bee",
+      "source_sha_after": "d9d8d14c676b3d5e90bfb1b3ed01797b35906c19",
+      "change": "removed hard-coded Route Guardian v21"
+    },
+    {
+      "path": "pmp-route-guardian-last-good-clean-v1.js",
+      "source_sha_before": "eb4aee6163ae168361f404dc37c2ec7adb78b3d6",
+      "source_sha_after": "1104931f33ea3f6a8a5e96e70b7cbb91ad7f12f3",
+      "change": "blocks arbitrary saved routes; permits only map-registered route entries"
+    },
+    {
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+      "source_sha_before": "f73761dfc870f96b58abb7313447a68ce1bc8cf3",
+      "source_sha_after": "4a0f91187c0f72fdb6b93ff9ec8d9ef20b34a014",
+      "change": "removed hard-coded v23 frame launch; explicit validated fallback_app activation"
+    }
+  ],
+  "tests": [
+    {
+      "name": "Exact Current Map SHA loads",
+      "result": "PASS"
+    },
+    {
+      "name": "Tampered Current Map SHA blocks",
+      "result": "PASS",
+      "method": "shared gate unit simulation"
+    },
+    {
+      "name": "Unregistered target blocks before navigation",
+      "result": "PASS",
+      "method": "shared gate unit simulation"
+    },
+    {
+      "name": "Exact actor agreement passes and mismatched target fails",
+      "result": "PASS",
+      "method": "append-only receipt and handoff unit simulation"
+    },
+    {
+      "name": "Obsolete route defaults absent from modified actors",
+      "result": "PASS",
+      "checked": [
+        "pmp-current-map-v11.json",
+        "pmp-current-map-v10.json",
+        "pmp-current-map-v9.json",
+        "pmp-current-reload-owner-v29-permanent-update-gate-20260706f.html",
+        "pmp-current-reload-owner-v27.html",
+        "pmp-route-guardian-current-loader-v21.html",
+        "pmp-current-inner-cleanbug-rgcontrols-v16.html#control",
+        "pmp-route-guardian-recovery-tools-v8.html",
+        "hard-coded pmp-current-inner-cleanbug-rgcontrols-v23.html frame assignment"
+      ]
+    },
+    {
+      "name": "Changed JavaScript and inline scripts parse",
+      "result": "PASS",
+      "method": "Node syntax checks against byte-identical local sources"
+    },
+    {
+      "name": "Cold browser launch through Route Guardian and Reload Owner",
+      "result": "PENDING_LIVE_EXECUTION"
+    },
+    {
+      "name": "Live tampered-map launch attempt",
+      "result": "PENDING_LIVE_EXECUTION"
+    },
+    {
+      "name": "Live unregistered-target launch attempt",
+      "result": "PENDING_LIVE_EXECUTION"
+    },
+    {
+      "name": "Live guardian/reload/inner/fallback receipt agreement",
+      "result": "PENDING_LIVE_EXECUTION"
+    }
+  ],
+  "safety": {
+    "route_targets_changed": false,
+    "current_map_content_changed": false,
+    "fallback_removed": false,
+    "cache_cleared": false,
+    "storage_cleared_or_migrated": false,
+    "indexeddb_cleared": false,
+    "bank_rebuilt": false,
+    "broad_visual_patch": false,
+    "pass9_work": false
+  },
+  "decision": "A002_REPOSITORY_ENFORCEMENT_IMPLEMENTED_LIVE_RUNTIME_TESTS_REQUIRED",
+  "certified": false
+}
