@@ -1,17 +1,19 @@
 {
-  "type": "PMP_A003_PREEXECUTION_PLAN_V1",
+  "type": "PMP_A003_EXECUTION_PLAN_FINAL_V1",
   "repair_id": "A-003",
-  "status": "AUTHORIZED_NOT_YET_CERTIFIED",
+  "status": "PASS_AT_FULL_A003_EXERCISED_SCOPE",
   "repository": "pmpbird/pmp-bridge-shell",
   "branch": "agent/a002-current-map-single-authority",
   "a002_frozen_head": "40a84f54494c05619f303f71ce74bde510898639",
   "main_baseline": "5dd049de1500ea427fa2cf395687239a19706115",
-  "main_status": "IDENTICAL_TO_BASELINE",
+  "tested_head": "f2ed35ff4a9c7b764e6bf60d5a15be04e4c974dd",
   "goal": "Verify exact runtime source bytes before covered application code, routes, tools, recovery pages, historic forwarders, JSON route data, and transitive local scripts are served or executed.",
   "trust_model": {
     "root_trust_anchor": "pmp-app-current.html",
-    "reason": "A browser document cannot verify its own bytes before execution. A-003 therefore names one explicit bootstrap root and verifies every downstream covered source from it.",
+    "root_self_verifiable": false,
     "manifest": "pmp-runtime-integrity-manifest-v1.json",
+    "manifest_sha256": "570c6db93da497758c6b18f53fa1e3c2b08cb1fdff761c9e54d97b87914e54d0",
+    "runtime_source_set_sha256": "2efc5aa5f3ece5b1da94e162baf7f981a636ef5f23d9c6b3f2d8a348688172e2",
     "algorithm": "SHA-256",
     "runtime_enforcer": "pmp-integrity-service-worker-v1.js",
     "route_resolver": "pmp-current-route-resolver-v1.js",
@@ -19,40 +21,26 @@
     "unlisted_executable_policy": "block",
     "verified_offline_policy": "only previously verified bytes with the same expected hash may be used"
   },
-  "phases": {
-    "P0": "Freeze A-002 head, verify main baseline, prepare manifest generator and inventory probe.",
-    "P1": "Generate current runtime integrity closure and identify external sources and unresolved executable paths.",
-    "P2": "Install bootstrap verification, integrity Service Worker, manifest-aware resolver, and Current Map integrity contract.",
-    "P3": "Generate and commit the exact final integrity manifest; seal its SHA-256 into the bootstrap root.",
-    "P4": "Run repository tests for valid bytes, one-byte tamper rejection, unlisted executable rejection, verified offline fallback, historical Home verification, and external-source policy.",
-    "P5": "Run live Chromium cold-start, controlled-runtime, six-screen, tool, recovery, historic, tamper, offline, and Service Worker matrices.",
-    "P6": "Issue final A-003 receipt and stop before merging A-002."
+  "phase_results": {
+    "P0": "PASS — A-002 head and main baseline frozen; rollback prepared.",
+    "P1": "PASS — 697-record runtime closure; 42/42 map paths; historical and external identities classified.",
+    "P2": "PASS — bootstrap, integrity worker, resolver, map, Guardian, Home, and observer-only runtime installed.",
+    "P3": "PASS — deterministic manifest generated and atomically sealed into the root bootstrap.",
+    "P4": "PASS — repository gate 21/21.",
+    "P5": "PASS — adversarial Chromium gate 47/47.",
+    "P6": "PASS — final receipt issued and stop before merge enforced."
   },
-  "initial_preimages": {
-    "pmp-app-current.html": "777538c0d40277431f1515331932acb6bc721428",
-    "pmp-current-map-v12.json": "655416f0ae7750a16ac15fb93a1ab62890491af7",
-    "pmp-current-route-resolver-v1.js": "7c119407b4f42d1b7436577110db4f04a5737802",
-    "pmp-service-worker-cache-governor-v1.js": "d49eb82efc2910fd13d2b1727f33d6c0a006b749",
-    "pmp-home-single-v6.html": "41ca3dd88f70abc12718d8228ff3004efd77b538"
+  "final_evidence": {
+    "receipt": "audit/a003-final-receipt.json",
+    "repository_gate": "audit/a003-repository-gate.json",
+    "live_matrix": "audit/a003-live-runtime-matrix.json",
+    "execution": "audit/a003-execution.json",
+    "repository_tests": "21/21",
+    "adversarial_live_tests": "47/47"
   },
-  "forbidden_effects": [
-    "No storage clear",
-    "No IndexedDB deletion or migration",
-    "No Bank rebuild",
-    "No user-content deletion",
-    "No broad visual redesign",
-    "No historic file deletion",
-    "No merge",
-    "No claim that the root trust anchor self-verifies"
-  ],
-  "stop_conditions": [
-    "A-002 head or main baseline mismatch",
-    "Any runtime executable source cannot be assigned an exact expected digest or explicit trust classification",
-    "Any valid current route fails under enforcement",
-    "Any one-byte tamper is allowed to execute",
-    "Any unlisted HTML, JavaScript, JSON, module, worker, or WebAssembly source is served as executable",
-    "Integrity enforcement clears or rewrites user data"
-  ],
+  "forbidden_effects_observed": false,
+  "rollback_required": false,
   "merge_authorized": false,
-  "decision": "BEGIN_A003_P0_THROUGH_P6_STOP_BEFORE_MERGE"
+  "current_boundary": "STOP_BEFORE_MERGE",
+  "decision": "A003_PASS_STOP_BEFORE_MERGE"
 }
