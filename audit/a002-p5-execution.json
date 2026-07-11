@@ -1,0 +1,31 @@
+{
+  "type":"PMP_A002_P5_EXECUTION_V1",
+  "repair_id":"A-002",
+  "phase":"P5",
+  "status":"PASS",
+  "baseline_commit":"5dd049de1500ea427fa2cf395687239a19706115",
+  "phase_base_commit":"e5fb3d615918c260a3497a5e8ccdd46fa4aa134e",
+  "source_head_commit":"0cf5103af6770b9a86bebbca9621fc407632ed5b",
+  "mutations":[
+    {"path":"pmp-route-guardian-last-good-clean-v1.js","preimage_git_blob_sha":"eb4aee6163ae168361f404dc37c2ec7adb78b3d6","postimage_git_blob_sha":"72edffab75a7d4a2863f2879c20b6517d4a99377"},
+    {"path":"pmp-current-inner-cleanbug-rgcontrols-v16.html","preimage_git_blob_sha":"b2e2cfe58dc6b5fb5b9a23640dbb22a944f97ab3","postimage_git_blob_sha":"c0f83193b6807bd6f7dcc40641f8ed1832fa244d"},
+    {"path":"pmp-route-guardian-last-good-v3-button-v1.js","preimage_git_blob_sha":"43746ee336c8093080fc72608edf95d11b7a7e64","postimage_git_blob_sha":"330543defd143bcef21635ac95c59b79efc7dab3"},
+    {"path":"pmp-route-guardian-last-good-v1.html","preimage_git_blob_sha":"f13a333c207bf31d1aab1bc5991fc07212f75f13","postimage_git_blob_sha":"0d55f2e1477c961cb49c9fe649ce6f7ed5e8e135"},
+    {"path":"pmp-route-guardian-last-good-v18.html","preimage_git_blob_sha":"2cccc42414d8523086fe909451595523ab25ed47","postimage_git_blob_sha":"91c79bccf1593878723ff7b36bfd522f878d6cdc"},
+    {"path":"pmp-route-guardian-recovery-tools-v8.html","preimage_git_blob_sha":"127f249f9856a4ea9dda55643930438d93b329df","postimage_git_blob_sha":"cb4df6092058292e4ec007952192322000cdb69f"},
+    {"path":"pmp-move-ledger-candidate-follow-v1.html","preimage_git_blob_sha":"2dfedf3030426a44611e13cb6958323a84571f3f","postimage_git_blob_sha":"d138a281b557efc50ac769a45f22e2b7d8cfca21"},
+    {"path":"pmp-route-guardian-current-loader-v14.html","preimage_git_blob_sha":"9a69eee8eb3641b13a809bb7c6b0f55a390aca1d","postimage_git_blob_sha":"8f081a2dfbbf29a78771ea6e5c8518cab314a6c3"},
+    {"path":"pmp-current-inner-cleanbug-rgcontrols-v9.html","preimage_git_blob_sha":"ebe842dac1a42739c4eb76cd7158a4af4684f970","postimage_git_blob_sha":"19b8965b0236ee15334f0540e292d9881864a073"},
+    {"path":"pmp-current-inner-cleanbug-rgcontrols-v13.html","preimage_git_blob_sha":"865d83836681e5e79ae897305ed8c21d4dc19729","postimage_git_blob_sha":"8e7575b76626d1f45827a670fc92d03c97ab7537"}
+  ],
+  "phase_diff":{"commit_count":10,"changed_file_count":10,"unexpected_files":[]},
+  "policy":{"saved_spots":"readable_evidence","move_ledger":"readable_evidence","candidate_execution":"exact_current_map_allowlist_only","make_current":"request_only_no_promotion","old_v9_v13_v16_authority":"removed","guardian_v14":"current_map_delegate"},
+  "effects":{"storage_schema_changes":0,"storage_clear_operations":0,"indexeddb_changes":0,"bank_rebuilds":0,"saved_spot_bulk_rewrites":0,"move_ledger_bulk_rewrites":0,"cache_clear_operations":0,"historic_file_deletions":0},
+  "rollback_group":"RG-P5",
+  "rollback_ready":true,
+  "rollback_required":false,
+  "p6_eligible":true,
+  "p6_executed":false,
+  "merge_authorized":false,
+  "decision":"PASS_P5_RECOVERY_POLICY_DELEGATION_CONTINUE_TO_P6"
+}
