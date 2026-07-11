@@ -1,1 +1,11 @@
-{"type":"PMP_RELOAD_CURRENT_LIVE_UPDATE_MARKER_V1","version":"1.1.9-app-orchestrator-wait-live-report-api","revision":"v30-app-orchestrator-wait-live-report-api-20260709B","target":"pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html","mode":"app_orchestrator_wait_live_report_api_patch","updated_at":"2026-07-09T00:49:00Z","status":"marker_bumped_for_live_orchestrator_report_wait"}
+{
+  "type": "PMP_RELOAD_CURRENT_LIVE_UPDATE_MARKER_V1",
+  "version": "1.2.0-a002-p2-revision-only",
+  "revision": "v30-a002-p2-map-delegated-chain-20260711A",
+  "mode": "revision_and_cache_bust_data_only",
+  "updated_at": "2026-07-11T00:00:00-07:00",
+  "status": "marker_cannot_select_destination",
+  "route_authority": "pmp-current-map-v12.json",
+  "destination_selection": false,
+  "rule": "This marker may change revision/cache-bust data only. Runtime destinations come exclusively from Current Map handoffs."
+}
