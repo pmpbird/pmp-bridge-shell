@@ -1,8 +1,8 @@
 {
-  "generated_from_commit": "b5200fa13f582a5da736c54d9d820eaa08e8e50d",
+  "generated_from_commit": "5ffd3c81b1dd7a4562031288d61279035f80d655",
   "manifest_bytes": 368015,
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
-  "manifest_sha256": "4cb61b4eba32de948e45f307a17de62bf5e802a360c561cae956b72559bedc21",
+  "manifest_sha256": "d3fcdf8c8abc81e97ddb3c9bc15892da58fac97de3752851d7e8da3b89fe163a",
   "manifest_version": "20260711A-A003-FINAL",
   "repair_id": "A-003",
   "root_self_verifiable": false,
