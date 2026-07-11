@@ -1,1 +1,68 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="PMP"><meta name="theme-color" content="#f3ded4"><title>PMP Current</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3ded4}iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#f3ded4}</style></head><body><iframe id="app" title="PMP Current"></iframe><script>document.getElementById('app').src='pmp-route-guardian-current-loader-v22.html?fresh=current-launcher-rg22-map12-cachelift-20260706b-'+Date.now()+'#control';</script></body></html>
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PMP">
+<meta name="theme-color" content="#f3ded4">
+<title>PMP Current</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3ded4}
+iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#f3ded4}
+pre{position:fixed;inset:18px;display:none;box-sizing:border-box;margin:0;padding:16px;overflow:auto;white-space:pre-wrap;background:#102033;color:#eaffef;border:3px solid #07101c;border-radius:18px;font:700 12px/1.4 monospace;user-select:text;-webkit-user-select:text}
+</style>
+</head>
+<body>
+<iframe id="app" title="PMP Current"></iframe>
+<pre id="routeDiagnostic" aria-live="polite"></pre>
+<script src="pmp-current-route-resolver-v1.js"></script>
+<script>
+(async function(){
+  var frame=document.getElementById('app');
+  var diagnosticBox=document.getElementById('routeDiagnostic');
+  var resolver=window.PMPCurrentRouteResolver;
+  function showDiagnostic(diagnostic){
+    try{frame.removeAttribute('src')}catch(e){}
+    diagnosticBox.style.display='block';
+    diagnosticBox.textContent=JSON.stringify(diagnostic,null,2);
+    try{localStorage.setItem('pmp_current_entry_fail_closed_receipt_v1',JSON.stringify(diagnostic,null,2))}catch(e){}
+  }
+  try{
+    if(!resolver)throw new Error('PMP Current Route Resolver did not load.');
+    var loaded=await resolver.load();
+    var handoff=resolver.resolve(loaded.map,'route_guardian');
+    var hash=resolver.normalizeHash(location.hash,loaded.map);
+    var launchUrl=resolver.buildUrl(handoff,{
+      fresh:'current-entry-'+handoff.route_epoch+'-'+Date.now(),
+      map_version:handoff.map_version,
+      route_epoch:handoff.route_epoch
+    },hash);
+    var receipt={
+      type:'PMP_CURRENT_ENTRY_ROUTE_HANDOFF_RECEIPT_V1',
+      at:new Date().toISOString(),
+      map_path:handoff.map_path,
+      map_version:handoff.map_version,
+      route_epoch:handoff.route_epoch,
+      role:handoff.role,
+      target:handoff.path,
+      launch_url:launchUrl,
+      rule:'Stable entry consumes one Current Map handoff and has no alternate application destination.'
+    };
+    try{localStorage.setItem('pmp_current_entry_route_handoff_receipt_v1',JSON.stringify(receipt,null,2))}catch(e){}
+    frame.src=launchUrl;
+  }catch(error){
+    showDiagnostic(resolver?resolver.diagnostic(error,'stable_entry'):{
+      type:'PMP_ROUTE_FAIL_CLOSED_DIAGNOSTIC_V1',
+      at:new Date().toISOString(),
+      context:'stable_entry',
+      code:'RESOLVER_UNAVAILABLE',
+      message:String(error&&error.message||error),
+      action:'navigation_blocked_no_fallback_consulted'
+    });
+  }
+})();
+</script>
+</body>
+</html>
