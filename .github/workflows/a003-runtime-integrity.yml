@@ -100,20 +100,26 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
+          import re
+
           path = Path('audit/a003-live-runtime.cjs')
           text = path.read_text('utf-8')
-          old = """            const receipt = JSON.parse(localStorage.getItem('pmp_home_single_v6_emergency_rollback_receipt') || 'null');
-            return { receipt, body: document.body?.innerText?.slice(0, 1200) || '', url: location.href };"""
-          new = """            let embedded = null;
+          pattern = re.compile(
+              r"\s*const receipt = JSON\.parse\(localStorage\.getItem\('pmp_home_single_v6_emergency_rollback_receipt'\) \|\| 'null'\);\s*"
+              r"return \{ receipt, body: document\.body\?\.innerText\?\.slice\(0, 1200\) \|\| '', url: location\.href \};"
+          )
+          replacement = """
+            let embedded = null;
             const node = document.getElementById('pmpA003HistoricalHomeIntegrityReceipt');
             if (node?.textContent) embedded = JSON.parse(node.textContent);
             let stored = null;
             try { stored = JSON.parse(localStorage.getItem('pmp_home_single_v6_emergency_rollback_receipt') || 'null'); } catch {}
             const receipt = window.__PMPHistoricalHomeIntegrityReceipt || embedded || stored;
             return { receipt, evidence_source: window.__PMPHistoricalHomeIntegrityReceipt ? 'window' : (embedded ? 'embedded_json' : (stored ? 'localStorage' : null)), body: document.body?.innerText?.slice(0, 1200) || '', url: location.href };"""
-          if old not in text:
-              raise SystemExit('Expected historical receipt reader was not found.')
-          path.write_text(text.replace(old, new, 1), 'utf-8')
+          updated, count = pattern.subn(replacement, text, count=1)
+          if count != 1:
+              raise SystemExit(f'Expected one historical receipt reader, found {count}.')
+          path.write_text(updated, 'utf-8')
           PY
 
       - name: Validate effective live harness syntax
