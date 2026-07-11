@@ -1,0 +1,59 @@
+{
+  "allowed_changes": [
+    "tools/build_pass2_authority_inventory.py",
+    "audit/pass2/p2a-scope-lock.json",
+    "audit/pass2/p2a-status.md",
+    "audit/pass2/p2a-receipt.json",
+    ".github/workflows/pass2-p2a-authority-census.yml"
+  ],
+  "base": {
+    "branch": "main",
+    "commit": "e7ba1b9384303abbbc67d3e9b0522e51bec65493",
+    "pass1_receipt_id": "PMP-APP-ORCH-PASS1-253111b7-CLOSED-001",
+    "pass1_status": "FORMALLY_CLOSED_AT_EXERCISED_SCOPE",
+    "runtime_manifest_sha256": "570c6db93da497758c6b18f53fa1e3c2b08cb1fdff761c9e54d97b87914e54d0",
+    "runtime_source_set_sha256": "2efc5aa5f3ece5b1da94e162baf7f981a636ef5f23d9c6b3f2d8a348688172e2"
+  },
+  "forbidden_changes": [
+    "application runtime source bytes",
+    "Current Map contents or route targets",
+    "runtime integrity manifest or service worker",
+    "localStorage, IndexedDB, or cache clearing",
+    "storage migration",
+    "Bank rebuild",
+    "visual redesign",
+    "Pass 3 or later implementation",
+    "Crosswalk Router integration"
+  ],
+  "historical_pass2_truth": {
+    "historical_files_are_repair_inputs_not_completion_proof": true,
+    "old_authority_mode": "passive_authority_map_only",
+    "old_bug_watch_formal_stop_or_handoff": false,
+    "old_bug_watch_receipt": "single mutable receipt key",
+    "old_bug_watch_recurring_actor": true,
+    "old_freeze_scope": "active_path_only"
+  },
+  "next_phase_after_p2a": "P2-B — actor authorization gate architecture and forbidden-action fixtures",
+  "overall_project_pass": "Pass 2",
+  "p2a_completion_gate": [
+    "Exact closed-Pass-1 main identity proven.",
+    "All A-003 executable manifest records inventoried with zero digest errors.",
+    "Historical A-001/A-002 identities reconciled against current exact identities.",
+    "Old Pass 2 passive/active-path-only limitations proven.",
+    "Hard blockers frozen for P2-B.",
+    "A-003 regression remains green.",
+    "No runtime byte changed."
+  ],
+  "p2a_work": [
+    "Reconcile historical A-001 and A-002 source identities against the exact current A-003 runtime manifest.",
+    "Inventory all executable protected actor candidates and their static capabilities.",
+    "Record startup/runtime/map roles, owner and version signals, recurring behavior, and stop-condition evidence.",
+    "Freeze the old Pass 2 deficiencies as explicit hard blockers.",
+    "Do not patch runtime until the census and blockers independently verify."
+  ],
+  "pass2_name": "Authority Rules + Bug Watch / Bug Bank Capture",
+  "pass2_purpose": "Classify every active actor and block undeclared or forbidden authority before side effects.",
+  "phase": "P2-A — Exact-main scope lock, actor census, and blocker freeze",
+  "status": "PASS2_OPEN_P2A_IN_PROGRESS",
+  "type": "PMP_APP_ORCHESTRATOR_PASS2_P2A_SCOPE_LOCK_V1"
+}
