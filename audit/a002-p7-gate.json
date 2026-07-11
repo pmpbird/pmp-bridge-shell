@@ -1,0 +1,141 @@
+{
+  "type": "PMP_A002_P7_GATE_RESULT_V1",
+  "repair_id": "A-002",
+  "phase": "P7",
+  "status": "PASS_AT_FULL_A002_EXERCISED_SCOPE",
+  "tested_head": "8437cadaa88428a90cb424829e70349fdad3a57e",
+  "gates": [
+    {
+      "id": "P7-G01",
+      "name": "P0-P6 prerequisite chain",
+      "result": "PASS",
+      "evidence": {
+        "P0": "PASS",
+        "P1": "11/11",
+        "P2": "16/16",
+        "P3": "17/17",
+        "P4": "17/17",
+        "P5": "18/18",
+        "P6": "21/21"
+      }
+    },
+    {
+      "id": "P7-G02",
+      "name": "Full original authority census",
+      "result": "PASS",
+      "evidence": {
+        "objects_audited": 65,
+        "independent_route_authorities": 0,
+        "unresolved": 0,
+        "sole_destination_truth": "pmp-current-map-v12.json"
+      }
+    },
+    {
+      "id": "P7-G03",
+      "name": "Current Map contract",
+      "result": "PASS",
+      "evidence": {
+        "route_epoch": "A002-P7-20260711A",
+        "failure_mode": "fail_closed",
+        "implicit_fallbacks": false,
+        "P7_status": "PASS_LIVE_RUNTIME_37_OF_37"
+      }
+    },
+    {
+      "id": "P7-G04",
+      "name": "Live Chromium matrix",
+      "result": "PASS",
+      "evidence": {
+        "run_id": 29150243463,
+        "job_id": 86538473100,
+        "tests_total": 37,
+        "tests_passed": 37,
+        "tests_failed": 0,
+        "fatal_error": null,
+        "artifact_id": 8247957279,
+        "artifact_digest": "sha256:9e687eeaf37063f08dde822272bff976fb2b4d8dab0985a896901cfbd26c9d64"
+      }
+    },
+    {
+      "id": "P7-G05",
+      "name": "Six-screen exact Home and Reload Current matrix",
+      "result": "PASS",
+      "evidence": {
+        "world": "#world",
+        "bridge": "#bridge",
+        "library": "#library",
+        "workshop": "#workshop",
+        "control": "#control",
+        "bank": "#bank"
+      }
+    },
+    {
+      "id": "P7-G06",
+      "name": "Tool open-return behavior",
+      "result": "PASS",
+      "checks": ["Safe Writer returns through current_app", "Code Safety returns through current_app"]
+    },
+    {
+      "id": "P7-G07",
+      "name": "Recovery enforcement",
+      "result": "PASS",
+      "checks": ["arbitrary candidate blocked", "allowlisted candidate view does not promote current"]
+    },
+    {
+      "id": "P7-G08",
+      "name": "Historic bookmark matrix",
+      "result": "PASS",
+      "checks": ["14 of 14 old Guardians, Reload Owners, and inner wrappers forward through Current Map", "historic JSON maps remain evidence-only"]
+    },
+    {
+      "id": "P7-G09",
+      "name": "Live Service Worker transport",
+      "result": "PASS",
+      "checks": ["MessagePort status handshake", "network-first HTML", "network-first JavaScript", "network-first JSON"]
+    },
+    {
+      "id": "P7-G10",
+      "name": "Independent source verification",
+      "result": "PASS",
+      "evidence": {
+        "workflow_run_id": 29150243412,
+        "verify_job_id": 86538473002,
+        "verify_conclusion": "success",
+        "receipt_job_id": 86538483878,
+        "receipt_conclusion": "success"
+      }
+    },
+    {
+      "id": "P7-G11",
+      "name": "Failed evidence retention and defect closure",
+      "result": "PASS",
+      "checks": ["five failed live runs retained", "each failure produced a diagnosed repair", "final sealed run passed"]
+    },
+    {
+      "id": "P7-G12",
+      "name": "No destructive effects",
+      "result": "PASS",
+      "checks": ["no storage clear", "no IndexedDB deletion", "no Bank rebuild", "no user-content deletion", "no cache clear", "no historical deletion"]
+    },
+    {
+      "id": "P7-G13",
+      "name": "Certification boundary",
+      "result": "PASS",
+      "evidence": "A-002 is complete at its full exercised scope. A-003 runtime source-byte enforcement remains separate and is not claimed."
+    }
+  ],
+  "summary": {
+    "gate_items_total": 13,
+    "gate_items_passed": 13,
+    "gate_items_failed": 0,
+    "live_tests_passed": 37,
+    "live_tests_failed": 0,
+    "authority_objects_audited": 65,
+    "independent_route_authorities": 0,
+    "unresolved": 0
+  },
+  "rollback_required": false,
+  "merge_authorized": false,
+  "next_boundary": "STOP_BEFORE_MERGE_AND_A003",
+  "decision": "PASS_A002_AT_FULL_EXERCISED_SCOPE"
+}
