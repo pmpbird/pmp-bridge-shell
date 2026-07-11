@@ -1,0 +1,52 @@
+{
+  "base_main_commit": "e7ba1b9384303abbbc67d3e9b0522e51bec65493",
+  "canonical_zip_requirement": "After merge, update the full-repository canonical ZIP and rerun manifest/checksum verification before P2-A is considered fully complete.",
+  "certification": {
+    "artifact_digest": "sha256:5bbb5d5aebbdaeb92192154d2a9ac692e782803e68b172fd924c7c9d38d86da2",
+    "artifact_id": 8253595632,
+    "artifact_name": "pass2-p2a-authority-census-evidence",
+    "conclusion": "success",
+    "job_id": 86592764721,
+    "run_id": 29171271383,
+    "tested_head": "feede4e4a37d79900d576875b02c115bd29e5234",
+    "workflow": "Pass 2 P2-A Authority Census"
+  },
+  "decision": "P2A_COMPLETE_READY_FOR_P2B",
+  "hard_blocker_ids": [
+    "P2-B01",
+    "P2-B02",
+    "P2-B03",
+    "P2-B04",
+    "P2-B05"
+  ],
+  "next_phase": "P2-B — actor authorization gate architecture and forbidden-action fixtures",
+  "overall_project_pass": "Pass 2",
+  "pass1_receipt_id": "PMP-APP-ORCH-PASS1-253111b7-CLOSED-001",
+  "phase": "P2-A — Exact-main scope lock, actor census, and blocker freeze",
+  "receipt_id": "PMP-APP-ORCH-PASS2-P2A-E7BA1B93-PASS-001",
+  "receipt_sha256": "2cb5fa91e57e698273dadb2ce4ec48611f71f7c89083807affaf64435a5657bd",
+  "results": {
+    "a001_a002_candidates": 208,
+    "a003_repository_regression": "21/21",
+    "current_map_declared_paths": 43,
+    "executable_actor_candidates": 576,
+    "hard_blockers": 5,
+    "historical_changed_blob": 51,
+    "historical_not_in_runtime_manifest": 5,
+    "historical_same_blob": 152,
+    "integrity_errors": 0,
+    "protected_runtime_records": 697,
+    "runtime_data_records": 121
+  },
+  "status": "P2A_COMPLETE_PASS2_IN_PROGRESS",
+  "truth": {
+    "crosswalk_router_integrated": false,
+    "current_map_changed": false,
+    "pass2_complete": false,
+    "pass3_started": false,
+    "runtime_enforcement_implemented": false,
+    "runtime_source_changed": false,
+    "storage_cache_or_indexeddb_changed": false
+  },
+  "type": "PMP_APP_ORCHESTRATOR_PASS2_P2A_RECEIPT_V1"
+}
