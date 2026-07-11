@@ -1,65 +1,30 @@
 {
   "repair_id": "A-002",
-  "status": "P3_PASS_P4_NOT_EXECUTED",
+  "status": "PASS_AT_FULL_A002_EXERCISED_SCOPE",
   "base_branch": "main",
   "baseline_commit": "5dd049de1500ea427fa2cf395687239a19706115",
   "goal": "Establish Current Map as the single routing authority.",
-  "inventory": {
-    "total_objects": 65,
-    "unclassified": 0,
-    "hard_blockers": 10,
-    "a001_dependency_discrepancy": "CLOSED_BY_P0_PASS"
+  "phase_results": {
+    "P0": {"status":"PASS"},
+    "P1": {"status":"PASS","tests":"11/11"},
+    "P2": {"status":"PASS","tests":"16/16"},
+    "P3": {"status":"PASS","tests":"17/17"},
+    "P4": {"status":"PASS","tests":"17/17"},
+    "P5": {"status":"PASS","tests":"18/18"},
+    "P6": {"status":"PASS","tests":"21/21"},
+    "P7": {"status":"PASS","live_tests":"37/37"}
   },
-  "p0": {
-    "status": "PASS",
-    "receipt_id": "PMP-A001-5dd049de-SUPPLEMENT-A002-PASS-004",
-    "combined_unresolved_identities": 0
+  "final_evidence": {
+    "receipt": "audit/a002-final-receipt.json",
+    "gate": "audit/a002-p7-gate.json",
+    "route_matrix": "audit/a002-route-test-matrix.json",
+    "postpatch_census": "audit/a002-postpatch-route-authority-audit.json",
+    "independent_route_authorities": 0,
+    "unresolved": 0
   },
-  "p1": {
-    "status": "PASS_AT_SOURCE_AND_SIMULATED_BROWSER_CONTRACT_SCOPE",
-    "gate_record": "audit/a002-p1-gate.json",
-    "tests_passed": 11,
-    "tests_failed": 0
-  },
-  "p2": {
-    "status": "PASS_AT_SOURCE_AND_SIMULATED_ROUTE_CONTRACT_SCOPE",
-    "gate_record": "audit/a002-p2-gate.json",
-    "tests_passed": 16,
-    "tests_failed": 0
-  },
-  "p3": {
-    "status": "PASS_AT_SOURCE_AND_SIMULATED_RELOAD_CONTRACT_SCOPE",
-    "execution_record": "audit/a002-p3-execution.json",
-    "gate_record": "audit/a002-p3-gate.json",
-    "source_files_changed": 4,
-    "unexpected_source_files": 0,
-    "tests_passed": 17,
-    "tests_failed": 0,
-    "canonical_reload_api": "PMPReloadCurrentCanonicalV1",
-    "canonical_reload_owner": "pmp-current-screen-pointer-v1.js",
-    "delegate_only_interceptors": 3,
-    "historic_map_fetches": 0,
-    "hard_coded_app_destinations": 0,
-    "live_six_screen_click_matrix_exercised": false,
-    "rollback_group": "RG-P3",
-    "rollback_required": false
-  },
-  "preexecution": {
-    "patch_plan": "audit/a002-preexecution-patch-plan.json",
-    "rollback_ledger": "audit/a002-rollback-ledger.json",
-    "next_phase": "P4",
-    "p4_eligible": true,
-    "p4_executed": false,
-    "merge_authorized": false
-  },
-  "constraints": [
-    "Do not begin P4 without a separate explicit execution instruction",
-    "No storage clearing",
-    "No cache clearing",
-    "No IndexedDB changes",
-    "No Bank rebuild",
-    "Preserve A-003 runtime hash-enforcement boundary",
-    "Execute future phases one at a time and stop on the first failed gate"
-  ],
-  "decision": "PASS_P3_ACTIVE_RELOAD_CONVERGENCE_STOP_BEFORE_P4"
+  "current_boundary": "STOP_BEFORE_MERGE_AND_A003",
+  "merge_authorized": false,
+  "A003_executed": false,
+  "overall_project_pass_1_complete": false,
+  "decision": "A002_PASS_STOP_BEFORE_MERGE_AND_A003"
 }
