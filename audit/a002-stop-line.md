@@ -10,6 +10,8 @@ P2 current Reload Owner, marker, wrapper chain, and Home delegation passed withi
 
 P3 Active Reload Current convergence passed within source-and-simulated-reload-contract scope.
 
+Current stop line: `STOP_BEFORE_P4`.
+
 P4 has not been executed.
 
 Do not change Safe Writer, Code Safety, Route Guardian Action, canonical Safe Writer routes, or inner-v2 tool-return behavior without a separate explicit P4 execution instruction.
