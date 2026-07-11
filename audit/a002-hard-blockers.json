@@ -1,0 +1,17 @@
+{
+  "type": "PMP_A002_HARD_BLOCKER_SET_V1",
+  "count": 10,
+  "blockers": [
+    "Route Guardian v22 reads v12, v11, v10, then a hard-coded terminal fallback.",
+    "Current Screen Pointer reloads through v9 and v27.",
+    "Reload World routes directly to Route Guardian v21.",
+    "Launcher Reload Current Bridge routes directly to Route Guardian v20.",
+    "Reload Owner v30 hard-codes inner v30.",
+    "The v30, v23, v4, and v3 wrapper chain hard-codes successive destinations.",
+    "Home v6 replaces the live document with historical remote bytes.",
+    "Last Good and Recovery Tools can select saved or candidate routes outside Current Map.",
+    "Safe Writer and Code Safety contain stale or broken return routes.",
+    "A-001 identity evidence does not cover all route-capable objects discovered by A-002."
+  ],
+  "decision": "A002_REPAIR_BLOCKED_UNTIL_PREEXECUTION_PATCH_AND_ROLLBACK_LEDGER"
+}
