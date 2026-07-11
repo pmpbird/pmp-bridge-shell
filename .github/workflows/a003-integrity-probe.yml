@@ -48,6 +48,17 @@ jobs:
             --report a003-integrity-probe-report.json \
             | tee a003-integrity-probe-console.log
 
+      - name: Finalize generated manifest contract
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path('a003-generated-integrity-manifest.json')
+          manifest = json.loads(path.read_text('utf-8'))
+          manifest['version'] = '20260711A-A003-FINAL'
+          path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + '\n', 'utf-8')
+          PY
+
       - name: Validate generated JSON
         run: |
           python3 -m json.tool a003-generated-integrity-manifest.json >/dev/null
@@ -81,6 +92,7 @@ jobs:
               'manifest_path': 'pmp-runtime-integrity-manifest-v1.json',
               'manifest_sha256': manifest_sha,
               'manifest_bytes': int(manifest_bytes),
+              'manifest_version': '20260711A-A003-FINAL',
               'root_trust_anchor': 'pmp-app-current.html',
               'generated_from_commit': generated_from,
               'root_self_verifiable': False,
