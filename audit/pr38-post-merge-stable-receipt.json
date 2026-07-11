@@ -1,0 +1,145 @@
+{
+  "type": "PMP_PR38_POST_MERGE_STABLE_RECEIPT_V1",
+  "receipt_id": "PMP-PR38-e4cd9948-STABLE-POSTMERGE-PASS-002",
+  "receipt_hash": "72325090b3ab0b602866487b24e0d9b24d311886366ed492ee2e436924d0ebd6",
+  "receipt_hash_basis": "SHA-256 of receipt_id|pr38_merge_commit|stability_repair_merge_commit|stable_main_commit|workflow_run_id|artifact_digest|manifest_sha256|runtime_source_set_sha256|repository_pass_count|adversarial_pass_count|a002_pass_count",
+  "status": "PASS_AT_FINAL_STABLE_POST_MERGE_EXERCISED_SCOPE",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "pull_request": 38,
+  "supersedes": {
+    "receipt_id": "PMP-PR38-e4cd9948-POSTMERGE-PASS-001",
+    "path": "audit/pr38-post-merge-receipt.json",
+    "reason": "After the first receipt, two pre-existing vault workflows rewrote timestamps in three nested protected JSON files. The runtime behavior was unchanged, but current main no longer matched the sealed A-003 byte set. The discrepancy was detected during Final State Audit, not hidden, and the earlier receipt is superseded for latest-main certification."
+  },
+  "delivery": {
+    "pr38_merge_method": "merge",
+    "pr38_merge_commit": "e4cd9948290f6de1ab563b2e698926f04771171e",
+    "pr38_base_parent": "5dd049de1500ea427fa2cf395687239a19706115",
+    "pr38_head_parent": "8f280837fd465ddcf0ba67ee4cd7b49865d58cc2",
+    "stability_repair_pr": 40,
+    "stability_repair_merge_commit": "12a9ccbbd0e229cbc56c6c92de5086252e485639",
+    "stable_main_seal_commit": "ce7ae45a62962026586a1b93618e92f318ec7e4e"
+  },
+  "stability_repair": {
+    "roadblock": "Timestamp-only vault commits altered protected nested JSON after the first post-merge receipt, while the manifest publisher watched only the retired feature branch and shallow root globs.",
+    "resolved": true,
+    "changes": [
+      "Vault latest-folder writer now skips a commit when packet, report, comment ID, and body hash are unchanged.",
+      "Vault record-ledger compactor now skips a commit when semantic compact content is unchanged.",
+      "A-003 publisher now watches recursive runtime extensions on main and the A-002 branch.",
+      "A-003 publisher now seals the active branch instead of a hard-coded retired branch.",
+      "The three vault JSON files were restored byte-for-byte to their prior sealed Git blobs."
+    ],
+    "restored_vault_blobs": {
+      "pmp-lossless-inventory-vault/latest/metadata.json": "2f788f0def2a521eac74ff4263b319f7b841b94d",
+      "pmp-lossless-inventory-vault/latest/mirror-status.json": "a60729528e75a90cdff30475c9ebcbeee4dc8ef7",
+      "pmp-lossless-inventory-vault/record-ledger.json": "58b4e8fd2dd1b9a44b6df89393464c1b4fa7d94a"
+    }
+  },
+  "integrity": {
+    "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
+    "manifest_version": "20260711A-A003-FINAL",
+    "manifest_sha256": "570c6db93da497758c6b18f53fa1e3c2b08cb1fdff761c9e54d97b87914e54d0",
+    "runtime_source_set_sha256": "2efc5aa5f3ece5b1da94e162baf7f981a636ef5f23d9c6b3f2d8a348688172e2",
+    "runtime_records": 697,
+    "current_map_paths_covered": 42,
+    "sealed_branch": "main",
+    "protected_runtime_identity_unchanged_from_a003_final": true
+  },
+  "final_stable_verification": {
+    "disposable_pr": 41,
+    "disposable_pr_merged": false,
+    "branch": "agent/pr38-final-stable-verification",
+    "branch_head": "d5c70febb0c426d167b7f5e4675192005dd9c7a7",
+    "tested_synthetic_merge_commit": "8be117189d181060c1fc60996788fecc17f29b5d",
+    "stable_main_commit": "ce7ae45a62962026586a1b93618e92f318ec7e4e",
+    "workflow": "PR38 Final Stable Certification",
+    "workflow_run_id": 29164192670,
+    "job_id": 86574366261,
+    "conclusion": "success",
+    "artifact_id": 8251694077,
+    "artifact_name": "pr38-final-stable-complete-evidence",
+    "artifact_digest": "sha256:1bb946ad9b02e99db75f9624e042a73abf7ed597dd980c0c37f12b6c2df30103"
+  },
+  "results": {
+    "stable_main_ancestry_and_workflow_only_delta": "PASS",
+    "vault_exact_blob_identities": "PASS",
+    "vault_no_op_and_recursive_reseal_contract": "PASS",
+    "a003_repository_gate": {
+      "tests_total": 21,
+      "tests_passed": 21,
+      "tests_failed": 0,
+      "status": "PASS"
+    },
+    "a003_adversarial_live_gate": {
+      "tests_total": 47,
+      "tests_passed": 47,
+      "tests_failed": 0,
+      "fatal_error": null,
+      "status": "PASS"
+    },
+    "a002_live_runtime_matrix": {
+      "tests_total": 41,
+      "tests_passed": 41,
+      "tests_failed": 0,
+      "fatal_error": null,
+      "status": "PASS"
+    },
+    "automated_plan_preserved_contract": "PASS",
+    "automated_plan_current_app_compatibility": "PASS",
+    "aggregate": "PASS"
+  },
+  "safety": {
+    "rollback_required": false,
+    "rollback_branch": "rollback/pr38-main-before-merge-20260711",
+    "rollback_commit": "5dd049de1500ea427fa2cf395687239a19706115",
+    "storage_cleared": false,
+    "indexeddb_deleted_or_migrated": false,
+    "bank_rebuilt": false,
+    "user_content_deleted": false,
+    "vault_packet_or_report_deleted": false,
+    "historic_files_deleted": false
+  },
+  "phase_and_pass_ledger": {
+    "overall_project": {
+      "phase": "Project Pass 1 repair program",
+      "pass": "Pass 1",
+      "status": "IN_PROGRESS_NOT_DECLARED_COMPLETE",
+      "truth": "A-002, A-003, PR #38 delivery, and its post-merge stability repair are complete. Other Pass 1 repairs may remain and must be selected separately."
+    },
+    "A002": {
+      "phase": "P7 final certification",
+      "pass": "final A-002 exercised-scope pass",
+      "status": "COMPLETE_MERGED_FINAL_STABLE_VERIFIED"
+    },
+    "A003": {
+      "phase": "P6 final receipt boundary plus main reseal stability",
+      "pass": "final A-003 exercised-scope pass",
+      "status": "COMPLETE_MERGED_FINAL_STABLE_VERIFIED"
+    },
+    "PR38_delivery": {
+      "phase": "Merge, verification, stability repair, and final receipt",
+      "pass_1": "Normal merge commit complete",
+      "pass_2": "Initial post-merge verification complete",
+      "pass_3": "Initial receipt issued, later superseded after final-state roadblock detection",
+      "pass_4": "Final-state stability roadblock found and repaired through PR #40",
+      "pass_5": "Main recursive reseal completed with unchanged protected identities",
+      "pass_6": "Final stable complete matrix passed",
+      "pass_7": "Superseding stable receipt issued",
+      "status": "COMPLETE"
+    }
+  },
+  "certification_truth": {
+    "PR38_merge_complete": true,
+    "stability_repair_complete": true,
+    "final_stable_post_merge_verification_complete": true,
+    "A002_and_A003_final_stable_verified": true,
+    "overall_project_pass_1_complete": false,
+    "bootstrap_root_self_verifiable": false,
+    "compromised_origin_server_fully_solved": false,
+    "service_worker_registration_TOCTOU_fully_eliminated": false,
+    "meaning": "This receipt certifies the stable main state exercised by the final matrix. It does not expand A-003 beyond its stated root-trust and Service Worker registration boundaries."
+  },
+  "next_boundary": "CLOSE_DISPOSABLE_PR41_AND_SELECT_NEXT_PROJECT_PASS_1_REPAIR",
+  "decision": "PASS_PR38_FINAL_STABLE_POST_MERGE_RECEIPT_ISSUED"
+}
