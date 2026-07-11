@@ -1,1 +1,26 @@
-{"repair_id":"A-002","status":"PLANNING_ONLY","base_branch":"main","depends_on":"A-001","goal":"Establish Current Map as the single routing authority.","constraints":["No runtime behavior changes","No route patches","No storage changes","No Bank rebuild","No app mutations until A-002 planning and evidence are complete"]}
+{
+  "repair_id": "A-002",
+  "status": "AUTHORITY_INVENTORY_COMPLETE_REPAIR_NOT_STARTED",
+  "base_branch": "main",
+  "baseline_commit": "5dd049de1500ea427fa2cf395687239a19706115",
+  "depends_on": "A-001",
+  "goal": "Establish Current Map as the single routing authority.",
+  "inventory": {
+    "full_record": "audit/a002-route-authority-inventory.json",
+    "readable_summary": "audit/a002-route-authority-summary.md",
+    "total_objects": 65,
+    "unclassified": 0,
+    "hard_blockers": 10,
+    "a001_dependency_discrepancy": "OPEN"
+  },
+  "constraints": [
+    "No runtime behavior changes",
+    "No route patches",
+    "No storage changes",
+    "No cache clearing",
+    "No IndexedDB changes",
+    "No Bank rebuild",
+    "No app mutations until an A-002 repair patch and rollback ledger are separately prepared"
+  ],
+  "decision": "INVENTORY_ACCEPTED_FOR_PLANNING_ONLY_A002_IMPLEMENTATION_NOT_AUTHORIZED"
+}
