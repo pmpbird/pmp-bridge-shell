@@ -64,6 +64,7 @@ jobs:
           path = Path('a003-generated-integrity-manifest.json')
           manifest = json.loads(path.read_text('utf-8'))
           manifest.pop('source_commit', None)
+          manifest.pop('self_digest_for_generated_bytes', None)
           identity = {
               'records': [(r['path'], r['sha256_hex']) for r in manifest.get('records', [])],
               'historical_records': [(r['path'], r.get('repository_ref'), r['sha256_hex']) for r in manifest.get('historical_records', [])],
