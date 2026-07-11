@@ -1,7 +1,7 @@
 {
   "type": "PMP_VAULT_LATEST_FOLDER_METADATA",
   "version": "1.1.0-edited-comment-trigger",
-  "updated_at": "2026-06-22T04:37:28.293Z",
+  "updated_at": "2026-07-11T18:33:11.316Z",
   "storage_policy": "rewrite_four_latest_files_only",
   "source_kind": "github_issue_inbox_comment",
   "issue": "https://github.com/pmpbird/pmp-bridge-shell/issues/1",
