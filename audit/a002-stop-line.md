@@ -4,8 +4,10 @@ A-002 authority inventory is complete.
 
 P0 identity reconciliation passed through receipt `PMP-A001-5dd049de-SUPPLEMENT-A002-PASS-004`.
 
-P1 Current Map contract and resolver passed its source-and-simulated-browser-contract gate.
+P1 Current Map contract and resolver passed within source-and-simulated-browser-contract scope.
 
-P2 has not been executed.
+P2 current Reload Owner, marker, wrapper chain, and Home delegation passed within source-and-simulated-route-contract scope.
 
-Do not change Reload Owner, wrapper, marker, or Home route behavior without a separate explicit P2 execution instruction.
+P3 has not been executed.
+
+Do not change Current Screen Pointer, Reload World, Launcher Reload Bridge, or the reload guard without a separate explicit P3 execution instruction.
