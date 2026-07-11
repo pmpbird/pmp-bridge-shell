@@ -1,0 +1,16 @@
+{
+  "type": "PMP_A002_NO_CODE_CHANGE_PROOF_V1",
+  "allowed_paths_prefix": "audit/",
+  "expected_changed_files": [
+    "audit/a002-plan.json",
+    "audit/a002-route-authority-inventory.json",
+    "audit/a002-route-authority-summary.md",
+    "audit/a002-inventory-receipt.json",
+    "audit/a002-scope-lock.md",
+    "audit/a002-no-code-change-proof.json"
+  ],
+  "runtime_files_changed": 0,
+  "application_files_changed": 0,
+  "route_files_changed": 0,
+  "decision": "AUDIT_ONLY"
+}
