@@ -7749,11 +7749,6 @@
     }
   ],
   "runtime_source_set_sha256": "2efc5aa5f3ece5b1da94e162baf7f981a636ef5f23d9c6b3f2d8a348688172e2",
-  "self_digest_for_generated_bytes": {
-    "sha256_base64": "AR8BeT8eyjxUqJ4aPa4tSnyUros62oiZjBpB18XTIxU=",
-    "sha256_hex": "011f01793f1eca3c54a89e1a3dae2d4a7c94ae8b3ada88998c1a41d7c5d32315",
-    "sri": "sha256-AR8BeT8eyjxUqJ4aPa4tSnyUros62oiZjBpB18XTIxU="
-  },
   "source_identity_rule": "Deterministic digest of protected local, historical, external, root-anchor, and policy identities; audit/workflow-only commits do not alter this identity.",
   "type": "PMP_RUNTIME_INTEGRITY_MANIFEST_V1",
   "unlisted_executable_policy": "FAIL_CLOSED",

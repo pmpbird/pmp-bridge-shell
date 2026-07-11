@@ -1,7 +1,7 @@
 {
-  "manifest_bytes": 368235,
+  "manifest_bytes": 367971,
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
-  "manifest_sha256": "d5a013e73ce5e0bbf47ddccb9241329253b75d81a95b9f0781119dec364c4312",
+  "manifest_sha256": "570c6db93da497758c6b18f53fa1e3c2b08cb1fdff761c9e54d97b87914e54d0",
   "manifest_version": "20260711A-A003-FINAL",
   "repair_id": "A-003",
   "root_self_verifiable": false,
