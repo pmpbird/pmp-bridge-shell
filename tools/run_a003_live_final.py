@@ -5,7 +5,9 @@ This runner does not modify repository runtime sources. It creates a temporary e
 copy of the committed browser harness that:
 1. reads historical Home verification evidence from window/embedded/localStorage;
 2. accepts BOOTSTRAP_HTTP_FAILED as the earlier equivalent fail-closed code when
-   bootstrap-protected resolver or worker bytes are tampered.
+   bootstrap-protected resolver or worker bytes are tampered;
+3. serves historical tamper bytes from the repository's exact Git object with clean
+   response headers and reads the fail-closed receipt from window or localStorage.
 """
 from __future__ import annotations
 
@@ -22,6 +24,12 @@ EFFECTIVE = ROOT / "a003-live-runtime-effective.cjs"
 
 def main() -> int:
     text = SOURCE.read_text("utf-8")
+
+    require_old = "const { chromium } = require('playwright');"
+    require_new = "const { chromium } = require('playwright');\nconst { execFileSync } = require('child_process');"
+    if require_old not in text:
+        raise SystemExit("Expected Playwright import was not found.")
+    text = text.replace(require_old, require_new, 1)
 
     receipt_pattern = re.compile(
         r"\s*const receipt = JSON\.parse\(localStorage\.getItem\('pmp_home_single_v6_emergency_rollback_receipt'\) \|\| 'null'\);\s*"
@@ -45,6 +53,40 @@ def main() -> int:
     if assertion_old not in text:
         raise SystemExit("Expected bootstrap tamper assertion was not found.")
     text = text.replace(assertion_old, assertion_new, 1)
+
+    route_old = """    await historicalContext.route('https://raw.githubusercontent.com/pmpbird/pmp-bridge-shell/7ac7213aeeeb8bb55692a4985e0fa80a547cff4e/pmp-home-single-v6.html*', async route => {
+      const response = await route.fetch();
+      const body = Buffer.concat([await response.body(), Buffer.from('\\n<!-- A003 HISTORICAL TAMPER -->')]);
+      const headers = {...response.headers(), 'access-control-allow-origin':'*', 'cache-control':'no-store'};
+      await route.fulfill({status:200, headers, body});
+    });"""
+    route_new = """    await historicalContext.route('https://raw.githubusercontent.com/pmpbird/pmp-bridge-shell/7ac7213aeeeb8bb55692a4985e0fa80a547cff4e/pmp-home-single-v6.html*', async route => {
+      const original = execFileSync('git', ['show', '7ac7213aeeeb8bb55692a4985e0fa80a547cff4e:pmp-home-single-v6.html'], {cwd:ROOT});
+      const body = Buffer.concat([original, Buffer.from('\\n<!-- A003 HISTORICAL TAMPER -->')]);
+      await route.fulfill({status:200, headers:{'content-type':'text/html; charset=utf-8','access-control-allow-origin':'*','cache-control':'no-store'}, body});
+    });"""
+    if route_old not in text:
+        raise SystemExit("Expected historical tamper route was not found.")
+    text = text.replace(route_old, route_new, 1)
+
+    wait_old = """    await historicalPage.waitForFunction(() => {
+      try { return JSON.parse(localStorage.getItem('pmp_home_single_v6_emergency_rollback_receipt') || 'null')?.status === 'rollback_failed_closed'; } catch { return false; }
+    }, null, {timeout:30000});
+    const historicalReceipt = await historicalPage.evaluate(() => JSON.parse(localStorage.getItem('pmp_home_single_v6_emergency_rollback_receipt')));"""
+    wait_new = """    await historicalPage.waitForFunction(() => {
+      let stored = null;
+      try { stored = JSON.parse(localStorage.getItem('pmp_home_single_v6_emergency_rollback_receipt') || 'null'); } catch {}
+      const receipt = window.__PMPHistoricalHomeIntegrityReceipt || stored;
+      return receipt?.status === 'rollback_failed_closed';
+    }, null, {timeout:30000});
+    const historicalReceipt = await historicalPage.evaluate(() => {
+      let stored = null;
+      try { stored = JSON.parse(localStorage.getItem('pmp_home_single_v6_emergency_rollback_receipt') || 'null'); } catch {}
+      return window.__PMPHistoricalHomeIntegrityReceipt || stored;
+    });"""
+    if wait_old not in text:
+        raise SystemExit("Expected final historical tamper receipt check was not found.")
+    text = text.replace(wait_old, wait_new, 1)
 
     EFFECTIVE.write_text(text, "utf-8")
     syntax = subprocess.run(["node", "--check", str(EFFECTIVE)], cwd=ROOT)
