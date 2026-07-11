@@ -3703,15 +3703,15 @@
       "sri": "sha256-Yp6Kp2D+F8g2j6zvfYnUleXhml3V72MtLhnziix21zI="
     },
     {
-      "bytes": 5472,
+      "bytes": 6243,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_DOCUMENT",
-      "git_blob_sha": "57cfd26be13ead0b82989da644b0e4c264643e9a",
+      "git_blob_sha": "c5356f78a1618dbfc8337c67cbce1d8d709b8e95",
       "mime_type": "text/html",
       "path": "pmp-home-single-v6.html",
-      "sha256_base64": "/y+lRLo8AA/up2YK8QCAuXL4YJPfuE5hNGoRTV0HwPE=",
-      "sha256_hex": "ff2fa544ba3c000feea7660af10080b972f86093dfb84e61346a114d5d07c0f1",
-      "sri": "sha256-/y+lRLo8AA/up2YK8QCAuXL4YJPfuE5hNGoRTV0HwPE="
+      "sha256_base64": "nO+hP2cFpegvRwymfYlTQ5jNcqNE7qkbzERHdihwWaA=",
+      "sha256_hex": "9cefa13f6705a5e82f470ca67d89534398cd72a344eea91bcc444776287059a0",
+      "sri": "sha256-nO+hP2cFpegvRwymfYlTQ5jNcqNE7qkbzERHdihwWaA="
     },
     {
       "bytes": 19106,
@@ -7749,11 +7749,11 @@
     }
   ],
   "self_digest_for_generated_bytes": {
-    "sha256_base64": "Z5YQBbGIapVvcL+8Grm8DUVC+fPXgzbflzdbsP3k9ZE=",
-    "sha256_hex": "67961005b1886a956f70bfbc1ab9bc0d4542f9f3d78336df97375bb0fde4f591",
-    "sri": "sha256-Z5YQBbGIapVvcL+8Grm8DUVC+fPXgzbflzdbsP3k9ZE="
+    "sha256_base64": "9qgbTUe/yncR7TAQZjtBWN9UlGd0GDRS6ianZmHKpas=",
+    "sha256_hex": "f6a81b4d47bfca7711ed3010663b4158df54946774183452ea26a76661caa5ab",
+    "sri": "sha256-9qgbTUe/yncR7TAQZjtBWN9UlGd0GDRS6ianZmHKpas="
   },
-  "source_commit": "b17e4476913611e26d675a71d2daa8bc4ea3c790",
+  "source_commit": "c0d87be94f88d12cf73e985d8c2e60a427c01380",
   "type": "PMP_RUNTIME_INTEGRITY_MANIFEST_V1",
   "unlisted_executable_policy": "FAIL_CLOSED",
   "version": "20260711A-A003-FINAL"
