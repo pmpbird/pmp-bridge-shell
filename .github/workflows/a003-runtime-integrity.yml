@@ -1,3 +1,4 @@
+# Final A-003 gates run only after the latest atomic manifest/bootstrap seal.
 name: A-003 Runtime Source-Byte Integrity
 
 on:
