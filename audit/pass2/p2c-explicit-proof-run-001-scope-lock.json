@@ -1,0 +1,18 @@
+{
+  "type": "PMP_APP_ORCHESTRATOR_PASS2_P2C_EXPLICIT_PRODUCTION_SHAPED_PROOF_RUN_001_SCOPE_LOCK",
+  "overall_project_pass": "Pass 2",
+  "phase": "P2-C",
+  "base_commit": "c618596f2b5c99ca7f355153a5bd31268170df80",
+  "isolated_proof_authorized": true,
+  "authorization_scope": "ISOLATED_DISPOSABLE_COPY_ACTIVATION_AND_ROLLBACK_PROOF_ONLY",
+  "production_activation_authorized": false,
+  "production_runtime_files_changed": false,
+  "production_patch_applied": false,
+  "active_chain_integration": false,
+  "current_map_changed": false,
+  "storage_indexeddb_cache_bank_or_user_content_changed": false,
+  "merge_authorized": false,
+  "pass2_complete": false,
+  "pass3_started": false,
+  "crosswalk_router_included": false
+}
