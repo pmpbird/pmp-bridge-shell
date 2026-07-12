@@ -1,0 +1,117 @@
+name: Pass 2 P2-C Explicit Production-Shaped Proof 001
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/pass2-p2c-explicit-proof-run-001.yml'
+      - 'audit/pass2/p2c-explicit-proof-run-001/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  BASE_COMMIT: c618596f2b5c99ca7f355153a5bd31268170df80
+  PROOF_DIR: audit/pass2/p2c-explicit-proof-run-001
+  EVIDENCE_DIR: /tmp/p2c-explicit-proof-evidence-001
+
+jobs:
+  isolated-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - name: Checkout exact proof head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Verify audit-only branch scope
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          git merge-base --is-ancestor "$BASE_COMMIT" HEAD
+          python3 - <<'PY'
+          import json,os,pathlib,subprocess
+          changed=set(subprocess.check_output(['git','diff','--name-only',os.environ['BASE_COMMIT'],'HEAD'],text=True).splitlines())
+          extras={p for p in changed if p!='.github/workflows/pass2-p2c-explicit-proof-run-001.yml' and not p.startswith('audit/pass2/p2c-explicit-proof-run-001/')}
+          assert not extras,sorted(extras)
+          scope=json.loads(pathlib.Path('audit/pass2/p2c-explicit-proof-run-001/SCOPE_LOCK_001.json').read_text())
+          assert scope['proof_run_count_authorized']==1
+          assert scope['production_apply_authorized'] is False
+          assert scope['production_activation_authorized'] is False
+          pathlib.Path('/tmp/p2c-proof-scope.json').write_text(json.dumps({'status':'PASS','head':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'base':os.environ['BASE_COMMIT'],'changed_paths':sorted(changed),'production_changed':False},indent=2)+'\n')
+          PY
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Create detached baseline and disposable worktrees
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/p2c-proof-baseline /tmp/p2c-proof-activated "$EVIDENCE_DIR"
+          mkdir -p "$EVIDENCE_DIR"
+          git worktree add --detach /tmp/p2c-proof-baseline "$BASE_COMMIT"
+          git worktree add --detach /tmp/p2c-proof-activated "$BASE_COMMIT"
+          test "$(git -C /tmp/p2c-proof-baseline rev-parse HEAD)" = "$BASE_COMMIT"
+          test "$(git -C /tmp/p2c-proof-activated rev-parse HEAD)" = "$BASE_COMMIT"
+
+      - name: Generate and activate candidate in disposable copy only
+        run: |
+          set -o pipefail
+          python3 "$PROOF_DIR/prepare_disposable_proof_001.py" \
+            --baseline-root /tmp/p2c-proof-baseline \
+            --activated-root /tmp/p2c-proof-activated \
+            --activated-existing \
+            --authorization-receipt "$PROOF_DIR/P2C_EXPLICIT_PRODUCTION_SHAPED_PROOF_AUTHORIZATION_RECEIPT_001.json" \
+            --output "$EVIDENCE_DIR/preparation.json" 2>&1 | tee "$EVIDENCE_DIR/preparation.log"
+
+      - name: Install Chromium proof dependency
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Run browser A-002 A-003 and rollback matrix
+        env:
+          NODE_PATH: ${{ github.workspace }}/node_modules
+        run: |
+          set -o pipefail
+          python3 "$PROOF_DIR/run_explicit_production_shaped_proof_001.py" \
+            --activated-root /tmp/p2c-proof-activated \
+            --baseline-root /tmp/p2c-proof-baseline \
+            --preparation-result "$EVIDENCE_DIR/preparation.json" \
+            --rollback-script "$PROOF_DIR/rollback_disposable_proof_001.py" \
+            --browser-script "$PROOF_DIR/run_production_shaped_browser_proof_001.cjs" \
+            --evidence-dir "$EVIDENCE_DIR" \
+            --output "$EVIDENCE_DIR/aggregate.json" 2>&1 | tee "$EVIDENCE_DIR/aggregate.log"
+
+      - name: Verify proof aggregate and untouched production boundary
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json,os,pathlib,subprocess
+          d=pathlib.Path(os.environ['EVIDENCE_DIR'])
+          agg=json.loads((d/'aggregate.json').read_text()) if (d/'aggregate.json').is_file() else {'status':'FAIL','reason':'aggregate absent'}
+          head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          dirty=subprocess.check_output(['git','status','--porcelain'],text=True).strip()
+          out={'type':'PMP_P2C_EXPLICIT_PROOF_FINAL_BOUNDARY_RESULT_001','status':'PASS' if agg.get('status')=='PASS' and not dirty else 'FAIL','proof_status':agg.get('status'),'proof_branch_head':head,'proof_checkout_dirty':bool(dirty),'production_branch_modified':False,'production_patch_applied':False,'merge_authorized':False,'active_chain_integrated_in_production':False}
+          (d/'final-boundary.json').write_text(json.dumps(out,indent=2)+'\n')
+          print(json.dumps(out,indent=2))
+          if out['status']!='PASS': raise SystemExit(1)
+          PY
+
+      - name: Upload complete proof evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2c-explicit-production-shaped-proof-001-evidence
+          path: |
+            /tmp/p2c-proof-scope.json
+            /tmp/p2c-explicit-proof-evidence-001/
+          if-no-files-found: warn
+          retention-days: 90
