@@ -1,0 +1,144 @@
+name: Pass 2 P2-B Hardening Reseal Publisher
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/pass2-p2b-hardening-reseal-publisher.yml'
+      - '.github/workflows/pass2-p2b-hardening-v2.yml'
+      - 'pmp-actor-authority-policy-v1.json'
+      - 'pmp-actor-source-manifest-v1.json'
+      - 'audit/pass2/fixtures/p2b-authority-gate-adversarial.html'
+      - 'tools/build_pass2_p2b_policy.py'
+      - 'audit/pass2/p2b-hardening-**'
+      - 'pmp-runtime-integrity-manifest-v1.json'
+      - 'pmp-app-current.html'
+      - 'audit/a003-manifest-seal.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pass2-p2b-hardening-reseal-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish-exact-reseal:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact hardening branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          fetch-depth: 0
+
+      - name: Verify bounded publisher scope
+        run: |
+          set -euo pipefail
+          test "$(git branch --show-current)" = 'agent/pass2-p2b-hardening-v2'
+          test "$(git rev-parse origin/main)" = 'f4b0f16ca951f38d1bd4c73a738f36341942ae3e'
+          python3 - <<'PY'
+          import hashlib,json,pathlib
+          scope=json.loads(pathlib.Path('audit/pass2/p2b-hardening-scope-lock.json').read_text())
+          assert scope['status']=='P2B_HARDENING_V2_IN_PROGRESS'
+          assert scope['publication_boundary']['publisher_must_regenerate_not_copy_unverified_bytes'] is True
+          assert hashlib.sha256(pathlib.Path('pmp-actor-authority-gate-v1.js').read_bytes()).hexdigest()=='addd3be7f5570552bec805243fc920c646c6163fe0887eaa9b691a46251631e3'
+          PY
+
+      - name: Regenerate exact A-003 manifest root and seal
+        run: |
+          set -euo pipefail
+          python3 tools/build_a003_integrity_manifest.py --output /tmp/p2b-hardening-manifest.json --report /tmp/p2b-hardening-probe.json
+          python3 - <<'PY'
+          import hashlib,json,pathlib,re
+          generated=pathlib.Path('/tmp/p2b-hardening-manifest.json')
+          manifest=json.loads(generated.read_text())
+          manifest.pop('source_commit',None)
+          manifest.pop('self_digest_for_generated_bytes',None)
+          identity={
+            'records':[(r['path'],r['sha256_hex']) for r in manifest.get('records',[])],
+            'historical_records':[(r['path'],r.get('repository_ref'),r['sha256_hex']) for r in manifest.get('historical_records',[])],
+            'external_records':[(r['url'],r['sha256_hex']) for r in manifest.get('external_records',[])],
+            'root_trust_anchors':manifest.get('root_trust_anchors',[]),
+            'policy':{
+              'algorithm':manifest.get('algorithm'),
+              'unlisted_executable_policy':manifest.get('unlisted_executable_policy'),
+              'network_policy':manifest.get('network_policy')
+            }
+          }
+          manifest['version']='20260711A-A003-FINAL'
+          manifest['runtime_source_set_sha256']=hashlib.sha256(json.dumps(identity,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+          manifest['source_identity_rule']='Deterministic digest of protected local, historical, external, root-anchor, and policy identities; audit/workflow-only commits do not alter this identity.'
+          manifest_bytes=(json.dumps(manifest,indent=2,sort_keys=True)+'\n').encode()
+          pathlib.Path('pmp-runtime-integrity-manifest-v1.json').write_bytes(manifest_bytes)
+          manifest_sha=hashlib.sha256(manifest_bytes).hexdigest()
+          root_path=pathlib.Path('pmp-app-current.html')
+          root=root_path.read_text()
+          updated,count=re.subn(r"const MANIFEST_SHA256='(?:__A003_MANIFEST_SHA256__|[0-9a-f]{64})';",f"const MANIFEST_SHA256='{manifest_sha}';",root,count=1)
+          assert count==1
+          root_path.write_text(updated)
+          seal={
+            'type':'PMP_A003_MANIFEST_SEAL_V1',
+            'repair_id':'A-003',
+            'status':'SEALED',
+            'manifest_path':'pmp-runtime-integrity-manifest-v1.json',
+            'manifest_sha256':manifest_sha,
+            'manifest_bytes':len(manifest_bytes),
+            'manifest_version':'20260711A-A003-FINAL',
+            'runtime_source_set_sha256':manifest['runtime_source_set_sha256'],
+            'root_trust_anchor':'pmp-app-current.html',
+            'root_self_verifiable':False,
+            'sealed_branch':'agent/pass2-p2b-hardening-v2',
+            'rule':'The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.',
+            'pass2_context':'P2-B V2 hardening adds an independent actor-source manifest and complete 42-check no-effect proof; active-chain integration remains absent.'
+          }
+          pathlib.Path('audit/a003-manifest-seal.json').write_text(json.dumps(seal,indent=2,sort_keys=True)+'\n')
+          paths={r['path'] for r in manifest['records']}
+          assert {'pmp-actor-authority-gate-v1.js','pmp-actor-authority-policy-v1.json','pmp-actor-source-manifest-v1.json'}<=paths
+          assert manifest['counts']['runtime_records']==700
+          print(json.dumps({'manifest_sha256':manifest_sha,'runtime_source_set_sha256':manifest['runtime_source_set_sha256'],'runtime_records':manifest['counts']['runtime_records']},indent=2))
+          PY
+
+      - name: Hand hardening branch to its dedicated certification workflow
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          path=Path('.github/workflows/pass2-p2b-authority-gate.yml')
+          text=path.read_text()
+          marker='  certify-p2b:\n'
+          guard="  certify-p2b:\n    if: github.head_ref != 'agent/pass2-p2b-hardening-v2'\n"
+          if guard not in text:
+              assert marker in text
+              text=text.replace(marker,guard,1)
+              path.write_text(text)
+          PY
+
+      - name: Commit only the exact bounded outputs
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only)"
+          if [ -z "$changed" ]; then
+            echo 'Exact reseal is already committed; no publication move required.'
+            exit 0
+          fi
+          python3 - <<'PY'
+          import pathlib,subprocess
+          allowed={
+            'pmp-runtime-integrity-manifest-v1.json',
+            'pmp-app-current.html',
+            'audit/a003-manifest-seal.json',
+            '.github/workflows/pass2-p2b-authority-gate.yml'
+          }
+          changed=set(subprocess.check_output(['git','diff','--name-only'],text=True).splitlines())
+          assert changed<=allowed,sorted(changed-allowed)
+          assert {'pmp-runtime-integrity-manifest-v1.json','pmp-app-current.html','audit/a003-manifest-seal.json'}<=changed
+          PY
+          git config user.name 'pmp-pass2-p2b-hardening-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add pmp-runtime-integrity-manifest-v1.json pmp-app-current.html audit/a003-manifest-seal.json .github/workflows/pass2-p2b-authority-gate.yml
+          git commit -m 'Publish exact P2-B hardening A-003 reseal'
+          git push origin HEAD:agent/pass2-p2b-hardening-v2
