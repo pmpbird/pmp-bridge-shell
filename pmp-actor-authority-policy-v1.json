@@ -1,0 +1,74 @@
+{
+  "actors": [
+    {
+      "capabilities": [
+        "storage_write"
+      ],
+      "owner": "fixture-owner",
+      "path": "audit/pass2/fixtures/p2b-known-storage-actor.js",
+      "phase": "fixture",
+      "role": "fixture_storage",
+      "sha256": "c1ca4745b5e214f2ddbe8f5ca2e65a2323775871e29a5c7e59bfbfdf318c5261",
+      "stop_condition": "bounded_fixture"
+    },
+    {
+      "capabilities": [
+        "dom_write"
+      ],
+      "owner": "fixture-owner",
+      "path": "audit/pass2/fixtures/p2b-known-dom-actor.js",
+      "phase": "fixture",
+      "role": "fixture_dom",
+      "sha256": "e0cf19c7c50f4aeb52b5dea3d8b13d7409c39b1f318417209042358b7d5b8d88",
+      "stop_condition": "bounded_fixture"
+    },
+    {
+      "capabilities": [],
+      "owner": "fixture-owner",
+      "path": "audit/pass2/fixtures/p2b-known-limited-actor.js",
+      "phase": "fixture",
+      "role": "fixture_limited",
+      "sha256": "a5c4e6a4219fb24cb344224db4adda0e7bc27939977e1b9b38bce90dc515c3a8",
+      "stop_condition": "bounded_fixture"
+    },
+    {
+      "capabilities": [
+        "timer_schedule",
+        "storage_write"
+      ],
+      "owner": "fixture-owner",
+      "path": "audit/pass2/fixtures/p2b-known-async-actor.js",
+      "phase": "fixture",
+      "role": "fixture_async",
+      "sha256": "a090080606568044549c803d23f1ef5333a58e1d27bcd5dddbdd5886c4d81aa5",
+      "stop_condition": "bounded_fixture"
+    }
+  ],
+  "algorithm": "SHA-256",
+  "pass2_complete": false,
+  "pass3_started": false,
+  "protected_capabilities": [
+    "storage_write",
+    "storage_delete",
+    "storage_clear",
+    "dom_write",
+    "dom_delete",
+    "script_injection",
+    "resource_target_change",
+    "document_write",
+    "navigation",
+    "network_fetch",
+    "indexeddb_open",
+    "indexeddb_delete",
+    "cache_open",
+    "cache_delete",
+    "timer_schedule",
+    "event_listener"
+  ],
+  "status": "P2B_CERTIFICATION_POLICY_NOT_ACTIVE_CHAIN",
+  "truth_boundary": "This P2-B policy certifies the gate engine and adversarial fixtures. Active-chain actor policy and integration remain a later Pass 2 phase.",
+  "type": "PMP_ACTOR_AUTHORITY_POLICY_V1",
+  "unauthorized_capability_policy": "BLOCK_BEFORE_SIDE_EFFECT",
+  "unknown_actor_policy": "BLOCK_BEFORE_SIDE_EFFECT",
+  "version": "1.0.0-pass2-p2b-fixture-policy"
+}
