@@ -25,10 +25,12 @@ P2-B hardening V2 adds:
 - `pmp-actor-source-manifest-v1.json`, generated directly from the exact fixture bytes;
 - deterministic policy and manifest generation from the same bounded source set, with independent output comparison;
 - policy-to-manifest path and SHA-256 agreement checks;
-- a 41-check adversarial browser matrix;
+- a **42-check** adversarial browser matrix;
 - separate denial and no-effect checks across all sixteen protected capability families;
 - deterministic A-003 resealing for the new protected actor-source manifest;
 - complete A-002 and A-003 regressions.
+
+The first hardening browser execution passed all **42/42** checks. The initial workflow failure was only a stale expected total of 41; no gate failure occurred.
 
 The gate engine is not changed unless the new matrix finds a real enforcement defect.
 
@@ -36,7 +38,7 @@ The gate engine is not changed unless the new matrix finds a real enforcement de
 
 Hardening is complete only after:
 
-- 41/41 adversarial checks pass;
+- 42/42 adversarial checks pass;
 - exact policy/source-manifest regeneration has no diff;
 - A-003 is resealed and passes 21/21 plus 47/47;
 - A-002 remains 41/41;
