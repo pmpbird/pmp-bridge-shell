@@ -1,0 +1,151 @@
+name: TEMP Pass 2 P2-C Candidate 001 Launcher
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/TEMP_pass2-p2c-integration-candidate-001-launcher.yml'
+
+permissions:
+  contents: read
+
+env:
+  BASE_MAIN_COMMIT: c618596f2b5c99ca7f355153a5bd31268170df80
+  CANDIDATE_BRANCH: agent/pass2-p2c-production-integration-candidate-001
+  CANDIDATE_DIR: /tmp/p2c-integration-candidate-001
+
+jobs:
+  proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.CANDIDATE_BRANCH }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Verify inactive branch scope and build candidate
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor "$BASE_MAIN_COMMIT" HEAD
+          python3 - <<'PY'
+          import json,os,pathlib,subprocess
+          changed=set(subprocess.check_output(['git','diff','--name-only',os.environ['BASE_MAIN_COMMIT'],'HEAD'],text=True).splitlines())
+          allowed={
+            '.github/workflows/pass2-p2c-integration-candidate-001-proof.yml',
+            'audit/pass2/p2c-integration-candidate-001-scope-lock.json',
+            'audit/pass2/p2c-integration-candidate-001-status.md',
+          }
+          extras={p for p in changed if p not in allowed and not p.startswith('audit/pass2/p2c-integration-candidate-001-generator/')}
+          assert not extras, sorted(extras)
+          scope=json.loads(pathlib.Path('audit/pass2/p2c-integration-candidate-001-scope-lock.json').read_text())
+          assert scope['production_runtime_files_changed'] is False and scope['active_chain_integration'] is False
+          pathlib.Path('/tmp/p2c-scope-result.json').write_text(json.dumps({'status':'PASS','changed_paths':sorted(changed),'active_chain_integrated':False,'pass2_complete':False,'pass3_started':False},indent=2)+'\n')
+          PY
+          base64 -d audit/pass2/p2c-integration-candidate-001-generator/generator.py.gz.b64 | gzip -d > /tmp/build_p2c_integration_candidate_001.py
+          test "$(sha256sum /tmp/build_p2c_integration_candidate_001.py | cut -d' ' -f1)" = "ed55dadfbcff934b3d63d179b26d6a60bd91bf83cf1a3b16952ebf05c2b980cc"
+          rm -rf "$CANDIDATE_DIR"
+          python3 /tmp/build_p2c_integration_candidate_001.py --repo . --output-dir "$CANDIDATE_DIR" | tee /tmp/p2c-candidate-build-console.log
+
+      - name: Install Chromium
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Production-shaped navigable-origin fixture
+        env:
+          P2C_PORT: '8765'
+        run: |
+          set -o pipefail
+          node "$CANDIDATE_DIR/run-p2c-production-shaped-browser-integration-candidate-001.cjs" "$CANDIDATE_DIR" /tmp/p2c-production-shaped-browser-result.json 2>&1 | tee /tmp/p2c-production-shaped-browser-console.log
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.loads(pathlib.Path('/tmp/p2c-production-shaped-browser-result.json').read_text())
+          assert r['status']=='PASS' and r['tests_failed']==0 and r['tests_passed']==r['tests_total']
+          assert r['order_ok'] is True and r['allowed_helper_requests']==1 and r['evil_requests']==0
+          assert r['production_sentinel']=='unchanged' and r['active_chain_integrated'] is False
+          assert set(r['realm_orders'])=={'root','guardian','reload-owner','inner-v30','inner-v23'}
+          PY
+
+      - name: A-003 repository 21 of 21
+        run: |
+          python3 tools/test_a003_integrity.py --output /tmp/p2c-a003-repository.json | tee /tmp/p2c-a003-repository-console.log
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.loads(pathlib.Path('/tmp/p2c-a003-repository.json').read_text())
+          assert (r['tests_total'],r['tests_passed'],r['tests_failed'])==(21,21,0)
+          PY
+
+      - name: A-003 adversarial Chromium 47 of 47
+        env:
+          A003_RESULT_PATH: /tmp/p2c-a003-live.json
+        run: |
+          python3 tools/run_a003_live_final.py | tee /tmp/p2c-a003-live-console.log
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.loads(pathlib.Path('/tmp/p2c-a003-live.json').read_text())
+          assert (r['tests_total'],r['tests_passed'],r['tests_failed'])==(47,47,0) and r.get('fatal_error') is None
+          PY
+
+      - name: Start repository origin
+        run: |
+          python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/p2c-a002-http.log 2>&1 &
+          for i in $(seq 1 30); do curl -fsS http://127.0.0.1:8000/pmp-current-map-v12.json >/dev/null && exit 0; sleep 1; done
+          cat /tmp/p2c-a002-http.log
+          exit 1
+
+      - name: A-002 live route 41 of 41
+        env:
+          A002_BASE_URL: http://127.0.0.1:8000/
+          A002_RESULT_PATH: /tmp/p2c-a002-live.json
+        run: |
+          node audit/a002-live-runtime.cjs | tee /tmp/p2c-a002-live-console.log
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.loads(pathlib.Path('/tmp/p2c-a002-live.json').read_text())
+          assert (r['tests_total'],r['tests_passed'],r['tests_failed'])==(41,41,0) and r.get('fatal_error') is None
+          PY
+
+      - name: Aggregate proof
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json,os,pathlib
+          def rd(p):
+            q=pathlib.Path(p); return json.loads(q.read_text()) if q.is_file() else None
+          b=rd('/tmp/p2c-production-shaped-browser-result.json'); a2=rd('/tmp/p2c-a002-live.json'); a3r=rd('/tmp/p2c-a003-repository.json'); a3l=rd('/tmp/p2c-a003-live.json')
+          ok=bool(b and b.get('status')=='PASS' and b.get('tests_failed')==0 and a2 and a2.get('tests_passed')==41 and a2.get('tests_failed')==0 and a3r and a3r.get('tests_passed')==21 and a3r.get('tests_failed')==0 and a3l and a3l.get('tests_passed')==47 and a3l.get('tests_failed')==0)
+          out={'type':'PMP_APP_ORCHESTRATOR_PASS2_P2C_PRODUCTION_INTEGRATION_PATCH_CANDIDATE_001_AGGREGATE','status':'PASS_INACTIVE_CANDIDATE_READY_FOR_ENFORCEMENT_REVIEW' if ok else 'FAIL','overall_project_pass':'Pass 2','phase':'P2-C','source_repository_commit':os.environ['BASE_MAIN_COMMIT'],'candidate_branch':os.environ['CANDIDATE_BRANCH'],'production_shaped_browser':b,'a002_live':a2,'a003_repository':a3r,'a003_adversarial_live':a3l,'production_files_changed':False,'active_chain_integrated':False,'pass2_complete':False,'pass3_started':False,'activation_decision':'NO_ACTIVATION_CANDIDATE_ONLY','remaining_to_finish_pass2':'one enforcement and closure phase','numbered_passes_after_pass2':6}
+          pathlib.Path('/tmp/p2c-integration-candidate-aggregate.json').write_text(json.dumps(out,indent=2)+'\n')
+          print(json.dumps({'status':out['status'],'browser':b and f"{b.get('tests_passed')}/{b.get('tests_total')}",'a002':a2 and f"{a2.get('tests_passed')}/{a2.get('tests_total')}",'a003_repository':a3r and f"{a3r.get('tests_passed')}/{a3r.get('tests_total')}",'a003_live':a3l and f"{a3l.get('tests_passed')}/{a3l.get('tests_total')}"},indent=2))
+          if not ok: raise SystemExit(1)
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2c-production-integration-patch-candidate-001-evidence
+          path: |
+            /tmp/p2c-integration-candidate-001/
+            /tmp/p2c-scope-result.json
+            /tmp/p2c-candidate-build-console.log
+            /tmp/p2c-production-shaped-browser-result.json
+            /tmp/p2c-production-shaped-browser-console.log
+            /tmp/p2c-a003-repository.json
+            /tmp/p2c-a003-repository-console.log
+            /tmp/p2c-a003-live.json
+            /tmp/p2c-a003-live-console.log
+            /tmp/p2c-a002-live.json
+            /tmp/p2c-a002-live-console.log
+            /tmp/p2c-a002-http.log
+            /tmp/p2c-integration-candidate-aggregate.json
+          if-no-files-found: warn
+          retention-days: 90
