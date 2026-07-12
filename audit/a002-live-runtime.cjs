@@ -84,16 +84,20 @@ async function waitForCanonical(page) {
 }
 async function frameReachedHome(page, expectedHash) {
   const deadline = Date.now() + 30000;
+  let lastMismatch = null;
   while (Date.now() < deadline) {
     const urls = page.frames().map(f => f.url());
-    const homeUrl = urls.find(u => /pmp-home-single-v6\.html/.test(u));
-    if (homeUrl) {
+    const homeUrls = urls.filter(u => /pmp-home-single-v6\.html/.test(u));
+    for (const homeUrl of homeUrls) {
       let actualHash = '';
       try { actualHash = new URL(homeUrl).hash; } catch {}
-      return { reached: true, hash_matches: actualHash === expectedHash, expected_hash: expectedHash, actual_hash: actualHash, home_url: homeUrl, urls };
+      const detail = { reached: true, hash_matches: actualHash === expectedHash, expected_hash: expectedHash, actual_hash: actualHash, home_url: homeUrl, urls };
+      if (detail.hash_matches) return detail;
+      lastMismatch = detail;
     }
     await page.waitForTimeout(400);
   }
+  if (lastMismatch) return lastMismatch;
   return { reached: false, hash_matches: false, expected_hash: expectedHash, actual_hash: null, home_url: null, urls: page.frames().map(f => f.url()) };
 }
 
