@@ -61,44 +61,11 @@ jobs:
           test "$(git -C /tmp/p2c-proof-baseline rev-parse HEAD)" = "$BASE_COMMIT"
           test "$(git -C /tmp/p2c-proof-activated rev-parse HEAD)" = "$BASE_COMMIT"
 
-      - name: Normalize disposable generator for Git worktrees and script attributes
+      - name: Normalize disposable generator
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          p=Path('audit/pass2/p2c-explicit-proof-run-001/prepare_disposable_proof_001.py')
-          s=p.read_text()
-          old="if p.is_file() and '.git/' not in p.relative_to(root).as_posix()}"
-          new="if p.is_file() and p.relative_to(root).as_posix() != '.git' and '.git/' not in p.relative_to(root).as_posix()}"
-          assert old in s
-          s=s.replace(old,new,1)
-          start=s.index('def patch_child(')
-          end=s.index('def write_runtime(',start)
-          replacement=r'''def patch_child(p,realm,actors):
- s=p.read_text();doc=p.name
- def external(m):
-  attrs=m.group(1)
-  srcm=re.search(r'\bsrc\s*=\s*([\'\"])(.*?)\1',attrs,re.I|re.S)
-  if not srcm:return m.group(0)
-  src=srcm.group(2);path=src.split('?')[0].split('#')[0].lstrip('./')
-  if path in actors:return f'<script type="application/pmp-p2c-managed-actor" data-pmp-path="{path}" data-pmp-src="{src}"></script>'
-  return m.group(0)
- s=re.sub(r'<script\b([^>]*)>\s*</script>',external,s,flags=re.I|re.S)
- def inline(m):
-  attrs=m.group(1);body=m.group(2)
-  if re.search(r'\bsrc\s*=',attrs,re.I):return m.group(0)
-  if 'application/pmp-p2c-managed-' in attrs:return m.group(0)
-  if re.search(r'\btype\s*=\s*([\'\"])(?:application/(?:json|ld\+json)|text/template)\1',attrs,re.I):return m.group(0)
-  return f'<script type="application/pmp-p2c-managed-document" data-pmp-path="{doc}">{body}</script>'
- s=re.sub(r'<script\b([^>]*)>(.*?)</script>',inline,s,flags=re.I|re.S)
- marker='<script type="application/pmp-p2c-managed-'
- i=s.find(marker)
- if i<0:raise SystemExit('NO_MANAGED_TAG:'+doc)
- pre=f'<script id="pmpP2CProofLock" type="application/json">{{"status":"DISPOSABLE_PROOF_ACTIVE"}}</script>\n<script src="pmp-p2c-production-enforcement-prelude-candidate-001.js" data-pmp-realm="{realm}" data-pmp-document-path="{doc}"></script>\n'
- p.write_text(s[:i]+pre+s[i:])
-'''
-          s=s[:start]+replacement+s[end:]
-          p.write_text(s)
-          PY
+          python3 "$PROOF_DIR/normalize_prepare_generator_001.py" \
+            --path "$PROOF_DIR/prepare_disposable_proof_001.py"
+          python3 -m py_compile "$PROOF_DIR/prepare_disposable_proof_001.py"
 
       - name: Generate and activate candidate in disposable copy only
         run: |
