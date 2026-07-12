@@ -5,7 +5,6 @@ on:
     branches:
       - main
       - agent/a002-current-map-single-authority
-      - agent/pass2-p2b-authority-gate
     paths:
       - 'tools/build_a003_integrity_manifest.py'
       - '.github/workflows/a003-integrity-probe.yml'
