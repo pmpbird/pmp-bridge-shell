@@ -8,6 +8,8 @@
     "audit/pass2/p2b-hardening-status.md",
     "audit/pass2/p2b-hardening-receipt.json",
     ".github/workflows/pass2-p2b-hardening-v2.yml",
+    ".github/workflows/pass2-p2b-hardening-reseal-publisher.yml",
+    ".github/workflows/pass2-p2b-authority-gate.yml",
     "pmp-runtime-integrity-manifest-v1.json",
     "pmp-app-current.html",
     "audit/a003-manifest-seal.json"
@@ -27,6 +29,17 @@
   ],
   "overall_project_pass": "Pass 2",
   "phase": "P2-B hardening V2 — independent exact-source proof and complete capability-family no-effect matrix",
+  "publication_boundary": {
+    "publisher_allowed_outputs": [
+      "pmp-runtime-integrity-manifest-v1.json",
+      "pmp-app-current.html",
+      "audit/a003-manifest-seal.json",
+      ".github/workflows/pass2-p2b-authority-gate.yml"
+    ],
+    "publisher_must_regenerate_not_copy_unverified_bytes": true,
+    "publisher_must_stop_on_no_diff": true,
+    "old_p2b_workflow_change": "Skip the original 34-check certification job only on the dedicated hardening branch because the V2 workflow independently supersedes that branch check; V1 receipt verification remains unchanged elsewhere."
+  },
   "required_proof": [
     "The actor-source manifest is generated independently from exact fixture bytes.",
     "The policy and independent manifest agree path-for-path and digest-for-digest.",
@@ -46,5 +59,5 @@
     "next_phase_after_hardening": "P2-C — active runtime integration and complete production actor policy",
     "pass3_started": false
   },
-  "type": "PMP_APP_ORCHESTRATOR_PASS2_P2B_HARDENING_SCOPE_LOCK_V1"
+  "type": "PMP_APP_ORCHESTRATOR_PASS2_P2B_HARDENING_SCOPE_LOCK_V2"
 }
