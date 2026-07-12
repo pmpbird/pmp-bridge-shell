@@ -1,0 +1,1 @@
+This audit-only record issues a fail-closed production activation HOLD and a NOT CERTIFIED Pass 2 closure result. It contains no production patch, changes no Current Map or persisted data, and authorizes no merge.
