@@ -14,8 +14,8 @@ def patch_a003_root_receipt_authority(root:Path):
  new_boot="p2cA003RootReceiptWrite('pmp_a003_bootstrap_receipt_v1',JSON.stringify(value,null,2))"
  old_handoff="localStorage.setItem('pmp_current_entry_route_handoff_receipt_v1',JSON.stringify(finalReceipt,null,2))"
  new_handoff="p2cA003RootReceiptWrite('pmp_current_entry_route_handoff_receipt_v1',JSON.stringify(finalReceipt,null,2))"
- old_fetch="const response=await fetch(path,{cache:'no-store'});"
- new_fetch="const response=await P2C_A003_NATIVE_FETCH(path,{cache:'no-store'});"
+ old_fetch="response=await fetch(path+'?pmp_a003_bootstrap_verify='+encodeURIComponent(String(Date.now())),{cache:'no-store',credentials:'same-origin'})"
+ new_fetch="response=await P2C_A003_NATIVE_FETCH(path+'?pmp_a003_bootstrap_verify='+encodeURIComponent(String(Date.now())),{cache:'no-store',credentials:'same-origin'})"
  if s.count(old_boot)!=1 or s.count(old_handoff)!=1:raise SystemExit('A003_ROOT_RECEIPT_WRITE_POINT_INVALID')
  if s.count(old_fetch)!=1:raise SystemExit('A003_ROOT_FETCH_POINT_INVALID')
  s=s.replace(old_boot,new_boot,1).replace(old_handoff,new_handoff,1).replace(old_fetch,new_fetch,1)
