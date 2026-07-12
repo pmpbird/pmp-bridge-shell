@@ -3,13 +3,12 @@
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
   "manifest_sha256": "3a98519479cefb4095291a9942c7d6c6efd6ac27c231034cb96e3942a5ab51f5",
   "manifest_version": "20260711A-A003-FINAL",
-  "pass2_context": "P2-B gate and fixture policy added; gate remains inactive on the live chain.",
   "repair_id": "A-003",
   "root_self_verifiable": false,
   "root_trust_anchor": "pmp-app-current.html",
   "rule": "The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.",
   "runtime_source_set_sha256": "c2f2a769a6b1897cb88809fbb908addd6b8e1b4f892a501484dc15c9b58a5fea",
-  "sealed_branch": "agent/pass2-p2b-authority-gate",
+  "sealed_branch": "main",
   "status": "SEALED",
   "type": "PMP_A003_MANIFEST_SEAL_V1"
 }
