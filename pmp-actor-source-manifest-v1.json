@@ -1,0 +1,45 @@
+{
+  "algorithm": "SHA-256",
+  "pass2_complete": false,
+  "pass3_started": false,
+  "record_count": 4,
+  "records": [
+    {
+      "bytes": 127,
+      "enforcement": "PMP_ACTOR_AUTHORITY_GATE_PRE_EXECUTION_SHA256",
+      "execution_class": "P2B_CERTIFICATION_FIXTURE_ACTOR",
+      "git_blob_sha": "c652967f7e493ea5904ef23b3190ede87f54e6d2",
+      "path": "audit/pass2/fixtures/p2b-known-storage-actor.js",
+      "sha256_hex": "c1ca4745b5e214f2ddbe8f5ca2e65a2323775871e29a5c7e59bfbfdf318c5261"
+    },
+    {
+      "bytes": 158,
+      "enforcement": "PMP_ACTOR_AUTHORITY_GATE_PRE_EXECUTION_SHA256",
+      "execution_class": "P2B_CERTIFICATION_FIXTURE_ACTOR",
+      "git_blob_sha": "ea7f2ef065f70e98b402c30fffaff23fce254d7c",
+      "path": "audit/pass2/fixtures/p2b-known-dom-actor.js",
+      "sha256_hex": "e0cf19c7c50f4aeb52b5dea3d8b13d7409c39b1f318417209042358b7d5b8d88"
+    },
+    {
+      "bytes": 78,
+      "enforcement": "PMP_ACTOR_AUTHORITY_GATE_PRE_EXECUTION_SHA256",
+      "execution_class": "P2B_CERTIFICATION_FIXTURE_ACTOR",
+      "git_blob_sha": "bf0fe316ce6152250eb63803a9328068500b35a1",
+      "path": "audit/pass2/fixtures/p2b-known-limited-actor.js",
+      "sha256_hex": "a5c4e6a4219fb24cb344224db4adda0e7bc27939977e1b9b38bce90dc515c3a8"
+    },
+    {
+      "bytes": 150,
+      "enforcement": "PMP_ACTOR_AUTHORITY_GATE_PRE_EXECUTION_SHA256",
+      "execution_class": "P2B_CERTIFICATION_FIXTURE_ACTOR",
+      "git_blob_sha": "8932f2c0f4192e0ac5af5b3fae7d2f1b99816f4f",
+      "path": "audit/pass2/fixtures/p2b-known-async-actor.js",
+      "sha256_hex": "a090080606568044549c803d23f1ef5333a58e1d27bcd5dddbdd5886c4d81aa5"
+    }
+  ],
+  "status": "P2B_CERTIFICATION_MANIFEST_NOT_ACTIVE_CHAIN",
+  "truth_boundary": "This manifest independently freezes the exact fixture actor source bytes used to certify the P2-B gate. Production active-chain actor identities remain P2-C.",
+  "type": "PMP_ACTOR_SOURCE_MANIFEST_V1",
+  "unknown_source_policy": "BLOCK_BEFORE_ACTOR_TOKEN",
+  "version": "1.0.0-pass2-p2b-fixtures"
+}
