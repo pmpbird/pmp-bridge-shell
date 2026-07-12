@@ -15,7 +15,7 @@
     "tools/build_pass2_p2b_policy.py",
     "tools/test_pass2_p2b_authority_gate.mjs",
     "tools/run_a003_live_final.py",
-    ".github/workflows/pass2-p2b-authority-gate.yml",
+    ".github/workflows/pass2-p2b-authority-gate-v2.yml",
     "pmp-runtime-integrity-manifest-v1.json",
     "pmp-app-current.html",
     "audit/a003-manifest-seal.json"
