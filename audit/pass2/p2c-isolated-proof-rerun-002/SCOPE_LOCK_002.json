@@ -1,0 +1,20 @@
+{
+  "type": "PMP_P2C_EXPLICIT_ISOLATED_PROOF_RERUN_SCOPE_LOCK_002",
+  "overall_project_pass": "Pass 2",
+  "phase": "P2-C",
+  "source_repository_commit": "c618596f2b5c99ca7f355153a5bd31268170df80",
+  "authorization_scope": "ONE_ISOLATED_PRODUCTION_SHAPED_PROOF_RERUN_ONLY",
+  "proof_run_count_authorized": 1,
+  "disposable_copy_required": true,
+  "byte_for_byte_rollback_required": true,
+  "restored_copy_regressions_required": true,
+  "production_activation_authorized": false,
+  "production_apply_authorized": false,
+  "merge_authorized": false,
+  "current_map_change_authorized": false,
+  "production_storage_change_authorized": false,
+  "bank_rebuild_authorized": false,
+  "crosswalk_router_included": false,
+  "pass2_complete": false,
+  "pass3_started": false
+}
