@@ -1,0 +1,7 @@
+{
+  "type":"PMP_P2C_ISOLATED_PROOF_RERUN_READY_002",
+  "status":"READY_FOR_ONE_AUTHORIZED_RUN",
+  "payload_verified_by_workflow_before_execution":true,
+  "production_activation_authorized":false,
+  "merge_authorized":false
+}
