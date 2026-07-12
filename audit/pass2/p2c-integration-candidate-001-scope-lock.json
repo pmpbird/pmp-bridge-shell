@@ -1,0 +1,20 @@
+{
+  "type": "PMP_APP_ORCHESTRATOR_PASS2_P2C_INTEGRATION_CANDIDATE_001_SCOPE_LOCK",
+  "overall_project_pass": "Pass 2",
+  "phase": "P2-C",
+  "base_main_commit": "c618596f2b5c99ca7f355153a5bd31268170df80",
+  "allowed_changes": [
+    ".github/workflows/pass2-p2c-integration-candidate-001.yml",
+    "audit/pass2/p2c-integration-candidate-001-generator/*.b64",
+    "audit/pass2/p2c-integration-candidate-001-scope-lock.json",
+    "audit/pass2/p2c-integration-candidate-001-status.md"
+  ],
+  "production_runtime_files_changed": false,
+  "active_chain_integration": false,
+  "current_map_changed": false,
+  "storage_indexeddb_cache_or_bank_changed": false,
+  "pass2_complete": false,
+  "pass3_started": false,
+  "crosswalk_router_integrated": false,
+  "activation_policy": "NO_ACTIVATION_CANDIDATE_AND_PROOF_ONLY"
+}
