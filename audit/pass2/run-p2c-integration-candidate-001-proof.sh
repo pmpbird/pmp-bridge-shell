@@ -41,6 +41,21 @@ PY
 rm -rf "$CANDIDATE_DIR"
 python3 /tmp/build_p2c_integration_candidate_001.py --repo . --output-dir "$CANDIDATE_DIR" 2>&1 | tee /tmp/p2c-candidate-build-console.log
 
+python3 - <<'PY'
+import hashlib,json,pathlib,os
+path=pathlib.Path(os.environ['CANDIDATE_DIR'])/'p2c-inner-tests.js'
+old="const fake={adapter_id:'foreign',actor_path:docPath};"
+new="const fake={adapter_id:'foreign',actor_path:D.realmActors['inner-v23']};"
+before=path.read_bytes(); text=before.decode('utf-8')
+count=text.count(old)
+assert count==1,count
+text=text.replace(old,new,1)
+after=text.encode('utf-8'); path.write_bytes(after)
+receipt={'type':'PMP_P2C_CANDIDATE_POST_GENERATION_PATCH_001','status':'PASS','scope':'inactive_browser_fixture_only','path':'p2c-inner-tests.js','reason':'bind cross-realm negative-test actor path inside inner-v23 fixture scope','replacements':count,'before_sha256':hashlib.sha256(before).hexdigest(),'after_sha256':hashlib.sha256(after).hexdigest(),'production_files_changed':False,'active_chain_integrated':False}
+pathlib.Path('/tmp/p2c-candidate-post-generation-patch-001.json').write_text(json.dumps(receipt,indent=2)+'\n')
+print(json.dumps(receipt,indent=2))
+PY
+
 npm install --no-save playwright@1.55.0
 npx playwright install --with-deps chromium
 NODE_PATH="$GITHUB_WORKSPACE/node_modules" P2C_PORT=8765 node "$CANDIDATE_DIR/run-p2c-production-shaped-browser-integration-candidate-001.cjs" "$CANDIDATE_DIR" /tmp/p2c-production-shaped-browser-result.json 2>&1 | tee /tmp/p2c-production-shaped-browser-console.log
@@ -62,11 +77,11 @@ A002_BASE_URL=http://127.0.0.1:8000/ A002_RESULT_PATH=/tmp/p2c-a002-live.json NO
 python3 - <<'PY'
 import json,pathlib
 def rd(p): return json.loads(pathlib.Path(p).read_text())
-b=rd('/tmp/p2c-production-shaped-browser-result.json'); a2=rd('/tmp/p2c-a002-live.json'); a3r=rd('/tmp/p2c-a003-repository.json'); a3l=rd('/tmp/p2c-a003-live.json')
+b=rd('/tmp/p2c-production-shaped-browser-result.json'); a2=rd('/tmp/p2c-a002-live.json'); a3r=rd('/tmp/p2c-a003-repository.json'); a3l=rd('/tmp/p2c-a003-live.json'); patch=rd('/tmp/p2c-candidate-post-generation-patch-001.json')
 assert (a2['tests_total'],a2['tests_passed'],a2['tests_failed'])==(41,41,0) and a2.get('fatal_error') is None
 assert (a3r['tests_total'],a3r['tests_passed'],a3r['tests_failed'])==(21,21,0)
 assert (a3l['tests_total'],a3l['tests_passed'],a3l['tests_failed'])==(47,47,0) and a3l.get('fatal_error') is None
-out={'type':'PMP_APP_ORCHESTRATOR_PASS2_P2C_PRODUCTION_INTEGRATION_PATCH_CANDIDATE_001_AGGREGATE','status':'PASS_INACTIVE_CANDIDATE_READY_FOR_ENFORCEMENT_REVIEW','overall_project_pass':'Pass 2','phase':'P2-C','source_repository_commit':'c618596f2b5c99ca7f355153a5bd31268170df80','production_shaped_browser':b,'a002_live':a2,'a003_repository':a3r,'a003_adversarial_live':a3l,'production_files_changed':False,'active_chain_integrated':False,'pass2_complete':False,'pass3_started':False,'activation_decision':'NO_ACTIVATION_CANDIDATE_ONLY','remaining_to_finish_pass2':'one enforcement and closure phase','numbered_passes_after_pass2':6,'exact_next_move':'Build and independently review the inactive P2-C enforcement patch and rollback-ready closure gate; activate nothing without explicit authorization.'}
+out={'type':'PMP_APP_ORCHESTRATOR_PASS2_P2C_PRODUCTION_INTEGRATION_PATCH_CANDIDATE_001_AGGREGATE','status':'PASS_INACTIVE_CANDIDATE_READY_FOR_ENFORCEMENT_REVIEW','overall_project_pass':'Pass 2','phase':'P2-C','source_repository_commit':'c618596f2b5c99ca7f355153a5bd31268170df80','candidate_fixture_patch':patch,'production_shaped_browser':b,'a002_live':a2,'a003_repository':a3r,'a003_adversarial_live':a3l,'production_files_changed':False,'active_chain_integrated':False,'pass2_complete':False,'pass3_started':False,'activation_decision':'NO_ACTIVATION_CANDIDATE_ONLY','remaining_to_finish_pass2':'one enforcement and closure phase','numbered_passes_after_pass2':6,'exact_next_move':'Build and independently review the inactive P2-C enforcement patch and rollback-ready closure gate; activate nothing without explicit authorization.'}
 pathlib.Path('/tmp/p2c-integration-candidate-aggregate.json').write_text(json.dumps(out,indent=2)+'\n')
 print(json.dumps({'status':out['status'],'browser':f"{b['tests_passed']}/{b['tests_total']}",'a002':f"{a2['tests_passed']}/{a2['tests_total']}",'a003_repository':f"{a3r['tests_passed']}/{a3r['tests_total']}",'a003_live':f"{a3l['tests_passed']}/{a3l['tests_total']}"},indent=2))
 PY
