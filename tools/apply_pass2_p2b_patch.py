@@ -3,12 +3,16 @@ from __future__ import annotations
 import base64,hashlib,json,subprocess,zlib
 from pathlib import Path
 BASE_COMMIT="c767844d53b4b393928170387b6f988e49fe1fc6"
-BOOTSTRAP_FILES=["tools/apply_pass2_p2b_patch.py","tools/pass2_p2b_patch_payload.b64",".github/workflows/pass2-p2b-patch-publisher.yml"]
-PAYLOAD_PATH=Path('tools/pass2_p2b_patch_payload.b64')
+BOOTSTRAP_FILES=["tools/apply_pass2_p2b_patch.py",".github/workflows/pass2-p2b-patch-publisher.yml"]
+PAYLOAD_GLOB='pass2_p2b_patch_payload_*.b64'
 def git_blob(data:bytes)->str:return hashlib.sha1(f"blob {len(data)}\0".encode()+data).hexdigest()
 def main()->int:
  subprocess.run(["git","merge-base","--is-ancestor",BASE_COMMIT,"HEAD"],check=True)
- payload=json.loads(zlib.decompress(base64.b64decode(PAYLOAD_PATH.read_text().strip())))
+ chunk_paths=sorted(Path('tools').glob(PAYLOAD_GLOB))
+ if not chunk_paths: raise SystemExit('Patch payload chunks are missing')
+ payload_text=''.join(path.read_text().strip() for path in chunk_paths)
+ payload=json.loads(zlib.decompress(base64.b64decode(payload_text)))
+ BOOTSTRAP_FILES.extend(str(path) for path in chunk_paths)
  for name,record in payload.items():
   path=Path(name); old=record["old_git_blob"]
   if old is None:
