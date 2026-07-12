@@ -1,0 +1,15 @@
+{
+  "type": "PMP_APP_ORCHESTRATOR_PASS2_P2B_PREFLIGHT_SUMMARY_V1",
+  "base_main_commit": "c767844d53b4b393928170387b6f988e49fe1fc6",
+  "status": "READY_FOR_DRAFT_PR_CERTIFICATION",
+  "gate": "pmp-actor-authority-gate-v1.js",
+  "policy": "pmp-actor-authority-policy-v1.json",
+  "source_manifest": "pmp-actor-source-manifest-v1.json",
+  "adversarial_fixture": "audit/pass2/fixtures/p2b-authority-gate-adversarial.html",
+  "adversarial_runner": "tools/test_pass2_p2b_authority_gate.mjs",
+  "expected_adversarial_checks": 41,
+  "active_chain_integrated": false,
+  "pass2_complete": false,
+  "pass3_started": false,
+  "next_if_green": "Issue independently verified P2-B receipt, merge, update canonical ZIP, then begin P2-C only."
+}
