@@ -1,0 +1,22 @@
+{
+  "type": "PMP_P2C_EXPLICIT_ISOLATED_PROOF_RERUN_AUTHORIZATION_RECEIPT_002",
+  "authorized": true,
+  "authorization_scope": "ONE_ISOLATED_PRODUCTION_SHAPED_PROOF_RERUN_ONLY",
+  "proof_run_count_authorized": 1,
+  "source_repository_commit": "c618596f2b5c99ca7f355153a5bd31268170df80",
+  "payload_sha256": "b4701708db618269143e657433004da0e4e7e2e93d252d6a204ea088e72699d8",
+  "payload_bytes": 42528,
+  "production_activation_authorized": false,
+  "production_apply_authorized": false,
+  "current_map_change_authorized": false,
+  "production_storage_change_authorized": false,
+  "indexeddb_change_authorized": false,
+  "cache_storage_change_authorized": false,
+  "bank_rebuild_authorized": false,
+  "crosswalk_router_included": false,
+  "user_authorization_text": "Repair the isolated proof runner, obtain a new explicit isolated-proof rerun authorization, and complete the browser + A-002 41/41 + A-003 21/21 + A-003 47/47 + byte-for-byte rollback + restored-copy regression chain. Then repeat the production-activation decision and Pass 2 closure certification.",
+  "overall_project_pass": "Pass 2",
+  "phase": "P2-C",
+  "pass2_complete": false,
+  "pass3_started": false
+}
