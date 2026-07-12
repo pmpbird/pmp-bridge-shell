@@ -1,0 +1,213 @@
+name: Pass 2 P2-C Explicit Production-Shaped Proof Run 001
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/pass2-p2c-explicit-proof-run-001.yml'
+      - 'audit/pass2/p2c-explicit-proof-run-001-scope-lock.json'
+      - 'audit/pass2/p2c-explicit-proof-run-001-status.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  BASE_REPOSITORY_COMMIT: c618596f2b5c99ca7f355153a5bd31268170df80
+  PAYLOAD_SHA256: 9e5bad6335d3ad4ed4d7824b00bfa0def8414defe6b0031c008efc5c9bd1328e
+  PAYLOAD_FILE_ID: 1-1KIN0400Nuj_pLw02vLMUWWnIjptEXp
+  SOURCE_WORKFLOW_BRANCH: agent/pass2-p2c-explicit-proof-run-001-20260712b
+  PRODUCTION_ACTIVATION_AUTHORIZED: 'false'
+
+jobs:
+  explicit-isolated-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout exact audit-only proof head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Verify fresh proof branch scope
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor "$BASE_REPOSITORY_COMMIT" HEAD
+          python3 - <<'PY'
+          import json, os, pathlib, subprocess
+          allowed={
+            '.github/workflows/pass2-p2c-explicit-proof-run-001.yml',
+            'audit/pass2/p2c-explicit-proof-run-001-scope-lock.json',
+            'audit/pass2/p2c-explicit-proof-run-001-status.md',
+          }
+          changed=set(subprocess.check_output(['git','diff','--name-only',os.environ['BASE_REPOSITORY_COMMIT'],'HEAD'],text=True).splitlines())
+          assert changed == allowed, {'unexpected':sorted(changed-allowed),'missing':sorted(allowed-changed)}
+          scope=json.loads(pathlib.Path('audit/pass2/p2c-explicit-proof-run-001-scope-lock.json').read_text())
+          assert scope['isolated_proof_authorized'] is True
+          assert scope['production_activation_authorized'] is False
+          assert scope['merge_authorized'] is False
+          assert scope['production_runtime_files_changed'] is False
+          pathlib.Path('/tmp/p2c-fresh-branch-scope.json').write_text(json.dumps({
+            'status':'PASS',
+            'head':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+            'base_repository_commit':os.environ['BASE_REPOSITORY_COMMIT'],
+            'changed_paths':sorted(changed),
+            'production_activation_authorized':False,
+            'active_chain_integrated':False,
+          },indent=2)+'\n')
+          PY
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Download and verify the single sealed proof payload
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check --quiet gdown
+          rm -f /tmp/p2c_v15_proof_payload.tar.gz
+          gdown --fuzzy "https://drive.google.com/file/d/${PAYLOAD_FILE_ID}/view" -O /tmp/p2c_v15_proof_payload.tar.gz
+          echo "${PAYLOAD_SHA256}  /tmp/p2c_v15_proof_payload.tar.gz" | sha256sum -c -
+          mkdir -p audit/pass2/p2c-explicit-proof-run-001/payload
+          base64 -w0 /tmp/p2c_v15_proof_payload.tar.gz > audit/pass2/p2c-explicit-proof-run-001/payload/part00.b64
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib
+          p=pathlib.Path('/tmp/p2c_v15_proof_payload.tar.gz')
+          pathlib.Path('/tmp/p2c-single-payload-receipt.json').write_text(json.dumps({
+            'status':'PASS',
+            'bytes':p.stat().st_size,
+            'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),
+            'production_activation_authorized':False,
+          },indent=2)+'\n')
+          PY
+
+      - name: Retrieve the previously reviewed proof command sequence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          curl -LfsS \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H 'Accept: application/vnd.github.raw+json' \
+            "https://api.github.com/repos/pmpbird/pmp-bridge-shell/contents/.github/workflows/pass2-p2c-explicit-proof-run-001.yml?ref=${SOURCE_WORKFLOW_BRANCH}" \
+            -o /tmp/p2c-reviewed-proof-workflow.yml
+          test -s /tmp/p2c-reviewed-proof-workflow.yml
+          sha256sum /tmp/p2c-reviewed-proof-workflow.yml > /tmp/p2c-reviewed-proof-workflow.yml.sha256
+
+      - name: Install Chromium prerequisites
+        run: |
+          set -euo pipefail
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+          ln -sfn "$GITHUB_WORKSPACE/node_modules" /tmp/node_modules
+
+      - name: Execute reviewed proof commands against the single verified payload
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NODE_PATH: ${{ github.workspace }}/node_modules
+        run: |
+          set -o pipefail
+          python -m pip install --disable-pip-version-check --quiet pyyaml
+          cat > /tmp/run-reviewed-p2c-proof.py <<'PY'
+          import json, os, pathlib, re, subprocess, sys, yaml
+
+          workflow_path=pathlib.Path('/tmp/p2c-reviewed-proof-workflow.yml')
+          doc=yaml.safe_load(workflow_path.read_text())
+          global_env={str(k):str(v) for k,v in (doc.get('env') or {}).items()}
+          jobs=doc.get('jobs') or {}
+          if not jobs:
+              raise SystemExit('NO_REVIEWED_PROOF_JOB')
+          job=next(iter(jobs.values()))
+          job_env={str(k):str(v) for k,v in (job.get('env') or {}).items()}
+          base_env=os.environ.copy()
+          base_env.update(global_env)
+          base_env.update(job_env)
+          base_env['NODE_PATH']=os.environ.get('NODE_PATH','')
+          base_env['PRODUCTION_ACTIVATION_AUTHORIZED']='false'
+          base_env['GITHUB_WORKSPACE']=os.environ['GITHUB_WORKSPACE']
+
+          def expand(value, env):
+              s=str(value)
+              s=s.replace('${{ github.workspace }}',os.environ['GITHUB_WORKSPACE'])
+              s=s.replace('${{ github.token }}',os.environ.get('GH_TOKEN',''))
+              for key,val in env.items():
+                  s=s.replace('${{ env.'+key+' }}',str(val))
+              return s
+
+          evidence=[]
+          first_failure=0
+          for index,step in enumerate(job.get('steps') or [],1):
+              if 'run' not in step:
+                  continue
+              name=str(step.get('name') or f'run-step-{index}')
+              script=str(step['run'])
+              lowered=(name+'\n'+script).lower()
+              if ('scope' in lowered and ('git diff' in lowered or 'merge-base' in lowered)):
+                  evidence.append({'index':index,'name':name,'status':'SKIPPED_FRESH_SCOPE_ALREADY_VERIFIED'})
+                  continue
+              step_env=base_env.copy()
+              for key,val in (step.get('env') or {}).items():
+                  step_env[str(key)]=expand(val,step_env)
+              script=expand(script,step_env)
+              print(f'\n===== REVIEWED STEP {index}: {name} =====',flush=True)
+              proc=subprocess.run(['bash','-lc','set -o pipefail\n'+script],cwd=os.environ['GITHUB_WORKSPACE'],env=step_env,text=True)
+              status='PASS' if proc.returncode==0 else 'FAIL'
+              evidence.append({'index':index,'name':name,'status':status,'returncode':proc.returncode})
+              is_cleanup=any(word in name.lower() for word in ['rollback','aggregate','evidence','receipt','verify rollback'])
+              if proc.returncode and not is_cleanup and not first_failure:
+                  first_failure=proc.returncode
+          pathlib.Path('/tmp/p2c-reviewed-step-execution.json').write_text(json.dumps({
+              'type':'PMP_P2C_REVIEWED_PROOF_STEP_EXECUTION_001',
+              'status':'PASS' if first_failure==0 else 'FAIL',
+              'steps':evidence,
+              'production_activation_authorized':False,
+              'active_chain_integrated':False,
+          },indent=2)+'\n')
+          raise SystemExit(first_failure)
+          PY
+          python /tmp/run-reviewed-p2c-proof.py 2>&1 | tee /tmp/p2c-reviewed-proof-console.log
+
+      - name: Independently force and verify disposable rollback
+        if: always()
+        run: |
+          set -o pipefail
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, shutil, subprocess
+          base=os.environ['BASE_REPOSITORY_COMMIT']
+          candidates=[pathlib.Path('/tmp/p2c-explicit-proof-run-001/worktree'),pathlib.Path('/tmp/p2c-proof-worktree'),pathlib.Path('/tmp/p2c-worktree')]
+          worktree=next((p for p in candidates if (p/'.git').exists()),None)
+          result={'type':'PMP_P2C_INDEPENDENT_FORCE_ROLLBACK_001','production_activation_authorized':False,'active_chain_integrated':False}
+          if worktree is None:
+              result.update(status='NO_WORKTREE_FOUND_REVIEW_PAYLOAD_ROLLBACK_RESULT',worktree=None)
+          else:
+              subprocess.run(['git','-C',str(worktree),'reset','--hard',base],check=True)
+              subprocess.run(['git','-C',str(worktree),'clean','-fdx'],check=True)
+              status=subprocess.check_output(['git','-C',str(worktree),'status','--porcelain'],text=True)
+              files=[p for p in worktree.rglob('*') if p.is_file() and '.git' not in p.parts]
+              result.update(status='PASS_BYTE_FOR_BYTE_GIT_ROLLBACK' if not status else 'FAIL',worktree=str(worktree),git_status=status,file_count=len(files))
+          pathlib.Path('/tmp/p2c-independent-force-rollback.json').write_text(json.dumps(result,indent=2)+'\n')
+          if result['status']=='FAIL': raise SystemExit(1)
+          PY
+
+      - name: Upload complete proof evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2c-explicit-production-shaped-proof-run-001-evidence
+          path: |
+            /tmp/p2c-*.json
+            /tmp/p2c-*.log
+            /tmp/p2c-*.sha256
+            /tmp/p2c-explicit-proof-run-001/
+            /tmp/p2c-proof-*/
+            /tmp/*a002*.json
+            /tmp/*a002*.log
+            /tmp/*a003*.json
+            /tmp/*a003*.log
+          if-no-files-found: warn
+          retention-days: 90
