@@ -7,9 +7,16 @@ let probeRequests=0;
 try{
  const page=await browser.newPage();
  page.on('request',request=>{if(new URL(request.url()).pathname==='/p2b-side-effect-probe')probeRequests+=1});
+ let resolveResult,rejectResult;
+ const resultPromise=new Promise((resolve,reject)=>{resolveResult=resolve;rejectResult=reject});
+ const timeout=setTimeout(()=>rejectResult(new Error('Timed out waiting for P2-B console result.')),30000);
+ page.on('console',message=>{
+   const text=message.text();
+   if(!text.startsWith('P2B_RESULT:'))return;
+   try{clearTimeout(timeout);resolveResult(JSON.parse(text.slice('P2B_RESULT:'.length)))}catch(error){clearTimeout(timeout);rejectResult(error)}
+ });
  await page.goto(base+'/audit/pass2/fixtures/p2b-authority-gate-adversarial.html',{waitUntil:'domcontentloaded'});
- await page.waitForFunction(()=>window.__P2B_RESULT__&&window.__P2B_RESULT__.status,{timeout:30000});
- const result=await page.evaluate(()=>window.__P2B_RESULT__);
+ const result=await resultPromise;
  result.side_effect_probe_requests=probeRequests;
  result.tests.push({name:'blocked fetch produced zero network requests',pass:probeRequests===0,detail:{probeRequests}});
  result.tests_total=result.tests.length;
