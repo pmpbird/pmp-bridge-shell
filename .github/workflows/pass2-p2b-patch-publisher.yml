@@ -1,0 +1,57 @@
+name: Publish Pass 2 P2-B Patch
+
+on:
+  push:
+    branches:
+      - agent/pass2-p2b-actor-authorization-gate
+    paths:
+      - 'tools/apply_pass2_p2b_patch.py'
+      - 'tools/pass2_p2b_patch_payload_*.b64'
+      - '.github/workflows/pass2-p2b-patch-publisher.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-pass2-p2b-patch
+  cancel-in-progress: false
+
+jobs:
+  apply-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply exact P2-B patch and remove bootstrap
+        run: |
+          set -euo pipefail
+          python3 tools/apply_pass2_p2b_patch.py | tee /tmp/pass2-p2b-patch-console.log
+          python3 -m json.tool /tmp/pass2-p2b-patch-result.json >/dev/null
+
+      - name: Verify intended patch scope
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,pathlib,subprocess
+          result=json.loads(pathlib.Path('/tmp/pass2-p2b-patch-result.json').read_text())
+          changed=set(subprocess.check_output(['git','status','--short'],text=True).splitlines())
+          assert result['status']=='PASS'
+          assert result['files_written']==16
+          assert result['pass2_complete'] is False
+          assert result['pass3_started'] is False
+          assert changed
+          PY
+          python3 tools/test_pass2_p2b_static.py /tmp/pass2-p2b-bootstrap-static.json
+
+      - name: Commit exact P2-B implementation
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Implement Pass 2 P2-B exact-source actor authorization gate'
+          git push origin "HEAD:${GITHUB_REF_NAME}"
