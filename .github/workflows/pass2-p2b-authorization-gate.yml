@@ -130,7 +130,8 @@ jobs:
       - name: Install Playwright Chromium
         run: |
           python3 -m pip install --disable-pip-version-check playwright==1.55.0
-          python3 -m playwright install --with-deps chromium
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
 
       - name: Run P2-B exact-source static gate
         run: |
