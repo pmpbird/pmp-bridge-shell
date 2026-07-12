@@ -3,13 +3,12 @@
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
   "manifest_sha256": "e90ea9d378cb068269cd0b7ee1336b64b72aa4feef029bc8a0b68b925877bb99",
   "manifest_version": "20260711A-A003-FINAL",
-  "pass2_context": "P2-B V2 hardening adds an independent actor-source manifest and complete 42-check no-effect proof; active-chain integration remains absent.",
   "repair_id": "A-003",
   "root_self_verifiable": false,
   "root_trust_anchor": "pmp-app-current.html",
   "rule": "The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.",
   "runtime_source_set_sha256": "a2118dbbbf390c08f61d025a103b5f5a7e2a21dfd49f859c8acf27d8c99cd642",
-  "sealed_branch": "agent/pass2-p2b-hardening-v2",
+  "sealed_branch": "main",
   "status": "SEALED",
   "type": "PMP_A003_MANIFEST_SEAL_V1"
 }
