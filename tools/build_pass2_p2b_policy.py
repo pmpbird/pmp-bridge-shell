@@ -12,6 +12,7 @@ ACTORS = [
     ("audit/pass2/fixtures/p2b-known-limited-actor.js", "fixture_limited", "fixture-owner", "fixture", []),
     ("audit/pass2/fixtures/p2b-known-async-actor.js", "fixture_async", "fixture-owner", "fixture", ["timer_schedule", "storage_write"]),
 ]
+CANONICAL_SOURCE_MANIFEST = "pmp-actor-source-manifest-v1.json"
 
 
 def sha256(data: bytes) -> str:
@@ -30,7 +31,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, default=Path("."))
     parser.add_argument("--output", type=Path, default=Path("pmp-actor-authority-policy-v1.json"))
-    parser.add_argument("--manifest-output", type=Path, default=Path("pmp-actor-source-manifest-v1.json"))
+    parser.add_argument("--manifest-output", type=Path, default=Path(CANONICAL_SOURCE_MANIFEST))
     args = parser.parse_args()
 
     actors = []
@@ -73,7 +74,7 @@ def main() -> int:
         "version": "1.0.0-pass2-p2b-fixture-policy",
         "algorithm": "SHA-256",
         "status": "P2B_CERTIFICATION_POLICY_NOT_ACTIVE_CHAIN",
-        "source_manifest": args.manifest_output.name,
+        "source_manifest": CANONICAL_SOURCE_MANIFEST,
         "unknown_actor_policy": "BLOCK_BEFORE_SIDE_EFFECT",
         "unauthorized_capability_policy": "BLOCK_BEFORE_SIDE_EFFECT",
         "protected_capabilities": [
@@ -95,6 +96,7 @@ def main() -> int:
         "actors": len(actors),
         "policy": str(args.output),
         "source_manifest": str(args.manifest_output),
+        "source_manifest_reference": CANONICAL_SOURCE_MANIFEST,
     }, sort_keys=True))
     return 0
 
