@@ -3,7 +3,13 @@ from __future__ import annotations
 import base64,hashlib,json,subprocess,zlib
 from pathlib import Path
 BASE_COMMIT="c767844d53b4b393928170387b6f988e49fe1fc6"
-BOOTSTRAP_FILES=["tools/apply_pass2_p2b_patch.py",".github/workflows/pass2-p2b-patch-publisher.yml"]
+BOOTSTRAP_FILES=[
+ "tools/apply_pass2_p2b_patch.py",
+ ".github/workflows/pass2-p2b-patch-publisher.yml",
+ "audit/pass2/p2b-draft-scope.md",
+ "audit/pass2/p2b-draft-scope.json",
+ "audit/pass2/p2b-publication-state.json",
+]
 PAYLOAD_GLOB='pass2_p2b_patch_payload_*.b64'
 def git_blob(data:bytes)->str:return hashlib.sha1(f"blob {len(data)}\0".encode()+data).hexdigest()
 def main()->int:
