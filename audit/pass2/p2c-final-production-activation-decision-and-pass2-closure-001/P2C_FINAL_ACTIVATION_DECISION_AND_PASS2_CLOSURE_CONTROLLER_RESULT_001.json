@@ -1,0 +1,17 @@
+{
+  "checks": {
+    "activation_not_authorized": true,
+    "closure_not_certified": true,
+    "decision_hold": true,
+    "pass3_not_started": true,
+    "production_untouched": true,
+    "review_fail_closed": true
+  },
+  "closure_certification": "NOT_CERTIFIED_FAIL_CLOSED",
+  "decision": "HOLD_DO_NOT_ACTIVATE",
+  "pass2_complete": false,
+  "pass3_started": false,
+  "production_patch_applied": false,
+  "status": "PASS",
+  "type": "PMP_P2C_FINAL_ACTIVATION_DECISION_AND_PASS2_CLOSURE_CONTROLLER_RESULT_001"
+}
