@@ -80,10 +80,12 @@ jobs:
         run: |
           npm install --no-save playwright@1.55.0
           npx playwright install --with-deps chromium
+          ln -sfn "$GITHUB_WORKSPACE/node_modules" /tmp/node_modules
 
       - name: Run production-shaped navigable-origin browser fixture
         env:
           P2C_PORT: '8765'
+          NODE_PATH: ${{ github.workspace }}/node_modules
         run: |
           set -o pipefail
           node "$CANDIDATE_DIR/run-p2c-production-shaped-browser-integration-candidate-001.cjs" "$CANDIDATE_DIR" /tmp/p2c-production-shaped-browser-result.json 2>&1 | tee /tmp/p2c-production-shaped-browser-console.log
