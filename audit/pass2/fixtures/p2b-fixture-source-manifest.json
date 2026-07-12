@@ -1,0 +1,23 @@
+{
+  "algorithm": "SHA-256",
+  "records": [
+    {
+      "path": "audit/pass2/fixtures/p2b-known-storage-actor.js",
+      "sha256_hex": "c1ca4745b5e214f2ddbe8f5ca2e65a2323775871e29a5c7e59bfbfdf318c5261"
+    },
+    {
+      "path": "audit/pass2/fixtures/p2b-known-dom-actor.js",
+      "sha256_hex": "e0cf19c7c50f4aeb52b5dea3d8b13d7409c39b1f318417209042358b7d5b8d88"
+    },
+    {
+      "path": "audit/pass2/fixtures/p2b-known-limited-actor.js",
+      "sha256_hex": "a5c4e6a4219fb24cb344224db4adda0e7bc27939977e1b9b38bce90dc515c3a8"
+    },
+    {
+      "path": "audit/pass2/fixtures/p2b-known-async-actor.js",
+      "sha256_hex": "a090080606568044549c803d23f1ef5333a58e1d27bcd5dddbdd5886c4d81aa5"
+    }
+  ],
+  "status": "EXACT_FIXTURE_SOURCE_IDENTITIES",
+  "type": "PMP_PASS2_P2B_FIXTURE_SOURCE_MANIFEST_V1"
+}
