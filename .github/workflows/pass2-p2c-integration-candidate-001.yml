@@ -1,0 +1,184 @@
+name: Pass 2 P2-C Integration Candidate 001
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/pass2-p2c-integration-candidate-001.yml'
+      - 'audit/pass2/p2c-integration-candidate-001-generator/**'
+      - 'audit/pass2/p2c-integration-candidate-001-scope-lock.json'
+      - 'audit/pass2/p2c-integration-candidate-001-status.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  BASE_MAIN_COMMIT: c618596f2b5c99ca7f355153a5bd31268170df80
+  CANDIDATE_DIR: /tmp/p2c-integration-candidate-001
+
+jobs:
+  integration-and-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify audit-only candidate scope
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor "$BASE_MAIN_COMMIT" HEAD
+          python3 - <<'PY'
+          import json,pathlib,subprocess,os
+          allowed={
+            '.github/workflows/pass2-p2c-integration-candidate-001.yml',
+            'audit/pass2/p2c-integration-candidate-001-scope-lock.json',
+            'audit/pass2/p2c-integration-candidate-001-status.md',
+          }
+          changed=set(subprocess.check_output(['git','diff','--name-only',os.environ['BASE_MAIN_COMMIT'],'HEAD'],text=True).splitlines())
+          extras={x for x in changed if x not in allowed and not x.startswith('audit/pass2/p2c-integration-candidate-001-generator/')}
+          assert not extras, sorted(extras)
+          assert allowed <= changed, sorted(allowed-changed)
+          assert any(x.startswith('audit/pass2/p2c-integration-candidate-001-generator/') for x in changed)
+          scope=json.loads(pathlib.Path('audit/pass2/p2c-integration-candidate-001-scope-lock.json').read_text())
+          assert scope['active_chain_integration'] is False
+          assert scope['production_runtime_files_changed'] is False
+          pathlib.Path('/tmp/p2c-scope-result.json').write_text(json.dumps({'status':'PASS','changed_paths':sorted(changed),'active_chain_integrated':False,'pass2_complete':False,'pass3_started':False},indent=2)+'\n')
+          PY
+
+      - name: Set up Python and Node
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build deterministic inactive integration candidate
+        run: |
+          set -euo pipefail
+          rm -rf "$CANDIDATE_DIR"
+          cat audit/pass2/p2c-integration-candidate-001-generator/*.b64 | base64 -d | gzip -d > /tmp/build_p2c_integration_candidate_001.py
+          python3 /tmp/build_p2c_integration_candidate_001.py --repo . --output-dir "$CANDIDATE_DIR" | tee /tmp/p2c-candidate-build-console.log
+          python3 - <<'PY'
+          import json,os,pathlib
+          d=pathlib.Path(os.environ['CANDIDATE_DIR'])
+          r=json.loads((d/'p2c-integration-candidate-build-result-001.json').read_text())
+          assert r['status']=='PASS'
+          assert r['production_actor_count']==79 and r['broker_actor_count']==8 and r['policy_actor_count']==87
+          assert r['active_chain_integration'] is False and r['production_files_changed'] is False
+          PY
+
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Run production-shaped navigable-origin browser fixture
+        env:
+          P2C_PORT: '8765'
+        run: |
+          set -o pipefail
+          node "$CANDIDATE_DIR/run-p2c-production-shaped-browser-integration-candidate-001.cjs" "$CANDIDATE_DIR" /tmp/p2c-production-shaped-browser-result.json 2>&1 | tee /tmp/p2c-production-shaped-browser-console.log
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.loads(pathlib.Path('/tmp/p2c-production-shaped-browser-result.json').read_text())
+          assert r['status']=='PASS',r
+          assert r['tests_failed']==0 and r['tests_passed']==r['tests_total']
+          assert r['order_ok'] is True
+          assert r['allowed_helper_requests']==1 and r['evil_requests']==0
+          assert r['production_sentinel']=='unchanged'
+          assert r['active_chain_integrated'] is False
+          assert set(r['realm_orders'])=={'root','guardian','reload-owner','inner-v30','inner-v23'}
+          PY
+
+      - name: Run A-003 repository regression 21 of 21
+        run: |
+          set -o pipefail
+          python3 tools/test_a003_integrity.py --output /tmp/p2c-a003-repository.json 2>&1 | tee /tmp/p2c-a003-repository-console.log
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.loads(pathlib.Path('/tmp/p2c-a003-repository.json').read_text())
+          assert r['tests_total']==21 and r['tests_passed']==21 and r['tests_failed']==0
+          PY
+
+      - name: Run A-003 adversarial live regression 47 of 47
+        env:
+          A003_RESULT_PATH: /tmp/p2c-a003-live.json
+        run: |
+          set -o pipefail
+          python3 tools/run_a003_live_final.py 2>&1 | tee /tmp/p2c-a003-live-console.log
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.loads(pathlib.Path('/tmp/p2c-a003-live.json').read_text())
+          assert r['tests_total']==47 and r['tests_passed']==47 and r['tests_failed']==0 and r.get('fatal_error') is None
+          PY
+
+      - name: Start repository server for A-002
+        run: |
+          python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/p2c-a002-http.log 2>&1 &
+          echo $! > /tmp/p2c-a002-http.pid
+          for i in $(seq 1 30); do
+            curl -fsS http://127.0.0.1:8000/pmp-current-map-v12.json >/dev/null && exit 0
+            sleep 1
+          done
+          cat /tmp/p2c-a002-http.log
+          exit 1
+
+      - name: Run A-002 live route regression 41 of 41
+        env:
+          A002_BASE_URL: http://127.0.0.1:8000/
+          A002_RESULT_PATH: /tmp/p2c-a002-live.json
+        run: |
+          set -o pipefail
+          node audit/a002-live-runtime.cjs 2>&1 | tee /tmp/p2c-a002-live-console.log
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.loads(pathlib.Path('/tmp/p2c-a002-live.json').read_text())
+          assert r['tests_total']==41 and r['tests_passed']==41 and r['tests_failed']==0 and r.get('fatal_error') is None
+          PY
+
+      - name: Build aggregate inactive-candidate receipt
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json,os,pathlib
+          def read(p):
+            q=pathlib.Path(p)
+            return json.loads(q.read_text()) if q.is_file() else None
+          browser=read('/tmp/p2c-production-shaped-browser-result.json')
+          a002=read('/tmp/p2c-a002-live.json')
+          a003r=read('/tmp/p2c-a003-repository.json')
+          a003l=read('/tmp/p2c-a003-live.json')
+          passed=bool(browser and browser.get('status')=='PASS' and browser.get('tests_failed')==0 and a002 and a002.get('tests_passed')==41 and a002.get('tests_failed')==0 and a003r and a003r.get('tests_passed')==21 and a003r.get('tests_failed')==0 and a003l and a003l.get('tests_passed')==47 and a003l.get('tests_failed')==0)
+          out={'type':'PMP_APP_ORCHESTRATOR_PASS2_P2C_PRODUCTION_INTEGRATION_PATCH_CANDIDATE_001_AGGREGATE','status':'PASS_INACTIVE_CANDIDATE_READY_FOR_ENFORCEMENT_REVIEW' if passed else 'FAIL','overall_project_pass':'Pass 2','phase':'P2-C','source_repository_commit':os.environ['BASE_MAIN_COMMIT'],'production_shaped_browser':browser,'a002_live':a002,'a003_repository':a003r,'a003_adversarial_live':a003l,'production_files_changed':False,'active_chain_integrated':False,'pass2_complete':False,'pass3_started':False,'activation_decision':'NO_ACTIVATION_CANDIDATE_ONLY','exact_next_move':'Build and independently review the P2-C inactive enforcement patch and closure gate. Apply nothing to production until explicit activation authorization and a final rollback-ready gate pass.'}
+          pathlib.Path('/tmp/p2c-integration-candidate-aggregate.json').write_text(json.dumps(out,indent=2)+'\n')
+          print(json.dumps({'status':out['status'],'browser':browser and f"{browser.get('tests_passed')}/{browser.get('tests_total')}",'a002':a002 and f"{a002.get('tests_passed')}/{a002.get('tests_total')}",'a003_repository':a003r and f"{a003r.get('tests_passed')}/{a003r.get('tests_total')}",'a003_live':a003l and f"{a003l.get('tests_passed')}/{a003l.get('tests_total')}"},indent=2))
+          if not passed: raise SystemExit(1)
+          PY
+
+      - name: Upload complete P2-C candidate evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2c-production-integration-patch-candidate-001-evidence
+          path: |
+            /tmp/p2c-integration-candidate-001/
+            /tmp/p2c-scope-result.json
+            /tmp/p2c-candidate-build-console.log
+            /tmp/p2c-production-shaped-browser-result.json
+            /tmp/p2c-production-shaped-browser-console.log
+            /tmp/p2c-a003-repository.json
+            /tmp/p2c-a003-repository-console.log
+            /tmp/p2c-a003-live.json
+            /tmp/p2c-a003-live-console.log
+            /tmp/p2c-a002-live.json
+            /tmp/p2c-a002-live-console.log
+            /tmp/p2c-a002-http.log
+            /tmp/p2c-integration-candidate-aggregate.json
+          if-no-files-found: warn
+          retention-days: 90
