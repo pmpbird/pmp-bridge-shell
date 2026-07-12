@@ -23,14 +23,16 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - name: Checkout full history
+      - name: Checkout exact candidate head with full history
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Verify audit-only candidate scope
         run: |
           set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
           git merge-base --is-ancestor "$BASE_MAIN_COMMIT" HEAD
           python3 - <<'PY'
           import json,pathlib,subprocess,os
@@ -45,9 +47,10 @@ jobs:
           assert allowed <= changed, sorted(allowed-changed)
           assert any(x.startswith('audit/pass2/p2c-integration-candidate-001-generator/') for x in changed)
           scope=json.loads(pathlib.Path('audit/pass2/p2c-integration-candidate-001-scope-lock.json').read_text())
+          assert scope['base_main_commit']==os.environ['BASE_MAIN_COMMIT']
           assert scope['active_chain_integration'] is False
           assert scope['production_runtime_files_changed'] is False
-          pathlib.Path('/tmp/p2c-scope-result.json').write_text(json.dumps({'status':'PASS','changed_paths':sorted(changed),'active_chain_integrated':False,'pass2_complete':False,'pass3_started':False},indent=2)+'\n')
+          pathlib.Path('/tmp/p2c-scope-result.json').write_text(json.dumps({'status':'PASS','candidate_head':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'base_main_commit':os.environ['BASE_MAIN_COMMIT'],'changed_paths':sorted(changed),'active_chain_integrated':False,'pass2_complete':False,'pass3_started':False},indent=2)+'\n')
           PY
 
       - name: Set up Python and Node
