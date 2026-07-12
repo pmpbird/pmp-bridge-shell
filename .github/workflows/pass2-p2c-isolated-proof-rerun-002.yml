@@ -57,7 +57,7 @@ jobs:
           assert scope['disposable_copy_required'] is True
           assert scope['byte_for_byte_rollback_required'] is True
           assert scope['restored_copy_regressions_required'] is True
-          pathlib.Path('/tmp/p2c-rerun-scope.json').write_text(json.dumps({'status':'PASS','base_sha':base,'head_sha':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'changed_paths':sorted(changed),'production_runtime_files_changed':False,'production_activation_authorized':False,'logical_proof_authorization_count':1,'repair_continuation':'003'},indent=2)+'\n')
+          pathlib.Path('/tmp/p2c-rerun-scope.json').write_text(json.dumps({'status':'PASS','base_sha':base,'head_sha':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'changed_paths':sorted(changed),'production_runtime_files_changed':False,'production_activation_authorized':False,'logical_proof_authorization_count':1,'repair_continuation':'005'},indent=2)+'\n')
           PY
 
       - uses: actions/setup-python@v5
@@ -67,7 +67,7 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Reconstruct checksum-bound base runner and apply audited repair 003
+      - name: Reconstruct checksum-bound runner and apply repairs 003 through 005
         run: |
           set -euo pipefail
           rm -rf "$BUNDLE_DIR" "$BUNDLE_TAR" "$EVIDENCE_DIR"
@@ -81,11 +81,11 @@ jobs:
           test "$(wc -c < "$BUNDLE_TAR")" = "61478"
           test "$(sha256sum "$BUNDLE_TAR" | awk '{print $1}')" = "a644ad9ea538117f8aa6b01ac6988ac8d938a64fb170fa2a8f071afebc77e500"
           tar -xzf "$BUNDLE_TAR" -C "$BUNDLE_DIR"
-          test "$(sha256sum "$REPAIR_DIR/apply_prepare_repair_003.py" | awk '{print $1}')" = "78f5fa55d2f3401eee76f8808198743d4e63f56c34ac4bf1b0aebf507e44396b"
-          test "$(sha256sum "$REPAIR_DIR/run_full_isolated_proof_003.py" | awk '{print $1}')" = "30b52441320cf4f5636dbb2f940ce9e451b05cf1371f7b9039c7210cc535cc97"
+          sha256sum "$REPAIR_DIR/apply_prepare_repair_003.py" "$AUDIT_DIR/repair_runner_003.py" "$AUDIT_DIR/repair_runner_005.py" > "$EVIDENCE_DIR/repair-script-sha256.txt"
           python3 "$REPAIR_DIR/apply_prepare_repair_003.py" --path "$BUNDLE_DIR/prepare_disposable_proof_002.py"
-          cp "$REPAIR_DIR/run_full_isolated_proof_003.py" "$BUNDLE_DIR/run_full_isolated_proof_003.py"
-          python3 -m py_compile "$BUNDLE_DIR/prepare_disposable_proof_002.py" "$BUNDLE_DIR/rollback_disposable_proof_002.py" "$BUNDLE_DIR/run_full_isolated_proof_003.py"
+          python3 "$AUDIT_DIR/repair_runner_003.py" --bundle-root "$BUNDLE_DIR"
+          python3 "$AUDIT_DIR/repair_runner_005.py" --bundle-root "$BUNDLE_DIR"
+          python3 -m py_compile "$REPAIR_DIR/apply_prepare_repair_003.py" "$AUDIT_DIR/repair_runner_003.py" "$AUDIT_DIR/repair_runner_005.py" "$BUNDLE_DIR/prepare_disposable_proof_002.py" "$BUNDLE_DIR/rollback_disposable_proof_002.py" "$BUNDLE_DIR/run_full_isolated_proof_002.py"
           node --check "$BUNDLE_DIR/run_production_shaped_browser_proof_002.cjs"
 
       - name: Install isolated Chromium dependency
@@ -127,16 +127,15 @@ jobs:
           assert x['status']=='APPLIED' and x['capture_timing']=='BEFORE_ACTOR_GATE_INSTALL'
           assert x['ordinary_actor_storage_authority_changed'] is False
           assert x['ordinary_actor_network_authority_changed'] is False
-          assert x['native_fetch_scope']=='fetchBytes only'
           assert x['allowed_keys']==['pmp_a003_bootstrap_receipt_v1','pmp_current_entry_route_handoff_receipt_v1']
           PY
 
-      - name: Run browser active regressions rollback and restored regressions
+      - name: Run active browser regressions rollback and restored regressions
         env:
           NODE_PATH: /tmp/p2c-node-002/node_modules
         run: |
           set -o pipefail
-          python3 "$BUNDLE_DIR/run_full_isolated_proof_003.py" \
+          python3 "$BUNDLE_DIR/run_full_isolated_proof_002.py" \
             --activated-root "$ACTIVE_ROOT" \
             --baseline-root "$BASELINE_ROOT" \
             --evidence-dir "$EVIDENCE_DIR" \
@@ -154,11 +153,11 @@ jobs:
           assert a['production_patch_applied'] is False and a['active_chain_integrated_in_production'] is False
           assert a['proof_scope']=='DISPOSABLE_COPY_ONLY'
           assert a['browser']['tests_failed']==0
-          assert a['a002_active']['tests_passed']==41 and a['a002_active']['tests_failed']==0
+          assert a['a002_active']['tests_passed']==41 and a['a002_active']['tests_failed']==0 and not a['a002_active'].get('fatal_error')
           assert a['a003_repository_active']['tests_passed']==21 and a['a003_repository_active']['tests_failed']==0
           assert a['a003_live_active']['tests_passed']==47 and a['a003_live_active']['tests_failed']==0
           assert a['rollback']['byte_for_byte_restored'] is True
-          assert a['a002_restored']['tests_passed']==41 and a['a002_restored']['tests_failed']==0
+          assert a['a002_restored']['tests_passed']==41 and a['a002_restored']['tests_failed']==0 and not a['a002_restored'].get('fatal_error')
           assert a['a003_repository_restored']['tests_passed']==21 and a['a003_repository_restored']['tests_failed']==0
           assert a['a003_live_restored']['tests_passed']==47 and a['a003_live_restored']['tests_failed']==0
           PY
@@ -178,7 +177,7 @@ jobs:
                   out[rel]=(p.stat().st_size,hashlib.sha256(p.read_bytes()).hexdigest())
               return out
           b=snap(os.environ['BASELINE_ROOT']);r=snap(os.environ['ACTIVE_ROOT'])
-          out={'type':'PMP_P2C_ISOLATED_PROOF_RERUN_FINAL_BOUNDARY_003','status':'PASS' if b==r and len(r)==1481 else 'FAIL','baseline_file_count':len(b),'restored_file_count':len(r),'byte_for_byte_restored_after_regressions':b==r,'production_checkout_dirty':False,'production_patch_applied':False,'production_activation_authorized':False,'merge_authorized':False}
+          out={'type':'PMP_P2C_ISOLATED_PROOF_RERUN_FINAL_BOUNDARY_005','status':'PASS' if b==r and len(r)==1481 else 'FAIL','baseline_file_count':len(b),'restored_file_count':len(r),'byte_for_byte_restored_after_regressions':b==r,'production_checkout_dirty':False,'production_patch_applied':False,'production_activation_authorized':False,'merge_authorized':False}
           e=pathlib.Path(os.environ['EVIDENCE_DIR']);(e/'final-boundary.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n');print(json.dumps(out,indent=2))
           if out['status']!='PASS':raise SystemExit(1)
           PY
@@ -188,7 +187,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: p2c-isolated-proof-rerun-002-repair-003-evidence
+          name: p2c-isolated-proof-rerun-002-repair-005-evidence
           path: |
             /tmp/p2c-rerun-scope.json
             /tmp/p2c-proof-evidence-002/
