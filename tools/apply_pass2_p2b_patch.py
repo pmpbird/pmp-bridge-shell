@@ -3,9 +3,12 @@ from __future__ import annotations
 import base64,hashlib,json,subprocess,zlib
 from pathlib import Path
 BASE_COMMIT="c767844d53b4b393928170387b6f988e49fe1fc6"
+DEFERRED_WORKFLOWS=[
+ ".github/workflows/a003-integrity-probe.yml",
+ ".github/workflows/pass2-p2b-authorization-gate.yml",
+]
 BOOTSTRAP_FILES=[
  "tools/apply_pass2_p2b_patch.py",
- ".github/workflows/pass2-p2b-patch-publisher.yml",
  "audit/pass2/p2b-draft-scope.md",
  "audit/pass2/p2b-draft-scope.json",
  "audit/pass2/p2b-publication-state.json",
@@ -19,7 +22,9 @@ def main()->int:
  payload_text=''.join(path.read_text().strip() for path in chunk_paths)
  payload=json.loads(zlib.decompress(base64.b64decode(payload_text)))
  BOOTSTRAP_FILES.extend(str(path) for path in chunk_paths)
+ written=[]
  for name,record in payload.items():
+  if name in DEFERRED_WORKFLOWS: continue
   path=Path(name); old=record["old_git_blob"]
   if old is None:
    if path.exists(): raise SystemExit(f"Refusing to replace unexpected new path: {name}")
@@ -28,14 +33,15 @@ def main()->int:
    actual=git_blob(path.read_bytes())
    if actual!=old: raise SystemExit(f"Base identity mismatch for {name}: {actual} != {old}")
  for name,record in payload.items():
+  if name in DEFERRED_WORKFLOWS: continue
   path=Path(name); path.parent.mkdir(parents=True,exist_ok=True)
   data=base64.b64decode(record["content_b64"])
   if hashlib.sha256(data).hexdigest()!=record["sha256"]: raise SystemExit(f"Payload digest mismatch: {name}")
-  path.write_bytes(data)
+  path.write_bytes(data); written.append(name)
  for name in BOOTSTRAP_FILES:
   path=Path(name)
   if path.exists(): path.unlink()
- result={"type":"PMP_PASS2_P2B_PATCH_APPLICATION_V1","status":"PASS","base_commit":BASE_COMMIT,"files_written":len(payload),"paths":sorted(payload),"bootstrap_files_removed":BOOTSTRAP_FILES,"pass2_complete":False,"pass3_started":False}
+ result={"type":"PMP_PASS2_P2B_PATCH_APPLICATION_V2","status":"PASS","base_commit":BASE_COMMIT,"files_written":len(written),"paths":sorted(written),"deferred_workflow_paths":DEFERRED_WORKFLOWS,"bootstrap_files_removed":BOOTSTRAP_FILES,"pass2_complete":False,"pass3_started":False}
  Path('/tmp/pass2-p2b-patch-result.json').write_text(json.dumps(result,indent=2,sort_keys=True)+'\n')
  print(json.dumps(result,indent=2,sort_keys=True))
  return 0
