@@ -1,0 +1,197 @@
+name: Pass 2 P2-C Explicit Production-Shaped Proof 001
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/pass2-p2c-explicit-production-shaped-proof-001.yml'
+      - 'audit/pass2/p2c-explicit-production-shaped-proof-001/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  BASE_COMMIT: c618596f2b5c99ca7f355153a5bd31268170df80
+  BUNDLE_DIR: /tmp/p2c-proof-bundle
+  PROOF_ROOT: /tmp/p2c-production-shaped-proof-root
+  EVIDENCE_DIR: /tmp/p2c-production-shaped-proof-evidence
+  NODE_PATH: ${{ github.workspace }}/node_modules
+
+jobs:
+  explicit-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    steps:
+      - name: Checkout exact audit branch head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Verify audit-only branch scope
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          git merge-base --is-ancestor "$BASE_COMMIT" HEAD
+          python3 - <<'PY'
+          import json,os,pathlib,subprocess
+          changed=set(subprocess.check_output(['git','diff','--name-only',os.environ['BASE_COMMIT'],'HEAD'],text=True).splitlines())
+          allowed_prefix='audit/pass2/p2c-explicit-production-shaped-proof-001/'
+          allowed_exact={'.github/workflows/pass2-p2c-explicit-production-shaped-proof-001.yml'}
+          extras=sorted(x for x in changed if x not in allowed_exact and not x.startswith(allowed_prefix))
+          assert not extras,extras
+          assert '.github/workflows/pass2-p2c-explicit-production-shaped-proof-001.yml' in changed
+          assert any(x.startswith(allowed_prefix+'bundle/') for x in changed)
+          scope=json.loads(pathlib.Path(allowed_prefix+'scope-lock.json').read_text())
+          assert scope['production_runtime_files_changed'] is False
+          assert scope['production_apply_authorized'] is False
+          pathlib.Path('/tmp/p2c-proof-branch-scope.json').write_text(json.dumps({'status':'PASS','changed_paths':sorted(changed),'production_runtime_files_changed':False,'production_apply_authorized':False},indent=2)+'\n')
+          PY
+
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - uses: actions/setup-node@v4
+        with: {node-version: '20'}
+
+      - name: Reconstruct exact proof runner bundle
+        run: |
+          set -euo pipefail
+          rm -rf "$BUNDLE_DIR" "$EVIDENCE_DIR"
+          mkdir -p "$BUNDLE_DIR" "$EVIDENCE_DIR"
+          cat audit/pass2/p2c-explicit-production-shaped-proof-001/bundle/*.b64 | base64 -d > /tmp/p2c-proof-bundle.tar.gz
+          test "$(sha256sum /tmp/p2c-proof-bundle.tar.gz | awk '{print $1}')" = "7072376284b6dd711876d66b2e98000aa4a8139fc889d479c3416180b72faea4"
+          tar -xzf /tmp/p2c-proof-bundle.tar.gz -C "$BUNDLE_DIR"
+          python3 -m py_compile "$BUNDLE_DIR/proof_runner.py"
+          node --check "$BUNDLE_DIR/browser_proof.cjs"
+
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Prepare explicitly authorized disposable proof copy
+        run: |
+          set -o pipefail
+          python3 "$BUNDLE_DIR/proof_runner.py" prepare --repo "$GITHUB_WORKSPACE" --assets "$BUNDLE_DIR/assets" --proof-root "$PROOF_ROOT" --evidence "$EVIDENCE_DIR" 2>&1 | tee "$EVIDENCE_DIR/prepare-console.log"
+          python3 - <<'PY'
+          import json,os,pathlib
+          e=pathlib.Path(os.environ['EVIDENCE_DIR'])
+          r=json.loads((e/'prepared-result.json').read_text())
+          assert r['status']=='PASS_PREPARED_DISPOSABLE_PROOF_COPY'
+          assert r['production_untouched'] is True
+          a=json.loads((e/'authorization-receipt.json').read_text())
+          assert a['authorized'] is True and a['activation_itself_authorized'] is False and a['production_apply_authorized'] is False
+          PY
+
+      - name: Run active production-shaped browser proof
+        env: {P2C_PROOF_PORT: '8877'}
+        run: |
+          set -o pipefail
+          node "$BUNDLE_DIR/browser_proof.cjs" "$PROOF_ROOT" "$EVIDENCE_DIR/active-browser-proof.json" 2>&1 | tee "$EVIDENCE_DIR/active-browser-console.log"
+
+      - name: Run active-copy A-003 repository 21 of 21
+        run: |
+          set -o pipefail
+          (cd "$PROOF_ROOT" && python3 tools/test_a003_integrity.py --output "$EVIDENCE_DIR/active-a003-repository.json") 2>&1 | tee "$EVIDENCE_DIR/active-a003-repository-console.log"
+          python3 - <<'PY'
+          import json,os,pathlib
+          r=json.loads((pathlib.Path(os.environ['EVIDENCE_DIR'])/'active-a003-repository.json').read_text()); assert r['tests_total']==21 and r['tests_passed']==21 and r['tests_failed']==0
+          PY
+
+      - name: Run active-copy A-003 adversarial live 47 of 47
+        env: {A003_RESULT_PATH: /tmp/p2c-production-shaped-proof-evidence/active-a003-live.json}
+        run: |
+          set -o pipefail
+          (cd "$PROOF_ROOT" && python3 tools/run_a003_live_final.py) 2>&1 | tee "$EVIDENCE_DIR/active-a003-live-console.log"
+          rm -f "$PROOF_ROOT/a003-live-runtime-effective.cjs"
+          python3 - <<'PY'
+          import json,os,pathlib
+          r=json.loads((pathlib.Path(os.environ['EVIDENCE_DIR'])/'active-a003-live.json').read_text()); assert r['tests_total']==47 and r['tests_passed']==47 and r['tests_failed']==0 and r.get('fatal_error') is None
+          PY
+
+      - name: Run active-copy A-002 live 41 of 41
+        env:
+          A002_BASE_URL: http://127.0.0.1:8880/
+          A002_RESULT_PATH: /tmp/p2c-production-shaped-proof-evidence/active-a002-live.json
+        run: |
+          set -euo pipefail
+          (cd "$PROOF_ROOT" && python3 -m http.server 8880 --bind 127.0.0.1 > "$EVIDENCE_DIR/active-a002-http.log" 2>&1 & echo $! > /tmp/p2c-a002-active.pid)
+          for i in $(seq 1 30); do curl -fsS http://127.0.0.1:8880/pmp-current-map-v12.json >/dev/null && break; sleep 1; done
+          set -o pipefail
+          (cd "$PROOF_ROOT" && node audit/a002-live-runtime.cjs) 2>&1 | tee "$EVIDENCE_DIR/active-a002-live-console.log"
+          kill "$(cat /tmp/p2c-a002-active.pid)" || true
+          python3 - <<'PY'
+          import json,os,pathlib
+          r=json.loads((pathlib.Path(os.environ['EVIDENCE_DIR'])/'active-a002-live.json').read_text()); assert r['tests_total']==41 and r['tests_passed']==41 and r['tests_failed']==0 and r.get('fatal_error') is None
+          PY
+
+      - name: Roll back disposable copy byte-for-byte
+        run: |
+          set -o pipefail
+          python3 "$BUNDLE_DIR/proof_runner.py" rollback --proof-root "$PROOF_ROOT" --evidence "$EVIDENCE_DIR" 2>&1 | tee "$EVIDENCE_DIR/rollback-console.log"
+          python3 - <<'PY'
+          import json,os,pathlib
+          r=json.loads((pathlib.Path(os.environ['EVIDENCE_DIR'])/'rollback-result.json').read_text()); assert r['status']=='PASS' and r['byte_for_byte_tree_restored'] is True and r['active_chain_integration_after_rollback'] is False
+          PY
+
+      - name: Run restored-copy A-003 repository 21 of 21
+        run: |
+          set -o pipefail
+          (cd "$PROOF_ROOT" && python3 tools/test_a003_integrity.py --output "$EVIDENCE_DIR/restored-a003-repository.json") 2>&1 | tee "$EVIDENCE_DIR/restored-a003-repository-console.log"
+          python3 - <<'PY'
+          import json,os,pathlib
+          r=json.loads((pathlib.Path(os.environ['EVIDENCE_DIR'])/'restored-a003-repository.json').read_text()); assert r['tests_total']==21 and r['tests_passed']==21 and r['tests_failed']==0
+          PY
+
+      - name: Run restored-copy A-003 adversarial live 47 of 47
+        env: {A003_RESULT_PATH: /tmp/p2c-production-shaped-proof-evidence/restored-a003-live.json}
+        run: |
+          set -o pipefail
+          (cd "$PROOF_ROOT" && python3 tools/run_a003_live_final.py) 2>&1 | tee "$EVIDENCE_DIR/restored-a003-live-console.log"
+          rm -f "$PROOF_ROOT/a003-live-runtime-effective.cjs"
+          python3 - <<'PY'
+          import json,os,pathlib
+          r=json.loads((pathlib.Path(os.environ['EVIDENCE_DIR'])/'restored-a003-live.json').read_text()); assert r['tests_total']==47 and r['tests_passed']==47 and r['tests_failed']==0 and r.get('fatal_error') is None
+          PY
+
+      - name: Run restored-copy A-002 live 41 of 41
+        env:
+          A002_BASE_URL: http://127.0.0.1:8881/
+          A002_RESULT_PATH: /tmp/p2c-production-shaped-proof-evidence/restored-a002-live.json
+        run: |
+          set -euo pipefail
+          (cd "$PROOF_ROOT" && python3 -m http.server 8881 --bind 127.0.0.1 > "$EVIDENCE_DIR/restored-a002-http.log" 2>&1 & echo $! > /tmp/p2c-a002-restored.pid)
+          for i in $(seq 1 30); do curl -fsS http://127.0.0.1:8881/pmp-current-map-v12.json >/dev/null && break; sleep 1; done
+          set -o pipefail
+          (cd "$PROOF_ROOT" && node audit/a002-live-runtime.cjs) 2>&1 | tee "$EVIDENCE_DIR/restored-a002-live-console.log"
+          kill "$(cat /tmp/p2c-a002-restored.pid)" || true
+          python3 - <<'PY'
+          import json,os,pathlib
+          r=json.loads((pathlib.Path(os.environ['EVIDENCE_DIR'])/'restored-a002-live.json').read_text()); assert r['tests_total']==41 and r['tests_passed']==41 and r['tests_failed']==0 and r.get('fatal_error') is None
+          PY
+
+      - name: Verify final restored tree and aggregate proof receipt
+        run: |
+          python3 - <<'PY'
+          import json,os,pathlib
+          e=pathlib.Path(os.environ['EVIDENCE_DIR'])
+          def rd(n): return json.loads((e/n).read_text())
+          b=rd('active-browser-proof.json'); a2=rd('active-a002-live.json'); a3r=rd('active-a003-repository.json'); a3l=rd('active-a003-live.json'); rb=rd('rollback-result.json'); r2=rd('restored-a002-live.json'); r3r=rd('restored-a003-repository.json'); r3l=rd('restored-a003-live.json')
+          ok=b['status']=='PASS' and a2['tests_passed']==41 and a3r['tests_passed']==21 and a3l['tests_passed']==47 and rb['status']=='PASS' and r2['tests_passed']==41 and r3r['tests_passed']==21 and r3l['tests_passed']==47
+          out={'type':'PMP_P2C_EXPLICIT_PRODUCTION_SHAPED_ACTIVATION_AND_ROLLBACK_PROOF_RESULT_001','status':'PASS_EXPLICITLY_AUTHORIZED_PROOF_COMPLETE_PRODUCTION_UNTOUCHED' if ok else 'FAIL','overall_project_pass':'Pass 2','phase':'P2-C','source_commit':os.environ['BASE_COMMIT'],'active_browser':b,'active_a002':a2,'active_a003_repository':a3r,'active_a003_live':a3l,'rollback':rb,'restored_a002':r2,'restored_a003_repository':r3r,'restored_a003_live':r3l,'production_untouched':True,'production_apply_authorized':False,'activation_decision_made':False,'active_chain_integration':False,'pass2_complete':False,'pass3_started':False,'remaining_major_moves_in_pass2':1,'full_passes_remaining_after_pass2':6,'unfinished_passes_including_current':7,'exact_next_move':'Build P2-C Final Production Activation Decision and Pass 2 Closure Controller 001. Review this proof, require a separate explicit production activation decision, and apply nothing unless separately authorized.'}
+          (e/'aggregate-proof-result.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          if not ok: raise SystemExit(1)
+          PY
+
+      - name: Upload exact proof evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2c-explicit-production-shaped-proof-001-evidence
+          path: |
+            /tmp/p2c-production-shaped-proof-evidence/
+            /tmp/p2c-proof-branch-scope.json
+            /tmp/p2c-proof-bundle.tar.gz
+          if-no-files-found: warn
+          retention-days: 90
