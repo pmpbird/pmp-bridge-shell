@@ -1,0 +1,33 @@
+{
+  "activation_lock": false,
+  "active_chain_integration": false,
+  "created_at_utc": "2026-07-12T21:48:44Z",
+  "decision": "HOLD_DO_NOT_ACTIVATE",
+  "decision_class": "FAIL_CLOSED_NEGATIVE_DECISION",
+  "explicit_new_production_activation_authorization_present": false,
+  "next_required_authorizations": [
+    "A new explicit isolated-proof rerun authorization after the proof runner is repaired.",
+    "Only after a complete successful proof: a separate explicit production-activation authorization."
+  ],
+  "overall_project_pass": "Pass 2",
+  "phase": "P2-C",
+  "production_activation_authorized": false,
+  "production_application_authorized": false,
+  "proof_review_status": "INCOMPLETE_FAILED_CANNOT_SUPPORT_ACTIVATION_OR_PASS2_CLOSURE",
+  "reasons": [
+    "The user explicitly required a new, explicit production-activation authorization before production can be applied; no such authorization was issued.",
+    "The reviewed dedicated proof workflows failed before completing the required integrated disposable activation-and-rollback chain.",
+    "A negative HOLD decision is the only decision consistent with the authorization boundary and evidence."
+  ],
+  "type": "PMP_P2C_FINAL_PRODUCTION_ACTIVATION_DECISION_001",
+  "what_this_decision_does": [
+    "Keeps the actor gate and enforcement patch inactive in production.",
+    "Preserves Current Map as sole route authority.",
+    "Preserves production storage, IndexedDB, Cache Storage, Bank, and user content unchanged."
+  ],
+  "what_this_decision_does_not_do": [
+    "Does not apply or merge any patch.",
+    "Does not treat standalone regressions as an integrated production-shaped proof.",
+    "Does not close Pass 2."
+  ]
+}
