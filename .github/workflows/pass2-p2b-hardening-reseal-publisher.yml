@@ -102,22 +102,7 @@ jobs:
           print(json.dumps({'manifest_sha256':manifest_sha,'runtime_source_set_sha256':manifest['runtime_source_set_sha256'],'runtime_records':manifest['counts']['runtime_records']},indent=2))
           PY
 
-      - name: Hand hardening branch to its dedicated certification workflow
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          from pathlib import Path
-          path=Path('.github/workflows/pass2-p2b-authority-gate.yml')
-          text=path.read_text()
-          marker='  certify-p2b:\n'
-          guard="  certify-p2b:\n    if: github.head_ref != 'agent/pass2-p2b-hardening-v2'\n"
-          if guard not in text:
-              assert marker in text
-              text=text.replace(marker,guard,1)
-              path.write_text(text)
-          PY
-
-      - name: Commit only the exact bounded outputs
+      - name: Commit only the exact bounded reseal outputs
         run: |
           set -euo pipefail
           changed="$(git diff --name-only)"
@@ -126,19 +111,18 @@ jobs:
             exit 0
           fi
           python3 - <<'PY'
-          import pathlib,subprocess
+          import subprocess
           allowed={
             'pmp-runtime-integrity-manifest-v1.json',
             'pmp-app-current.html',
-            'audit/a003-manifest-seal.json',
-            '.github/workflows/pass2-p2b-authority-gate.yml'
+            'audit/a003-manifest-seal.json'
           }
           changed=set(subprocess.check_output(['git','diff','--name-only'],text=True).splitlines())
           assert changed<=allowed,sorted(changed-allowed)
-          assert {'pmp-runtime-integrity-manifest-v1.json','pmp-app-current.html','audit/a003-manifest-seal.json'}<=changed
+          assert allowed<=changed,sorted(allowed-changed)
           PY
           git config user.name 'pmp-pass2-p2b-hardening-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add pmp-runtime-integrity-manifest-v1.json pmp-app-current.html audit/a003-manifest-seal.json .github/workflows/pass2-p2b-authority-gate.yml
+          git add pmp-runtime-integrity-manifest-v1.json pmp-app-current.html audit/a003-manifest-seal.json
           git commit -m 'Publish exact P2-B hardening A-003 reseal'
           git push origin HEAD:agent/pass2-p2b-hardening-v2
