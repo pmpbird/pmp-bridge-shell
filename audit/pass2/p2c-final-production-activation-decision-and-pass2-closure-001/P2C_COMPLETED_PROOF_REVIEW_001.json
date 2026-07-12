@@ -1,0 +1,74 @@
+{
+  "bank_changed": false,
+  "cache_storage_changed": false,
+  "claimed_proof_status": "PASS_IN_PR_BODY",
+  "created_at_utc": "2026-07-12T21:48:44Z",
+  "crosswalk_router_included": false,
+  "current_map_changed": false,
+  "evidence": [
+    {
+      "body_claim": "proof completed successfully",
+      "failed_step": "Generate and activate candidate in disposable copy only",
+      "head_sha": "c318e2598b319ef3ccfdee0225bca1dba09bb663",
+      "merged": false,
+      "number": 58,
+      "skipped_required_steps": [
+        "Install Chromium proof dependency",
+        "Run browser A-002 A-003 and rollback matrix"
+      ],
+      "source": "GitHub PR and Actions metadata reviewed 2026-07-12",
+      "state": "closed",
+      "workflow_conclusion": "failure",
+      "workflow_run_id": 29208556442
+    },
+    {
+      "failed_step": "Reconstruct exact proof runner bundle",
+      "head_sha": "dc3dd951e0a5c28bd791d97a2baea6f7af837fcb",
+      "merged": false,
+      "number": 59,
+      "skipped_required_steps": [
+        "Install Playwright Chromium",
+        "Prepare explicitly authorized disposable proof copy",
+        "Run active production-shaped browser proof",
+        "Run active-copy A-003 repository 21 of 21",
+        "Run active-copy A-003 adversarial live 47 of 47",
+        "Run active-copy A-002 live 41 of 41",
+        "Roll back disposable copy byte-for-byte",
+        "Run restored-copy A-003 repository 21 of 21",
+        "Run restored-copy A-003 adversarial live 47 of 47",
+        "Run restored-copy A-002 live 41 of 41",
+        "Verify final restored tree and aggregate proof receipt"
+      ],
+      "source": "GitHub PR and Actions metadata reviewed 2026-07-12",
+      "standalone_checks": {
+        "A-002 Live Runtime Matrix": "success",
+        "A-003 Integrity Probe": "success"
+      },
+      "state": "open",
+      "workflow_conclusion": "failure",
+      "workflow_run_id": 29208664836
+    },
+    {
+      "associated_pull_request_workflow_runs": 0,
+      "later_candidate_heads_checked": [
+        "e2bd909c53e6f82babef3ba590a50d890f28ee4b",
+        "c56965609b16746347cb91790095cd2fd6ba21b0",
+        "711be4113215565f57c792d8666dcb510519a192"
+      ]
+    }
+  ],
+  "indexeddb_changed": false,
+  "load_bearing_findings": [
+    "No reviewed dedicated proof workflow completed the disposable activation, browser proof, A-002, both A-003 gates, rollback, restored-copy regressions, and final aggregate receipt as one successful chain.",
+    "The PR 58 success statement conflicts with its exact head workflow, which failed before Chromium and rollback.",
+    "The PR 59 dedicated workflow failed before disposable activation; standalone A-002 and A-003 successes do not substitute for integrated activation-and-rollback proof.",
+    "No new explicit production-activation authorization is present."
+  ],
+  "production_runtime_changed_by_review": false,
+  "repository": "pmpbird/pmp-bridge-shell",
+  "review_scope": "REVIEW_ONLY_NO_PRODUCTION_APPLICATION",
+  "source_repository_commit": "c618596f2b5c99ca7f355153a5bd31268170df80",
+  "storage_changed": false,
+  "type": "PMP_P2C_COMPLETED_PROOF_REVIEW_001",
+  "verified_proof_status": "INCOMPLETE_FAILED_CANNOT_SUPPORT_ACTIVATION_OR_PASS2_CLOSURE"
+}
