@@ -6,6 +6,7 @@
 (async()=>{
   const tests=[];
   const add=(name,pass,detail)=>tests.push({name,pass:Boolean(pass),detail:detail||null});
+  const publish=result=>{window.__P2B_RESULT__=result;console.log('P2B_RESULT:'+JSON.stringify(result));return result};
   const denied=async(name,fn,verify)=>{
     let error=null;try{await fn()}catch(e){error=e}
     add(name,Boolean(error&&error.code==='PMP_ACTOR_AUTHORITY_DENIED'&&(!verify||verify(error))),error?{code:error.code,reason:error.reason,detail:error.detail}:null);
@@ -94,7 +95,7 @@
     add('gate reports fail-closed policies',report.unknown_actor_policy==='BLOCK_BEFORE_SIDE_EFFECT'&&report.unauthorized_capability_policy==='BLOCK_BEFORE_SIDE_EFFECT');
     add('gate remains inside Pass 2',report.pass2_complete===false&&report.pass3_started===false);
     const failed=tests.filter(t=>!t.pass);
-    window.__P2B_RESULT__={type:'PMP_PASS2_P2B_ADVERSARIAL_BROWSER_RESULT_V1',status:failed.length?'FAIL':'PASS',tests_total:tests.length,tests_passed:tests.length-failed.length,tests_failed:failed.length,tests,gate_report:report,side_effect_probe_requests:0,decision:failed.length?'STOP_P2B_GATE_FAILED':'P2B_GATE_AND_FIXTURES_PASS_READY_FOR_ACTIVE_CHAIN_INTEGRATION'};
-  }catch(error){window.__P2B_RESULT__={type:'PMP_PASS2_P2B_ADVERSARIAL_BROWSER_RESULT_V1',status:'FAIL',fatal_error:String(error&&error.stack||error),tests_total:tests.length,tests_passed:tests.filter(t=>t.pass).length,tests_failed:tests.filter(t=>!t.pass).length+1,tests};}
+    publish({type:'PMP_PASS2_P2B_ADVERSARIAL_BROWSER_RESULT_V1',status:failed.length?'FAIL':'PASS',tests_total:tests.length,tests_passed:tests.length-failed.length,tests_failed:failed.length,tests,gate_report:report,side_effect_probe_requests:0,decision:failed.length?'STOP_P2B_GATE_FAILED':'P2B_GATE_AND_FIXTURES_PASS_READY_FOR_ACTIVE_CHAIN_INTEGRATION'});
+  }catch(error){publish({type:'PMP_PASS2_P2B_ADVERSARIAL_BROWSER_RESULT_V1',status:'FAIL',fatal_error:String(error&&error.stack||error),tests_total:tests.length,tests_passed:tests.filter(t=>t.pass).length,tests_failed:tests.filter(t=>!t.pass).length+1,tests});}
 })();
 </script></body></html>
