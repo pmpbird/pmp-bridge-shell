@@ -20,6 +20,7 @@
     "audit/pass2/fixtures/p2b-unknown-actor.js",
     "tools/build_pass2_p2b_policy.py",
     "tools/test_pass2_p2b_authority_gate.mjs",
+    "tools/run_a003_live_final.py",
     ".github/workflows/pass2-p2b-authority-gate.yml",
     "pmp-runtime-integrity-manifest-v1.json",
     "pmp-app-current.html",
