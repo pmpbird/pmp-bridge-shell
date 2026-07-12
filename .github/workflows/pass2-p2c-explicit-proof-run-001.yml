@@ -1,0 +1,170 @@
+name: Pass 2 P2-C Explicit Production-Shaped Proof Run 001
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/pass2-p2c-explicit-proof-run-001.yml'
+      - 'audit/pass2/p2c-explicit-proof-run-001/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  BASE_COMMIT: c618596f2b5c99ca7f355153a5bd31268170df80
+  PAYLOAD_SHA256: 9e5bad6335d3ad4ed4d7824b00bfa0def8414defe6b0031c008efc5c9bd1328e
+  PAYLOAD_DIR: /tmp/p2c-proof-payload
+  PROOF_ROOT: /tmp/p2c-proof-root
+  EVIDENCE_DIR: /tmp/p2c-proof-evidence
+
+jobs:
+  isolated-activation-rollback-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout exact proof branch head with history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Verify audit-only branch scope
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          git merge-base --is-ancestor "$BASE_COMMIT" HEAD
+          python3 - <<'PY'
+          import json,os,pathlib,subprocess
+          changed=set(subprocess.check_output(['git','diff','--name-only',os.environ['BASE_COMMIT'],'HEAD'],text=True).splitlines())
+          allowed={'.github/workflows/pass2-p2c-explicit-proof-run-001.yml','audit/pass2/p2c-explicit-proof-run-001-scope-lock.json','audit/pass2/p2c-explicit-proof-run-001-status.md'}
+          extra={p for p in changed if p not in allowed and not p.startswith('audit/pass2/p2c-explicit-proof-run-001/payload/')}
+          assert not extra,sorted(extra)
+          assert allowed<=changed,sorted(allowed-changed)
+          scope=json.loads(pathlib.Path('audit/pass2/p2c-explicit-proof-run-001-scope-lock.json').read_text())
+          assert scope['production_runtime_files_changed'] is False
+          assert scope['production_activation_authorized'] is False
+          assert scope['isolated_proof_authorized'] is True
+          pathlib.Path('/tmp/p2c-proof-scope.json').write_text(json.dumps({'status':'PASS','candidate_head':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'base_commit':os.environ['BASE_COMMIT'],'changed_paths':sorted(changed),'production_runtime_files_changed':False},indent=2)+'\n')
+          PY
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Reconstruct and verify proof payload
+        run: |
+          set -euo pipefail
+          mkdir -p "$PAYLOAD_DIR" "$EVIDENCE_DIR"
+          cat audit/pass2/p2c-explicit-proof-run-001/payload/part*.b64 | base64 -d > /tmp/p2c-proof-payload.tar.gz
+          echo "$PAYLOAD_SHA256  /tmp/p2c-proof-payload.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/p2c-proof-payload.tar.gz -C "$PAYLOAD_DIR"
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib
+          root=pathlib.Path(os.environ['PAYLOAD_DIR']); m=json.loads((root/'PAYLOAD_MANIFEST.json').read_text())
+          for r in m['records']:
+            p=root/r['path']; assert p.is_file(),r['path']; assert hashlib.sha256(p.read_bytes()).hexdigest()==r['sha256'],r['path']
+          print(json.dumps({'status':'PASS','payload_records':len(m['records']),'authorization_receipt_sha256':m['authorization_receipt_sha256']},indent=2))
+          PY
+
+      - name: Apply activated candidate only to detached disposable worktree
+        run: |
+          set -euo pipefail
+          python3 "$PAYLOAD_DIR/prepare_isolated_proof.py" --repo "$GITHUB_WORKSPACE" --payload "$PAYLOAD_DIR" --proof-root "$PROOF_ROOT" --evidence-dir "$EVIDENCE_DIR" | tee "$EVIDENCE_DIR/prepare-console.log"
+
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+          ln -sfn "$GITHUB_WORKSPACE/node_modules" "$PROOF_ROOT/node_modules"
+
+      - name: Run A-003 repository regression 21 of 21
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          cd "$PROOF_ROOT"
+          python3 tools/test_a003_integrity.py --output "$EVIDENCE_DIR/P2C_A003_REPOSITORY_RESULT_001.json" 2>&1 | tee "$EVIDENCE_DIR/a003-repository-console.log"
+
+      - name: Start proof-only navigable origin
+        run: |
+          cd "$PROOF_ROOT"
+          python3 -m http.server 8765 --bind 127.0.0.1 > "$EVIDENCE_DIR/proof-http.log" 2>&1 &
+          echo $! > "$EVIDENCE_DIR/proof-http.pid"
+          for i in $(seq 1 30); do curl -fsS http://127.0.0.1:8765/pmp-app-current.html >/dev/null && exit 0; sleep 1; done
+          cat "$EVIDENCE_DIR/proof-http.log"; exit 1
+
+      - name: Run production-shaped activated browser proof
+        continue-on-error: true
+        env:
+          NODE_PATH: ${{ github.workspace }}/node_modules
+          P2C_BASE_URL: http://127.0.0.1:8765/
+          P2C_PROOF_BROWSER_RESULT: /tmp/p2c-proof-evidence/P2C_PRODUCTION_SHAPED_ACTIVATION_BROWSER_PROOF_001.json
+        run: |
+          set -o pipefail
+          node "$PAYLOAD_DIR/run_production_shaped_proof_browser_001.cjs" 2>&1 | tee "$EVIDENCE_DIR/production-shaped-browser-console.log"
+
+      - name: Stop proof-only origin
+        if: always()
+        run: |
+          test -f "$EVIDENCE_DIR/proof-http.pid" && kill "$(cat "$EVIDENCE_DIR/proof-http.pid")" || true
+
+      - name: Run A-003 adversarial live regression 47 of 47
+        continue-on-error: true
+        env:
+          NODE_PATH: ${{ github.workspace }}/node_modules
+          A003_RESULT_PATH: /tmp/p2c-proof-evidence/P2C_A003_LIVE_RESULT_001.json
+        run: |
+          set -o pipefail
+          cd "$PROOF_ROOT"
+          python3 tools/run_a003_live_final.py 2>&1 | tee "$EVIDENCE_DIR/a003-live-console.log"
+
+      - name: Start A-002 proof origin
+        run: |
+          cd "$PROOF_ROOT"
+          python3 -m http.server 8000 --bind 127.0.0.1 > "$EVIDENCE_DIR/a002-http.log" 2>&1 &
+          echo $! > "$EVIDENCE_DIR/a002-http.pid"
+          for i in $(seq 1 30); do curl -fsS http://127.0.0.1:8000/pmp-current-map-v12.json >/dev/null && exit 0; sleep 1; done
+          cat "$EVIDENCE_DIR/a002-http.log"; exit 1
+
+      - name: Run A-002 live regression 41 of 41
+        continue-on-error: true
+        env:
+          NODE_PATH: ${{ github.workspace }}/node_modules
+          A002_BASE_URL: http://127.0.0.1:8000/
+          A002_RESULT_PATH: /tmp/p2c-proof-evidence/P2C_A002_LIVE_RESULT_001.json
+        run: |
+          set -o pipefail
+          cd "$PROOF_ROOT"
+          node audit/a002-live-runtime.cjs 2>&1 | tee "$EVIDENCE_DIR/a002-live-console.log"
+
+      - name: Stop A-002 origin
+        if: always()
+        run: |
+          test -f "$EVIDENCE_DIR/a002-http.pid" && kill "$(cat "$EVIDENCE_DIR/a002-http.pid")" || true
+
+      - name: Roll disposable worktree back byte-for-byte
+        if: always()
+        run: |
+          set -o pipefail
+          python3 "$PAYLOAD_DIR/rollback_isolated_proof.py" --repo "$GITHUB_WORKSPACE" --payload "$PAYLOAD_DIR" --proof-root "$PROOF_ROOT" --evidence-dir "$EVIDENCE_DIR" 2>&1 | tee "$EVIDENCE_DIR/rollback-console.log"
+
+      - name: Build final aggregate proof receipt
+        if: always()
+        run: |
+          python3 "$PAYLOAD_DIR/aggregate_proof_results.py" --evidence-dir "$EVIDENCE_DIR" --output "$EVIDENCE_DIR/P2C_EXPLICIT_PRODUCTION_SHAPED_PROOF_AGGREGATE_RESULT_001.json"
+
+      - name: Upload complete proof evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2c-explicit-production-shaped-proof-run-001-evidence
+          path: |
+            /tmp/p2c-proof-scope.json
+            /tmp/p2c-proof-evidence/
+            /tmp/p2c-proof-payload/P2C_EXPLICIT_PRODUCTION_SHAPED_PROOF_AUTHORIZATION_RECEIPT_001.json
+            /tmp/p2c-proof-payload/PAYLOAD_MANIFEST.json
+          if-no-files-found: warn
+          retention-days: 90
