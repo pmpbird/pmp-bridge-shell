@@ -34,9 +34,10 @@ jobs:
           python3 tools/apply_pass2_p2b_patch.py | tee /tmp/pass2-p2b-patch-console.log
           python3 -m json.tool /tmp/pass2-p2b-patch-result.json >/dev/null
 
-      - name: Verify intended patch scope
+      - name: Generate registry and verify intended patch scope
         run: |
           set -euo pipefail
+          python3 tools/build_pass2_actor_registry.py
           python3 - <<'PY'
           import json,pathlib,subprocess
           result=json.loads(pathlib.Path('/tmp/pass2-p2b-patch-result.json').read_text())
@@ -46,6 +47,7 @@ jobs:
           assert result['pass2_complete'] is False
           assert result['pass3_started'] is False
           assert changed
+          assert pathlib.Path('pmp-pass2-actor-authority-registry-v1.json').is_file()
           PY
           python3 tools/test_pass2_p2b_static.py /tmp/pass2-p2b-bootstrap-static.json
 
