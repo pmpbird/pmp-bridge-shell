@@ -1,0 +1,296 @@
+name: Pass 2 P2-B Actor Authority Gate
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'pmp-actor-authority-gate-v1.js'
+      - 'pmp-actor-authority-policy-v1.json'
+      - 'audit/pass2/p2b-**'
+      - 'audit/pass2/fixtures/p2b-**'
+      - 'tools/build_pass2_p2b_policy.py'
+      - 'tools/test_pass2_p2b_authority_gate.mjs'
+      - '.github/workflows/pass2-p2b-authority-gate.yml'
+      - 'pmp-runtime-integrity-manifest-v1.json'
+      - 'pmp-app-current.html'
+      - 'audit/a003-manifest-seal.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: pass2-p2b-authority-gate-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+env:
+  P2A_MAIN_COMMIT: c767844d53b4b393928170387b6f988e49fe1fc6
+  P2A_RECEIPT_ID: PMP-APP-ORCH-PASS2-P2A-E7BA1B93-PASS-001
+  GH_TOKEN: ${{ github.token }}
+
+jobs:
+  certify-p2b:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify P2-B scope and Pass 2 lineage
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse origin/main)" = "$P2A_MAIN_COMMIT"
+          git merge-base --is-ancestor "$P2A_MAIN_COMMIT" HEAD
+          python3 - <<'PY'
+          import json,os,pathlib,subprocess
+          p2a=json.loads(pathlib.Path('audit/pass2/p2a-receipt.json').read_text())
+          assert p2a['receipt_id']==os.environ['P2A_RECEIPT_ID']
+          assert p2a['status']=='P2A_COMPLETE_PASS2_IN_PROGRESS'
+          scope=json.loads(pathlib.Path('audit/pass2/p2b-scope-lock.json').read_text())
+          assert scope['status']=='P2B_IN_PROGRESS'
+          assert scope['truth_boundary']['active_chain_integration_in_this_phase'] is False
+          allowed=set(scope['allowed_changes'])
+          changed=set(subprocess.check_output(['git','diff','--name-only',os.environ['P2A_MAIN_COMMIT'],'HEAD'],text=True).splitlines())
+          assert changed <= allowed, sorted(changed-allowed)
+          required={'pmp-actor-authority-gate-v1.js','pmp-actor-authority-policy-v1.json','audit/pass2/p2b-scope-lock.json','audit/pass2/p2b-status.md','audit/pass2/fixtures/p2b-authority-gate-adversarial.html','tools/build_pass2_p2b_policy.py','tools/test_pass2_p2b_authority_gate.mjs','.github/workflows/pass2-p2b-authority-gate.yml'}
+          assert required <= changed, sorted(required-changed)
+          runtime_html=[]
+          for path in pathlib.Path('.').glob('*.html'):
+              if 'pmp-actor-authority-gate-v1.js' in path.read_text('utf-8',errors='ignore'):
+                  runtime_html.append(path.as_posix())
+          assert runtime_html==[], runtime_html
+          pathlib.Path('/tmp/pass2-p2b-scope-result.json').write_text(json.dumps({
+            'type':'PMP_PASS2_P2B_SCOPE_RESULT_V1','status':'PASS','base_main_commit':os.environ['P2A_MAIN_COMMIT'],
+            'changed_paths':sorted(changed),'active_chain_integration':False,'pass2_complete':False,'pass3_started':False
+          },indent=2)+'\n')
+          PY
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Verify deterministic policy and JavaScript syntax
+        run: |
+          set -euo pipefail
+          python3 tools/build_pass2_p2b_policy.py --root . --output /tmp/p2b-policy.json
+          cmp /tmp/p2b-policy.json pmp-actor-authority-policy-v1.json
+          python3 -m json.tool pmp-actor-authority-policy-v1.json >/dev/null
+          node --check pmp-actor-authority-gate-v1.js
+          node --check tools/test_pass2_p2b_authority_gate.mjs
+          python3 - <<'PY'
+          import json,pathlib
+          policy=json.loads(pathlib.Path('pmp-actor-authority-policy-v1.json').read_text())
+          assert policy['unknown_actor_policy']=='BLOCK_BEFORE_SIDE_EFFECT'
+          assert policy['unauthorized_capability_policy']=='BLOCK_BEFORE_SIDE_EFFECT'
+          assert policy['status']=='P2B_CERTIFICATION_POLICY_NOT_ACTIVE_CHAIN'
+          assert len(policy['actors'])==4
+          assert policy['pass2_complete'] is False and policy['pass3_started'] is False
+          gate=pathlib.Path('pmp-actor-authority-gate-v1.js').read_text()
+          for signal in ['UNKNOWN_ACTOR','UNAUTHORIZED_CAPABILITY','SOURCE_DIGEST_MISMATCH','requireCapability','authorizeSource','PMP_ACTOR_AUTHORITY_DENIED']:
+              assert signal in gate, signal
+          pathlib.Path('/tmp/pass2-p2b-static-result.json').write_text(json.dumps({
+            'type':'PMP_PASS2_P2B_STATIC_RESULT_V1','status':'PASS','declared_actors':4,
+            'unknown_actor_policy':policy['unknown_actor_policy'],
+            'unauthorized_capability_policy':policy['unauthorized_capability_policy'],
+            'active_chain_integration':False
+          },indent=2)+'\n')
+          PY
+
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Start repository server
+        run: |
+          python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/pass2-p2b-http.log 2>&1 &
+          for i in $(seq 1 30); do
+            curl -fsS http://127.0.0.1:8000/pmp-actor-authority-policy-v1.json >/dev/null && exit 0
+            sleep 1
+          done
+          cat /tmp/pass2-p2b-http.log
+          exit 1
+
+      - name: Run adversarial no-side-effect browser matrix
+        env:
+          P2B_BASE_URL: http://127.0.0.1:8000
+          P2B_RESULT_PATH: /tmp/pass2-p2b-adversarial-result.json
+        run: |
+          set -o pipefail
+          node tools/test_pass2_p2b_authority_gate.mjs 2>&1 | tee /tmp/pass2-p2b-adversarial-console.log
+          python3 - <<'PY'
+          import json,pathlib
+          result=json.loads(pathlib.Path('/tmp/pass2-p2b-adversarial-result.json').read_text())
+          assert result['status']=='PASS', result
+          assert result['tests_total']==34, result['tests_total']
+          assert result['tests_passed']==34 and result['tests_failed']==0
+          assert result['side_effect_probe_requests']==0
+          required={
+            'unknown source path blocked before authorization',
+            'known path with changed bytes blocked',
+            'unknown actor storage blocked before write',
+            'unknown actor DOM append blocked',
+            'known actor unauthorized storage blocked before write',
+            'known actor unauthorized DOM append blocked',
+            'unauthorized script injection blocked before append',
+            'unauthorized history navigation blocked',
+            'unauthorized network fetch blocked before request',
+            'unauthorized IndexedDB open blocked before request',
+            'unauthorized IndexedDB delete blocked before request',
+            'unauthorized cache open blocked before request',
+            'unauthorized cache delete blocked before request',
+            'unauthorized timer blocked before scheduling',
+            'unauthorized event listener blocked before registration',
+            'unauthorized storage clear blocked',
+            'unauthorized document.write blocked',
+            'authorized timer preserves actor identity into callback',
+            'blocked fetch produced zero network requests'
+          }
+          rows={row['name']:row for row in result['tests']}
+          assert required <= set(rows), sorted(required-set(rows))
+          assert all(rows[name]['pass'] for name in required)
+          PY
+
+      - name: Build deterministic A-003 reseal candidate
+        run: |
+          set -euo pipefail
+          python3 tools/build_a003_integrity_manifest.py --output /tmp/p2b-generated-integrity-manifest.json --report /tmp/p2b-integrity-probe-report.json | tee /tmp/p2b-integrity-probe-console.log
+          python3 - <<'PY'
+          import hashlib,json,pathlib,re
+          manifest_path=pathlib.Path('/tmp/p2b-generated-integrity-manifest.json')
+          manifest=json.loads(manifest_path.read_text())
+          manifest.pop('source_commit',None);manifest.pop('self_digest_for_generated_bytes',None)
+          identity={
+            'records':[(r['path'],r['sha256_hex']) for r in manifest.get('records',[])],
+            'historical_records':[(r['path'],r.get('repository_ref'),r['sha256_hex']) for r in manifest.get('historical_records',[])],
+            'external_records':[(r['url'],r['sha256_hex']) for r in manifest.get('external_records',[])],
+            'root_trust_anchors':manifest.get('root_trust_anchors',[]),
+            'policy':{'algorithm':manifest.get('algorithm'),'unlisted_executable_policy':manifest.get('unlisted_executable_policy'),'network_policy':manifest.get('network_policy')}
+          }
+          canonical=json.dumps(identity,sort_keys=True,separators=(',',':')).encode()
+          manifest['version']='20260711A-A003-FINAL'
+          manifest['runtime_source_set_sha256']=hashlib.sha256(canonical).hexdigest()
+          manifest['source_identity_rule']='Deterministic digest of protected local, historical, external, root-anchor, and policy identities; audit/workflow-only commits do not alter this identity.'
+          manifest_path.write_text(json.dumps(manifest,indent=2,sort_keys=True)+'\n')
+          manifest_bytes=manifest_path.read_bytes();manifest_sha=hashlib.sha256(manifest_bytes).hexdigest()
+          root=pathlib.Path('pmp-app-current.html').read_text()
+          updated,count=re.subn(r"const MANIFEST_SHA256='(?:__A003_MANIFEST_SHA256__|[0-9a-f]{64})';",f"const MANIFEST_SHA256='{manifest_sha}';",root,count=1)
+          assert count==1
+          pathlib.Path('/tmp/p2b-generated-app-current.html').write_text(updated)
+          seal={'type':'PMP_A003_MANIFEST_SEAL_V1','repair_id':'A-003','status':'SEALED','manifest_path':'pmp-runtime-integrity-manifest-v1.json','manifest_sha256':manifest_sha,'manifest_bytes':len(manifest_bytes),'manifest_version':'20260711A-A003-FINAL','runtime_source_set_sha256':manifest['runtime_source_set_sha256'],'root_trust_anchor':'pmp-app-current.html','root_self_verifiable':False,'sealed_branch':'agent/pass2-p2b-authority-gate','rule':'The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.','pass2_context':'P2-B gate and fixture policy added; gate remains inactive on the live chain.'}
+          pathlib.Path('/tmp/p2b-generated-a003-manifest-seal.json').write_text(json.dumps(seal,indent=2,sort_keys=True)+'\n')
+          ready=(pathlib.Path('pmp-runtime-integrity-manifest-v1.json').read_bytes()==manifest_bytes and pathlib.Path('pmp-app-current.html').read_text()==updated and pathlib.Path('audit/a003-manifest-seal.json').read_text()==json.dumps(seal,indent=2,sort_keys=True)+'\n')
+          state={'type':'PMP_PASS2_P2B_A003_RESEAL_STATE_V1','status':'READY' if ready else 'PENDING_RESEAL','manifest_sha256':manifest_sha,'runtime_source_set_sha256':manifest['runtime_source_set_sha256'],'runtime_records':manifest['counts']['runtime_records'],'gate_record_present':any(r['path']=='pmp-actor-authority-gate-v1.js' for r in manifest['records']),'policy_record_present':any(r['path']=='pmp-actor-authority-policy-v1.json' for r in manifest['records'])}
+          assert state['gate_record_present'] and state['policy_record_present']
+          pathlib.Path('/tmp/pass2-p2b-a003-reseal-state.json').write_text(json.dumps(state,indent=2)+'\n')
+          with pathlib.Path('/tmp/p2b-ready.env').open('w') as f:f.write('ready='+('true' if ready else 'false')+'\n')
+          print(json.dumps(state,indent=2))
+          PY
+          cat /tmp/p2b-ready.env >> "$GITHUB_OUTPUT"
+        id: reseal
+
+      - name: Run A-003 repository regression after reseal
+        if: steps.reseal.outputs.ready == 'true'
+        run: |
+          set -o pipefail
+          python3 tools/test_a003_integrity.py --output /tmp/pass2-p2b-a003-repository-result.json 2>&1 | tee /tmp/pass2-p2b-a003-repository-console.log
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.loads(pathlib.Path('/tmp/pass2-p2b-a003-repository-result.json').read_text())
+          assert r['tests_passed']==21 and r['tests_failed']==0
+          PY
+
+      - name: Run A-003 adversarial browser regression after reseal
+        if: steps.reseal.outputs.ready == 'true'
+        env:
+          A003_RESULT_PATH: /tmp/pass2-p2b-a003-live-result.json
+        run: |
+          set -o pipefail
+          python3 tools/run_a003_live_final.py 2>&1 | tee /tmp/pass2-p2b-a003-live-console.log
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.loads(pathlib.Path('/tmp/pass2-p2b-a003-live-result.json').read_text())
+          assert r['tests_passed']==47 and r['tests_failed']==0 and r.get('fatal_error') is None
+          PY
+
+      - name: Run A-002 live routing regression after reseal
+        if: steps.reseal.outputs.ready == 'true'
+        env:
+          A002_BASE_URL: http://127.0.0.1:8000/
+          A002_RESULT_PATH: /tmp/pass2-p2b-a002-live-result.json
+        run: |
+          set -o pipefail
+          node audit/a002-live-runtime.cjs 2>&1 | tee /tmp/pass2-p2b-a002-live-console.log
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.loads(pathlib.Path('/tmp/pass2-p2b-a002-live-result.json').read_text())
+          assert r['tests_passed']==41 and r['tests_failed']==0 and r.get('fatal_error') is None
+          PY
+
+      - name: Build P2-B aggregate and verify receipt when present
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,os,pathlib,urllib.request
+          reseal=json.loads(pathlib.Path('/tmp/pass2-p2b-a003-reseal-state.json').read_text())
+          adversarial=json.loads(pathlib.Path('/tmp/pass2-p2b-adversarial-result.json').read_text())
+          ready=reseal['status']=='READY'
+          receipt_path=pathlib.Path('audit/pass2/p2b-receipt.json')
+          receipt_verified=False;receipt_id=None
+          if receipt_path.is_file():
+            assert ready
+            receipt=json.loads(receipt_path.read_text());receipt_id=receipt['receipt_id']
+            assert receipt['status']=='P2B_COMPLETE_PASS2_IN_PROGRESS'
+            assert receipt['base_main_commit']==os.environ['P2A_MAIN_COMMIT']
+            assert receipt['results']['adversarial_browser']=='34/34'
+            assert receipt['results']['a003_repository']=='21/21'
+            assert receipt['results']['a003_adversarial_live']=='47/47'
+            assert receipt['results']['a002_live_runtime']=='41/41'
+            assert receipt['truth']['active_chain_integrated'] is False
+            assert receipt['truth']['pass2_complete'] is False and receipt['truth']['pass3_started'] is False
+            req=urllib.request.Request(f"https://api.github.com/repos/{os.environ['GITHUB_REPOSITORY']}/actions/runs/{receipt['certification']['run_id']}/artifacts",headers={'Authorization':f"Bearer {os.environ['GH_TOKEN']}",'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'})
+            with urllib.request.urlopen(req) as response: artifacts=json.load(response)['artifacts']
+            match=[a for a in artifacts if a['name']=='pass2-p2b-authority-gate-evidence']
+            assert match and match[0]['digest']==receipt['certification']['artifact_digest']
+            receipt_verified=True
+          aggregate={'type':'PMP_PASS2_P2B_AGGREGATE_V1','status':'PASS_WITH_RECEIPT_VERIFIED' if receipt_verified else ('PASS_READY_TO_ISSUE_RECEIPT' if ready else 'PASS_READY_FOR_A003_RESEAL'),'overall_project_pass':'Pass 2','phase':'P2-B','p2b_complete':bool(ready),'pass2_complete':False,'pass3_started':False,'active_chain_integrated':False,'adversarial_browser':f"{adversarial['tests_passed']}/{adversarial['tests_total']}",'a003_reseal':reseal,'receipt_present':receipt_path.is_file(),'receipt_verified':receipt_verified,'receipt_id':receipt_id,'next_phase':'P2-C — active runtime integration and exact active actor policy'}
+          pathlib.Path('/tmp/pass2-p2b-aggregate.json').write_text(json.dumps(aggregate,indent=2)+'\n')
+          print(json.dumps(aggregate,indent=2))
+          PY
+
+      - name: Upload P2-B evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass2-p2b-authority-gate-evidence
+          path: |
+            /tmp/pass2-p2b-scope-result.json
+            /tmp/pass2-p2b-static-result.json
+            /tmp/pass2-p2b-adversarial-result.json
+            /tmp/pass2-p2b-adversarial-console.log
+            /tmp/pass2-p2b-http.log
+            /tmp/p2b-generated-integrity-manifest.json
+            /tmp/p2b-generated-app-current.html
+            /tmp/p2b-generated-a003-manifest-seal.json
+            /tmp/p2b-integrity-probe-report.json
+            /tmp/p2b-integrity-probe-console.log
+            /tmp/pass2-p2b-a003-reseal-state.json
+            /tmp/pass2-p2b-a003-repository-result.json
+            /tmp/pass2-p2b-a003-repository-console.log
+            /tmp/pass2-p2b-a003-live-result.json
+            /tmp/pass2-p2b-a003-live-console.log
+            /tmp/pass2-p2b-a002-live-result.json
+            /tmp/pass2-p2b-a002-live-console.log
+            /tmp/pass2-p2b-aggregate.json
+          if-no-files-found: warn
+          retention-days: 90

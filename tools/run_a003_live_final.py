@@ -25,6 +25,12 @@ EFFECTIVE = ROOT / "a003-live-runtime-effective.cjs"
 def main() -> int:
     text = SOURCE.read_text("utf-8")
 
+    count_old = "status.receipt?.record_count === 697"
+    count_new = "status.receipt?.record_count === JSON.parse(fs.readFileSync(path.join(ROOT, MANIFEST), 'utf8')).records.length"
+    if count_old not in text:
+        raise SystemExit("Expected fixed A-003 record-count assertion was not found.")
+    text = text.replace(count_old, count_new, 1)
+
     require_old = "const { chromium } = require('playwright');"
     require_new = "const { chromium } = require('playwright');\nconst { execFileSync } = require('child_process');"
     if require_old not in text:
