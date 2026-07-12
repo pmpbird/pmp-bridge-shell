@@ -1,0 +1,20 @@
+{
+  "type": "PMP_APP_ORCHESTRATOR_PASS2_P2C_EXPLICIT_PRODUCTION_SHAPED_PROOF_SCOPE_LOCK_001",
+  "overall_project_pass": "Pass 2",
+  "phase": "P2-C",
+  "base_repository_commit": "c618596f2b5c99ca7f355153a5bd31268170df80",
+  "authorized_scope": "ISOLATED_DISPOSABLE_COPY_ACTIVATION_AND_ROLLBACK_PROOF_ONLY",
+  "isolated_proof_authorized": true,
+  "production_activation_authorized": false,
+  "merge_authorized": false,
+  "production_runtime_files_changed": false,
+  "active_chain_integration": false,
+  "current_map_changed": false,
+  "storage_indexeddb_cache_or_bank_changed_in_production": false,
+  "pass2_complete": false,
+  "pass3_started": false,
+  "crosswalk_router_included": false,
+  "payload_file_id": "1-1KIN0400Nuj_pLw02vLMUWWnIjptEXp",
+  "payload_sha256": "9e5bad6335d3ad4ed4d7824b00bfa0def8414defe6b0031c008efc5c9bd1328e",
+  "rule": "The enforcement patch may enter activated state only inside a detached disposable worktree. That worktree must be rolled back byte-for-byte and removed. Production must remain untouched regardless of proof outcome."
+}
