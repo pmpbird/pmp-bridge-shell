@@ -1,0 +1,25 @@
+{
+  "activation_itself_authorized": false,
+  "authorization_scope": "PRODUCTION_SHAPED_ACTIVATION_AND_ROLLBACK_PROOF_ONLY",
+  "authorized": true,
+  "authorized_at_utc": "2026-07-12T19:55:24Z",
+  "base_patch_package_sha256": "a0fc06f2197e59914780edc0da9fda6cd5f4d38526d6f0d978b77fffdf527d7c",
+  "candidate_patch_manifest_file_sha256": "3bdbc0dcc9902e8fbb7573a3fdbfb86c6bc8b30bc781d5a54130ba858d884c18",
+  "canonical_v14_sha256": "04fd41e7ecfdea999db939a8eaf8a069b77c5209753941e0464a334608ee6aaf",
+  "explicit_user_authorization_text": "Build P2-C Explicit Production-Shaped Proof Authorization Receipt and Proof Runner 001 only after you explicitly authorize that isolated proof run. It must activate the enforcement patch only inside a disposable copy, roll it back completely, rerun A-002 and A-003, and leave production untouched.",
+  "hard_boundary": [
+    "apply only to a disposable copy",
+    "do not modify production branch or production files",
+    "roll back byte-for-byte",
+    "rerun A-002 and A-003",
+    "retain evidence whether pass or fail",
+    "separate later authorization required for production activation"
+  ],
+  "merge_authorized": false,
+  "owner_namespace_closure_package_sha256": "2b61d40a1f13e5bce42176f9044f02acc5918a2feb21eb01bcdea7a4bb2cb9af",
+  "production_apply_authorized": false,
+  "proof_run_count_authorized": 1,
+  "source_repository_commit": "c618596f2b5c99ca7f355153a5bd31268170df80",
+  "type": "PMP_P2C_PRODUCTION_ENFORCEMENT_ACTIVATION_AUTHORIZATION_RECEIPT_001",
+  "version": "1.0.0"
+}
