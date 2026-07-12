@@ -22,18 +22,26 @@ pathlib.Path('/tmp/p2c-scope-result.json').write_text(json.dumps({'status':'PASS
 PY
 
 python3 - <<'PY'
-import base64,gzip,hashlib,json,pathlib
+import base64,gzip,hashlib,json,pathlib,traceback
 source=pathlib.Path('audit/pass2/p2c-integration-candidate-001-generator/generator.py.gz.b64')
-encoded=''.join(source.read_text().split())
-compressed=base64.b64decode(encoded,validate=True)
-raw=gzip.decompress(compressed)
-digest=hashlib.sha256(raw).hexdigest()
 expected='ed55dadfbcff934b3d63d179b26d6a60bd91bf83cf1a3b16952ebf05c2b980cc'
-result={'status':'PASS' if digest==expected else 'FAIL','encoded_chars':len(encoded),'compressed_bytes':len(compressed),'decoded_bytes':len(raw),'expected_sha256':expected,'actual_sha256':digest}
+result={'status':'FAIL','source_exists':source.is_file(),'expected_sha256':expected}
+try:
+    original=source.read_text()
+    encoded=''.join(original.split())
+    result.update({'source_chars':len(original),'encoded_chars':len(encoded),'encoded_sha256':hashlib.sha256(encoded.encode()).hexdigest()})
+    compressed=base64.b64decode(encoded,validate=True)
+    result.update({'compressed_bytes':len(compressed),'compressed_sha256':hashlib.sha256(compressed).hexdigest()})
+    raw=gzip.decompress(compressed)
+    digest=hashlib.sha256(raw).hexdigest()
+    result.update({'decoded_bytes':len(raw),'actual_sha256':digest,'status':'PASS' if digest==expected else 'FAIL_DIGEST'})
+    if digest==expected:
+        pathlib.Path('/tmp/build_p2c_integration_candidate_001.py').write_bytes(raw)
+except Exception as exc:
+    result.update({'exception_type':type(exc).__name__,'exception':str(exc),'traceback':traceback.format_exc()})
 pathlib.Path('/tmp/p2c-generator-decode-result.json').write_text(json.dumps(result,indent=2)+'\n')
 print(json.dumps(result,indent=2))
-assert digest==expected
-pathlib.Path('/tmp/build_p2c_integration_candidate_001.py').write_bytes(raw)
+assert result['status']=='PASS',result
 PY
 
 rm -rf "$CANDIDATE_DIR"
