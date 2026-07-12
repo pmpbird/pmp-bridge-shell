@@ -65,8 +65,9 @@
     "timer_schedule",
     "event_listener"
   ],
+  "source_manifest": "pmp-actor-source-manifest-v1.json",
   "status": "P2B_CERTIFICATION_POLICY_NOT_ACTIVE_CHAIN",
-  "truth_boundary": "This P2-B policy certifies the gate engine and adversarial fixtures. Active-chain actor policy and integration remain a later Pass 2 phase.",
+  "truth_boundary": "This P2-B policy certifies the gate engine and adversarial fixtures. Active-chain actor policy and integration remain P2-C.",
   "type": "PMP_ACTOR_AUTHORITY_POLICY_V1",
   "unauthorized_capability_policy": "BLOCK_BEFORE_SIDE_EFFECT",
   "unknown_actor_policy": "BLOCK_BEFORE_SIDE_EFFECT",
