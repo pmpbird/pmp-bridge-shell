@@ -1,5 +1,6 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><title>P2-B Authority Gate Adversarial Fixture</title></head><body>
+<div id="p2b_delete_sentinel">keep</div>
 <script src="../../../pmp-actor-authority-gate-v1.js"></script>
 <script>
 'use strict';
@@ -13,16 +14,19 @@
   };
   try{
     const policy=await (await fetch('/pmp-actor-authority-policy-v1.json',{cache:'no-store'})).json();
+    const manifest=await (await fetch('/'+policy.source_manifest,{cache:'no-store'})).json();
+    add('independent exact source manifest loaded',manifest.type==='PMP_ACTOR_SOURCE_MANIFEST_V1'&&manifest.record_count===4&&manifest.unknown_source_policy==='BLOCK_BEFORE_ACTOR_TOKEN');
     const sources={};
-    for(const actor of policy.actors){sources[actor.path]=await (await fetch('/'+actor.path,{cache:'no-store'})).text();Function(sources[actor.path])();}
+    for(const actor of policy.actors){sources[actor.path]=await (await fetch('/'+actor.path,{cache:'no-store'})).text();new Function(sources[actor.path]);}
     const unknownPath='audit/pass2/fixtures/p2b-unknown-actor.js';
-    sources[unknownPath]=await (await fetch('/'+unknownPath,{cache:'no-store'})).text();Function(sources[unknownPath])();
-    const manifest={records:policy.actors.map(actor=>({path:actor.path,sha256_hex:actor.sha256}))};
+    sources[unknownPath]=await (await fetch('/'+unknownPath,{cache:'no-store'})).text();new Function(sources[unknownPath]);
     const gate=window.PMPActorAuthorityGateV1;
     gate.configure({policy,manifest});
     localStorage.removeItem('p2b_allowed_storage');
     localStorage.removeItem('p2b_unknown_storage');
     localStorage.removeItem('p2b_async_storage');
+    localStorage.removeItem('p2b_limited_storage');
+    localStorage.setItem('p2b_delete_sentinel','keep');
     localStorage.setItem('p2b_clear_sentinel','keep');
     gate.install();
 
@@ -31,8 +35,11 @@
     const tokenLimited=await gate.authorizeSource(policy.actors[2].path,sources[policy.actors[2].path]);
     const tokenAsync=await gate.authorizeSource(policy.actors[3].path,sources[policy.actors[3].path]);
     add('exact source actors authorize',Boolean(tokenStorage&&tokenDom&&tokenLimited&&tokenAsync));
+    const load=(token,path)=>gate.run(token,()=>{(0,eval)(sources[path]+'\n//# sourceURL='+path)});
+    load(tokenStorage,policy.actors[0].path);load(tokenDom,policy.actors[1].path);load(tokenLimited,policy.actors[2].path);load(tokenAsync,policy.actors[3].path);
 
     await denied('unknown source path blocked before authorization',()=>gate.authorizeSource(unknownPath,sources[unknownPath]),e=>e.reason==='UNKNOWN_ACTOR');
+    add('unknown source code never executed',typeof window.__p2b_fixture_unknown_actor==='undefined');
     await denied('known path with changed bytes blocked',()=>gate.authorizeSource(policy.actors[0].path,sources[policy.actors[0].path]+'\nchanged'),e=>e.reason==='SOURCE_DIGEST_MISMATCH');
 
     gate.run(tokenStorage,window.__p2b_fixture_storage_actor);
@@ -40,62 +47,60 @@
 
     await denied('known actor unauthorized storage blocked before write',()=>gate.run(tokenLimited,()=>localStorage.setItem('p2b_limited_storage','no')),e=>e.reason==='UNAUTHORIZED_CAPABILITY');
     add('unauthorized storage left no value',localStorage.getItem('p2b_limited_storage')===null);
-
-    await denied('unknown actor storage blocked before write',()=>window.__p2b_fixture_unknown_actor(),e=>e.reason==='UNKNOWN_ACTOR');
+    await denied('unknown actor storage blocked before write',()=>localStorage.setItem('p2b_unknown_storage','no'),e=>e.reason==='UNKNOWN_ACTOR');
     add('unknown actor storage left no value',localStorage.getItem('p2b_unknown_storage')===null);
+    await denied('unauthorized storage delete blocked',()=>gate.run(tokenLimited,()=>localStorage.removeItem('p2b_delete_sentinel')),e=>e.detail&&e.detail.capability==='storage_delete');
+    add('blocked storage delete preserved value',localStorage.getItem('p2b_delete_sentinel')==='keep');
 
     gate.run(tokenDom,window.__p2b_fixture_dom_actor);
     add('authorized DOM append succeeds',Boolean(document.getElementById('p2b_allowed_dom')));
-
     const unknownNode=document.createElement('div');unknownNode.id='p2b_unknown_dom';
     await denied('unknown actor DOM append blocked',()=>document.body.appendChild(unknownNode),e=>e.reason==='UNKNOWN_ACTOR');
     add('unknown DOM append left no node',document.getElementById('p2b_unknown_dom')===null);
-
     const limitedNode=document.createElement('div');limitedNode.id='p2b_limited_dom';
     await denied('known actor unauthorized DOM append blocked',()=>gate.run(tokenLimited,()=>document.body.appendChild(limitedNode)),e=>e.reason==='UNAUTHORIZED_CAPABILITY');
     add('unauthorized DOM append left no node',document.getElementById('p2b_limited_dom')===null);
+    const deleteNode=document.getElementById('p2b_delete_sentinel');
+    await denied('unauthorized DOM delete blocked',()=>gate.run(tokenLimited,()=>document.body.removeChild(deleteNode)),e=>e.detail&&e.detail.capability==='dom_delete');
+    add('blocked DOM delete preserved node',document.getElementById('p2b_delete_sentinel')===deleteNode);
 
     const script=document.createElement('script');script.text='window.__p2b_injected=1';
     await denied('unauthorized script injection blocked before append',()=>gate.run(tokenLimited,()=>document.head.appendChild(script)),e=>e.detail&&e.detail.capability==='script_injection');
     add('blocked script did not execute',window.__p2b_injected!==1&&!script.isConnected);
+    const targetScript=document.createElement('script');
+    await denied('unauthorized resource target change blocked',()=>gate.run(tokenLimited,()=>{targetScript.src='/p2b-never-load.js'}),e=>e.detail&&e.detail.capability==='resource_target_change');
+    add('blocked resource target remained unset',targetScript.getAttribute('src')===null);
 
     const beforeUrl=location.href;
     await denied('unauthorized history navigation blocked',()=>gate.run(tokenLimited,()=>history.pushState({},'',location.pathname+'?p2b_bad=1')),e=>e.detail&&e.detail.capability==='navigation');
     add('blocked navigation preserved URL',location.href===beforeUrl);
-
     await denied('unauthorized network fetch blocked before request',()=>gate.run(tokenLimited,()=>fetch('/p2b-side-effect-probe')),e=>e.detail&&e.detail.capability==='network_fetch');
-
     await denied('unauthorized IndexedDB open blocked before request',()=>gate.run(tokenLimited,()=>indexedDB.open('p2b_should_not_open')),e=>e.detail&&e.detail.capability==='indexeddb_open');
     await denied('unauthorized IndexedDB delete blocked before request',()=>gate.run(tokenLimited,()=>indexedDB.deleteDatabase('p2b_should_not_delete')),e=>e.detail&&e.detail.capability==='indexeddb_delete');
-
     if(window.caches){
       await denied('unauthorized cache open blocked before request',()=>gate.run(tokenLimited,()=>caches.open('p2b_should_not_open')),e=>e.detail&&e.detail.capability==='cache_open');
       await denied('unauthorized cache delete blocked before request',()=>gate.run(tokenLimited,()=>caches.delete('p2b_should_not_delete')),e=>e.detail&&e.detail.capability==='cache_delete');
-    }else add('cache API unavailable fixture boundary',true,{skipped:true});
+    }else{add('unauthorized cache open blocked before request',true,{skipped:'CacheStorage unavailable'});add('unauthorized cache delete blocked before request',true,{skipped:'CacheStorage unavailable'});}
 
     let timerRan=false;
     await denied('unauthorized timer blocked before scheduling',()=>gate.run(tokenLimited,()=>setTimeout(()=>{timerRan=true},0)),e=>e.detail&&e.detail.capability==='timer_schedule');
-    add('blocked timer did not run synchronously',timerRan===false);
-
+    add('blocked timer did not run',timerRan===false);
     let eventRan=false;const eventFn=()=>{eventRan=true};
     await denied('unauthorized event listener blocked before registration',()=>gate.run(tokenLimited,()=>window.addEventListener('p2b-never',eventFn)),e=>e.detail&&e.detail.capability==='event_listener');
     window.dispatchEvent(new Event('p2b-never'));
     add('blocked event listener did not run',eventRan===false);
-
     await denied('unauthorized storage clear blocked',()=>gate.run(tokenLimited,()=>localStorage.clear()),e=>e.detail&&e.detail.capability==='storage_clear');
     add('blocked clear preserved sentinel',localStorage.getItem('p2b_clear_sentinel')==='keep');
-
     await denied('unauthorized document.write blocked',()=>gate.run(tokenLimited,()=>document.write('<p id="p2b_bad_write">bad</p>')),e=>e.detail&&e.detail.capability==='document_write');
     add('blocked document.write preserved document',document.getElementById('p2b_bad_write')===null);
 
     const asyncResult=await new Promise(resolve=>gate.run(tokenAsync,()=>window.__p2b_fixture_async_actor(resolve)));
     add('authorized timer preserves actor identity into callback',asyncResult==='async_written'&&localStorage.getItem('p2b_async_storage')==='written');
-
     const report=gate.report();
     add('gate reports fail-closed policies',report.unknown_actor_policy==='BLOCK_BEFORE_SIDE_EFFECT'&&report.unauthorized_capability_policy==='BLOCK_BEFORE_SIDE_EFFECT');
     add('gate remains inside Pass 2',report.pass2_complete===false&&report.pass3_started===false);
     const failed=tests.filter(t=>!t.pass);
-    publish({type:'PMP_PASS2_P2B_ADVERSARIAL_BROWSER_RESULT_V1',status:failed.length?'FAIL':'PASS',tests_total:tests.length,tests_passed:tests.length-failed.length,tests_failed:failed.length,tests,gate_report:report,side_effect_probe_requests:0,decision:failed.length?'STOP_P2B_GATE_FAILED':'P2B_GATE_AND_FIXTURES_PASS_READY_FOR_ACTIVE_CHAIN_INTEGRATION'});
-  }catch(error){publish({type:'PMP_PASS2_P2B_ADVERSARIAL_BROWSER_RESULT_V1',status:'FAIL',fatal_error:String(error&&error.stack||error),tests_total:tests.length,tests_passed:tests.filter(t=>t.pass).length,tests_failed:tests.filter(t=>!t.pass).length+1,tests});}
+    publish({type:'PMP_PASS2_P2B_ADVERSARIAL_BROWSER_RESULT_V2',status:failed.length?'FAIL':'PASS',tests_total:tests.length,tests_passed:tests.length-failed.length,tests_failed:failed.length,tests,gate_report:report,side_effect_probe_requests:0,decision:failed.length?'STOP_P2B_GATE_FAILED':'P2B_GATE_AND_FIXTURES_PASS_READY_FOR_ACTIVE_CHAIN_INTEGRATION'});
+  }catch(error){publish({type:'PMP_PASS2_P2B_ADVERSARIAL_BROWSER_RESULT_V2',status:'FAIL',fatal_error:String(error&&error.stack||error),tests_total:tests.length,tests_passed:tests.filter(t=>t.pass).length,tests_failed:tests.filter(t=>!t.pass).length+1,tests});}
 })();
 </script></body></html>
