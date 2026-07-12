@@ -43,7 +43,7 @@ python3 /tmp/build_p2c_integration_candidate_001.py --repo . --output-dir "$CAND
 
 npm install --no-save playwright@1.55.0
 npx playwright install --with-deps chromium
-P2C_PORT=8765 node "$CANDIDATE_DIR/run-p2c-production-shaped-browser-integration-candidate-001.cjs" "$CANDIDATE_DIR" /tmp/p2c-production-shaped-browser-result.json 2>&1 | tee /tmp/p2c-production-shaped-browser-console.log
+NODE_PATH="$GITHUB_WORKSPACE/node_modules" P2C_PORT=8765 node "$CANDIDATE_DIR/run-p2c-production-shaped-browser-integration-candidate-001.cjs" "$CANDIDATE_DIR" /tmp/p2c-production-shaped-browser-result.json 2>&1 | tee /tmp/p2c-production-shaped-browser-console.log
 python3 - <<'PY'
 import json,pathlib
 r=json.loads(pathlib.Path('/tmp/p2c-production-shaped-browser-result.json').read_text())
@@ -57,7 +57,7 @@ python3 tools/test_a003_integrity.py --output /tmp/p2c-a003-repository.json 2>&1
 A003_RESULT_PATH=/tmp/p2c-a003-live.json python3 tools/run_a003_live_final.py 2>&1 | tee /tmp/p2c-a003-live-console.log
 python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/p2c-a002-http.log 2>&1 &
 for i in $(seq 1 30); do curl -fsS http://127.0.0.1:8000/pmp-current-map-v12.json >/dev/null && break; sleep 1; done
-A002_BASE_URL=http://127.0.0.1:8000/ A002_RESULT_PATH=/tmp/p2c-a002-live.json node audit/a002-live-runtime.cjs 2>&1 | tee /tmp/p2c-a002-live-console.log
+A002_BASE_URL=http://127.0.0.1:8000/ A002_RESULT_PATH=/tmp/p2c-a002-live.json NODE_PATH="$GITHUB_WORKSPACE/node_modules" node audit/a002-live-runtime.cjs 2>&1 | tee /tmp/p2c-a002-live-console.log
 
 python3 - <<'PY'
 import json,pathlib
