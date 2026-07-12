@@ -1,0 +1,99 @@
+name: Pass 2 P2-B Hardened Canonical Snapshot Final
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/pass2-p2b-hardening-canonical-snapshot-final.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SOURCE_COMMIT: c618596f2b5c99ca7f355153a5bd31268170df80
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify exact final main
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse origin/main)" = "$SOURCE_COMMIT"
+          git cat-file -e "${SOURCE_COMMIT}^{commit}"
+          git show "${SOURCE_COMMIT}:audit/pass2/p2b-hardening-receipt.json" | python3 -m json.tool >/dev/null
+          python3 - <<'PY'
+          import json,subprocess
+          seal=json.loads(subprocess.check_output(['git','show','c618596f2b5c99ca7f355153a5bd31268170df80:audit/a003-manifest-seal.json']))
+          assert seal['sealed_branch']=='main'
+          assert seal['manifest_sha256']=='e90ea9d378cb068269cd0b7ee1336b64b72aa4feef029bc8a0b68b925877bb99'
+          assert seal['runtime_source_set_sha256']=='a2118dbbbf390c08f61d025a103b5f5a7e2a21dfd49f859c8acf27d8c99cd642'
+          PY
+
+      - name: Build exact repository archive
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          git archive --format=zip --output=dist/PMP_APP_ORCHESTRATOR_REPOSITORY_C618596F.zip "$SOURCE_COMMIT"
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,json,zipfile
+          p=Path('dist/PMP_APP_ORCHESTRATOR_REPOSITORY_C618596F.zip')
+          digest=hashlib.sha256(p.read_bytes()).hexdigest()
+          with zipfile.ZipFile(p) as z:
+              names=z.namelist()
+              required={
+                'audit/pass2/p2a-receipt.json',
+                'audit/pass2/p2b-receipt.json',
+                'audit/pass2/p2b-hardening-receipt.json',
+                'pmp-actor-authority-gate-v1.js',
+                'pmp-actor-authority-policy-v1.json',
+                'pmp-actor-source-manifest-v1.json',
+                'pmp-runtime-integrity-manifest-v1.json',
+                'pmp-app-current.html'
+              }
+              assert required<=set(names),sorted(required-set(names))
+              assert len(names)==len(set(names))
+              hardening=json.loads(z.read('audit/pass2/p2b-hardening-receipt.json'))
+              assert hardening['receipt_id']=='PMP-APP-ORCH-PASS2-P2B-HARDENING-065A3148-PASS-003'
+              assert hardening['results']['adversarial_browser']=='42/42'
+              assert hardening['results']['a002_live_runtime']=='41/41'
+              assert hardening['results']['a003_repository']=='21/21'
+              assert hardening['results']['a003_adversarial_live']=='47/47'
+              assert hardening['truth']['active_chain_integrated'] is False
+              report={
+                'type':'PMP_APP_ORCHESTRATOR_P2B_HARDENED_FINAL_REPOSITORY_SNAPSHOT_V1',
+                'status':'PASS',
+                'source_commit':'c618596f2b5c99ca7f355153a5bd31268170df80',
+                'archive':p.name,
+                'archive_sha256':digest,
+                'member_count':len(names),
+                'unique_member_names':True,
+                'manifest_sha256':'e90ea9d378cb068269cd0b7ee1336b64b72aa4feef029bc8a0b68b925877bb99',
+                'runtime_source_set_sha256':'a2118dbbbf390c08f61d025a103b5f5a7e2a21dfd49f859c8acf27d8c99cd642',
+                'pass2_status':'IN_PROGRESS_P2B_HARDENED_P2C_NEXT',
+                'active_chain_integrated':False,
+                'pass3_started':False,
+                'crosswalk_router_included':False
+              }
+          Path('dist/repository-snapshot-report.json').write_text(json.dumps(report,indent=2,sort_keys=True)+'\n')
+          Path(str(p)+'.sha256').write_text(f'{digest}  {p.name}\n')
+          print(json.dumps(report,indent=2,sort_keys=True))
+          PY
+
+      - name: Upload exact repository snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: pmp-app-orchestrator-p2b-hardened-final-repository-c618596f
+          path: |
+            dist/PMP_APP_ORCHESTRATOR_REPOSITORY_C618596F.zip
+            dist/PMP_APP_ORCHESTRATOR_REPOSITORY_C618596F.zip.sha256
+            dist/repository-snapshot-report.json
+          if-no-files-found: error
+          retention-days: 90
