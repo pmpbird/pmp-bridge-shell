@@ -43,6 +43,7 @@ def main():
   results.append(run('a003-live-active-47',[sys.executable,'tools/run_a003_live_final.py'],a.activated_root,e,a.evidence_dir/'a003-live-active-command.json',480))
  finally:
   results.append(run('byte-for-byte-rollback',[sys.executable,str(a.scripts_root/'rollback_disposable_proof_002.py'),'--activated-root',str(a.activated_root),'--baseline-root',str(a.baseline_root),'--source-commit',SOURCE,'--output',str(a.evidence_dir/'rollback.json')],a.activated_root,env,a.evidence_dir/'rollback-command.json',180))
+ # Mandatory restored-copy regressions after rollback.
  results.append(run('a003-repository-restored-21',[sys.executable,'tools/test_a003_integrity.py','--output',str(a.evidence_dir/'a003-repository-restored.json')],a.activated_root,env,a.evidence_dir/'a003-repository-restored-command.json',180))
  results.append(run_a002('a002-restored-41',a.activated_root,8001,a.evidence_dir/'a002-restored.json',a.evidence_dir/'a002-restored-command.json',env))
  e=dict(env);e['A003_RESULT_PATH']=str(a.evidence_dir/'a003-live-restored.json')
