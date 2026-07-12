@@ -40,6 +40,7 @@ jobs:
             /tmp/p2c-integration-candidate-001/
             /tmp/p2c-scope-result.json
             /tmp/p2c-generator-decode-result.json
+            /tmp/p2c-candidate-post-generation-patch-001.json
             /tmp/p2c-candidate-build-console.log
             /tmp/p2c-production-shaped-browser-result.json
             /tmp/p2c-production-shaped-browser-console.log
