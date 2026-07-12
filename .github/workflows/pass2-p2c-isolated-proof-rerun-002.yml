@@ -1,0 +1,163 @@
+name: Pass 2 P2-C Isolated Proof Rerun 002
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/pass2-p2c-isolated-proof-rerun-002.yml'
+      - 'audit/pass2/p2c-isolated-proof-rerun-002/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  BASE_COMMIT: c618596f2b5c99ca7f355153a5bd31268170df80
+  PROOF_DIR: audit/pass2/p2c-isolated-proof-rerun-002
+  EVIDENCE_DIR: /tmp/p2c-isolated-proof-rerun-002-evidence
+  EXPECTED_PAYLOAD_SHA256: b4701708db618269143e657433004da0e4e7e2e93d252d6a204ea088e72699d8
+  EXPECTED_PAYLOAD_BYTES: '42704'
+
+jobs:
+  isolated-proof-rerun-002:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - name: Checkout exact proof head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Verify audit-only branch scope and authorization
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor "$BASE_COMMIT" HEAD
+          python3 - <<'PY'
+          import json,os,pathlib,subprocess
+          changed=set(subprocess.check_output(['git','diff','--name-only','origin/main...HEAD'],text=True).splitlines())
+          extras={p for p in changed if p!='.github/workflows/pass2-p2c-isolated-proof-rerun-002.yml' and not p.startswith('audit/pass2/p2c-isolated-proof-rerun-002/')}
+          assert not extras, sorted(extras)
+          root=pathlib.Path(os.environ['PROOF_DIR'])
+          auth=json.loads((root/'P2C_EXPLICIT_ISOLATED_PROOF_RERUN_AUTHORIZATION_RECEIPT_002.json').read_text())
+          scope=json.loads((root/'SCOPE_LOCK_002.json').read_text())
+          assert auth['authorized'] is True
+          assert auth['authorization_scope']=='ONE_ISOLATED_PRODUCTION_SHAPED_PROOF_RERUN_ONLY'
+          assert auth['proof_run_count_authorized']==1
+          assert auth['source_repository_commit']==os.environ['BASE_COMMIT']
+          assert auth['production_activation_authorized'] is False
+          assert auth['production_apply_authorized'] is False
+          assert scope['merge_authorized'] is False
+          assert scope['disposable_copy_required'] is True
+          assert scope['byte_for_byte_rollback_required'] is True
+          assert scope['restored_copy_regressions_required'] is True
+          pathlib.Path('/tmp/p2c-rerun-scope.json').write_text(json.dumps({'status':'PASS','head':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'base':os.environ['BASE_COMMIT'],'changed_paths':sorted(changed),'production_changed':False},indent=2)+'\n')
+          PY
+
+      - name: Reconstruct and verify exact proof payload
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import base64,hashlib,os,pathlib
+          p=pathlib.Path(os.environ['PROOF_DIR'])/'payload'
+          text=(p/'chunk00.b64').read_text()+(p/'chunk01.b64').read_text()+(p/'chunk02a.b64').read_text()
+          for name in ('chunk02b.hex','chunk02c.hex','chunk02d.hex'):
+              text += bytes.fromhex((p/name).read_text().strip()).decode('ascii')
+          for name in ('chunk03.b64','chunk04.b64','chunk05.b64','chunk06.b64','chunk07.b64'):
+              text += (p/name).read_text()
+          raw=base64.b64decode(text,validate=True)
+          digest=hashlib.sha256(raw).hexdigest()
+          assert len(raw)==int(os.environ['EXPECTED_PAYLOAD_BYTES']), (len(raw),os.environ['EXPECTED_PAYLOAD_BYTES'])
+          assert digest==os.environ['EXPECTED_PAYLOAD_SHA256'], (digest,os.environ['EXPECTED_PAYLOAD_SHA256'])
+          pathlib.Path('/tmp/p2c-rerun-payload-002.tar.xz').write_bytes(raw)
+          pathlib.Path('/tmp/p2c-rerun-payload-verification.json').write_text(__import__('json').dumps({'status':'PASS','bytes':len(raw),'sha256':digest},indent=2)+'\n')
+          PY
+          rm -rf /tmp/p2c_rerun_payload_002
+          tar -xJf /tmp/p2c-rerun-payload-002.tar.xz -C /tmp
+          test -f /tmp/p2c_rerun_payload_002/prepare_disposable_proof_002.py
+          python3 -m py_compile /tmp/p2c_rerun_payload_002/prepare_disposable_proof_002.py /tmp/p2c_rerun_payload_002/rollback_disposable_proof_002.py /tmp/p2c_rerun_payload_002/run_full_isolated_proof_002.py
+          node --check /tmp/p2c_rerun_payload_002/run_production_shaped_browser_proof_002.cjs
+
+      - name: Create exact baseline and disposable worktrees
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/p2c-proof-baseline-002 /tmp/p2c-proof-activated-002 "$EVIDENCE_DIR"
+          mkdir -p "$EVIDENCE_DIR"
+          git worktree add --detach /tmp/p2c-proof-baseline-002 "$BASE_COMMIT"
+          git worktree add --detach /tmp/p2c-proof-activated-002 "$BASE_COMMIT"
+          test "$(git -C /tmp/p2c-proof-baseline-002 rev-parse HEAD)" = "$BASE_COMMIT"
+          test "$(git -C /tmp/p2c-proof-activated-002 rev-parse HEAD)" = "$BASE_COMMIT"
+
+      - name: Install Chromium proof dependency
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/p2c-node
+          npm install --prefix /tmp/p2c-node --no-save playwright@1.55.0
+          npx --prefix /tmp/p2c-node playwright install --with-deps chromium
+          echo "NODE_PATH=/tmp/p2c-node/node_modules" >> "$GITHUB_ENV"
+          CHROMIUM_PATH="$(NODE_PATH=/tmp/p2c-node/node_modules node -e "console.log(require('playwright').chromium.executablePath())")"
+          test -x "$CHROMIUM_PATH"
+          echo "CHROMIUM_PATH=$CHROMIUM_PATH" >> "$GITHUB_ENV"
+
+      - name: Prepare authorized disposable activation
+        run: |
+          set -o pipefail
+          python3 /tmp/p2c_rerun_payload_002/prepare_disposable_proof_002.py \
+            --baseline-root /tmp/p2c-proof-baseline-002 \
+            --activated-root /tmp/p2c-proof-activated-002 \
+            --payload-root /tmp/p2c_rerun_payload_002 \
+            --authorization-receipt "$PROOF_DIR/P2C_EXPLICIT_ISOLATED_PROOF_RERUN_AUTHORIZATION_RECEIPT_002.json" \
+            --evidence-dir "$EVIDENCE_DIR" \
+            --output "$EVIDENCE_DIR/preparation.json" 2>&1 | tee "$EVIDENCE_DIR/preparation.log"
+
+      - name: Run browser regressions rollback and restored-copy chain
+        run: |
+          set -o pipefail
+          python3 /tmp/p2c_rerun_payload_002/run_full_isolated_proof_002.py \
+            --activated-root /tmp/p2c-proof-activated-002 \
+            --baseline-root /tmp/p2c-proof-baseline-002 \
+            --evidence-dir "$EVIDENCE_DIR" \
+            --scripts-root /tmp/p2c_rerun_payload_002 \
+            --output "$EVIDENCE_DIR/aggregate.json" 2>&1 | tee "$EVIDENCE_DIR/aggregate.log"
+
+      - name: Verify complete proof and untouched production boundary
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json,os,pathlib,subprocess
+          d=pathlib.Path(os.environ['EVIDENCE_DIR'])
+          aggregate=json.loads((d/'aggregate.json').read_text()) if (d/'aggregate.json').is_file() else {'status':'FAIL','reason':'aggregate absent'}
+          expected={
+            'status':'PASS',
+            'browser':('tests_failed',0),
+            'a003_repository_active':('tests_passed',21),
+            'a003_live_active':('tests_passed',47),
+            'a002_active':('tests_passed',41),
+            'rollback':('byte_for_byte_restored',True),
+            'a003_repository_restored':('tests_passed',21),
+            'a003_live_restored':('tests_passed',47),
+            'a002_restored':('tests_passed',41),
+          }
+          checks={'aggregate_pass':aggregate.get('status')=='PASS'}
+          for key,(field,value) in list(expected.items())[1:]:
+              checks[key]=isinstance(aggregate.get(key),dict) and aggregate[key].get(field)==value and aggregate[key].get('tests_failed',0)==0
+          checks['production_patch_not_applied']=aggregate.get('production_patch_applied') is False
+          checks['production_active_chain_unchanged']=aggregate.get('active_chain_integrated_in_production') is False
+          checks['proof_checkout_clean']=subprocess.check_output(['git','status','--porcelain'],text=True).strip()==''
+          out={'type':'PMP_P2C_ISOLATED_PROOF_RERUN_FINAL_BOUNDARY_RESULT_002','status':'PASS' if all(checks.values()) else 'FAIL','checks':checks,'proof_branch_head':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'source_repository_commit':os.environ['BASE_COMMIT'],'production_branch_modified':False,'production_patch_applied':False,'merge_authorized':False,'pass2_complete':False,'pass3_started':False}
+          (d/'final-boundary.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          print(json.dumps(out,indent=2))
+          if out['status']!='PASS': raise SystemExit(1)
+          PY
+
+      - name: Upload complete proof evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2c-isolated-proof-rerun-002-evidence
+          path: |
+            /tmp/p2c-rerun-scope.json
+            /tmp/p2c-rerun-payload-verification.json
+            /tmp/p2c-isolated-proof-rerun-002-evidence/
+          if-no-files-found: warn
+          retention-days: 90
