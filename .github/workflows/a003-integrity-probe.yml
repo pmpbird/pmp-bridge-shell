@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - agent/a002-current-map-single-authority
+      - 'agent/pass2-*'
     paths:
       - 'tools/build_a003_integrity_manifest.py'
       - '.github/workflows/a003-integrity-probe.yml'
@@ -55,6 +55,13 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
+      - name: Build deterministic Pass 2 actor registry when present
+        run: |
+          if [ -f tools/build_pass2_actor_registry.py ]; then
+            python3 tools/build_pass2_actor_registry.py --root . --output pmp-pass2-actor-authority-registry-v1.json
+            python3 -m json.tool pmp-pass2-actor-authority-registry-v1.json >/dev/null
+          fi
 
       - name: Build integrity probe
         run: |
@@ -136,13 +143,13 @@ jobs:
           Path('audit/a003-manifest-seal.json').write_text(json.dumps(receipt, indent=2, sort_keys=True) + '\n', 'utf-8')
           PY
           python3 -m json.tool audit/a003-manifest-seal.json >/dev/null
-          if git diff --quiet -- pmp-runtime-integrity-manifest-v1.json pmp-app-current.html audit/a003-manifest-seal.json && git ls-files --error-unmatch pmp-runtime-integrity-manifest-v1.json >/dev/null 2>&1; then
+          if git diff --quiet -- pmp-pass2-actor-authority-registry-v1.json pmp-runtime-integrity-manifest-v1.json pmp-app-current.html audit/a003-manifest-seal.json && git ls-files --error-unmatch pmp-runtime-integrity-manifest-v1.json >/dev/null 2>&1; then
             echo 'Integrity manifest and bootstrap seal already match the deterministic runtime source set.'
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add pmp-runtime-integrity-manifest-v1.json pmp-app-current.html audit/a003-manifest-seal.json
+          git add pmp-pass2-actor-authority-registry-v1.json pmp-runtime-integrity-manifest-v1.json pmp-app-current.html audit/a003-manifest-seal.json
           git commit -m 'A-003 seal deterministic runtime integrity manifest into bootstrap [skip ci]'
           git push origin "HEAD:${GITHUB_REF_NAME}"
 
