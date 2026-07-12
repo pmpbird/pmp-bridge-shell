@@ -1,0 +1,71 @@
+{
+  "base_main_commit": "c767844d53b4b393928170387b6f988e49fe1fc6",
+  "canonical_zip_requirement": "After merge, update the full-repository roadmap-first canonical ZIP and rerun manifest/checksum verification before P2-B is fully complete.",
+  "certification": {
+    "artifact_digest": "sha256:312e31f3ec7952d7f548f12f80a461586faf72da9a7116e0c1f5bda84c32df22",
+    "artifact_id": 8255066239,
+    "artifact_name": "pass2-p2b-authority-gate-evidence",
+    "conclusion": "success",
+    "job_id": 86606200042,
+    "run_id": 29176373865,
+    "tested_head": "6b61067c5e4996e8fb252317b349b73aea7f6ddc",
+    "workflow": "Pass 2 P2-B Actor Authority Gate"
+  },
+  "next_phase": "P2-C — integrate the certified gate into the active runtime chain and generate the exact active actor policy",
+  "overall_project_pass": "Pass 2",
+  "p2a_receipt_id": "PMP-APP-ORCH-PASS2-P2A-E7BA1B93-PASS-001",
+  "phase": "P2-B — Exact-source actor authorization gate and adversarial forbidden-action fixtures",
+  "proved": {
+    "authorized_capabilities_continue": true,
+    "authorized_timer_callback_preserves_actor_identity": true,
+    "changed_known_source_blocked_before_authorization": true,
+    "denials_preserved_in_memory_without_app_storage_write": true,
+    "denied_storage_dom_script_navigation_network_indexeddb_cache_timer_event_document_write_left_no_exercised_effect": true,
+    "unauthorized_capabilities_blocked_before_native_api": true,
+    "unknown_actor_side_effects_blocked_before_native_api": true,
+    "unknown_actor_source_blocked_before_authorization": true
+  },
+  "receipt_id": "PMP-APP-ORCH-PASS2-P2B-6B61067C-PASS-001",
+  "receipt_sha256": "bf60a92ef3586744116a710029dcee269f5e884a93b33bd6458613d5c60d27ed",
+  "results": {
+    "a002_live_runtime": "41/41",
+    "a003_adversarial_live": "47/47",
+    "a003_repository": "21/21",
+    "adversarial_browser": "34/34",
+    "blocked_fetch_network_requests": 0,
+    "gate_sha256": "addd3be7f5570552bec805243fc920c646c6163fe0887eaa9b691a46251631e3",
+    "manifest_sha256": "3a98519479cefb4095291a9942c7d6c6efd6ac27c231034cb96e3942a5ab51f5",
+    "policy_sha256": "f99687b56a208d522199ed6df2bf471c05225e33b88d1147789d0312c2a1f0bf",
+    "protected_runtime_records": 699,
+    "runtime_source_set_sha256": "c2f2a769a6b1897cb88809fbb908addd6b8e1b4f892a501484dc15c9b58a5fea"
+  },
+  "roadblocks_repaired": [
+    {
+      "finding": "Playwright post-gate page injection was correctly treated as an unknown actor.",
+      "gate_weakened": false,
+      "id": "P2B-R01",
+      "repair": "Observe the signed fixture result through browser-protocol console output without page-side controller injection."
+    },
+    {
+      "finding": "The historical A-003 live runner required the obsolete literal record count 697.",
+      "id": "P2B-R02",
+      "repair": "Normalize the temporary test harness to compare against the sealed manifest record count.",
+      "runtime_changed": false
+    }
+  ],
+  "status": "P2B_COMPLETE_PASS2_IN_PROGRESS",
+  "truth": {
+    "active_chain_integrated": false,
+    "bank_rebuilt": false,
+    "crosswalk_router_integrated": false,
+    "current_map_changed": false,
+    "fixture_policy_certified": true,
+    "gate_engine_certified": true,
+    "pass2_complete": false,
+    "pass3_started": false,
+    "production_actor_policy_complete": false,
+    "storage_cache_or_indexeddb_changed": false,
+    "user_content_deleted": false
+  },
+  "type": "PMP_APP_ORCHESTRATOR_PASS2_P2B_RECEIPT_V1"
+}
