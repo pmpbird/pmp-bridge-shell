@@ -5,7 +5,7 @@
   "proof_run_count_authorized": 1,
   "source_repository_commit": "c618596f2b5c99ca7f355153a5bd31268170df80",
   "payload_sha256": "b4701708db618269143e657433004da0e4e7e2e93d252d6a204ea088e72699d8",
-  "payload_bytes": 42528,
+  "payload_bytes": 42704,
   "production_activation_authorized": false,
   "production_apply_authorized": false,
   "current_map_change_authorized": false,
