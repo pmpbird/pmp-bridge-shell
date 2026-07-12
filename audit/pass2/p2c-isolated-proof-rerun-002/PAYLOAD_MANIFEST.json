@@ -1,0 +1,22 @@
+{
+  "type": "PMP_P2C_ISOLATED_PROOF_RERUN_PAYLOAD_MANIFEST_002",
+  "archive_bytes": 42704,
+  "archive_sha256": "b4701708db618269143e657433004da0e4e7e2e93d252d6a204ea088e72699d8",
+  "reconstruction_order": [
+    {"path":"payload/chunk00.b64","decode":"TEXT_BASE64_FRAGMENT"},
+    {"path":"payload/chunk01.b64","decode":"TEXT_BASE64_FRAGMENT"},
+    {"path":"payload/chunk02a.b64","decode":"TEXT_BASE64_FRAGMENT"},
+    {"path":"payload/chunk02b.hex","decode":"HEX_TO_ASCII_BASE64_FRAGMENT"},
+    {"path":"payload/chunk02c.hex","decode":"HEX_TO_ASCII_BASE64_FRAGMENT"},
+    {"path":"payload/chunk02d.hex","decode":"HEX_TO_ASCII_BASE64_FRAGMENT"},
+    {"path":"payload/chunk03.b64","decode":"TEXT_BASE64_FRAGMENT"},
+    {"path":"payload/chunk04.b64","decode":"TEXT_BASE64_FRAGMENT"},
+    {"path":"payload/chunk05.b64","decode":"TEXT_BASE64_FRAGMENT"},
+    {"path":"payload/chunk06.b64","decode":"TEXT_BASE64_FRAGMENT"},
+    {"path":"payload/chunk07.b64","decode":"TEXT_BASE64_FRAGMENT"}
+  ],
+  "ignored_transport_attempts": ["payload/chunk02.hex","payload/chunk02.note"],
+  "scope": "DISPOSABLE_ISOLATED_PROOF_RERUN_ONLY",
+  "production_activation_authorized": false,
+  "merge_authorized": false
+}
