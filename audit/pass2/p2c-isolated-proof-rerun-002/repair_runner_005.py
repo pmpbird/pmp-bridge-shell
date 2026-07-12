@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import argparse
+import subprocess
+import sys
 from pathlib import Path
 
 
@@ -63,7 +65,13 @@ def main() -> int:
     )
     runner.write_text(runner_source)
 
-    print("CURRENT_MAP_PREFETCH_AND_RESTORED_ORDER_REPAIR_APPLIED")
+    repair_006 = Path(__file__).with_name("repair_runner_006.py")
+    subprocess.run(
+        [sys.executable, str(repair_006), "--bundle-root", str(root)],
+        check=True,
+    )
+
+    print("CURRENT_MAP_PREFETCH_RESTORED_ORDER_AND_REPAIR_006_APPLIED")
     return 0
 
 
