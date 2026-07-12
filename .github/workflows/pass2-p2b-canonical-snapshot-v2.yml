@@ -1,0 +1,97 @@
+name: Pass 2 P2-B Stable Canonical Repository Snapshot
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/pass2-p2b-canonical-snapshot-v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  export-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SOURCE_COMMIT: f4b0f16ca951f38d1bd4c73a738f36341942ae3e
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Verify stable P2-B source truth
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse origin/main)" = "$SOURCE_COMMIT"
+          git cat-file -e "${SOURCE_COMMIT}^{commit}"
+          git merge-base --is-ancestor b6b4bd8db247c502c6567a3b24eb6761a594a25c "$SOURCE_COMMIT"
+          git show "${SOURCE_COMMIT}:audit/pass2/p2b-receipt.json" | python3 -c "import json,sys; r=json.load(sys.stdin); assert r['status']=='P2B_COMPLETE_PASS2_IN_PROGRESS'; assert r['truth']['active_chain_integrated'] is False; assert r['truth']['pass2_complete'] is False; assert r['truth']['pass3_started'] is False"
+          test "$(git show "${SOURCE_COMMIT}:pmp-runtime-integrity-manifest-v1.json" | sha256sum | awk '{print $1}')" = '3a98519479cefb4095291a9942c7d6c6efd6ac27c231034cb96e3942a5ab51f5'
+          git show "${SOURCE_COMMIT}:audit/a003-manifest-seal.json" | python3 -c "import json,sys; s=json.load(sys.stdin); assert s['sealed_branch']=='main'; assert s['manifest_sha256']=='3a98519479cefb4095291a9942c7d6c6efd6ac27c231034cb96e3942a5ab51f5'; assert s['runtime_source_set_sha256']=='c2f2a769a6b1897cb88809fbb908addd6b8e1b4f892a501484dc15c9b58a5fea'"
+
+      - name: Export deterministic exact repository snapshot
+        run: |
+          set -euo pipefail
+          rm -rf snapshot dist
+          mkdir -p snapshot/APP_ORCHESTRATOR_REPOSITORY dist
+          git archive "$SOURCE_COMMIT" | tar -x -C snapshot/APP_ORCHESTRATOR_REPOSITORY
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,json,stat,zipfile
+          root=Path('snapshot')
+          out=Path('dist/PMP_APP_ORCHESTRATOR_PASS2_P2B_STABLE_EXACT_REPOSITORY_SNAPSHOT.zip')
+          files=sorted(p for p in root.rglob('*') if p.is_file())
+          fixed=(2026,7,12,0,0,0)
+          with zipfile.ZipFile(out,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=9) as z:
+              for p in files:
+                  rel=p.relative_to(root).as_posix()
+                  info=zipfile.ZipInfo(rel,fixed)
+                  info.compress_type=zipfile.ZIP_DEFLATED
+                  info.create_system=3
+                  mode=0o755 if p.suffix in {'.py','.sh'} else 0o644
+                  info.external_attr=(stat.S_IFREG|mode)<<16
+                  z.writestr(info,p.read_bytes())
+          digest=hashlib.sha256(out.read_bytes()).hexdigest()
+          with zipfile.ZipFile(out) as z:
+              names=z.namelist()
+              receipt=json.loads(z.read('APP_ORCHESTRATOR_REPOSITORY/audit/pass2/p2b-receipt.json'))
+              manifest=json.loads(z.read('APP_ORCHESTRATOR_REPOSITORY/pmp-runtime-integrity-manifest-v1.json'))
+              seal=json.loads(z.read('APP_ORCHESTRATOR_REPOSITORY/audit/a003-manifest-seal.json'))
+          report={
+            'type':'PMP_APP_ORCHESTRATOR_PASS2_P2B_STABLE_EXACT_REPOSITORY_SNAPSHOT_REPORT_V1',
+            'status':'PASS','source_commit':'f4b0f16ca951f38d1bd4c73a738f36341942ae3e',
+            'p2b_merge_commit':'b6b4bd8db247c502c6567a3b24eb6761a594a25c',
+            'snapshot':out.name,'snapshot_sha256':digest,'member_count':len(names),
+            'unique_member_names':len(names)==len(set(names)),
+            'receipt_id':receipt['receipt_id'],'pass2_complete':receipt['truth']['pass2_complete'],
+            'pass3_started':receipt['truth']['pass3_started'],
+            'active_chain_integrated':receipt['truth']['active_chain_integrated'],
+            'runtime_records':manifest['counts']['runtime_records'],
+            'manifest_sha256':seal['manifest_sha256'],
+            'runtime_source_set_sha256':manifest['runtime_source_set_sha256'],
+            'sealed_branch':seal['sealed_branch']
+          }
+          Path('dist/snapshot-report.json').write_text(json.dumps(report,indent=2,sort_keys=True)+'\n')
+          Path(str(out)+'.sha256').write_text(f'{digest}  {out.name}\n')
+          print(json.dumps(report,indent=2,sort_keys=True))
+          PY
+
+      - name: Upload exact repository snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: pmp-app-orchestrator-pass2-p2b-stable-exact-repository-snapshot
+          path: |
+            dist/PMP_APP_ORCHESTRATOR_PASS2_P2B_STABLE_EXACT_REPOSITORY_SNAPSHOT.zip
+            dist/PMP_APP_ORCHESTRATOR_PASS2_P2B_STABLE_EXACT_REPOSITORY_SNAPSHOT.zip.sha256
+            dist/snapshot-report.json
+          if-no-files-found: error
+          retention-days: 90
