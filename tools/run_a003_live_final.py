@@ -62,12 +62,8 @@ def main() -> int:
         raise SystemExit("Expected bootstrap tamper assertion was not found.")
     text = text.replace(assertion_old, assertion_new, 1)
 
-    route_old = """    await historicalContext.route('https://raw.githubusercontent.com/pmpbird/pmp-bridge-shell/7ac7213aeeeb8bb55692a4985e0fa80a547cff4e/pmp-home-single-v6.html*', async route => {
-      const response = await route.fetch();
-      const body = Buffer.concat([await response.body(), Buffer.from('\n<!-- A003 HISTORICAL TAMPER -->')]);
-      const headers = {...response.headers(), 'access-control-allow-origin':'*', 'cache-control':'no-store'};
-      await route.fulfill({status:200, headers, body});
-    });"""
+    route_start_marker = "    await historicalContext.route('https://raw.githubusercontent.com/pmpbird/pmp-bridge-shell/7ac7213aeeeb8bb55692a4985e0fa80a547cff4e/pmp-home-single-v6.html*', async route => {"
+    route_end_marker = "\n    });"
     route_new = """    const historicalTarget = 'https://raw.githubusercontent.com/pmpbird/pmp-bridge-shell/7ac7213aeeeb8bb55692a4985e0fa80a547cff4e/pmp-home-single-v6.html';
     const historicalOriginal = execFileSync('git', ['show', '7ac7213aeeeb8bb55692a4985e0fa80a547cff4e:pmp-home-single-v6.html'], {cwd:ROOT});
     const historicalTamperedBase64 = Buffer.concat([historicalOriginal, Buffer.from('\n<!-- A003 HISTORICAL TAMPER -->')]).toString('base64');
@@ -84,9 +80,15 @@ def main() -> int:
         return originalFetch(input, init);
       };
     }, {target:historicalTarget, payload:historicalTamperedBase64});"""
-    if route_old not in text:
-        raise SystemExit("Expected historical tamper route was not found.")
-    text = text.replace(route_old, route_new, 1)
+    route_start = text.find(route_start_marker)
+    if route_start < 0:
+        if "const historicalTarget = 'https://raw.githubusercontent.com/pmpbird/pmp-bridge-shell/7ac7213aeeeb8bb55692a4985e0fa80a547cff4e/pmp-home-single-v6.html';" not in text:
+            raise SystemExit("Expected historical tamper route start marker was not found.")
+    else:
+        route_end = text.find(route_end_marker, route_start)
+        if route_end < 0:
+            raise SystemExit("Expected historical tamper route end marker was not found.")
+        text = text[:route_start] + route_new + text[route_end + len(route_end_marker):]
 
     wait_old = """    await historicalPage.waitForFunction(() => {
       try { return JSON.parse(localStorage.getItem('pmp_home_single_v6_emergency_rollback_receipt') || 'null')?.status === 'rollback_failed_closed'; } catch { return false; }
