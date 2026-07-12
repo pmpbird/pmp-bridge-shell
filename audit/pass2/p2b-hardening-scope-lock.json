@@ -1,0 +1,50 @@
+{
+  "allowed_changes": [
+    "pmp-actor-authority-policy-v1.json",
+    "pmp-actor-source-manifest-v1.json",
+    "audit/pass2/fixtures/p2b-authority-gate-adversarial.html",
+    "tools/build_pass2_p2b_policy.py",
+    "audit/pass2/p2b-hardening-scope-lock.json",
+    "audit/pass2/p2b-hardening-status.md",
+    "audit/pass2/p2b-hardening-receipt.json",
+    ".github/workflows/pass2-p2b-hardening-v2.yml",
+    "pmp-runtime-integrity-manifest-v1.json",
+    "pmp-app-current.html",
+    "audit/a003-manifest-seal.json"
+  ],
+  "base_main_commit": "f4b0f16ca951f38d1bd4c73a738f36341942ae3e",
+  "existing_p2b_receipt_id": "PMP-APP-ORCH-PASS2-P2B-6B61067C-PASS-001",
+  "finding": "The merged P2-B V1 gate was sound at its exercised 34-check scope, but the fixture manifest was derived directly from the policy and separate no-effect assertions were missing for storage delete, DOM delete, resource target change, and unknown-source non-execution.",
+  "forbidden_changes": [
+    "change the certified gate engine unless a hardening test exposes a gate defect",
+    "integrate the gate into the active app chain",
+    "change Current Map destinations",
+    "clear or migrate storage, IndexedDB, or caches",
+    "rebuild Bank",
+    "delete user or vault content",
+    "begin Pass 3",
+    "integrate Crosswalk Router"
+  ],
+  "overall_project_pass": "Pass 2",
+  "phase": "P2-B hardening V2 — independent exact-source proof and complete capability-family no-effect matrix",
+  "required_proof": [
+    "The actor-source manifest is generated independently from exact fixture bytes.",
+    "The policy and independent manifest agree path-for-path and digest-for-digest.",
+    "Unknown source is rejected before its code executes.",
+    "All sixteen protected capability families have exercised denial proof.",
+    "Every blocked capability with an observable state leaves no exercised effect.",
+    "Authorized storage, DOM, and asynchronous actor behavior remains functional.",
+    "The gate engine bytes remain unchanged unless a real defect is found.",
+    "A-003 is resealed with the new source-manifest runtime record.",
+    "A-002 41/41, A-003 repository 21/21, and A-003 adversarial 47/47 remain green."
+  ],
+  "status": "P2B_HARDENING_V2_IN_PROGRESS",
+  "truth_boundary": {
+    "active_chain_integrated": false,
+    "gate_engine_already_certified_by_p2b_v1": true,
+    "hardening_does_not_close_pass2": true,
+    "next_phase_after_hardening": "P2-C — active runtime integration and complete production actor policy",
+    "pass3_started": false
+  },
+  "type": "PMP_APP_ORCHESTRATOR_PASS2_P2B_HARDENING_SCOPE_LOCK_V1"
+}
