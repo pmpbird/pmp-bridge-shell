@@ -3,6 +3,7 @@
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
   "manifest_sha256": "3a98519479cefb4095291a9942c7d6c6efd6ac27c231034cb96e3942a5ab51f5",
   "manifest_version": "20260711A-A003-FINAL",
+  "pass2_context": "P2-B gate and fixture policy added; gate remains inactive on the live chain.",
   "repair_id": "A-003",
   "root_self_verifiable": false,
   "root_trust_anchor": "pmp-app-current.html",
