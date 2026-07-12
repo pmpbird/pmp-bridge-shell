@@ -1,0 +1,31 @@
+{
+  "active_chain_integrated": false,
+  "blocking_findings": [
+    "Required integrated disposable proof did not complete successfully in the reviewed GitHub Actions evidence.",
+    "Required rollback and restored-copy regression receipts are absent from a successful aggregate proof chain.",
+    "Production activation authorization is intentionally absent."
+  ],
+  "certification_status": "NOT_CERTIFIED_FAIL_CLOSED",
+  "closure_gate_results": {
+    "crosswalk_router_excluded": true,
+    "current_map_untouched": true,
+    "exact_source_identity_preserved": true,
+    "new_explicit_production_activation_authorization_present": false,
+    "production_runtime_untouched": true,
+    "production_storage_untouched": true,
+    "successful_byte_for_byte_rollback_receipt_present": false,
+    "successful_integrated_disposable_proof_receipt_present": false
+  },
+  "created_at_utc": "2026-07-12T21:48:44Z",
+  "full_passes_remaining_after_pass2": 6,
+  "overall_project_pass": "Pass 2",
+  "pass2_complete": false,
+  "pass3_started": false,
+  "phase": "P2-C",
+  "production_activation_decision": "HOLD_DO_NOT_ACTIVATE",
+  "production_patch_applied": false,
+  "remaining_major_moves_inside_pass2": 1,
+  "remaining_move": "Repair the isolated proof runner, obtain a new explicit isolated-proof authorization, complete the full proof and rollback chain, then repeat final activation decision and Pass 2 closure certification.",
+  "type": "PMP_APP_ORCHESTRATOR_PASS2_FINAL_CLOSURE_CERTIFICATION_001",
+  "unfinished_passes_including_current": 7
+}
