@@ -157,7 +157,7 @@ jobs:
                   subprocess.run(['node','--check',str(target)],check=True)
           PY
 
-      - name: Verify A-003 manifest contains exact P2-B bytes
+      - name: Verify A-003 manifest contains exact runtime P2-B bytes
         run: |
           set -euo pipefail
           python3 - <<'PY'
@@ -172,10 +172,7 @@ jobs:
             'pmp-safe-writer-current-return-fix-v1.js',
             'pmp-continuous-run-bank-order-frame-loader-v1.js',
             'pmp-authority-rules-v1.js',
-            'pmp-bug-watch-passive-capture-v1.js',
-            'audit/pass2/p2b-forbidden-action-fixture.html',
-            'audit/pass2/p2b-registered-marker.js',
-            'audit/pass2/p2b-scope-lock.json'
+            'pmp-bug-watch-passive-capture-v1.js'
           ]
           for path in required:
               data=pathlib.Path(path).read_bytes()
@@ -189,7 +186,8 @@ jobs:
             'type':'PMP_PASS2_P2B_A003_SEAL_RESULT_V1','status':'PASS',
             'manifest_sha256':seal['manifest_sha256'],
             'runtime_source_set_sha256':seal['runtime_source_set_sha256'],
-            'required_p2b_records':len(required)
+            'required_p2b_records':len(required),
+            'audit_fixture_identity_proof':'STATIC_AND_BROWSER_SUITES'
           },indent=2)+'\n')
           PY
 
