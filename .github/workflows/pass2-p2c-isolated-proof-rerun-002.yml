@@ -14,6 +14,7 @@ permissions:
 env:
   SOURCE_COMMIT: c618596f2b5c99ca7f355153a5bd31268170df80
   AUDIT_DIR: audit/pass2/p2c-isolated-proof-rerun-002
+  REPAIR_DIR: audit/pass2/p2c-isolated-proof-rerun-002/repair-continuation-003
   BUNDLE_DIR: /tmp/p2c-proof-runner-002
   BUNDLE_TAR: /tmp/p2c-proof-rerun-002.tar.gz
   BASELINE_ROOT: /tmp/p2c-proof-baseline-002
@@ -44,21 +45,19 @@ jobs:
           import json,pathlib,subprocess,sys
           base=sys.argv[1]
           changed=set(subprocess.check_output(['git','diff','--name-only',base,'HEAD'],text=True).splitlines())
-          allowed_exact={'.github/workflows/pass2-p2c-isolated-proof-rerun-002.yml'}
-          allowed_prefix='audit/pass2/p2c-isolated-proof-rerun-002/'
-          extras=sorted(p for p in changed if p not in allowed_exact and not p.startswith(allowed_prefix))
+          extras=sorted(p for p in changed if p!='.github/workflows/pass2-p2c-isolated-proof-rerun-002.yml' and not p.startswith('audit/pass2/p2c-isolated-proof-rerun-002/'))
           assert not extras,extras
-          receipt=json.loads(pathlib.Path(allowed_prefix+'P2C_EXPLICIT_ISOLATED_PROOF_RERUN_AUTHORIZATION_RECEIPT_002.json').read_text())
-          scope=json.loads(pathlib.Path(allowed_prefix+'scope-lock.json').read_text())
-          assert receipt['authorized'] is True
-          assert receipt['proof_run_count_authorized']==1
+          root=pathlib.Path('audit/pass2/p2c-isolated-proof-rerun-002')
+          receipt=json.loads((root/'P2C_EXPLICIT_ISOLATED_PROOF_RERUN_AUTHORIZATION_RECEIPT_002.json').read_text())
+          scope=json.loads((root/'scope-lock.json').read_text())
+          assert receipt['authorized'] is True and receipt['proof_run_count_authorized']==1
           assert receipt['authorization_scope']=='ONE_ISOLATED_PRODUCTION_SHAPED_PROOF_RERUN_ONLY'
           for key in ('production_activation_authorized','production_apply_authorized','merge_authorized','current_map_change_authorized','production_storage_change_authorized'):
               assert receipt[key] is False,key
           assert scope['disposable_copy_required'] is True
           assert scope['byte_for_byte_rollback_required'] is True
           assert scope['restored_copy_regressions_required'] is True
-          pathlib.Path('/tmp/p2c-rerun-scope.json').write_text(json.dumps({'status':'PASS','base_sha':base,'head_sha':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'changed_paths':sorted(changed),'production_runtime_files_changed':False,'production_activation_authorized':False},indent=2)+'\n')
+          pathlib.Path('/tmp/p2c-rerun-scope.json').write_text(json.dumps({'status':'PASS','base_sha':base,'head_sha':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'changed_paths':sorted(changed),'production_runtime_files_changed':False,'production_activation_authorized':False,'logical_proof_authorization_count':1,'repair_continuation':'003'},indent=2)+'\n')
           PY
 
       - uses: actions/setup-python@v5
@@ -68,7 +67,7 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Reconstruct and verify repaired proof runner
+      - name: Reconstruct checksum-bound base runner and apply audited repair 003
         run: |
           set -euo pipefail
           rm -rf "$BUNDLE_DIR" "$BUNDLE_TAR" "$EVIDENCE_DIR"
@@ -82,15 +81,17 @@ jobs:
           test "$(wc -c < "$BUNDLE_TAR")" = "61478"
           test "$(sha256sum "$BUNDLE_TAR" | awk '{print $1}')" = "a644ad9ea538117f8aa6b01ac6988ac8d938a64fb170fa2a8f071afebc77e500"
           tar -xzf "$BUNDLE_TAR" -C "$BUNDLE_DIR"
-          python3 -m py_compile "$BUNDLE_DIR/prepare_disposable_proof_002.py" "$BUNDLE_DIR/rollback_disposable_proof_002.py" "$BUNDLE_DIR/run_full_isolated_proof_002.py"
+          test "$(sha256sum "$REPAIR_DIR/apply_prepare_repair_003.py" | awk '{print $1}')" = "623046b90824a7d2adf64a766ab36d01987bd282c6032cca61a905bc0c3d8324"
+          test "$(sha256sum "$REPAIR_DIR/run_full_isolated_proof_003.py" | awk '{print $1}')" = "30b52441320cf4f5636dbb2f940ce9e451b05cf1371f7b9039c7210cc535cc97"
+          python3 "$REPAIR_DIR/apply_prepare_repair_003.py" --path "$BUNDLE_DIR/prepare_disposable_proof_002.py"
+          cp "$REPAIR_DIR/run_full_isolated_proof_003.py" "$BUNDLE_DIR/run_full_isolated_proof_003.py"
+          python3 -m py_compile "$BUNDLE_DIR/prepare_disposable_proof_002.py" "$BUNDLE_DIR/rollback_disposable_proof_002.py" "$BUNDLE_DIR/run_full_isolated_proof_003.py"
           node --check "$BUNDLE_DIR/run_production_shaped_browser_proof_002.cjs"
 
       - name: Install isolated Chromium dependency
         run: |
           set -euo pipefail
-          rm -rf "$NODE_HOME"
-          mkdir -p "$NODE_HOME"
-          cd "$NODE_HOME"
+          rm -rf "$NODE_HOME"; mkdir -p "$NODE_HOME"; cd "$NODE_HOME"
           npm init -y >/dev/null
           npm install --no-save playwright@1.55.0
           "$NODE_HOME/node_modules/.bin/playwright" install --with-deps chromium
@@ -119,12 +120,13 @@ jobs:
           python3 - <<'PY'
           import json,os,pathlib
           r=json.loads((pathlib.Path(os.environ['EVIDENCE_DIR'])/'preparation.json').read_text())
-          assert r['status']=='PASS'
-          assert r['baseline_file_count']==1481
-          assert r['governed_actor_count']==86
-          assert r['quarantine_count']==25
-          assert r['current_map_unchanged'] is True
-          assert r['production_changed'] is False
+          assert r['status']=='PASS' and r['baseline_file_count']==1481
+          assert r['governed_actor_count']==86 and r['quarantine_count']==25
+          assert r['current_map_unchanged'] is True and r['production_changed'] is False
+          x=r['a003_root_receipt_authority_exception']
+          assert x['status']=='APPLIED' and x['capture_timing']=='BEFORE_ACTOR_GATE_INSTALL'
+          assert x['ordinary_actor_storage_authority_changed'] is False
+          assert x['allowed_keys']==['pmp_a003_bootstrap_receipt_v1','pmp_current_entry_route_handoff_receipt_v1']
           PY
 
       - name: Run browser active regressions rollback and restored regressions
@@ -132,7 +134,7 @@ jobs:
           NODE_PATH: /tmp/p2c-node-002/node_modules
         run: |
           set -o pipefail
-          python3 "$BUNDLE_DIR/run_full_isolated_proof_002.py" \
+          python3 "$BUNDLE_DIR/run_full_isolated_proof_003.py" \
             --activated-root "$ACTIVE_ROOT" \
             --baseline-root "$BASELINE_ROOT" \
             --evidence-dir "$EVIDENCE_DIR" \
@@ -145,11 +147,9 @@ jobs:
           set -euo pipefail
           python3 - <<'PY'
           import json,os,pathlib
-          e=pathlib.Path(os.environ['EVIDENCE_DIR'])
-          a=json.loads((e/'aggregate.json').read_text())
+          e=pathlib.Path(os.environ['EVIDENCE_DIR']);a=json.loads((e/'aggregate.json').read_text())
           assert a['status']=='PASS'
-          assert a['production_patch_applied'] is False
-          assert a['active_chain_integrated_in_production'] is False
+          assert a['production_patch_applied'] is False and a['active_chain_integrated_in_production'] is False
           assert a['proof_scope']=='DISPOSABLE_COPY_ONLY'
           assert a['browser']['tests_failed']==0
           assert a['a002_active']['tests_passed']==41 and a['a002_active']['tests_failed']==0
@@ -170,15 +170,15 @@ jobs:
           def snap(root):
               out={}
               for p in sorted(pathlib.Path(root).rglob('*')):
-                  if not p.is_file(): continue
+                  if not p.is_file():continue
                   rel=p.relative_to(root).as_posix()
-                  if rel=='.git' or rel.startswith('.git/'): continue
+                  if rel=='.git' or rel.startswith('.git/'):continue
                   out[rel]=(p.stat().st_size,hashlib.sha256(p.read_bytes()).hexdigest())
               return out
           b=snap(os.environ['BASELINE_ROOT']);r=snap(os.environ['ACTIVE_ROOT'])
-          out={'type':'PMP_P2C_ISOLATED_PROOF_RERUN_FINAL_BOUNDARY_002','status':'PASS' if b==r and len(r)==1481 else 'FAIL','baseline_file_count':len(b),'restored_file_count':len(r),'byte_for_byte_restored_after_regressions':b==r,'production_checkout_dirty':False,'production_patch_applied':False,'production_activation_authorized':False,'merge_authorized':False}
+          out={'type':'PMP_P2C_ISOLATED_PROOF_RERUN_FINAL_BOUNDARY_003','status':'PASS' if b==r and len(r)==1481 else 'FAIL','baseline_file_count':len(b),'restored_file_count':len(r),'byte_for_byte_restored_after_regressions':b==r,'production_checkout_dirty':False,'production_patch_applied':False,'production_activation_authorized':False,'merge_authorized':False}
           e=pathlib.Path(os.environ['EVIDENCE_DIR']);(e/'final-boundary.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n');print(json.dumps(out,indent=2))
-          if out['status']!='PASS': raise SystemExit(1)
+          if out['status']!='PASS':raise SystemExit(1)
           PY
           test -z "$(git status --porcelain)"
 
@@ -186,7 +186,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: p2c-isolated-proof-rerun-002-evidence
+          name: p2c-isolated-proof-rerun-002-repair-003-evidence
           path: |
             /tmp/p2c-rerun-scope.json
             /tmp/p2c-proof-evidence-002/
