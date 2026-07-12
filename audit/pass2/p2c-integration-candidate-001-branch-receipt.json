@@ -1,0 +1,8 @@
+{
+  "type": "PMP_APP_ORCHESTRATOR_PASS2_P2C_INTEGRATION_CANDIDATE_001_BRANCH_RECEIPT",
+  "status": "AUDIT_ONLY_NOT_ACTIVE",
+  "base_main_commit": "c618596f2b5c99ca7f355153a5bd31268170df80",
+  "production_runtime_files_changed": false,
+  "active_chain_integration": false,
+  "activation_decision": "NO_ACTIVATION_CANDIDATE_ONLY"
+}
