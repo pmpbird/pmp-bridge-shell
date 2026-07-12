@@ -1,13 +1,13 @@
 {
   "algorithm": "SHA-256",
   "counts": {
-    "executable_records": 697,
+    "executable_records": 699,
     "external_errors": 0,
     "external_records": 3,
     "historical_records": 1,
     "map_declared_covered": 42,
     "map_declared_paths": 42,
-    "runtime_records": 697,
+    "runtime_records": 699,
     "style_records": 0
   },
   "external_records": [
@@ -1019,15 +1019,15 @@
       "sri": "sha256-E5Ix50JDguiWafEKx7C2cFhFZOqfOf23/8nAWTKa6fw="
     },
     {
-      "bytes": 18969,
+      "bytes": 19508,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "6e0f9145dca873b73f6000444b8c498ff3741629",
+      "git_blob_sha": "c610a06c60376e8c0a896094374e2d5dbacc9996",
       "mime_type": "text/javascript",
       "path": "pmp-app-orchestrator-v1.js",
-      "sha256_base64": "NNpiLLOSRiT+36oRCtOK4W+zqktA1ZWuJEb4+ShV/pE=",
-      "sha256_hex": "34da622cb3924624fedfaa110ad38ae16fb3aa4b40d595ae2446f8f92855fe91",
-      "sri": "sha256-NNpiLLOSRiT+36oRCtOK4W+zqktA1ZWuJEb4+ShV/pE="
+      "sha256_base64": "UQbFfMpLhnqL29WxGFrCcCqBV5WVqdFxlCMhRKwtYM4=",
+      "sha256_hex": "5106c57cca4b867a8bdbd5b1185ac2702a81579595a9d17194232144ac2d60ce",
+      "sri": "sha256-UQbFfMpLhnqL29WxGFrCcCqBV5WVqdFxlCMhRKwtYM4="
     },
     {
       "bytes": 3035,
@@ -1173,15 +1173,15 @@
       "sri": "sha256-cGj8IBN4QowWXv2mzkYRHf5J4RTdc4zfUc8V7hoXgho="
     },
     {
-      "bytes": 3914,
+      "bytes": 4548,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "74b7b933e3ccf8f9f34393f4428e7ff6ee01b74b",
+      "git_blob_sha": "5a83def1811e8490e2aed6b07f41a6913cfcffee",
       "mime_type": "text/javascript",
       "path": "pmp-authority-rules-v1.js",
-      "sha256_base64": "33Cxs3tP1AK8a5EpZYLD8x9aXEheRy4MJfZ0YJVUcEM=",
-      "sha256_hex": "df70b1b37b4fd402bc6b91296582c3f31f5a5c485e472e0c25f6746095547043",
-      "sri": "sha256-33Cxs3tP1AK8a5EpZYLD8x9aXEheRy4MJfZ0YJVUcEM="
+      "sha256_base64": "yBypAdmsmokLCngghghNuFYmSWEXYBMm5GmR2quHJVs=",
+      "sha256_hex": "c81ca901d9ac9a890b0a782086084db85626496117601326e46991daab87255b",
+      "sri": "sha256-yBypAdmsmokLCngghghNuFYmSWEXYBMm5GmR2quHJVs="
     },
     {
       "bytes": 1710,
@@ -1745,15 +1745,15 @@
       "sri": "sha256-3G7ZtDCHUTVsrJBthZ5IvyTT2sgGKW4Jr5FMVQRxOrs="
     },
     {
-      "bytes": 4359,
+      "bytes": 4574,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "b86a41a627d8e3f1c6073a4bdee799b2feed804f",
+      "git_blob_sha": "d489805b1c82b7a9d7212d4665812b6b5bee312a",
       "mime_type": "text/javascript",
       "path": "pmp-bug-watch-passive-capture-v1.js",
-      "sha256_base64": "+a00M0+hg1sQNEWcejRikuvhR6vMfboUahVf463yFLU=",
-      "sha256_hex": "f9ad34334fa1835b1034459c7a346292ebe147abcc7dba146a155fe3adf214b5",
-      "sri": "sha256-+a00M0+hg1sQNEWcejRikuvhR6vMfboUahVf463yFLU="
+      "sha256_base64": "IENDOM9cT2Rz+EVsPRUOF826e2HmRNiMYDyAIFTxBzQ=",
+      "sha256_hex": "20434338cf5c4f6473f8456c3d150e17cdba7b61e644d88c603c802054f10734",
+      "sri": "sha256-IENDOM9cT2Rz+EVsPRUOF826e2HmRNiMYDyAIFTxBzQ="
     },
     {
       "bytes": 1840,
@@ -2130,15 +2130,15 @@
       "sri": "sha256-i7nLqktZyE+5Hw4mnbM516JQpiyd5eYR2w3h191Inhw="
     },
     {
-      "bytes": 10437,
+      "bytes": 10975,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "648e34bb25b35f9634cbad03442bfa84eea1535a",
+      "git_blob_sha": "70c6ceedbf0b2da224e1062387c06bad5d59247e",
       "mime_type": "text/javascript",
       "path": "pmp-continuous-run-bank-order-frame-loader-v1.js",
-      "sha256_base64": "nLV/zbpkX5EApUdgEddlbA0fb/1QIGeTVF9mPm29JJM=",
-      "sha256_hex": "9cb57fcdba645f9100a5476011d7656c0d1f6ffd50206793545f663e6dbd2493",
-      "sri": "sha256-nLV/zbpkX5EApUdgEddlbA0fb/1QIGeTVF9mPm29JJM="
+      "sha256_base64": "YuahuA4Cm2HLlRFIl2EYFu1mcbBoPuxdaxcan2gueKA=",
+      "sha256_hex": "62e6a1b80e029b61cb95114897611816ed6671b0683eec5d6b171a9f682e78a0",
+      "sri": "sha256-YuahuA4Cm2HLlRFIl2EYFu1mcbBoPuxdaxcan2gueKA="
     },
     {
       "bytes": 83,
@@ -2933,15 +2933,15 @@
       "sri": "sha256-EWrEaZ2mhcvtS9o2eSEyrSII9kUZ0Eu3+X5IiZns7aU="
     },
     {
-      "bytes": 21761,
+      "bytes": 22036,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_DOCUMENT",
-      "git_blob_sha": "b5a9bdb75dd765fc6844e26b4fdd7342a106b2a2",
+      "git_blob_sha": "ee18c77de5dc5579e8b3976aa215cd9c1a912dc5",
       "mime_type": "text/html",
       "path": "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
-      "sha256_base64": "VVsErpQrgyePCTKjH9KEtRw08dc1Ho4wMK28Jqdg2DY=",
-      "sha256_hex": "555b04ae942b83278f0932a31fd284b51c34f1d7351e8e3030adbc26a760d836",
-      "sri": "sha256-VVsErpQrgyePCTKjH9KEtRw08dc1Ho4wMK28Jqdg2DY="
+      "sha256_base64": "lYOywYEOPICIp5ow+fKnkC9A3W0QDZqyCJSrE88uvCs=",
+      "sha256_hex": "9583b2c1810e3c8088a79a30f9f2a7902f40dd6d100d9ab20894ab13cf2ebc2b",
+      "sri": "sha256-lYOywYEOPICIp5ow+fKnkC9A3W0QDZqyCJSrE88uvCs="
     },
     {
       "bytes": 8346,
@@ -4889,6 +4889,28 @@
       "sha256_base64": "h7AQv/2JPWWUzwokfsqivHgOC4rBMJr1lcgZicwHfOQ=",
       "sha256_hex": "87b010bffd893d6594cf0a247ecaa2bc780e0b8ac1309af595c81989cc077ce4",
       "sri": "sha256-h7AQv/2JPWWUzwokfsqivHgOC4rBMJr1lcgZicwHfOQ="
+    },
+    {
+      "bytes": 690114,
+      "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
+      "execution_class": "RUNTIME_DATA",
+      "git_blob_sha": "be9afc99f12097ba094f207c09620d6d68d231dc",
+      "mime_type": "application/json",
+      "path": "pmp-pass2-actor-authority-registry-v1.json",
+      "sha256_base64": "237M6KhOcYzyb+zkoLKdu+lWaNhgZ19guZ8yxkgID2Q=",
+      "sha256_hex": "db7ecce8a84e718cf26fece4a0b29dbbe95668d860675f60b99f32c648080f64",
+      "sri": "sha256-237M6KhOcYzyb+zkoLKdu+lWaNhgZ19guZ8yxkgID2Q="
+    },
+    {
+      "bytes": 27842,
+      "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
+      "execution_class": "EXECUTABLE_SCRIPT",
+      "git_blob_sha": "6fa01872a94ea9d93254d51bb526fd466088e4d4",
+      "mime_type": "text/javascript",
+      "path": "pmp-pass2-actor-authorization-gate-v1.js",
+      "sha256_base64": "w2hyKYwHbFvhH8sVB/Ob2GzLi5xEfHA07SMtl1g2GWU=",
+      "sha256_hex": "c36872298c076c5be11fcb1507f39bd86ccb8b9c447c7034ed232d9758361965",
+      "sri": "sha256-w2hyKYwHbFvhH8sVB/Ob2GzLi5xEfHA07SMtl1g2GWU="
     },
     {
       "bytes": 3508,
@@ -6926,15 +6948,15 @@
       "sri": "sha256-mhfLj362tyF69VUCSKnlWaY8iD9KDAfezwKiyoc6VdU="
     },
     {
-      "bytes": 4379,
+      "bytes": 4726,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "45db6422099795b68552604e19570653efd28e49",
+      "git_blob_sha": "d4e3313fc62db16d32c9b21836445db757a4a740",
       "mime_type": "text/javascript",
       "path": "pmp-safe-writer-current-return-fix-v1.js",
-      "sha256_base64": "aFr81g1buZevcfYxegkPSp5OU63KWqEDxu2vi+hb6MM=",
-      "sha256_hex": "685afcd60d5bb997af71f6317a090f4a9e4e53adca5aa103c6edaf8be85be8c3",
-      "sri": "sha256-aFr81g1buZevcfYxegkPSp5OU63KWqEDxu2vi+hb6MM="
+      "sha256_base64": "+mbMXK2hVNB5kMnQ3gFNvOkY5jzHiPDMg2M3rysmiS0=",
+      "sha256_hex": "fa66cc5cada154d07990c9d0de014dbce918e63cc788f0cc836337af2b26892d",
+      "sri": "sha256-+mbMXK2hVNB5kMnQ3gFNvOkY5jzHiPDMg2M3rysmiS0="
     },
     {
       "bytes": 4399,
@@ -7748,7 +7770,7 @@
       "rule": "This is the only application bootstrap source excluded from downstream manifest self-enforcement."
     }
   ],
-  "runtime_source_set_sha256": "2efc5aa5f3ece5b1da94e162baf7f981a636ef5f23d9c6b3f2d8a348688172e2",
+  "runtime_source_set_sha256": "796135c9dc844c1d312f87085c882bccde5f0ef9353bfd66df0dcb9466e90867",
   "source_identity_rule": "Deterministic digest of protected local, historical, external, root-anchor, and policy identities; audit/workflow-only commits do not alter this identity.",
   "type": "PMP_RUNTIME_INTEGRITY_MANIFEST_V1",
   "unlisted_executable_policy": "FAIL_CLOSED",
