@@ -66,7 +66,7 @@ def main() -> int:
     route_end_marker = "\n    });"
     route_new = """    const historicalTarget = 'https://raw.githubusercontent.com/pmpbird/pmp-bridge-shell/7ac7213aeeeb8bb55692a4985e0fa80a547cff4e/pmp-home-single-v6.html';
     const historicalOriginal = execFileSync('git', ['show', '7ac7213aeeeb8bb55692a4985e0fa80a547cff4e:pmp-home-single-v6.html'], {cwd:ROOT});
-    const historicalTamperedBase64 = Buffer.concat([historicalOriginal, Buffer.from('\n<!-- A003 HISTORICAL TAMPER -->')]).toString('base64');
+    const historicalTamperedBase64 = Buffer.concat([historicalOriginal, Buffer.from(String.fromCharCode(10) + '<!-- A003 HISTORICAL TAMPER -->')]).toString('base64');
     await historicalContext.addInitScript(({target, payload}) => {
       const originalFetch = window.fetch.bind(window);
       window.fetch = async function(input, init) {
