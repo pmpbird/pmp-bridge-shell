@@ -28,7 +28,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.head_ref || github.ref_name }}
 
-      - name: Apply exact P2-B patch and remove bootstrap
+      - name: Apply exact non-workflow P2-B patch and remove staging
         run: |
           set -euo pipefail
           python3 tools/apply_pass2_p2b_patch.py | tee /tmp/pass2-p2b-patch-console.log
@@ -43,7 +43,11 @@ jobs:
           result=json.loads(pathlib.Path('/tmp/pass2-p2b-patch-result.json').read_text())
           changed=set(subprocess.check_output(['git','status','--short'],text=True).splitlines())
           assert result['status']=='PASS'
-          assert result['files_written']==16
+          assert result['files_written']==14
+          assert result['deferred_workflow_paths']==[
+            '.github/workflows/a003-integrity-probe.yml',
+            '.github/workflows/pass2-p2b-authorization-gate.yml'
+          ]
           assert result['pass2_complete'] is False
           assert result['pass3_started'] is False
           assert changed
@@ -51,7 +55,7 @@ jobs:
           PY
           python3 tools/test_pass2_p2b_static.py /tmp/pass2-p2b-bootstrap-static.json
 
-      - name: Commit exact P2-B implementation
+      - name: Commit exact non-workflow P2-B implementation
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
