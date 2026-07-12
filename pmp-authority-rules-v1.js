@@ -1,9 +1,9 @@
 (()=>{
 'use strict';
-const V='2.0.0-authority-rules-passive-foundation';
+const V='3.0.0-pass2-p2b-active-exact-source-gate';
 const OWNER='pmp-authority-rules-v1';
-const MODE='passive_authority_map_only';
-const RULE='Defines who may do what. It does not fix, move, delete, rebuild, reroute, migrate storage, or write app data.';
+const MODE='active_exact_source_pre_side_effect_gate';
+const RULE='Defines semantic roles and delegates executable capability decisions to the exact-source Pass 2 authorization gate before protected side effects.';
 const GLOBAL_DENY=['auto_fix','auto_repair','move_file','delete_file','rebuild_bank','reroute_current_app','overwrite_storage','indexeddb_write','unscoped_dom_mount','silent_authority_gain'];
 const ROLES={
   route_guardian:{may:['open_current_app_path','read_current_map','show_route_status'],deny:['storage_write','mount_sections','repair','delete','reroute_elsewhere'],boundary:'Outer gate only. Opens the current app path; does not own app structure.'},
@@ -23,6 +23,8 @@ function role(name){return ROLES[norm(name)]||null;}
 function isGloballyDenied(action){return GLOBAL_DENY.indexOf(norm(action))>=0;}
 function allowed(roleName,action){const r=role(roleName);const a=norm(action);if(!r)return false;if(isGloballyDenied(a))return false;return (r.may||[]).map(norm).indexOf(a)>=0;}
 function denied(roleName,action){const r=role(roleName);const a=norm(action);if(!r)return true;if(isGloballyDenied(a))return true;return (r.deny||[]).map(norm).indexOf(a)>=0;}
-function report(){return {type:'PMP_AUTHORITY_RULES_REPORT_V1',version:V,owner:OWNER,mode:MODE,rule:RULE,global_deny:clone(GLOBAL_DENY),roles:clone(ROLES),passive_only:true,storage_write:false,indexeddb_write:false,mutation:false};}
-window.PMPAuthorityRulesV1=Object.freeze({version:V,owner:OWNER,mode:MODE,rule:RULE,global_deny:Object.freeze(GLOBAL_DENY.slice()),roles:Object.freeze(clone(ROLES)),role,allowed,denied,report});
+function gate(){try{return window.PMPPass2ActorAuthorizationGateV1||(window.top&&window.top.PMPPass2ActorAuthorizationGateV1)||null}catch(e){return null}}
+function authorizeCapability(capability,details){const g=gate();if(!g||typeof g.authorize!=='function'){const e=new Error('Pass 2 authorization gate is unavailable.');e.code='P2_GATE_UNAVAILABLE';throw e}return g.authorize(capability,details||{})}
+function report(){const g=gate(),r=g&&typeof g.report==='function'?g.report():null;return {type:'PMP_AUTHORITY_RULES_REPORT_V2',version:V,owner:OWNER,mode:MODE,rule:RULE,global_deny:clone(GLOBAL_DENY),roles:clone(ROLES),passive_only:false,enforcement_gate_active:!!(r&&r.enforced),gate_report:r,storage_write:'capability_gated',indexeddb_write:'capability_gated',mutation:'capability_gated'};}
+window.PMPAuthorityRulesV1=Object.freeze({version:V,owner:OWNER,mode:MODE,rule:RULE,global_deny:Object.freeze(GLOBAL_DENY.slice()),roles:Object.freeze(clone(ROLES)),role,allowed,denied,authorizeCapability,report});
 })();

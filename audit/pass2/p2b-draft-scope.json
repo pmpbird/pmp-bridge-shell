@@ -1,8 +1,0 @@
-{
-  "type": "PMP_PASS2_P2B_TEMPORARY_PUBLICATION_SCOPE_V1",
-  "status": "TEMPORARY_SELF_REMOVING_PUBLISHER_PENDING",
-  "base_main_commit": "c767844d53b4b393928170387b6f988e49fe1fc6",
-  "pass2_complete": false,
-  "pass3_started": false,
-  "must_be_deleted_before_certification": true
-}

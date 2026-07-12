@@ -1,0 +1,67 @@
+{
+  "allowed_runtime_changes": [
+    "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+    "pmp-app-orchestrator-v1.js",
+    "pmp-safe-writer-current-return-fix-v1.js",
+    "pmp-continuous-run-bank-order-frame-loader-v1.js",
+    "pmp-authority-rules-v1.js",
+    "pmp-bug-watch-passive-capture-v1.js",
+    "pmp-pass2-actor-authorization-gate-v1.js",
+    "pmp-pass2-actor-authority-registry-v1.json",
+    "audit/pass2/p2b-forbidden-action-fixture.html",
+    "audit/pass2/p2b-registered-marker.js"
+  ],
+  "allowed_support_changes": [
+    "tools/build_pass2_actor_registry.py",
+    "tools/test_pass2_p2b_static.py",
+    "tools/run_pass2_p2b_browser.py",
+    "audit/pass2/p2b-scope-lock.json",
+    "audit/pass2/p2b-status.md",
+    "audit/pass2/p2b-receipt.json",
+    "audit/pass2/p2b-receipt-verification-trigger.md",
+    ".github/workflows/pass2-p2b-authorization-gate.yml",
+    ".github/workflows/a003-integrity-probe.yml",
+    "pmp-runtime-integrity-manifest-v1.json",
+    "pmp-app-current.html",
+    "audit/a003-manifest-seal.json"
+  ],
+  "base_main_commit": "c767844d53b4b393928170387b6f988e49fe1fc6",
+  "deferred_within_pass2": {
+    "P2-B03": "Bug Watch append-only immutable receipt history is deferred to P2-C.",
+    "P2-B04": "Recurring actor stop, expiry, handoff, and owner lifecycle certification is deferred to P2-C."
+  },
+  "forbidden_changes": [
+    "Pass 3 owner action gateway or action-token implementation",
+    "Current Map route target changes",
+    "storage, IndexedDB, or cache clearing",
+    "Bank rebuild",
+    "user-content deletion",
+    "visual redesign",
+    "Crosswalk Router integration"
+  ],
+  "next_phase_after_p2b": "P2-C \u2014 Bug Watch append-only history and recurring actor lifecycle enforcement",
+  "overall_project_pass": "Pass 2",
+  "p2a_receipt_id": "PMP-APP-ORCH-PASS2-P2A-E7BA1B93-PASS-001",
+  "p2b_completion_gate": [
+    "Every registered actor path has exact current SHA-256 and Git blob identity.",
+    "The authorization gate loads before the protected active inner actor set.",
+    "Unknown actor execution and unknown script injection fail closed.",
+    "Undeclared storage, DOM, timer, network, navigation, IndexedDB, cache, Service Worker, and eval capabilities fail before native action.",
+    "Globally forbidden destructive capabilities remain forbidden for every actor.",
+    "Exact registered source executes only after digest verification.",
+    "Quarantine evidence records side_effect_executed=false.",
+    "A-002 41/41 and A-003 21/21 plus 47/47 remain green.",
+    "Pass 2 remains in progress and Pass 3 remains not started."
+  ],
+  "pass2_complete_after_p2b": false,
+  "pass3_started": false,
+  "phase": "P2-B \u2014 Exact-source actor authorization gate and forbidden-action fixtures",
+  "purpose": "Block unknown actors and undeclared or globally forbidden capabilities before native side effects while preserving the A-003 exact-source chain.",
+  "required_repairs": {
+    "P2-B01": "Replace passive authority reporting with an active pre-side-effect capability gate.",
+    "P2-B02": "Authorize the exact current active actor set rather than the obsolete active-path-only freeze.",
+    "P2-B05": "Reject unregistered paths, wrong bytes, runtime script injection, and undeclared capabilities before execution or native action."
+  },
+  "status": "P2B_IMPLEMENTATION_AND_CERTIFICATION_IN_PROGRESS",
+  "type": "PMP_APP_ORCHESTRATOR_PASS2_P2B_SCOPE_LOCK_V1"
+}

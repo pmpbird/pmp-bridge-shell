@@ -1,0 +1,54 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>P2-B Forbidden Action Fixture</title></head>
+<body><pre id="result">running</pre>
+<script src="../../pmp-pass2-actor-authorization-gate-v1.js"></script>
+<script>
+(async()=>{
+'use strict';
+const FIXTURE='audit/pass2/p2b-forbidden-action-fixture.html';
+const out=document.getElementById('result');
+const gate=window.PMPPass2ActorAuthorizationGateV1;
+const tests=[];
+function record(name,pass,detail){tests.push({name,pass:!!pass,detail:detail||null});if(!pass)throw new Error(name+': '+JSON.stringify(detail||null))}
+function code(e){return String(e&&e.code||e&&e.message||e)}
+await gate.ready();gate.sealBootstrap('p2b_adversarial_fixture_ready');
+await gate.testRunAs(FIXTURE,async()=>{
+  const unique='p2b_'+Date.now()+'_'+Math.random().toString(16).slice(2);
+  const deniedKey=unique+'_denied',sentinelKey=unique+'_sentinel';
+  localStorage.setItem(sentinelKey,'preserve');
+  let e1=null;try{await gate.testRunAs('__unknown_actor__',()=>localStorage.setItem(deniedKey,'bad'))}catch(e){e1=e}
+  record('unknown actor storage write blocked before effect',code(e1)==='P2_UNKNOWN_ACTOR'&&!localStorage.getItem(deniedKey),{code:code(e1)});
+  let e2=null;try{await gate.testRunAs('pmp-authority-rules-v1.js',()=>localStorage.setItem(deniedKey,'bad'))}catch(e){e2=e}
+  record('known actor undeclared storage capability blocked',code(e2)==='P2_CAPABILITY_DENIED'&&!localStorage.getItem(deniedKey),{code:code(e2)});
+  let e3=null;try{localStorage.clear()}catch(e){e3=e}
+  record('globally forbidden storage clear blocked and sentinel preserved',code(e3)==='P2_CAPABILITY_GLOBALLY_FORBIDDEN'&&localStorage.getItem(sentinelKey)==='preserve',{code:code(e3)});
+  const node=document.createElement('div');node.id=unique+'_node';let e4=null;try{await gate.testRunAs('pmp-authority-rules-v1.js',()=>document.body.appendChild(node))}catch(e){e4=e}
+  record('undeclared DOM mutation blocked before connection',code(e4)==='P2_CAPABILITY_DENIED'&&!node.isConnected,{code:code(e4)});
+  let intervalFired=false,e5=null;try{await gate.testRunAs('pmp-phase8-atlas-marker-v1.js',()=>setInterval(()=>{intervalFired=true},1))}catch(e){e5=e}
+  await new Promise(r=>setTimeout(r,25));
+  record('undeclared recurring timer blocked before scheduling',code(e5)==='P2_CAPABILITY_DENIED'&&!intervalFired,{code:code(e5)});
+  let e6=null;try{await gate.testRunAs('pmp-authority-rules-v1.js',()=>fetch('/audit/pass2/should-never-request-p2b'))}catch(e){e6=e}
+  record('undeclared network fetch blocked before request',code(e6)==='P2_CAPABILITY_DENIED',{code:code(e6)});
+  const unknownScript=document.createElement('script');unknownScript.src='/audit/pass2/p2b-unknown-never-execute.js';let e7=null;try{await gate.testRunAs('pmp-app-orchestrator-v1.js',()=>document.body.appendChild(unknownScript))}catch(e){e7=e}
+  record('unregistered script path quarantined before append',code(e7)==='P2_UNKNOWN_ACTOR'&&!unknownScript.isConnected,{code:code(e7)});
+  let e8=null;try{await gate.testRunAs('pmp-authority-rules-v1.js',()=>gate.navigateWindow(window,'about:blank',{reason:'fixture_forbidden_navigation'}))}catch(e){e8=e}
+  record('undeclared window navigation blocked before action',code(e8)==='P2_CAPABILITY_DENIED'&&location.pathname.endsWith('p2b-forbidden-action-fixture.html'),{code:code(e8)});
+  const dbName=unique+'_db';
+  await new Promise((resolve,reject)=>{const req=indexedDB.open(dbName,1);req.onupgradeneeded=()=>req.result.createObjectStore('keep');req.onsuccess=()=>{req.result.close();resolve()};req.onerror=()=>reject(req.error)});
+  let e9=null;try{await gate.testRunAs('pmp-bug-watch-passive-capture-v1.js',()=>indexedDB.deleteDatabase(dbName))}catch(e){e9=e}
+  const storeStillThere=await new Promise((resolve,reject)=>{const req=indexedDB.open(dbName,1);req.onsuccess=()=>{const ok=req.result.objectStoreNames.contains('keep');req.result.close();resolve(ok)};req.onerror=()=>reject(req.error)});
+  record('IndexedDB deletion blocked before database loss',code(e9)==='P2_CAPABILITY_GLOBALLY_FORBIDDEN'&&storeStillThere,{code:code(e9)});
+  const cacheName=unique+'_cache';await caches.open(cacheName);let e10=null;try{await caches.delete(cacheName)}catch(e){e10=e}
+  record('cache deletion blocked before cache loss',code(e10)==='P2_CAPABILITY_GLOBALLY_FORBIDDEN'&&await caches.has(cacheName),{code:code(e10)});
+  let e11=null;try{await gate.testVerifySource('pmp-authority-rules-v1.js',new TextEncoder().encode('tampered'))}catch(e){e11=e}
+  record('registered path with wrong bytes blocked before execution',code(e11)==='P2_SOURCE_DIGEST_MISMATCH',{code:code(e11)});
+  await gate.loadActor('audit/pass2/p2b-registered-marker.js',{reason:'fixture_exact_registered_actor'});
+  record('registered exact-source actor executes',!!window.__PMP_P2B_REGISTERED_MARKER__,window.__PMP_P2B_REGISTERED_MARKER__||null);
+  const report=gate.report(),ledger=gate.quarantineLedger();
+  record('gate remains enforced',report.enforced===true&&report.bootstrap_sealed===true,report);
+  record('quarantine ledger is append-history with denials',Array.isArray(ledger.events)&&ledger.events.length>=9&&ledger.events.every((x,i)=>x.sequence===i+1),{events:ledger.events.length});
+});
+const result={type:'PMP_PASS2_P2B_FORBIDDEN_ACTION_FIXTURE_RESULT_V1',status:'PASS',tests_passed:tests.length,tests_failed:0,tests,gate:gate.report()};
+window.PMP_P2B_FIXTURE_RESULT=result;out.textContent=JSON.stringify(result,null,2);
+})().catch(error=>{const result={type:'PMP_PASS2_P2B_FORBIDDEN_ACTION_FIXTURE_RESULT_V1',status:'FAIL',tests_passed:0,tests_failed:1,error:String(error&&error.stack||error)};window.PMP_P2B_FIXTURE_RESULT=result;document.getElementById('result').textContent=JSON.stringify(result,null,2)});
+</script></body></html>

@@ -15,9 +15,11 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3ded4!imp
 <body>
 <iframe id="app" title="PMP Current Inner v30"></iframe>
 <div id="boot" role="status" aria-live="polite"><section class="bootCard" aria-label="App Orchestrator launch gate"><div class="bootBadge">App Orchestrator</div><h1 class="bootTitle">Checking PMP before entry</h1><p class="bootSub">This launch gate verifies the startup chain, keeps the reports copyable, then opens the app.</p><div class="bootChecklist"><div class="bootItem" id="bootRoute"><span class="bootDot"></span><span>Route handoff</span><small>checking</small></div><div class="bootItem" id="bootRuntime"><span class="bootDot"></span><span>Runtime surface</span><small>checking</small></div><div class="bootItem" id="bootOrchestrator"><span class="bootDot"></span><span>App Orchestrator proof</span><small>checking</small></div><div class="bootItem" id="bootEntry"><span class="bootDot"></span><span>PMP entry</span><small>pending</small></div></div><div class="bootActions"><button id="copyStartupBtn" type="button">Copy Startup Report</button><button id="copyOrchBtn" type="button">Copy Orchestrator Report</button><button class="dark wide" id="showBootBtn" type="button">Show Boot Details</button></div><div class="bootDetails" id="bootDetails"><div class="bootDetailsHead">Boot Details</div><pre class="bootLog" id="bootLog"></pre></div><p class="bootNote" id="bootNote">No route changes, Bank rebuild, storage migration, or ownership takeover.</p></section></div>
-<script src="pmp-current-route-resolver-v1.js"></script>
+<script src="pmp-pass2-actor-authorization-gate-v1.js"></script>
 <script>
+(async()=>{
 'use strict';
+const authorityGate=window.PMPPass2ActorAuthorizationGateV1;if(!authorityGate)throw new Error('Pass 2 actor authorization gate did not initialize.');await authorityGate.ready();await authorityGate.runDocument(async()=>{await authorityGate.loadActor('pmp-current-route-resolver-v1.js',{reason:'inner_v30_route_resolver'});
 window.PMP_APP_ORCHESTRATOR_BOOT_DELAY_MS=4300;
 window.PMP_BOOT_PANEL_SUPPRESS=true;
 const KEY='20260711A-v30-a002-p2-map-delegated-chain';
@@ -50,20 +52,12 @@ function launchInner(reason){if(launchInner.done||routeFailed)return;if(!NEXT_HA
 try{document.getElementById('copyStartupBtn').onclick=function(){copyStartup(this)};document.getElementById('copyOrchBtn').onclick=function(){copyOrchestrator(this)};document.getElementById('showBootBtn').onclick=function(){let d=document.getElementById('bootDetails');let open=d&&d.classList.toggle('show');this.textContent=open?'Hide Boot Details':'Show Boot Details'}}catch(e){}
 publishApi();
 async function initializeChain(){try{if(!resolver)throw new Error('PMP Current Route Resolver did not load.');const loaded=await resolver.load();ROUTE_MAP=loaded.map;const guardian=resolver.resolve(loaded.map,'route_guardian');const current=resolver.resolve(loaded.map,'current_app');const inner=resolver.resolve(loaded.map,'runtime_chain.inner_v30');NEXT_HANDOFF=resolver.resolve(loaded.map,'runtime_chain.inner_v23');CURRENT_CHAIN={map:loaded.map_path,map_version:loaded.map.app_version,route_epoch:loaded.map.route_epoch,guardian:guardian.path,current:current.path,inner:inner.path,next_inner:NEXT_HANDOFF.path};setReady('bootRoute','ready');publishApi();currentLiveReport('boot_start_live_api');setReady('bootRuntime','ready');setReady('bootOrchestrator','ready');shellReceipt('boot_start');push('$ pmp app-orchestrator --launch-gate');push('Current Map chain handoffs resolved.');push('Live App Orchestrator API published.');push('Clean final startup certification is available.');window.PMPInnerV30EnterNow=launchInner;setTimeout(()=>launchInner('timer_ready'),PRE_MS)}catch(e){failClosed(e)}}
-initializeChain();
+const initialActorPaths=['pmp-app-orchestrator-v1.js','pmp-pass2-atlas-adapter-v2.js','pmp-mount-registry-v1.js','pmp-authority-rules-v1.js','pmp-active-bug-found-contract-v1.js','pmp-bug-watch-passive-capture-v1.js','pmp-safe-writer-current-return-fix-v1.js','pmp-phase8-atlas-marker-v1.js','pmp-pass1r-version-aligner-v1.js','pmp-pass1w-live-proof-reader-v1.js','pmp-active-path-discovery-machine-v1.js','pmp-continuous-run-bank-order-frame-loader-v1.js'];
+const initializePromise=initializeChain();await authorityGate.loadActors(initialActorPaths,{reason:'inner_v30_initial_actor_set'});await initializePromise;
 frame.addEventListener('load',()=>{clearPreframe('frame_loaded_world_safe');shellReceipt('inner_frame_loaded')});[PRE_MS+450,PRE_MS+900,PRE_MS+1500,PRE_MS+2200].forEach(ms=>setTimeout(()=>{if(!routeFailed)clearPreframe('repeat_world_safe_'+ms)},ms));
+authorityGate.sealBootstrap('inner_v30_initial_actor_set_loaded');
+});
+})().catch(error=>{try{document.getElementById('bootNote').textContent='Pass 2 authorization failed closed: '+String(error&&error.code||error&&error.message||error);document.getElementById('bootDetails').classList.add('show');document.getElementById('bootLog').textContent=JSON.stringify({type:'PMP_PASS2_AUTHORIZATION_BOOT_FAILURE_V1',status:'FAIL_CLOSED',code:String(error&&error.code||'P2B_BOOT_ERROR'),message:String(error&&error.message||error),action:'entry_blocked_before_unapproved_actor_side_effect'},null,2);document.getElementById('app').removeAttribute('src')}catch(_){}});
 </script>
-<script src="pmp-app-orchestrator-v1.js?fresh=app-orchestrator-final-clean-startup-certification-20260709A"></script>
-<script src="pmp-pass2-atlas-adapter-v2.js?fresh=pass2-atlas-pass5-stable-20260704I"></script>
-<script src="pmp-mount-registry-v1.js?fresh=mount-registry-pass7-v21-v29-atlas-minimal-20260706B"></script>
-<script src="pmp-authority-rules-v1.js?fresh=authority-rules-pass5-stable-20260704I"></script>
-<script src="pmp-active-bug-found-contract-v1.js?fresh=active-bug-found-contract-stable-20260704I"></script>
-<script src="pmp-bug-watch-passive-capture-v1.js?fresh=bug-watch-passive-capture-stable-20260704I"></script>
-<script src="pmp-safe-writer-current-return-fix-v1.js?fresh=safe-writer-current-return-hook-stable-20260704I"></script>
-<script src="pmp-phase8-atlas-marker-v1.js?fresh=phase8-atlas-marker-pass5-stable-20260704I"></script>
-<script src="pmp-pass1r-version-aligner-v1.js?fresh=active-path-aligner-pass5-stable-20260704I"></script>
-<script src="pmp-pass1w-live-proof-reader-v1.js?fresh=live-proof-reader-pass5-stable-20260704I"></script>
-<script src="pmp-active-path-discovery-machine-v1.js?fresh=active-path-discovery-pass7-v21-v29-freeze-proof-20260706A"></script>
-<script src="pmp-continuous-run-bank-order-frame-loader-v1.js?fresh=pass75-headless-runtime-platform-20260708A"></script>
 </body>
 </html>
