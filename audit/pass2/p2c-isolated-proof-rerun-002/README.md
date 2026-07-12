@@ -1,0 +1,1 @@
+Audit-only repaired isolated proof rerun. Reconstruct only the files listed in PAYLOAD_MANIFEST.json. The authorization permits one disposable proof rerun and does not authorize production activation, production application, Current Map changes, persisted-data changes, Bank rebuild, Crosswalk Router inclusion, or merge.
