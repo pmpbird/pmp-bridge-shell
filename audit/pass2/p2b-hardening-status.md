@@ -32,7 +32,18 @@ P2-B hardening V2 adds:
 
 The first hardening browser execution passed all **42/42** checks. The initial workflow failure was only a stale expected total of 41; no gate failure occurred.
 
-The gate engine is not changed unless the new matrix finds a real enforcement defect.
+## Committed exact reseal
+
+The bounded publisher committed the exact regenerated A-003 identities:
+
+- protected runtime records: **700**
+- manifest SHA-256: `e90ea9d378cb068269cd0b7ee1336b64b72aa4feef029bc8a0b68b925877bb99`
+- runtime source-set SHA-256: `a2118dbbbf390c08f61d025a103b5f5a7e2a21dfd49f859c8acf27d8c99cd642`
+- gate engine SHA-256: `addd3be7f5570552bec805243fc920c646c6163fe0887eaa9b691a46251631e3`
+- gate engine changed: **no**
+- actor-source manifest record present: **yes**
+
+This connector-authored status commit triggers the complete regression matrix against those exact resealed bytes.
 
 ## Stop line
 
