@@ -7,17 +7,20 @@ FUNCTION = r'''
 def patch_a003_root_receipt_authority(root:Path):
  p=root/'pmp-app-current.html';s=p.read_text()
  marker="  function receipt(status,extra){"
- insert="""  const P2C_A003_NATIVE_STORAGE_SET_ITEM=Storage.prototype.setItem;\n  function p2cA003RootReceiptWrite(key,value){if(key!=='pmp_a003_bootstrap_receipt_v1'&&key!=='pmp_current_entry_route_handoff_receipt_v1')throw fail('P2C_A003_ROOT_RECEIPT_KEY_DENIED','Root receipt authority is restricted to fixed A-003 keys.',{key});return P2C_A003_NATIVE_STORAGE_SET_ITEM.call(localStorage,key,value)}\n"""
+ insert="""  const P2C_A003_NATIVE_FETCH=globalThis.fetch.bind(globalThis);\n  const P2C_A003_NATIVE_STORAGE_SET_ITEM=Storage.prototype.setItem;\n  function p2cA003RootReceiptWrite(key,value){if(key!=='pmp_a003_bootstrap_receipt_v1'&&key!=='pmp_current_entry_route_handoff_receipt_v1')throw fail('P2C_A003_ROOT_RECEIPT_KEY_DENIED','Root receipt authority is restricted to fixed A-003 keys.',{key});return P2C_A003_NATIVE_STORAGE_SET_ITEM.call(localStorage,key,value)}\n"""
  if s.count(marker)!=1:raise SystemExit('A003_ROOT_RECEIPT_INSERTION_POINT_INVALID')
  s=s.replace(marker,insert+marker,1)
  old_boot="localStorage.setItem('pmp_a003_bootstrap_receipt_v1',JSON.stringify(value,null,2))"
  new_boot="p2cA003RootReceiptWrite('pmp_a003_bootstrap_receipt_v1',JSON.stringify(value,null,2))"
  old_handoff="localStorage.setItem('pmp_current_entry_route_handoff_receipt_v1',JSON.stringify(finalReceipt,null,2))"
  new_handoff="p2cA003RootReceiptWrite('pmp_current_entry_route_handoff_receipt_v1',JSON.stringify(finalReceipt,null,2))"
+ old_fetch="const response=await fetch(path,{cache:'no-store'});"
+ new_fetch="const response=await P2C_A003_NATIVE_FETCH(path,{cache:'no-store'});"
  if s.count(old_boot)!=1 or s.count(old_handoff)!=1:raise SystemExit('A003_ROOT_RECEIPT_WRITE_POINT_INVALID')
- s=s.replace(old_boot,new_boot,1).replace(old_handoff,new_handoff,1)
+ if s.count(old_fetch)!=1:raise SystemExit('A003_ROOT_FETCH_POINT_INVALID')
+ s=s.replace(old_boot,new_boot,1).replace(old_handoff,new_handoff,1).replace(old_fetch,new_fetch,1)
  p.write_text(s)
- return {'status':'APPLIED','authority':'A003_ROOT_TRUST_ANCHOR','capture_timing':'BEFORE_ACTOR_GATE_INSTALL','native_operation':'Storage.prototype.setItem','allowed_keys':['pmp_a003_bootstrap_receipt_v1','pmp_current_entry_route_handoff_receipt_v1'],'ordinary_actor_storage_authority_changed':False}
+ return {'status':'APPLIED','authority':'A003_ROOT_TRUST_ANCHOR','capture_timing':'BEFORE_ACTOR_GATE_INSTALL','native_operations':['Storage.prototype.setItem','globalThis.fetch'],'native_fetch_scope':'fetchBytes only','allowed_keys':['pmp_a003_bootstrap_receipt_v1','pmp_current_entry_route_handoff_receipt_v1'],'ordinary_actor_storage_authority_changed':False,'ordinary_actor_network_authority_changed':False}
 '''
 
 def main():
