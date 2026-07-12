@@ -1,0 +1,14 @@
+{
+  "type": "PMP_P2C_EXPLICIT_PRODUCTION_SHAPED_PROOF_001_SCOPE_LOCK",
+  "base_commit": "c618596f2b5c99ca7f355153a5bd31268170df80",
+  "canonical_v14_sha256": "04fd41e7ecfdea999db939a8eaf8a069b77c5209753941e0464a334608ee6aaf",
+  "owner_namespace_closure_candidate_sha256": "2b61d40a1f13e5bce42176f9044f02acc5918a2feb21eb01bcdea7a4bb2cb9af",
+  "explicit_authorization_scope": "PRODUCTION_SHAPED_ACTIVATION_AND_ROLLBACK_PROOF_ONLY",
+  "production_runtime_files_changed": false,
+  "production_apply_authorized": false,
+  "production_merge_authorized": false,
+  "active_chain_integration": false,
+  "pass2_complete": false,
+  "pass3_started": false,
+  "rule": "Only the detached disposable worktree may receive active proof bytes. The branch itself is audit-only and must close without merge."
+}
