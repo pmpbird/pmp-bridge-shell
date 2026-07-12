@@ -1,0 +1,7 @@
+{
+  "type":"PMP_P2C_PROOF_PAYLOAD_TRANSPORT_CLEANUP_POLICY_002",
+  "accepted_files":["chunk00.b64","chunk01.b64","chunk02a.b64","chunk02b.hex","chunk02c.hex","chunk02d.hex","chunk03.b64","chunk04.b64","chunk05.b64","chunk06.b64","chunk07.b64"],
+  "ignored_files":["chunk02.hex","chunk02.note"],
+  "reason":"Earlier transport attempts are not part of reconstruction and cannot influence proof bytes.",
+  "archive_sha256":"b4701708db618269143e657433004da0e4e7e2e93d252d6a204ea088e72699d8"
+}
