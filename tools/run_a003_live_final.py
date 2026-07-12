@@ -7,7 +7,9 @@ copy of the committed browser harness that:
 2. accepts BOOTSTRAP_HTTP_FAILED as the earlier equivalent fail-closed code when
    bootstrap-protected resolver or worker bytes are tampered;
 3. injects exact Git-object historical bytes plus one tamper byte through a pre-document
-   fetch override, then reads the fail-closed receipt from window or localStorage.
+   fetch override, then reads the fail-closed receipt from window or localStorage;
+4. derives the expected protected-record count from the current sealed manifest rather
+   than preserving the historical 697-record constant.
 """
 from __future__ import annotations
 
@@ -30,6 +32,12 @@ def main() -> int:
     if require_old not in text:
         raise SystemExit("Expected Playwright import was not found.")
     text = text.replace(require_old, require_new, 1)
+
+    count_old = "status.receipt?.record_count === 697"
+    count_new = "status.receipt?.record_count === JSON.parse(fs.readFileSync(path.join(ROOT, MANIFEST), 'utf8')).records.length"
+    if count_old not in text:
+        raise SystemExit("Expected fixed A-003 manifest record-count assertion was not found.")
+    text = text.replace(count_old, count_new, 1)
 
     receipt_pattern = re.compile(
         r"\s*const receipt = JSON\.parse\(localStorage\.getItem\('pmp_home_single_v6_emergency_rollback_receipt'\) \|\| 'null'\);\s*"
@@ -56,13 +64,13 @@ def main() -> int:
 
     route_old = """    await historicalContext.route('https://raw.githubusercontent.com/pmpbird/pmp-bridge-shell/7ac7213aeeeb8bb55692a4985e0fa80a547cff4e/pmp-home-single-v6.html*', async route => {
       const response = await route.fetch();
-      const body = Buffer.concat([await response.body(), Buffer.from('\\n<!-- A003 HISTORICAL TAMPER -->')]);
+      const body = Buffer.concat([await response.body(), Buffer.from('\n<!-- A003 HISTORICAL TAMPER -->')]);
       const headers = {...response.headers(), 'access-control-allow-origin':'*', 'cache-control':'no-store'};
       await route.fulfill({status:200, headers, body});
     });"""
     route_new = """    const historicalTarget = 'https://raw.githubusercontent.com/pmpbird/pmp-bridge-shell/7ac7213aeeeb8bb55692a4985e0fa80a547cff4e/pmp-home-single-v6.html';
     const historicalOriginal = execFileSync('git', ['show', '7ac7213aeeeb8bb55692a4985e0fa80a547cff4e:pmp-home-single-v6.html'], {cwd:ROOT});
-    const historicalTamperedBase64 = Buffer.concat([historicalOriginal, Buffer.from('\\n<!-- A003 HISTORICAL TAMPER -->')]).toString('base64');
+    const historicalTamperedBase64 = Buffer.concat([historicalOriginal, Buffer.from('\n<!-- A003 HISTORICAL TAMPER -->')]).toString('base64');
     await historicalContext.addInitScript(({target, payload}) => {
       const originalFetch = window.fetch.bind(window);
       window.fetch = async function(input, init) {
