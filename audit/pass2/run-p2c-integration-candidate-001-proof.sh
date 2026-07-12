@@ -8,35 +8,29 @@ git merge-base --is-ancestor "$BASE_MAIN_COMMIT" HEAD
 python3 - <<'PY'
 import json,os,pathlib,subprocess
 changed=set(subprocess.check_output(['git','diff','--name-only',os.environ['BASE_MAIN_COMMIT'],'HEAD'],text=True).splitlines())
-allowed={
- '.github/workflows/pass2-p2c-integration-candidate-001-proof.yml',
- 'audit/pass2/p2c-integration-candidate-001-scope-lock.json',
- 'audit/pass2/p2c-integration-candidate-001-status.md',
- 'audit/pass2/run-p2c-integration-candidate-001-proof.sh',
-}
+allowed={'.github/workflows/pass2-p2c-integration-candidate-001-proof.yml','audit/pass2/p2c-integration-candidate-001-scope-lock.json','audit/pass2/p2c-integration-candidate-001-status.md','audit/pass2/run-p2c-integration-candidate-001-proof.sh'}
 extras={p for p in changed if p not in allowed and not p.startswith('audit/pass2/p2c-integration-candidate-001-generator/')}
-assert not extras, sorted(extras)
+assert not extras,sorted(extras)
 scope=json.loads(pathlib.Path('audit/pass2/p2c-integration-candidate-001-scope-lock.json').read_text())
 assert scope['production_runtime_files_changed'] is False and scope['active_chain_integration'] is False
 pathlib.Path('/tmp/p2c-scope-result.json').write_text(json.dumps({'status':'PASS','changed_paths':sorted(changed),'active_chain_integrated':False,'pass2_complete':False,'pass3_started':False},indent=2)+'\n')
 PY
 
 python3 - <<'PY'
-import base64,gzip,hashlib,json,pathlib,traceback
-source=pathlib.Path('audit/pass2/p2c-integration-candidate-001-generator/generator.py.gz.b64')
-expected='ed55dadfbcff934b3d63d179b26d6a60bd91bf83cf1a3b16952ebf05c2b980cc'
-result={'status':'FAIL','source_exists':source.is_file(),'expected_sha256':expected}
+import gzip,hashlib,json,pathlib,traceback
+source=pathlib.Path('audit/pass2/p2c-integration-candidate-001-generator/generator.py.gz')
+expected_compressed='96255ab71825abc0894f741322235623848bb1339c50c31cdf010d62077a9aa0'
+expected_source='ed55dadfbcff934b3d63d179b26d6a60bd91bf83cf1a3b16952ebf05c2b980cc'
+result={'status':'FAIL','source_exists':source.is_file(),'expected_compressed_sha256':expected_compressed,'expected_source_sha256':expected_source}
 try:
-    original=source.read_text()
-    encoded=''.join(original.split())
-    result.update({'source_chars':len(original),'encoded_chars':len(encoded),'encoded_sha256':hashlib.sha256(encoded.encode()).hexdigest()})
-    compressed=base64.b64decode(encoded,validate=True)
-    result.update({'compressed_bytes':len(compressed),'compressed_sha256':hashlib.sha256(compressed).hexdigest()})
-    raw=gzip.decompress(compressed)
-    digest=hashlib.sha256(raw).hexdigest()
-    result.update({'decoded_bytes':len(raw),'actual_sha256':digest,'status':'PASS' if digest==expected else 'FAIL_DIGEST'})
-    if digest==expected:
-        pathlib.Path('/tmp/build_p2c_integration_candidate_001.py').write_bytes(raw)
+    compressed=source.read_bytes(); compressed_sha=hashlib.sha256(compressed).hexdigest()
+    result.update({'compressed_bytes':len(compressed),'compressed_sha256':compressed_sha})
+    assert compressed_sha==expected_compressed
+    raw=gzip.decompress(compressed); source_sha=hashlib.sha256(raw).hexdigest()
+    result.update({'decoded_bytes':len(raw),'source_sha256':source_sha})
+    assert source_sha==expected_source
+    pathlib.Path('/tmp/build_p2c_integration_candidate_001.py').write_bytes(raw)
+    result['status']='PASS'
 except Exception as exc:
     result.update({'exception_type':type(exc).__name__,'exception':str(exc),'traceback':traceback.format_exc()})
 pathlib.Path('/tmp/p2c-generator-decode-result.json').write_text(json.dumps(result,indent=2)+'\n')
@@ -49,7 +43,6 @@ python3 /tmp/build_p2c_integration_candidate_001.py --repo . --output-dir "$CAND
 
 npm install --no-save playwright@1.55.0
 npx playwright install --with-deps chromium
-
 P2C_PORT=8765 node "$CANDIDATE_DIR/run-p2c-production-shaped-browser-integration-candidate-001.cjs" "$CANDIDATE_DIR" /tmp/p2c-production-shaped-browser-result.json 2>&1 | tee /tmp/p2c-production-shaped-browser-console.log
 python3 - <<'PY'
 import json,pathlib
