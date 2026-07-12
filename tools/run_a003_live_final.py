@@ -40,26 +40,39 @@ def main() -> int:
         raise SystemExit("Expected fixed A-003 manifest record-count assertion was not found.")
     text = text.replace(count_old, count_new, 1)
 
-    home_old = """  const home = allFrames.find(f => f.url().includes('pmp-home-single-v6.html'));
-  record('current-nested-home-loaded', !!home && (await home.locator('#pmpHomeGrid').count()) === 1, {frames:allFrames.map(f=>f.url())});"""
-    home_new = """  const home = allFrames.find(f => f.url().includes('pmp-home-single-v6.html'));
-  const p2bDiagnostic = inner ? await inner.evaluate(() => {
-    let report = null;
-    let stored = null;
-    try { report = window.PMPPass2ActorAuthorizationGateV1?.report?.() || null; } catch {}
-    try { stored = JSON.parse(localStorage.getItem('pmp_pass2_actor_authorization_report_v1') || 'null'); } catch {}
-    return {
-      report: report || stored,
-      boot_note: document.getElementById('bootNote')?.textContent || null,
-      boot_log: document.getElementById('bootLog')?.textContent || null,
-      app_src: document.getElementById('app')?.getAttribute('src') || null,
-      sealed: window.PMPPass2ActorAuthorizationGateV1?.state?.()?.sealed ?? null
-    };
-  }) : null;
-  record('current-nested-home-loaded', !!home && (await home.locator('#pmpHomeGrid').count()) === 1, {frames:allFrames.map(f=>f.url()), p2b_diagnostic:p2bDiagnostic});"""
-    if home_old not in text:
-        raise SystemExit("Expected nested Home assertion was not found.")
-    text = text.replace(home_old, home_new, 1)
+    frame_fail_old = """  return { reached:false, expected_hash:expectedHash, actual_hash:null, hash_matches:false, home_url:null, urls:page.frames().map(f=>f.url()) };"""
+    frame_fail_new = """  const urls = page.frames().map(f=>f.url());
+  const inner = page.frames().find(f => /pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A\.html/.test(f.url()));
+  let p2bDiagnostic = null;
+  if (inner) {
+    try {
+      p2bDiagnostic = await inner.evaluate(() => {
+        let report = null;
+        let stored = null;
+        try { report = window.PMPPass2ActorAuthorizationGateV1?.report?.() || null; } catch {}
+        try { stored = JSON.parse(localStorage.getItem('pmp_pass2_actor_authorization_report_v1') || 'null'); } catch {}
+        return {
+          report: report || stored,
+          boot_note: document.getElementById('bootNote')?.textContent || null,
+          boot_log: document.getElementById('bootLog')?.textContent || null,
+          app_src: document.getElementById('app')?.getAttribute('src') || null,
+          sealed: window.PMPPass2ActorAuthorizationGateV1?.state?.()?.sealed ?? null
+        };
+      });
+    } catch (error) {
+      p2bDiagnostic = { evaluation_error:String(error?.message || error) };
+    }
+  }
+  return { reached:false, expected_hash:expectedHash, actual_hash:null, hash_matches:false, home_url:null, urls, p2b_diagnostic:p2bDiagnostic };"""
+    if frame_fail_old not in text:
+        raise SystemExit("Expected frameReachedHome failure return was not found.")
+    text = text.replace(frame_fail_old, frame_fail_new, 1)
+
+    chain_record_old = """      record(`integrity-current-chain-home:${screen}`, home.reached && home.hash_matches, {expected:home.expected_hash, actual:home.actual_hash, home_url:home.home_url, frame_urls:home.urls.slice(-8)});"""
+    chain_record_new = """      record(`integrity-current-chain-home:${screen}`, home.reached && home.hash_matches, {expected:home.expected_hash, actual:home.actual_hash, home_url:home.home_url, frame_urls:home.urls.slice(-8), p2b_diagnostic:home.p2b_diagnostic || null});"""
+    if chain_record_old not in text:
+        raise SystemExit("Expected current-chain Home record was not found.")
+    text = text.replace(chain_record_old, chain_record_new, 1)
 
     receipt_pattern = re.compile(
         r"\s*const receipt = JSON\.parse\(localStorage\.getItem\('pmp_home_single_v6_emergency_rollback_receipt'\) \|\| 'null'\);\s*"
