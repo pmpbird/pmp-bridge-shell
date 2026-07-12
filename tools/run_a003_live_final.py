@@ -9,7 +9,8 @@ copy of the committed browser harness that:
 3. injects exact Git-object historical bytes plus one tamper byte through a pre-document
    fetch override, then reads the fail-closed receipt from window or localStorage;
 4. derives the expected protected-record count from the current sealed manifest rather
-   than preserving the historical 697-record constant.
+   than preserving the historical 697-record constant;
+5. records the Pass 2 gate report and inner boot diagnostics when nested Home entry fails.
 """
 from __future__ import annotations
 
@@ -38,6 +39,27 @@ def main() -> int:
     if count_old not in text:
         raise SystemExit("Expected fixed A-003 manifest record-count assertion was not found.")
     text = text.replace(count_old, count_new, 1)
+
+    home_old = """  const home = allFrames.find(f => f.url().includes('pmp-home-single-v6.html'));
+  record('current-nested-home-loaded', !!home && (await home.locator('#pmpHomeGrid').count()) === 1, {frames:allFrames.map(f=>f.url())});"""
+    home_new = """  const home = allFrames.find(f => f.url().includes('pmp-home-single-v6.html'));
+  const p2bDiagnostic = inner ? await inner.evaluate(() => {
+    let report = null;
+    let stored = null;
+    try { report = window.PMPPass2ActorAuthorizationGateV1?.report?.() || null; } catch {}
+    try { stored = JSON.parse(localStorage.getItem('pmp_pass2_actor_authorization_report_v1') || 'null'); } catch {}
+    return {
+      report: report || stored,
+      boot_note: document.getElementById('bootNote')?.textContent || null,
+      boot_log: document.getElementById('bootLog')?.textContent || null,
+      app_src: document.getElementById('app')?.getAttribute('src') || null,
+      sealed: window.PMPPass2ActorAuthorizationGateV1?.state?.()?.sealed ?? null
+    };
+  }) : null;
+  record('current-nested-home-loaded', !!home && (await home.locator('#pmpHomeGrid').count()) === 1, {frames:allFrames.map(f=>f.url()), p2b_diagnostic:p2bDiagnostic});"""
+    if home_old not in text:
+        raise SystemExit("Expected nested Home assertion was not found.")
+    text = text.replace(home_old, home_new, 1)
 
     receipt_pattern = re.compile(
         r"\s*const receipt = JSON\.parse\(localStorage\.getItem\('pmp_home_single_v6_emergency_rollback_receipt'\) \|\| 'null'\);\s*"
