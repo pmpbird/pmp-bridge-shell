@@ -1,0 +1,235 @@
+name: Pass 2 P2-C Isolated Proof Rerun 003 — Repair 008 One Run
+
+on:
+  pull_request:
+    types: [opened]
+    branches: [main]
+    paths:
+      - '.github/workflows/pass2-p2c-isolated-proof-rerun-003.yml'
+      - '.github/workflows/pass2-p2c-isolated-proof-rerun-002.yml'
+      - 'audit/pass2/p2c-isolated-proof-rerun-002/**'
+
+permissions:
+  contents: read
+
+env:
+  SOURCE_COMMIT: c618596f2b5c99ca7f355153a5bd31268170df80
+  AUDIT_DIR: audit/pass2/p2c-isolated-proof-rerun-002
+  REPAIR_DIR: audit/pass2/p2c-isolated-proof-rerun-002/repair-continuation-003
+  BUNDLE_DIR: /tmp/p2c-proof-runner-003
+  BUNDLE_TAR: /tmp/p2c-proof-rerun-003.tar.gz
+  BASELINE_ROOT: /tmp/p2c-proof-baseline-003
+  ACTIVE_ROOT: /tmp/p2c-proof-active-003
+  EVIDENCE_DIR: /tmp/p2c-proof-evidence-003
+  NODE_HOME: /tmp/p2c-node-003
+
+jobs:
+  isolated-proof-rerun-003:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact audit head with full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Verify one-run authorization and audit-only scope
+        run: |
+          set -euo pipefail
+          test "${{ github.event.action }}" = "opened"
+          test "${{ github.run_attempt }}" = "1"
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          git cat-file -e "$SOURCE_COMMIT^{commit}"
+          git merge-base --is-ancestor "$SOURCE_COMMIT" HEAD
+          python3 - "${{ github.event.pull_request.base.sha }}" <<'PY'
+          import json,pathlib,subprocess,sys
+          base=sys.argv[1]
+          changed=set(subprocess.check_output(['git','diff','--name-only',base,'HEAD'],text=True).splitlines())
+          allowed_workflows={
+            '.github/workflows/pass2-p2c-isolated-proof-rerun-002.yml',
+            '.github/workflows/pass2-p2c-isolated-proof-rerun-003.yml',
+          }
+          extras=sorted(p for p in changed if p not in allowed_workflows and not p.startswith('audit/pass2/p2c-isolated-proof-rerun-002/'))
+          assert not extras,extras
+          root=pathlib.Path('audit/pass2/p2c-isolated-proof-rerun-002')
+          receipt=json.loads((root/'P2C_EXPLICIT_ISOLATED_PROOF_RERUN_AUTHORIZATION_RECEIPT_003.json').read_text())
+          scope=json.loads((root/'scope-lock-rerun-003.json').read_text())
+          assert receipt['authorized'] is True and receipt['proof_run_count_authorized']==1
+          assert receipt['authorization_scope']=='ONE_ISOLATED_PRODUCTION_SHAPED_PROOF_RERUN_ONLY'
+          assert receipt['source_repository_commit']=='c618596f2b5c99ca7f355153a5bd31268170df80'
+          assert receipt['repair008_sha256']=='9de909e03b5a691d4215c785f36ad64ce38e844c7540b9f5bdc65f4a1b671972'
+          assert receipt['workflow_candidate_sha256']=='5878d6fb0a7cf5ef5c33abc47f41f948abffeaeb2f2c1412a9959e7ab25f9a3b'
+          assert receipt['bundle_sha256']=='a644ad9ea538117f8aa6b01ac6988ac8d938a64fb170fa2a8f071afebc77e500'
+          for key in ('production_activation_authorized','production_apply_authorized','merge_authorized','current_map_change_authorized','production_storage_change_authorized','second_proof_run_authorized'):
+              assert receipt[key] is False,key
+          assert scope['event']=='pull_request.opened' and scope['required_run_attempt']==1
+          assert scope['workflow_dispatch_allowed'] is False
+          assert scope['disposable_copy_required'] is True
+          assert scope['byte_for_byte_rollback_required'] is True
+          assert scope['restored_copy_regressions_required'] is True
+          assert scope['repair_chain']==['003','005','006','007','008']
+          pathlib.Path('/tmp/p2c-rerun-scope-003.json').write_text(json.dumps({
+            'status':'PASS','event':'pull_request.opened','run_attempt':1,
+            'base_sha':base,'head_sha':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+            'changed_paths':sorted(changed),'production_runtime_files_changed':False,
+            'production_activation_authorized':False,'logical_proof_authorization_count':1,
+            'repair_continuation':'008','second_proof_run_authorized':False
+          },indent=2)+'\n')
+          PY
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Reconstruct checksum-bound runner and apply Repairs 003 005 006 007 008 exactly once
+        run: |
+          set -euo pipefail
+          rm -rf "$BUNDLE_DIR" "$BUNDLE_TAR" "$EVIDENCE_DIR"
+          mkdir -p "$BUNDLE_DIR" "$EVIDENCE_DIR"
+          test "$(sha256sum "$AUDIT_DIR/bundle/part06_0.bin" | awk '{print $1}')" = "13435f1fcf4aa33c2df7d719944bc986fea8ebe45b7568766a3e086a56fa94ae"
+          test "$(sha256sum "$AUDIT_DIR/bundle/part06_1.bin" | awk '{print $1}')" = "917bc7936f8d9e5cbefbccbc7c4ff75f97156fada545d26c82e8f149c3feb7f8"
+          tr -d '\r\n' < "$AUDIT_DIR/bundle/part06_2.b64" | base64 -d > /tmp/p2c-part06-2.bin
+          test "$(sha256sum /tmp/p2c-part06-2.bin | awk '{print $1}')" = "250e8719e8e5184206464906a35e082a1e83d1dcfe717276fdfdba175c08fdfe"
+          cat "$AUDIT_DIR/bundle/part00.b64" "$AUDIT_DIR/bundle/part01.b64" "$AUDIT_DIR/bundle/part02.b64" "$AUDIT_DIR/bundle/part03.b64" | tr -d '\r\n' | base64 -d > "$BUNDLE_TAR"
+          cat "$AUDIT_DIR/bundle/part04_0.bin" "$AUDIT_DIR/bundle/part04_1.bin" "$AUDIT_DIR/bundle/part04_2.bin" "$AUDIT_DIR/bundle/part05_0.bin" "$AUDIT_DIR/bundle/part05_1.bin" "$AUDIT_DIR/bundle/part06_0.bin" "$AUDIT_DIR/bundle/part06_1.bin" /tmp/p2c-part06-2.bin >> "$BUNDLE_TAR"
+          test "$(wc -c < "$BUNDLE_TAR")" = "61478"
+          test "$(sha256sum "$BUNDLE_TAR" | awk '{print $1}')" = "a644ad9ea538117f8aa6b01ac6988ac8d938a64fb170fa2a8f071afebc77e500"
+          test "$(sha256sum "$AUDIT_DIR/pass2-p2c-isolated-proof-rerun-003.workflow-candidate.yml.txt" | awk '{print $1}')" = "5878d6fb0a7cf5ef5c33abc47f41f948abffeaeb2f2c1412a9959e7ab25f9a3b"
+          test "$(sha256sum "$REPAIR_DIR/apply_prepare_repair_003.py" | awk '{print $1}')" = "7461136b03dec90dc559532874843585d545fef1972e44fda2902ca1cdf7ed10"
+          test "$(sha256sum "$AUDIT_DIR/repair_runner_003.py" | awk '{print $1}')" = "ebb6f7c0b1b5d41eb795e48706cbfd00a66117653e03a8bce7248a5f63b5c1ca"
+          test "$(sha256sum "$AUDIT_DIR/repair_runner_005.py" | awk '{print $1}')" = "c7d327f8e7133fd1d6a2e2c0958d29f33844898ebba468d2266e78464982e6a8"
+          test "$(sha256sum "$AUDIT_DIR/repair_runner_006.py" | awk '{print $1}')" = "f88802507841710193dcecb3abd62934488fef5ce1e347f4689bd2d5aa9cb30f"
+          test "$(sha256sum "$AUDIT_DIR/repair_runner_007.py" | awk '{print $1}')" = "e47b2530a2ab4180b255d6c1d70cbc314e72564cb4fa35ab2229c824d81384ee"
+          test "$(sha256sum "$AUDIT_DIR/repair_runner_008.py" | awk '{print $1}')" = "9de909e03b5a691d4215c785f36ad64ce38e844c7540b9f5bdc65f4a1b671972"
+          tar -xzf "$BUNDLE_TAR" -C "$BUNDLE_DIR"
+          sha256sum "$REPAIR_DIR/apply_prepare_repair_003.py" "$AUDIT_DIR/repair_runner_003.py" "$AUDIT_DIR/repair_runner_005.py" "$AUDIT_DIR/repair_runner_006.py" "$AUDIT_DIR/repair_runner_007.py" "$AUDIT_DIR/repair_runner_008.py" > "$EVIDENCE_DIR/repair-script-sha256.txt"
+          python3 -m py_compile "$REPAIR_DIR/apply_prepare_repair_003.py" "$AUDIT_DIR/repair_runner_003.py" "$AUDIT_DIR/repair_runner_005.py" "$AUDIT_DIR/repair_runner_006.py" "$AUDIT_DIR/repair_runner_007.py" "$AUDIT_DIR/repair_runner_008.py"
+          python3 "$REPAIR_DIR/apply_prepare_repair_003.py" --path "$BUNDLE_DIR/prepare_disposable_proof_002.py"
+          python3 "$AUDIT_DIR/repair_runner_003.py" --bundle-root "$BUNDLE_DIR"
+          python3 "$AUDIT_DIR/repair_runner_005.py" --bundle-root "$BUNDLE_DIR"
+          python3 "$AUDIT_DIR/repair_runner_008.py" --bundle-root "$BUNDLE_DIR"
+          python3 -m py_compile "$BUNDLE_DIR/prepare_disposable_proof_002.py" "$BUNDLE_DIR/rollback_disposable_proof_002.py" "$BUNDLE_DIR/run_full_isolated_proof_002.py"
+          node --check "$BUNDLE_DIR/after/pmp-p2c-production-enforcement-adapter-candidate-001.js"
+          node --check "$BUNDLE_DIR/run_production_shaped_browser_proof_002.cjs"
+
+      - name: Install isolated Chromium dependency
+        run: |
+          set -euo pipefail
+          rm -rf "$NODE_HOME"; mkdir -p "$NODE_HOME"; cd "$NODE_HOME"
+          npm init -y >/dev/null
+          npm install --no-save playwright@1.55.0
+          "$NODE_HOME/node_modules/.bin/playwright" install --with-deps chromium
+
+      - name: Create exact detached baseline and active worktrees
+        run: |
+          set -euo pipefail
+          rm -rf "$BASELINE_ROOT" "$ACTIVE_ROOT"
+          git worktree add --detach "$BASELINE_ROOT" "$SOURCE_COMMIT"
+          git worktree add --detach "$ACTIVE_ROOT" "$SOURCE_COMMIT"
+          test "$(git -C "$BASELINE_ROOT" rev-parse HEAD)" = "$SOURCE_COMMIT"
+          test "$(git -C "$ACTIVE_ROOT" rev-parse HEAD)" = "$SOURCE_COMMIT"
+          test -z "$(git -C "$BASELINE_ROOT" status --porcelain)"
+          test -z "$(git -C "$ACTIVE_ROOT" status --porcelain)"
+
+      - name: Prepare explicitly authorized disposable active copy
+        run: |
+          set -o pipefail
+          python3 "$BUNDLE_DIR/prepare_disposable_proof_002.py" \
+            --baseline-root "$BASELINE_ROOT" \
+            --activated-root "$ACTIVE_ROOT" \
+            --payload-root "$BUNDLE_DIR" \
+            --authorization-receipt "$GITHUB_WORKSPACE/$AUDIT_DIR/P2C_EXPLICIT_ISOLATED_PROOF_RERUN_AUTHORIZATION_RECEIPT_003.json" \
+            --evidence-dir "$EVIDENCE_DIR" \
+            --output "$EVIDENCE_DIR/preparation.json" 2>&1 | tee "$EVIDENCE_DIR/preparation-console.log"
+          python3 - <<'PY'
+          import json,os,pathlib
+          r=json.loads((pathlib.Path(os.environ['EVIDENCE_DIR'])/'preparation.json').read_text())
+          assert r['status']=='PASS' and r['baseline_file_count']==1481
+          assert r['governed_actor_count']==86 and r['quarantine_count']==25
+          assert r['current_map_unchanged'] is True and r['production_changed'] is False
+          x=r['a003_root_receipt_authority_exception']
+          assert x['status']=='APPLIED' and x['capture_timing']=='BEFORE_ACTOR_GATE_INSTALL'
+          assert x['ordinary_actor_storage_authority_changed'] is False
+          assert x['ordinary_actor_network_authority_changed'] is False
+          y=r['callback_bound_actor_lease_repair']
+          assert y['status']=='APPLIED' and y['authority_model']=='CALLBACK_BOUND_TOKEN_VALIDATOR'
+          assert y['global_ambient_authority'] is False and y['lease_revalidated_on_callback'] is True
+          assert y['ambient_depth_constant_zero'] is True
+          PY
+
+      - name: Run exactly one active browser rollback and restored regression chain
+        env:
+          NODE_PATH: /tmp/p2c-node-003/node_modules
+        run: |
+          set -o pipefail
+          test ! -e "$EVIDENCE_DIR/proof-run-started.lock"
+          printf '%s\n' "${{ github.run_id }}:${{ github.run_attempt }}" > "$EVIDENCE_DIR/proof-run-started.lock"
+          python3 "$BUNDLE_DIR/run_full_isolated_proof_002.py" \
+            --activated-root "$ACTIVE_ROOT" \
+            --baseline-root "$BASELINE_ROOT" \
+            --evidence-dir "$EVIDENCE_DIR" \
+            --scripts-root "$BUNDLE_DIR" \
+            --output "$EVIDENCE_DIR/aggregate.json" 2>&1 | tee "$EVIDENCE_DIR/aggregate-console.log"
+
+      - name: Verify aggregate semantics and final clean restored worktree
+        if: always()
+        run: |
+          set -euo pipefail
+          test -f "$EVIDENCE_DIR/proof-run-started.lock"
+          test -f "$EVIDENCE_DIR/aggregate.json"
+          python3 - <<'PY'
+          import json,os,pathlib
+          e=pathlib.Path(os.environ['EVIDENCE_DIR']);a=json.loads((e/'aggregate.json').read_text())
+          assert a['status']=='PASS'
+          assert a['production_patch_applied'] is False and a['active_chain_integrated_in_production'] is False
+          assert a['proof_scope']=='DISPOSABLE_COPY_ONLY'
+          assert a['browser']['tests_failed']==0
+          assert a['a002_active']['tests_passed']==41 and a['a002_active']['tests_failed']==0 and not a['a002_active'].get('fatal_error')
+          assert a['a003_repository_active']['tests_passed']==21 and a['a003_repository_active']['tests_failed']==0
+          assert a['a003_live_active']['tests_passed']==47 and a['a003_live_active']['tests_failed']==0
+          assert a['rollback']['byte_for_byte_restored'] is True
+          assert a['a002_restored']['tests_passed']==41 and a['a002_restored']['tests_failed']==0 and not a['a002_restored'].get('fatal_error')
+          assert a['a003_repository_restored']['tests_passed']==21 and a['a003_repository_restored']['tests_failed']==0
+          assert a['a003_live_restored']['tests_passed']==47 and a['a003_live_restored']['tests_failed']==0
+          for lane in ('a002_active','a002_restored'):
+              stages=a[lane].get('stage_evidence') or []
+              names={x.get('name') for x in stages}
+              assert 'bootstrap-start' in names and 'guardian-run-app-clicked' in names and 'home-observation' in names,(lane,names)
+          PY
+          rm -f "$ACTIVE_ROOT/a003-live-runtime-effective.cjs"
+          git -C "$ACTIVE_ROOT" reset --hard "$SOURCE_COMMIT" >/dev/null
+          git -C "$ACTIVE_ROOT" clean -ffdx >/dev/null
+          test -z "$(git -C "$ACTIVE_ROOT" status --porcelain)"
+          test "$(git -C "$ACTIVE_ROOT" rev-parse HEAD)" = "$SOURCE_COMMIT"
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib
+          def snap(root):
+              out={}
+              for p in sorted(pathlib.Path(root).rglob('*')):
+                  if not p.is_file():continue
+                  rel=p.relative_to(root).as_posix()
+                  if rel=='.git' or rel.startswith('.git/'):continue
+                  out[rel]=(p.stat().st_size,hashlib.sha256(p.read_bytes()).hexdigest())
+              return out
+          b=snap(os.environ['BASELINE_ROOT']);r=snap(os.environ['ACTIVE_ROOT'])
+          out={'type':'PMP_P2C_ISOLATED_PROOF_RERUN_FINAL_BOUNDARY_008','status':'PASS' if b==r and len(r)==1481 else 'FAIL','baseline_file_count':len(b),'restored_file_count':len(r),'byte_for_byte_restored_after_regressions':b==r,'production_checkout_dirty':False,'production_patch_applied':False,'production_activation_authorized':False,'merge_authorized':False,'proof_run_count_executed':1,'second_proof_run_authorized':False}
+          e=pathlib.Path(os.environ['EVIDENCE_DIR']);(e/'final-boundary.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n');print(json.dumps(out,indent=2))
+          if out['status']!='PASS':raise SystemExit(1)
+          PY
+          test -z "$(git status --porcelain)"
+
+      - name: Upload complete Repair 008 proof evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2c-isolated-proof-rerun-003-repair-008-evidence
+          path: |
+            /tmp/p2c-rerun-scope-003.json
+            /tmp/p2c-proof-evidence-003/
+            /tmp/p2c-proof-rerun-003.tar.gz
+          if-no-files-found: warn
+          retention-days: 90
