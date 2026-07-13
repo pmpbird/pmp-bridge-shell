@@ -1,0 +1,1 @@
+This proof is the Pass 2 decision gate. It determines whether Repair 009 works under production-shaped browser conditions on a disposable copy, preserves actor isolation, and restores the 1,481-file baseline byte-for-byte. A passing result permits the separate production-activation decision; it does not itself authorize activation.
