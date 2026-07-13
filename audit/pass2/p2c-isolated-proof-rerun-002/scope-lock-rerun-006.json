@@ -1,0 +1,41 @@
+{
+  "authorization_receipt_sha256": "841ba0a4f4133241b5a76588a6a661196f5c2e14b3568e0b8562a96e146765fd",
+  "authorization_scope": "EXACTLY_ONE_CHECKSUM_BOUND_DISPOSABLE_COPY_ISOLATED_BROWSER_PROOF_ONLY",
+  "byte_for_byte_rollback_required": true,
+  "current_map_change_authorized": false,
+  "disposable_copy_required": true,
+  "event": "pull_request.opened",
+  "merge_authorized": false,
+  "overall_project_pass": "Pass 2",
+  "persisted_data_change_authorized": false,
+  "phase": "P2-C",
+  "production_activation_authorized": false,
+  "production_application_authorized": false,
+  "proof_run_count_authorized": 1,
+  "repair_chain": [
+    "003",
+    "005",
+    "006",
+    "007",
+    "008",
+    "009-controller002",
+    "transport-controller003",
+    "harness-controller004"
+  ],
+  "required_results": {
+    "active_a002": "41/41",
+    "active_a003_live": "47/47",
+    "active_a003_repository": "21/21",
+    "production_shaped_browser": "PASS",
+    "restored_a002": "41/41",
+    "restored_a003_live": "47/47",
+    "restored_a003_repository": "21/21",
+    "rollback": "BYTE_FOR_BYTE_PASS"
+  },
+  "required_run_attempt": 1,
+  "restored_copy_regressions_required": true,
+  "second_proof_run_authorized": false,
+  "source_repository_commit": "c618596f2b5c99ca7f355153a5bd31268170df80",
+  "type": "PMP_P2C_ISOLATED_PROOF_RERUN_SCOPE_LOCK_006",
+  "workflow_dispatch_allowed": false
+}
