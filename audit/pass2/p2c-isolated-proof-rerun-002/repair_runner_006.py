@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import argparse
+import subprocess
+import sys
 from pathlib import Path
 
 
@@ -67,7 +69,13 @@ def main() -> int:
     )
     runner.write_text(runner_source)
 
-    print("CHILD_PARSE_BARRIER_AND_HARNESS_NORMALIZATION_APPLIED")
+    repair_007 = Path(__file__).with_name("repair_runner_007.py")
+    subprocess.run(
+        [sys.executable, str(repair_007), "--bundle-root", str(root)],
+        check=True,
+    )
+
+    print("CHILD_PARSE_BARRIER_HARNESS_NORMALIZATION_AND_REPAIR_007_APPLIED")
     return 0
 
 
