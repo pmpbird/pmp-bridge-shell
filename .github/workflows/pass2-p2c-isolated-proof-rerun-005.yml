@@ -1,0 +1,92 @@
+name: Pass 2 P2-C Isolated Proof Rerun 005 — Repair 009 One Run
+
+on:
+  pull_request:
+    types: [opened]
+    branches: [main]
+    paths:
+      - '.github/workflows/pass2-p2c-isolated-proof-rerun-005.yml'
+      - '.github/workflows/pass2-p2c-isolated-proof-rerun-004.yml'
+      - 'audit/pass2/p2c-isolated-proof-rerun-002/**'
+
+permissions:
+  contents: read
+
+env:
+  SOURCE_COMMIT: c618596f2b5c99ca7f355153a5bd31268170df80
+  AUDIT_DIR: audit/pass2/p2c-isolated-proof-rerun-002
+  REPAIR_DIR: audit/pass2/p2c-isolated-proof-rerun-002/repair-continuation-003
+  BUNDLE_DIR: /tmp/p2c-proof-runner-005
+  BUNDLE_TAR: /tmp/p2c-proof-rerun-005.tar.gz
+  BASELINE_ROOT: /tmp/p2c-proof-baseline-005
+  ACTIVE_ROOT: /tmp/p2c-proof-active-005
+  EVIDENCE_DIR: /tmp/p2c-proof-evidence-005
+  NORMALIZED_ROOT: /tmp/p2c-repair009-normalized-005
+  NODE_HOME: /tmp/p2c-node-005
+
+jobs:
+  isolated-proof-rerun-005:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact audit head with full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+
+      - name: Reconstruct checksum-bound one-run controller and execute once
+        env:
+          EVENT_ACTION: ${{ github.event.action }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          P="$AUDIT_DIR/rerun005-controller-parts"
+          test "$(sha256sum "$P/main.part00.b64" | awk '{print $1}')" = "825c7d3ebafbeb0835e405f946e04537d348141bd529d28fb2d36eb7fdc4336f"
+          test "$(sha256sum "$P/main.part01.b64" | awk '{print $1}')" = "4bb5b38e65153973a9477003a9335ab0fe5b975f1f2f237baf5cc14dcbafb66e"
+          test "$(sha256sum "$P/main.part02.b64" | awk '{print $1}')" = "8f5b8b561f3c87efa0f78da278457c3aa0e7ea60ee3c5e091622fe5a8492ec83"
+          test "$(sha256sum "$P/main.part03.b64" | awk '{print $1}')" = "705e78d755b36b4748521d613de5b96b667191210f6a8c9e187b4bb9461b3ea9"
+          cat "$P"/main.part*.b64 | tr -d '\r\n' | base64 -d > /tmp/p2c-rerun005-main.sh
+          test "$(wc -c < /tmp/p2c-rerun005-main.sh)" = "16613"
+          test "$(sha256sum /tmp/p2c-rerun005-main.sh | awk '{print $1}')" = "9732a223c77427fb7351031f4cbff52da57054ed82a53ae75bfb3a0f43e983dd"
+          bash -n /tmp/p2c-rerun005-main.sh
+          chmod 700 /tmp/p2c-rerun005-main.sh
+          /tmp/p2c-rerun005-main.sh
+
+      - name: Finalize rollback boundary and proof semantics
+        if: always()
+        run: |
+          set -euo pipefail
+          P="$AUDIT_DIR/rerun005-controller-parts"
+          test "$(sha256sum "$P/finalize.part00.b64" | awk '{print $1}')" = "f3c8b35d7d957d1e3f91d7d2cc7fe0f6097c8a8ca659c044b6e7c3b9b56baf5f"
+          test "$(sha256sum "$P/finalize.part01.b64" | awk '{print $1}')" = "8eba6640d19a0409d74142ebfc8e470f58aad76cb5af2616bf321fd1f1519158"
+          cat "$P"/finalize.part*.b64 | tr -d '\r\n' | base64 -d > /tmp/p2c-rerun005-finalize.sh
+          test "$(wc -c < /tmp/p2c-rerun005-finalize.sh)" = "3392"
+          test "$(sha256sum /tmp/p2c-rerun005-finalize.sh | awk '{print $1}')" = "562399e3bbfdf9515d171ac1b3cc65942d9cc54a0218685ceb2ef889cfb57a33"
+          bash -n /tmp/p2c-rerun005-finalize.sh
+          chmod 700 /tmp/p2c-rerun005-finalize.sh
+          /tmp/p2c-rerun005-finalize.sh
+
+      - name: Upload complete Repair 009 proof evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2c-isolated-proof-rerun-005-repair-009-evidence
+          path: |
+            /tmp/p2c-rerun-scope-005.json
+            /tmp/p2c-proof-runtime-authorization-receipt-005.json
+            /tmp/p2c-proof-evidence-005/
+            /tmp/p2c-proof-rerun-005.tar.gz
+          if-no-files-found: warn
+          retention-days: 90
