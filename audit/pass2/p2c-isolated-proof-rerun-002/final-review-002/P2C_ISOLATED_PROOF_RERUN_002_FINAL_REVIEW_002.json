@@ -1,0 +1,30 @@
+{
+  "type": "PMP_P2C_ISOLATED_PROOF_RERUN_002_FINAL_REVIEW_002",
+  "overall_project_pass": "Pass 2",
+  "phase": "P2-C",
+  "source_repository_commit": "c618596f2b5c99ca7f355153a5bd31268170df80",
+  "authorization_scope": "ONE_ISOLATED_PRODUCTION_SHAPED_PROOF_RERUN_ONLY",
+  "authorization_consumed": true,
+  "workflow_run_id": 29214085635,
+  "workflow_head_sha": "a8ff6daec8520c3f5178f26428f0d40709f15edc",
+  "proof_status": "FAIL_CLOSED",
+  "required_lane_results": {
+    "production_shaped_browser": {"tests_passed": 13, "tests_failed": 21, "status": "FAIL"},
+    "active_a002": {"tests_passed": 8, "tests_failed": 0, "fatal_error": "navigation timeout", "status": "FAIL"},
+    "active_a003_repository": {"tests_passed": 21, "tests_failed": 0, "status": "PASS"},
+    "active_a003_live": {"tests_passed": 3, "tests_failed": 0, "fatal_error": "UNKNOWN_ACTOR in-page test-harness fetch", "status": "FAIL"},
+    "rollback": {"byte_for_byte_restored": true, "baseline_file_count": 1481, "restored_file_count": 1481, "status": "PASS"},
+    "restored_a002": {"tests_passed": 9, "tests_failed": 1, "status": "FAIL"},
+    "restored_a003_repository": {"tests_passed": 21, "tests_failed": 0, "status": "PASS"},
+    "restored_a003_live": {"tests_passed": 47, "tests_failed": 0, "status": "PASS"},
+    "post_regression_final_clean_tree_receipt": {"status": "NOT_RUN_BECAUSE_AGGREGATE_FAILED"}
+  },
+  "production_runtime_changed": false,
+  "current_map_changed": false,
+  "storage_changed": false,
+  "indexeddb_changed": false,
+  "cache_storage_changed": false,
+  "bank_changed": false,
+  "crosswalk_router_included": false,
+  "next_required_step": "Obtain a new explicit isolated-proof authorization for Repair 006."
+}
