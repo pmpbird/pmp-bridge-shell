@@ -1,0 +1,38 @@
+{
+  "type": "PMP_APP_ORCHESTRATOR_PASS2_FINAL_CLOSURE_CERTIFICATION_003",
+  "created_at_utc": "2026-07-13T00:06:21Z",
+  "overall_project_pass": "Pass 2",
+  "phase": "P2-C",
+  "certification_status": "NOT_CERTIFIED_FAIL_CLOSED",
+  "production_activation_decision": "HOLD_DO_NOT_ACTIVATE",
+  "pass2_complete": false,
+  "pass3_started": false,
+  "production_patch_applied": false,
+  "active_chain_integrated": false,
+  "closure_gate_results": {
+    "exact_source_identity_preserved": true,
+    "production_runtime_untouched": true,
+    "current_map_untouched": true,
+    "production_storage_untouched": true,
+    "crosswalk_router_excluded": true,
+    "successful_byte_for_byte_rollback_receipt_present": true,
+    "successful_active_browser_receipt_present": false,
+    "successful_active_a002_41_of_41_present": false,
+    "successful_active_a003_repository_21_of_21_present": true,
+    "successful_active_a003_live_47_of_47_present": false,
+    "successful_restored_a002_41_of_41_present": false,
+    "successful_restored_a003_repository_21_of_21_present": true,
+    "successful_restored_a003_live_47_of_47_present": true,
+    "separate_production_activation_authorization_present": false
+  },
+  "blocking_findings": [
+    "The complete active proof chain did not pass.",
+    "Restored A-002 did not produce 41/41.",
+    "Repair 007 is unexecuted because the isolated-proof authorization is consumed.",
+    "Production activation authorization is absent."
+  ],
+  "remaining_major_moves_inside_pass2": 1,
+  "full_passes_remaining_after_pass2": 6,
+  "unfinished_passes_including_current": 7,
+  "remaining_move": "Obtain a new explicit one-run isolated-proof authorization, execute Repair 007 in a disposable copy, require every active and restored proof lane to pass, then repeat the activation decision and Pass 2 closure certification."
+}
