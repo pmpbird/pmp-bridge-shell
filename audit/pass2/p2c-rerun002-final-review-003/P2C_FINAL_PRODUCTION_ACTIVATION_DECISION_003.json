@@ -1,0 +1,25 @@
+{
+  "type": "PMP_P2C_FINAL_PRODUCTION_ACTIVATION_DECISION_003",
+  "created_at_utc": "2026-07-13T00:06:21Z",
+  "overall_project_pass": "Pass 2",
+  "phase": "P2-C",
+  "decision": "HOLD_DO_NOT_ACTIVATE",
+  "decision_class": "FAIL_CLOSED_NEGATIVE_DECISION",
+  "proof_status": "FAIL_CLOSED",
+  "explicit_separate_production_activation_authorization_present": false,
+  "production_activation_authorized": false,
+  "production_application_authorized": false,
+  "production_patch_applied": false,
+  "active_chain_integration": false,
+  "reasons": [
+    "The required integrated browser, active A-002 41/41, and active A-003 live 47/47 proof chain did not pass.",
+    "The one-run isolated-proof authorization is consumed and cannot authorize Repair 007 execution.",
+    "No separate explicit production-activation authorization was issued."
+  ],
+  "preserved_boundaries": [
+    "Production runtime remains unchanged.",
+    "Current Map remains unchanged and sole route authority.",
+    "Production localStorage, IndexedDB, Cache Storage, Bank, and user content remain unchanged.",
+    "No audit or proof branch is authorized for merge."
+  ]
+}
