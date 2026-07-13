@@ -1,0 +1,81 @@
+  'proof_run_count_authorized':1,
+  'parent_authorization_receipt_sha256':sha,
+  'parent_authorization_receipt_type':auth['type'],
+  'derived_without_scope_expansion':True,
+}
+pathlib.Path('/tmp/p2c-proof-runtime-authorization-receipt-004.json').write_text(json.dumps(compat,indent=2,sort_keys=True)+'\n')
+PY
+
+echo "=== Prepare explicitly authorized disposable active copy ==="
+set -o pipefail
+python3 "$BUNDLE_DIR/prepare_disposable_proof_002.py" \
+  --baseline-root "$BASELINE_ROOT" \
+  --activated-root "$ACTIVE_ROOT" \
+  --payload-root "$BUNDLE_DIR" \
+  --authorization-receipt /tmp/p2c-proof-runtime-authorization-receipt-004.json \
+  --evidence-dir "$EVIDENCE_DIR" \
+  --output "$EVIDENCE_DIR/preparation.json" 2>&1 | tee "$EVIDENCE_DIR/preparation-console.log"
+python3 - <<'PY'
+import json,os,pathlib
+r=json.loads((pathlib.Path(os.environ['EVIDENCE_DIR'])/'preparation.json').read_text())
+assert r['status']=='PASS' and r['baseline_file_count']==1481
+assert r['governed_actor_count']==86 and r['quarantine_count']==25
+assert r['current_map_unchanged'] is True and r['production_changed'] is False
+x=r['a003_root_receipt_authority_exception']
+assert x['status']=='APPLIED' and x['capture_timing']=='BEFORE_ACTOR_GATE_INSTALL'
+assert x['ordinary_actor_storage_authority_changed'] is False
+assert x['ordinary_actor_network_authority_changed'] is False
+y=r['callback_bound_actor_lease_repair']
+assert y['status']=='APPLIED'
+assert y['authority_model']=='SOURCE_NORMALIZED_PROMISE_CONTINUATIONS'
+assert y['callback_registration_authority']=='EVENT_HANDLER_PROPERTY_SETTERS_BOUND'
+assert y['global_ambient_authority'] is False and y['lease_revalidated_on_callback'] is True
+assert y['ambient_depth_constant_zero'] is True
+z=r['repair009_async_continuation_normalization']
+assert z['status']=='APPLIED' and z['record_count']==19
+assert z['global_ambient_authority'] is False and z['quarantined_actors_changed'] is False
+PY
+
+echo "=== Run exactly one active browser rollback and restored regression chain ==="
+set +e
+set -o pipefail
+test ! -e "$EVIDENCE_DIR/proof-run-started.lock"
+printf '%s\n' "$RUN_ID:$RUN_ATTEMPT" > "$EVIDENCE_DIR/proof-run-started.lock"
+python3 "$BUNDLE_DIR/run_full_isolated_proof_002.py" \
+  --activated-root "$ACTIVE_ROOT" \
+  --baseline-root "$BASELINE_ROOT" \
+  --evidence-dir "$EVIDENCE_DIR" \
+  --scripts-root "$BUNDLE_DIR" \
+  --output "$EVIDENCE_DIR/aggregate.json" 2>&1 | tee "$EVIDENCE_DIR/aggregate-console.log"
+
+proof_rc=$?
+set -e
+
+echo "=== Verify semantics and clean restored worktree before final decision ==="
+set +e
+set -euo pipefail
+python3 - <<'PY'
+import json,os,pathlib
+e=pathlib.Path(os.environ['EVIDENCE_DIR'])
+aggregate=None
+try:aggregate=json.loads((e/'aggregate.json').read_text())
+except Exception as exc:(e/'aggregate-read-error.txt').write_text(repr(exc)+'\n')
+semantic=False
+if aggregate:
+    semantic=bool(
+      aggregate.get('status')=='PASS' and
+      aggregate.get('production_patch_applied') is False and
+      aggregate.get('active_chain_integrated_in_production') is False and
+      aggregate.get('proof_scope')=='DISPOSABLE_COPY_ONLY' and
+      aggregate.get('browser',{}).get('tests_failed')==0 and
+      aggregate.get('a002_active',{}).get('tests_passed')==41 and aggregate.get('a002_active',{}).get('tests_failed')==0 and not aggregate.get('a002_active',{}).get('fatal_error') and
+      aggregate.get('a003_repository_active',{}).get('tests_passed')==21 and aggregate.get('a003_repository_active',{}).get('tests_failed')==0 and
+      aggregate.get('a003_live_active',{}).get('tests_passed')==47 and aggregate.get('a003_live_active',{}).get('tests_failed')==0 and
+      aggregate.get('rollback',{}).get('byte_for_byte_restored') is True and
+      aggregate.get('a002_restored',{}).get('tests_passed')==41 and aggregate.get('a002_restored',{}).get('tests_failed')==0 and not aggregate.get('a002_restored',{}).get('fatal_error') and
+      aggregate.get('a003_repository_restored',{}).get('tests_passed')==21 and aggregate.get('a003_repository_restored',{}).get('tests_failed')==0 and
+      aggregate.get('a003_live_restored',{}).get('tests_passed')==47 and aggregate.get('a003_live_restored',{}).get('tests_failed')==0
+    )
+(e/'semantic-review-004.json').write_text(json.dumps({'status':'PASS' if semantic else 'FAIL','aggregate_present':aggregate is not None,'proof_run_count_executed':1,'second_proof_run_authorized':False},indent=2,sort_keys=True)+'\n')
+PY
+rm -f "$ACTIVE_ROOT/a003-live-runtime-effective.cjs"
