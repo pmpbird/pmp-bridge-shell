@@ -24,12 +24,36 @@
   "proof_run_count_authorized": 1,
   "proof_run_count_executed_under_this_receipt": 0,
   "rerun006_checksum_locked_parts": [
-    {"bytes": 2504, "path": "rerun006-controller-parts/finalize.part00.b64", "sha256": "b86ea954910de70d5f0f044ca45466b1b06a2f59f74b92f1e9102f7dd0eaf63e"},
-    {"bytes": 2504, "path": "rerun006-controller-parts/finalize.part01.b64", "sha256": "a7e8c7f595256462f03c788690dc67acc48c0e33fa537bd0e077f2786064e6bb"},
-    {"bytes": 5901, "path": "rerun006-controller-parts/main.part00.b64", "sha256": "75b39e584c78a276468b37dfd7c56af182a916f2c04e4f1cf74ed198a75c65bd"},
-    {"bytes": 5901, "path": "rerun006-controller-parts/main.part01.b64", "sha256": "50832125493043338de6805b7533be8455ca8589745c117396ae74aabdfbdf35"},
-    {"bytes": 5901, "path": "rerun006-controller-parts/main.part02.b64", "sha256": "87b5b417c82d55fa92d381dcf5e96cc39b3fa67b51e99f1d132a30874a2069ce"},
-    {"bytes": 5901, "path": "rerun006-controller-parts/main.part03.b64", "sha256": "370b140421f25435f5db9652781119504ccf64fc52adfe43e969b70de6cc8855"}
+    {
+      "bytes": 2504,
+      "path": "rerun006-controller-parts/finalize.part00.b64",
+      "sha256": "b86ea954910de70d5f0f044ca45466b1b06a2f59f74b92f1e9102f7dd0eaf63e"
+    },
+    {
+      "bytes": 2504,
+      "path": "rerun006-controller-parts/finalize.part01.b64",
+      "sha256": "a7e8c7f595256462f03c788690dc67acc48c0e33fa537bd0e077f2786064e6bb"
+    },
+    {
+      "bytes": 5901,
+      "path": "rerun006-controller-parts/main.part00.b64",
+      "sha256": "75b39e584c78a276468b37dfd7c56af182a916f2c04e4f1cf74ed198a75c65bd"
+    },
+    {
+      "bytes": 5901,
+      "path": "rerun006-controller-parts/main.part01.b64",
+      "sha256": "50832125493043338de6805b7533be8455ca8589745c117396ae74aabdfbdf35"
+    },
+    {
+      "bytes": 5901,
+      "path": "rerun006-controller-parts/main.part02.b64",
+      "sha256": "87b5b417c82d55fa92d381dcf5e96cc39b3fa67b51e99f1d132a30874a2069ce"
+    },
+    {
+      "bytes": 5901,
+      "path": "rerun006-controller-parts/main.part03.b64",
+      "sha256": "370b140421f25435f5db9652781119504ccf64fc52adfe43e969b70de6cc8855"
+    }
   ],
   "second_proof_run_authorized": false,
   "separate_execution_authorization_required": true,
