@@ -1,0 +1,183 @@
+{
+  "authority_failure_settlement": "PROMISE_REJECT_WITHOUT_ACTOR_AUTHORITY",
+  "global_ambient_authority": false,
+  "quarantined_actors_changed": false,
+  "record_count": 19,
+  "records": [
+    {
+      "kind": "external",
+      "original_bytes": 16868,
+      "original_sha256": "238fbf6a768acca2362284fa293ab7604ad599a258dd9f2a0c61a0f43d2dfb87",
+      "path": "pmp-current-route-resolver-v1.js",
+      "realm": "guardian",
+      "transformed_bytes": 22305,
+      "transformed_sha256": "e040b232fdf1247afaf6dc4aaa03acf6eec585637fc1edfe875c2b5899a32626"
+    },
+    {
+      "kind": "document-inline",
+      "original_bytes": 8108,
+      "original_sha256": "84702f084b853ae958a1e6acfb19eadcd7f25f3946001690d4bd98e909fb6b15",
+      "path": "pmp-route-guardian-current-loader-v22.html",
+      "realm": "guardian",
+      "transformed_bytes": 9922,
+      "transformed_sha256": "1d28a8df6114ef605faaeee352bae085a061f651264fc5b4bf82d986c3544e62"
+    },
+    {
+      "kind": "external",
+      "original_bytes": 8119,
+      "original_sha256": "5c38f954a043480cacfafca5e8b14e9fa68efcc7ac112c357396a69783a8a7b3",
+      "path": "pmp-current-screen-pointer-v1.js",
+      "realm": "reload-owner",
+      "transformed_bytes": 11597,
+      "transformed_sha256": "c3bcebea7b6a9224613a331b12ca9c173b44262ceace13d50969a065ef4a5602"
+    },
+    {
+      "kind": "external",
+      "original_bytes": 3792,
+      "original_sha256": "eed79f861dd255ebe01e7c4a853deeda91ccd3191e7bbdb81059f85596e7848f",
+      "path": "pmp-reload-world-from-map-v1.js",
+      "realm": "reload-owner",
+      "transformed_bytes": 5911,
+      "transformed_sha256": "5bafb12ef7761c0ec43e37a950b4ec8f82fda1d11f1781553b4e22a694e8653d"
+    },
+    {
+      "kind": "external",
+      "original_bytes": 10372,
+      "original_sha256": "93e7158687edfc673c8357993329ff9439195c44ba5a7076d0d6d6ccb7f968fe",
+      "path": "pmp-active-path-discovery-zip-export-v2.js",
+      "realm": "reload-owner",
+      "transformed_bytes": 13972,
+      "transformed_sha256": "f8ce4ab213ba9adb58e1837430acd373037f47d884df62488fe7a7d9618f907d"
+    },
+    {
+      "kind": "external",
+      "original_bytes": 10097,
+      "original_sha256": "3bd54e89efc2cadfb89c55cf4811c11e176dcd6c43d5402d62a0da832772acb5",
+      "path": "pmp-pass75-reload-runtime-platform-gate-v1.js",
+      "realm": "reload-owner",
+      "transformed_bytes": 12647,
+      "transformed_sha256": "8a63a9c0192bbcd29ef6ac263a6c97ce808c7ee04ecaaf51d3a6a574d7cfa499"
+    },
+    {
+      "kind": "document-inline",
+      "original_bytes": 11136,
+      "original_sha256": "a98d943c64d3f2fef8e81dbc5cf57fc316bf210f37824d27e95d3b6d0efe3d33",
+      "path": "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html",
+      "realm": "reload-owner",
+      "transformed_bytes": 13244,
+      "transformed_sha256": "3e45242d96b2de02d69c1646c7d85cc3f6f4ee435081c5dc0ed1956d57f521f4"
+    },
+    {
+      "kind": "document-inline",
+      "original_bytes": 23641,
+      "original_sha256": "eb0950507b26e9bcc9571cc469147631a029343a8493c7d75a53329537bc96d4",
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+      "realm": "inner-v30",
+      "transformed_bytes": 26556,
+      "transformed_sha256": "edd22b17142f16364428f79b785a842eccac68b26d23daea9230ad9ace558351"
+    },
+    {
+      "kind": "external",
+      "original_bytes": 4379,
+      "original_sha256": "685afcd60d5bb997af71f6317a090f4a9e4e53adca5aa103c6edaf8be85be8c3",
+      "path": "pmp-safe-writer-current-return-fix-v1.js",
+      "realm": "inner-v30",
+      "transformed_bytes": 6562,
+      "transformed_sha256": "74ccf4f99f4a27bae2635ef9df219319741da8a020302bb893d4b2c53beda9dc"
+    },
+    {
+      "kind": "external",
+      "original_bytes": 13842,
+      "original_sha256": "0cc6309370ae2b89f096ac379d48ff4fc3e84e03ba44a4134f18720f8f14cb96",
+      "path": "pmp-master-bank-tab-v1.js",
+      "realm": "inner-v23",
+      "transformed_bytes": 17746,
+      "transformed_sha256": "62d5cadda57fb4b86fd317a108c3f546f9aa4e120c4e395a467fe904a5eb5085"
+    },
+    {
+      "kind": "external",
+      "original_bytes": 5664,
+      "original_sha256": "08a2d01ba61783056e1fd7bf16061699bf816e20a83299134c2faad2f3410d51",
+      "path": "pmp-bug-bank-family-view-v1.js",
+      "realm": "inner-v23",
+      "transformed_bytes": 7680,
+      "transformed_sha256": "1255aa98675b3c8c8229e52f63292285578ceee5512f2a6313bc06a4e66dbae9"
+    },
+    {
+      "kind": "external",
+      "original_bytes": 9076,
+      "original_sha256": "9c20db948f196eedbb72cea88c29b98dba8b41f00e9d25968187c31d139b33f8",
+      "path": "pmp-helper-bank-live-inspector-v2.js",
+      "realm": "inner-v23",
+      "transformed_bytes": 11918,
+      "transformed_sha256": "b7ee9c0126070ba1eea29b241a23c26d2884d50ad765c76dea1a98a9a7d34a8e"
+    },
+    {
+      "kind": "external",
+      "original_bytes": 12042,
+      "original_sha256": "d2def4bf620cb0858cae43c4e5ab29db1814053d7204a16f160a8c000d249bf4",
+      "path": "pmp-continuous-run-bank-transfer-store-v2.js",
+      "realm": "inner-v23",
+      "transformed_bytes": 15156,
+      "transformed_sha256": "33f7b6682cee0256f26fcf1302d4102e5fb184d15c1c828f891c9ab523ae2c00"
+    },
+    {
+      "kind": "external",
+      "original_bytes": 6056,
+      "original_sha256": "8bb9cbaa4b59c84fb91f0e269db339d7a250a62c9de5e611db0de1d7dd489e1c",
+      "path": "pmp-continuous-run-bank-must-source-zip-v1.js",
+      "realm": "inner-v23",
+      "transformed_bytes": 8786,
+      "transformed_sha256": "1b4b5a0aa8a27d42d82b173868a34e56afca0fbf15f1cb610d3928527467eb11"
+    },
+    {
+      "kind": "external",
+      "original_bytes": 14407,
+      "original_sha256": "45fb4e8f1eb99ab2ea9c2985c9b47aee07f377731211b4d4d47d2714c86b9f01",
+      "path": "pmp-bank-mode1-hide-unchecked-v1.js",
+      "realm": "inner-v23",
+      "transformed_bytes": 18719,
+      "transformed_sha256": "9bf3621dd91bf1bb1bbaf6fec671fc68aea1d16641f0b102b8014cd2d442c4a4"
+    },
+    {
+      "kind": "external",
+      "original_bytes": 3038,
+      "original_sha256": "79f0f290ef0eaae790d36fec24ada53d3783cf40cf17ea72e37e012a99fc9a11",
+      "path": "pmp-connections-copy-output-fix-v1.js",
+      "realm": "inner-v23",
+      "transformed_bytes": 5365,
+      "transformed_sha256": "8063580ffe99d8fd309d7459c49304cc32916d959377b73fc303b70b8b0f8d1c"
+    },
+    {
+      "kind": "external",
+      "original_bytes": 13278,
+      "original_sha256": "83532bc877cea015698fb57871df1cec22c33eb59627e6b2fb7466237fa619e8",
+      "path": "pmp-route-guardian-last-good-clean-v1.js",
+      "realm": "inner-v23",
+      "transformed_bytes": 17269,
+      "transformed_sha256": "274adf8e92f917508fda04a3492eaa16aa2c5e90624431ef0d60b3b36d04c83d"
+    },
+    {
+      "kind": "external",
+      "original_bytes": 20354,
+      "original_sha256": "87cfa967720583d78e010a49f23c7a751410ed68012fb80d2d2a169ee177ece7",
+      "path": "pmp-bank-screen-owner-v1.js",
+      "realm": "inner-v23",
+      "transformed_bytes": 25331,
+      "transformed_sha256": "c76ee777c4ab56bfb46e31a5e42955e229acb0f7d525f9f7a92235e3563f53c4"
+    },
+    {
+      "kind": "document-inline",
+      "original_bytes": 13297,
+      "original_sha256": "32a46b030275975f0f3d538af2a786d6baf85b3554e356145fea524b8809dd6a",
+      "path": "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+      "realm": "inner-v23",
+      "transformed_bytes": 14541,
+      "transformed_sha256": "f209cbb7a61557e8a4358f9d8d9458fe2006ce8ab5c3d72f71d066e478a59daa"
+    }
+  ],
+  "source_repository_commit": "c618596f2b5c99ca7f355153a5bd31268170df80",
+  "target": "ES2016",
+  "type": "PMP_REPAIR009_NORMALIZED_SOURCE_MANIFEST_002",
+  "typescript_version": "5.8.3"
+}
