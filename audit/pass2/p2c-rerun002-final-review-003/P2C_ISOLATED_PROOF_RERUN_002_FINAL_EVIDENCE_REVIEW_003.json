@@ -1,0 +1,62 @@
+{
+  "type": "PMP_P2C_ISOLATED_PROOF_RERUN_002_FINAL_EVIDENCE_REVIEW_003",
+  "created_at_utc": "2026-07-13T00:06:21Z",
+  "overall_project_pass": "Pass 2",
+  "phase": "P2-C",
+  "source_repository_commit": "c618596f2b5c99ca7f355153a5bd31268170df80",
+  "authorization_scope": "ONE_ISOLATED_PRODUCTION_SHAPED_PROOF_RERUN_ONLY",
+  "authorization_status": "CONSUMED",
+  "proof_status": "FAIL_CLOSED",
+  "reviewed_workflow": {
+    "pull_request": 61,
+    "workflow_run_id": 29214085635,
+    "head_sha": "a8ff6daec8520c3f5178f26428f0d40709f15edc",
+    "artifact_id": 8266065655,
+    "artifact_sha256": "be9f6121d9afed442fe76f776dd5cb80826e3b26bc182ecbad7c0fe75406b2bc"
+  },
+  "passed_lanes": {
+    "authorization_and_audit_scope": true,
+    "checksum_bound_runner_reconstruction": true,
+    "chromium_installation": true,
+    "exact_detached_worktrees": true,
+    "disposable_candidate_preparation": true,
+    "active_a003_repository": "21/21",
+    "byte_for_byte_rollback": "1481/1481",
+    "restored_a003_repository": "21/21",
+    "restored_a003_live": "47/47",
+    "evidence_upload": true
+  },
+  "failed_or_incomplete_lanes": {
+    "production_shaped_active_browser": "13/34",
+    "active_a002": "8 preliminary checks then navigation timeout",
+    "active_a003_live": "3 preliminary checks then correctly denied unowned test-harness fetch",
+    "restored_a002": "9 preliminary checks then Home observation failure"
+  },
+  "remaining_candidate_defects": [
+    "Guardian and downstream document actors need bounded async authorization propagation across their own Promise lifetimes.",
+    "The A-003 proof harness must use a separately captured pre-gate native fetch rather than page-global fetch after actor enforcement is installed.",
+    "The production-shaped browser harness must explicitly trigger the Guardian Run App control before waiting for downstream realms.",
+    "Restored A-002 Home observation still requires deterministic stabilization and a true 41/41 result."
+  ],
+  "repair_007": {
+    "status": "READY_NOT_EXECUTED",
+    "branch_commits": [
+      "92960a293999999e22b0719f24cf860349ef0422",
+      "777d4dee5b94abeb367b9d5bea6b8df240602d68"
+    ],
+    "workflow_runs_registered": 0,
+    "reason_not_executed": "The one-run isolated-proof authorization was consumed by rerun 002 and cannot be reused."
+  },
+  "production_boundary": {
+    "production_patch_applied": false,
+    "production_activation_authorized": false,
+    "active_chain_integrated_in_production": false,
+    "current_map_changed": false,
+    "production_storage_changed": false,
+    "indexeddb_changed": false,
+    "cache_storage_changed": false,
+    "bank_changed": false,
+    "crosswalk_router_included": false,
+    "proof_branch_merged": false
+  }
+}
