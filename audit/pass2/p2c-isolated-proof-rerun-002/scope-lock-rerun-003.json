@@ -1,0 +1,32 @@
+{
+  "type": "PMP_P2C_ISOLATED_PROOF_RERUN_SCOPE_LOCK_003",
+  "overall_project_pass": "Pass 2",
+  "phase": "P2-C",
+  "source_repository_commit": "c618596f2b5c99ca7f355153a5bd31268170df80",
+  "authorization_scope": "ONE_ISOLATED_PRODUCTION_SHAPED_PROOF_RERUN_ONLY",
+  "proof_run_count_authorized": 1,
+  "event": "pull_request.opened",
+  "required_run_attempt": 1,
+  "workflow_dispatch_allowed": false,
+  "production_activation_authorized": false,
+  "production_apply_authorized": false,
+  "merge_authorized": false,
+  "current_map_change_authorized": false,
+  "production_storage_change_authorized": false,
+  "second_proof_run_authorized": false,
+  "disposable_copy_required": true,
+  "byte_for_byte_rollback_required": true,
+  "restored_copy_regressions_required": true,
+  "repair_chain": ["003", "005", "006", "007", "008"],
+  "single_application_rule": "Repair 005 invokes 006 and Repair 006 invokes 007; 006 and 007 must not be invoked separately.",
+  "required_results": {
+    "production_shaped_browser": "PASS",
+    "active_a002": "41/41",
+    "active_a003_repository": "21/21",
+    "active_a003_live": "47/47",
+    "rollback": "BYTE_FOR_BYTE_PASS",
+    "restored_a002": "41/41",
+    "restored_a003_repository": "21/21",
+    "restored_a003_live": "47/47"
+  }
+}
