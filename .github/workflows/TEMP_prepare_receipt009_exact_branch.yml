@@ -1,0 +1,35 @@
+name: TEMP Prepare Receipt 009 Exact Branch Final
+
+on:
+  push:
+    branches:
+      - agent/pass2-p2c-repair009-rerun008-controller007-ready
+    paths:
+      - '.github/workflows/TEMP_prepare_receipt009_exact_branch.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  prepare-only:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Reconstruct exact main, verify capsule, install proof workflow, self-remove
+        run: |
+          set -euo pipefail
+          A='audit/pass2/p2c-isolated-proof-rerun-008'
+          cat "$A"/rerun008-controller-parts/main.part*.b64 | tr -d '\r\n' | base64 -d > "$A/rerun008-controller-main.sh"
+          test "$(sha256sum "$A/rerun008-controller-main.sh" | awk '{print $1}')" = 'd39fec91176c71b634aec8cda696a2032da3ccc5953e6336bd35852191e7bb66'
+          sha256sum -c SHA256SUMS.txt
+          install -D -m 0644 "$A/pass2-p2c-isolated-proof-rerun-008.workflow-candidate.yml.txt" '.github/workflows/pass2-p2c-isolated-proof-rerun-008.yml'
+          cmp -s "$A/pass2-p2c-isolated-proof-rerun-008.workflow-candidate.yml.txt" '.github/workflows/pass2-p2c-isolated-proof-rerun-008.yml'
+          rm -f '.github/workflows/TEMP_prepare_receipt009_exact_branch.yml' "$A/PMP_REPAIR009_REFRESHED_EXECUTABLE_FROZEN_PROOF_CAPSULE_CONTROLLER007.zip"
+          printf '%s\n' 'PASS_EXACT_CONTROLLER007_BRANCH_READY_NO_PROOF' > "$A/BRANCH_READY_VERIFIED.txt"
+          git config user.name pmpbird
+          git config user.email pmpbird@gmail.com
+          git add -A
+          git commit -m 'Finalize exact Receipt 009 proof branch [no-proof-run]'
+          git push origin HEAD:agent/pass2-p2c-repair009-rerun008-controller007-ready
