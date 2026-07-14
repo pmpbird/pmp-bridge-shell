@@ -18,10 +18,19 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Reconstruct exact main, verify frozen capsule, install proof workflow, and self-remove
+      - name: Normalize exact files, reconstruct main, verify, install, and self-remove
         run: |
           set -euo pipefail
           AUDIT='audit/pass2/p2c-isolated-proof-rerun-008'
+          python3 - <<'PY'
+          from pathlib import Path
+          for p in [
+            Path('audit/pass2/p2c-isolated-proof-rerun-008/CONTROLLER007_RECEIPT.json'),
+            Path('audit/pass2/p2c-isolated-proof-rerun-008/EXECUTABLE_RERUN_MANIFEST_007.json'),
+            Path('audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-parts/main.part02.b64'),
+          ]:
+              p.write_bytes(p.read_bytes().rstrip(b'\r\n') + b'\n')
+          PY
           cat "$AUDIT"/rerun008-controller-parts/main.part*.b64 | tr -d '\r\n' | base64 -d > "$AUDIT/rerun008-controller-main.sh"
           test "$(sha256sum "$AUDIT/rerun008-controller-main.sh" | awk '{print $1}')" = 'd39fec91176c71b634aec8cda696a2032da3ccc5953e6336bd35852191e7bb66'
           sha256sum -c SHA256SUMS.txt
