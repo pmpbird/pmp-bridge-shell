@@ -1,16 +1,48 @@
 {
-  "authorization_receipt": "008",
+  "at": "2026-07-14T03:45:02.000363+00:00",
   "browser_proof_executed": false,
-  "capsule_id": "repair009-rerun008-refreshed-executable-capsule-003",
-  "checks": {
-    "controller_parts_reconstruct": "PASS",
-    "production_commit_binding": "PASS",
-    "repair009_logic_preserved": "PASS",
-    "workflow_binding": "PASS"
-  },
-  "controller": "REPAIR009_REFRESHED_EXECUTABLE_FROZEN_PROOF_CAPSULE_CONTROLLER_007",
-  "production_commit": "98b2e293717b81289e3b372d1fff8f5832d29fd6",
+  "checks": [
+    {
+      "name": "receipt008_sha",
+      "pass": true
+    },
+    {
+      "name": "source_commit_bound",
+      "pass": true
+    },
+    {
+      "name": "main_bash_syntax",
+      "pass": true
+    },
+    {
+      "name": "parts_reconstruct_main",
+      "pass": true
+    },
+    {
+      "name": "parts_reconstruct_finalize",
+      "pass": true
+    },
+    {
+      "name": "no_receipt006_binding",
+      "pass": true
+    },
+    {
+      "name": "no_old_source_binding",
+      "pass": true
+    },
+    {
+      "name": "no_execution",
+      "pass": true
+    }
+  ],
+  "current_map_changed": false,
+  "merge_performed": false,
+  "persisted_data_changed": false,
+  "production_changed": false,
+  "receipt008_consumed": false,
   "repair009_logic_changed": false,
-  "status": "PASS_EXECUTABLE_FROZEN_CAPSULE_READY_NOT_EXECUTED",
+  "source_repository_commit": "98b2e293717b81289e3b372d1fff8f5832d29fd6",
+  "status": "PASS_FROZEN_EXECUTABLE_AUTHORIZATION_BOUND_NOT_EXECUTED",
+  "type": "PMP_REPAIR009_REFRESHED_EXECUTABLE_CAPSULE_CONTROLLER007_REPORT",
   "workflow_executed": false
 }
