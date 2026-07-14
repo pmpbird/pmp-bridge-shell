@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+trap 'rc=$?; printf 'RECEIPT010_COMMAND_FAILURE line=%s rc=%s command=%q\n' "$LINENO" "$rc" "$BASH_COMMAND" >&2; exit "$rc"' ERR
 
 echo "=== Verify one-run authorization and audit-only scope ==="
 set -euo pipefail

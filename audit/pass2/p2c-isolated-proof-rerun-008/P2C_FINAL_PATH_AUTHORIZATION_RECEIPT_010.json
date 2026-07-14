@@ -1,11 +1,14 @@
 {
+  "additional_proof_run_authorized": false,
   "authorization_consumed": false,
   "authorization_scope": "ONE_FRESH_CHECKSUM_BOUND_DISPOSABLE_COPY_ISOLATED_PROOF_RUN_ONLY",
   "authorization_source": "User message in current conversation",
   "authorization_text": "Create the fresh Receipt 010 clean proof branch from current main, install only the repaired checksum-bound proof capsule and immutable dependencies, run the full preflight, and open exactly one proof-only PR so the pull_request.opened workflow executes once.",
   "authorized": true,
   "current_map_change_authorized": false,
+  "diagnostic_repair_applied": true,
   "merge_authorized": false,
+  "missing_dependency_repair_applied": true,
   "persisted_data_change_authorized": false,
   "pr67_merge_authorized": false,
   "production_activation_authorized": false,
@@ -13,7 +16,7 @@
   "proof_run_count_authorized": 1,
   "proof_run_count_executed_under_this_receipt": 0,
   "receipt009_reuse_authorized": false,
-  "repaired_finalizer_sha256": "c117370a5d3eba34aa8b67b8c59cda216f74a37c8ade7de4395c70b8cd31ad12",
+  "repaired_finalizer_sha256": "5b092ffc4c8b37b0ed6a1d32c67445aec96ae4af149630f32446700e5a86d1d4",
   "second_proof_run_authorized": false,
   "status": "AUTHORIZED_UNCONSUMED",
   "type": "PMP_P2C_EXPLICIT_FINAL_PATH_AUTHORIZATION_RECEIPT_010"

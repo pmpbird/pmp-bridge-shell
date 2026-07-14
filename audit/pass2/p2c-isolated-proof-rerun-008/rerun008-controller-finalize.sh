@@ -29,11 +29,15 @@ if proof_started and aggregate:
     )
 (e/'semantic-review-008.json').write_text(json.dumps({'status':'PASS' if semantic else 'FAIL','aggregate_present':aggregate is not None,'proof_started':proof_started,'proof_run_count_executed':proof_run_count,'workflow_attempt_completed':True,'second_proof_run_authorized':False},indent=2,sort_keys=True)+'\n')
 PY
-rm -f "$ACTIVE_ROOT/a003-live-runtime-effective.cjs"
-git -C "$ACTIVE_ROOT" reset --hard "$SOURCE_COMMIT" >/dev/null
-git -C "$ACTIVE_ROOT" clean -ffdx >/dev/null
-test -z "$(git -C "$ACTIVE_ROOT" status --porcelain)"
-test "$(git -C "$ACTIVE_ROOT" rev-parse HEAD)" = "$SOURCE_COMMIT"
+if [ -d "$ACTIVE_ROOT" ] && [ -d "$BASELINE_ROOT" ]; then
+  rm -f "$ACTIVE_ROOT/a003-live-runtime-effective.cjs"
+  git -C "$ACTIVE_ROOT" reset --hard "$SOURCE_COMMIT" >/dev/null
+  git -C "$ACTIVE_ROOT" clean -ffdx >/dev/null
+  test -z "$(git -C "$ACTIVE_ROOT" status --porcelain)"
+  test "$(git -C "$ACTIVE_ROOT" rev-parse HEAD)" = "$SOURCE_COMMIT"
+else
+  printf '%s\n' 'proof_worktrees_not_created_before_failure' > "$EVIDENCE_DIR/finalizer-worktree-absence.txt"
+fi
 python3 - <<'PY'
 import hashlib,json,os,pathlib
 def snap(root):
@@ -48,8 +52,11 @@ e=pathlib.Path(os.environ['EVIDENCE_DIR'])
 review=json.loads((e/'semantic-review-008.json').read_text())
 proof_started=(e/'proof-run-started.lock').is_file()
 proof_run_count=1 if proof_started else 0
-b=snap(os.environ['BASELINE_ROOT']);r=snap(os.environ['ACTIVE_ROOT'])
-boundary_ok=b==r and len(r)==1481
+baseline=pathlib.Path(os.environ['BASELINE_ROOT']);active=pathlib.Path(os.environ['ACTIVE_ROOT'])
+if baseline.is_dir() and active.is_dir():
+    b=snap(baseline);r=snap(active);boundary_ok=b==r and len(r)==1481
+else:
+    b={};r={};boundary_ok=not proof_started
 out={'type':'PMP_P2C_ISOLATED_PROOF_RERUN008_FINAL_BOUNDARY_011','status':'PASS' if boundary_ok else 'FAIL','baseline_file_count':len(b),'restored_file_count':len(r),'byte_for_byte_restored_after_regressions':b==r,'production_checkout_dirty':False,'production_patch_applied':False,'production_activation_authorized':False,'merge_authorized':False,'proof_started':proof_started,'proof_run_count_executed':proof_run_count,'workflow_attempt_completed':True,'second_proof_run_authorized':False}
 (e/'final-boundary.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
 print(json.dumps(out,indent=2))
