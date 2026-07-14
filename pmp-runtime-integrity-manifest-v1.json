@@ -3307,15 +3307,15 @@
       "sri": "sha256-IABcW95MLzZjWE8ofw8sAt73ApfBeVMytTAFzLW6P9k="
     },
     {
-      "bytes": 9861,
+      "bytes": 9912,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_DOCUMENT",
-      "git_blob_sha": "520cbea77f80326758f9514aa036974e531c2dad",
+      "git_blob_sha": "ffb45fd17cd407bf22ab2c3fb911bb3e9def0754",
       "mime_type": "text/html",
       "path": "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html",
-      "sha256_base64": "wYNeKh3AmahgUEULoZheV8BesnCSzQHlTW12AlA7JQI=",
-      "sha256_hex": "c1835e2a1dc099a86050450ba1985e57c05eb27092cd01e54d6d7602503b2502",
-      "sri": "sha256-wYNeKh3AmahgUEULoZheV8BesnCSzQHlTW12AlA7JQI="
+      "sha256_base64": "05f/ipetFa/BAKcr2mFZkyc/tJ6kk5oa+4ccQio1IsU=",
+      "sha256_hex": "d397ff8a97ad15afc100a72bda615993273fb49ea4939a1afb871c422a3522c5",
+      "sri": "sha256-05f/ipetFa/BAKcr2mFZkyc/tJ6kk5oa+4ccQio1IsU="
     },
     {
       "bytes": 16868,
@@ -5023,15 +5023,15 @@
       "sri": "sha256-gkNna22pS082XWvQ/4tVnjTE9w3CyownDT+Me0D3FYA="
     },
     {
-      "bytes": 10097,
+      "bytes": 10369,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "c84ab1f02e432505ccb33d36fed92bb5caea550c",
+      "git_blob_sha": "37c6d75d2b4ef478ceaa690a24dc67bec89bbf08",
       "mime_type": "text/javascript",
       "path": "pmp-pass75-reload-runtime-platform-gate-v1.js",
-      "sha256_base64": "O9VOie/Cyt+4nFXPSBHBHhdtzWxD1UAtYqDagydyrLU=",
-      "sha256_hex": "3bd54e89efc2cadfb89c55cf4811c11e176dcd6c43d5402d62a0da832772acb5",
-      "sri": "sha256-O9VOie/Cyt+4nFXPSBHBHhdtzWxD1UAtYqDagydyrLU="
+      "sha256_base64": "ID4dAJb1F+ZrBvBTTZkatUVV+Tal0r5C2eiy+lf9UEI=",
+      "sha256_hex": "203e1d0096f517e66b06f0534d991ab54555f936a5d2be42d9e8b2fa57fd5042",
+      "sri": "sha256-ID4dAJb1F+ZrBvBTTZkatUVV+Tal0r5C2eiy+lf9UEI="
     },
     {
       "bytes": 10893,

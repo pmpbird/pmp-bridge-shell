@@ -18,11 +18,29 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3ded4}ifr
 <pre id="routeDiagnostic" aria-live="polite"></pre>
 <script>
 'use strict';
+window.PMPIntegrityTransitionReady=(async function(){
+  const target='028506e6bd4d14327a7a2b4e1e08a46098ba61a31b2147ce3c1ef7ce6c439d10',key='pmp_integrity_transition_'+target;
+  if(!('serviceWorker' in navigator))return;
+  const controller=navigator.serviceWorker.controller;
+  if(!controller)return;
+  let count=Number(sessionStorage.getItem(key)||0);
+  if(count>=3)throw new Error('integrity_transition_controller_persisted');
+  sessionStorage.setItem(key,String(count+1));
+  const regs=await navigator.serviceWorker.getRegistrations();
+  for(const reg of regs){try{await reg.unregister()}catch(e){}}
+  const u=new URL(location.href);u.searchParams.set('pmp_integrity_transition',target.slice(0,16)+'-'+Date.now());
+  location.replace(u.href);
+  await new Promise(()=>{});
+})();
+</script>
+<script>
+'use strict';
 (async function(){
+  await window.PMPIntegrityTransitionReady;
   const ROOT_VERSION='1.0.0-a003-bootstrap-root';
   const ROOT_TRUST_ANCHOR='pmp-app-current.html';
   const MANIFEST_PATH='pmp-runtime-integrity-manifest-v1.json';
-  const MANIFEST_SHA256='e90ea9d378cb068269cd0b7ee1336b64b72aa4feef029bc8a0b68b925877bb99';
+  const MANIFEST_SHA256='028506e6bd4d14327a7a2b4e1e08a46098ba61a31b2147ce3c1ef7ce6c439d10';
   const RESOLVER_PATH='pmp-current-route-resolver-v1.js';
   const INTEGRITY_SW_PATH='pmp-integrity-service-worker-v1.js';
   const frame=document.getElementById('app'),diagnosticBox=document.getElementById('routeDiagnostic'),bootBox=document.getElementById('boot');
@@ -59,43 +77,6 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3ded4}ifr
     try{localStorage.setItem('pmp_current_entry_route_handoff_receipt_v1',JSON.stringify(finalReceipt,null,2))}catch(e){}
     bootBox.classList.add('hidden');frame.src=launchUrl;
   }catch(error){showDiagnostic(error,'stable_entry_integrity_bootstrap')}
-})();
-</script>
-<script>
-'use strict';
-(function(){
-  const GATE_ID='pmpPass75ReloadRuntimePlatformGateV1';
-  const STYLE_ID='pmp75ReloadGateStyle';
-  const seen=new WeakSet();
-  function clearReleasedGate(win){
-    try{
-      const api=win.PMPPass75ReloadRuntimePlatformGateV1;
-      if(!api||!api.state||api.state.released!==true)return;
-      const doc=win.document;
-      const gate=doc.getElementById(GATE_ID);if(gate)gate.remove();
-      const style=doc.getElementById(STYLE_ID);if(style)style.remove();
-    }catch(e){}
-  }
-  function watch(win){
-    try{
-      if(!win||seen.has(win))return;
-      seen.add(win);
-      const doc=win.document;
-      const observer=new win.MutationObserver(()=>{clearReleasedGate(win);scan(win)});
-      observer.observe(doc.documentElement||doc,{childList:true,subtree:true});
-      clearReleasedGate(win);
-      scan(win);
-    }catch(e){}
-  }
-  function scan(win){
-    try{
-      clearReleasedGate(win);
-      const frames=win.document.getElementsByTagName('iframe');
-      for(let i=0;i<frames.length;i++)try{watch(frames[i].contentWindow)}catch(e){}
-    }catch(e){}
-  }
-  watch(window);
-  setInterval(()=>scan(window),250);
 })();
 </script>
 </body>
