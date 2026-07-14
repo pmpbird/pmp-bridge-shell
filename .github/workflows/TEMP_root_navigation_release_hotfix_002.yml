@@ -1,0 +1,71 @@
+name: TEMP Root Navigation Release Hotfix 002
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/TEMP_root_navigation_release_hotfix_002.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: ${{ !contains(github.event.head_commit.message, '[root-navfix-complete]') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Apply root-only release latch guard
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64, hashlib, re
+          p=Path('pmp-app-current.html')
+          s=p.read_text()
+          marker="const GATE_ID='pmpPass75ReloadRuntimePlatformGateV1';"
+          assert marker not in s
+          assert "const MANIFEST_SHA256='e90ea9d378cb068269cd0b7ee1336b64b72aa4feef029bc8a0b68b925877bb99';" in s
+          shim=base64.b64decode('PHNjcmlwdD4KJ3VzZSBzdHJpY3QnOwooZnVuY3Rpb24oKXsKICBjb25zdCBHQVRFX0lEPSdwbXBQYXNzNzVSZWxvYWRSdW50aW1lUGxhdGZvcm1HYXRlVjEnOwogIGNvbnN0IFNUWUxFX0lEPSdwbXA3NVJlbG9hZEdhdGVTdHlsZSc7CiAgY29uc3Qgc2Vlbj1uZXcgV2Vha1NldCgpOwogIGZ1bmN0aW9uIGNsZWFyUmVsZWFzZWRHYXRlKHdpbil7CiAgICB0cnl7CiAgICAgIGNvbnN0IGFwaT13aW4uUE1QUGFzczc1UmVsb2FkUnVudGltZVBsYXRmb3JtR2F0ZVYxOwogICAgICBpZighYXBpfHwhYXBpLnN0YXRlfHxhcGkuc3RhdGUucmVsZWFzZWQhPT10cnVlKXJldHVybjsKICAgICAgY29uc3QgZG9jPXdpbi5kb2N1bWVudDsKICAgICAgY29uc3QgZ2F0ZT1kb2MuZ2V0RWxlbWVudEJ5SWQoR0FURV9JRCk7aWYoZ2F0ZSlnYXRlLnJlbW92ZSgpOwogICAgICBjb25zdCBzdHlsZT1kb2MuZ2V0RWxlbWVudEJ5SWQoU1RZTEVfSUQpO2lmKHN0eWxlKXN0eWxlLnJlbW92ZSgpOwogICAgfWNhdGNoKGUpe30KICB9CiAgZnVuY3Rpb24gd2F0Y2god2luKXsKICAgIHRyeXsKICAgICAgaWYoIXdpbnx8c2Vlbi5oYXMod2luKSlyZXR1cm47CiAgICAgIHNlZW4uYWRkKHdpbik7CiAgICAgIGNvbnN0IGRvYz13aW4uZG9jdW1lbnQ7CiAgICAgIGNvbnN0IG9ic2VydmVyPW5ldyB3aW4uTXV0YXRpb25PYnNlcnZlcigoKT0+e2NsZWFyUmVsZWFzZWRHYXRlKHdpbik7c2Nhbih3aW4pfSk7CiAgICAgIG9ic2VydmVyLm9ic2VydmUoZG9jLmRvY3VtZW50RWxlbWVudHx8ZG9jLHtjaGlsZExpc3Q6dHJ1ZSxzdWJ0cmVlOnRydWV9KTsKICAgICAgY2xlYXJSZWxlYXNlZEdhdGUod2luKTsKICAgICAgc2Nhbih3aW4pOwogICAgfWNhdGNoKGUpe30KICB9CiAgZnVuY3Rpb24gc2Nhbih3aW4pewogICAgdHJ5ewogICAgICBjbGVhclJlbGVhc2VkR2F0ZSh3aW4pOwogICAgICBjb25zdCBmcmFtZXM9d2luLmRvY3VtZW50LmdldEVsZW1lbnRzQnlUYWdOYW1lKCdpZnJhbWUnKTsKICAgICAgZm9yKGxldCBpPTA7aTxmcmFtZXMubGVuZ3RoO2krKyl0cnl7d2F0Y2goZnJhbWVzW2ldLmNvbnRlbnRXaW5kb3cpfWNhdGNoKGUpe30KICAgIH1jYXRjaChlKXt9CiAgfQogIHdhdGNoKHdpbmRvdyk7CiAgc2V0SW50ZXJ2YWwoKCk9PnNjYW4od2luZG93KSwyNTApOwp9KSgpOwo8L3NjcmlwdD4K').decode()
+          assert s.count('</body>')==1
+          p.write_text(s.replace('</body>',shim+'</body>'))
+          assert marker in p.read_text()
+          assert hashlib.sha256(Path('pmp-runtime-integrity-manifest-v1.json').read_bytes()).hexdigest()=='e90ea9d378cb068269cd0b7ee1336b64b72aa4feef029bc8a0b68b925877bb99'
+          PY
+      - name: Validate syntax and integrity contract
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('pmp-app-current.html').read_text()
+          scripts=re.findall(r'<script>(.*?)</script>',s,re.S)
+          assert len(scripts)==2
+          Path('/tmp/root-bootstrap.js').write_text(scripts[0])
+          Path('/tmp/root-navfix.js').write_text(scripts[1])
+          assert "api.state.released!==true" in scripts[1]
+          assert "getElementsByTagName('iframe')" in scripts[1]
+          PY
+          node --check /tmp/root-bootstrap.js
+          node --check /tmp/root-navfix.js
+          python3 tools/test_a003_integrity.py --output /tmp/a003-root-navfix.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open('/tmp/a003-root-navfix.json'))
+          assert (r['tests_total'],r['tests_passed'],r['tests_failed'])==(21,21,0),r
+          PY
+      - name: Commit root-only hotfix
+        run: |
+          set -euo pipefail
+          rm .github/workflows/TEMP_root_navigation_release_hotfix_002.yml
+          git config user.name pmpbird
+          git config user.email pmpbird@gmail.com
+          git add pmp-app-current.html .github/workflows/TEMP_root_navigation_release_hotfix_002.yml
+          git commit -m 'Apply root-only runtime-to-orchestrator navigation latch guard [root-navfix-complete]'
+          git push origin HEAD:main
