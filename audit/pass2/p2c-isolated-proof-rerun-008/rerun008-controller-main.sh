@@ -215,3 +215,4 @@ python3 "$BUNDLE_DIR/run_full_isolated_proof_002.py" \
   --evidence-dir "$EVIDENCE_DIR" \
   --scripts-root "$BUNDLE_DIR" \
   --output "$EVIDENCE_DIR/aggregate.json" 2>&1 | tee "$EVIDENCE_DIR/aggregate-console.log"
+
