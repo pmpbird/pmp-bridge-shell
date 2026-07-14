@@ -18,19 +18,27 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Normalize exact files, reconstruct main, verify, install, and self-remove
+      - name: Repair transport endings, reconstruct, verify, install, and self-remove
         run: |
           set -euo pipefail
-          AUDIT='audit/pass2/p2c-isolated-proof-rerun-008'
           python3 - <<'PY'
-          from pathlib import Path
-          for p in [
-            Path('audit/pass2/p2c-isolated-proof-rerun-008/CONTROLLER007_RECEIPT.json'),
-            Path('audit/pass2/p2c-isolated-proof-rerun-008/EXECUTABLE_RERUN_MANIFEST_007.json'),
-            Path('audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-parts/main.part02.b64'),
-          ]:
-              p.write_bytes(p.read_bytes().rstrip(b'\r\n') + b'\n')
+          import hashlib,pathlib
+          expected={
+            'audit/pass2/p2c-isolated-proof-rerun-008/CONTROLLER007_RECEIPT.json':'a2acba57ac41cc12a6b68de48439f014f5fc4e4a5bb1e063685b59ba3f530ac9',
+            'audit/pass2/p2c-isolated-proof-rerun-008/EXECUTABLE_RERUN_MANIFEST_007.json':'1fd94d302dbf28313cea6cc1d1c23226ac506c1ead73b1d37ca0fdbb20715faa',
+            'audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-parts/main.part02.b64':'a32a5902cd078f97b1d90a267148004b6c4cbf2a5f1f0c4c9d7257606b99633a',
+            'audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-parts/main.part03.b64':'ad668c6081aff8b0f31e855e68ac4d1b9342be436a8bb6124efc4d0590abc4cb',
+          }
+          for name,want in expected.items():
+            p=pathlib.Path(name); raw=p.read_bytes(); core=raw.rstrip(b'\r\n')
+            matches=[]
+            for n in range(5):
+              candidate=core+b'\n'*n
+              if hashlib.sha256(candidate).hexdigest()==want: matches.append(candidate)
+            assert len(matches)==1,(name,hashlib.sha256(raw).hexdigest(),want)
+            p.write_bytes(matches[0])
           PY
+          AUDIT='audit/pass2/p2c-isolated-proof-rerun-008'
           cat "$AUDIT"/rerun008-controller-parts/main.part*.b64 | tr -d '\r\n' | base64 -d > "$AUDIT/rerun008-controller-main.sh"
           test "$(sha256sum "$AUDIT/rerun008-controller-main.sh" | awk '{print $1}')" = 'd39fec91176c71b634aec8cda696a2032da3ccc5953e6336bd35852191e7bb66'
           sha256sum -c SHA256SUMS.txt
@@ -41,6 +49,7 @@ jobs:
           cmp -s "$CANDIDATE" "$ACTIVE"
           rm -f '.github/workflows/TEMP_prepare_receipt009_exact_branch.yml'
           rm -f "$AUDIT/PMP_REPAIR009_REFRESHED_EXECUTABLE_FROZEN_PROOF_CAPSULE_CONTROLLER007.zip"
+          rm -f "$AUDIT/BRANCH_PREPARATION_IN_PROGRESS.md" "$AUDIT/TRANSFER_STATUS.txt"
           git config user.name pmpbird
           git config user.email pmpbird@gmail.com
           git add -A
