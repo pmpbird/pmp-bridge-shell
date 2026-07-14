@@ -5,12 +5,36 @@
   "capsule_id": "repair009-rerun008-refreshed-executable-capsule-003",
   "controller": "REPAIR009_REFRESHED_EXECUTABLE_FROZEN_PROOF_CAPSULE_CONTROLLER_007",
   "controller_parts": [
-    {"bytes": 5525, "filename": "main.part00.b64", "sha256": "d4f8185ae6ddc9a0f65f9b5c877a29846432858c422832934ff9f1a2c21d1489"},
-    {"bytes": 5525, "filename": "main.part01.b64", "sha256": "3f89ff3fd491b0e10e4b3c3f8c3d126af4e98c1f839ca1bd51558dc2c887394b"},
-    {"bytes": 5525, "filename": "main.part02.b64", "sha256": "a32a5902cd078f97b1d90a267148004b6c4cbf2a5f1f0c4c9d7257606b99633a"},
-    {"bytes": 5525, "filename": "main.part03.b64", "sha256": "ad668c6081aff8b0f31e855e68ac4d1b9342be436a8bb6124efc4d0590abc4cb"},
-    {"bytes": 2507, "filename": "finalize.part00.b64", "sha256": "4e7aa2a1f80adf6818d725e211e7b9ace69a8b09f625caedcd3e5c4beb6ab307"},
-    {"bytes": 2507, "filename": "finalize.part01.b64", "sha256": "0e3f4055f36632f7e603e1a4057586f0ee0b0c2e1d830fd7527219c329607d65"}
+    {
+      "bytes": 5525,
+      "filename": "main.part00.b64",
+      "sha256": "d4f8185ae6ddc9a0f65f9b5c877a29846432858c422832934ff9f1a2c21d1489"
+    },
+    {
+      "bytes": 5525,
+      "filename": "main.part01.b64",
+      "sha256": "3f89ff3fd491b0e10e4b3c3f8c3d126af4e98c1f839ca1bd51558dc2c887394b"
+    },
+    {
+      "bytes": 5525,
+      "filename": "main.part02.b64",
+      "sha256": "a32a5902cd078f97b1d90a267148004b6c4cbf2a5f1f0c4c9d7257606b99633a"
+    },
+    {
+      "bytes": 5525,
+      "filename": "main.part03.b64",
+      "sha256": "ad668c6081aff8b0f31e855e68ac4d1b9342be436a8bb6124efc4d0590abc4cb"
+    },
+    {
+      "bytes": 2507,
+      "filename": "finalize.part00.b64",
+      "sha256": "4e7aa2a1f80adf6818d725e211e7b9ace69a8b09f625caedcd3e5c4beb6ab307"
+    },
+    {
+      "bytes": 2507,
+      "filename": "finalize.part01.b64",
+      "sha256": "0e3f4055f36632f7e603e1a4057586f0ee0b0c2e1d830fd7527219c329607d65"
+    }
   ],
   "current_map_change_authorized": false,
   "directive": "008",
