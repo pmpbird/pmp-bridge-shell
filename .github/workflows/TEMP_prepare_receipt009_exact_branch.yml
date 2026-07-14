@@ -18,9 +18,13 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Verify staged capsule, install proof workflow, and self-remove
+      - name: Restore exact frozen capsule, verify, install proof workflow, and self-remove
         run: |
           set -euo pipefail
+          ZIP='audit/pass2/p2c-isolated-proof-rerun-008/PMP_REPAIR009_REFRESHED_EXECUTABLE_FROZEN_PROOF_CAPSULE_CONTROLLER007.zip'
+          EXPECTED='6032ba66eddfc3e0d48f1846b0518bd85f6bff005dcabb7b73ebfaa41ef72bb7'
+          test "$(sha256sum "$ZIP" | awk '{print $1}')" = "$EXPECTED"
+          unzip -oq "$ZIP" -d "$GITHUB_WORKSPACE"
           sha256sum -c SHA256SUMS.txt
           CANDIDATE='audit/pass2/p2c-isolated-proof-rerun-008/pass2-p2c-isolated-proof-rerun-008.workflow-candidate.yml.txt'
           ACTIVE='.github/workflows/pass2-p2c-isolated-proof-rerun-008.yml'
@@ -28,7 +32,7 @@ jobs:
           install -D -m 0644 "$CANDIDATE" "$ACTIVE"
           cmp -s "$CANDIDATE" "$ACTIVE"
           rm -f '.github/workflows/TEMP_prepare_receipt009_exact_branch.yml'
-          rm -f 'audit/pass2/p2c-isolated-proof-rerun-008/PMP_REPAIR009_REFRESHED_EXECUTABLE_FROZEN_PROOF_CAPSULE_CONTROLLER007.zip'
+          rm -f "$ZIP"
           git config user.name pmpbird
           git config user.email pmpbird@gmail.com
           git add -A
