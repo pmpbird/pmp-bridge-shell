@@ -1,0 +1,10 @@
+{
+  "authorization_receipt": "008",
+  "browser_proof_executed": false,
+  "capsule_id": "repair009-rerun008-refreshed-executable-capsule-003",
+  "controller": "REPAIR009_REFRESHED_EXECUTABLE_FROZEN_PROOF_CAPSULE_CONTROLLER_007",
+  "production_commit": "98b2e293717b81289e3b372d1fff8f5832d29fd6",
+  "repair009_logic_changed": false,
+  "status": "PASS_EXECUTABLE_FROZEN_CAPSULE_READY_NOT_EXECUTED",
+  "workflow_executed": false
+}
