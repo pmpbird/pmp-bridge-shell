@@ -1,10 +1,11 @@
 {
-  "authorization_receipt": "008",
-  "browser_proof_executed": false,
-  "capsule_id": "repair009-rerun008-refreshed-executable-capsule-003",
-  "controller": "REPAIR009_REFRESHED_EXECUTABLE_FROZEN_PROOF_CAPSULE_CONTROLLER_007",
-  "production_commit": "98b2e293717b81289e3b372d1fff8f5832d29fd6",
-  "repair009_logic_changed": false,
-  "status": "PASS_EXECUTABLE_FROZEN_CAPSULE_READY_NOT_EXECUTED",
-  "workflow_executed": false
+  "finalizer_sha256": "51b3cdc2e124b4b526478bee5108a7a4ef9984ce84e5963b6a3271ac511a88e7",
+  "main_sha256": "d39fec91176c71b634aec8cda696a2032da3ccc5953e6336bd35852191e7bb66",
+  "manifest_sha256": "1fd94d302dbf28313cea6cc1d1c23226ac506c1ead73b1d37ca0fdbb20715faa",
+  "receipt008_consumed": false,
+  "receipt008_sha256": "37a439de5a4f8320d1cdea3e692be592c14dfc639d1e8b6d6f42ec11d3cd159a",
+  "report_sha256": "b5a02652958a8d53852fe249cd4e6dace081ee5ec57649178f8e2a84737d4864",
+  "status": "PASS_FROZEN_EXECUTABLE_AUTHORIZATION_BOUND_NOT_EXECUTED",
+  "type": "PMP_REPAIR009_REFRESHED_EXECUTABLE_CAPSULE_CONTROLLER007_RECEIPT",
+  "workflow_sha256": "5c92dfe6a7eb731f117fb1086343886fcbb2009b3e17ca1f3f3fc5836efa275d"
 }
