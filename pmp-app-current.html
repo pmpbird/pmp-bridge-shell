@@ -61,5 +61,42 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3ded4}ifr
   }catch(error){showDiagnostic(error,'stable_entry_integrity_bootstrap')}
 })();
 </script>
+<script>
+'use strict';
+(function(){
+  const GATE_ID='pmpPass75ReloadRuntimePlatformGateV1';
+  const STYLE_ID='pmp75ReloadGateStyle';
+  const seen=new WeakSet();
+  function clearReleasedGate(win){
+    try{
+      const api=win.PMPPass75ReloadRuntimePlatformGateV1;
+      if(!api||!api.state||api.state.released!==true)return;
+      const doc=win.document;
+      const gate=doc.getElementById(GATE_ID);if(gate)gate.remove();
+      const style=doc.getElementById(STYLE_ID);if(style)style.remove();
+    }catch(e){}
+  }
+  function watch(win){
+    try{
+      if(!win||seen.has(win))return;
+      seen.add(win);
+      const doc=win.document;
+      const observer=new win.MutationObserver(()=>{clearReleasedGate(win);scan(win)});
+      observer.observe(doc.documentElement||doc,{childList:true,subtree:true});
+      clearReleasedGate(win);
+      scan(win);
+    }catch(e){}
+  }
+  function scan(win){
+    try{
+      clearReleasedGate(win);
+      const frames=win.document.getElementsByTagName('iframe');
+      for(let i=0;i<frames.length;i++)try{watch(frames[i].contentWindow)}catch(e){}
+    }catch(e){}
+  }
+  watch(window);
+  setInterval(()=>scan(window),250);
+})();
+</script>
 </body>
 </html>
