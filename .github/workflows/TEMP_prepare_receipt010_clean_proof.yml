@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Install exact clean proof capsule and self-remove
+      - name: Install exact non-workflow clean proof capsule
         run: |
           set -euo pipefail
           OLD=047847972b87a60f73567b0ff13c088e35c1de49
@@ -68,73 +68,37 @@ jobs:
           r=json.loads(p.read_text());r['repaired_finalizer_sha256']=sys.argv[1]
           p.write_text(json.dumps(r,indent=2,sort_keys=True)+'\n')
           PY
-          cat > .github/workflows/pass2-p2c-isolated-proof-rerun-006.yml <<'YML'
-          name: Pass 2 P2-C Receipt 010 Clean Isolated Proof
-          on:
-            pull_request:
-              types: [opened]
-          permissions:
-            contents: read
-          jobs:
-            isolated-proof-receipt010:
-              if: github.event.action == 'opened' && github.run_attempt == 1
-              runs-on: ubuntu-24.04
-              env:
-                SOURCE_COMMIT: 98b2e293717b81289e3b372d1fff8f5832d29fd6
-                AUDIT_DIR: audit/pass2/p2c-isolated-proof-rerun-008
-                DEPS_DIR: audit/pass2/p2c-isolated-proof-rerun-006
-                REPAIR_DIR: audit/pass2/p2c-isolated-proof-rerun-006/repair-continuation-003
-                BUNDLE_DIR: /tmp/p2c-proof-runner-010
-                BUNDLE_TAR: /tmp/p2c-proof-rerun-010.tar.gz
-                BASELINE_ROOT: /tmp/p2c-proof-baseline-010
-                ACTIVE_ROOT: /tmp/p2c-proof-active-010
-                EVIDENCE_DIR: /tmp/p2c-proof-evidence-010
-                NORMALIZED_ROOT: /tmp/p2c-repair010-normalized
-                NODE_HOME: /tmp/p2c-node-010
-              steps:
-                - uses: actions/checkout@v4
-                  with:
-                    fetch-depth: 0
-                - uses: actions/setup-python@v5
-                  with:
-                    python-version: '3.12'
-                - uses: actions/setup-node@v4
-                  with:
-                    node-version: '22.16.0'
-                - name: Verify Receipt 010 and run exactly one frozen proof
-                  env:
-                    EVENT_ACTION: ${{ github.event.action }}
-                    RUN_ATTEMPT: ${{ github.run_attempt }}
-                    HEAD_SHA: ${{ github.sha }}
-                    BASE_SHA: ${{ github.event.pull_request.base.sha }}
-                    RUN_ID: ${{ github.run_id }}
-                  run: |
-                    set -euo pipefail
-                    python3 - <<'PY'
-                    import json,hashlib,pathlib
-                    root=pathlib.Path('audit/pass2/p2c-isolated-proof-rerun-008')
-                    r=json.loads((root/'P2C_FINAL_PATH_AUTHORIZATION_RECEIPT_010.json').read_text())
-                    assert r['authorized'] is True and r['authorization_consumed'] is False
-                    assert r['proof_run_count_authorized']==1 and r['proof_run_count_executed_under_this_receipt']==0
-                    for k in ('production_application_authorized','production_activation_authorized','current_map_change_authorized','persisted_data_change_authorized','merge_authorized','second_proof_run_authorized'):
-                      assert r[k] is False,k
-                    f=root/'rerun008-controller-finalize.sh'
-                    assert hashlib.sha256(f.read_bytes()).hexdigest()==r['repaired_finalizer_sha256']
-                    PY
-                    bash "$AUDIT_DIR/rerun008-controller-main.sh"
-                - name: Finalize truth and rollback boundary
-                  if: always()
-                  run: bash "$AUDIT_DIR/rerun008-controller-finalize.sh"
-                - name: Upload complete evidence
-                  if: always()
-                  uses: actions/upload-artifact@v4
-                  with:
-                    name: p2c-receipt010-clean-proof-evidence
-                    path: /tmp/p2c-proof-evidence-010
-          YML
-          rm .github/workflows/TEMP_prepare_receipt010_clean_proof.yml
+          python3 - <<'PY'
+          import hashlib,json,pathlib,subprocess
+          root=pathlib.Path('audit/pass2/p2c-isolated-proof-rerun-008')
+          deps=pathlib.Path('audit/pass2/p2c-isolated-proof-rerun-006')
+          receipt=json.loads((root/'P2C_FINAL_PATH_AUTHORIZATION_RECEIPT_010.json').read_text())
+          assert receipt['authorized'] is True
+          assert receipt['authorization_consumed'] is False
+          assert receipt['proof_run_count_authorized']==1
+          assert receipt['proof_run_count_executed_under_this_receipt']==0
+          for key in ('production_application_authorized','production_activation_authorized','current_map_change_authorized','persisted_data_change_authorized','merge_authorized','second_proof_run_authorized'):
+              assert receipt[key] is False,key
+          finalizer=root/'rerun008-controller-finalize.sh'
+          assert hashlib.sha256(finalizer.read_bytes()).hexdigest()==receipt['repaired_finalizer_sha256']
+          assert deps.is_dir() and root.is_dir()
+          changed=subprocess.check_output(['git','status','--porcelain'],text=True).splitlines()
+          assert changed
+          for line in changed:
+              path=line[3:]
+              assert path.startswith(str(root)+'/') or path.startswith(str(deps)+'/'),path
+          (root/'RECEIPT010_NON_WORKFLOW_PREFLIGHT.json').write_text(json.dumps({
+              'type':'PMP_P2C_RECEIPT010_NON_WORKFLOW_PREFLIGHT',
+              'status':'PASS',
+              'source_commit':'98b2e293717b81289e3b372d1fff8f5832d29fd6',
+              'proof_execution':False,
+              'workflow_file_created':False,
+              'production_files_changed':False,
+              'authorization_consumed':False
+          },indent=2,sort_keys=True)+'\n')
+          PY
           git config user.name pmpbird
           git config user.email pmpbird@gmail.com
-          git add .github/workflows audit/pass2/p2c-isolated-proof-rerun-006 audit/pass2/p2c-isolated-proof-rerun-008
-          git commit -m 'Prepare clean Receipt 010 isolated proof capsule [no-proof-run]'
+          git add audit/pass2/p2c-isolated-proof-rerun-006 audit/pass2/p2c-isolated-proof-rerun-008
+          git commit -m 'Stage Receipt 010 non-workflow proof capsule [no-proof-run]'
           git push origin HEAD:agent/pass2-p2c-receipt010-clean-proof
