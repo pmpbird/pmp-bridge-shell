@@ -1,0 +1,43 @@
+name: TEMP Prepare Receipt 009 Exact Branch
+
+on:
+  push:
+    branches:
+      - agent/pass2-p2c-repair009-rerun008-controller007-ready
+    paths:
+      - '.github/workflows/TEMP_prepare_receipt009_exact_branch.yml'
+      - 'audit/pass2/p2c-isolated-proof-rerun-008/PMP_REPAIR009_REFRESHED_EXECUTABLE_FROZEN_PROOF_CAPSULE_CONTROLLER007.zip'
+
+permissions:
+  contents: write
+
+jobs:
+  prepare-only:
+    if: github.event_name == 'push' && github.ref_name == 'agent/pass2-p2c-repair009-rerun008-controller007-ready'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify, extract, install, and self-remove
+        run: |
+          set -euo pipefail
+          ZIP='audit/pass2/p2c-isolated-proof-rerun-008/PMP_REPAIR009_REFRESHED_EXECUTABLE_FROZEN_PROOF_CAPSULE_CONTROLLER007.zip'
+          EXPECTED='6032ba66eddfc3e0d48f1846b0518bd85f6bff005dcabb7b73ebfaa41ef72bb7'
+          test "$(sha256sum "$ZIP" | awk '{print $1}')" = "$EXPECTED"
+          rm -rf /tmp/controller007-exact
+          mkdir -p /tmp/controller007-exact
+          unzip -q "$ZIP" -d /tmp/controller007-exact
+          cp -a /tmp/controller007-exact/. .
+          sha256sum -c SHA256SUMS.txt
+          CANDIDATE='audit/pass2/p2c-isolated-proof-rerun-008/pass2-p2c-isolated-proof-rerun-008.workflow-candidate.yml.txt'
+          ACTIVE='.github/workflows/pass2-p2c-isolated-proof-rerun-008.yml'
+          install -D -m 0644 "$CANDIDATE" "$ACTIVE"
+          test "$(sha256sum "$CANDIDATE" | awk '{print $1}')" = '5c92dfe6a7eb731f117fb1086343886fcbb2009b3e17ca1f3f3fc5836efa275d'
+          cmp -s "$CANDIDATE" "$ACTIVE"
+          rm -f '.github/workflows/TEMP_prepare_receipt009_exact_branch.yml' "$ZIP"
+          git config user.name pmpbird
+          git config user.email pmpbird@gmail.com
+          git add -A
+          git commit -m 'Prepare exact Receipt 009 Controller 007 proof branch [no-proof-run]'
+          git push origin HEAD:agent/pass2-p2c-repair009-rerun008-controller007-ready
