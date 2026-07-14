@@ -1,0 +1,77 @@
+test -z "$(git -C "$ACTIVE_ROOT" status --porcelain)"
+
+echo "=== Deterministically regenerate and verify 19 normalized actor sources ==="
+set -euo pipefail
+npm install -g typescript@5.8.3
+test "$(node -e 'console.log(require(require.resolve("typescript/package.json")).version)')" = "5.8.3"
+sudo mkdir -p /opt/nvm/versions/node/v22.16.0/lib/node_modules
+sudo rm -f /opt/nvm/versions/node/v22.16.0/lib/node_modules/typescript
+sudo ln -s "$(npm root -g)/typescript" /opt/nvm/versions/node/v22.16.0/lib/node_modules/typescript
+python3 - <<'PY'
+import hashlib,json,os,pathlib
+root=pathlib.Path(os.environ['AUDIT_DIR'])
+bundle=pathlib.Path(os.environ['BUNDLE_DIR'])
+baseline=pathlib.Path(os.environ['BASELINE_ROOT'])
+manifest=json.loads((root/'repair009-normalized-source-manifest-002.json').read_text())
+records=[]
+for row in manifest['records']:
+    source=(bundle/'after'/row['path']) if row['kind']=='document-inline' else (baseline/row['path'])
+    assert source.is_file(),source
+    actual=hashlib.sha256(source.read_bytes()).hexdigest()
+    assert actual==row['original_sha256'],(row['path'],actual,row['original_sha256'])
+    records.append({'kind':row['kind'],'path':row['path'],'policy_original_sha256':row['original_sha256'],'quarantined':False,'realm':row['realm'],'source_path':str(source)})
+out={'type':'PMP_REPAIR009_ASYNC_SOURCE_NORMALIZATION_INPUT_002','records':records}
+pathlib.Path('/tmp/p2c-repair009-normalization-input-004.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
+PY
+node "$AUDIT_DIR/transpile_async_sources.js" /tmp/p2c-repair009-normalization-input-004.json "$NORMALIZED_ROOT" > "$EVIDENCE_DIR/async-source-normalization-report-004.json"
+python3 - <<'PY'
+import json,os,pathlib
+e=pathlib.Path(os.environ['EVIDENCE_DIR'])
+root=pathlib.Path(os.environ['AUDIT_DIR'])
+report=json.loads((e/'async-source-normalization-report-004.json').read_text())
+manifest=json.loads((root/'repair009-normalized-source-manifest-002.json').read_text())
+assert report['type']=='PMP_REPAIR009_ASYNC_SOURCE_NORMALIZATION_REPORT_002'
+assert report['typescript_version']=='5.8.3' and len(report['records'])==19
+by={x['path']:x for x in report['records']}
+for row in manifest['records']:
+    got=by[row['path']]
+    assert got['original_sha256']==row['original_sha256'],row['path']
+    assert got['transformed_sha256']==row['transformed_sha256'],row['path']
+    assert got['original_bytes']==row['original_bytes'],row['path']
+    assert got['transformed_bytes']==row['transformed_bytes'],row['path']
+    assert got['residual_async_nodes']==0 and got['residual_await_nodes']==0,row['path']
+PY
+
+echo "=== Apply Repair 009 Controller 002 and compile final disposable runner ==="
+set -euo pipefail
+python3 "$AUDIT_DIR/repair_runner_009_controller002.py" --bundle-root "$BUNDLE_DIR" --normalized-root "$NORMALIZED_ROOT" --normalization-manifest "$AUDIT_DIR/repair009-normalized-source-manifest-002.json" | tee "$EVIDENCE_DIR/repair009-controller002-apply.log"
+python3 -m py_compile "$BUNDLE_DIR/prepare_disposable_proof_002.py" "$BUNDLE_DIR/rollback_disposable_proof_002.py" "$BUNDLE_DIR/run_full_isolated_proof_002.py"
+node --check "$BUNDLE_DIR/after/pmp-p2c-production-enforcement-adapter-candidate-001.js"
+node --check "$BUNDLE_DIR/run_production_shaped_browser_proof_002.cjs"
+
+echo "=== Install isolated Chromium dependency ==="
+set -euo pipefail
+rm -rf "$NODE_HOME"; mkdir -p "$NODE_HOME"; cd "$NODE_HOME"
+npm init -y >/dev/null
+npm install --no-save playwright@1.55.0
+"$NODE_HOME/node_modules/.bin/playwright" install --with-deps chromium
+
+echo "=== Derive compatibility runtime receipt from verified Authorization Receipt 004 ==="
+set -euo pipefail
+python3 - <<'PY'
+import hashlib,json,os,pathlib
+root=pathlib.Path(os.environ['AUDIT_DIR'])
+source=root/'P2C_EXPLICIT_ISOLATED_PROOF_RERUN_AUTHORIZATION_RECEIPT_004.json'
+auth=json.loads(source.read_text());sha=hashlib.sha256(source.read_bytes()).hexdigest()
+assert sha=='6d5c27081c445e20dc16eb8265689b6e8a9923249cc95d5971fbfa175c27607f'
+compat={
+  'type':'PMP_P2C_PROOF_RUNTIME_AUTHORIZATION_RECEIPT_004_COMPAT',
+  'authorized':True,
+  'authorization_scope':'ONE_ISOLATED_PRODUCTION_SHAPED_PROOF_RERUN_ONLY',
+  'production_activation_authorized':False,
+  'production_apply_authorized':False,
+  'current_map_change_authorized':False,
+  'production_storage_change_authorized':False,
+  'merge_authorized':False,
+  'second_proof_run_authorized':False,
+  'source_repository_commit':auth['source_repository_commit'],

@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "audit_only_branch": true,
+  "disposable_copy_only": true,
+  "production_runtime_files_changed": false,
+  "production_activation_authorized": false,
+  "merge_authorized": false,
+  "second_run_authorized": false
+}

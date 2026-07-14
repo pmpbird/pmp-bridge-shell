@@ -1,0 +1,6 @@
+{
+  "ready": true,
+  "trigger": "pull_request.opened",
+  "proof_capacity": 1,
+  "proofs_executed": 0
+}

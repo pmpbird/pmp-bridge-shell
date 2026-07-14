@@ -1,0 +1,23 @@
+{
+  "type": "PMP_P2C_FINAL_PRODUCTION_ACTIVATION_DECISION_002",
+  "overall_project_pass": "Pass 2",
+  "phase": "P2-C",
+  "decision": "HOLD_DO_NOT_ACTIVATE",
+  "decision_class": "FAIL_CLOSED_NEGATIVE_DECISION",
+  "proof_review_status": "FAIL_CLOSED",
+  "explicit_new_production_activation_authorization_present": false,
+  "production_activation_authorized": false,
+  "production_application_authorized": false,
+  "activation_lock": false,
+  "active_chain_integration": false,
+  "production_patch_applied": false,
+  "reasons": [
+    "The integrated isolated proof rerun failed required browser and live lanes.",
+    "The one-run isolated proof authorization is consumed.",
+    "No separate explicit production-activation authorization was issued."
+  ],
+  "next_required_authorizations": [
+    "A new explicit isolated-proof authorization for Repair 006.",
+    "Only after a complete successful proof: a separate explicit production-activation authorization."
+  ]
+}

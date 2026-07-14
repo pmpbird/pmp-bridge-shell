@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+set -euo pipefail
+SOURCE_COMMIT=c618596f2b5c99ca7f355153a5bd31268170df80
+AUDIT_DIR=audit/pass2/p2c-isolated-proof-rerun-002
+REPAIR_DIR=audit/pass2/p2c-isolated-proof-rerun-002/repair-continuation-003
+BUNDLE_DIR=/tmp/p2c-proof-runner-004
+BUNDLE_TAR=/tmp/p2c-proof-rerun-004.tar.gz
+BASELINE_ROOT=/tmp/p2c-proof-baseline-004
+ACTIVE_ROOT=/tmp/p2c-proof-active-004
+EVIDENCE_DIR=/tmp/p2c-proof-evidence-004
+NORMALIZED_ROOT=/tmp/p2c-repair009-normalized-004
+NODE_HOME=/tmp/p2c-node-004
+export SOURCE_COMMIT AUDIT_DIR REPAIR_DIR BUNDLE_DIR BUNDLE_TAR BASELINE_ROOT ACTIVE_ROOT EVIDENCE_DIR NORMALIZED_ROOT NODE_HOME
+cleanup(){
+  if [ -d "$ACTIVE_ROOT" ]; then
+    rm -f "$ACTIVE_ROOT/a003-live-runtime-effective.cjs" || true
+    git -C "$ACTIVE_ROOT" reset --hard "$SOURCE_COMMIT" >/dev/null 2>&1 || true
+    git -C "$ACTIVE_ROOT" clean -ffdx >/dev/null 2>&1 || true
+  fi
+}
+trap cleanup EXIT
+
+echo "=== Verify one-run authorization and audit-only scope ==="
+set -euo pipefail
+test "$EVENT_ACTION" = "opened"
+test "$RUN_ATTEMPT" = "1"
+test "$(git rev-parse HEAD)" = "$HEAD_SHA"
+git cat-file -e "$SOURCE_COMMIT^{commit}"
+git merge-base --is-ancestor "$SOURCE_COMMIT" HEAD
+test ! -e .github/workflows/pass2-p2c-isolated-proof-rerun-002.yml
+test ! -e .github/workflows/pass2-p2c-isolated-proof-rerun-003.yml
+python3 - "$BASE_SHA" <<'PY'
+import hashlib,json,pathlib,subprocess,sys
+base=sys.argv[1]
+root=pathlib.Path('audit/pass2/p2c-isolated-proof-rerun-002')
+changed=set(subprocess.check_output(['git','diff','--name-only',base,'HEAD'],text=True).splitlines())
+allowed_workflows={
+  '.github/workflows/pass2-p2c-isolated-proof-rerun-002.yml',
+  '.github/workflows/pass2-p2c-isolated-proof-rerun-003.yml',
+  '.github/workflows/pass2-p2c-isolated-proof-rerun-004.yml',
+}
+extras=sorted(p for p in changed if p not in allowed_workflows and not p.startswith('audit/pass2/p2c-isolated-proof-rerun-002/'))
+assert not extras,extras
+sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+receipt_path=root/'P2C_EXPLICIT_ISOLATED_PROOF_RERUN_AUTHORIZATION_RECEIPT_004.json'
+receipt=json.loads(receipt_path.read_text())
+directive=json.loads((root/'P2C_ISOLATED_PROOF_RERUN_EXECUTION_DIRECTIVE_004.json').read_text())
+scope=json.loads((root/'scope-lock-rerun-004.json').read_text())
+assert sha(receipt_path)=='6d5c27081c445e20dc16eb8265689b6e8a9923249cc95d5971fbfa175c27607f'
+assert receipt['authorized'] is True and receipt['status']=='AUTHORIZED_UNCONSUMED'
+assert receipt['proof_run_count_authorized']==1 and receipt['proof_run_count_executed_under_this_receipt']==0
+assert receipt['authorization_scope']=='EXACTLY_ONE_CHECKSUM_BOUND_DISPOSABLE_COPY_ISOLATED_PROOF_RERUN_ONLY'
+assert receipt['source_repository_commit']=='c618596f2b5c99ca7f355153a5bd31268170df80'
+assert receipt['repair009_controller_sha256']=='ad10e91f9f8319747d08f6f882031eae48aee7c9d7813b1a3f63ad5d0e4a72f7'
+assert receipt['async_transformer_sha256']=='c5ffb899637aa45feb64b604dca426503f99fc9a34f05a1c83a12d0cfef3d0dd'
+assert receipt['normalized_source_manifest_sha256']=='9e8bb7a9e2a695085d5fd80028bc8a2a4076865c355812044cd78fb6b0d44b76'
+assert receipt['inactive_rerun004_workflow_candidate_sha256']=='0ec8c289693b2728c5a5433f019ea24f9c66392b71f0e2f692bf3ff7ecf8c6dc'
+assert directive['authorized'] is True and directive['authorization_receipt_sha256']==sha(receipt_path)
+assert directive['proof_run_count_to_execute']==1 and directive['proof_run_count_previously_executed_under_receipt']==0
+for key in ('production_application_authorized','production_activation_authorized','current_map_change_authorized','persisted_data_change_authorized','merge_authorized','second_proof_run_authorized'):
+    assert receipt[key] is False,key
+    assert directive[key] is False,key
+    assert scope[key] is False,key
+assert scope['event']=='pull_request.opened' and scope['required_run_attempt']==1
+assert scope['workflow_dispatch_allowed'] is False
+assert scope['repair_chain']==['003','005','006','007','008','009-controller002']
+pathlib.Path('/tmp/p2c-rerun-scope-004.json').write_text(json.dumps({
+  'status':'PASS','event':'pull_request.opened','run_attempt':1,
+  'base_sha':base,'head_sha':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+  'authorization_receipt_sha256':sha(receipt_path),'changed_paths':sorted(changed),
+  'production_runtime_files_changed':False,'production_activation_authorized':False,
+  'logical_proof_authorization_count':1,'proof_runs_previously_executed':0,

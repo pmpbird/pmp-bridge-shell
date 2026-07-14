@@ -1,0 +1,28 @@
+{
+  "authorization_consumed": false,
+  "authorized": true,
+  "browser_proof_execution_authorized": false,
+  "current_map_change_authorized": false,
+  "execution_capsule": {
+    "capsule_sha256": "6032ba66eddfc3e0d48f1846b0518bd85f6bff005dcabb7b73ebfaa41ef72bb7",
+    "controller": "REPAIR009_REFRESHED_EXECUTABLE_FROZEN_PROOF_CAPSULE_CONTROLLER_007",
+    "production_commit": "98b2e293717b81289e3b372d1fff8f5832d29fd6"
+  },
+  "issued_at_utc": "2026-07-14T03:56:18.665413+00:00",
+  "merge_authorized": false,
+  "persisted_data_change_authorized": false,
+  "production_activation_authorized": false,
+  "production_application_authorized": false,
+  "proof_run_count_authorized": 1,
+  "proof_run_count_executed_under_this_receipt": 0,
+  "receipt008": {
+    "consumed": false,
+    "may_be_used_for_execution": false,
+    "status": "UNCONSUMED_SUPERSEDED_FOR_EXECUTION"
+  },
+  "second_proof_run_authorized": false,
+  "separate_execution_authorization_required": true,
+  "status": "AUTHORIZED_UNCONSUMED",
+  "type": "PMP_P2C_EXACTLY_ONE_CONTROLLER007_BROWSER_PROOF_AUTHORIZATION_RECEIPT_009",
+  "workflow_execution_authorized": false
+}

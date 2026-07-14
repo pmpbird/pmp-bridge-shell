@@ -1,0 +1,9 @@
+{
+  "type": "PMP_P2C_RERUN005_READY_MARKER",
+  "status": "READY_FOR_EXACTLY_ONE_PULL_REQUEST_OPENED_ATTEMPT",
+  "authorization_receipt": "P2C_EXPLICIT_ISOLATED_PROOF_RERUN_AUTHORIZATION_RECEIPT_005.json",
+  "workflow": ".github/workflows/pass2-p2c-isolated-proof-rerun-005.yml",
+  "production_changes_authorized": false,
+  "merge_authorized": false,
+  "second_run_authorized": false
+}

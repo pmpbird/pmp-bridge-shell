@@ -1,0 +1,6 @@
+{
+  "workflow_run_attempt_required": 1,
+  "workflow_dispatch_allowed": false,
+  "rerun_authorized": false,
+  "second_proof_run_authorized": false
+}

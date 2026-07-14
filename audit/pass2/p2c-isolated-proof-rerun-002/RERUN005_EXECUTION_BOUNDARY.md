@@ -1,0 +1,1 @@
+Rerun-005 may execute exactly once from the pull_request.opened event. It may operate only on disposable worktrees rooted at c618596f2b5c99ca7f355153a5bd31268170df80. Production application, activation, Current Map changes, persisted-data changes, merge, and any second proof run are prohibited.

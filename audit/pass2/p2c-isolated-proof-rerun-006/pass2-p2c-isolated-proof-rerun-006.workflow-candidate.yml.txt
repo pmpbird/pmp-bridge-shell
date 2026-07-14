@@ -1,0 +1,63 @@
+name: Pass 2 P2-C Isolated Proof Rerun 006 — Frozen Capsule 005
+
+on:
+  pull_request:
+    types: [opened]
+
+permissions:
+  contents: read
+
+jobs:
+  isolated-proof-rerun-006:
+    if: github.event.action == 'opened' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    env:
+      SOURCE_COMMIT: c618596f2b5c99ca7f355153a5bd31268170df80
+      AUDIT_DIR: audit/pass2/p2c-isolated-proof-rerun-006
+      REPAIR_DIR: audit/pass2/p2c-isolated-proof-rerun-006/repair-continuation-003
+      BUNDLE_DIR: /tmp/p2c-proof-runner-006
+      BUNDLE_TAR: /tmp/p2c-proof-rerun-006.tar.gz
+      BASELINE_ROOT: /tmp/p2c-proof-baseline-006
+      ACTIVE_ROOT: /tmp/p2c-proof-active-006
+      EVIDENCE_DIR: /tmp/p2c-proof-evidence-006
+      NORMALIZED_ROOT: /tmp/p2c-repair009-normalized-006
+      NODE_HOME: /tmp/p2c-node-006
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - name: Reconstruct and execute exactly one frozen proof harness
+        env:
+          EVENT_ACTION: ${{ github.event.action }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          HEAD_SHA: ${{ github.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          cd "$AUDIT_DIR"
+          cat rerun006-controller-parts/main.part*.b64 | tr -d '\r\n' | base64 -d > /tmp/rerun006-controller-main.sh
+          test "$(sha256sum /tmp/rerun006-controller-main.sh | awk '{print $1}')" = "20b35b4d8615407aaeaf922a840cfcd000130618f95cc6b5d54ad0c401db9a81"
+          cd "$GITHUB_WORKSPACE"
+          bash /tmp/rerun006-controller-main.sh
+      - name: Finalize truth and rollback boundary
+        if: always()
+        run: |
+          set -euo pipefail
+          cd "$AUDIT_DIR"
+          cat rerun006-controller-parts/finalize.part*.b64 | tr -d '\r\n' | base64 -d > /tmp/rerun006-controller-finalize.sh
+          test "$(sha256sum /tmp/rerun006-controller-finalize.sh | awk '{print $1}')" = "4a4b234ef43c00c83126cabfef893127d0bf57105bdd2bf17f54a7d790bbe53e"
+          cd "$GITHUB_WORKSPACE"
+          bash /tmp/rerun006-controller-finalize.sh
+      - name: Upload complete evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2c-isolated-proof-rerun-006-repair-009-evidence
+          path: /tmp/p2c-proof-evidence-006
