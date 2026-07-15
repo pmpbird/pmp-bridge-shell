@@ -1,0 +1,97 @@
+name: TEMP Receipt 013 A-002 Promotion Reseal
+
+on:
+  push:
+    branches: [agent/pass2-p2c-receipt013-repaired-proof]
+    paths: ['.github/workflows/TEMP_receipt013_a002_promotion_reseal.yml']
+
+permissions:
+  contents: write
+
+jobs:
+  reseal:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Bind promoted A-002 repair and run static preflight only
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,json,subprocess
+          branch='agent/pass2-p2c-receipt013-repaired-proof'
+          main=subprocess.check_output(['git','rev-parse','origin/main'],text=True).strip()
+          head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          a002=Path('audit/a002-live-runtime.cjs')
+          a002_sha=hashlib.sha256(a002.read_bytes()).hexdigest()
+          a002_blob=subprocess.check_output(['git','hash-object',str(a002)],text=True).strip()
+          assert a002_blob=='4e21df4ec490d1856502d7a51393c99ff8de8642',a002_blob
+          receipt_path=Path('audit/pass2/p2c-isolated-proof-rerun-008/P2C_REPAIRED_PROOF_AUTHORIZATION_RECEIPT_013.json')
+          r=json.loads(receipt_path.read_text())
+          r.update({
+            'status':'CONSUMED_FAILED_ATTEMPT_REPAIRED_NO_NEW_AUTHORITY',
+            'authorized':False,
+            'authorization_consumed':True,
+            'proof_run_count_executed_under_this_receipt':1,
+            'a002_repair_promoted':True,
+            'a002_repair_path':str(a002),
+            'a002_repair_git_blob_sha':a002_blob,
+            'a002_repair_sha256':a002_sha,
+            'a002_isolated_validation_tests_total':41,
+            'a002_isolated_validation_tests_passed':41,
+            'a002_isolated_validation_tests_failed':0,
+            'a002_isolated_validation_fatal_error':False,
+            'repaired_source_head_before_reseal':head,
+            'new_proof_run_authorized_by_promotion':False,
+            'proof_execution_performed_by_promotion':False
+          })
+          receipt_path.write_text(json.dumps(r,indent=2,sort_keys=True)+'\n')
+          changed=set(subprocess.check_output(['git','diff','--name-only',main,'HEAD'],text=True).splitlines())
+          allowed={'.github/workflows/pass2-p2c-isolated-proof-rerun-006.yml','audit/a002-live-runtime.cjs','.github/workflows/TEMP_receipt013_a002_promotion_reseal.yml'}
+          extras=sorted(p for p in changed if p not in allowed and not p.startswith('audit/pass2/p2c-isolated-proof-rerun-006/') and not p.startswith('audit/pass2/p2c-isolated-proof-rerun-008/'))
+          assert not extras,extras
+          assert not any('/__pycache__/' in p or p.endswith('.pyc') for p in changed)
+          forbidden=('pmp-current-map','persisted','production')
+          assert not any(any(x in p.lower() for x in forbidden) for p in changed if p!='audit/a002-live-runtime.cjs')
+          controller=Path(r['controller_path']); finalizer=Path(r['finalizer_path'])
+          assert hashlib.sha256(controller.read_bytes()).hexdigest()==r['controller_sha256']
+          assert hashlib.sha256(finalizer.read_bytes()).hexdigest()==r['finalizer_sha256']
+          preflight={
+            'type':'PMP_P2C_RECEIPT013_A002_PROMOTION_STATIC_PREFLIGHT_V1',
+            'status':'PASS',
+            'current_main_sha':main,
+            'promotion_branch':branch,
+            'promotion_head_before_reseal':head,
+            'a002_path':str(a002),
+            'a002_git_blob_sha':a002_blob,
+            'a002_sha256':a002_sha,
+            'a002_validation':'41_OF_41_PASS',
+            'controller_sha256_unchanged_and_verified':True,
+            'finalizer_sha256_unchanged_and_verified':True,
+            'changed_paths':sorted(changed),
+            'unapproved_paths':extras,
+            'proof_execution_performed':False,
+            'new_proof_run_authorized':False,
+            'production_application_authorized':False,
+            'production_activation_authorized':False,
+            'current_map_change_authorized':False,
+            'persisted_data_change_authorized':False,
+            'merge_authorized':False
+          }
+          out=Path('audit/pass2/p2c-isolated-proof-rerun-008/P2C_RECEIPT013_A002_PROMOTION_STATIC_PREFLIGHT.json')
+          out.write_text(json.dumps(preflight,indent=2,sort_keys=True)+'\n')
+          PY
+          bash -n audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-main.sh
+          bash -n audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-finalize.sh
+      - name: Commit reseal and remove temporary workflow
+        run: |
+          set -euo pipefail
+          rm .github/workflows/TEMP_receipt013_a002_promotion_reseal.yml
+          git config user.name pmpbird
+          git config user.email actions@users.noreply.github.com
+          git add audit/pass2/p2c-isolated-proof-rerun-008/P2C_REPAIRED_PROOF_AUTHORIZATION_RECEIPT_013.json audit/pass2/p2c-isolated-proof-rerun-008/P2C_RECEIPT013_A002_PROMOTION_STATIC_PREFLIGHT.json .github/workflows/TEMP_receipt013_a002_promotion_reseal.yml
+          git commit -m 'Reseal Receipt 013 after validated A-002 promotion [no-proof-run]'
+          git push origin HEAD:agent/pass2-p2c-receipt013-repaired-proof
