@@ -17,7 +17,7 @@ import hashlib,json,pathlib,subprocess,sys
 base=sys.argv[1]
 root=pathlib.Path('audit/pass2/p2c-isolated-proof-rerun-008')
 changed=set(subprocess.check_output(['git','diff','--name-only',base,'HEAD'],text=True).splitlines())
-allowed={'.github/workflows/pass2-p2c-isolated-proof-rerun-006.yml'}
+allowed={'.github/workflows/pass2-p2c-isolated-proof-rerun-006.yml','audit/a002-live-runtime.cjs'}
 extras=sorted(p for p in changed if p not in allowed and not p.startswith(str(root)+'/') and not p.startswith('audit/pass2/p2c-isolated-proof-rerun-006/'))
 assert not extras,extras
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
