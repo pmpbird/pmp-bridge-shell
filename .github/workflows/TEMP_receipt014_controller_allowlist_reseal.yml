@@ -115,3 +115,4 @@ jobs:
           git add "$CONTROLLER" "$ROOT/P2C_CONTROLLER_ALLOWLIST_REPAIR_RECEIPT_015.json" "$ROOT/RECEIPT015_CONTROLLER_ALLOWLIST_STATIC_PREFLIGHT.json"
           git commit -m 'Repair controller allowlist and seal Receipt 015 preflight'
           git push origin HEAD:agent/pass2-p2c-receipt014-final-proof
+# trigger 2
