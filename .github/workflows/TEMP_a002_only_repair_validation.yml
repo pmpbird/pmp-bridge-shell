@@ -20,36 +20,15 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
+          import re
           p=Path('audit/a002-live-runtime.cjs')
           s=p.read_text()
-          old="""async function frameReachedHome(page, expectedHash) {
+          pattern=r"async function frameReachedHome\(page, expectedHash\) \{.*?\n\}\n\nasync function runMatrix"
+          replacement="""async function frameReachedHome(page, expectedHash) {
             const deadline = Date.now() + 30000;
             let lastMismatch = null;
             while (Date.now() < deadline) {
               const urls = page.frames().map(f => f.url());
-              const homeUrls = urls.filter(u => /pmp-home-single-v6\\.html/.test(u));
-              for (const homeUrl of homeUrls) {
-                let actualHash = '';
-                try { actualHash = new URL(homeUrl).hash; } catch {}
-                const detail = { reached: true, hash_matches: actualHash === expectedHash, expected_hash: expectedHash, actual_hash: actualHash, home_url: homeUrl, urls };
-                if (detail.hash_matches) return detail;
-                lastMismatch = detail;
-              }
-              await page.waitForTimeout(400);
-            }
-            if (lastMismatch) return lastMismatch;
-            return { reached: false, hash_matches: false, expected_hash: expectedHash, actual_hash: null, home_url: null, urls: page.frames().map(f => f.url()) };
-          }"""
-          new="""async function frameReachedHome(page, expectedHash) {
-            const deadline = Date.now() + 30000;
-            let lastMismatch = null;
-            while (Date.now() < deadline) {
-              const urls = page.frames().map(f => f.url());
-
-              // The current architecture may land directly on the canonical
-              // current-app page instead of nesting the legacy home frame.
-              // Accept that landing only when the canonical controller exists
-              // and the requested hash matches; retain the legacy check below.
               const pageUrl = page.url();
               let directPathMatches = false;
               let directHash = '';
@@ -64,7 +43,6 @@ jobs:
                 if (detail.hash_matches) return detail;
                 lastMismatch = detail;
               }
-
               const homeUrls = urls.filter(u => /pmp-home-single-v6\\.html/.test(u));
               for (const homeUrl of homeUrls) {
                 let actualHash = '';
@@ -77,10 +55,15 @@ jobs:
             }
             if (lastMismatch) return lastMismatch;
             return { reached: false, hash_matches: false, expected_hash: expectedHash, actual_hash: null, home_url: null, landing_mode: null, urls: page.frames().map(f => f.url()) };
-          }"""
-          assert s.count(old)==1, s.count(old)
+          }
+
+          async function runMatrix"""
+          s,n=re.subn(pattern,replacement,s,count=1,flags=re.S)
+          assert n==1,n
+          old="{ expected_hash: home.expected_hash, actual_hash: home.actual_hash, home_url: home.home_url, frame_urls: home.urls.slice(-8) }"
+          new="{ expected_hash: home.expected_hash, actual_hash: home.actual_hash, home_url: home.home_url, landing_mode: home.landing_mode, frame_urls: home.urls.slice(-8) }"
+          assert s.count(old)==1,s.count(old)
           s=s.replace(old,new,1)
-          s=s.replace("{ expected_hash: home.expected_hash, actual_hash: home.actual_hash, home_url: home.home_url, frame_urls: home.urls.slice(-8) }", "{ expected_hash: home.expected_hash, actual_hash: home.actual_hash, home_url: home.home_url, landing_mode: home.landing_mode, frame_urls: home.urls.slice(-8) }", 1)
           p.write_text(s)
           PY
           node --check audit/a002-live-runtime.cjs
