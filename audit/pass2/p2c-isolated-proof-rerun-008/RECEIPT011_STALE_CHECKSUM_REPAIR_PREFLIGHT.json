@@ -1,0 +1,15 @@
+{
+  "actual_sha256": "efe861570ea5d8e63e197d468bee287ca179f849938973b1ed977658fb75af57",
+  "binding_parent_branch_head": "3973e7afcbb581549ad0ae7546d2d366f2a47bbb",
+  "controller_sha256": "9517c160b59a2109c574afe2e6b7944e7f8e691d2a883b8f005b5a641e772c83",
+  "current_map_changed": false,
+  "finalizer_sha256": "5b092ffc4c8b37b0ed6a1d32c67445aec96ae4af149630f32446700e5a86d1d4",
+  "merge_authorized": false,
+  "persisted_data_changed": false,
+  "production_files_changed": false,
+  "proof_execution_authorized_by_this_repair": false,
+  "proof_execution_performed": false,
+  "status": "PASS",
+  "target": "audit/pass2/p2c-isolated-proof-rerun-006/repair-continuation-003/apply_prepare_repair_003.py",
+  "type": "PMP_P2C_RECEIPT011_STALE_CHECKSUM_REPAIR_STATIC_PREFLIGHT"
+}

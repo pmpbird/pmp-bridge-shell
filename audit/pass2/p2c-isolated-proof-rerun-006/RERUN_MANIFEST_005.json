@@ -1,0 +1,23 @@
+{
+  "authorization_receipt_filename": "P2C_EXPLICIT_ISOLATED_PROOF_RERUN_AUTHORIZATION_RECEIPT_006.json",
+  "authorization_receipt_sha256": "841ba0a4f4133241b5a76588a6a661196f5c2e14b3568e0b8562a96e146765fd",
+  "browser_launch_in_preflight_authorized": false,
+  "capsule_id": "repair009-rerun006-frozen-capsule-001",
+  "current_map_change_authorized": false,
+  "directive": "006",
+  "evidence_namespace": "p2c-proof-evidence-006",
+  "merge_authorized": false,
+  "persisted_data_change_authorized": false,
+  "production_activation_authorized": false,
+  "production_application_authorized": false,
+  "proof_run_count_authorized": 1,
+  "receipt": "006",
+  "run": "006",
+  "runtime_receipt_filename": "p2c-proof-runtime-authorization-receipt-006.json",
+  "scope_lock": "006",
+  "second_proof_run_authorized": false,
+  "source_repository_commit": "c618596f2b5c99ca7f355153a5bd31268170df80",
+  "type": "PMP_REPAIR009_END_TO_END_FROZEN_PROOF_CAPSULE_MANIFEST_005",
+  "workflow_candidate_filename": "pass2-p2c-isolated-proof-rerun-006.workflow-candidate.yml.txt",
+  "workflow_filename": "pass2-p2c-isolated-proof-rerun-006.yml"
+}
