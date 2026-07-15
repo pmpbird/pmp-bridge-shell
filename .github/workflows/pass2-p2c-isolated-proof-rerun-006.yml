@@ -1,4 +1,4 @@
-name: Pass 2 P2-C Receipt 011 Repaired Isolated Proof
+name: Pass 2 P2-C Receipt 012 Repaired Isolated Proof
 
 on:
   pull_request:
@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 jobs:
-  isolated-proof-receipt011:
+  isolated-proof-receipt012:
     if: github.event.action == 'opened' && github.run_attempt == 1
     runs-on: ubuntu-24.04
     env:
@@ -16,13 +16,13 @@ jobs:
       AUDIT_DIR: audit/pass2/p2c-isolated-proof-rerun-008
       DEPS_DIR: audit/pass2/p2c-isolated-proof-rerun-006
       REPAIR_DIR: audit/pass2/p2c-isolated-proof-rerun-006/repair-continuation-003
-      BUNDLE_DIR: /tmp/p2c-proof-runner-011
-      BUNDLE_TAR: /tmp/p2c-proof-rerun-011.tar.gz
-      BASELINE_ROOT: /tmp/p2c-proof-baseline-011
-      ACTIVE_ROOT: /tmp/p2c-proof-active-011
-      EVIDENCE_DIR: /tmp/p2c-proof-evidence-011
-      NORMALIZED_ROOT: /tmp/p2c-repair011-normalized
-      NODE_HOME: /tmp/p2c-node-011
+      BUNDLE_DIR: /tmp/p2c-proof-runner-012
+      BUNDLE_TAR: /tmp/p2c-proof-rerun-012.tar.gz
+      BASELINE_ROOT: /tmp/p2c-proof-baseline-012
+      ACTIVE_ROOT: /tmp/p2c-proof-active-012
+      EVIDENCE_DIR: /tmp/p2c-proof-evidence-012
+      NORMALIZED_ROOT: /tmp/p2c-repair012-normalized
+      NODE_HOME: /tmp/p2c-node-012
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,35 +33,42 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22.16.0'
-      - name: Verify Receipt 011, repaired source binding, and run exactly once
+      - name: Verify Receipt 012 bindings and run exactly once
         env:
           EVENT_ACTION: ${{ github.event.action }}
           RUN_ATTEMPT: ${{ github.run_attempt }}
           HEAD_SHA: ${{ github.sha }}
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           RUN_ID: ${{ github.run_id }}
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import hashlib,json,pathlib,subprocess
+          import hashlib,json,pathlib,subprocess,os
           root=pathlib.Path('audit/pass2/p2c-isolated-proof-rerun-008')
-          r=json.loads((root/'P2C_REPAIRED_PROOF_AUTHORIZATION_RECEIPT_011.json').read_text())
+          r=json.loads((root/'P2C_REPAIRED_PROOF_AUTHORIZATION_RECEIPT_012.json').read_text())
           assert r['authorized'] is True and r['authorization_consumed'] is False
           assert r['status']=='AUTHORIZED_UNCONSUMED'
           assert r['proof_run_count_authorized']==1 and r['proof_run_count_executed_under_this_receipt']==0
-          assert r['repaired_source_head']=='f98bf584525fbb6ee24ae90ad60ae85ee0046a4f'
-          subprocess.run(['git','merge-base','--is-ancestor',r['repaired_source_head'],'HEAD'],check=True)
+          assert os.environ['BASE_SHA']==r['current_main_sha']==r['source_repository_commit']
+          subprocess.run(['git','merge-base','--is-ancestor',r['repaired_receipt011_parent_head'],os.environ['PR_HEAD_SHA']],check=True)
           controller=root/'rerun008-controller-main.sh'
           finalizer=root/'rerun008-controller-finalize.sh'
+          dep=pathlib.Path(r['stale_checksum_target'])
           assert subprocess.check_output(['git','hash-object',str(controller)],text=True).strip()==r['controller_git_blob_sha']
-          assert hashlib.sha256(finalizer.read_bytes()).hexdigest()==r['repaired_finalizer_sha256']
-          assert r['missing_dependency_repair_applied'] is True and r['diagnostic_repair_applied'] is True
+          assert hashlib.sha256(controller.read_bytes()).hexdigest()==r['controller_sha256']
+          assert hashlib.sha256(finalizer.read_bytes()).hexdigest()==r['finalizer_sha256']
+          assert hashlib.sha256(dep.read_bytes()).hexdigest()==r['stale_checksum_actual_sha256']
+          assert r['missing_dependency_repair_applied'] is True
+          assert r['diagnostic_repair_applied'] is True
+          assert r['stale_checksum_repair_applied'] is True
           for k in ('production_application_authorized','production_activation_authorized','current_map_change_authorized','persisted_data_change_authorized','merge_authorized','second_proof_run_authorized'):
             assert r[k] is False,k
-          changed=set(subprocess.check_output(['git','diff','--name-only',r['source_repository_commit'],'HEAD'],text=True).splitlines())
+          changed=set(subprocess.check_output(['git','diff','--name-only',r['current_main_sha'],os.environ['PR_HEAD_SHA']],text=True).splitlines())
           allowed={'.github/workflows/pass2-p2c-isolated-proof-rerun-006.yml'}
           extras=sorted(p for p in changed if p not in allowed and not p.startswith('audit/pass2/p2c-isolated-proof-rerun-006/') and not p.startswith('audit/pass2/p2c-isolated-proof-rerun-008/'))
           assert not extras,extras
+          assert not any('/__pycache__/' in p or p.endswith('.pyc') for p in changed)
           PY
           bash -n "$AUDIT_DIR/rerun008-controller-main.sh"
           bash -n "$AUDIT_DIR/rerun008-controller-finalize.sh"
@@ -69,9 +76,9 @@ jobs:
       - name: Finalize truth and rollback boundary
         if: always()
         run: bash "$AUDIT_DIR/rerun008-controller-finalize.sh"
-      - name: Upload complete Receipt 011 evidence
+      - name: Upload complete Receipt 012 evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: p2c-receipt011-repaired-proof-evidence
-          path: /tmp/p2c-proof-evidence-011
+          name: p2c-receipt012-repaired-proof-evidence
+          path: /tmp/p2c-proof-evidence-012
