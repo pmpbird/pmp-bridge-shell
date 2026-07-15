@@ -1,0 +1,33 @@
+name: TEMP A-002 Only Repair Validation
+
+on:
+  push:
+    branches: [agent/pass2-p2c-a002-single-test-repair]
+
+permissions:
+  contents: read
+
+jobs:
+  live-runtime:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - name: Install Playwright
+        run: npx playwright install --with-deps chromium
+      - name: Start repository server
+        run: |
+          python3 -m http.server 8000 > /tmp/a002-http.log 2>&1 &
+          echo $! > /tmp/a002-http.pid
+      - name: Run only A-002 live runtime matrix
+        run: node audit/a002-live-runtime.cjs
+      - name: Upload A-002 result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a002-only-repair-validation
+          path: |
+            a002-live-runtime-results.json
+            /tmp/a002-http.log
