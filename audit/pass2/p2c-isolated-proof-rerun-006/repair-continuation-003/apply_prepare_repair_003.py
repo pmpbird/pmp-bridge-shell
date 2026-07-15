@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 import argparse
+import re
 from pathlib import Path
 
 FUNCTION = r'''
@@ -29,15 +30,28 @@ def main():
  anchor="def main():\n"
  if s.count(anchor)!=1:raise SystemExit('MAIN_ANCHOR_INVALID')
  s=s.replace(anchor,FUNCTION+'\n'+anchor,1)
- old="patch_a003_prelude(activated); patch_a002_harness(activated); patch_browser_proof(scripts); patch_full_runner(scripts)"
- new="patch_a003_prelude(activated); root_receipt_exception=patch_a003_root_receipt_authority(activated); patch_a002_harness(activated); patch_browser_proof(scripts); patch_full_runner(scripts)"
- if old not in s:raise SystemExit('CALL_PATCH_POINT_MISSING')
- s=s.replace(old,new,1)
+ already="root_receipt_exception=patch_a003_root_receipt_authority(activated)"
+ if already not in s:
+  pattern=re.compile(
+   r"patch_a003_prelude\(activated\)\s*;\s*"
+   r"patch_a002_harness\(activated\)\s*;\s*"
+   r"patch_browser_proof\(scripts\)\s*;\s*"
+   r"patch_full_runner\(scripts\)"
+  )
+  matches=list(pattern.finditer(s))
+  if len(matches)!=1:raise SystemExit('CALL_PATCH_POINT_MISSING')
+  replacement=(
+   "patch_a003_prelude(activated); "
+   "root_receipt_exception=patch_a003_root_receipt_authority(activated); "
+   "patch_a002_harness(activated); patch_browser_proof(scripts); patch_full_runner(scripts)"
+  )
+  s=pattern.sub(replacement,s,count=1)
  old2="def snapshot(root:Path):"
  if old2 not in s:raise SystemExit('SNAPSHOT_POINT_MISSING')
  old3="'proof_only_prelude_repair':'PREFETCH_ALL_VERIFIED_BYTES_BEFORE_GATE_INSTALL','production_changed':False"
  new3="'proof_only_prelude_repair':'PREFETCH_ALL_VERIFIED_BYTES_BEFORE_GATE_INSTALL','a003_root_receipt_authority_exception':root_receipt_exception,'production_changed':False"
- if old3 not in s:raise SystemExit('OUTPUT_PATCH_POINT_MISSING')
- s=s.replace(old3,new3,1)
+ if new3 not in s:
+  if old3 not in s:raise SystemExit('OUTPUT_PATCH_POINT_MISSING')
+  s=s.replace(old3,new3,1)
  a.path.write_text(s)
 if __name__=='__main__':main()
