@@ -1,0 +1,15 @@
+{
+  "finalizer_bytes": 3756,
+  "finalizer_sha256": "4a4b234ef43c00c83126cabfef893127d0bf57105bdd2bf17f54a7d790bbe53e",
+  "main_bytes": 15916,
+  "main_sha256": "20b35b4d8615407aaeaf922a840cfcd000130618f95cc6b5d54ad0c401db9a81",
+  "records": [
+    {"bytes": 5307, "path": "main.part00.b64", "sha256": "7aa548fb28900d0513eaecf174464adc10832319d72a0ef8631ab3973f09340f"},
+    {"bytes": 5307, "path": "main.part01.b64", "sha256": "00b3e76c5adee817aa018028843ccacef32e6df633a42b7723296c1227efc26a"},
+    {"bytes": 5307, "path": "main.part02.b64", "sha256": "ed6447f4e5c20fb53d767f711f400edb4efa562a085207b31640085c12d2aa6b"},
+    {"bytes": 5307, "path": "main.part03.b64", "sha256": "ef39ee3875cee40d9c7f3cb084b3db16dc9122b9aac1a06270ee807bd4297d8c"},
+    {"bytes": 2505, "path": "finalize.part00.b64", "sha256": "619fb875a44b1116779c582f9e9226b245f85b78517e7a265ccc800871e8634a"},
+    {"bytes": 2505, "path": "finalize.part01.b64", "sha256": "8d0fb3a350a3fa1db44b0394331b1c9f5540efa75ecbf22bf79d56307ded23ed"}
+  ],
+  "type": "PMP_REPAIR009_RERUN006_FROZEN_CONTROLLER_PARTS_MANIFEST_005"
+}

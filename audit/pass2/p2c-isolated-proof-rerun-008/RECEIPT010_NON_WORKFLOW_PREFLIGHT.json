@@ -1,0 +1,9 @@
+{
+  "authorization_consumed": false,
+  "production_files_changed": false,
+  "proof_execution": false,
+  "source_commit": "98b2e293717b81289e3b372d1fff8f5832d29fd6",
+  "status": "PASS",
+  "type": "PMP_P2C_RECEIPT010_NON_WORKFLOW_PREFLIGHT",
+  "workflow_file_created": false
+}
