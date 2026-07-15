@@ -18,6 +18,8 @@ jobs:
           node-version: '22.16.0'
       - name: Validate A-002 syntax
         run: node --check audit/a002-live-runtime.cjs
+      - name: Install Playwright package
+        run: npm install --no-save playwright
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
       - name: Start repository server
