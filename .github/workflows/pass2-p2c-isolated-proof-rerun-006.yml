@@ -2,14 +2,14 @@ name: Pass 2 P2-C Receipt 016 Diagnostic Capture Only
 
 on:
   pull_request:
-    types: [opened]
+    types: [opened, synchronize]
 
 permissions:
   contents: read
 
 jobs:
   receipt016-diagnostic-capture:
-    if: github.event.action == 'opened' && github.run_attempt == 1
+    if: (github.event.action == 'opened' || github.event.action == 'synchronize') && github.run_attempt == 1
     runs-on: ubuntu-24.04
     env:
       SOURCE_COMMIT: 98b2e293717b81289e3b372d1fff8f5832d29fd6
@@ -47,19 +47,7 @@ jobs:
             python3 - "$EVIDENCE_DIR/receipt016-controller-diagnostic.json" "$syntax_rc" <<'PY'
           import json,pathlib,sys
           pathlib.Path(sys.argv[1]).write_text(json.dumps({
-            'type':'PMP_P2C_RECEIPT016_CONTROLLER_DIAGNOSTIC_V1',
-            'status':'FAIL',
-            'failed_line':'BASH_PARSE',
-            'failed_command':'bash -n audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-main.sh',
-            'expected_value':'exit_code=0',
-            'actual_value':'exit_code='+sys.argv[2],
-            'affected_file':'audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-main.sh',
-            'diagnostic_scope':'PRE_WORKTREE_VERIFICATION_AND_RECONSTRUCTION_ONLY',
-            'git_worktree_add_executed':False,
-            'playwright_or_chromium_install_executed':False,
-            'disposable_copy_preparation_executed':False,
-            'browser_proof_executed':False,
-            'proof_run_count_executed':0
+            'type':'PMP_P2C_RECEIPT016_CONTROLLER_DIAGNOSTIC_V1','status':'FAIL','failed_line':'BASH_PARSE','failed_command':'bash -n audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-main.sh','expected_value':'exit_code=0','actual_value':'exit_code='+sys.argv[2],'affected_file':'audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-main.sh','diagnostic_scope':'PRE_WORKTREE_VERIFICATION_AND_RECONSTRUCTION_ONLY','git_worktree_add_executed':False,'playwright_or_chromium_install_executed':False,'disposable_copy_preparation_executed':False,'browser_proof_executed':False,'proof_run_count_executed':0
           },indent=2,sort_keys=True)+'\n')
           PY
           else
@@ -69,19 +57,7 @@ jobs:
               python3 - "$EVIDENCE_DIR/receipt016-controller-diagnostic.json" "$controller_rc" <<'PY'
           import json,pathlib,sys
           pathlib.Path(sys.argv[1]).write_text(json.dumps({
-            'type':'PMP_P2C_RECEIPT016_CONTROLLER_DIAGNOSTIC_V1',
-            'status':'FAIL',
-            'failed_line':'HARNESS_CAPTURE',
-            'failed_command':'bash audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-main.sh',
-            'expected_value':'controller-generated diagnostic receipt',
-            'actual_value':'missing; exit_code='+sys.argv[2],
-            'affected_file':'audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-main.sh',
-            'diagnostic_scope':'PRE_WORKTREE_VERIFICATION_AND_RECONSTRUCTION_ONLY',
-            'git_worktree_add_executed':False,
-            'playwright_or_chromium_install_executed':False,
-            'disposable_copy_preparation_executed':False,
-            'browser_proof_executed':False,
-            'proof_run_count_executed':0
+            'type':'PMP_P2C_RECEIPT016_CONTROLLER_DIAGNOSTIC_V1','status':'FAIL','failed_line':'HARNESS_CAPTURE','failed_command':'bash audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-main.sh','expected_value':'controller-generated diagnostic receipt','actual_value':'missing; exit_code='+sys.argv[2],'affected_file':'audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-main.sh','diagnostic_scope':'PRE_WORKTREE_VERIFICATION_AND_RECONSTRUCTION_ONLY','git_worktree_add_executed':False,'playwright_or_chromium_install_executed':False,'disposable_copy_preparation_executed':False,'browser_proof_executed':False,'proof_run_count_executed':0
           },indent=2,sort_keys=True)+'\n')
           PY
             fi
