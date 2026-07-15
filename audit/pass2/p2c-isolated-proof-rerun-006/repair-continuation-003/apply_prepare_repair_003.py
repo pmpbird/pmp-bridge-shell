@@ -29,15 +29,24 @@ def main():
  anchor="def main():\n"
  if s.count(anchor)!=1:raise SystemExit('MAIN_ANCHOR_INVALID')
  s=s.replace(anchor,FUNCTION+'\n'+anchor,1)
- old="patch_a003_prelude(activated); patch_a002_harness(activated); patch_browser_proof(scripts); patch_full_runner(scripts)"
- new="patch_a003_prelude(activated); root_receipt_exception=patch_a003_root_receipt_authority(activated); patch_a002_harness(activated); patch_browser_proof(scripts); patch_full_runner(scripts)"
- if old not in s:raise SystemExit('CALL_PATCH_POINT_MISSING')
- s=s.replace(old,new,1)
+ historical_call="patch_a003_prelude(activated)"
+ current_call="(a.activated_root/'pmp-p2c-production-enforcement-prelude-candidate-001.js').write_text(REPAIRED_PRELUDE)"
+ historical_insert="root_receipt_exception=patch_a003_root_receipt_authority(activated)"
+ current_insert="root_receipt_exception=patch_a003_root_receipt_authority(a.activated_root)"
+ if historical_insert not in s and current_insert not in s:
+  historical_count=s.count(historical_call)
+  current_count=s.count(current_call)
+  if historical_count+current_count!=1:raise SystemExit('CALL_PATCH_POINT_MISSING')
+  if historical_count==1:
+   s=s.replace(historical_call,historical_call+'; '+historical_insert,1)
+  else:
+   s=s.replace(current_call,current_call+'\n '+current_insert,1)
  old2="def snapshot(root:Path):"
  if old2 not in s:raise SystemExit('SNAPSHOT_POINT_MISSING')
  old3="'proof_only_prelude_repair':'PREFETCH_ALL_VERIFIED_BYTES_BEFORE_GATE_INSTALL','production_changed':False"
  new3="'proof_only_prelude_repair':'PREFETCH_ALL_VERIFIED_BYTES_BEFORE_GATE_INSTALL','a003_root_receipt_authority_exception':root_receipt_exception,'production_changed':False"
- if old3 not in s:raise SystemExit('OUTPUT_PATCH_POINT_MISSING')
- s=s.replace(old3,new3,1)
+ if new3 not in s:
+  if old3 not in s:raise SystemExit('OUTPUT_PATCH_POINT_MISSING')
+  s=s.replace(old3,new3,1)
  a.path.write_text(s)
 if __name__=='__main__':main()
