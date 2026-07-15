@@ -1,0 +1,54 @@
+name: Pass 2 P2-C Receipt 016 Diagnostic Only
+
+on:
+  pull_request:
+    types: [opened]
+
+permissions:
+  contents: read
+
+jobs:
+  receipt016-diagnostic-only:
+    if: github.event.action == 'opened' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    env:
+      SOURCE_COMMIT: 98b2e293717b81289e3b372d1fff8f5832d29fd6
+      AUDIT_DIR: audit/pass2/p2c-isolated-proof-rerun-008
+      DEPS_DIR: audit/pass2/p2c-isolated-proof-rerun-006
+      REPAIR_DIR: audit/pass2/p2c-isolated-proof-rerun-006/repair-continuation-003
+      BUNDLE_DIR: /tmp/p2c-diagnostic-runner-016
+      BUNDLE_TAR: /tmp/p2c-diagnostic-rerun-016.tar.gz
+      BASELINE_ROOT: /tmp/forbidden-not-created-baseline-016
+      ACTIVE_ROOT: /tmp/forbidden-not-created-active-016
+      EVIDENCE_DIR: /tmp/p2c-diagnostic-evidence-016
+      NORMALIZED_ROOT: /tmp/p2c-diagnostic-normalized-016
+      NODE_HOME: /tmp/forbidden-not-created-node-016
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run Receipt 016 pre-worktree diagnostic only
+        env:
+          EVENT_ACTION: ${{ github.event.action }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          HEAD_SHA: ${{ github.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          bash -n "$AUDIT_DIR/rerun008-controller-main.sh"
+          bash "$AUDIT_DIR/rerun008-controller-main.sh"
+          test ! -e "$BASELINE_ROOT"
+          test ! -e "$ACTIVE_ROOT"
+          test ! -e "$NODE_HOME"
+          test ! -e "$EVIDENCE_DIR/proof-run-started.lock"
+      - name: Upload Receipt 016 diagnostic receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2c-receipt016-controller-diagnostic
+          path: /tmp/p2c-diagnostic-evidence-016
