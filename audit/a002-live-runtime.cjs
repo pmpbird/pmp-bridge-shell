@@ -87,18 +87,37 @@ async function frameReachedHome(page, expectedHash) {
   let lastMismatch = null;
   while (Date.now() < deadline) {
     const urls = page.frames().map(f => f.url());
+
+    // Current runtime can land directly on the canonical current-app page.
+    // Accept that only when the canonical controller exists and the requested
+    // hash matches. Keep the legacy nested-home-frame path as a second check.
+    const pageUrl = page.url();
+    let directPathMatches = false;
+    let directHash = '';
+    try {
+      const parsed = new URL(pageUrl);
+      directPathMatches = parsed.pathname.endsWith('/' + CURRENT);
+      directHash = parsed.hash;
+    } catch {}
+    const canonicalReady = await page.evaluate(() => !!(window.PMPReloadCurrentCanonicalV1 && typeof window.PMPReloadCurrentCanonicalV1.reload === 'function')).catch(() => false);
+    if (directPathMatches && canonicalReady) {
+      const detail = { reached: true, hash_matches: directHash === expectedHash, expected_hash: expectedHash, actual_hash: directHash, home_url: pageUrl, landing_mode: 'canonical-current-app', urls };
+      if (detail.hash_matches) return detail;
+      lastMismatch = detail;
+    }
+
     const homeUrls = urls.filter(u => /pmp-home-single-v6\.html/.test(u));
     for (const homeUrl of homeUrls) {
       let actualHash = '';
       try { actualHash = new URL(homeUrl).hash; } catch {}
-      const detail = { reached: true, hash_matches: actualHash === expectedHash, expected_hash: expectedHash, actual_hash: actualHash, home_url: homeUrl, urls };
+      const detail = { reached: true, hash_matches: actualHash === expectedHash, expected_hash: expectedHash, actual_hash: actualHash, home_url: homeUrl, landing_mode: 'legacy-home-frame', urls };
       if (detail.hash_matches) return detail;
       lastMismatch = detail;
     }
     await page.waitForTimeout(400);
   }
   if (lastMismatch) return lastMismatch;
-  return { reached: false, hash_matches: false, expected_hash: expectedHash, actual_hash: null, home_url: null, urls: page.frames().map(f => f.url()) };
+  return { reached: false, hash_matches: false, expected_hash: expectedHash, actual_hash: null, home_url: null, landing_mode: null, urls: page.frames().map(f => f.url()) };
 }
 
 async function runMatrix(page) {
@@ -139,7 +158,7 @@ async function runMatrix(page) {
     }
     await waitForCanonical(page);
     const home = await frameReachedHome(page, expectedHash);
-    record(`current-chain-home:${screen}`, home.reached && home.hash_matches, { expected_hash: home.expected_hash, actual_hash: home.actual_hash, home_url: home.home_url, frame_urls: home.urls.slice(-8) });
+    record(`current-chain-home:${screen}`, home.reached && home.hash_matches, { expected_hash: home.expected_hash, actual_hash: home.actual_hash, home_url: home.home_url, landing_mode: home.landing_mode, frame_urls: home.urls.slice(-8) });
 
     await page.evaluate(async s => {
       await window.PMPReloadCurrentCanonicalV1.reload(null, { source: 'a002-a003-compatible-live', page: '#' + s, pressed_text: 'Reload Current' });
