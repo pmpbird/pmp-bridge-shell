@@ -1,0 +1,32 @@
+{
+  "audit_prefix": "audit/pass2/p2c-isolated-proof-rerun-008/",
+  "current_map_change_authorized": false,
+  "directive": "008",
+  "event": "pull_request.opened",
+  "immutable_dependency_prefix": "audit/pass2/p2c-isolated-proof-rerun-006/",
+  "merge_authorized": false,
+  "persisted_data_change_authorized": false,
+  "production_activation_authorized": false,
+  "production_application_authorized": false,
+  "receipt": "008",
+  "repair_chain": [
+    "003",
+    "005",
+    "006",
+    "007",
+    "008",
+    "009-controller002",
+    "transport-controller003",
+    "harness-controller004",
+    "capsule-controller005",
+    "refresh-controller006",
+    "executable-capsule-controller007"
+  ],
+  "required_run_attempt": 1,
+  "run": "008",
+  "second_proof_run_authorized": false,
+  "source_repository_commit": "98b2e293717b81289e3b372d1fff8f5832d29fd6",
+  "type": "PMP_P2C_RERUN008_SCOPE_LOCK",
+  "workflow_dispatch_allowed": false,
+  "workflow_filename": "pass2-p2c-isolated-proof-rerun-008.yml"
+}

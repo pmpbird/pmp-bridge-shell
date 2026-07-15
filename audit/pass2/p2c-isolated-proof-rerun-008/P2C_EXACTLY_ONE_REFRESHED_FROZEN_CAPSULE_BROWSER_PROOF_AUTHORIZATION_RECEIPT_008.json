@@ -1,0 +1,55 @@
+{
+  "authorization_consumed": false,
+  "authorization_scope": "EXACTLY_ONE_FUTURE_CHECKSUM_BOUND_DISPOSABLE_COPY_ISOLATED_BROWSER_PROOF_USING_REFRESHED_FROZEN_CAPSULE_CONTROLLER006_ONLY",
+  "authorized": true,
+  "browser_proof_execution_authorized": false,
+  "current_map_change_authorized": false,
+  "issuance_only_boundary": {
+    "browser_proof_executed": false,
+    "current_map_changed": false,
+    "merge_performed": false,
+    "persisted_data_changed": false,
+    "production_changed": false,
+    "workflow_executed": false
+  },
+  "issued_at_utc": "2026-07-14T03:17:39.447741+00:00",
+  "merge_authorized": false,
+  "next_required_authorization": "Explicitly authorize execution of exactly one checksum-bound disposable-copy isolated browser proof using Authorization Receipt 008 and the refreshed frozen capsule.",
+  "persisted_data_change_authorized": false,
+  "production_activation_authorized": false,
+  "production_application_authorized": false,
+  "proof_run_count_authorized": 1,
+  "proof_run_count_executed_under_this_receipt": 0,
+  "receipt007": {
+    "consumed": false,
+    "may_be_used_for_execution": false,
+    "status": "UNCONSUMED_SUPERSEDED_FOR_EXECUTION"
+  },
+  "refreshed_frozen_capsule": {
+    "capsule_id": "repair009-rerun006-refreshed-capsule-002",
+    "controller": "PASS2_MOVE1_CURRENT_PRODUCTION_BOUNDARY_REFRESH_CONTROLLER_006",
+    "filename": "PMP_REPAIR009_REFRESHED_FROZEN_PROOF_CAPSULE_CONTROLLER006.zip",
+    "finalizer_sha256": "4a4b234ef43c00c83126cabfef893127d0bf57105bdd2bf17f54a7d790bbe53e",
+    "main_script_sha256": "20b35b4d8615407aaeaf922a840cfcd000130618f95cc6b5d54ad0c401db9a81",
+    "manifest_sha256": "028506e6bd4d14327a7a2b4e1e08a46098ba61a31b2147ce3c1ef7ce6c439d10",
+    "protected_paths": [
+      "audit/a003-manifest-seal.json",
+      "pmp-app-current.html",
+      "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html",
+      "pmp-pass75-reload-runtime-platform-gate-v1.js",
+      "pmp-runtime-integrity-manifest-v1.json"
+    ],
+    "refreshed_manifest_filename": "REFRESHED_RERUN_MANIFEST_006.json",
+    "refreshed_manifest_sha256": "a82ef60340f854fc553c79957905ee1cd14cf8adf86680e7345cea64439eb86e",
+    "repair009_logic_preserved_byte_for_byte": true,
+    "sha256": "963472dfe9590bd21d060af802e8baa6d870ae2bb1a8cc5d1bd7fa0e2fa55060",
+    "source_repository_commit": "98b2e293717b81289e3b372d1fff8f5832d29fd6",
+    "workflow_candidate_filename": "pass2-p2c-isolated-proof-rerun-006.workflow-candidate.yml.txt",
+    "workflow_candidate_sha256": "f37ad4ba1351818f6187a9733cb3a6ed9ae753fd4aab5578e7dfe9960e2eb48d"
+  },
+  "second_proof_run_authorized": false,
+  "separate_execution_authorization_required": true,
+  "status": "AUTHORIZED_UNCONSUMED",
+  "type": "PMP_P2C_EXACTLY_ONE_REFRESHED_FROZEN_CAPSULE_BROWSER_PROOF_AUTHORIZATION_RECEIPT_008",
+  "workflow_execution_authorized": false
+}
