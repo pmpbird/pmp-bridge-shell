@@ -1,0 +1,109 @@
+name: TEMP A-002 Only Repair Validation
+
+on:
+  push:
+    branches: [agent/pass2-p2c-a002-single-test-repair]
+    paths: ['.github/workflows/TEMP_a002_only_repair_validation.yml']
+
+permissions:
+  contents: write
+
+jobs:
+  live-runtime:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - name: Patch only current-app landing detector
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('audit/a002-live-runtime.cjs')
+          s=p.read_text()
+          old="""async function frameReachedHome(page, expectedHash) {
+            const deadline = Date.now() + 30000;
+            let lastMismatch = null;
+            while (Date.now() < deadline) {
+              const urls = page.frames().map(f => f.url());
+              const homeUrls = urls.filter(u => /pmp-home-single-v6\\.html/.test(u));
+              for (const homeUrl of homeUrls) {
+                let actualHash = '';
+                try { actualHash = new URL(homeUrl).hash; } catch {}
+                const detail = { reached: true, hash_matches: actualHash === expectedHash, expected_hash: expectedHash, actual_hash: actualHash, home_url: homeUrl, urls };
+                if (detail.hash_matches) return detail;
+                lastMismatch = detail;
+              }
+              await page.waitForTimeout(400);
+            }
+            if (lastMismatch) return lastMismatch;
+            return { reached: false, hash_matches: false, expected_hash: expectedHash, actual_hash: null, home_url: null, urls: page.frames().map(f => f.url()) };
+          }"""
+          new="""async function frameReachedHome(page, expectedHash) {
+            const deadline = Date.now() + 30000;
+            let lastMismatch = null;
+            while (Date.now() < deadline) {
+              const urls = page.frames().map(f => f.url());
+
+              // The current architecture may land directly on the canonical
+              // current-app page instead of nesting the legacy home frame.
+              // Accept that landing only when the canonical controller exists
+              // and the requested hash matches; retain the legacy check below.
+              const pageUrl = page.url();
+              let directPathMatches = false;
+              let directHash = '';
+              try {
+                const parsed = new URL(pageUrl);
+                directPathMatches = parsed.pathname.endsWith('/' + CURRENT);
+                directHash = parsed.hash;
+              } catch {}
+              const canonicalReady = await page.evaluate(() => !!(window.PMPReloadCurrentCanonicalV1 && typeof window.PMPReloadCurrentCanonicalV1.reload === 'function')).catch(() => false);
+              if (directPathMatches && canonicalReady) {
+                const detail = { reached: true, hash_matches: directHash === expectedHash, expected_hash: expectedHash, actual_hash: directHash, home_url: pageUrl, landing_mode: 'canonical-current-app', urls };
+                if (detail.hash_matches) return detail;
+                lastMismatch = detail;
+              }
+
+              const homeUrls = urls.filter(u => /pmp-home-single-v6\\.html/.test(u));
+              for (const homeUrl of homeUrls) {
+                let actualHash = '';
+                try { actualHash = new URL(homeUrl).hash; } catch {}
+                const detail = { reached: true, hash_matches: actualHash === expectedHash, expected_hash: expectedHash, actual_hash: actualHash, home_url: homeUrl, landing_mode: 'legacy-home-frame', urls };
+                if (detail.hash_matches) return detail;
+                lastMismatch = detail;
+              }
+              await page.waitForTimeout(400);
+            }
+            if (lastMismatch) return lastMismatch;
+            return { reached: false, hash_matches: false, expected_hash: expectedHash, actual_hash: null, home_url: null, landing_mode: null, urls: page.frames().map(f => f.url()) };
+          }"""
+          assert s.count(old)==1, s.count(old)
+          s=s.replace(old,new,1)
+          s=s.replace("{ expected_hash: home.expected_hash, actual_hash: home.actual_hash, home_url: home.home_url, frame_urls: home.urls.slice(-8) }", "{ expected_hash: home.expected_hash, actual_hash: home.actual_hash, home_url: home.home_url, landing_mode: home.landing_mode, frame_urls: home.urls.slice(-8) }", 1)
+          p.write_text(s)
+          PY
+          node --check audit/a002-live-runtime.cjs
+      - name: Install Playwright
+        run: npx playwright install --with-deps chromium
+      - name: Start repository server
+        run: |
+          python3 -m http.server 8000 > /tmp/a002-http.log 2>&1 &
+          echo $! > /tmp/a002-http.pid
+      - name: Run only A-002 live runtime matrix
+        run: node audit/a002-live-runtime.cjs
+      - name: Commit only passing A-002 repair
+        run: |
+          git config user.name pmpbird
+          git config user.email actions@users.noreply.github.com
+          git add audit/a002-live-runtime.cjs
+          git commit -m 'Repair A-002 canonical current-app landing test'
+          git push origin HEAD:agent/pass2-p2c-a002-single-test-repair
+      - name: Upload A-002 result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a002-only-repair-validation
+          path: |
+            a002-live-runtime-results.json
+            /tmp/a002-http.log
