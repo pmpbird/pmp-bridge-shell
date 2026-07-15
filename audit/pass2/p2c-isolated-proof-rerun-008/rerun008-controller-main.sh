@@ -55,7 +55,7 @@ cat "$DEPS_DIR/bundle/part00.b64" "$DEPS_DIR/bundle/part01.b64" "$DEPS_DIR/bundl
 cat "$DEPS_DIR/bundle/part04_0.bin" "$DEPS_DIR/bundle/part04_1.bin" "$DEPS_DIR/bundle/part04_2.bin" "$DEPS_DIR/bundle/part05_0.bin" "$DEPS_DIR/bundle/part05_1.bin" "$DEPS_DIR/bundle/part06_0.bin" "$DEPS_DIR/bundle/part06_1.bin" /tmp/p2c-part06-2.bin >> "$BUNDLE_TAR"
 test "$(wc -c < "$BUNDLE_TAR")" = "61478"
 test "$(sha256sum "$BUNDLE_TAR" | awk '{print $1}')" = "a644ad9ea538117f8aa6b01ac6988ac8d938a64fb170fa2a8f071afebc77e500"
-test "$(sha256sum "$DEPS_DIR/repair-continuation-003/apply_prepare_repair_003.py" | awk '{print $1}')" = "7461136b03dec90dc559532874843585d545fef1972e44fda2902ca1cdf7ed10"
+test "$(sha256sum "$DEPS_DIR/repair-continuation-003/apply_prepare_repair_003.py" | awk '{print $1}')" = "efe861570ea5d8e63e197d468bee287ca179f849938973b1ed977658fb75af57"
 test "$(sha256sum "$DEPS_DIR/repair_runner_003.py" | awk '{print $1}')" = "ebb6f7c0b1b5d41eb795e48706cbfd00a66117653e03a8bce7248a5f63b5c1ca"
 test "$(sha256sum "$DEPS_DIR/repair_runner_005.py" | awk '{print $1}')" = "c7d327f8e7133fd1d6a2e2c0958d29f33844898ebba468d2266e78464982e6a8"
 test "$(sha256sum "$DEPS_DIR/repair_runner_006.py" | awk '{print $1}')" = "f88802507841710193dcecb3abd62934488fef5ce1e347f4689bd2d5aa9cb30f"
