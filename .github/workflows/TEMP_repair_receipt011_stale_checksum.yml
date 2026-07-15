@@ -28,7 +28,82 @@ jobs:
           OLD=7461136b03dec90dc559532874843585d545fef1972e44fda2902ca1cdf7ed10
           ACTUAL=$(sha256sum "$TARGET" | awk '{print $1}')
           test "$ACTUAL" = efe861570ea5d8e63e197d468bee287ca179f849938973b1ed977658fb75af57
-          python3 - "$CTRL" "$RECEIPT" "$PREFLIGHT" "$TARGET" "$OLD" "$ACTUAL" "$GITHUB_SHA" <<'PY'
-          import hashlib,json,pathlib,subprocess,sys
-          ctrl,receipt,preflight,target,old,actual,parent_head=map(pathlib.Path,sys.argv[1:5])+tuple(sys.argv[5:])
+          python3 - "$CTRL" "$FINAL" "$RECEIPT" "$PREFLIGHT" "$TARGET" "$OLD" "$ACTUAL" "$GITHUB_SHA" <<'PY'
+          import hashlib,json,pathlib,sys
+          ctrl=pathlib.Path(sys.argv[1]); final=pathlib.Path(sys.argv[2])
+          receipt=pathlib.Path(sys.argv[3]); preflight=pathlib.Path(sys.argv[4])
+          target=pathlib.Path(sys.argv[5]); old=sys.argv[6]; actual=sys.argv[7]; parent_head=sys.argv[8]
+          text=ctrl.read_text()
+          assert text.count(old)==1, text.count(old)
+          text=text.replace(old,actual,1)
+          ctrl.write_text(text)
+          ctrl_sha=hashlib.sha256(ctrl.read_bytes()).hexdigest()
+          final_sha=hashlib.sha256(final.read_bytes()).hexdigest()
+          target_sha=hashlib.sha256(target.read_bytes()).hexdigest()
+          assert target_sha==actual
+          data=json.loads(receipt.read_text())
+          data.update({
+            'authorization_consumed':False,
+            'proof_run_count_executed_under_this_receipt':0,
+            'additional_proof_run_authorized':False,
+            'second_proof_run_authorized':False,
+            'stale_checksum_repair_authorized':True,
+            'stale_checksum_repair_only':True,
+            'stale_checksum_target':str(target),
+            'stale_checksum_previous_expected_sha256':old,
+            'stale_checksum_actual_sha256':actual,
+            'repaired_controller_sha256':ctrl_sha,
+            'repaired_finalizer_sha256':final_sha,
+            'binding_parent_branch_head':parent_head,
+            'proof_execution_authorized_by_this_repair':False,
+            'merge_authorized':False,
+            'production_application_authorized':False,
+            'production_activation_authorized':False,
+            'current_map_change_authorized':False,
+            'persisted_data_change_authorized':False,
+          })
+          receipt.write_text(json.dumps(data,indent=2,sort_keys=True)+'\n')
+          report={
+            'type':'PMP_P2C_RECEIPT011_STALE_CHECKSUM_REPAIR_STATIC_PREFLIGHT',
+            'status':'PASS',
+            'target':str(target),
+            'actual_sha256':actual,
+            'controller_sha256':ctrl_sha,
+            'finalizer_sha256':final_sha,
+            'binding_parent_branch_head':parent_head,
+            'proof_execution_performed':False,
+            'proof_execution_authorized_by_this_repair':False,
+            'production_files_changed':False,
+            'current_map_changed':False,
+            'persisted_data_changed':False,
+            'merge_authorized':False,
+          }
+          preflight.write_text(json.dumps(report,indent=2,sort_keys=True)+'\n')
           PY
+          bash -n "$CTRL"
+          bash -n "$FINAL"
+          test "$(sha256sum "$TARGET" | awk '{print $1}')" = "$ACTUAL"
+          grep -Fq "$ACTUAL" "$CTRL"
+          test "$(grep -Fc "$OLD" "$CTRL")" = 0
+          python3 - "$RECEIPT" "$PREFLIGHT" "$CTRL" "$FINAL" "$TARGET" <<'PY'
+          import hashlib,json,pathlib,sys
+          receipt,preflight,ctrl,final,target=map(pathlib.Path,sys.argv[1:])
+          r=json.loads(receipt.read_text()); p=json.loads(preflight.read_text())
+          sha=lambda x:hashlib.sha256(x.read_bytes()).hexdigest()
+          assert p['status']=='PASS' and p['proof_execution_performed'] is False
+          assert r['authorization_consumed'] is False
+          assert r['proof_run_count_executed_under_this_receipt']==0
+          assert r['proof_execution_authorized_by_this_repair'] is False
+          assert r['second_proof_run_authorized'] is False
+          assert r['repaired_controller_sha256']==sha(ctrl)
+          assert r['repaired_finalizer_sha256']==sha(final)
+          assert r['stale_checksum_actual_sha256']==sha(target)
+          for k in ('merge_authorized','production_application_authorized','production_activation_authorized','current_map_change_authorized','persisted_data_change_authorized'):
+              assert r[k] is False,k
+          PY
+          git diff --exit-code -- . ':!audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-main.sh' ':!audit/pass2/p2c-isolated-proof-rerun-008/P2C_REPAIRED_PROOF_AUTHORIZATION_RECEIPT_011.json' ':!audit/pass2/p2c-isolated-proof-rerun-008/RECEIPT011_STALE_CHECKSUM_REPAIR_PREFLIGHT.json' ':!.github/workflows/TEMP_repair_receipt011_stale_checksum.yml'
+          git config user.name pmpbird
+          git config user.email pmpbird@gmail.com
+          git add "$CTRL" "$RECEIPT" "$PREFLIGHT"
+          git commit -m 'Repair Receipt 011 stale checksum binding and static preflight [no-proof-run]'
+          git push origin HEAD:agent/pass2-p2c-receipt011-repaired-proof
