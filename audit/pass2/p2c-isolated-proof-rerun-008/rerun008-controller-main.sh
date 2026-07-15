@@ -87,7 +87,7 @@ bundle_dir.mkdir(parents=True); normalized.mkdir(parents=True)
 checks=[
 (52,deps/'bundle/part06_0.bin','13435f1fcf4aa33c2df7d719944bc986fea8ebe45b7568766a3e086a56fa94ae'),
 (53,deps/'bundle/part06_1.bin','917bc7936f8d9e5cbefbccbc7c4ff75f97156fada545d26c82e8f149c3feb7f8'),
-(60,deps/'repair-continuation-003/apply_prepare_repair_003.py','efe861570ea5d8e63e197d468bee287ca179f849938973b1ed977658fb75af57'),
+(60,deps/'repair-continuation-003/apply_prepare_repair_003.py','5c73cba231bb4c8d906fcc2ba43c659d4b10645ff9ec42bc445cee2c1c6073c5'),
 (61,deps/'repair_runner_003.py','ebb6f7c0b1b5d41eb795e48706cbfd00a66117653e03a8bce7248a5f63b5c1ca'),
 (62,deps/'repair_runner_005.py','c7d327f8e7133fd1d6a2e2c0958d29f33844898ebba468d2266e78464982e6a8'),
 (63,deps/'repair_runner_006.py','f88802507841710193dcecb3abd62934488fef5ce1e347f4689bd2d5aa9cb30f'),
