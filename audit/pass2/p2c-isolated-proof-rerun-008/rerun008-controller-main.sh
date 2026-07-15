@@ -66,7 +66,7 @@ test "$(sha256sum "$DEPS_DIR/repair009_transport_fidelity_controller003.py" | aw
 test "$(sha256sum "$DEPS_DIR/transpile_async_sources.part00.b64" | awk '{print $1}')" = "c2febd1a52ac905aab8af36d6995694eaf4719f886fe228860c44e827e268be3"
 test "$(sha256sum "$DEPS_DIR/transpile_async_sources.part01.b64" | awk '{print $1}')" = "07b68e774f7d8534a70ba1e0fdafbb6b1df109482462e86cb343c4ad4ac786a1"
 test "$(sha256sum "$DEPS_DIR/transpile_async_sources.part02.b64" | awk '{print $1}')" = "9f0be30991386eb2e75d03525cd18f54a16d2b682b4ae73d23c0de15ff90ffde"
-test "$(sha256sum "$DEPS_DIR/repair009-normalized-source-manifest-002.json" | awk '{print $1}')" = "9e8bb7a9e2a695085d5fd80028bc8a2a4076865c355812044cd78fb6b0d44b76"
+test "$(sha256sum "$DEPS_DIR/repair009-normalized-source-manifest-002.json" | awk '{print $1}')" = "72d664d3ddf1890da802a5b7e00138a487682fde9859ef1c036f05c69e840619"
 test -s "$AUDIT_DIR/pass2-p2c-isolated-proof-rerun-008.workflow-candidate.yml.txt"
 rm -rf /tmp/p2c-transformer-transport-006; mkdir -p /tmp/p2c-transformer-transport-006
 cp "$DEPS_DIR"/transpile_async_sources.part*.b64 /tmp/p2c-transformer-transport-006/
