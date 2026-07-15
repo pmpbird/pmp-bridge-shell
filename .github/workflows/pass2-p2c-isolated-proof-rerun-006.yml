@@ -1,4 +1,4 @@
-name: Pass 2 P2-C Receipt 016 Diagnostic Only
+name: Pass 2 P2-C Receipt 016 Diagnostic Capture Only
 
 on:
   pull_request:
@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 jobs:
-  receipt016-diagnostic-only:
+  receipt016-diagnostic-capture:
     if: github.event.action == 'opened' && github.run_attempt == 1
     runs-on: ubuntu-24.04
     env:
@@ -30,7 +30,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Run Receipt 016 pre-worktree diagnostic only
+      - name: Capture Receipt 016 pre-worktree diagnostic
         env:
           EVENT_ACTION: ${{ github.event.action }}
           RUN_ATTEMPT: ${{ github.run_attempt }}
@@ -39,16 +39,66 @@ jobs:
           PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           RUN_ID: ${{ github.run_id }}
         run: |
-          set -euo pipefail
-          bash -n "$AUDIT_DIR/rerun008-controller-main.sh"
-          bash "$AUDIT_DIR/rerun008-controller-main.sh"
+          set -uo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          bash -n "$AUDIT_DIR/rerun008-controller-main.sh" >"$EVIDENCE_DIR/bash-n.stdout.log" 2>"$EVIDENCE_DIR/bash-n.stderr.log"
+          syntax_rc=$?
+          if [ "$syntax_rc" -ne 0 ]; then
+            python3 - "$EVIDENCE_DIR/receipt016-controller-diagnostic.json" "$syntax_rc" <<'PY'
+          import json,pathlib,sys
+          pathlib.Path(sys.argv[1]).write_text(json.dumps({
+            'type':'PMP_P2C_RECEIPT016_CONTROLLER_DIAGNOSTIC_V1',
+            'status':'FAIL',
+            'failed_line':'BASH_PARSE',
+            'failed_command':'bash -n audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-main.sh',
+            'expected_value':'exit_code=0',
+            'actual_value':'exit_code='+sys.argv[2],
+            'affected_file':'audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-main.sh',
+            'diagnostic_scope':'PRE_WORKTREE_VERIFICATION_AND_RECONSTRUCTION_ONLY',
+            'git_worktree_add_executed':False,
+            'playwright_or_chromium_install_executed':False,
+            'disposable_copy_preparation_executed':False,
+            'browser_proof_executed':False,
+            'proof_run_count_executed':0
+          },indent=2,sort_keys=True)+'\n')
+          PY
+          else
+            bash "$AUDIT_DIR/rerun008-controller-main.sh" >"$EVIDENCE_DIR/controller.stdout.log" 2>"$EVIDENCE_DIR/controller.stderr.log"
+            controller_rc=$?
+            if [ ! -f "$EVIDENCE_DIR/receipt016-controller-diagnostic.json" ]; then
+              python3 - "$EVIDENCE_DIR/receipt016-controller-diagnostic.json" "$controller_rc" <<'PY'
+          import json,pathlib,sys
+          pathlib.Path(sys.argv[1]).write_text(json.dumps({
+            'type':'PMP_P2C_RECEIPT016_CONTROLLER_DIAGNOSTIC_V1',
+            'status':'FAIL',
+            'failed_line':'HARNESS_CAPTURE',
+            'failed_command':'bash audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-main.sh',
+            'expected_value':'controller-generated diagnostic receipt',
+            'actual_value':'missing; exit_code='+sys.argv[2],
+            'affected_file':'audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-main.sh',
+            'diagnostic_scope':'PRE_WORKTREE_VERIFICATION_AND_RECONSTRUCTION_ONLY',
+            'git_worktree_add_executed':False,
+            'playwright_or_chromium_install_executed':False,
+            'disposable_copy_preparation_executed':False,
+            'browser_proof_executed':False,
+            'proof_run_count_executed':0
+          },indent=2,sort_keys=True)+'\n')
+          PY
+            fi
+          fi
           test ! -e "$BASELINE_ROOT"
           test ! -e "$ACTIVE_ROOT"
           test ! -e "$NODE_HOME"
           test ! -e "$EVIDENCE_DIR/proof-run-started.lock"
-      - name: Upload Receipt 016 diagnostic receipt
+          echo '=== DIAGNOSTIC RECEIPT ==='
+          cat "$EVIDENCE_DIR/receipt016-controller-diagnostic.json"
+          echo '=== CONTROLLER STDERR ==='
+          cat "$EVIDENCE_DIR/controller.stderr.log" 2>/dev/null || true
+          exit 0
+      - name: Upload Receipt 016 diagnostic capture
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: p2c-receipt016-controller-diagnostic
+          name: p2c-receipt016-controller-diagnostic-capture
           path: /tmp/p2c-diagnostic-evidence-016
+          if-no-files-found: error
