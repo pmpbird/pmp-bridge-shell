@@ -6,7 +6,7 @@ on:
     paths: ['.github/workflows/TEMP_a002_only_repair_validation.yml']
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   live-runtime:
@@ -26,6 +26,35 @@ jobs:
           echo $! > /tmp/a002-http.pid
       - name: Run only A-002 live runtime matrix
         run: node audit/a002-live-runtime.cjs
+      - name: Commit passing A-002-only validation receipt
+        run: |
+          python3 - <<'PY'
+          import json, pathlib
+          result=json.loads(pathlib.Path('a002-live-runtime-results.json').read_text())
+          assert result['tests_failed']==0
+          assert result['fatal_error'] is None
+          out={
+            'type':'PMP_P2C_A002_SINGLE_TEST_REPAIR_VALIDATION',
+            'status':'PASS',
+            'tests_total':result['tests_total'],
+            'tests_passed':result['tests_passed'],
+            'tests_failed':result['tests_failed'],
+            'fatal_error':result['fatal_error'],
+            'repair_branch':'agent/pass2-p2c-a002-single-test-repair',
+            'isolated_proof_executed':False,
+            'production_changed':False,
+            'current_map_changed':False,
+            'persisted_data_changed':False,
+            'merge_authorized':False
+          }
+          p=pathlib.Path('audit/pass2/p2c-isolated-proof-rerun-008/A002_SINGLE_TEST_REPAIR_VALIDATION.json')
+          p.write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          PY
+          git config user.name pmpbird
+          git config user.email actions@users.noreply.github.com
+          git add audit/pass2/p2c-isolated-proof-rerun-008/A002_SINGLE_TEST_REPAIR_VALIDATION.json
+          git commit -m 'Record passing A-002-only repair validation'
+          git push origin HEAD:agent/pass2-p2c-a002-single-test-repair
       - name: Upload A-002 result
         if: always()
         uses: actions/upload-artifact@v4
