@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 import argparse
-import re
 from pathlib import Path
 
 FUNCTION = r'''
@@ -32,20 +31,9 @@ def main():
  s=s.replace(anchor,FUNCTION+'\n'+anchor,1)
  already="root_receipt_exception=patch_a003_root_receipt_authority(activated)"
  if already not in s:
-  pattern=re.compile(
-   r"patch_a003_prelude\(activated\)\s*;\s*"
-   r"patch_a002_harness\(activated\)\s*;\s*"
-   r"patch_browser_proof\(scripts\)\s*;\s*"
-   r"patch_full_runner\(scripts\)"
-  )
-  matches=list(pattern.finditer(s))
-  if len(matches)!=1:raise SystemExit('CALL_PATCH_POINT_MISSING')
-  replacement=(
-   "patch_a003_prelude(activated); "
-   "root_receipt_exception=patch_a003_root_receipt_authority(activated); "
-   "patch_a002_harness(activated); patch_browser_proof(scripts); patch_full_runner(scripts)"
-  )
-  s=pattern.sub(replacement,s,count=1)
+  call_anchor="patch_a003_prelude(activated)"
+  if s.count(call_anchor)!=1:raise SystemExit('CALL_PATCH_POINT_MISSING')
+  s=s.replace(call_anchor,call_anchor+"; root_receipt_exception=patch_a003_root_receipt_authority(activated)",1)
  old2="def snapshot(root:Path):"
  if old2 not in s:raise SystemExit('SNAPSHOT_POINT_MISSING')
  old3="'proof_only_prelude_repair':'PREFETCH_ALL_VERIFIED_BYTES_BEFORE_GATE_INSTALL','production_changed':False"
