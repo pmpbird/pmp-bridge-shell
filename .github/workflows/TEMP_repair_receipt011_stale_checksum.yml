@@ -1,0 +1,34 @@
+name: TEMP Repair Receipt 011 Stale Checksum
+
+on:
+  push:
+    branches: [agent/pass2-p2c-receipt011-repaired-proof]
+    paths: ['.github/workflows/TEMP_repair_receipt011_stale_checksum.yml']
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Repair one stale checksum and run static preflight only
+        run: |
+          set -euo pipefail
+          ROOT=audit/pass2/p2c-isolated-proof-rerun-008
+          DEPS=audit/pass2/p2c-isolated-proof-rerun-006
+          CTRL="$ROOT/rerun008-controller-main.sh"
+          FINAL="$ROOT/rerun008-controller-finalize.sh"
+          RECEIPT="$ROOT/P2C_REPAIRED_PROOF_AUTHORIZATION_RECEIPT_011.json"
+          PREFLIGHT="$ROOT/RECEIPT011_STALE_CHECKSUM_REPAIR_PREFLIGHT.json"
+          TARGET="$DEPS/repair-continuation-003/apply_prepare_repair_003.py"
+          OLD=7461136b03dec90dc559532874843585d545fef1972e44fda2902ca1cdf7ed10
+          ACTUAL=$(sha256sum "$TARGET" | awk '{print $1}')
+          test "$ACTUAL" = efe861570ea5d8e63e197d468bee287ca179f849938973b1ed977658fb75af57
+          python3 - "$CTRL" "$RECEIPT" "$PREFLIGHT" "$TARGET" "$OLD" "$ACTUAL" "$GITHUB_SHA" <<'PY'
+          import hashlib,json,pathlib,subprocess,sys
+          ctrl,receipt,preflight,target,old,actual,parent_head=map(pathlib.Path,sys.argv[1:5])+tuple(sys.argv[5:])
+          PY
