@@ -1,0 +1,80 @@
+name: TEMP Repair Receipt 012 Manifest Checksum
+
+on:
+  push:
+    branches: [agent/pass2-p2c-receipt012-repaired-proof]
+    paths: ['.github/workflows/TEMP_repair_receipt012_manifest_checksum.yml']
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Repair only stale manifest checksum and static preflight
+        run: |
+          set -euo pipefail
+          ROOT=audit/pass2/p2c-isolated-proof-rerun-008
+          DEPS=audit/pass2/p2c-isolated-proof-rerun-006
+          CTRL="$ROOT/rerun008-controller-main.sh"
+          FINAL="$ROOT/rerun008-controller-finalize.sh"
+          RECEIPT="$ROOT/P2C_REPAIRED_PROOF_AUTHORIZATION_RECEIPT_012.json"
+          PREFLIGHT="$ROOT/RECEIPT012_MANIFEST_CHECKSUM_REPAIR_PREFLIGHT.json"
+          TARGET="$DEPS/repair009-normalized-source-manifest-002.json"
+          OLD=9e8bb7a9e2a695085d5fd80028bc8a2a4076865c355812044cd78fb6b0d44b76
+          ACTUAL=$(sha256sum "$TARGET" | awk '{print $1}')
+          python3 - "$CTRL" "$FINAL" "$RECEIPT" "$PREFLIGHT" "$TARGET" "$OLD" "$ACTUAL" "$GITHUB_SHA" <<'PY'
+          import hashlib,json,pathlib,subprocess,sys
+          ctrl,final,receipt,preflight,target=map(pathlib.Path,sys.argv[1:6])
+          old,actual,parent_head=sys.argv[6:9]
+          s=ctrl.read_text()
+          assert s.count(old)==1,(old,s.count(old))
+          s=s.replace(old,actual,1)
+          ctrl.write_text(s)
+          subprocess.run(['bash','-n',str(ctrl)],check=True)
+          subprocess.run(['bash','-n',str(final)],check=True)
+          r=json.loads(receipt.read_text())
+          r.update({
+            'manifest_checksum_repair_authorized':True,
+            'manifest_checksum_repair_only':True,
+            'manifest_checksum_target':str(target),
+            'manifest_checksum_previous_expected_sha256':old,
+            'manifest_checksum_actual_sha256':actual,
+            'binding_parent_branch_head':parent_head,
+            'repaired_controller_sha256':hashlib.sha256(ctrl.read_bytes()).hexdigest(),
+            'repaired_finalizer_sha256':hashlib.sha256(final.read_bytes()).hexdigest(),
+            'proof_execution_authorized_by_this_repair':False,
+            'additional_proof_run_authorized':False,
+            'authorization_consumed':False,
+            'proof_run_count_executed_under_this_receipt':0,
+            'status':'AUTHORIZED_UNCONSUMED'
+          })
+          receipt.write_text(json.dumps(r,indent=2,sort_keys=True)+'\n')
+          out={
+            'type':'PMP_P2C_RECEIPT012_MANIFEST_CHECKSUM_REPAIR_STATIC_PREFLIGHT',
+            'status':'PASS',
+            'target':str(target),
+            'actual_sha256':actual,
+            'controller_sha256':hashlib.sha256(ctrl.read_bytes()).hexdigest(),
+            'finalizer_sha256':hashlib.sha256(final.read_bytes()).hexdigest(),
+            'binding_parent_branch_head':parent_head,
+            'proof_execution_performed':False,
+            'proof_execution_authorized_by_this_repair':False,
+            'production_files_changed':False,
+            'current_map_changed':False,
+            'persisted_data_changed':False,
+            'merge_authorized':False
+          }
+          preflight.write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          PY
+          test "$(sha256sum "$TARGET" | awk '{print $1}')" = "$ACTUAL"
+          grep -F "$ACTUAL" "$CTRL"
+          git config user.name pmpbird
+          git config user.email actions@users.noreply.github.com
+          git add "$CTRL" "$RECEIPT" "$PREFLIGHT"
+          git commit -m 'Repair Receipt 012 manifest checksum binding [no proof run]'
+          git push origin HEAD:agent/pass2-p2c-receipt012-repaired-proof
