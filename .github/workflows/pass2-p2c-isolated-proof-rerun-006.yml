@@ -1,0 +1,80 @@
+name: Pass 2 P2-C Receipt 016 Diagnostic Capture Only
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  receipt016-diagnostic-capture:
+    if: (github.event.action == 'opened' || github.event.action == 'synchronize') && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    env:
+      SOURCE_COMMIT: 98b2e293717b81289e3b372d1fff8f5832d29fd6
+      AUDIT_DIR: audit/pass2/p2c-isolated-proof-rerun-008
+      DEPS_DIR: audit/pass2/p2c-isolated-proof-rerun-006
+      REPAIR_DIR: audit/pass2/p2c-isolated-proof-rerun-006/repair-continuation-003
+      BUNDLE_DIR: /tmp/p2c-diagnostic-runner-016
+      BUNDLE_TAR: /tmp/p2c-diagnostic-rerun-016.tar.gz
+      BASELINE_ROOT: /tmp/forbidden-not-created-baseline-016
+      ACTIVE_ROOT: /tmp/forbidden-not-created-active-016
+      EVIDENCE_DIR: /tmp/p2c-diagnostic-evidence-016
+      NORMALIZED_ROOT: /tmp/p2c-diagnostic-normalized-016
+      NODE_HOME: /tmp/forbidden-not-created-node-016
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Capture Receipt 016 pre-worktree diagnostic
+        env:
+          EVENT_ACTION: ${{ github.event.action }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          HEAD_SHA: ${{ github.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          set -uo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          bash -n "$AUDIT_DIR/rerun008-controller-main.sh" >"$EVIDENCE_DIR/bash-n.stdout.log" 2>"$EVIDENCE_DIR/bash-n.stderr.log"
+          syntax_rc=$?
+          if [ "$syntax_rc" -ne 0 ]; then
+            python3 - "$EVIDENCE_DIR/receipt016-controller-diagnostic.json" "$syntax_rc" <<'PY'
+          import json,pathlib,sys
+          pathlib.Path(sys.argv[1]).write_text(json.dumps({
+            'type':'PMP_P2C_RECEIPT016_CONTROLLER_DIAGNOSTIC_V1','status':'FAIL','failed_line':'BASH_PARSE','failed_command':'bash -n audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-main.sh','expected_value':'exit_code=0','actual_value':'exit_code='+sys.argv[2],'affected_file':'audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-main.sh','diagnostic_scope':'PRE_WORKTREE_VERIFICATION_AND_RECONSTRUCTION_ONLY','git_worktree_add_executed':False,'playwright_or_chromium_install_executed':False,'disposable_copy_preparation_executed':False,'browser_proof_executed':False,'proof_run_count_executed':0
+          },indent=2,sort_keys=True)+'\n')
+          PY
+          else
+            bash "$AUDIT_DIR/rerun008-controller-main.sh" >"$EVIDENCE_DIR/controller.stdout.log" 2>"$EVIDENCE_DIR/controller.stderr.log"
+            controller_rc=$?
+            if [ ! -f "$EVIDENCE_DIR/receipt016-controller-diagnostic.json" ]; then
+              python3 - "$EVIDENCE_DIR/receipt016-controller-diagnostic.json" "$controller_rc" <<'PY'
+          import json,pathlib,sys
+          pathlib.Path(sys.argv[1]).write_text(json.dumps({
+            'type':'PMP_P2C_RECEIPT016_CONTROLLER_DIAGNOSTIC_V1','status':'FAIL','failed_line':'HARNESS_CAPTURE','failed_command':'bash audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-main.sh','expected_value':'controller-generated diagnostic receipt','actual_value':'missing; exit_code='+sys.argv[2],'affected_file':'audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-main.sh','diagnostic_scope':'PRE_WORKTREE_VERIFICATION_AND_RECONSTRUCTION_ONLY','git_worktree_add_executed':False,'playwright_or_chromium_install_executed':False,'disposable_copy_preparation_executed':False,'browser_proof_executed':False,'proof_run_count_executed':0
+          },indent=2,sort_keys=True)+'\n')
+          PY
+            fi
+          fi
+          test ! -e "$BASELINE_ROOT"
+          test ! -e "$ACTIVE_ROOT"
+          test ! -e "$NODE_HOME"
+          test ! -e "$EVIDENCE_DIR/proof-run-started.lock"
+          echo '=== DIAGNOSTIC RECEIPT ==='
+          cat "$EVIDENCE_DIR/receipt016-controller-diagnostic.json"
+          echo '=== CONTROLLER STDERR ==='
+          cat "$EVIDENCE_DIR/controller.stderr.log" 2>/dev/null || true
+          exit 0
+      - name: Upload Receipt 016 diagnostic capture
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2c-receipt016-controller-diagnostic-capture
+          path: /tmp/p2c-diagnostic-evidence-016
+          if-no-files-found: error
