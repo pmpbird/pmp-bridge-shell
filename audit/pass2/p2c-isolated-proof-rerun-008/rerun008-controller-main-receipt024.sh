@@ -27,9 +27,22 @@ npm install --no-save playwright@1.55.0
 new_install='''rm -rf "$NODE_HOME"; mkdir -p "$NODE_HOME"
 (
   cd "$NODE_HOME"
-  npm init -y >/dev/null
-  npm install --no-save playwright@1.55.0
-  "$NODE_HOME/node_modules/.bin/playwright" install --with-deps chromium
+  npm init -y >"$EVIDENCE_DIR/browser-npm-init.log" 2>&1
+  npm install --no-save playwright@1.55.0 >"$EVIDENCE_DIR/browser-npm-install.log" 2>&1
+  if ! "$NODE_HOME/node_modules/.bin/playwright" install --with-deps chromium >"$EVIDENCE_DIR/browser-install-with-deps.log" 2>&1; then
+    "$NODE_HOME/node_modules/.bin/playwright" install chromium >"$EVIDENCE_DIR/browser-install-fallback.log" 2>&1
+  fi
+  node - <<'JS' >"$EVIDENCE_DIR/browser-launch-smoke.log" 2>&1
+const { chromium } = require(process.env.NODE_HOME + '/node_modules/playwright');
+(async () => {
+  const browser = await chromium.launch({headless:true});
+  const page = await browser.newPage();
+  await page.setContent('<title>p2c-browser-ready</title>');
+  if (await page.title() !== 'p2c-browser-ready') throw new Error('browser smoke title mismatch');
+  console.log(JSON.stringify({status:'PASS',browserVersion:browser.version()}));
+  await browser.close();
+})().catch(error => { console.error(error && error.stack || String(error)); process.exit(1); });
+JS
 )'''
 expected_counts={old_patcher:1,old_manifest:1,old_controller:4,old_controller_sha:1,old_allowlist:1,old_install:1}
 labels={old_patcher:'PATCHER_SHA',old_manifest:'MANIFEST_SHA',old_controller:'CONTROLLER_PATH',old_controller_sha:'CONTROLLER_SHA',old_allowlist:'INTERNAL_ALLOWLIST',old_install:'BROWSER_INSTALL_CWD'}
