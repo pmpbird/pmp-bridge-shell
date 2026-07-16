@@ -1,4 +1,4 @@
-name: Pass 2 Browser Setup Closure Diagnostic Only
+name: Pass 2 P2-C Receipt 033 Final Isolated Proof
 
 on:
   pull_request:
@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 jobs:
-  browser-setup-closure:
+  isolated-proof-receipt033:
     if: github.event.action == 'opened' && github.run_attempt == 1
     runs-on: ubuntu-24.04
     env:
@@ -16,14 +16,13 @@ jobs:
       AUDIT_DIR: audit/pass2/p2c-isolated-proof-rerun-008
       DEPS_DIR: audit/pass2/p2c-isolated-proof-rerun-006
       REPAIR_DIR: audit/pass2/p2c-isolated-proof-rerun-006/repair-continuation-003
-      BUNDLE_DIR: /tmp/p2c-browser-setup-bundle-031
-      BUNDLE_TAR: /tmp/p2c-browser-setup-bundle-031.tar.gz
-      BASELINE_ROOT: /tmp/p2c-browser-setup-baseline-031
-      ACTIVE_ROOT: /tmp/p2c-browser-setup-active-031
-      EVIDENCE_DIR: /tmp/p2c-browser-setup-evidence-031
-      NORMALIZED_ROOT: /tmp/p2c-browser-setup-normalized-031
-      NODE_HOME: /tmp/p2c-browser-setup-node-031
-      OUTER_CONSOLE: /tmp/p2c-browser-setup-chain-console-031.log
+      BUNDLE_DIR: /tmp/p2c-proof-runner-receipt033
+      BUNDLE_TAR: /tmp/p2c-proof-rerun-receipt033.tar.gz
+      BASELINE_ROOT: /tmp/p2c-proof-baseline-receipt033
+      ACTIVE_ROOT: /tmp/p2c-proof-active-receipt033
+      EVIDENCE_DIR: /tmp/p2c-proof-evidence-receipt033
+      NORMALIZED_ROOT: /tmp/p2c-repair-receipt033-normalized
+      NODE_HOME: /tmp/p2c-node-receipt033
     steps:
       - uses: actions/checkout@v4
         with:
@@ -34,7 +33,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22.16.0'
-      - name: Validate repaired browser setup through runtime receipt
+      - name: Verify Receipt 033 bindings and run exactly once
         env:
           EVENT_ACTION: ${{ github.event.action }}
           RUN_ATTEMPT: ${{ github.run_attempt }}
@@ -42,23 +41,13 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           RUN_ID: ${{ github.run_id }}
-          P2C_STOP_BEFORE_PREPARATION: '1'
-        run: |
-          set -euo pipefail
-          rm -rf "$EVIDENCE_DIR" "$OUTER_CONSOLE"
-          mkdir -p "$EVIDENCE_DIR"
-          bash "$AUDIT_DIR/rerun008-controller-main-receipt024.sh" 2>&1 | tee "$OUTER_CONSOLE"
-          test -f /tmp/p2c-proof-runtime-authorization-receipt-008.json
-          test "$(sha256sum /tmp/p2c-proof-runtime-authorization-receipt-008.json | awk '{print $1}')" = "0bbd7c4bcace7101237b9a0b8b612bf90bebd9697b95efc90a61bb6cdf438f26"
-          test -f "$EVIDENCE_DIR/browser-launch-smoke.log"
-          grep -F 'P2C_BROWSER_SETUP_HARD_STOP_BEFORE_PREPARATION' "$OUTER_CONSOLE"
-          test ! -e "$EVIDENCE_DIR/preparation.json"
-          test ! -e "$EVIDENCE_DIR/proof-run-started.lock"
-          cp "$OUTER_CONSOLE" "$EVIDENCE_DIR/browser-setup-chain-console-031.log"
-          printf '%s\n' '{"status":"PASS","reached_hard_stop_before_preparation":true,"browser_launch_smoke_passed":true,"runtime_receipt_verified":true,"proof_run_count_executed":0}' > "$EVIDENCE_DIR/browser-setup-closure-031.json"
-      - name: Upload browser-setup closure evidence
+        run: bash "$AUDIT_DIR/run_receipt033_final_proof.sh"
+      - name: Finalize truth and rollback boundary
+        if: always()
+        run: bash "$AUDIT_DIR/rerun008-controller-finalize.sh"
+      - name: Upload complete Receipt 033 proof evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: p2c-browser-setup-closure-031
-          path: /tmp/p2c-browser-setup-evidence-031
+          name: p2c-receipt033-final-proof-evidence
+          path: /tmp/p2c-proof-evidence-receipt033
