@@ -1,0 +1,31 @@
+name: Pass 2 P2-C Combined Pre-Proof Diagnostic Only
+
+on:
+  pull_request:
+    types: [opened]
+
+permissions:
+  contents: read
+
+jobs:
+  combined-preproof-diagnostic:
+    if: github.event.action == 'opened' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - name: Run combined pre-proof diagnostic only
+        run: bash audit/pass2/p2c-isolated-proof-rerun-008/combined_preproof_diagnostic_020.sh
+      - name: Upload combined pre-proof diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2c-combined-preproof-diagnostic
+          path: /tmp/p2c-combined-preproof-evidence
