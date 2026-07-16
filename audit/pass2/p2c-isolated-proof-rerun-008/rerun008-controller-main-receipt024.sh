@@ -18,13 +18,30 @@ import pathlib,sys
 path=pathlib.Path(sys.argv[1])
 old_patcher,new_patcher,old_manifest,new_manifest,old_controller,new_controller,old_controller_sha,new_controller_sha=sys.argv[2:]
 text=path.read_text()
-for old,label in ((old_patcher,'PATCHER_SHA'),(old_manifest,'MANIFEST_SHA'),(old_controller,'CONTROLLER_PATH'),(old_controller_sha,'CONTROLLER_SHA')):
-    if text.count(old)!=1:
-        raise SystemExit(f'RECEIPT024_{label}_BINDING_COUNT_INVALID:{text.count(old)}')
+expected_counts={
+    old_patcher:1,
+    old_manifest:1,
+    old_controller:4,
+    old_controller_sha:1,
+}
+labels={
+    old_patcher:'PATCHER_SHA',
+    old_manifest:'MANIFEST_SHA',
+    old_controller:'CONTROLLER_PATH',
+    old_controller_sha:'CONTROLLER_SHA',
+}
+for old,expected in expected_counts.items():
+    actual=text.count(old)
+    if actual!=expected:
+        raise SystemExit(f'RECEIPT024_{labels[old]}_BINDING_COUNT_INVALID:{actual}:EXPECTED:{expected}')
 text=text.replace(old_patcher,new_patcher,1)
 text=text.replace(old_manifest,new_manifest,1)
-text=text.replace(old_controller,new_controller,1)
+text=text.replace(old_controller,new_controller)
 text=text.replace(old_controller_sha,new_controller_sha,1)
+if text.count(new_controller)!=4:
+    raise SystemExit(f'RECEIPT024_NEW_CONTROLLER_PATH_BINDING_COUNT_INVALID:{text.count(new_controller)}')
+if text.count(new_controller_sha)!=1:
+    raise SystemExit(f'RECEIPT024_NEW_CONTROLLER_SHA_BINDING_COUNT_INVALID:{text.count(new_controller_sha)}')
 path.write_text(text)
 PY
 bash -n "$MATERIALIZED_CONTROLLER"
