@@ -23,6 +23,7 @@ jobs:
       EVIDENCE_DIR: /tmp/p2c-browser-setup-evidence-031
       NORMALIZED_ROOT: /tmp/p2c-browser-setup-normalized-031
       NODE_HOME: /tmp/p2c-browser-setup-node-031
+      OUTER_CONSOLE: /tmp/p2c-browser-setup-chain-console-031.log
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,7 +34,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22.16.0'
-      - name: Run repaired chain through runtime receipt and stop before preparation
+      - name: Validate repaired browser setup through runtime receipt
         env:
           EVENT_ACTION: ${{ github.event.action }}
           RUN_ATTEMPT: ${{ github.run_attempt }}
@@ -44,34 +45,17 @@ jobs:
           P2C_STOP_BEFORE_PREPARATION: '1'
         run: |
           set -euo pipefail
-          rm -rf "$EVIDENCE_DIR"
+          rm -rf "$EVIDENCE_DIR" "$OUTER_CONSOLE"
           mkdir -p "$EVIDENCE_DIR"
-          bash "$AUDIT_DIR/rerun008-controller-main-receipt024.sh" 2>&1 | tee "$EVIDENCE_DIR/browser-setup-chain-console-031.log"
+          bash "$AUDIT_DIR/rerun008-controller-main-receipt024.sh" 2>&1 | tee "$OUTER_CONSOLE"
           test -f /tmp/p2c-proof-runtime-authorization-receipt-008.json
           test "$(sha256sum /tmp/p2c-proof-runtime-authorization-receipt-008.json | awk '{print $1}')" = "0bbd7c4bcace7101237b9a0b8b612bf90bebd9697b95efc90a61bb6cdf438f26"
+          test -f "$EVIDENCE_DIR/browser-launch-smoke.log"
+          grep -F 'P2C_BROWSER_SETUP_HARD_STOP_BEFORE_PREPARATION' "$OUTER_CONSOLE"
           test ! -e "$EVIDENCE_DIR/preparation.json"
           test ! -e "$EVIDENCE_DIR/proof-run-started.lock"
-          grep -F 'P2C_BROWSER_SETUP_HARD_STOP_BEFORE_PREPARATION' "$EVIDENCE_DIR/browser-setup-chain-console-031.log"
-          python3 - <<'PY'
-          import hashlib,json,os,pathlib
-          e=pathlib.Path(os.environ['EVIDENCE_DIR'])
-          runtime=pathlib.Path('/tmp/p2c-proof-runtime-authorization-receipt-008.json')
-          out={
-            'type':'PMP_P2C_BROWSER_SETUP_CLOSURE_031',
-            'status':'PASS',
-            'runtime_receipt_present':runtime.is_file(),
-            'runtime_receipt_sha256':hashlib.sha256(runtime.read_bytes()).hexdigest(),
-            'reached_hard_stop_before_preparation':True,
-            'disposable_preparation_executed':False,
-            'browser_proof_executed':False,
-            'proof_run_count_executed':0,
-            'production_modified':False,
-            'current_map_modified':False,
-            'persisted_data_modified':False,
-          }
-          (e/'browser-setup-closure-031.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
-          print(json.dumps(out,indent=2,sort_keys=True))
-          PY
+          cp "$OUTER_CONSOLE" "$EVIDENCE_DIR/browser-setup-chain-console-031.log"
+          printf '%s\n' '{"status":"PASS","reached_hard_stop_before_preparation":true,"browser_launch_smoke_passed":true,"runtime_receipt_verified":true,"proof_run_count_executed":0}' > "$EVIDENCE_DIR/browser-setup-closure-031.json"
       - name: Upload browser-setup closure evidence
         if: always()
         uses: actions/upload-artifact@v4
