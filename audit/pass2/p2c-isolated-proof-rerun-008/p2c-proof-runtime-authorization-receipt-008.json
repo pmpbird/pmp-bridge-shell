@@ -1,0 +1,16 @@
+{
+  "authorization_scope": "ONE_ISOLATED_PRODUCTION_SHAPED_PROOF_RERUN_ONLY",
+  "authorized": true,
+  "current_map_change_authorized": false,
+  "derived_without_scope_expansion": true,
+  "merge_authorized": false,
+  "parent_authorization_receipt_sha256": "37a439de5a4f8320d1cdea3e692be592c14dfc639d1e8b6d6f42ec11d3cd159a",
+  "parent_authorization_receipt_type": "PMP_P2C_EXACTLY_ONE_REFRESHED_FROZEN_CAPSULE_BROWSER_PROOF_AUTHORIZATION_RECEIPT_008",
+  "production_activation_authorized": false,
+  "production_apply_authorized": false,
+  "production_storage_change_authorized": false,
+  "proof_run_count_authorized": 1,
+  "second_proof_run_authorized": false,
+  "source_repository_commit": "c618596f2b5c99ca7f355153a5bd31268170df80",
+  "type": "PMP_P2C_PROOF_RUNTIME_AUTHORIZATION_RECEIPT_008_COMPAT"
+}
