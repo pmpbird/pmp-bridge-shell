@@ -1,28 +1,24 @@
-name: Pass 2 P2-C Receipt 033 Final Isolated Proof
-
+name: Runtime Binding Validation
 on:
   pull_request:
     types: [opened]
-
 permissions:
   contents: read
-
 jobs:
-  isolated-proof-receipt033:
-    if: github.event.action == 'opened' && github.run_attempt == 1
+  validate:
     runs-on: ubuntu-24.04
     env:
       SOURCE_COMMIT: 98b2e293717b81289e3b372d1fff8f5832d29fd6
       AUDIT_DIR: audit/pass2/p2c-isolated-proof-rerun-008
       DEPS_DIR: audit/pass2/p2c-isolated-proof-rerun-006
       REPAIR_DIR: audit/pass2/p2c-isolated-proof-rerun-006/repair-continuation-003
-      BUNDLE_DIR: /tmp/p2c-proof-runner-receipt033
-      BUNDLE_TAR: /tmp/p2c-proof-rerun-receipt033.tar.gz
-      BASELINE_ROOT: /tmp/p2c-proof-baseline-receipt033
-      ACTIVE_ROOT: /tmp/p2c-proof-active-receipt033
-      EVIDENCE_DIR: /tmp/p2c-proof-evidence-receipt033
-      NORMALIZED_ROOT: /tmp/p2c-repair-receipt033-normalized
-      NODE_HOME: /tmp/p2c-node-receipt033
+      BUNDLE_DIR: /tmp/p2c-rb-bundle
+      BUNDLE_TAR: /tmp/p2c-rb-bundle.tar.gz
+      BASELINE_ROOT: /tmp/p2c-rb-base
+      ACTIVE_ROOT: /tmp/p2c-rb-active
+      EVIDENCE_DIR: /tmp/p2c-rb-evidence
+      NORMALIZED_ROOT: /tmp/p2c-rb-normalized
+      NODE_HOME: /tmp/p2c-rb-node
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,7 +29,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22.16.0'
-      - name: Verify Receipt 033 bindings and run exactly once
+      - name: Validate preparation boundary
         env:
           EVENT_ACTION: ${{ github.event.action }}
           RUN_ATTEMPT: ${{ github.run_attempt }}
@@ -41,13 +37,14 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           RUN_ID: ${{ github.run_id }}
-        run: bash "$AUDIT_DIR/run_receipt033_final_proof.sh"
-      - name: Finalize truth and rollback boundary
+          P2C_STOP_AFTER_PREPARATION: '1'
+        run: |
+          set -euo pipefail
+          bash "$AUDIT_DIR/rerun008-controller-main-receipt024.sh"
+          test -f "$EVIDENCE_DIR/preparation.json"
+          test ! -e "$EVIDENCE_DIR/proof-run-started.lock"
+      - uses: actions/upload-artifact@v4
         if: always()
-        run: bash "$AUDIT_DIR/rerun008-controller-finalize.sh"
-      - name: Upload complete Receipt 033 proof evidence
-        if: always()
-        uses: actions/upload-artifact@v4
         with:
-          name: p2c-receipt033-final-proof-evidence
-          path: /tmp/p2c-proof-evidence-receipt033
+          name: runtime-binding-validation
+          path: /tmp/p2c-rb-evidence
