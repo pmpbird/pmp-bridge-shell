@@ -1,4 +1,4 @@
-name: Pass 2 P2-C Receipt 024 Final Isolated Proof
+name: Pass 2 P2-C Receipt 026 Final Isolated Proof
 
 on:
   pull_request:
@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 jobs:
-  isolated-proof-receipt024:
+  isolated-proof-receipt026:
     if: github.event.action == 'opened' && github.run_attempt == 1
     runs-on: ubuntu-24.04
     env:
@@ -16,13 +16,13 @@ jobs:
       AUDIT_DIR: audit/pass2/p2c-isolated-proof-rerun-008
       DEPS_DIR: audit/pass2/p2c-isolated-proof-rerun-006
       REPAIR_DIR: audit/pass2/p2c-isolated-proof-rerun-006/repair-continuation-003
-      BUNDLE_DIR: /tmp/p2c-proof-runner-024
-      BUNDLE_TAR: /tmp/p2c-proof-rerun-024.tar.gz
-      BASELINE_ROOT: /tmp/p2c-proof-baseline-024
-      ACTIVE_ROOT: /tmp/p2c-proof-active-024
-      EVIDENCE_DIR: /tmp/p2c-proof-evidence-024
-      NORMALIZED_ROOT: /tmp/p2c-repair024-normalized
-      NODE_HOME: /tmp/p2c-node-024
+      BUNDLE_DIR: /tmp/p2c-proof-runner-026
+      BUNDLE_TAR: /tmp/p2c-proof-rerun-026.tar.gz
+      BASELINE_ROOT: /tmp/p2c-proof-baseline-026
+      ACTIVE_ROOT: /tmp/p2c-proof-active-026
+      EVIDENCE_DIR: /tmp/p2c-proof-evidence-026
+      NORMALIZED_ROOT: /tmp/p2c-repair026-normalized
+      NODE_HOME: /tmp/p2c-node-026
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,7 +33,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22.16.0'
-      - name: Verify Receipt 024 bindings and run exactly once
+      - name: Verify Receipt 026 bindings and run exactly once
         env:
           EVENT_ACTION: ${{ github.event.action }}
           RUN_ATTEMPT: ${{ github.run_attempt }}
@@ -46,30 +46,36 @@ jobs:
           python3 - <<'PY'
           import hashlib,json,os,pathlib,subprocess
           root=pathlib.Path('audit/pass2/p2c-isolated-proof-rerun-008')
-          receipt_path=root/'P2C_FINAL_ONE_RUN_PROOF_AUTHORIZATION_RECEIPT_024.json'
+          receipt_path=root/'P2C_FINAL_ONE_RUN_PROOF_AUTHORIZATION_RECEIPT_026.json'
+          repair_path=root/'P2C_RECEIPT024_WRAPPER_STATIC_REPAIR_RECEIPT_025.json'
           reseal_path=root/'P2C_EXHAUSTIVE_PREPROOF_STATIC_RESEAL_RECEIPT_023.json'
           receipt=json.loads(receipt_path.read_text())
+          repair=json.loads(repair_path.read_text())
           reseal=json.loads(reseal_path.read_text())
-          wrapper=root/'rerun008-controller-main-receipt024.sh'
-          finalizer=root/'rerun008-controller-finalize.sh'
+          wrapper=pathlib.Path(receipt['corrected_wrapper_path'])
+          finalizer=pathlib.Path(receipt['unchanged_finalizer_path'])
           policy=pathlib.Path(receipt['policy_compatibility_controller_path'])
-          manifest=pathlib.Path('audit/pass2/p2c-isolated-proof-rerun-006/repair009-normalized-source-manifest-002.json')
-          patcher=pathlib.Path('audit/pass2/p2c-isolated-proof-rerun-006/repair-continuation-003/apply_prepare_repair_003.py')
+          manifest=pathlib.Path(receipt['repaired_manifest_path'])
+          patcher=pathlib.Path(receipt['repaired_patcher_path'])
           assert receipt['authorized'] is True and receipt['status']=='AUTHORIZED_UNCONSUMED' and receipt['authorization_consumed'] is False
           assert receipt['proof_run_count_authorized']==1 and receipt['proof_run_count_executed_under_this_receipt']==0
           assert receipt['proof_execution_started'] is False and receipt['second_proof_run_authorized'] is False
+          assert receipt['prior_receipt024_attempt_reusable'] is False and receipt['prior_pr89_rerun_authorized'] is False
           assert receipt['current_main_sha']==os.environ['BASE_SHA']==os.environ['SOURCE_COMMIT']
           assert os.environ['EVENT_ACTION']=='opened' and os.environ['RUN_ATTEMPT']=='1'
           assert os.environ['HEAD_SHA']==os.environ['PR_HEAD_SHA']==subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
-          subprocess.run(['git','merge-base','--is-ancestor','ef73f7596fa146d1f4131ea2311775b58621ee1d',os.environ['PR_HEAD_SHA']],check=True)
-          assert subprocess.check_output(['git','hash-object',str(receipt_path)],text=True).strip()=='82e4dc810e6873fe0f8127f67e9631649928fb89'
+          subprocess.run(['git','merge-base','--is-ancestor','eb83fef9c982d9f5658ebbadd402d0d9931da4b8',os.environ['PR_HEAD_SHA']],check=True)
+          assert subprocess.check_output(['git','hash-object',str(receipt_path)],text=True).strip()=='5042d0e1886ef02d02750fc4900c3a7f16ab67d9'
+          assert subprocess.check_output(['git','hash-object',str(repair_path)],text=True).strip()=='014900ec0a9618e1f130e5ecc3ff0a9b568142e1'
           assert subprocess.check_output(['git','hash-object',str(reseal_path)],text=True).strip()=='ffdfd2e8a991c22bb95d68b57205486ec2734ead'
-          assert subprocess.check_output(['git','hash-object',str(wrapper)],text=True).strip()=='3d3b49cfeb4b431281b231a4a0682613a5f7377a'
-          assert subprocess.check_output(['git','hash-object',str(policy)],text=True).strip()==receipt['policy_compatibility_controller_git_blob']=='3818d7ae0ea3bf2de98a23e334515ca0fd6da052'
-          assert subprocess.check_output(['git','hash-object',str(finalizer)],text=True).strip()=='87e86c533d5d630121ded31334c46457ef4a7ad6'
+          assert subprocess.check_output(['git','hash-object',str(wrapper)],text=True).strip()==receipt['corrected_wrapper_git_blob_sha']=='58b647d1c3c73f249541a29803609185fbf5da32'
+          assert subprocess.check_output(['git','hash-object',str(policy)],text=True).strip()=='3818d7ae0ea3bf2de98a23e334515ca0fd6da052'
+          assert subprocess.check_output(['git','hash-object',str(finalizer)],text=True).strip()==receipt['unchanged_finalizer_git_blob_sha']=='87e86c533d5d630121ded31334c46457ef4a7ad6'
+          assert hashlib.sha256(wrapper.read_bytes()).hexdigest()==receipt['corrected_wrapper_sha256']=='85d92efb342655524399dfcd1efb2e8b337650150c544ededcd4149b533b3550'
           assert hashlib.sha256(policy.read_bytes()).hexdigest()==receipt['policy_compatibility_controller_sha256']=='1a553e229078239f0d17e25ca813788b4b25aa1d33fd511cdc179f1a6ebecb13'
-          assert hashlib.sha256(manifest.read_bytes()).hexdigest()==receipt['normalization_manifest_sha256']=='d53dc787298e8fec5f00227b680645dffd25774913ba34461d4969df6bf2b803'
+          assert hashlib.sha256(manifest.read_bytes()).hexdigest()==receipt['repaired_manifest_sha256']=='d53dc787298e8fec5f00227b680645dffd25774913ba34461d4969df6bf2b803'
           assert hashlib.sha256(patcher.read_bytes()).hexdigest()==receipt['repaired_patcher_sha256']=='d4dd82c4787cb0464e6d7be1edff11174e0f05d7bd177a096300661f7fde2024'
+          assert repair['status']=='PASS_STATIC_PREFLIGHT' and repair['old_controller_path_replacement_count']==4 and repair['new_controller_path_expected_count']==4
           assert reseal['status']=='PASS_STATIC_RESEALED' and reseal['repair_queue_count']==0
           assert reseal['all_eight_repair009_patch_anchors_passed'] is True
           assert reseal['all_19_original_source_records_passed'] is True and reseal['all_19_transformed_source_records_passed'] is True
@@ -88,9 +94,9 @@ jobs:
       - name: Finalize truth and rollback boundary
         if: always()
         run: bash "$AUDIT_DIR/rerun008-controller-finalize.sh"
-      - name: Upload complete Receipt 024 evidence
+      - name: Upload complete Receipt 026 evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: p2c-receipt024-final-proof-evidence
-          path: /tmp/p2c-proof-evidence-024
+          name: p2c-receipt026-final-proof-evidence
+          path: /tmp/p2c-proof-evidence-026
