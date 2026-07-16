@@ -1,0 +1,17 @@
+{
+  "type": "PMP_P2C_RUNTIME_SOURCE_BINDING_REPAIR_RECEIPT_034",
+  "status": "REPAIR_PREPARED_NOT_YET_VALIDATED",
+  "failed_proof_pr": 99,
+  "failed_authorization_receipt": "033",
+  "affected_runtime_receipt_path": "audit/pass2/p2c-isolated-proof-rerun-008/p2c-proof-runtime-authorization-receipt-008.json",
+  "old_source_repository_commit": "98b2e293717b81289e3b372d1fff8f5832d29fd6",
+  "new_source_repository_commit": "c618596f2b5c99ca7f355153a5bd31268170df80",
+  "new_runtime_receipt_sha256": "928f551d28ce57a2ffd30c533503448685a155813ae02f805b164e6483fdc4d0",
+  "repair_scope": "SOURCE_REPOSITORY_COMMIT_BINDING_ONLY_PLUS_DIRECT_CHECKSUM_REBINDING",
+  "browser_proof_authorized": false,
+  "browser_proof_executed": false,
+  "production_modified": false,
+  "current_map_modified": false,
+  "persisted_data_modified": false,
+  "merge_performed": false
+}
