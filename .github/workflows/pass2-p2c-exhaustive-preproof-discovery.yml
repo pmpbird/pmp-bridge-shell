@@ -1,0 +1,67 @@
+name: Pass 2 Exhaustive Pre-Proof Failure Discovery
+on:
+  pull_request:
+    types: [opened]
+permissions:
+  contents: read
+jobs:
+  exhaustive-preproof:
+    if: github.event.action == 'opened' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    env:
+      SOURCE_COMMIT: 98b2e293717b81289e3b372d1fff8f5832d29fd6
+      DEPS_DIR: audit/pass2/p2c-isolated-proof-rerun-006
+      AUDIT_DIR: audit/pass2/p2c-isolated-proof-rerun-008
+      ROOT: /tmp/p2c-exhaustive-021
+      BUNDLE: /tmp/p2c-exhaustive-021/bundle
+      SOURCES: /tmp/p2c-exhaustive-021/sources
+      NORMALIZED: /tmp/p2c-exhaustive-021/normalized
+      TRANSPORT: /tmp/p2c-exhaustive-021/transport
+      EVIDENCE: /tmp/p2c-exhaustive-021/evidence
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - name: Exhaust complete pre-proof failure set
+        run: |
+          set -euo pipefail
+          rm -rf "$ROOT"; mkdir -p "$BUNDLE" "$SOURCES" "$NORMALIZED" "$TRANSPORT" "$EVIDENCE"
+          npm install -g typescript@5.8.3 >/dev/null
+          TS_GLOBAL="$(npm root -g)/typescript"; TS_FIXED="/opt/nvm/versions/node/v22.16.0/lib/node_modules/typescript"
+          sudo mkdir -p "$(dirname "$TS_FIXED")"; sudo rm -rf "$TS_FIXED"; sudo ln -s "$TS_GLOBAL" "$TS_FIXED"
+          cp "$DEPS_DIR"/transpile_async_sources.part*.b64 "$TRANSPORT"/
+          python3 "$DEPS_DIR/repair009_transport_fidelity_controller003.py" "$TRANSPORT" > "$EVIDENCE/transport.json"
+          test "$(sha256sum "$TRANSPORT/transpile_async_sources.decoded.js" | awk '{print $1}')" = "c5ffb899637aa45feb64b604dca426503f99fc9a34f05a1c83a12d0cfef3d0dd"
+          python3 - <<'PY'
+          import base64,hashlib,json,os,pathlib,subprocess,tarfile
+          d=pathlib.Path(os.environ['DEPS_DIR']);b=pathlib.Path(os.environ['BUNDLE']);s=pathlib.Path(os.environ['SOURCES']);e=pathlib.Path(os.environ['EVIDENCE']);m=json.loads((d/'repair009-normalized-source-manifest-002.json').read_text())
+          assert hashlib.sha256((d/'repair009-normalized-source-manifest-002.json').read_bytes()).hexdigest()=='d53dc787298e8fec5f00227b680645dffd25774913ba34461d4969df6bf2b803'
+          raw=base64.b64decode(b''.join(b''.join((d/f'bundle/part0{i}.b64').read_bytes() for i in range(4)).split()))
+          raw+=b''.join((d/'bundle'/n).read_bytes() for n in ('part04_0.bin','part04_1.bin','part04_2.bin','part05_0.bin','part05_1.bin','part06_0.bin','part06_1.bin'))
+          raw+=base64.b64decode(b''.join((d/'bundle/part06_2.b64').read_bytes().split()))
+          t=e/'bundle.tar.gz';t.write_bytes(raw);assert len(raw)==61478 and hashlib.sha256(raw).hexdigest()=='a644ad9ea538117f8aa6b01ac6988ac8d938a64fb170fa2a8f071afebc77e500'
+          with tarfile.open(t,'r:gz') as tf: tf.extractall(b)
+          subprocess.run(['python3',str(d/'repair-continuation-003/apply_prepare_repair_003.py'),'--path',str(b/'prepare_disposable_proof_002.py')],check=True)
+          for r in ('repair_runner_003.py','repair_runner_005.py','repair_runner_008.py'): subprocess.run(['python3',str(d/r),'--bundle-root',str(b)],check=True)
+          rec=[]
+          for row in m['records']:
+           target=s/row['path'];target.parent.mkdir(parents=True,exist_ok=True)
+           data=(b/'after'/row['path']).read_bytes() if row['kind']=='document-inline' else subprocess.check_output(['git','show',f"{os.environ['SOURCE_COMMIT']}:{row['path']}"])
+           assert hashlib.sha256(data).hexdigest()==row['original_sha256'] and len(data)==row['original_bytes'];target.write_bytes(data)
+           rec.append({'kind':row['kind'],'path':row['path'],'policy_original_sha256':row['original_sha256'],'quarantined':False,'realm':row['realm'],'source_path':str(target)})
+          (e/'input.json').write_text(json.dumps({'type':'PMP_REPAIR009_ASYNC_SOURCE_NORMALIZATION_INPUT_002','records':rec},indent=2,sort_keys=True)+'\n')
+          PY
+          node "$TRANSPORT/transpile_async_sources.decoded.js" "$EVIDENCE/input.json" "$NORMALIZED" > "$EVIDENCE/transformer-report.json"
+          python3 "$AUDIT_DIR/exhaustive_preproof_failure_discovery_021.py" --bundle-root "$BUNDLE" --normalized-root "$NORMALIZED" --manifest "$DEPS_DIR/repair009-normalized-source-manifest-002.json" --controller "$DEPS_DIR/repair_runner_009_controller002.py" --repo-root . --output "$EVIDENCE/exhaustive-preproof-report-021.json"
+      - name: Upload exhaustive discovery evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2c-exhaustive-preproof-failure-discovery-021
+          path: /tmp/p2c-exhaustive-021/evidence
