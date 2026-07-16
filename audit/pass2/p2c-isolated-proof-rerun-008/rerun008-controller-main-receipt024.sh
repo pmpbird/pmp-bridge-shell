@@ -48,5 +48,16 @@ if text.count(new_allowlist)!=1:raise SystemExit(f'RECEIPT024_NEW_INTERNAL_ALLOW
 if text.count(new_install)!=1:raise SystemExit(f'RECEIPT024_NEW_BROWSER_INSTALL_CWD_COUNT_INVALID:{text.count(new_install)}')
 path.write_text(text)
 PY
+if [ "${P2C_STOP_BEFORE_PREPARATION:-0}" = "1" ]; then
+  python3 - "$MATERIALIZED_CONTROLLER" <<'PY'
+import pathlib,sys
+path=pathlib.Path(sys.argv[1])
+text=path.read_text()
+marker='echo "=== Prepare explicitly authorized disposable active copy ==="'
+if text.count(marker)!=1:raise SystemExit(f'PREPARATION_MARKER_COUNT_INVALID:{text.count(marker)}')
+prefix=text.split(marker,1)[0]
+path.write_text(prefix+"printf '%s\\n' 'P2C_BROWSER_SETUP_HARD_STOP_BEFORE_PREPARATION'\n")
+PY
+fi
 bash -n "$MATERIALIZED_CONTROLLER"
 exec bash "$MATERIALIZED_CONTROLLER"
