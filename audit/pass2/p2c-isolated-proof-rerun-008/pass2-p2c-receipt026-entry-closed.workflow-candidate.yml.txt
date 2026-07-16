@@ -1,0 +1,93 @@
+name: Pass 2 P2-C Receipt 026 Entry-Closed Final Isolated Proof
+
+on:
+  pull_request:
+    types: [opened]
+
+permissions:
+  contents: read
+
+jobs:
+  isolated-proof-receipt026-entry-closed:
+    if: github.event.action == 'opened' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    env:
+      SOURCE_COMMIT: 98b2e293717b81289e3b372d1fff8f5832d29fd6
+      AUDIT_DIR: audit/pass2/p2c-isolated-proof-rerun-008
+      DEPS_DIR: audit/pass2/p2c-isolated-proof-rerun-006
+      REPAIR_DIR: audit/pass2/p2c-isolated-proof-rerun-006/repair-continuation-003
+      BUNDLE_DIR: /tmp/p2c-proof-runner-entry-closed
+      BUNDLE_TAR: /tmp/p2c-proof-rerun-entry-closed.tar.gz
+      BASELINE_ROOT: /tmp/p2c-proof-baseline-entry-closed
+      ACTIVE_ROOT: /tmp/p2c-proof-active-entry-closed
+      EVIDENCE_DIR: /tmp/p2c-proof-evidence-entry-closed
+      NORMALIZED_ROOT: /tmp/p2c-repair-entry-closed-normalized
+      NODE_HOME: /tmp/p2c-node-entry-closed
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - name: Verify entry-closed authorization bindings and run exactly once
+        env:
+          EVENT_ACTION: ${{ github.event.action }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          HEAD_SHA: ${{ github.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib,subprocess
+          root=pathlib.Path('audit/pass2/p2c-isolated-proof-rerun-008')
+          receipt_path=root/'P2C_FINAL_ONE_RUN_PROOF_AUTHORIZATION_RECEIPT_026.json'
+          repair_path=root/'P2C_RECEIPT024_WRAPPER_STATIC_REPAIR_RECEIPT_025.json'
+          reseal_path=root/'P2C_EXHAUSTIVE_PREPROOF_STATIC_RESEAL_RECEIPT_023.json'
+          receipt=json.loads(receipt_path.read_text());repair=json.loads(repair_path.read_text());reseal=json.loads(reseal_path.read_text())
+          wrapper=pathlib.Path(receipt['corrected_wrapper_path']);finalizer=pathlib.Path(receipt['unchanged_finalizer_path']);policy=pathlib.Path(receipt['policy_compatibility_controller_path']);manifest=pathlib.Path(receipt['repaired_manifest_path']);patcher=pathlib.Path(receipt['repaired_patcher_path'])
+          assert receipt['authorized'] is True and receipt['status']=='AUTHORIZED_UNCONSUMED' and receipt['authorization_consumed'] is False
+          assert receipt['proof_run_count_authorized']==1 and receipt['proof_run_count_executed_under_this_receipt']==0
+          assert receipt['proof_execution_started'] is False and receipt['second_proof_run_authorized'] is False
+          assert receipt['current_main_sha']==os.environ['BASE_SHA']==os.environ['SOURCE_COMMIT']
+          assert os.environ['EVENT_ACTION']=='opened' and os.environ['RUN_ATTEMPT']=='1'
+          checkout_head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          assert os.environ['HEAD_SHA']==checkout_head
+          subprocess.run(['git','merge-base','--is-ancestor',os.environ['PR_HEAD_SHA'],checkout_head],check=True)
+          subprocess.run(['git','merge-base','--is-ancestor','eb83fef9c982d9f5658ebbadd402d0d9931da4b8',os.environ['PR_HEAD_SHA']],check=True)
+          assert subprocess.check_output(['git','hash-object',str(receipt_path)],text=True).strip()=='5042d0e1886ef02d02750fc4900c3a7f16ab67d9'
+          assert subprocess.check_output(['git','hash-object',str(repair_path)],text=True).strip()=='014900ec0a9618e1f130e5ecc3ff0a9b568142e1'
+          assert subprocess.check_output(['git','hash-object',str(reseal_path)],text=True).strip()=='ffdfd2e8a991c22bb95d68b57205486ec2734ead'
+          assert subprocess.check_output(['git','hash-object',str(wrapper)],text=True).strip()==receipt['corrected_wrapper_git_blob_sha']=='58b647d1c3c73f249541a29803609185fbf5da32'
+          assert subprocess.check_output(['git','hash-object',str(policy)],text=True).strip()=='3818d7ae0ea3bf2de98a23e334515ca0fd6da052'
+          assert subprocess.check_output(['git','hash-object',str(finalizer)],text=True).strip()==receipt['unchanged_finalizer_git_blob_sha']=='87e86c533d5d630121ded31334c46457ef4a7ad6'
+          assert hashlib.sha256(wrapper.read_bytes()).hexdigest()==receipt['corrected_wrapper_sha256']=='85d92efb342655524399dfcd1efb2e8b337650150c544ededcd4149b533b3550'
+          assert hashlib.sha256(policy.read_bytes()).hexdigest()==receipt['policy_compatibility_controller_sha256']=='1a553e229078239f0d17e25ca813788b4b25aa1d33fd511cdc179f1a6ebecb13'
+          assert hashlib.sha256(manifest.read_bytes()).hexdigest()==receipt['repaired_manifest_sha256']=='d53dc787298e8fec5f00227b680645dffd25774913ba34461d4969df6bf2b803'
+          assert hashlib.sha256(patcher.read_bytes()).hexdigest()==receipt['repaired_patcher_sha256']=='d4dd82c4787cb0464e6d7be1edff11174e0f05d7bd177a096300661f7fde2024'
+          assert repair['status']=='PASS_STATIC_PREFLIGHT' and repair['old_controller_path_replacement_count']==4 and repair['new_controller_path_expected_count']==4
+          assert reseal['status']=='PASS_STATIC_RESEALED' and reseal['repair_queue_count']==0 and reseal['compile_checks_passed']==5
+          for key in ('production_application_authorized','production_activation_authorized','current_map_change_authorized','persisted_data_change_authorized','merge_authorized','second_proof_run_authorized'):assert receipt[key] is False,key
+          changed=set(subprocess.check_output(['git','diff','--name-only',receipt['current_main_sha'],os.environ['PR_HEAD_SHA']],text=True).splitlines())
+          allowed={'.github/workflows/pass2-p2c-isolated-proof-rerun-006.yml','.github/workflows/pass2-p2c-exhaustive-preproof-discovery.yml','audit/a002-live-runtime.cjs'}
+          extras=sorted(p for p in changed if p not in allowed and not p.startswith('audit/pass2/p2c-isolated-proof-rerun-006/') and not p.startswith('audit/pass2/p2c-isolated-proof-rerun-008/'))
+          assert not extras,extras
+          assert not any('/__pycache__/' in p or p.endswith('.pyc') for p in changed)
+          PY
+          bash -n "$AUDIT_DIR/rerun008-controller-main-receipt024.sh"
+          bash -n "$AUDIT_DIR/rerun008-controller-finalize.sh"
+          bash "$AUDIT_DIR/rerun008-controller-main-receipt024.sh"
+      - name: Finalize truth and rollback boundary
+        if: always()
+        run: bash "$AUDIT_DIR/rerun008-controller-finalize.sh"
+      - name: Upload complete entry-closed proof evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2c-entry-closed-final-proof-evidence
+          path: /tmp/p2c-proof-evidence-entry-closed
