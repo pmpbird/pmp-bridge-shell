@@ -63,7 +63,7 @@ jobs:
           manifest_bytes=manifest_path.read_bytes()
           manifest=json.loads(manifest_bytes)
           manifest_sha=hashlib.sha256(manifest_bytes).hexdigest()
-          assert manifest_sha=='fb87f6dfc4a46cc07927b9ba78e1f8ac657eed2d16b4764b63f5ecb8c787e238'
+          assert manifest_sha=='d53dc787298e8fec5f00227b680645dffd25774913ba34461d4969df6bf2b803'
 
           encoded=b''.join((deps/f'bundle/part0{i}.b64').read_bytes() for i in range(4))
           base=base64.b64decode(b''.join(encoded.split()))
