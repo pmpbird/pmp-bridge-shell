@@ -1,4 +1,4 @@
-name: Pass 2 P2-C Receipt 018 Manifest Record Sweep Diagnostic Only
+name: Pass 2 P2-C Receipt 018 Transformer Validation Diagnostic Only
 
 on:
   pull_request:
@@ -8,14 +8,17 @@ permissions:
   contents: read
 
 jobs:
-  manifest-sweep-diagnostic:
+  transformer-validation-diagnostic:
     if: github.event.action == 'opened' && github.run_attempt == 1
     runs-on: ubuntu-24.04
     env:
       SOURCE_COMMIT: 98b2e293717b81289e3b372d1fff8f5832d29fd6
       DEPS_DIR: audit/pass2/p2c-isolated-proof-rerun-006
-      EVIDENCE_DIR: /tmp/p2c-receipt018-manifest-sweep
-      BUNDLE_DIR: /tmp/p2c-receipt018-manifest-bundle
+      EVIDENCE_DIR: /tmp/p2c-receipt018-transformer-validation
+      BUNDLE_DIR: /tmp/p2c-receipt018-transformer-bundle
+      SOURCE_DIR: /tmp/p2c-receipt018-transformer-sources
+      NORMALIZED_ROOT: /tmp/p2c-receipt018-transformer-output
+      TRANSPORT_DIR: /tmp/p2c-transformer-transport-018
     steps:
       - uses: actions/checkout@v4
         with:
@@ -23,24 +26,44 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Compare 19 normalization sources in manifest order only
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - name: Run transformer and validate 19 transformed records only
         run: |
           set -euo pipefail
-          rm -rf "$EVIDENCE_DIR" "$BUNDLE_DIR"
-          mkdir -p "$EVIDENCE_DIR" "$BUNDLE_DIR"
+          rm -rf "$EVIDENCE_DIR" "$BUNDLE_DIR" "$SOURCE_DIR" "$NORMALIZED_ROOT" "$TRANSPORT_DIR"
+          mkdir -p "$EVIDENCE_DIR" "$BUNDLE_DIR" "$SOURCE_DIR" "$NORMALIZED_ROOT" "$TRANSPORT_DIR"
+
+          npm install -g typescript@5.8.3 >/dev/null
+          TS_GLOBAL_MODULE="$(npm root -g)/typescript"
+          TS_FIXED_MODULE="/opt/nvm/versions/node/v22.16.0/lib/node_modules/typescript"
+          test -f "$TS_GLOBAL_MODULE/package.json"
+          test "$(node --no-global-search-paths -e 'console.log(require(process.argv[1]).version)' "$TS_GLOBAL_MODULE/package.json")" = "5.8.3"
+          sudo mkdir -p "$(dirname "$TS_FIXED_MODULE")"
+          sudo rm -rf "$TS_FIXED_MODULE"
+          sudo ln -s "$TS_GLOBAL_MODULE" "$TS_FIXED_MODULE"
+          test -L "$TS_FIXED_MODULE"
+
+          cp "$DEPS_DIR"/transpile_async_sources.part*.b64 "$TRANSPORT_DIR"/
+          python3 "$DEPS_DIR/repair009_transport_fidelity_controller003.py" "$TRANSPORT_DIR" > "$EVIDENCE_DIR/transport-controller003.json"
+          TRANSFORMER_JS="$TRANSPORT_DIR/transpile_async_sources.decoded.js"
+          test "$(sha256sum "$TRANSFORMER_JS" | awk '{print $1}')" = "c5ffb899637aa45feb64b604dca426503f99fc9a34f05a1c83a12d0cfef3d0dd"
+          test "$(git hash-object "$TRANSFORMER_JS")" = "06a33bfd0bed8cc4b914b519bab606ddcd719cd1"
+
           python3 - <<'PY'
           import base64, hashlib, json, os, pathlib, subprocess, tarfile
 
           deps=pathlib.Path(os.environ['DEPS_DIR'])
           evidence=pathlib.Path(os.environ['EVIDENCE_DIR'])
           bundle_dir=pathlib.Path(os.environ['BUNDLE_DIR'])
+          source_dir=pathlib.Path(os.environ['SOURCE_DIR'])
           source_commit=os.environ['SOURCE_COMMIT']
           manifest_path=deps/'repair009-normalized-source-manifest-002.json'
           manifest_bytes=manifest_path.read_bytes()
           manifest=json.loads(manifest_bytes)
-          expected_manifest_sha='fb87f6dfc4a46cc07927b9ba78e1f8ac657eed2d16b4764b63f5ecb8c787e238'
-          actual_manifest_sha=hashlib.sha256(manifest_bytes).hexdigest()
-          assert actual_manifest_sha==expected_manifest_sha,(actual_manifest_sha,expected_manifest_sha)
+          manifest_sha=hashlib.sha256(manifest_bytes).hexdigest()
+          assert manifest_sha=='fb87f6dfc4a46cc07927b9ba78e1f8ac657eed2d16b4764b63f5ecb8c787e238'
 
           encoded=b''.join((deps/f'bundle/part0{i}.b64').read_bytes() for i in range(4))
           base=base64.b64decode(b''.join(encoded.split()))
@@ -50,47 +73,64 @@ jobs:
           ))+part062
           bundle_tar=evidence/'reconstructed-bundle.tar.gz'
           bundle_tar.write_bytes(base+suffix)
-          assert bundle_tar.stat().st_size==61478,bundle_tar.stat().st_size
+          assert bundle_tar.stat().st_size==61478
           assert hashlib.sha256(bundle_tar.read_bytes()).hexdigest()=='a644ad9ea538117f8aa6b01ac6988ac8d938a64fb170fa2a8f071afebc77e500'
           with tarfile.open(bundle_tar,'r:gz') as tf:
             tf.extractall(bundle_dir)
 
-          checked=[]
-          mismatch=None
+          records=[]
           for index,row in enumerate(manifest['records'],1):
+            target=source_dir/row['path']
+            target.parent.mkdir(parents=True,exist_ok=True)
             if row['kind']=='document-inline':
-              source=bundle_dir/'after'/row['path']
-              data=source.read_bytes()
-              source_read=str(source)
+              data=(bundle_dir/'after'/row['path']).read_bytes()
+              origin=f'bundle-after:{row["path"]}'
             else:
-              source_read=f'git:{source_commit}:{row["path"]}'
               data=subprocess.check_output(['git','show',f'{source_commit}:{row["path"]}'])
+              origin=f'git:{source_commit}:{row["path"]}'
             actual_sha=hashlib.sha256(data).hexdigest()
-            actual_bytes=len(data)
-            item={
-              'record_index_one_based':index,
-              'path':row['path'],
-              'kind':row['kind'],
-              'source_file_actually_read':source_read,
-              'expected_original_sha256':row['original_sha256'],
-              'actual_sha256':actual_sha,
-              'expected_original_bytes':row['original_bytes'],
-              'actual_bytes':actual_bytes,
-              'match':actual_sha==row['original_sha256'] and actual_bytes==row['original_bytes'],
-            }
-            checked.append(item)
-            if not item['match']:
-              mismatch=item
-              break
+            assert actual_sha==row['original_sha256'],(index,row['path'],actual_sha,row['original_sha256'])
+            assert len(data)==row['original_bytes'],(index,row['path'],len(data),row['original_bytes'])
+            target.write_bytes(data)
+            records.append({'kind':row['kind'],'path':row['path'],'policy_original_sha256':row['original_sha256'],'quarantined':False,'realm':row['realm'],'source_path':str(target),'source_origin':origin})
 
+          normalization_input={'type':'PMP_REPAIR009_ASYNC_SOURCE_NORMALIZATION_INPUT_002','records':records}
+          input_path=evidence/'normalization-input-018.json'
+          input_path.write_text(json.dumps(normalization_input,indent=2,sort_keys=True)+'\n')
+          PY
+
+          node "$TRANSPORT_DIR/transpile_async_sources.decoded.js" "$EVIDENCE_DIR/normalization-input-018.json" "$NORMALIZED_ROOT" > "$EVIDENCE_DIR/async-source-normalization-report-018.json"
+
+          python3 - <<'PY'
+          import json, os, pathlib
+          evidence=pathlib.Path(os.environ['EVIDENCE_DIR'])
+          deps=pathlib.Path(os.environ['DEPS_DIR'])
+          report=json.loads((evidence/'async-source-normalization-report-018.json').read_text())
+          manifest=json.loads((deps/'repair009-normalized-source-manifest-002.json').read_text())
+          assert report['type']=='PMP_REPAIR009_ASYNC_SOURCE_NORMALIZATION_REPORT_002'
+          assert report['typescript_version']=='5.8.3'
+          assert len(report['records'])==19
+          by={x['path']:x for x in report['records']}
+          validated=[]
+          for index,row in enumerate(manifest['records'],1):
+            got=by[row['path']]
+            checks={
+              'original_sha256':got['original_sha256']==row['original_sha256'],
+              'transformed_sha256':got['transformed_sha256']==row['transformed_sha256'],
+              'original_bytes':got['original_bytes']==row['original_bytes'],
+              'transformed_bytes':got['transformed_bytes']==row['transformed_bytes'],
+              'residual_async_nodes_zero':got['residual_async_nodes']==0,
+              'residual_await_nodes_zero':got['residual_await_nodes']==0,
+            }
+            validated.append({'record_index_one_based':index,'path':row['path'],'checks':checks,'actual':got,'expected':row,'pass':all(checks.values())})
+          failures=[x for x in validated if not x['pass']]
           out={
-            'type':'PMP_P2C_RECEIPT018_MANIFEST_ORDER_SWEEP_DIAGNOSTIC_V1',
-            'status':'FIRST_MISMATCH_FOUND' if mismatch else 'ALL_19_MATCH',
-            'manifest_sha256':actual_manifest_sha,
-            'records_checked':len(checked),
-            'first_mismatch':mismatch,
-            'next_command_if_all_match':'node /tmp/p2c-transformer-transport-006/transpile_async_sources.decoded.js /tmp/p2c-repair009-normalization-input-006.json "$NORMALIZED_ROOT"',
-            'transformer_executed':False,
+            'type':'PMP_P2C_RECEIPT018_TRANSFORMER_VALIDATION_DIAGNOSTIC_V1',
+            'status':'PASS_ALL_19_TRANSFORMED_RECORDS' if not failures else 'FAIL_TRANSFORMED_RECORD_VALIDATION',
+            'records_validated':len(validated),
+            'failures':failures,
+            'validated_records':validated,
+            'transformer_executed':True,
             'repair009_controller_executed':False,
             'compile_checks_executed':False,
             'git_worktree_add_executed':False,
@@ -101,15 +141,16 @@ jobs:
             'production_files_modified':False,
             'current_map_modified':False,
             'persisted_data_modified':False,
-            'authorization_bindings_modified':False,
-            'checked_records':checked,
+            'next_command_if_pass':'python3 audit/pass2/p2c-isolated-proof-rerun-006/repair_runner_009_controller002.py --bundle-root <BUNDLE_DIR> --normalized-root <NORMALIZED_ROOT> --normalization-manifest audit/pass2/p2c-isolated-proof-rerun-006/repair009-normalized-source-manifest-002.json',
           }
-          (evidence/'manifest-order-sweep.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          (evidence/'transformer-validation-diagnostic.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
           print(json.dumps(out,indent=2,sort_keys=True))
+          if failures:
+            raise SystemExit(1)
           PY
-      - name: Upload diagnostic report only
+      - name: Upload transformer diagnostic evidence only
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: p2c-receipt018-manifest-order-sweep-diagnostic
-          path: /tmp/p2c-receipt018-manifest-sweep
+          name: p2c-receipt018-transformer-validation-diagnostic
+          path: /tmp/p2c-receipt018-transformer-validation
