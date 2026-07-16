@@ -1,4 +1,4 @@
-name: Pass 2 Browser Installation Diagnostic Only
+name: Pass 2 Browser Setup Closure Diagnostic Only
 
 on:
   pull_request:
@@ -8,100 +8,73 @@ permissions:
   contents: read
 
 jobs:
-  browser-install-diagnostic:
+  browser-setup-closure:
     if: github.event.action == 'opened' && github.run_attempt == 1
     runs-on: ubuntu-24.04
     env:
-      NODE_HOME: /tmp/p2c-node-browser-diagnostic
-      EVIDENCE_DIR: /tmp/p2c-browser-install-diagnostic
-      PLAYWRIGHT_BROWSERS_PATH: /tmp/p2c-playwright-browsers
+      SOURCE_COMMIT: 98b2e293717b81289e3b372d1fff8f5832d29fd6
+      AUDIT_DIR: audit/pass2/p2c-isolated-proof-rerun-008
+      DEPS_DIR: audit/pass2/p2c-isolated-proof-rerun-006
+      REPAIR_DIR: audit/pass2/p2c-isolated-proof-rerun-006/repair-continuation-003
+      BUNDLE_DIR: /tmp/p2c-browser-setup-bundle-031
+      BUNDLE_TAR: /tmp/p2c-browser-setup-bundle-031.tar.gz
+      BASELINE_ROOT: /tmp/p2c-browser-setup-baseline-031
+      ACTIVE_ROOT: /tmp/p2c-browser-setup-active-031
+      EVIDENCE_DIR: /tmp/p2c-browser-setup-evidence-031
+      NORMALIZED_ROOT: /tmp/p2c-browser-setup-normalized-031
+      NODE_HOME: /tmp/p2c-browser-setup-node-031
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       - uses: actions/setup-node@v4
         with:
           node-version: '22.16.0'
-      - name: Diagnose and validate isolated Chromium installation
+      - name: Run repaired chain through runtime receipt and stop before preparation
+        env:
+          EVENT_ACTION: ${{ github.event.action }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          HEAD_SHA: ${{ github.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          RUN_ID: ${{ github.run_id }}
+          P2C_STOP_BEFORE_PREPARATION: '1'
         run: |
-          set -uo pipefail
-          rm -rf "$NODE_HOME" "$EVIDENCE_DIR" "$PLAYWRIGHT_BROWSERS_PATH"
-          mkdir -p "$NODE_HOME" "$EVIDENCE_DIR" "$PLAYWRIGHT_BROWSERS_PATH"
-          cd "$NODE_HOME"
-
-          npm init -y >"$EVIDENCE_DIR/npm-init.stdout" 2>"$EVIDENCE_DIR/npm-init.stderr"
-          init_rc=$?
-          npm install --no-save playwright@1.55.0 >"$EVIDENCE_DIR/npm-install.stdout" 2>"$EVIDENCE_DIR/npm-install.stderr"
-          npm_rc=$?
-
-          original_rc=999
-          fallback_rc=999
-          launch_rc=999
-          selected_method=none
-
-          if [ "$npm_rc" -eq 0 ]; then
-            "$NODE_HOME/node_modules/.bin/playwright" install --with-deps chromium >"$EVIDENCE_DIR/original-install.stdout" 2>"$EVIDENCE_DIR/original-install.stderr"
-            original_rc=$?
-            if [ "$original_rc" -eq 0 ]; then
-              selected_method=install-with-deps
-            else
-              "$NODE_HOME/node_modules/.bin/playwright" install chromium >"$EVIDENCE_DIR/fallback-install.stdout" 2>"$EVIDENCE_DIR/fallback-install.stderr"
-              fallback_rc=$?
-              if [ "$fallback_rc" -eq 0 ]; then
-                selected_method=install-without-deps
-              fi
-            fi
-          fi
-
-          if [ "$selected_method" != none ]; then
-            node - <<'JS' >"$EVIDENCE_DIR/launch.stdout" 2>"$EVIDENCE_DIR/launch.stderr"
-          const { chromium } = require('/tmp/p2c-node-browser-diagnostic/node_modules/playwright');
-          (async () => {
-            const browser = await chromium.launch({headless: true});
-            const page = await browser.newPage();
-            await page.setContent('<title>p2c-browser-install-diagnostic</title>');
-            const title = await page.title();
-            if (title !== 'p2c-browser-install-diagnostic') throw new Error(`unexpected title: ${title}`);
-            console.log(JSON.stringify({status:'PASS', browserVersion:browser.version(), title}));
-            await browser.close();
-          })().catch(err => { console.error(err && err.stack || String(err)); process.exit(1); });
-          JS
-            launch_rc=$?
-          fi
-
-          export init_rc npm_rc original_rc fallback_rc launch_rc selected_method
-          node - <<'JS'
-          const fs = require('fs');
-          const path = require('path');
-          const e = process.env.EVIDENCE_DIR;
-          const read = name => {
-            const p = path.join(e, name);
-            return fs.existsSync(p) ? fs.readFileSync(p, 'utf8') : '';
-          };
-          const out = {
-            type: 'PMP_P2C_BROWSER_INSTALL_DIAGNOSTIC_030',
-            status: Number(process.env.launch_rc) === 0 ? 'PASS' : 'FAIL',
-            npm_init_exit_code: Number(process.env.init_rc),
-            npm_install_exit_code: Number(process.env.npm_rc),
-            original_install_command: 'playwright install --with-deps chromium',
-            original_install_exit_code: Number(process.env.original_rc),
-            fallback_install_command: 'playwright install chromium',
-            fallback_install_exit_code: Number(process.env.fallback_rc),
-            selected_method: process.env.selected_method,
-            browser_launch_exit_code: Number(process.env.launch_rc),
-            npm_install_stderr_tail: read('npm-install.stderr').split('\n').slice(-80),
-            original_install_stderr_tail: read('original-install.stderr').split('\n').slice(-120),
-            fallback_install_stderr_tail: read('fallback-install.stderr').split('\n').slice(-120),
-            launch_stderr_tail: read('launch.stderr').split('\n').slice(-80),
-            disposable_preparation_executed: false,
-            browser_proof_executed: false,
-            proof_run_count_executed: 0
-          };
-          fs.writeFileSync(path.join(e, 'browser-install-diagnostic-030.json'), JSON.stringify(out, null, 2) + '\n');
-          console.log(JSON.stringify(out, null, 2));
-          if (out.status !== 'PASS') process.exit(1);
-          JS
-      - name: Upload browser-install diagnostic evidence
+          set -euo pipefail
+          rm -rf "$EVIDENCE_DIR"
+          mkdir -p "$EVIDENCE_DIR"
+          bash "$AUDIT_DIR/rerun008-controller-main-receipt024.sh" 2>&1 | tee "$EVIDENCE_DIR/browser-setup-chain-console-031.log"
+          test -f /tmp/p2c-proof-runtime-authorization-receipt-008.json
+          test "$(sha256sum /tmp/p2c-proof-runtime-authorization-receipt-008.json | awk '{print $1}')" = "0bbd7c4bcace7101237b9a0b8b612bf90bebd9697b95efc90a61bb6cdf438f26"
+          test ! -e "$EVIDENCE_DIR/preparation.json"
+          test ! -e "$EVIDENCE_DIR/proof-run-started.lock"
+          grep -F 'P2C_BROWSER_SETUP_HARD_STOP_BEFORE_PREPARATION' "$EVIDENCE_DIR/browser-setup-chain-console-031.log"
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib
+          e=pathlib.Path(os.environ['EVIDENCE_DIR'])
+          runtime=pathlib.Path('/tmp/p2c-proof-runtime-authorization-receipt-008.json')
+          out={
+            'type':'PMP_P2C_BROWSER_SETUP_CLOSURE_031',
+            'status':'PASS',
+            'runtime_receipt_present':runtime.is_file(),
+            'runtime_receipt_sha256':hashlib.sha256(runtime.read_bytes()).hexdigest(),
+            'reached_hard_stop_before_preparation':True,
+            'disposable_preparation_executed':False,
+            'browser_proof_executed':False,
+            'proof_run_count_executed':0,
+            'production_modified':False,
+            'current_map_modified':False,
+            'persisted_data_modified':False,
+          }
+          (e/'browser-setup-closure-031.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          print(json.dumps(out,indent=2,sort_keys=True))
+          PY
+      - name: Upload browser-setup closure evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: p2c-browser-install-diagnostic-030
-          path: /tmp/p2c-browser-install-diagnostic
+          name: p2c-browser-setup-closure-031
+          path: /tmp/p2c-browser-setup-evidence-031
