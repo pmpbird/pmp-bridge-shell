@@ -58,7 +58,7 @@ jobs:
           (e/'input.json').write_text(json.dumps({'type':'PMP_REPAIR009_ASYNC_SOURCE_NORMALIZATION_INPUT_002','records':rec},indent=2,sort_keys=True)+'\n')
           PY
           node "$TRANSPORT/transpile_async_sources.decoded.js" "$EVIDENCE/input.json" "$NORMALIZED" > "$EVIDENCE/transformer-report.json"
-          python3 "$AUDIT_DIR/exhaustive_preproof_failure_discovery_021.py" --bundle-root "$BUNDLE" --normalized-root "$NORMALIZED" --manifest "$DEPS_DIR/repair009-normalized-source-manifest-002.json" --controller "$DEPS_DIR/repair_runner_009_controller002.py" --repo-root . --output "$EVIDENCE/exhaustive-preproof-report-021.json"
+          python3 "$AUDIT_DIR/exhaustive_preproof_failure_discovery_021.py" --bundle-root "$BUNDLE" --normalized-root "$NORMALIZED" --manifest "$DEPS_DIR/repair009-normalized-source-manifest-002.json" --controller "$DEPS_DIR/repair_runner_009_controller002_policycompat_022.py" --repo-root . --output "$EVIDENCE/exhaustive-preproof-report-021.json"
       - name: Upload exhaustive discovery evidence
         if: always()
         uses: actions/upload-artifact@v4
