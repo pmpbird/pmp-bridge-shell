@@ -20,8 +20,19 @@ import pathlib,sys
 path=pathlib.Path(sys.argv[1])
 old_patcher,new_patcher,old_manifest,new_manifest,old_controller,new_controller,old_controller_sha,new_controller_sha,old_allowlist,new_allowlist=sys.argv[2:]
 text=path.read_text()
-expected_counts={old_patcher:1,old_manifest:1,old_controller:4,old_controller_sha:1,old_allowlist:1}
-labels={old_patcher:'PATCHER_SHA',old_manifest:'MANIFEST_SHA',old_controller:'CONTROLLER_PATH',old_controller_sha:'CONTROLLER_SHA',old_allowlist:'INTERNAL_ALLOWLIST'}
+old_install='''rm -rf "$NODE_HOME"; mkdir -p "$NODE_HOME"; cd "$NODE_HOME"
+npm init -y >/dev/null
+npm install --no-save playwright@1.55.0
+"$NODE_HOME/node_modules/.bin/playwright" install --with-deps chromium'''
+new_install='''rm -rf "$NODE_HOME"; mkdir -p "$NODE_HOME"
+(
+  cd "$NODE_HOME"
+  npm init -y >/dev/null
+  npm install --no-save playwright@1.55.0
+  "$NODE_HOME/node_modules/.bin/playwright" install --with-deps chromium
+)'''
+expected_counts={old_patcher:1,old_manifest:1,old_controller:4,old_controller_sha:1,old_allowlist:1,old_install:1}
+labels={old_patcher:'PATCHER_SHA',old_manifest:'MANIFEST_SHA',old_controller:'CONTROLLER_PATH',old_controller_sha:'CONTROLLER_SHA',old_allowlist:'INTERNAL_ALLOWLIST',old_install:'BROWSER_INSTALL_CWD'}
 for old,expected in expected_counts.items():
     actual=text.count(old)
     if actual!=expected:raise SystemExit(f'RECEIPT024_{labels[old]}_BINDING_COUNT_INVALID:{actual}:EXPECTED:{expected}')
@@ -30,9 +41,11 @@ text=text.replace(old_manifest,new_manifest,1)
 text=text.replace(old_controller,new_controller)
 text=text.replace(old_controller_sha,new_controller_sha,1)
 text=text.replace(old_allowlist,new_allowlist,1)
+text=text.replace(old_install,new_install,1)
 if text.count(new_controller)!=4:raise SystemExit(f'RECEIPT024_NEW_CONTROLLER_PATH_BINDING_COUNT_INVALID:{text.count(new_controller)}')
 if text.count(new_controller_sha)!=1:raise SystemExit(f'RECEIPT024_NEW_CONTROLLER_SHA_BINDING_COUNT_INVALID:{text.count(new_controller_sha)}')
 if text.count(new_allowlist)!=1:raise SystemExit(f'RECEIPT024_NEW_INTERNAL_ALLOWLIST_COUNT_INVALID:{text.count(new_allowlist)}')
+if text.count(new_install)!=1:raise SystemExit(f'RECEIPT024_NEW_BROWSER_INSTALL_CWD_COUNT_INVALID:{text.count(new_install)}')
 path.write_text(text)
 PY
 bash -n "$MATERIALIZED_CONTROLLER"
