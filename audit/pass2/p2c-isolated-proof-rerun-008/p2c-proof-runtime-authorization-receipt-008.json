@@ -11,6 +11,6 @@
   "production_storage_change_authorized": false,
   "proof_run_count_authorized": 1,
   "second_proof_run_authorized": false,
-  "source_repository_commit": "98b2e293717b81289e3b372d1fff8f5832d29fd6",
+  "source_repository_commit": "c618596f2b5c99ca7f355153a5bd31268170df80",
   "type": "PMP_P2C_PROOF_RUNTIME_AUTHORIZATION_RECEIPT_008_COMPAT"
 }
