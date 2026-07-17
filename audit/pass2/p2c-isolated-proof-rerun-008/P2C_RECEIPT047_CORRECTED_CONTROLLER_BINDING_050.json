@@ -1,0 +1,10 @@
+{
+  "status": "STATIC_CORRECTION_ONLY",
+  "receipt": "047",
+  "correct_formal_controller_wrapper_git_blob_sha": "3de2ba9329ea37a3c7d8524b92a9603cb47ef875",
+  "incorrect_directive_044_value": "3de2ba9329ea37c923677e4c287393368eec71",
+  "proof_run_count_executed": 0,
+  "formal_proof_execution_authorized": false,
+  "merge_authorized": false,
+  "production_activation_authorized": false
+}
