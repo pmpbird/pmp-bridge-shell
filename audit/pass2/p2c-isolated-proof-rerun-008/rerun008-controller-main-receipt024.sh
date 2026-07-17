@@ -61,6 +61,16 @@ if text.count(new_allowlist)!=1:raise SystemExit(f'RECEIPT024_NEW_INTERNAL_ALLOW
 if text.count(new_install)!=1:raise SystemExit(f'RECEIPT024_NEW_BROWSER_INSTALL_CWD_COUNT_INVALID:{text.count(new_install)}')
 path.write_text(text)
 PY
+if [ "${P2C_REHEARSAL_SKIP_AUTHORIZATION:-0}" = "1" ]; then
+  python3 - "$MATERIALIZED_CONTROLLER" <<'PY'
+import pathlib,sys
+path=pathlib.Path(sys.argv[1])
+text=path.read_text()
+marker='echo "=== Reconstruct checksum-bound base runner and apply Repairs 003 through 008 exactly once ==="'
+if text.count(marker)!=1:raise SystemExit(f'REHEARSAL_RECONSTRUCTION_MARKER_COUNT_INVALID:{text.count(marker)}')
+path.write_text('#!/usr/bin/env bash\nset -euo pipefail\n'+marker+text.split(marker,1)[1])
+PY
+fi
 if [ "${P2C_STOP_BEFORE_PREPARATION:-0}" = "1" ]; then
   python3 - "$MATERIALIZED_CONTROLLER" <<'PY'
 import pathlib,sys
