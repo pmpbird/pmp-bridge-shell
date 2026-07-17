@@ -22,6 +22,7 @@ jobs:
       EVIDENCE_DIR: /tmp/p2c-rehearsal-discovery-evidence
       NORMALIZED_ROOT: /tmp/p2c-rehearsal-discovery-normalized
       NODE_HOME: /tmp/p2c-rehearsal-discovery-node
+      P2C_REHEARSAL_SKIP_AUTHORIZATION: '1'
       P2C_STOP_BEFORE_PREPARATION: '1'
       EVENT_ACTION: ${{ github.event.action }}
       RUN_ATTEMPT: ${{ github.run_attempt }}
