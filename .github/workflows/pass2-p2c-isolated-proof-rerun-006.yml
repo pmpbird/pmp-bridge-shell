@@ -1,4 +1,4 @@
-name: Pass 2 Receipt 038 Exactly-One Formal Proof
+name: Pass 2 Receipt 047 Exactly-One Formal Proof
 
 on:
   pull_request:
@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 jobs:
-  isolated-proof-receipt038:
+  isolated-proof-receipt047:
     if: github.event.action == 'opened' && github.run_attempt == 1
     runs-on: ubuntu-24.04
     env:
@@ -16,13 +16,13 @@ jobs:
       AUDIT_DIR: audit/pass2/p2c-isolated-proof-rerun-008
       DEPS_DIR: audit/pass2/p2c-isolated-proof-rerun-006
       REPAIR_DIR: audit/pass2/p2c-isolated-proof-rerun-006/repair-continuation-003
-      BUNDLE_DIR: /tmp/p2c-proof-runner-receipt038
-      BUNDLE_TAR: /tmp/p2c-proof-rerun-receipt038.tar.gz
-      BASELINE_ROOT: /tmp/p2c-proof-baseline-receipt038
-      ACTIVE_ROOT: /tmp/p2c-proof-active-receipt038
-      EVIDENCE_DIR: /tmp/p2c-proof-evidence-receipt038
-      NORMALIZED_ROOT: /tmp/p2c-repair-receipt038-normalized
-      NODE_HOME: /tmp/p2c-node-receipt038
+      BUNDLE_DIR: /tmp/p2c-proof-runner-receipt047
+      BUNDLE_TAR: /tmp/p2c-proof-rerun-receipt047.tar.gz
+      BASELINE_ROOT: /tmp/p2c-proof-baseline-receipt047
+      ACTIVE_ROOT: /tmp/p2c-proof-active-receipt047
+      EVIDENCE_DIR: /tmp/p2c-proof-evidence-receipt047
+      NORMALIZED_ROOT: /tmp/p2c-repair-receipt047-normalized
+      NODE_HOME: /tmp/p2c-node-receipt047
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,7 +33,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22.16.0'
-      - name: Verify Receipt 038 bindings and execute exactly once
+      - name: Verify Receipt 047 bindings and execute exactly once
         env:
           EVENT_ACTION: ${{ github.event.action }}
           RUN_ATTEMPT: ${{ github.run_attempt }}
@@ -41,13 +41,13 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           RUN_ID: ${{ github.run_id }}
-        run: bash "$AUDIT_DIR/run_receipt038_exactly_one_formal_proof.sh"
+        run: bash "$AUDIT_DIR/run_receipt047_exactly_one_formal_proof.sh"
       - name: Finalize truth and rollback boundary
         if: always()
         run: bash "$AUDIT_DIR/rerun008-controller-finalize.sh"
-      - name: Upload complete Receipt 038 proof evidence
+      - name: Upload complete Receipt 047 proof evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: p2c-receipt038-exactly-one-formal-proof-evidence
-          path: /tmp/p2c-proof-evidence-receipt038
+          name: p2c-receipt047-exactly-one-formal-proof-evidence
+          path: /tmp/p2c-proof-evidence-receipt047
