@@ -1,0 +1,18 @@
+{
+  "type": "PMP_P2C_REHEARSAL_PASS_RECEIPT_035",
+  "status": "PASS",
+  "rehearsal_pass_number": 1,
+  "workflow_name": "Pass 2 Full Proof Rehearsal and Equivalence Closure",
+  "workflow_run_id": 29544432511,
+  "workflow_run_number": 4,
+  "head_commit": "a580690939a7819aaf5b7bc0a0bd271d606c5a00",
+  "source_repository_commit": "98b2e293717b81289e3b372d1fff8f5832d29fd6",
+  "reconstruction_completed": true,
+  "source_identity_inspection_completed": true,
+  "validator_sha256": "3a18ce186a2f7270432692accf64e5d35491cdb52f20b02ead5757ca2d2adc07",
+  "disposable_preparation_executed": false,
+  "formal_proof_executed": false,
+  "production_modified": false,
+  "proof_run_count_executed": 0,
+  "second_consecutive_pass_required": true
+}
