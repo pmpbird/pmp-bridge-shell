@@ -1,0 +1,18 @@
+{
+  "authorization_bytes": 2504,
+  "authorization_path": "audit/pass2/p2c-isolated-proof-rerun-008/P2C_FRESH_EXACTLY_ONE_FORMAL_PROOF_AUTHORIZATION_RECEIPT_038.json",
+  "authorization_sha256": "cd37eba96fffe9e99e68037301520a0ceafeb7ff2dd41efb35852dc5b48fec08",
+  "authorization_state_ancestor": "c736ad8e114cbd307d2f8b676e782918df86d660",
+  "current_map_change_authorized": false,
+  "equivalence_manifest_sha256": "fc5089a4b6ee92f5092fc806f6838e979087529f9699e400273d8f0e3a34968f",
+  "formal_proof_execution_authorized": false,
+  "formal_proof_pr_open_authorized": false,
+  "merge_authorized": false,
+  "persisted_data_change_authorized": false,
+  "production_activation_authorized": false,
+  "proof_run_count_executed": 0,
+  "rule": "Static preflight must verify every bound path, blob, SHA-256, repository ancestor, base SHA, source commit, and false safety boundary before any separate formal-proof PR-open or execution directive may be considered.",
+  "second_proof_run_authorized": false,
+  "status": "SEALED_STATIC_PREFLIGHT_PENDING",
+  "type": "PMP_P2C_FRESH_FORMAL_PROOF_AUTHORIZATION_SEAL_RECEIPT_039"
+}
