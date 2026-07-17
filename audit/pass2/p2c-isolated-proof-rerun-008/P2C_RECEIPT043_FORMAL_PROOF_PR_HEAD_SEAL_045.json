@@ -10,7 +10,7 @@
   "proof_run_count_authorized": 1,
   "proof_run_count_executed": 0,
   "rerun_authorized": false,
-  "sealed_parent_commit": "7146313c36faebc2b090c5d37c20a53865f0a61c",
+  "sealed_parent_commit": "4af72e33f77f7d7daa03b47b4f63d5f9c1fa09fc",
   "second_proof_run_authorized": false,
   "status": "SEALED_EXACT_FINAL_PR_HEAD",
   "type": "PMP_P2C_RECEIPT043_FORMAL_PROOF_PR_HEAD_SEAL_045"
