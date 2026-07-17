@@ -3,9 +3,9 @@ set -euo pipefail
 python3 - <<'PY'
 import hashlib,json,os,pathlib,subprocess
 root=pathlib.Path('audit/pass2/p2c-isolated-proof-rerun-008')
-auth_path=root/'P2C_FRESH_EXACTLY_ONE_FORMAL_PROOF_AUTHORIZATION_RECEIPT_038.json'
-directive_path=root/'P2C_RECEIPT038_EXACTLY_ONE_FORMAL_PROOF_EXECUTION_DIRECTIVE_041.json'
-head_seal_path=root/'P2C_RECEIPT038_FORMAL_PROOF_PR_HEAD_SEAL_042.json'
+auth_path=root/'P2C_REFRESHED_EXACTLY_ONE_FORMAL_PROOF_AUTHORIZATION_RECEIPT_043.json'
+directive_path=root/'P2C_RECEIPT043_EXACTLY_ONE_FORMAL_PROOF_EXECUTION_DIRECTIVE_044.json'
+head_seal_path=root/'P2C_RECEIPT043_FORMAL_PROOF_PR_HEAD_SEAL_045.json'
 manifest_path=root/'P2C_REHEARSAL_EQUIVALENCE_MANIFEST_036.json'
 equivalence_seal_path=root/'P2C_REHEARSAL_EQUIVALENCE_SEAL_RECEIPT_037.json'
 auth=json.loads(auth_path.read_text()); directive=json.loads(directive_path.read_text()); head_seal=json.loads(head_seal_path.read_text())
@@ -47,7 +47,7 @@ extras=sorted(p for p in changed if p not in allowed and not p.startswith('audit
 assert not extras,extras
 assert not any('/__pycache__/' in p or p.endswith('.pyc') for p in changed)
 pathlib.Path(os.environ['EVIDENCE_DIR']).mkdir(parents=True,exist_ok=True)
-(pathlib.Path(os.environ['EVIDENCE_DIR'])/'receipt038-execution-binding-check.json').write_text(json.dumps({
+(pathlib.Path(os.environ['EVIDENCE_DIR'])/'receipt043-execution-binding-check.json').write_text(json.dumps({
   'status':'PASS','authorization_receipt_sha256':sha(auth_path),'directive_sha256':sha(directive_path),
   'base_sha':os.environ['BASE_SHA'],'pr_head_sha':pr_head,'checkout_head':checkout_head,
   'sealed_parent_commit':head_seal['sealed_parent_commit'],'proof_run_count_authorized':1,
