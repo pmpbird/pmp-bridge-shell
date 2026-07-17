@@ -1,0 +1,26 @@
+{
+  "artifact_digests": [
+    "sha256:6a90898484268a32b89757639262faf618c8d5cc8f1b16b00b7ebf1eaab241aa",
+    "sha256:a9b90b5eef5054b2a0f2d9b6d81c4cdeeaea1d7bb574495bfeba2be45bcec668"
+  ],
+  "consecutive_successful_rehearsals": 2,
+  "current_map_change_authorized": false,
+  "formal_proof_executed": false,
+  "fresh_formal_proof_authorization_created": false,
+  "manifest_bytes": 4813,
+  "manifest_path": "audit/pass2/p2c-isolated-proof-rerun-008/P2C_REHEARSAL_EQUIVALENCE_MANIFEST_036.json",
+  "manifest_sha256": "fc5089a4b6ee92f5092fc806f6838e979087529f9699e400273d8f0e3a34968f",
+  "merge_authorized": false,
+  "persisted_data_change_authorized": false,
+  "production_activation_authorized": false,
+  "proof_run_count_executed": 0,
+  "rule": "The seal proves only the manifest bytes and the two-run exercised rehearsal equivalence. Any future formal proof requires a separate fresh authorization bound to the then-current exact controller, workflow, repository head, base, source commit, manifest, and seal.",
+  "run_ids": [
+    29544432511,
+    29544545571
+  ],
+  "sealed_scope": "REHEARSAL_ONLY_THROUGH_PREPARATION_HARD_STOP_AND_SOURCE_IDENTITY_INSPECTION",
+  "status": "SEALED",
+  "type": "PMP_P2C_REHEARSAL_EQUIVALENCE_SEAL_RECEIPT_037",
+  "validator_sha256": "3a18ce186a2f7270432692accf64e5d35491cdb52f20b02ead5757ca2d2adc07"
+}
