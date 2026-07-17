@@ -13,7 +13,7 @@
   "formal_finalizer_path": "audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-finalize.sh",
   "formal_proof_execution_authorized": false,
   "formal_proof_pr_open_authorized": false,
-  "formal_workflow_git_blob_sha": "5cae9f7d131b093e5c28e7dcd0d6bfca0e3b90de",
+  "formal_workflow_git_blob_sha": "f1b237d6acd7746193583242cd0d34f253ae6c37",
   "formal_workflow_path": ".github/workflows/pass2-p2c-isolated-proof-rerun-006.yml",
   "formal_wrapper_git_blob_sha": "3de2ba9329ea37a3c7d8524b92a9603cb47ef875",
   "formal_wrapper_path": "audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-main-receipt024.sh",
