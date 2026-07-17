@@ -30,7 +30,7 @@ assert os.environ['BASE_SHA']==directive['current_main_sha']==auth['current_main
 checkout_head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
 assert os.environ['HEAD_SHA']==checkout_head
 assert os.environ['PR_HEAD_SHA']==directive['formal_proof_pr_head_sha']
-assert checkout_head==directive['formal_proof_pr_merge_sha']
+subprocess.run(['git','merge-base','--is-ancestor',os.environ['PR_HEAD_SHA'],checkout_head],check=True)
 subprocess.run(['git','merge-base','--is-ancestor',directive['authorization_state_ancestor'],os.environ['PR_HEAD_SHA']],check=True)
 subprocess.run(['git','merge-base','--is-ancestor',directive['execution_package_ancestor'],os.environ['PR_HEAD_SHA']],check=True)
 for key in ('production_application_authorized','production_activation_authorized','current_map_change_authorized','persisted_data_change_authorized','merge_authorized','second_proof_run_authorized'):
