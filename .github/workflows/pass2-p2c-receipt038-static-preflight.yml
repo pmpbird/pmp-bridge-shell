@@ -1,0 +1,30 @@
+name: Pass 2 Receipt 038 Static Authorization Preflight
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  static-preflight-only:
+    runs-on: ubuntu-24.04
+    env:
+      BASE_SHA: ${{ github.event.pull_request.base.sha }}
+      EVIDENCE_DIR: /tmp/p2c-receipt038-static-preflight
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify fresh authorization bindings without executing proof
+        run: python3 audit/pass2/p2c-isolated-proof-rerun-008/static_preflight_receipt038.py
+      - name: Upload static preflight evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2c-receipt038-static-preflight-result-040
+          path: /tmp/p2c-receipt038-static-preflight
