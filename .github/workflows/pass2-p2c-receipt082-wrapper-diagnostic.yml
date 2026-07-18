@@ -35,7 +35,14 @@ jobs:
         with:
           node-version: '22.16.0'
       - name: Trace Receipt 082 wrapper through hard stop
-        run: bash -x "$AUDIT_DIR/rerun008-controller-main-receipt082.sh"
+        run: |
+          mkdir -p "$EVIDENCE_DIR"
+          set +e
+          bash -x "$AUDIT_DIR/rerun008-controller-main-receipt082.sh" >"$EVIDENCE_DIR/wrapper-trace.log" 2>&1
+          rc=$?
+          printf '%s\n' "$rc" >"$EVIDENCE_DIR/wrapper-trace-exit-code.txt"
+          cat "$EVIDENCE_DIR/wrapper-trace.log"
+          exit "$rc"
       - name: Upload diagnostic evidence
         if: always()
         uses: actions/upload-artifact@v4
