@@ -10,7 +10,7 @@ NEW_CONTROLLER='repair_runner_009_controller002_policycompat_022.py'
 OLD_CONTROLLER_SHA256='ad10e91f9f8319747d08f6f882031eae48aee7c9d7813b1a3f63ad5d0e4a72f7'
 NEW_CONTROLLER_SHA256='1a553e229078239f0d17e25ca813788b4b25aa1d33fd511cdc179f1a6ebecb13'
 OLD_ALLOWLIST="allowed={'.github/workflows/pass2-p2c-isolated-proof-rerun-006.yml','audit/a002-live-runtime.cjs'}"
-NEW_ALLOWLIST="allowed={'.github/workflows/pass2-p2c-isolated-proof-rerun-006.yml','.github/workflows/pass2-p2c-exhaustive-preproof-discovery.yml','audit/a002-live-runtime.cjs'}"
+NEW_ALLOWLIST="allowed={'.github/workflows/pass2-p2c-isolated-proof-rerun-006.yml','.github/workflows/pass2-p2c-exhaustive-preproof-discovery.yml','.github/workflows/pass2-p2c-full-rehearsal-equivalence-closure.yml','.github/workflows/pass2-p2c-receipt038-static-preflight.yml','audit/a002-live-runtime.cjs'}"
 MATERIALIZED_CONTROLLER="${TMPDIR:-/tmp}/p2c-rerun008-controller-main-receipt024-$$.sh"
 trap 'rm -f "$MATERIALIZED_CONTROLLER"' EXIT
 
