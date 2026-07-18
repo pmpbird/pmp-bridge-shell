@@ -15,7 +15,7 @@
   "formal_workflow_path": ".github/workflows/pass2-p2c-isolated-proof-rerun-006.yml",
   "formal_workflow_git_blob_sha": "5cae9f7d131b093e5c28e7dcd0d6bfca0e3b90de",
   "formal_wrapper_path": "audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-main-receipt082.sh",
-  "formal_wrapper_git_blob_sha": "8fa51d445eec2b381e385da59fd0f1c7f6d86368",
+  "formal_wrapper_git_blob_sha": "b4a9b67e3d5d2b88701be863549253842d16d473",
   "runtime_binding_patcher_path": "audit/pass2/p2c-isolated-proof-rerun-008/patch_runtime_nodepath_and_source_bindings_receipt082.py",
   "runtime_binding_patcher_git_blob_sha": "4bf94e9fad2917d42bba02e9fb609f096bc38da2",
   "formal_finalizer_path": "audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-finalize.sh",
