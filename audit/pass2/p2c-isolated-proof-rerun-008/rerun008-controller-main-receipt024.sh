@@ -59,60 +59,11 @@ if text.count(new_controller)!=4:raise SystemExit(f'RECEIPT024_NEW_CONTROLLER_PA
 if text.count(new_controller_sha)!=1:raise SystemExit(f'RECEIPT024_NEW_CONTROLLER_SHA_BINDING_COUNT_INVALID:{text.count(new_controller_sha)}')
 if text.count(new_allowlist)!=1:raise SystemExit(f'RECEIPT024_NEW_INTERNAL_ALLOWLIST_COUNT_INVALID:{text.count(new_allowlist)}')
 if text.count(new_install)!=1:raise SystemExit(f'RECEIPT024_NEW_BROWSER_INSTALL_CWD_COUNT_INVALID:{text.count(new_install)}')
-marker='echo "=== Prepare explicitly authorized disposable active copy ==="'
-if text.count(marker)!=1:raise SystemExit(f'PREPARATION_MARKER_COUNT_INVALID:{text.count(marker)}')
-repair='''python3 - "${SOURCE_COMMIT:?SOURCE_COMMIT_REQUIRED}" "$BUNDLE_DIR" "$EVIDENCE_DIR" "$NORMALIZED_ROOT" <<'PY2'
-import json,pathlib,re,sys
-source=sys.argv[1]
-if not re.fullmatch(r'[0-9a-f]{40}',source):
-    raise SystemExit('SOURCE_COMMIT_FORMAT_INVALID')
-roots=[pathlib.Path(p) for p in sys.argv[2:]]
-changed=[]; observed=[]
-def rewrite(node,path):
-    count=0
-    if isinstance(node,dict):
-        for key,value in list(node.items()):
-            if key=='source_repository_commit':
-                observed.append((str(path),value))
-                if value!=source:
-                    node[key]=source; count+=1
-            else:
-                count+=rewrite(value,path)
-    elif isinstance(node,list):
-        for value in node: count+=rewrite(value,path)
-    return count
-for root in roots:
-    if not root.exists(): continue
-    for path in sorted(root.rglob('*.json')):
-        try: data=json.loads(path.read_text())
-        except Exception: continue
-        count=rewrite(data,path)
-        if count:
-            path.write_text(json.dumps(data,indent=2,sort_keys=True)+'\\n')
-            changed.append({'path':str(path),'bindings_repaired':count})
-if not changed:
-    raise SystemExit('POST_GENERATION_SOURCE_REPOSITORY_COMMIT_BINDING_NOT_FOUND')
-remaining=[]
-for root in roots:
-    if not root.exists(): continue
-    for path in sorted(root.rglob('*.json')):
-        try: data=json.loads(path.read_text())
-        except Exception: continue
-        def check(node):
-            if isinstance(node,dict):
-                for key,value in node.items():
-                    if key=='source_repository_commit' and value!=source: remaining.append((str(path),value))
-                    else: check(value)
-            elif isinstance(node,list):
-                for value in node: check(value)
-        check(data)
-if remaining:
-    raise SystemExit(f'POST_GENERATION_SOURCE_REPOSITORY_COMMIT_BINDING_INCOMPLETE:{remaining}')
-evidence=pathlib.Path(sys.argv[3]); evidence.mkdir(parents=True,exist_ok=True)
-(evidence/'post-generation-source-commit-binding-repair-058.json').write_text(json.dumps({'status':'PASS','source_repository_commit':source,'changed':changed,'observed_binding_count':len(observed)},indent=2,sort_keys=True)+'\\n')
-print(f'POST_GENERATION_SOURCE_REPOSITORY_COMMIT_BINDINGS_REPAIRED:{sum(x["bindings_repaired"] for x in changed)}:{source}')
-PY2'''
-text=text.replace(marker,repair+'\n'+marker,1)
+old_prepare='python3 "$BUNDLE_DIR/prepare_disposable_proof_002.py"'
+new_prepare='python3 "$AUDIT_DIR/prepare_disposable_proof_002_receipt062_proxy.py" "$BUNDLE_DIR/prepare_disposable_proof_002.py" "$SOURCE_COMMIT"'
+if text.count(old_prepare)!=1:raise SystemExit(f'RECEIPT062_PREPARE_INVOCATION_COUNT_INVALID:{text.count(old_prepare)}')
+text=text.replace(old_prepare,new_prepare,1)
+if text.count(new_prepare)!=1:raise SystemExit(f'RECEIPT062_PROXY_INVOCATION_COUNT_INVALID:{text.count(new_prepare)}')
 path.write_text(text)
 PY
 if [ "${P2C_REHEARSAL_SKIP_AUTHORIZATION:-0}" = "1" ]; then
