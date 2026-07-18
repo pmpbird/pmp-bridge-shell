@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 import hashlib,json,os,pathlib,subprocess
 root=pathlib.Path('audit/pass2/p2c-isolated-proof-rerun-008')
-auth_path=root/'P2C_CONTROLLER_ALLOWLIST_REPAIR_EXACTLY_ONE_FORMAL_PROOF_AUTHORIZATION_RECEIPT_050.json'
-directive_path=root/'P2C_RECEIPT050_EXACTLY_ONE_FORMAL_PROOF_EXECUTION_DIRECTIVE_051.json'
+auth_path=root/'P2C_SOURCE_COMMIT_REPAIR_EXACTLY_ONE_FORMAL_PROOF_AUTHORIZATION_RECEIPT_054.json'
+directive_path=root/'P2C_RECEIPT054_EXACTLY_ONE_FORMAL_PROOF_EXECUTION_DIRECTIVE_055.json'
 auth=json.loads(auth_path.read_text()); directive=json.loads(directive_path.read_text())
 sha=lambda p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()
 blob=lambda p:subprocess.check_output(['git','hash-object',str(p)],text=True).strip()
@@ -34,7 +34,7 @@ for key in ('production_application_authorized','production_activation_authorize
     assert directive[key] is False,key
 changed=subprocess.check_output(['git','diff','--name-only',base,'HEAD'],text=True).splitlines()
 assert changed and not any(p.endswith('.pyc') or '/__pycache__/' in p for p in changed)
-out={'type':'PMP_P2C_RECEIPT050_FORMAL_PROOF_AUTHORIZATION_STATIC_PREFLIGHT_RESULT_053','status':'PASS_STATIC_PREFLIGHT_ONLY','head_sha':head,'base_sha':base,'authorization_receipt':'050','execution_directive':'051','authorization_sha256':sha(auth_path),'authorization_git_blob_sha':blob(auth_path),'execution_wrapper_git_blob_sha':blob(directive['execution_wrapper_path']),'formal_workflow_git_blob_sha':blob(auth['formal_workflow_path']),'formal_controller_wrapper_git_blob_sha':blob(auth['formal_wrapper_path']),'formal_finalizer_git_blob_sha':blob(auth['formal_finalizer_path']),'proof_run_count_executed':0,'formal_proof_executed':False,'merge_authorized':False,'production_activation_authorized':False,'current_map_change_authorized':False,'persisted_data_change_authorized':False,'second_proof_run_authorized':False}
+out={'type':'PMP_P2C_RECEIPT054_FORMAL_PROOF_AUTHORIZATION_STATIC_PREFLIGHT_RESULT_057','status':'PASS_STATIC_PREFLIGHT_ONLY','head_sha':head,'base_sha':base,'authorization_receipt':'054','execution_directive':'055','authorization_sha256':sha(auth_path),'authorization_git_blob_sha':blob(auth_path),'execution_wrapper_git_blob_sha':blob(directive['execution_wrapper_path']),'formal_workflow_git_blob_sha':blob(auth['formal_workflow_path']),'formal_controller_wrapper_git_blob_sha':blob(auth['formal_wrapper_path']),'formal_finalizer_git_blob_sha':blob(auth['formal_finalizer_path']),'proof_run_count_executed':0,'formal_proof_executed':False,'merge_authorized':False,'production_activation_authorized':False,'current_map_change_authorized':False,'persisted_data_change_authorized':False,'second_proof_run_authorized':False}
 pathlib.Path(os.environ['EVIDENCE_DIR']).mkdir(parents=True,exist_ok=True)
-(pathlib.Path(os.environ['EVIDENCE_DIR'])/'static-preflight-result-053.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
+(pathlib.Path(os.environ['EVIDENCE_DIR'])/'static-preflight-result-057.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
 print(json.dumps(out,indent=2,sort_keys=True))
