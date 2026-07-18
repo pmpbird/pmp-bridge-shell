@@ -1,9 +1,8 @@
 name: Pass 2 Receipt 082 Wrapper Diagnostic
 
 on:
-  push:
-    branches:
-      - agent/pass2-receipt082-nodepath-rollback-source-repair
+  pull_request:
+    types: [synchronize]
 
 permissions:
   contents: read
