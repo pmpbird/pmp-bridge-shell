@@ -1,0 +1,17 @@
+{
+  "authorization_receipt_sha256": "f8d479f25de173b30a85fbf2686d80ed5b71e6f657af7c1f9a1ed2217d53b091",
+  "directive_git_blob_sha": "a3460f58bab8a02831172918b4b91bbeed26d2a5",
+  "directive_path": "audit/pass2/p2c-isolated-proof-rerun-008/P2C_RECEIPT050_EXACTLY_ONE_FORMAL_PROOF_EXECUTION_DIRECTIVE_051.json",
+  "directive_sha256": "65ea2c17f516b58d3e57c80d1581c96dafd151ca3e8ea680e5e52bfff0e79c31",
+  "formal_proof_execution_authorized": true,
+  "formal_proof_pr_open_authorized": true,
+  "merge_authorized": false,
+  "production_activation_authorized": false,
+  "proof_run_count_authorized": 1,
+  "proof_run_count_executed": 0,
+  "rerun_authorized": false,
+  "sealed_parent_commit": "c9990970db1c105311133e5470ce361347f6d150",
+  "second_proof_run_authorized": false,
+  "status": "SEALED_EXACT_FINAL_PR_HEAD",
+  "type": "PMP_P2C_RECEIPT050_FORMAL_PROOF_PR_HEAD_SEAL_052"
+}
