@@ -59,23 +59,61 @@ if text.count(new_controller)!=4:raise SystemExit(f'RECEIPT024_NEW_CONTROLLER_PA
 if text.count(new_controller_sha)!=1:raise SystemExit(f'RECEIPT024_NEW_CONTROLLER_SHA_BINDING_COUNT_INVALID:{text.count(new_controller_sha)}')
 if text.count(new_allowlist)!=1:raise SystemExit(f'RECEIPT024_NEW_INTERNAL_ALLOWLIST_COUNT_INVALID:{text.count(new_allowlist)}')
 if text.count(new_install)!=1:raise SystemExit(f'RECEIPT024_NEW_BROWSER_INSTALL_CWD_COUNT_INVALID:{text.count(new_install)}')
-path.write_text(text)
-PY
-python3 - "$MATERIALIZED_CONTROLLER" "${SOURCE_COMMIT:?SOURCE_COMMIT_REQUIRED}" <<'PY'
-import pathlib,re,sys
-path=pathlib.Path(sys.argv[1]); target=sys.argv[2]
-if not re.fullmatch(r'[0-9a-f]{40}',target):
+marker='echo "=== Prepare explicitly authorized disposable active copy ==="'
+if text.count(marker)!=1:raise SystemExit(f'PREPARATION_MARKER_COUNT_INVALID:{text.count(marker)}')
+repair='''python3 - "${SOURCE_COMMIT:?SOURCE_COMMIT_REQUIRED}" "$BUNDLE_DIR" "$EVIDENCE_DIR" "$NORMALIZED_ROOT" <<'PY2'
+import json,pathlib,re,sys
+source=sys.argv[1]
+if not re.fullmatch(r'[0-9a-f]{40}',source):
     raise SystemExit('SOURCE_COMMIT_FORMAT_INVALID')
-text=path.read_text()
-pattern=re.compile(r'(["\']source_repository_commit["\']\s*:\s*["\'])[0-9a-f]{40}(["\'])')
-text,count=pattern.subn(lambda m:m.group(1)+target+m.group(2),text)
-if count < 1:
-    raise SystemExit('SOURCE_REPOSITORY_COMMIT_BINDING_NOT_FOUND')
-remaining=[m.group(0) for m in pattern.finditer(text) if target not in m.group(0)]
+roots=[pathlib.Path(p) for p in sys.argv[2:]]
+changed=[]; observed=[]
+def rewrite(node,path):
+    count=0
+    if isinstance(node,dict):
+        for key,value in list(node.items()):
+            if key=='source_repository_commit':
+                observed.append((str(path),value))
+                if value!=source:
+                    node[key]=source; count+=1
+            else:
+                count+=rewrite(value,path)
+    elif isinstance(node,list):
+        for value in node: count+=rewrite(value,path)
+    return count
+for root in roots:
+    if not root.exists(): continue
+    for path in sorted(root.rglob('*.json')):
+        try: data=json.loads(path.read_text())
+        except Exception: continue
+        count=rewrite(data,path)
+        if count:
+            path.write_text(json.dumps(data,indent=2,sort_keys=True)+'\\n')
+            changed.append({'path':str(path),'bindings_repaired':count})
+if not changed:
+    raise SystemExit('POST_GENERATION_SOURCE_REPOSITORY_COMMIT_BINDING_NOT_FOUND')
+remaining=[]
+for root in roots:
+    if not root.exists(): continue
+    for path in sorted(root.rglob('*.json')):
+        try: data=json.loads(path.read_text())
+        except Exception: continue
+        def check(node):
+            if isinstance(node,dict):
+                for key,value in node.items():
+                    if key=='source_repository_commit' and value!=source: remaining.append((str(path),value))
+                    else: check(value)
+            elif isinstance(node,list):
+                for value in node: check(value)
+        check(data)
 if remaining:
-    raise SystemExit(f'SOURCE_REPOSITORY_COMMIT_BINDING_INCOMPLETE:{len(remaining)}')
+    raise SystemExit(f'POST_GENERATION_SOURCE_REPOSITORY_COMMIT_BINDING_INCOMPLETE:{remaining}')
+evidence=pathlib.Path(sys.argv[3]); evidence.mkdir(parents=True,exist_ok=True)
+(evidence/'post-generation-source-commit-binding-repair-058.json').write_text(json.dumps({'status':'PASS','source_repository_commit':source,'changed':changed,'observed_binding_count':len(observed)},indent=2,sort_keys=True)+'\\n')
+print(f'POST_GENERATION_SOURCE_REPOSITORY_COMMIT_BINDINGS_REPAIRED:{sum(x["bindings_repaired"] for x in changed)}:{source}')
+PY2'''
+text=text.replace(marker,repair+'\n'+marker,1)
 path.write_text(text)
-print(f'SOURCE_REPOSITORY_COMMIT_BINDINGS_REPAIRED:{count}:{target}')
 PY
 if [ "${P2C_REHEARSAL_SKIP_AUTHORIZATION:-0}" = "1" ]; then
   python3 - "$MATERIALIZED_CONTROLLER" <<'PY'
