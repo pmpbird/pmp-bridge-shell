@@ -1,0 +1,50 @@
+name: Pass 2 Prepare Receipt Validation Diagnostic 074
+
+on:
+  pull_request:
+    types: [opened]
+
+permissions:
+  contents: read
+
+jobs:
+  prepare-receipt-diagnostic-074:
+    if: github.event.action == 'opened' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    env:
+      SOURCE_COMMIT: 98b2e293717b81289e3b372d1fff8f5832d29fd6
+      AUDIT_DIR: audit/pass2/p2c-isolated-proof-rerun-008
+      DEPS_DIR: audit/pass2/p2c-isolated-proof-rerun-006
+      REPAIR_DIR: audit/pass2/p2c-isolated-proof-rerun-006/repair-continuation-003
+      BUNDLE_DIR: /tmp/p2c-diagnostic-074-runner
+      BUNDLE_TAR: /tmp/p2c-diagnostic-074-runner.tar.gz
+      BASELINE_ROOT: /tmp/p2c-diagnostic-074-baseline
+      ACTIVE_ROOT: /tmp/p2c-diagnostic-074-active
+      EVIDENCE_DIR: /tmp/p2c-diagnostic-074-evidence
+      NORMALIZED_ROOT: /tmp/p2c-diagnostic-074-normalized
+      NODE_HOME: /tmp/p2c-diagnostic-074-node
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - name: Reconstruct and inspect exact preparation validation
+        env:
+          EVENT_ACTION: ${{ github.event.action }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          HEAD_SHA: ${{ github.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          RUN_ID: ${{ github.run_id }}
+        run: bash "$AUDIT_DIR/diagnose_prepare_receipt_validation_074.sh"
+      - name: Upload diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2c-prepare-receipt-validation-diagnostic-074
+          path: /tmp/p2c-diagnostic-074-evidence
