@@ -61,6 +61,22 @@ if text.count(new_allowlist)!=1:raise SystemExit(f'RECEIPT024_NEW_INTERNAL_ALLOW
 if text.count(new_install)!=1:raise SystemExit(f'RECEIPT024_NEW_BROWSER_INSTALL_CWD_COUNT_INVALID:{text.count(new_install)}')
 path.write_text(text)
 PY
+python3 - "$MATERIALIZED_CONTROLLER" "${SOURCE_COMMIT:?SOURCE_COMMIT_REQUIRED}" <<'PY'
+import pathlib,re,sys
+path=pathlib.Path(sys.argv[1]); target=sys.argv[2]
+if not re.fullmatch(r'[0-9a-f]{40}',target):
+    raise SystemExit('SOURCE_COMMIT_FORMAT_INVALID')
+text=path.read_text()
+pattern=re.compile(r'(["\']source_repository_commit["\']\s*:\s*["\'])[0-9a-f]{40}(["\'])')
+text,count=pattern.subn(lambda m:m.group(1)+target+m.group(2),text)
+if count < 1:
+    raise SystemExit('SOURCE_REPOSITORY_COMMIT_BINDING_NOT_FOUND')
+remaining=[m.group(0) for m in pattern.finditer(text) if target not in m.group(0)]
+if remaining:
+    raise SystemExit(f'SOURCE_REPOSITORY_COMMIT_BINDING_INCOMPLETE:{len(remaining)}')
+path.write_text(text)
+print(f'SOURCE_REPOSITORY_COMMIT_BINDINGS_REPAIRED:{count}:{target}')
+PY
 if [ "${P2C_REHEARSAL_SKIP_AUTHORIZATION:-0}" = "1" ]; then
   python3 - "$MATERIALIZED_CONTROLLER" <<'PY'
 import pathlib,sys
