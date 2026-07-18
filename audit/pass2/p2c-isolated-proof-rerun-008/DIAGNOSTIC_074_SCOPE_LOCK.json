@@ -1,0 +1,12 @@
+{
+  "type": "PMP_P2C_PREPARE_RECEIPT_VALIDATION_DIAGNOSTIC_SCOPE_LOCK_074",
+  "status": "DIAGNOSTIC_ONLY",
+  "proof_execution_authorized": false,
+  "proof_run_count_authorized": 0,
+  "production_application_authorized": false,
+  "production_activation_authorized": false,
+  "current_map_change_authorized": false,
+  "persisted_data_change_authorized": false,
+  "merge_authorized": false,
+  "purpose": "Reconstruct the exact preparation script, capture its internal receipt-loading and source_repository_commit validation path, and stop before preparation or browser proof execution."
+}
