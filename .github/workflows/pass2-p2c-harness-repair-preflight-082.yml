@@ -1,0 +1,77 @@
+name: Pass 2 Harness Repair Preflight 082
+
+on:
+  push:
+    branches:
+      - agent/pass2-harness-repair-preflight-082
+
+permissions:
+  contents: read
+
+jobs:
+  harness-repair-preflight-082:
+    runs-on: ubuntu-24.04
+    env:
+      SOURCE_COMMIT: 98b2e293717b81289e3b372d1fff8f5832d29fd6
+      AUDIT_DIR: audit/pass2/p2c-isolated-proof-rerun-008
+      DEPS_DIR: audit/pass2/p2c-isolated-proof-rerun-006
+      REPAIR_DIR: audit/pass2/p2c-isolated-proof-rerun-006/repair-continuation-003
+      BUNDLE_DIR: /tmp/p2c-proof-runner-preflight082
+      BUNDLE_TAR: /tmp/p2c-proof-rerun-preflight082.tar.gz
+      BASELINE_ROOT: /tmp/p2c-proof-baseline-preflight082
+      ACTIVE_ROOT: /tmp/p2c-proof-active-preflight082
+      EVIDENCE_DIR: /tmp/p2c-proof-evidence-preflight082
+      NORMALIZED_ROOT: /tmp/p2c-repair-preflight082-normalized
+      NODE_HOME: /tmp/p2c-node-preflight082
+      P2C_REHEARSAL_SKIP_AUTHORIZATION: '1'
+      P2C_STOP_BEFORE_PREPARATION: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - name: Reconstruct and apply harness repairs without proof
+        run: bash "$AUDIT_DIR/rerun008-controller-main-receipt082.sh"
+      - name: Verify repaired harness bindings
+        run: |
+          set -euo pipefail
+          test -s "$EVIDENCE_DIR/prepare-source-commit-constant-repair-078.json"
+          test -s "$EVIDENCE_DIR/run-full-source-commit-repair-082.json"
+          test -f "$BUNDLE_DIR/run_full_isolated_proof_002.py"
+          ! grep -R "c618596f2b5c99ca7f355153a5bd31268170df80" "$BUNDLE_DIR/prepare_disposable_proof_002.py" "$BUNDLE_DIR/run_full_isolated_proof_002.py"
+          grep -q "98b2e293717b81289e3b372d1fff8f5832d29fd6" "$BUNDLE_DIR/prepare_disposable_proof_002.py"
+          grep -q "98b2e293717b81289e3b372d1fff8f5832d29fd6" "$BUNDLE_DIR/run_full_isolated_proof_002.py"
+          NODE_PATH="$NODE_HOME/node_modules" node -e "const p=require('playwright'); if(!p.chromium) process.exit(1); console.log('PLAYWRIGHT_NODE_PATH_RESOLUTION_PASS')" | tee "$EVIDENCE_DIR/playwright-node-path-resolution-082.log"
+          python3 - <<'PY'
+          import json,os,pathlib
+          out=pathlib.Path(os.environ['EVIDENCE_DIR'])
+          result={
+            'type':'PMP_P2C_HARNESS_REPAIR_PREFLIGHT_RESULT_082',
+            'status':'PASS',
+            'formal_proof_executed':False,
+            'proof_run_count_executed':0,
+            'node_path':os.environ['NODE_HOME']+'/node_modules',
+            'playwright_resolution_verified':True,
+            'prepare_source_commit_repaired':True,
+            'run_full_source_commit_repaired':True,
+            'production_application_authorized':False,
+            'production_activation_authorized':False,
+            'current_map_change_authorized':False,
+            'persisted_data_change_authorized':False,
+            'merge_authorized':False,
+            'second_proof_run_authorized':False,
+          }
+          (out/'harness-repair-preflight-result-082.json').write_text(json.dumps(result,indent=2,sort_keys=True)+'\n')
+          print(json.dumps(result,indent=2,sort_keys=True))
+          PY
+      - name: Upload preflight evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2c-harness-repair-preflight-082
+          path: /tmp/p2c-proof-evidence-preflight082
