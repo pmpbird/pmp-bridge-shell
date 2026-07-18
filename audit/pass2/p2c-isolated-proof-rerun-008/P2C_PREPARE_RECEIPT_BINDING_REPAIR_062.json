@@ -1,0 +1,17 @@
+{
+  "type": "PMP_P2C_PREPARE_RECEIPT_BINDING_REPAIR_062",
+  "status": "STATIC_ONLY_READY",
+  "authorized": true,
+  "proof_run_count_authorized": 1,
+  "proof_run_count_executed": 0,
+  "formal_proof_pr_open_authorized": false,
+  "formal_proof_execution_authorized": false,
+  "merge_authorized": false,
+  "production_activation_authorized": false,
+  "current_map_change_authorized": false,
+  "persisted_data_change_authorized": false,
+  "second_proof_run_authorized": false,
+  "source_repository_commit": "98b2e293717b81289e3b372d1fff8f5832d29fd6",
+  "formal_wrapper_git_blob_sha": "beea98a7dc5165d85299754b4f444aefb3df14eb",
+  "prepare_proxy_git_blob_sha": "5e4b1245e225d51c11dcafb38819230d3f907ff5"
+}
