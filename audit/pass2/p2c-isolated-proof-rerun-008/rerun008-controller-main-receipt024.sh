@@ -60,10 +60,10 @@ if text.count(new_controller_sha)!=1:raise SystemExit(f'RECEIPT024_NEW_CONTROLLE
 if text.count(new_allowlist)!=1:raise SystemExit(f'RECEIPT024_NEW_INTERNAL_ALLOWLIST_COUNT_INVALID:{text.count(new_allowlist)}')
 if text.count(new_install)!=1:raise SystemExit(f'RECEIPT024_NEW_BROWSER_INSTALL_CWD_COUNT_INVALID:{text.count(new_install)}')
 old_prepare='python3 "$BUNDLE_DIR/prepare_disposable_proof_002.py"'
-new_prepare='python3 "$AUDIT_DIR/prepare_disposable_proof_002_receipt062_proxy.py" "$BUNDLE_DIR/prepare_disposable_proof_002.py" "$SOURCE_COMMIT"'
-if text.count(old_prepare)!=1:raise SystemExit(f'RECEIPT062_PREPARE_INVOCATION_COUNT_INVALID:{text.count(old_prepare)}')
+new_prepare='python3 "$AUDIT_DIR/prepare_disposable_proof_002_receipt066_argument_proxy.py" "$BUNDLE_DIR/prepare_disposable_proof_002.py" "$SOURCE_COMMIT"'
+if text.count(old_prepare)!=1:raise SystemExit(f'RECEIPT066_PREPARE_INVOCATION_COUNT_INVALID:{text.count(old_prepare)}')
 text=text.replace(old_prepare,new_prepare,1)
-if text.count(new_prepare)!=1:raise SystemExit(f'RECEIPT062_PROXY_INVOCATION_COUNT_INVALID:{text.count(new_prepare)}')
+if text.count(new_prepare)!=1:raise SystemExit(f'RECEIPT066_PROXY_INVOCATION_COUNT_INVALID:{text.count(new_prepare)}')
 path.write_text(text)
 PY
 if [ "${P2C_REHEARSAL_SKIP_AUTHORIZATION:-0}" = "1" ]; then
