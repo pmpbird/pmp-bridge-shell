@@ -28,6 +28,12 @@ jobs:
       NODE_HOME: /tmp/p2c-rehearsal090-node
       P2C_REHEARSAL_SKIP_AUTHORIZATION: '1'
       CAPTURE_DIR: /tmp/p2c-rehearsal090-capture
+      EVENT_ACTION: ${{ github.event.action }}
+      RUN_ATTEMPT: ${{ github.run_attempt }}
+      HEAD_SHA: ${{ github.sha }}
+      BASE_SHA: ${{ github.event.pull_request.base.sha }}
+      PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+      RUN_ID: ${{ github.run_id }}
     steps:
       - uses: actions/checkout@v4
         with:
