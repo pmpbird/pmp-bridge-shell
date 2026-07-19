@@ -1,4 +1,4 @@
-name: Pass 2 A-002 Native MessagePort Rehearsal 089
+name: Pass 2 A-002 Native MessagePort Rehearsal 090
 
 on:
   pull_request:
@@ -7,22 +7,27 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: pass2-a002-native-messageport-rehearsal-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
-  a002-native-messageport-rehearsal-089:
+  a002-native-messageport-rehearsal-090:
     runs-on: ubuntu-24.04
     env:
       SOURCE_COMMIT: 98b2e293717b81289e3b372d1fff8f5832d29fd6
       AUDIT_DIR: audit/pass2/p2c-isolated-proof-rerun-008
       DEPS_DIR: audit/pass2/p2c-isolated-proof-rerun-006
       REPAIR_DIR: audit/pass2/p2c-isolated-proof-rerun-006/repair-continuation-003
-      BUNDLE_DIR: /tmp/p2c-rehearsal089-runner
-      BUNDLE_TAR: /tmp/p2c-rehearsal089.tar.gz
-      BASELINE_ROOT: /tmp/p2c-rehearsal089-baseline
-      ACTIVE_ROOT: /tmp/p2c-rehearsal089-active
-      EVIDENCE_DIR: /tmp/p2c-rehearsal089-evidence
-      NORMALIZED_ROOT: /tmp/p2c-rehearsal089-normalized
-      NODE_HOME: /tmp/p2c-rehearsal089-node
+      BUNDLE_DIR: /tmp/p2c-rehearsal090-runner
+      BUNDLE_TAR: /tmp/p2c-rehearsal090.tar.gz
+      BASELINE_ROOT: /tmp/p2c-rehearsal090-baseline
+      ACTIVE_ROOT: /tmp/p2c-rehearsal090-active
+      EVIDENCE_DIR: /tmp/p2c-rehearsal090-evidence
+      NORMALIZED_ROOT: /tmp/p2c-rehearsal090-normalized
+      NODE_HOME: /tmp/p2c-rehearsal090-node
       P2C_REHEARSAL_SKIP_AUTHORIZATION: '1'
+      CAPTURE_DIR: /tmp/p2c-rehearsal090-capture
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,21 +38,30 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22.16.0'
-      - name: Run repaired rehearsal and capture console
-        continue-on-error: true
+      - name: Run repaired rehearsal and preserve exit status
         run: |
-          mkdir -p /tmp/p2c-rehearsal089-capture
-          bash "$AUDIT_DIR/rerun008-controller-main-rehearsal088.sh" > /tmp/p2c-rehearsal089-capture/complete-console.log 2>&1
-          echo "$?" > /tmp/p2c-rehearsal089-capture/exit-code.txt
-      - name: Copy generated evidence
+          rm -rf "$CAPTURE_DIR"
+          mkdir -p "$CAPTURE_DIR"
+          set +e
+          bash "$AUDIT_DIR/rerun008-controller-main-rehearsal088.sh" > "$CAPTURE_DIR/complete-console.log" 2>&1
+          rc=$?
+          set -e
+          printf '%s\n' "$rc" > "$CAPTURE_DIR/exit-code.txt"
+      - name: Copy all generated evidence
         if: always()
         run: |
-          mkdir -p /tmp/p2c-rehearsal089-capture
-          if [ -d "$EVIDENCE_DIR" ]; then cp -a "$EVIDENCE_DIR" /tmp/p2c-rehearsal089-capture/evidence; fi
+          mkdir -p "$CAPTURE_DIR"
+          if [ -d "$EVIDENCE_DIR" ]; then cp -a "$EVIDENCE_DIR" "$CAPTURE_DIR/evidence"; fi
+          find "$CAPTURE_DIR" -maxdepth 3 -type f -print | sort > "$CAPTURE_DIR/captured-files.txt"
       - name: Upload complete rehearsal evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: p2c-a002-native-messageport-rehearsal-089
+          name: p2c-a002-native-messageport-rehearsal-090
           if-no-files-found: error
-          path: /tmp/p2c-rehearsal089-capture
+          path: /tmp/p2c-rehearsal090-capture
+      - name: Enforce rehearsal result after evidence upload
+        if: always()
+        run: |
+          test -f "$CAPTURE_DIR/exit-code.txt"
+          test "$(cat "$CAPTURE_DIR/exit-code.txt")" = "0"
