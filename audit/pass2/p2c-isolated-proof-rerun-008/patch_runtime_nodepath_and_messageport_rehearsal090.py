@@ -21,6 +21,7 @@ original = here / 'patch_runtime_nodepath_and_source_bindings_receipt082.py'
 messageport = here / 'patch_a002_native_messageport_setter_rehearsal088.py'
 diagnostics = here / 'patch_runtime_source_and_landing_diagnostics_rehearsal096.py'
 a003_compat = here / 'patch_a003_harness_patch_compatibility_rehearsal098.py'
+a002_no_waitforfunction = here / 'patch_a002_no_waitforfunction_rehearsal104.py'
 bundle_root = pathlib.Path(a.bundle_root)
 prepare_target = bundle_root / 'prepare_disposable_proof_002.py'
 policy_target = bundle_root / 'policy-template.json'
@@ -97,4 +98,11 @@ subprocess.run([
     '--evidence-dir', a.evidence_dir,
 ], check=True)
 
-print('REHEARSAL103_RESOLVER_EVENT_LISTENER_AND_PRIOR_REPAIRS_APPLIED')
+subprocess.run([
+    sys.executable,
+    str(a002_no_waitforfunction),
+    '--path', str(target),
+    '--evidence-dir', a.evidence_dir,
+], check=True)
+
+print('REHEARSAL104_A002_NO_WAITFORFUNCTION_AND_PRIOR_REPAIRS_APPLIED')
