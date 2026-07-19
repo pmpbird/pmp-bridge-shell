@@ -7,6 +7,7 @@ import pathlib
 
 RESOLVER = 'pmp-current-route-resolver-v1.js'
 CAPABILITY = 'timer_schedule'
+EXPECTED_TEMPLATE_TYPE = 'PMP_P2C_PRODUCTION_ENFORCEMENT_POLICY_CANDIDATE_002'
 EXPECTED_BEFORE = ['network_fetch']
 EXPECTED_AFTER = ['network_fetch', 'timer_schedule']
 EXPECTED_FAIL_CLOSED = 'BLOCK_BEFORE_SIDE_EFFECT'
@@ -26,7 +27,7 @@ raw_before = policy_path.read_bytes()
 policy = json.loads(raw_before)
 before = copy.deepcopy(policy)
 
-if policy.get('type') != 'PMP_ACTOR_AUTHORITY_POLICY_V1':
+if policy.get('type') != EXPECTED_TEMPLATE_TYPE:
     raise SystemExit(f"REHEARSAL102_POLICY_TYPE_INVALID:{policy.get('type')}")
 if policy.get('unknown_actor_policy') != EXPECTED_FAIL_CLOSED:
     raise SystemExit(f"REHEARSAL102_UNKNOWN_ACTOR_POLICY_INVALID:{policy.get('unknown_actor_policy')}")
@@ -53,6 +54,8 @@ if changed != [RESOLVER]:
     raise SystemExit('REHEARSAL102_CHANGED_ACTOR_SET_INVALID:' + json.dumps(changed, sort_keys=True))
 if len(before['actors']) != len(policy['actors']):
     raise SystemExit('REHEARSAL102_ACTOR_COUNT_CHANGED')
+if policy.get('type') != before.get('type'):
+    raise SystemExit('REHEARSAL102_POLICY_TYPE_CHANGED')
 if policy.get('unknown_actor_policy') != before.get('unknown_actor_policy'):
     raise SystemExit('REHEARSAL102_UNKNOWN_ACTOR_POLICY_CHANGED')
 if policy.get('unauthorized_capability_policy') != before.get('unauthorized_capability_policy'):
@@ -64,6 +67,8 @@ verification = json.loads(raw_after)
 resolver_after = [actor for actor in verification['actors'] if actor.get('path') == RESOLVER]
 if len(resolver_after) != 1 or resolver_after[0].get('capabilities') != EXPECTED_AFTER:
     raise SystemExit('REHEARSAL102_RESOLVER_CAPABILITY_WRITE_VERIFICATION_FAILED')
+if verification.get('type') != EXPECTED_TEMPLATE_TYPE:
+    raise SystemExit('REHEARSAL102_POLICY_TYPE_WRITE_VERIFICATION_FAILED')
 if verification.get('unknown_actor_policy') != EXPECTED_FAIL_CLOSED:
     raise SystemExit('REHEARSAL102_UNKNOWN_ACTOR_POLICY_WRITE_VERIFICATION_FAILED')
 if verification.get('unauthorized_capability_policy') != EXPECTED_FAIL_CLOSED:
@@ -73,6 +78,8 @@ evidence = {
     'type': 'PMP_P2C_RESOLVER_TIMER_SCHEDULE_CAPABILITY_REPAIR_102',
     'status': 'PASS',
     'policy_path': str(policy_path),
+    'policy_type_before': before.get('type'),
+    'policy_type_after': verification.get('type'),
     'actor_path': RESOLVER,
     'capability_added': CAPABILITY,
     'capabilities_before': capabilities_before,
