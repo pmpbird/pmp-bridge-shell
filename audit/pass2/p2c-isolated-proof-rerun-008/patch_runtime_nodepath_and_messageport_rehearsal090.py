@@ -12,11 +12,23 @@ p.add_argument('--evidence-dir', required=True)
 a = p.parse_args()
 
 here = pathlib.Path(__file__).resolve().parent
+prepare_getter = here / 'patch_event_handler_getter_authority_rehearsal097.py'
 original = here / 'patch_runtime_nodepath_and_source_bindings_receipt082.py'
 messageport = here / 'patch_a002_native_messageport_setter_rehearsal088.py'
 diagnostics = here / 'patch_runtime_source_and_landing_diagnostics_rehearsal096.py'
+a003_compat = here / 'patch_a003_harness_patch_compatibility_rehearsal098.py'
 bundle_root = pathlib.Path(a.bundle_root)
+prepare_target = bundle_root / 'prepare_disposable_proof_002.py'
 target = bundle_root / 'run_full_isolated_proof_002.py'
+
+if not prepare_target.is_file():
+    raise SystemExit(f'REHEARSAL097_PREPARE_NOT_FOUND:{prepare_target}')
+subprocess.run([
+    sys.executable,
+    str(prepare_getter),
+    '--path', str(prepare_target),
+    '--evidence-dir', a.evidence_dir,
+], check=True)
 
 subprocess.run([
     sys.executable,
@@ -44,4 +56,11 @@ subprocess.run([
     '--evidence-dir', a.evidence_dir,
 ], check=True)
 
-print('REHEARSAL096_RUNTIME_MESSAGEPORT_SOURCE_CAPTURE_AND_LANDING_PATCHES_APPLIED')
+subprocess.run([
+    sys.executable,
+    str(a003_compat),
+    '--path', str(target),
+    '--evidence-dir', a.evidence_dir,
+], check=True)
+
+print('REHEARSAL098_EVENT_GETTER_RUNTIME_MESSAGEPORT_SOURCE_CAPTURE_AND_HARNESS_PATCHES_APPLIED')
