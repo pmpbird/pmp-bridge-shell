@@ -14,6 +14,7 @@ a = p.parse_args()
 here = pathlib.Path(__file__).resolve().parent
 original = here / 'patch_runtime_nodepath_and_source_bindings_receipt082.py'
 messageport = here / 'patch_a002_native_messageport_setter_rehearsal088.py'
+diagnostics = here / 'patch_runtime_source_and_landing_diagnostics_rehearsal096.py'
 bundle_root = pathlib.Path(a.bundle_root)
 target = bundle_root / 'run_full_isolated_proof_002.py'
 
@@ -36,4 +37,11 @@ subprocess.run([
     '--evidence-dir', a.evidence_dir,
 ], check=True)
 
-print('REHEARSAL090_RUNTIME_AND_MESSAGEPORT_PATCHES_APPLIED')
+subprocess.run([
+    sys.executable,
+    str(diagnostics),
+    '--path', str(target),
+    '--evidence-dir', a.evidence_dir,
+], check=True)
+
+print('REHEARSAL096_RUNTIME_MESSAGEPORT_SOURCE_CAPTURE_AND_LANDING_PATCHES_APPLIED')
