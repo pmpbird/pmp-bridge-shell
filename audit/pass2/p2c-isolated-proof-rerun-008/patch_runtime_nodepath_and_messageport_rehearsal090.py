@@ -14,6 +14,7 @@ a = p.parse_args()
 here = pathlib.Path(__file__).resolve().parent
 prepare_getter = here / 'patch_event_handler_getter_authority_rehearsal097.py'
 registration_scope = here / 'patch_explicit_document_registration_authority_rehearsal099.py'
+registration_ledger = here / 'patch_event_property_registration_ledger_rehearsal100.py'
 original = here / 'patch_runtime_nodepath_and_source_bindings_receipt082.py'
 messageport = here / 'patch_a002_native_messageport_setter_rehearsal088.py'
 diagnostics = here / 'patch_runtime_source_and_landing_diagnostics_rehearsal096.py'
@@ -36,6 +37,13 @@ subprocess.run([
     str(registration_scope),
     '--bundle-root', str(bundle_root),
     '--prepare-path', str(prepare_target),
+    '--evidence-dir', a.evidence_dir,
+], check=True)
+
+subprocess.run([
+    sys.executable,
+    str(registration_ledger),
+    '--path', str(prepare_target),
     '--evidence-dir', a.evidence_dir,
 ], check=True)
 
@@ -72,4 +80,4 @@ subprocess.run([
     '--evidence-dir', a.evidence_dir,
 ], check=True)
 
-print('REHEARSAL099_EXPLICIT_DOCUMENT_REGISTRATION_AND_PRIOR_REPAIRS_APPLIED')
+print('REHEARSAL100_EXPLICIT_REGISTRATION_LEDGER_AND_PRIOR_REPAIRS_APPLIED')
