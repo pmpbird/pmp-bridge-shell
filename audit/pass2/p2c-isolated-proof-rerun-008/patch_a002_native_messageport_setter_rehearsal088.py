@@ -10,21 +10,18 @@ out=pathlib.Path(a.evidence_dir)
 out.mkdir(parents=True,exist_ok=True)
 text=path.read_text()
 
-old_worker=''' new="""    const channel = new MessageChannel();
-    channel.port1.onmessage = event => { resolve(event.data); };"""'''
-new_worker=''' new="""    const channel = new MessageChannel();
-    const nativeSetter = globalThis.__PMP_A002_TEST_NATIVE_MESSAGEPORT_ONMESSAGE_SETTER;
+old_worker="    channel.port1.onmessage = event => { resolve(event.data); };"
+new_worker="""    const nativeSetter = globalThis.__PMP_A002_TEST_NATIVE_MESSAGEPORT_ONMESSAGE_SETTER;
     if (typeof nativeSetter !== 'function') throw new Error('A002_TEST_NATIVE_MESSAGEPORT_ONMESSAGE_SETTER_MISSING');
-    nativeSetter.call(channel.port1, event => { resolve(event.data); });"""'''
-
-old_page='''  const page = await context.newPage();
-    page.setDefaultTimeout(30000);'''
-new_page='''  const page = await context.newPage();
+    nativeSetter.call(channel.port1, event => { resolve(event.data); });"""
+old_page="""  const page = await context.newPage();
+    page.setDefaultTimeout(30000);"""
+new_page="""  const page = await context.newPage();
     await page.addInitScript(() => {
       const descriptor = Object.getOwnPropertyDescriptor(MessagePort.prototype, 'onmessage');
       globalThis.__PMP_A002_TEST_NATIVE_MESSAGEPORT_ONMESSAGE_SETTER = descriptor && descriptor.set;
     });
-    page.setDefaultTimeout(30000);'''
+    page.setDefaultTimeout(30000);"""
 
 counts={'worker':text.count(old_worker),'page':text.count(old_page)}
 if counts['worker']!=1:
