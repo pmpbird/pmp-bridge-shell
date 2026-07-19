@@ -13,7 +13,7 @@ out.mkdir(parents=True,exist_ok=True)
 allowed_suffixes={'.py','.js','.cjs','.mjs','.json','.sh'}
 changed=[]
 replacement_count=0
-binding_tokens=('SOURCE_COMMIT','source_commit','source_repository_commit')
+binding_tokens=('SOURCE_COMMIT','source_commit','source_repository_commit','SOURCE=')
 for path in sorted(p for p in root.rglob('*') if p.is_file() and p.suffix in allowed_suffixes):
     text=path.read_text(errors='strict')
     lines=text.splitlines(keepends=True)
@@ -41,6 +41,13 @@ if replacement_count < 1:
     raise SystemExit('RECEIPT082_NO_STALE_SOURCE_BINDINGS_FOUND')
 if remaining:
     raise SystemExit('RECEIPT082_STALE_SOURCE_BINDINGS_REMAIN:'+json.dumps(remaining,sort_keys=True))
+runner=root/'run_full_isolated_proof_002.py'
+if not runner.is_file():
+    raise SystemExit(f'RECEIPT082_RUNTIME_RUNNER_NOT_FOUND:{runner}')
+runner_source_lines=[line for line in runner.read_text(errors='strict').splitlines() if line.startswith('SOURCE=')]
+runner_binding_count=sum(line.count(a.new_source_commit) for line in runner_source_lines)
+if len(runner_source_lines)!=1 or runner_binding_count!=1:
+    raise SystemExit('RECEIPT082_RUNTIME_RUNNER_SOURCE_BINDING_INVALID:'+json.dumps({'source_lines':runner_source_lines,'new_commit_count':runner_binding_count},sort_keys=True))
 evidence={
   'type':'PMP_P2C_RUNTIME_NODEPATH_AND_SOURCE_BINDING_REPAIR_082',
   'status':'PASS',
@@ -48,6 +55,8 @@ evidence={
   'new_source_commit':a.new_source_commit,
   'replacement_count':replacement_count,
   'changed_files':changed,
+  'runtime_runner_source_binding_repaired':True,
+  'runtime_runner_source_binding_count':runner_binding_count,
   'all_other_lines_preserved':True,
   'node_path_required':'$NODE_HOME/node_modules',
 }
