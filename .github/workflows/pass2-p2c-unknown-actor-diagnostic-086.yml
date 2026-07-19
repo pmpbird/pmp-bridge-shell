@@ -1,0 +1,57 @@
+name: Pass 2 UNKNOWN_ACTOR Diagnostic 086
+
+on:
+  pull_request:
+    types: [opened]
+
+permissions:
+  contents: read
+
+jobs:
+  unknown-actor-diagnostic-086:
+    runs-on: ubuntu-24.04
+    env:
+      SOURCE_COMMIT: 98b2e293717b81289e3b372d1fff8f5832d29fd6
+      AUDIT_DIR: audit/pass2/p2c-isolated-proof-rerun-008
+      DEPS_DIR: audit/pass2/p2c-isolated-proof-rerun-006
+      REPAIR_DIR: audit/pass2/p2c-isolated-proof-rerun-006/repair-continuation-003
+      BUNDLE_DIR: /tmp/p2c-unknown-actor-diagnostic-bundle
+      BUNDLE_TAR: /tmp/p2c-unknown-actor-diagnostic.tar.gz
+      BASELINE_ROOT: /tmp/p2c-unknown-actor-diagnostic-baseline
+      ACTIVE_ROOT: /tmp/p2c-unknown-actor-diagnostic-active
+      EVIDENCE_DIR: /tmp/p2c-unknown-actor-diagnostic-evidence
+      NORMALIZED_ROOT: /tmp/p2c-unknown-actor-diagnostic-normalized
+      NODE_HOME: /tmp/p2c-unknown-actor-diagnostic-node
+      P2C_REHEARSAL_SKIP_AUTHORIZATION: '1'
+      P2C_STOP_BEFORE_PREPARATION: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - name: Reconstruct disposable proof bundle without proof execution
+        run: bash "$AUDIT_DIR/rerun008-controller-main-receipt082.sh"
+      - name: Capture exact A-002 command and authority context
+        run: |
+          mkdir -p "$EVIDENCE_DIR"
+          cp "$BUNDLE_DIR/run_full_isolated_proof_002.py" "$EVIDENCE_DIR/"
+          cp audit/a002-live-runtime.cjs "$EVIDENCE_DIR/a002-live-runtime-source.cjs"
+          cp pmp-actor-authority-gate-v1.js "$EVIDENCE_DIR/"
+          cp pmp-actor-authority-policy-v1.json "$EVIDENCE_DIR/"
+          grep -RniE "a002-live-runtime|MessageChannel|workerStatus|UNKNOWN_ACTOR|actor.authority|authorizeSource|PMPActorAuthorityGateV1" "$BUNDLE_DIR" audit/a002-live-runtime.cjs pmp-actor-authority-gate-v1.js pmp-actor-authority-policy-v1.json > "$EVIDENCE_DIR/exact-unknown-actor-trace.txt" || true
+          python3 - <<'PY'
+          import json,pathlib
+          root=pathlib.Path('/tmp/p2c-unknown-actor-diagnostic-evidence')
+          out={'type':'PMP_P2C_UNKNOWN_ACTOR_DIAGNOSTIC_086','status':'PASS_DIAGNOSTIC_ONLY','proof_started':False,'proof_run_count_executed':0,'production_changed':False,'captured_files':sorted(p.name for p in root.iterdir())}
+          (root/'diagnostic-086.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          PY
+      - name: Upload diagnostic evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2c-unknown-actor-diagnostic-086
+          path: /tmp/p2c-unknown-actor-diagnostic-evidence
