@@ -7781,7 +7781,7 @@
       "rule": "This is the only application bootstrap source excluded from downstream manifest self-enforcement."
     }
   ],
-  "runtime_source_set_sha256": "a2118dbbbf390c08f61d025a103b5f5a7e2a21dfd49f859c8acf27d8c99cd642",
+  "runtime_source_set_sha256": "e4651fab64387ab0dd2353d6acfbeae892ca415ebbea59d31621fa8abe346e2e",
   "source_identity_rule": "Deterministic digest of protected local, historical, external, root-anchor, and policy identities; audit/workflow-only commits do not alter this identity.",
   "type": "PMP_RUNTIME_INTEGRITY_MANIFEST_V1",
   "unlisted_executable_policy": "FAIL_CLOSED",
