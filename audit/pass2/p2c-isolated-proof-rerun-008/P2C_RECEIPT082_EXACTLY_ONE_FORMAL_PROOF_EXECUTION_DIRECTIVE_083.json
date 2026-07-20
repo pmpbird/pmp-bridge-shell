@@ -16,7 +16,7 @@
   "authorization_receipt_git_blob_sha": "f5e3fd08d067a6b5cd359f073915efacc8303d6f",
   "authorization_receipt_sha256": "7106dbdd4effcc8f6f765f3c53c5fbe68b69d0d03209fd39d31adc0c8b11d162",
   "execution_wrapper_path": "audit/pass2/p2c-isolated-proof-rerun-008/run_receipt082_exactly_one_formal_proof.sh",
-  "execution_wrapper_git_blob_sha": "cc3ff35dfc47ce69bc1e4dac4b8d38dcc1f8b2f2",
+  "execution_wrapper_git_blob_sha": "797b35b101a3638df62ba465a85644ecbfe5cb7e",
   "formal_controller_wrapper_git_blob_sha": "1ff522ece3f08838b2cfd1ede3405b573a17b2f0",
   "runtime_binding_patcher_git_blob_sha": "3ceee2648bdb06fc5d6cf664759951dc4bc3fb5d",
   "execution_workflow_path": ".github/workflows/pass2-p2c-isolated-proof-rerun-006.yml",
