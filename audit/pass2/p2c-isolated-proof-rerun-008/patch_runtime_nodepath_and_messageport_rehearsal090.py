@@ -28,6 +28,7 @@ a002_historic_navigation_isolation = here / 'patch_a002_historic_navigation_isol
 a002_historic_context_isolation = here / 'patch_a002_historic_context_isolation_rehearsal108.py'
 ci_lane_closure = here / 'patch_ci_lane_closure_rehearsal109.py'
 a002_historic_lane_lifecycle = here / 'patch_a002_historic_lane_lifecycle_rehearsal110.py'
+ci_lane_lifecycle = here / 'patch_ci_lane_lifecycle_rehearsal111.py'
 bundle_root = pathlib.Path(a.bundle_root)
 prepare_target = bundle_root / 'prepare_disposable_proof_002.py'
 policy_target = bundle_root / 'policy-template.json'
@@ -154,4 +155,11 @@ subprocess.run([
     '--evidence-dir', a.evidence_dir,
 ], check=True)
 
-print('REHEARSAL110_A002_HISTORIC_LANE_LIFECYCLE_AND_PRIOR_REPAIRS_APPLIED')
+subprocess.run([
+    sys.executable,
+    str(ci_lane_lifecycle),
+    '--path', str(target),
+    '--evidence-dir', a.evidence_dir,
+], check=True)
+
+print('REHEARSAL111_CI_LANE_LIFECYCLE_AND_PRIOR_REPAIRS_APPLIED')
