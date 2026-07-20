@@ -2,7 +2,7 @@ name: Pass 2 A-002 Native MessagePort Rehearsal 088
 
 on:
   pull_request:
-    types: [opened]
+    types: [opened, synchronize]
 
 permissions:
   contents: read
@@ -24,6 +24,12 @@ jobs:
       NORMALIZED_ROOT: /tmp/p2c-rehearsal088-normalized
       NODE_HOME: /tmp/p2c-rehearsal088-node
       P2C_REHEARSAL_SKIP_AUTHORIZATION: '1'
+      EVENT_ACTION: ${{ github.event.action }}
+      RUN_ATTEMPT: ${{ github.run_attempt }}
+      HEAD_SHA: ${{ github.sha }}
+      BASE_SHA: ${{ github.event.pull_request.base.sha }}
+      PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+      RUN_ID: ${{ github.run_id }}
     steps:
       - uses: actions/checkout@v4
         with:
