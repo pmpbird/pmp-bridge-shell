@@ -1,0 +1,104 @@
+{
+  "certification_truth": "This manifest certifies equivalence only for the exercised rehearsal path through environment reconstruction, browser setup and launch smoke, normalized-source regeneration, preparation hard stop, and source-identity validator inspection. It does not certify disposable preparation, browser proof execution, rollback after proof, formal authorization validity, production activation, merge, Current Map changes, or persisted-data changes.",
+  "consecutive_successful_rehearsals": 2,
+  "current_map_change_authorized": false,
+  "disposable_preparation_executed": false,
+  "equivalence_assertions": {
+    "browser_launch_receipt_exact_bytes_equal": true,
+    "job_conclusion_equal_success": true,
+    "normalization_report_exact_bytes_equal": true,
+    "proof_side_effect_boundaries_equal_and_false": true,
+    "repair_controller_apply_receipt_exact_bytes_equal": true,
+    "source_identity_discovery_exact_bytes_equal": true,
+    "transport_receipt_exact_bytes_equal": true,
+    "typescript_path_receipt_exact_bytes_equal": true,
+    "validator_sha256_equal": true
+  },
+  "exactly_equal_evidence_files": {
+    "async-source-normalization-report-006.json": {
+      "bytes": 13729,
+      "sha256": "33a4d8d774b26a2812ff844f1c713981fc9a29e9b58dc823ee2e37f65a18dc90"
+    },
+    "browser-launch-smoke.log": {
+      "bytes": 51,
+      "sha256": "70f245c3ab58c1367ffcf0492e7c1ca310db7be27c4c89b2f6f7826d7f1e4cc9"
+    },
+    "browser-npm-init.log": {
+      "bytes": 303,
+      "sha256": "6f6baedd31d512339d2c1ae94ddc2530c1e0573da8490e0c4c77e9fa6fb82c80"
+    },
+    "browser-npm-install.log": {
+      "bytes": 162,
+      "sha256": "97575dab7ccd1f073c58250a36751141ecff8bfa9cff41c6d8891f09b1907286"
+    },
+    "repair-script-sha256-controller007.txt": {
+      "bytes": 1690,
+      "sha256": "63b4fea68afc9a54104e1e7144fa75051d593542438781e4c6c5b0173ec603d9"
+    },
+    "repair009-controller002-apply.log": {
+      "bytes": 453,
+      "sha256": "d8fefaa9350941a879573774f58cf10e1749e89bbda0b7d1545a79a43dab236d"
+    },
+    "source-identity-discovery-034.json": {
+      "bytes": 22823,
+      "sha256": "5e01afc0338091be1d6788b034816e383a2e1cdfb18597a329d6b3b09b305c49"
+    },
+    "transport-controller003.json": {
+      "bytes": 183,
+      "sha256": "98113062aeea8f3f2e5b0658a8f626cb66fc040711b143e8e1be2f2b27115c2d"
+    },
+    "typescript-module-path-004.json": {
+      "bytes": 420,
+      "sha256": "0e201eaddf44964b8b8ad6e70730b2bc13653b8b07cfe9e5459fc195cdbb5764"
+    }
+  },
+  "expected_nondeterministic_difference": {
+    "browser_launch_and_version_equal": true,
+    "classification": "MIRROR_FETCH_ORDER_ONLY",
+    "equal_bytes": 17946,
+    "path": "browser-install-with-deps.log",
+    "semantic_outcome_equal": true
+  },
+  "formal_proof_executed": false,
+  "merge_authorized": false,
+  "next_gate": "FRESH_FORMAL_PROOF_AUTHORIZATION_MAY_BE_CONSIDERED_SEPARATELY_BUT_IS_NOT_CREATED_OR_AUTHORIZED_BY_THIS_MANIFEST",
+  "persisted_data_change_authorized": false,
+  "production_modified": false,
+  "proof_execution_authorized": false,
+  "runs": [
+    {
+      "artifact_digest": "sha256:6a90898484268a32b89757639262faf618c8d5cc8f1b16b00b7ebf1eaab241aa",
+      "artifact_id": 8393404721,
+      "artifact_name": "p2c-rehearsal-source-identity-discovery-034",
+      "browser_install_log_sha256": "7c59853fc2362976f68abfdd57c5986743e2d45a66e62bc386321aacdc5ec005",
+      "browser_version": "140.0.7339.16",
+      "conclusion": "success",
+      "head_sha": "a580690939a7819aaf5b7bc0a0bd271d606c5a00",
+      "job_id": 87773437041,
+      "ordinal": 1,
+      "run_id": 29544432511,
+      "run_number": 4,
+      "validator_sha256": "3a18ce186a2f7270432692accf64e5d35491cdb52f20b02ead5757ca2d2adc07"
+    },
+    {
+      "artifact_digest": "sha256:a9b90b5eef5054b2a0f2d9b6d81c4cdeeaea1d7bb574495bfeba2be45bcec668",
+      "artifact_id": 8393443161,
+      "artifact_name": "p2c-rehearsal-source-identity-discovery-034",
+      "browser_install_log_sha256": "eae2d6c10815af34de2c1eedc45bdee617d5b334b73448304c5deef154e26820",
+      "browser_version": "140.0.7339.16",
+      "conclusion": "success",
+      "head_sha": "8fb0c04a369d58a4cc876fb410093f85c3669bde",
+      "job_id": 87773787001,
+      "ordinal": 2,
+      "run_id": 29544545571,
+      "run_number": 5,
+      "validator_sha256": "3a18ce186a2f7270432692accf64e5d35491cdb52f20b02ead5757ca2d2adc07"
+    }
+  ],
+  "scope": "REHEARSAL_ONLY_THROUGH_PREPARATION_HARD_STOP_AND_SOURCE_IDENTITY_INSPECTION",
+  "source_repository_commit": "98b2e293717b81289e3b372d1fff8f5832d29fd6",
+  "status": "SEALED_EQUIVALENT_AT_EXERCISED_REHEARSAL_SCOPE",
+  "type": "PMP_P2C_REHEARSAL_EQUIVALENCE_MANIFEST_036",
+  "workflow_name": "Pass 2 Full Proof Rehearsal and Equivalence Closure",
+  "workflow_path": ".github/workflows/pass2-p2c-full-rehearsal-equivalence-closure.yml"
+}

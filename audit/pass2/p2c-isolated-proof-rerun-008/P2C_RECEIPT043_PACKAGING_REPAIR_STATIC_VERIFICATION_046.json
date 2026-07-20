@@ -1,0 +1,20 @@
+{
+  "authorization_receipt_git_blob_sha": "43d106fc07ac1eaad0e860898a353b461fe1613a",
+  "authorization_receipt_sha256": "b1b5472c89ebd0c3ef9a16d9a7d276425ac7c3ae0fc613a028e0de172762dba4",
+  "directive_git_blob_sha": "6595d7a7353202d961527c2ce2e4bdc15a83ab75",
+  "directive_sha256": "6ee56468bd999ef51cbefaf358c8c6bc233b3bf0a71af3a754d61ec5a072dc7f",
+  "equivalence_manifest_sha256": "fc5089a4b6ee92f5092fc806f6838e979087529f9699e400273d8f0e3a34968f",
+  "equivalence_seal_git_blob_sha": "17e8102c0586c99f56c01c5566667968c8e0cec9",
+  "formal_controller_wrapper_git_blob_sha": "3de2ba9329ea37c923677e4c287393368eec71",
+  "formal_finalizer_git_blob_sha": "87e86c533d5d630121ded31334c46457ef4a7ad6",
+  "formal_workflow_git_blob_sha": "5cae9f7d131b093e5c28e7dcd0d6bfca0e3b90de",
+  "head_seal_git_blob_sha": "b431c3d4c9d19824d076ff6f5604337cd9ff448e",
+  "merge_authorized": false,
+  "production_activation_authorized": false,
+  "proof_run_count_executed": 0,
+  "second_proof_run_authorized": false,
+  "static_preflight_checker_git_blob_sha": "1e09fb7e1fe6833859825f9c472b59fa9dd803db",
+  "status": "PASS_STATIC_PACKAGE_VERIFICATION",
+  "type": "PMP_P2C_RECEIPT043_PACKAGING_REPAIR_STATIC_VERIFICATION_046",
+  "wrapper_git_blob_sha": "f773a0f375cff0f131ebe70e7cee0e8703cc258b"
+}

@@ -1,0 +1,53 @@
+name: Pass 2 Receipt 038 Exactly-One Formal Proof
+
+on:
+  pull_request:
+    types: [opened]
+
+permissions:
+  contents: read
+
+jobs:
+  isolated-proof-receipt038:
+    if: github.event.action == 'opened' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    env:
+      SOURCE_COMMIT: 98b2e293717b81289e3b372d1fff8f5832d29fd6
+      AUDIT_DIR: audit/pass2/p2c-isolated-proof-rerun-008
+      DEPS_DIR: audit/pass2/p2c-isolated-proof-rerun-006
+      REPAIR_DIR: audit/pass2/p2c-isolated-proof-rerun-006/repair-continuation-003
+      BUNDLE_DIR: /tmp/p2c-proof-runner-receipt038
+      BUNDLE_TAR: /tmp/p2c-proof-rerun-receipt038.tar.gz
+      BASELINE_ROOT: /tmp/p2c-proof-baseline-receipt038
+      ACTIVE_ROOT: /tmp/p2c-proof-active-receipt038
+      EVIDENCE_DIR: /tmp/p2c-proof-evidence-receipt038
+      NORMALIZED_ROOT: /tmp/p2c-repair-receipt038-normalized
+      NODE_HOME: /tmp/p2c-node-receipt038
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - name: Verify Receipt 038 bindings and execute exactly once
+        env:
+          EVENT_ACTION: ${{ github.event.action }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          HEAD_SHA: ${{ github.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          RUN_ID: ${{ github.run_id }}
+        run: bash "$AUDIT_DIR/run_receipt038_exactly_one_formal_proof.sh"
+      - name: Finalize truth and rollback boundary
+        if: always()
+        run: bash "$AUDIT_DIR/rerun008-controller-finalize.sh"
+      - name: Upload complete Receipt 038 proof evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2c-receipt038-exactly-one-formal-proof-evidence
+          path: /tmp/p2c-proof-evidence-receipt038

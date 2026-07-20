@@ -1,0 +1,27 @@
+{
+  "type": "PMP_P2C_BROWSER_ENVIRONMENT_STATIC_RESEAL_RECEIPT_032",
+  "status": "PASS_STATIC_RESEALED",
+  "source_state_commit": "26dfaa699d4b963dd6d4a4a4fb52e542e090d796",
+  "current_main_sha": "98b2e293717b81289e3b372d1fff8f5832d29fd6",
+  "corrected_wrapper_path": "audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-main-receipt024.sh",
+  "corrected_wrapper_git_blob_sha": "9386c251078921da3f939ce5e3f8d362d4c8e448",
+  "browser_environment_repair": {
+    "working_directory_leak_contained": true,
+    "playwright_installation_logged": true,
+    "chromium_installation_fallback_present": true,
+    "headless_browser_launch_required": true,
+    "validated_browser_version": "140.0.7339.16"
+  },
+  "closure_workflow_run_id": 29502756710,
+  "closure_artifact_id": 8377150558,
+  "closure_artifact_digest": "sha256:7273d909f3683acecf4c3b4188e2997177390de548149c2abc4e5aa961a21f55",
+  "runtime_receipt_sha256": "0bbd7c4bcace7101237b9a0b8b612bf90bebd9697b95efc90a61bb6cdf438f26",
+  "browser_setup_closure_passed": true,
+  "reached_hard_stop_before_preparation": true,
+  "proof_run_count_executed": 0,
+  "production_application_performed": false,
+  "production_activation_performed": false,
+  "current_map_modified": false,
+  "persisted_data_modified": false,
+  "merge_performed": false
+}

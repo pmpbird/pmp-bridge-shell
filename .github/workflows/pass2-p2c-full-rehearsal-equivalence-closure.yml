@@ -1,0 +1,52 @@
+name: Pass 2 Full Proof Rehearsal and Equivalence Closure
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  source-identity-discovery:
+    runs-on: ubuntu-24.04
+    env:
+      SOURCE_COMMIT: 98b2e293717b81289e3b372d1fff8f5832d29fd6
+      AUDIT_DIR: audit/pass2/p2c-isolated-proof-rerun-008
+      DEPS_DIR: audit/pass2/p2c-isolated-proof-rerun-006
+      REPAIR_DIR: audit/pass2/p2c-isolated-proof-rerun-006/repair-continuation-003
+      BUNDLE_DIR: /tmp/p2c-rehearsal-discovery-bundle
+      BUNDLE_TAR: /tmp/p2c-rehearsal-discovery-bundle.tar.gz
+      BASELINE_ROOT: /tmp/p2c-rehearsal-discovery-baseline
+      ACTIVE_ROOT: /tmp/p2c-rehearsal-discovery-active
+      EVIDENCE_DIR: /tmp/p2c-rehearsal-discovery-evidence
+      NORMALIZED_ROOT: /tmp/p2c-rehearsal-discovery-normalized
+      NODE_HOME: /tmp/p2c-rehearsal-discovery-node
+      P2C_REHEARSAL_SKIP_AUTHORIZATION: '1'
+      P2C_STOP_BEFORE_PREPARATION: '1'
+      EVENT_ACTION: ${{ github.event.action }}
+      RUN_ATTEMPT: ${{ github.run_attempt }}
+      HEAD_SHA: ${{ github.sha }}
+      BASE_SHA: ${{ github.event.pull_request.base.sha }}
+      PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+      RUN_ID: ${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - name: Reconstruct through preparation boundary
+        run: bash "$AUDIT_DIR/rerun008-controller-main-receipt024.sh"
+      - name: Inspect generated preparation validator
+        run: python3 "$AUDIT_DIR/rehearsal_source_identity_discovery_034.py" "$BUNDLE_DIR/prepare_disposable_proof_002.py" "$EVIDENCE_DIR/source-identity-discovery-034.json"
+      - name: Upload discovery evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2c-rehearsal-source-identity-discovery-034
+          path: /tmp/p2c-rehearsal-discovery-evidence
