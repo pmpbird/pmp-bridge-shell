@@ -3,6 +3,8 @@ name: Pass 2 Receipt 038 Exactly-One Formal Proof
 on:
   pull_request:
     types: [opened]
+    paths:
+      - audit/pass2/p2c-isolated-proof-rerun-008/P2C_RECEIPT082_FORMAL_PROOF_PR_HEAD_SEAL_084.json
 
 permissions:
   contents: read
