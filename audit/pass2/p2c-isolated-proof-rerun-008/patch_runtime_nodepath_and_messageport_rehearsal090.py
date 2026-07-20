@@ -17,11 +17,15 @@ registration_scope = here / 'patch_explicit_document_registration_authority_rehe
 registration_ledger = here / 'patch_event_property_registration_ledger_rehearsal100.py'
 resolver_timer = here / 'patch_resolver_timer_schedule_capability_rehearsal102.py'
 resolver_event_listener = here / 'patch_resolver_event_listener_capability_rehearsal103.py'
+actor_global_eventtarget_receiver = here / 'patch_actor_global_eventtarget_receiver_rehearsal106.py'
 original = here / 'patch_runtime_nodepath_and_source_bindings_receipt082.py'
 messageport = here / 'patch_a002_native_messageport_setter_rehearsal088.py'
 diagnostics = here / 'patch_runtime_source_and_landing_diagnostics_rehearsal096.py'
 a003_compat = here / 'patch_a003_harness_patch_compatibility_rehearsal098.py'
 a002_no_waitforfunction = here / 'patch_a002_no_waitforfunction_rehearsal104.py'
+a002_navigation_stable_receipt = here / 'patch_a002_navigation_stable_receipt_rehearsal105.py'
+a002_historic_navigation_isolation = here / 'patch_a002_historic_navigation_isolation_rehearsal107.py'
+a002_historic_context_isolation = here / 'patch_a002_historic_context_isolation_rehearsal108.py'
 bundle_root = pathlib.Path(a.bundle_root)
 prepare_target = bundle_root / 'prepare_disposable_proof_002.py'
 policy_target = bundle_root / 'policy-template.json'
@@ -67,6 +71,13 @@ subprocess.run([
 
 subprocess.run([
     sys.executable,
+    str(actor_global_eventtarget_receiver),
+    '--bundle-root', str(bundle_root),
+    '--evidence-dir', a.evidence_dir,
+], check=True)
+
+subprocess.run([
+    sys.executable,
     str(original),
     '--bundle-root', str(bundle_root),
     '--old-source-commit', a.old_source_commit,
@@ -105,4 +116,25 @@ subprocess.run([
     '--evidence-dir', a.evidence_dir,
 ], check=True)
 
-print('REHEARSAL104_A002_NO_WAITFORFUNCTION_AND_PRIOR_REPAIRS_APPLIED')
+subprocess.run([
+    sys.executable,
+    str(a002_navigation_stable_receipt),
+    '--path', str(target),
+    '--evidence-dir', a.evidence_dir,
+], check=True)
+
+subprocess.run([
+    sys.executable,
+    str(a002_historic_navigation_isolation),
+    '--path', str(target),
+    '--evidence-dir', a.evidence_dir,
+], check=True)
+
+subprocess.run([
+    sys.executable,
+    str(a002_historic_context_isolation),
+    '--path', str(target),
+    '--evidence-dir', a.evidence_dir,
+], check=True)
+
+print('REHEARSAL108_A002_HISTORIC_CONTEXT_ISOLATION_AND_PRIOR_REPAIRS_APPLIED')
