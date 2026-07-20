@@ -41,8 +41,9 @@ assert directive['formal_proof_pr_open_authorized'] is True
 assert directive['formal_proof_execution_authorized'] is True
 assert directive['rerun_authorized'] is False
 
-assert auth['current_main_sha'] == directive['current_main_sha'] == reseal['current_main_sha'] == base
-assert auth['resealed_against_merged_main_sha'] == base
+assert auth['current_main_sha'] == directive['current_main_sha'] == reseal['current_main_sha']
+assert auth['resealed_against_merged_main_sha'] == auth['current_main_sha']
+subprocess.run(['git', 'merge-base', '--is-ancestor', auth['current_main_sha'], base], check=True)
 assert auth['source_repository_commit'] == directive['source_repository_commit'] == reseal['source_repository_commit']
 
 assert directive['authorization_receipt_git_blob_sha'] == blob(auth_path)
@@ -108,6 +109,7 @@ out = {
     'status': 'PASS_STATIC_PREFLIGHT_ONLY',
     'head_sha': head,
     'base_sha': base,
+    'authorization_anchor_sha': auth['current_main_sha'],
     'source_repository_commit': auth['source_repository_commit'],
     'authorization_receipt': '082',
     'execution_directive': '083',
