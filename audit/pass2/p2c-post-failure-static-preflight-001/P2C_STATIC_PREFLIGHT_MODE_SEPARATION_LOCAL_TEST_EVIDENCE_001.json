@@ -1,0 +1,78 @@
+{
+  "authorization_consumed": true,
+  "base_main_commit": "9c2a9959131e2367477d84404ce94f63694edc76",
+  "canonical_authority": "V27",
+  "canonical_v27_sha256": "dc7b9f18da096b7351bdbf103e680ff4905697decae83f451ccc2d7c6c387797",
+  "controller_invoked": false,
+  "files_verified": [
+    {
+      "bytes": 1927,
+      "path": ".github/workflows/pass2-p2c-receipt038-static-preflight.yml",
+      "sha256": "750d637df5eabb3a75f04349f32ca6f2e808b90e9e70a7358a9e37bcd33037a6"
+    },
+    {
+      "bytes": 324,
+      "path": "audit/pass2/p2c-isolated-proof-rerun-008/static_preflight_receipt038.py",
+      "sha256": "47a451f75fe5c8c8f99f50e9c6209baeb505ceddc5704bab74692b8ae0cdd53b"
+    },
+    {
+      "bytes": 1910,
+      "path": "audit/pass2/p2c-post-failure-static-preflight-001/P2C_POST_FAILURE_STATIC_PREFLIGHT_SCOPE_LOCK_001.json",
+      "sha256": "ce3d392e9460cfd4773982b4c6791a445c2ab1daaf8a21723c3471942ea35785"
+    },
+    {
+      "bytes": 1330,
+      "path": "audit/pass2/p2c-post-failure-static-preflight-001/P2C_POST_FAILURE_STATIC_PREFLIGHT_CURRENT_AUTHORITY_RECEIPT_001.json",
+      "sha256": "4d796f4492695bad6b2829a4b6aab10937d923ef0e3e0fdcd2a2c9ef2013c371"
+    },
+    {
+      "bytes": 3665,
+      "path": "audit/pass2/p2c-post-failure-static-preflight-001/P2C_STATIC_PREFLIGHT_MODE_CONTRACT_001.json",
+      "sha256": "e4ff1ae48b2e3204f1eef6083fb550ab9cf58acb0495b9a24e0b134ed1aaa6de"
+    },
+    {
+      "bytes": 1254,
+      "path": "audit/pass2/p2c-post-failure-static-preflight-001/P2C_STATIC_PREFLIGHT_MODE_SEPARATION_CURRENT_STATE_001.md",
+      "sha256": "ebc3ab5cd26050d32a0386ec8775b0fe0e44243e7a82bfdd6b9c510e93c36e74"
+    },
+    {
+      "bytes": 18007,
+      "path": "audit/pass2/p2c-post-failure-static-preflight-001/static_preflight_modes_001.py",
+      "sha256": "89211c23f51349a59b0c051936648182fe36d37c809432d8877a31c21c259328"
+    },
+    {
+      "bytes": 7911,
+      "path": "audit/pass2/p2c-post-failure-static-preflight-001/test_static_preflight_modes_001.py",
+      "sha256": "4b7b7f5281613eb9f150bea6744e7b3100216079c05dbb09ac54026e6c097513"
+    },
+    {
+      "bytes": 6485,
+      "path": "audit/pass2/p2c-post-failure-static-preflight-001/verify_static_preflight_mode_separation_001.py",
+      "sha256": "d9ab318f369d57607d909e5e18cc7062ff990f311b09eb674ae3c4e245705d0c"
+    }
+  ],
+  "formal_proof_executed_during_unit": false,
+  "merge_authorized": false,
+  "production_change": false,
+  "proof_run_count_executed": 1,
+  "python_ast_parse": "PASS",
+  "rerun_observed_or_authorized": false,
+  "status": "PASS_STATIC_ONLY",
+  "test_errors": 0,
+  "test_failures": 0,
+  "test_result": {
+    "authorization_consumed": true,
+    "controller_invoked": false,
+    "errors": 0,
+    "failures": 0,
+    "formal_proof_executed": false,
+    "proof_run_count_executed": 1,
+    "status": "PASS",
+    "tests_run": 13,
+    "type": "PMP_APP_ORCHESTRATOR_P2C_STATIC_PREFLIGHT_MODE_TEST_RESULT_001"
+  },
+  "test_result_sha256": "14dd5b2a1da0441c8963a0c098ad374f496ae788ecdf8885d2c1c7ea4a3665ad",
+  "tests_run": 13,
+  "type": "PMP_APP_ORCHESTRATOR_P2C_STATIC_PREFLIGHT_MODE_SEPARATION_LOCAL_TEST_EVIDENCE_001",
+  "workflow_yaml_parse": "PASS"
+}
