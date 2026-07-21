@@ -1,0 +1,66 @@
+{
+  "type": "PMP_APP_ORCHESTRATOR_P2C_STATIC_PREFLIGHT_MODE_CONTRACT_001",
+  "status": "STATIC_ONLY_TWO_MODE_CONTRACT",
+  "modes": {
+    "maintenance_reseal": {
+      "proof_trigger_path_must_be_absent_from_diff": true,
+      "historical_proof_files_must_match_base_tree": true,
+      "formal_execution_authorized": false
+    },
+    "exact_head_seal": {
+      "diff_must_equal_one_allowed_seal_path": true,
+      "head_parent_must_equal_pull_request_base": true,
+      "all_historical_base_tree_bindings_must_match": true,
+      "validation_only": true,
+      "formal_execution_authorized": false
+    }
+  },
+  "formal_proof_trigger_path": "audit/pass2/p2c-isolated-proof-rerun-008/P2C_RECEIPT082_FORMAL_PROOF_PR_HEAD_SEAL_084.json",
+  "historical_source_repository_commit": "98b2e293717b81289e3b372d1fff8f5832d29fd6",
+  "historical_authorization_anchor": "7b4c6b1c649ce969ed98e30dd21ad38f55ddc18a",
+  "post_failure_live_main_anchor": "9c2a9959131e2367477d84404ce94f63694edc76",
+  "historical_bound_git_blobs_at_live_main": {
+    "audit/pass2/p2c-isolated-proof-rerun-008/P2C_NODEPATH_ROLLBACK_SOURCE_REPAIR_AUTHORIZATION_RECEIPT_082.json": "f5e3fd08d067a6b5cd359f073915efacc8303d6f",
+    "audit/pass2/p2c-isolated-proof-rerun-008/P2C_RECEIPT082_EXACTLY_ONE_FORMAL_PROOF_EXECUTION_DIRECTIVE_083.json": "9babde8a8a4c2c631f3a6bbfdc1071cb3effe421",
+    "audit/pass2/p2c-isolated-proof-rerun-008/P2C_RECEIPT082_MERGED_MAIN_STATIC_RESEAL_RECEIPT_115.json": "60310d2110324bd8ac3ed7d647c418b2e62356c0",
+    "audit/pass2/p2c-isolated-proof-rerun-008/P2C_RECEIPT082_FORMAL_PROOF_PR_HEAD_SEAL_084.json": "8bf4d77ec01131f19ca401aec089372b88ca2699",
+    ".github/workflows/pass2-p2c-isolated-proof-rerun-006.yml": "21055cfee07a1da6ffc83c9f632308d7580ceb94",
+    "audit/pass2/p2c-isolated-proof-rerun-008/run_receipt082_exactly_one_formal_proof.sh": "797b35b101a3638df62ba465a85644ecbfe5cb7e",
+    "audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-main-receipt082.sh": "1ff522ece3f08838b2cfd1ede3405b573a17b2f0",
+    "audit/pass2/p2c-isolated-proof-rerun-008/patch_runtime_nodepath_and_source_bindings_receipt082.py": "3ceee2648bdb06fc5d6cf664759951dc4bc3fb5d",
+    "audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-finalize.sh": "87e86c533d5d630121ded31334c46457ef4a7ad6"
+  },
+  "allowed_exact_head_seals": [
+    {
+      "purpose": "STATIC_VALIDATION_OF_PRESERVED_PR122_SHAPE_ONLY_NO_EXECUTION_AUTHORITY",
+      "path": "audit/pass2/p2c-isolated-proof-rerun-008/P2C_RECEIPT082_FORMAL_PROOF_PR_HEAD_SEAL_084.json",
+      "sealed_parent_commit": "9c2a9959131e2367477d84404ce94f63694edc76",
+      "git_blob_sha": "08b3059a4b983f0b1234f55ac05180b72deb3b3b",
+      "sha256": "73992f2a074f4c5e4fd3afd8a118be03a74a22e9c240652dcf6e113aa74fb1b6",
+      "directive_path": "audit/pass2/p2c-isolated-proof-rerun-008/P2C_RECEIPT082_EXACTLY_ONE_FORMAL_PROOF_EXECUTION_DIRECTIVE_083.json",
+      "directive_git_blob_sha": "9babde8a8a4c2c631f3a6bbfdc1071cb3effe421",
+      "directive_sha256": "8c3f08cddb6316fe5cb6f5003c1ee2a32c2b634bbd810aac9518024c26dcffb8",
+      "authorization_receipt_sha256": "7106dbdd4effcc8f6f765f3c53c5fbe68b69d0d03209fd39d31adc0c8b11d162",
+      "validation_only": true,
+      "formal_execution_authorized": false
+    }
+  ],
+  "static_command_policy": {
+    "allowed_executable": "git",
+    "allowed_git_subcommands": [
+      "diff",
+      "hash-object",
+      "merge-base",
+      "rev-parse"
+    ]
+  },
+  "forbidden_workflow_tokens": [
+    "workflow_dispatch",
+    "run_receipt038_exactly_one_formal_proof.sh",
+    "run_receipt082_exactly_one_formal_proof.sh",
+    "rerun008-controller",
+    "gh workflow run",
+    "curl ",
+    "wget "
+  ]
+}
