@@ -1,0 +1,42 @@
+{
+  "type": "PMP_APP_ORCHESTRATOR_P2C_POST_FAILURE_STATIC_PREFLIGHT_SCOPE_LOCK_001",
+  "status": "AUTHORIZED_STATIC_REPAIR_UNIT_1_ONLY",
+  "checkpoint_authority": {
+    "version": "V27",
+    "outer_sha256": "dc7b9f18da096b7351bdbf103e680ff4905697decae83f451ccc2d7c6c387797",
+    "repository_snapshot_commit": "ea337f534e89c04b842e3d88513be6d052b9e410",
+    "live_main_commit_at_authorization": "9c2a9959131e2367477d84404ce94f63694edc76"
+  },
+  "unit": "POST_FAILURE_REPAIR_UNIT_1_STATIC_PREFLIGHT_MODE_SEPARATION",
+  "allowed_exact_paths": [
+    ".github/workflows/pass2-p2c-receipt038-static-preflight.yml",
+    "audit/pass2/p2c-isolated-proof-rerun-008/static_preflight_receipt038.py"
+  ],
+  "allowed_new_prefix": "audit/pass2/p2c-post-failure-static-preflight-001/",
+  "required_preserved_remote_state": {
+    "formal_proof_pr": 122,
+    "formal_proof_pr_state": "OPEN_UNMERGED",
+    "formal_proof_pr_head": "ea337f534e89c04b842e3d88513be6d052b9e410",
+    "formal_proof_pr_changed_path": "audit/pass2/p2c-isolated-proof-rerun-008/P2C_RECEIPT082_FORMAL_PROOF_PR_HEAD_SEAL_084.json",
+    "formal_proof_pr_head_seal_git_blob_sha": "08b3059a4b983f0b1234f55ac05180b72deb3b3b",
+    "formal_proof_pr_head_seal_sha256": "73992f2a074f4c5e4fd3afd8a118be03a74a22e9c240652dcf6e113aa74fb1b6"
+  },
+  "forbidden": [
+    "formal proof execution",
+    "workflow rerun or manual dispatch",
+    "replacement proof pull request",
+    "change to pull request 122 or its branch",
+    "change to Head Seal 084",
+    "change to Receipt 082 or Directive 083",
+    "change to the formal workflow, execution wrapper, controller, patcher, or finalizer",
+    "merge",
+    "production application or activation",
+    "Current Map change",
+    "persisted user data change",
+    "candidate runtime repair",
+    "Pass 3 work"
+  ],
+  "merge_authorized": false,
+  "proof_execution_authorized": false,
+  "second_proof_run_authorized": false
+}
