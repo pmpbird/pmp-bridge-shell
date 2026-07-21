@@ -1,0 +1,35 @@
+name: Pass 2 P2-C Active Promotion Gate 001
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/pass2-p2c-active-promotion-gate-001.yml
+      - audit/pass2/p2c-active-promotion-gate-001/**
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/pass2-p2c-active-promotion-gate-001.yml
+      - audit/pass2/p2c-active-promotion-gate-001/**
+
+permissions:
+  contents: read
+
+jobs:
+  static-promotion-gate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify exact P2-C promotion contract without executing formal proof
+        run: >-
+          python3 audit/pass2/p2c-active-promotion-gate-001/verify_p2c_active_promotion_gate_001.py
+          --output /tmp/p2c-active-promotion-gate-001.json
+      - name: Upload static gate evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2c-active-promotion-gate-001-evidence
+          path: /tmp/p2c-active-promotion-gate-001.json
