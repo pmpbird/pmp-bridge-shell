@@ -1,0 +1,75 @@
+{
+  "type": "PMP_APP_ORCHESTRATOR_PASS2_P2C_ACTIVE_PROMOTION_SCOPE_LOCK_001",
+  "status": "P2C_ACTIVE_PROMOTION_GATE_IN_PROGRESS",
+  "overall_project_pass": "Pass 2",
+  "phase": "P2-C — active-chain Authority Rules and bounded passive Bug Watch",
+  "base_main_commit": "b302081e697a2ae46ba6820eea319d647c3c8dd7",
+  "purpose": "Freeze the exact promotion contract between the rehearsed disposable 86-actor enforcement design and a later rollback-ready production integration.",
+  "recovered_contract": {
+    "source_repository_commit": "98b2e293717b81289e3b372d1fff8f5832d29fd6",
+    "governed_actor_count": 86,
+    "privileged_owner_broker_count": 8,
+    "quarantine_count": 25,
+    "realm_count": 5,
+    "normalized_async_actor_count": 19,
+    "global_ambient_authority": false,
+    "unknown_actor_policy": "BLOCK_BEFORE_SIDE_EFFECT",
+    "unauthorized_capability_policy": "BLOCK_BEFORE_SIDE_EFFECT"
+  },
+  "required_bug_watch_contract": {
+    "mode": "BOUNDED_PASSIVE_CAPTURE_ONLY",
+    "append_only_receipt_history": true,
+    "owner_controlled_dispatch": true,
+    "formal_expiry_or_handoff": true,
+    "automatic_repair": false,
+    "storage_clear_or_migration": false,
+    "indexeddb_write": false
+  },
+  "safe_writer_invariants": {
+    "path": "pmp-safe-writer-current-return-fix-v1.js",
+    "sha256": "685afcd60d5bb997af71f6317a090f4a9e4e53adca5aa103c6edaf8be85be8c3",
+    "must_remain_exact_before_promotion": true
+  },
+  "formal_proof_gate": {
+    "required_before_production_application": true,
+    "authorization_receipt": "audit/pass2/p2c-isolated-proof-rerun-008/P2C_NODEPATH_ROLLBACK_SOURCE_REPAIR_AUTHORIZATION_RECEIPT_082.json",
+    "execution_directive": "audit/pass2/p2c-isolated-proof-rerun-008/P2C_RECEIPT082_EXACTLY_ONE_FORMAL_PROOF_EXECUTION_DIRECTIVE_083.json",
+    "head_seal": "audit/pass2/p2c-isolated-proof-rerun-008/P2C_RECEIPT082_FORMAL_PROOF_PR_HEAD_SEAL_084.json",
+    "proof_runs_authorized": 1,
+    "proof_runs_already_executed": 0,
+    "authorization_consumed": false,
+    "retry_without_new_authority": false
+  },
+  "allowed_changes_in_this_gate_move": [
+    ".github/workflows/pass2-p2c-active-promotion-gate-001.yml",
+    "audit/pass2/p2c-active-promotion-gate-001/P2C_ACTIVE_PROMOTION_SCOPE_LOCK_001.json",
+    "audit/pass2/p2c-active-promotion-gate-001/P2C_ACTIVE_PROMOTION_CURRENT_STATE_001.md",
+    "audit/pass2/p2c-active-promotion-gate-001/P2C_EXACT_NEXT_MOVE_LOCK_001.md",
+    "audit/pass2/p2c-active-promotion-gate-001/verify_p2c_active_promotion_gate_001.py"
+  ],
+  "forbidden_in_this_gate_move": [
+    "formal proof execution",
+    "production runtime activation",
+    "Current Map destination change",
+    "persisted user data change",
+    "automatic bug repair",
+    "Safe Writer byte change",
+    "Pass 3 work"
+  ],
+  "completion_gate": [
+    "The frozen candidate archive reconstructs to its exact SHA-256.",
+    "The recovered design contains exactly 86 governed actors, eight privileged owner brokers, 25 quarantined actors, five realms, and 19 normalized async actors.",
+    "Every non-document production source still matches the frozen proof identity or its exact recorded pre-normalization identity.",
+    "Safe Writer current return remains byte-exact.",
+    "Receipt 082, Directive 083, workflow, wrapper, controller, patcher, and finalizer bindings remain exact and unconsumed.",
+    "The next move is locked to one fresh exact-head-seal formal-proof pull request before production application."
+  ],
+  "truth_boundary": {
+    "production_runtime_files_changed": false,
+    "active_chain_integrated": false,
+    "formal_proof_executed": false,
+    "authorization_consumed": false,
+    "pass2_complete": false,
+    "pass3_started": false
+  }
+}
