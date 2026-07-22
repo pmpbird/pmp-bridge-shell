@@ -21,8 +21,8 @@ jobs:
       BASELINE_ROOT: /tmp/p2c-rehearsal088-baseline
       ACTIVE_ROOT: /tmp/p2c-rehearsal088-active
       EVIDENCE_DIR: /tmp/p2c-rehearsal088-evidence
-      NORMALIZED_ROOT: /tmp/p2c-repair-receipt038-normalized
-      NODE_HOME: /tmp/p2c-node-receipt038
+      NORMALIZED_ROOT: /tmp/p2c-rehearsal088-normalized
+      NODE_HOME: /tmp/p2c-rehearsal088-node
       P2C_REHEARSAL_SKIP_AUTHORIZATION: '1'
       EVENT_ACTION: ${{ github.event.action }}
       RUN_ATTEMPT: ${{ github.run_attempt }}
