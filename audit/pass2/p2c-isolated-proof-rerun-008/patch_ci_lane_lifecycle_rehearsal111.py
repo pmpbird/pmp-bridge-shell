@@ -5,12 +5,20 @@ import argparse
 import hashlib
 import json
 import pathlib
+import sys
 
 from patch_a002_historic_lane_lifecycle_rehearsal110 import (
     A002_HISTORIC_LIFECYCLE_GUARDS,
     A002_HISTORIC_LIFECYCLE_LOOP,
 )
 from patch_ci_lane_closure_rehearsal109 import A003_SCREEN_LOOP_NEW
+
+UNIT_ROOT = pathlib.Path(__file__).resolve().parents[1] / "p2c-post-failure-guardian-readiness-001"
+sys.path.insert(0, str(UNIT_ROOT))
+from guardian_readiness_contract_001 import (  # noqa: E402
+    apply_guardian_readiness_patch_to_runner,
+    contract_summary as guardian_contract_summary,
+)
 
 
 def sha256(data: bytes) -> str:
@@ -108,7 +116,7 @@ A003_REUSED_CONTEXT_SCREEN_LOOP = r'''    await page.close();
       for (let attempt = 1; attempt <= 2; attempt += 1) {
         try {
           page = await bootstrap(context, '#' + screen);
-          const home = await openCurrentFromGuardian(page, screen);
+          const home = await openCurrentFromGuardian(page, screen, attempt);
           const homeState = await historicalReceiptFromHomeFrame(page);
           const homeReceipt = homeState.receipt;
           await page.waitForLoadState('networkidle', { timeout:15000 });
@@ -149,6 +157,7 @@ def main() -> int:
     a003_assignment_old = " a003_screen_loop_new=" + repr(A003_SCREEN_LOOP_NEW)
     a003_assignment_new = " a003_screen_loop_new=" + repr(A003_REUSED_CONTEXT_SCREEN_LOOP)
     text = replace_once(text, a003_assignment_old, a003_assignment_new, "A003_SCREEN_LOOP")
+    text = apply_guardian_readiness_patch_to_runner(text)
     compile(text, str(args.path), "exec")
 
     contracts = {
@@ -159,6 +168,10 @@ def main() -> int:
         "a003_reused_context_bootstrap": text.count("page = await bootstrap(context, '#' + screen);"),
         "a003_retry_two": text.count("attempt <= 2"),
         "a003_fresh_screen_context": text.count("const screenContext = await browser.newContext({ serviceWorkers:'allow' });"),
+        "a003_guardian_attempt_signature": text.count("openCurrentFromGuardian(page, screen, attempt)"),
+        "a003_guardian_diagnostics_output": text.count("guardian_diagnostics: state.guardianDiagnostics"),
+        "a003_guardian_readiness_timeout": text.count("A003_GUARDIAN_READINESS_TIMEOUT"),
+        "a003_guardian_failure_evidence": text.count("A003_GUARDIAN_ATTEMPT_FAILED"),
     }
     expected = {
         "a002_single_historic_context": 2,
@@ -168,6 +181,10 @@ def main() -> int:
         "a003_reused_context_bootstrap": 2,
         "a003_retry_two": 1,
         "a003_fresh_screen_context": 0,
+        "a003_guardian_attempt_signature": 2,
+        "a003_guardian_diagnostics_output": 1,
+        "a003_guardian_readiness_timeout": 1,
+        "a003_guardian_failure_evidence": 2,
     }
     if contracts != expected:
         raise SystemExit("REHEARSAL111_RUNNER_CONTRACT_INVALID:" + json.dumps({"actual": contracts, "expected": expected}, sort_keys=True))
@@ -179,7 +196,8 @@ def main() -> int:
         "scope": "DISPOSABLE_TEST_HARNESS_ONLY",
         "github_observation": "FRESH_SERVICE_WORKER_CONTEXT_CHURN_PRECEDED_ABORTED_NAVIGATION",
         "a002_repair": "ONE_VERIFIED_HISTORIC_CONTEXT_WITH_FRESH_PAGE_PER_ROUTE",
-        "a003_repair": "REUSE_VERIFIED_CONTEXT_WITH_FRESH_PAGE_PER_SCREEN",
+        "a003_repair": "REUSE_VERIFIED_CONTEXT_WITH_FRESH_PAGE_PER_SCREEN_PLUS_BOUNDED_GUARDIAN_READINESS_DIAGNOSTICS",
+        "a003_guardian_readiness_contract": guardian_contract_summary(),
         "a002_retry_model": "BOUNDED_THREE_ATTEMPT_FAIL_CLOSED",
         "a003_retry_model": "BOUNDED_TWO_ATTEMPT_FAIL_CLOSED",
         "navigation_quiescence_required_before_assertion": True,
@@ -196,6 +214,17 @@ def main() -> int:
         "unauthorized_capability_policy_weakened": False,
     }
     (args.evidence_dir / "ci-lane-lifecycle-repair-111.json").write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+    guardian_receipt = guardian_contract_summary() | {
+        "status": "PASS_STATIC_PATCH_APPLIED",
+        "runner_original_sha256": sha256(original.encode()),
+        "runner_patched_sha256": sha256(text.encode()),
+        "contracts": contracts,
+        "authorization_consumed": True,
+        "proof_run_count_executed": 1,
+        "formal_proof_result": "FAIL",
+        "merge_authorized": False,
+    }
+    (args.evidence_dir / "guardian-readiness-diagnostics-repair-001.json").write_text(json.dumps(guardian_receipt, indent=2, sort_keys=True) + "\n")
     print(json.dumps(receipt, sort_keys=True))
     return 0
 
