@@ -1,0 +1,117 @@
+{
+  "allowed_exact_paths": [
+    ".github/workflows/pass2-p2c-a002-native-messageport-rehearsal-088.yml",
+    "audit/pass2/p2c-isolated-proof-rerun-008/patch_ci_lane_closure_rehearsal109.py",
+    "audit/pass2/p2c-isolated-proof-rerun-008/patch_ci_lane_lifecycle_rehearsal111.py"
+  ],
+  "allowed_new_prefix": "audit/pass2/p2c-post-failure-guardian-readiness-001/",
+  "base_main_commit": "d109cac3b89e67e28a2ae8ffae43e28b6a8009a7",
+  "canonical_checkpoint": {
+    "embedded_repository_commit": "d109cac3b89e67e28a2ae8ffae43e28b6a8009a7",
+    "outer_sha256": "1b315768f9efcac9b5d5043ff4b9d10f5afa3c555300d69f4ce4baafade49570",
+    "version": "V30"
+  },
+  "forbidden": [
+    "formal proof execution",
+    "workflow rerun or manual dispatch",
+    "PR #122 modification or merge",
+    "production or candidate runtime byte change",
+    "Current Map change",
+    "Safe Writer change",
+    "persisted data change",
+    "new proof authority",
+    "Pass 3 work"
+  ],
+  "formal_proof_pr": {
+    "head": "ea337f534e89c04b842e3d88513be6d052b9e410",
+    "number": 122,
+    "state": "OPEN_UNMERGED"
+  },
+  "historical_proof": {
+    "authorization_consumed": true,
+    "proof_run_count_executed": 1,
+    "receipt": "082",
+    "rerun_authorized": false,
+    "result": "FAIL",
+    "second_proof_authorized": false
+  },
+  "repository": "pmpbird/pmp-bridge-shell",
+  "required_changes": [
+    ".github/workflows/pass2-p2c-a002-native-messageport-rehearsal-088.yml",
+    "audit/pass2/p2c-isolated-proof-rerun-008/patch_ci_lane_lifecycle_rehearsal111.py"
+  ],
+  "required_preserved_files": {
+    ".github/workflows/pass2-p2c-isolated-proof-rerun-006.yml": {
+      "bytes": 2099,
+      "git_blob_sha": "21055cfee07a1da6ffc83c9f632308d7580ceb94",
+      "sha256": "03c32ad015507790de7d2d2a440f53a7ccafe6f22593e97639c856ef4ff8ddeb"
+    },
+    "audit/pass2/p2c-isolated-proof-rerun-008/P2C_NODEPATH_ROLLBACK_SOURCE_REPAIR_AUTHORIZATION_RECEIPT_082.json": {
+      "bytes": 2105,
+      "git_blob_sha": "f5e3fd08d067a6b5cd359f073915efacc8303d6f",
+      "sha256": "7106dbdd4effcc8f6f765f3c53c5fbe68b69d0d03209fd39d31adc0c8b11d162"
+    },
+    "audit/pass2/p2c-isolated-proof-rerun-008/P2C_RECEIPT082_EXACTLY_ONE_FORMAL_PROOF_EXECUTION_DIRECTIVE_083.json": {
+      "bytes": 2172,
+      "git_blob_sha": "9babde8a8a4c2c631f3a6bbfdc1071cb3effe421",
+      "sha256": "8c3f08cddb6316fe5cb6f5003c1ee2a32c2b634bbd810aac9518024c26dcffb8"
+    },
+    "audit/pass2/p2c-isolated-proof-rerun-008/P2C_RECEIPT082_FORMAL_PROOF_PR_HEAD_SEAL_084.json": {
+      "bytes": 873,
+      "git_blob_sha": "8bf4d77ec01131f19ca401aec089372b88ca2699",
+      "sha256": "d3fe5aa2e99fe579864e35c144e7d102776fea57ec1bb46cef4dd6f325c0d696"
+    },
+    "audit/pass2/p2c-isolated-proof-rerun-008/patch_runtime_nodepath_and_source_bindings_receipt082.py": {
+      "bytes": 3203,
+      "git_blob_sha": "3ceee2648bdb06fc5d6cf664759951dc4bc3fb5d",
+      "sha256": "d6546c5ef14319e677afc3116ed0ebd141a7accbb641c1f6d21d525d5fb86843"
+    },
+    "audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-finalize.sh": {
+      "bytes": 4126,
+      "git_blob_sha": "87e86c533d5d630121ded31334c46457ef4a7ad6",
+      "sha256": "5b092ffc4c8b37b0ed6a1d32c67445aec96ae4af149630f32446700e5a86d1d4"
+    },
+    "audit/pass2/p2c-isolated-proof-rerun-008/rerun008-controller-main-receipt082.sh": {
+      "bytes": 3456,
+      "git_blob_sha": "1ff522ece3f08838b2cfd1ede3405b573a17b2f0",
+      "sha256": "6f5555e852695497c2f535dc0b11dbd948d4d04b8dac9d1438079923cbabcaec"
+    },
+    "audit/pass2/p2c-isolated-proof-rerun-008/run_receipt082_exactly_one_formal_proof.sh": {
+      "bytes": 3914,
+      "git_blob_sha": "797b35b101a3638df62ba465a85644ecbfe5cb7e",
+      "sha256": "a0e9c5b0e0757d9226386aa2212d6b18ea8639302eee616815c8edd6da2e9b3d"
+    },
+    "pmp-actor-authority-gate-v1.js": {
+      "bytes": 14145,
+      "git_blob_sha": "1a7151d0166bc21f6d33f99cab79f99a77ae2bbf",
+      "sha256": "addd3be7f5570552bec805243fc920c646c6163fe0887eaa9b691a46251631e3"
+    },
+    "pmp-current-map-v12.json": {
+      "bytes": 12177,
+      "git_blob_sha": "709c4d953697ada70a6bc5f29eca44c68f4f6f7d",
+      "sha256": "a28c5918aec907d8d3011c9c4407ee6eef5251c33d33cfa8b232d2295072d926"
+    },
+    "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html": {
+      "bytes": 9912,
+      "git_blob_sha": "ffb45fd17cd407bf22ab2c3fb911bb3e9def0754",
+      "sha256": "d397ff8a97ad15afc100a72bda615993273fb49ea4939a1afb871c422a3522c5"
+    },
+    "pmp-route-guardian-current-loader-v22.html": {
+      "bytes": 7497,
+      "git_blob_sha": "3a4178a7f5664892c5cccd1c21f80f99d26ff707",
+      "sha256": "c7b9a520e6ebd2b07f46b8152756f771650459cc90c3489c1e6f86e755481783"
+    },
+    "pmp-runtime-integrity-manifest-v1.json": {
+      "bytes": 369522,
+      "git_blob_sha": "f80bee94edaf951393cae6292285fa41a1ddaa46",
+      "sha256": "740e21c0463d32f58f4a034ae1a928c55ca98e4199b2463f754d2ea47d4a0f6c"
+    },
+    "pmp-safe-writer-current-return-fix-v1.js": {
+      "bytes": 4379,
+      "git_blob_sha": "45db6422099795b68552604e19570653efd28e49",
+      "sha256": "685afcd60d5bb997af71f6317a090f4a9e4e53adca5aa103c6edaf8be85be8c3"
+    }
+  },
+  "status": "AUTHORIZED_DISPOSABLE_TEST_HARNESS_REPAIR_UNIT_2_ONLY",
+  "type": "PMP_APP_ORCHESTRATOR_P2C_POST_FAILURE_GUARDIAN_READINESS_SCOPE_LOCK_001"
+}
