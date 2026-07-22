@@ -8,6 +8,7 @@ import subprocess
 import tempfile
 import unittest
 
+import verify_guardian_readiness_unit_001 as scope_verifier
 from guardian_readiness_contract_001 import (
     A003_OPEN_CURRENT_FUNCTION_NEW,
     CURRENT,
@@ -77,6 +78,50 @@ def valid_failure() -> dict:
 
 
 class GuardianReadinessContractTests(unittest.TestCase):
+    def _ancestry_fixture(self) -> tuple[pathlib.Path, str, str, str]:
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        repo = pathlib.Path(temp.name)
+        subprocess.run(['git', 'init', '-q', str(repo)], check=True)
+        subprocess.run(['git', '-C', str(repo), 'config', 'user.name', 'PMP Unit 2A Test'], check=True)
+        subprocess.run(['git', '-C', str(repo), 'config', 'user.email', 'unit2a@example.invalid'], check=True)
+        (repo / 'base.txt').write_text('base\n')
+        subprocess.run(['git', '-C', str(repo), 'add', 'base.txt'], check=True)
+        subprocess.run(['git', '-C', str(repo), 'commit', '-q', '-m', 'base'], check=True)
+        base = subprocess.check_output(['git', '-C', str(repo), 'rev-parse', 'HEAD'], text=True).strip()
+        subprocess.run(['git', '-C', str(repo), 'checkout', '-q', '-b', 'pr-head'], check=True)
+        (repo / 'repair.txt').write_text('repair\n')
+        subprocess.run(['git', '-C', str(repo), 'add', 'repair.txt'], check=True)
+        subprocess.run(['git', '-C', str(repo), 'commit', '-q', '-m', 'repair'], check=True)
+        pr_head = subprocess.check_output(['git', '-C', str(repo), 'rev-parse', 'HEAD'], text=True).strip()
+        subprocess.run(['git', '-C', str(repo), 'checkout', '-q', '--detach', base], check=True)
+        subprocess.run(['git', '-C', str(repo), 'merge', '-q', '--no-ff', pr_head, '-m', 'temporary PR merge'], check=True)
+        merge_head = subprocess.check_output(['git', '-C', str(repo), 'rev-parse', 'HEAD'], text=True).strip()
+        unrelated_tree = subprocess.check_output(['git', '-C', str(repo), 'mktree'], input='', text=True).strip()
+        unrelated = subprocess.check_output(
+            ['git', '-C', str(repo), 'commit-tree', unrelated_tree, '-m', 'unrelated'],
+            text=True,
+        ).strip()
+        return repo, pr_head, merge_head, unrelated
+
+    def test_pr_merge_checkout_accepts_pr_head_ancestor(self) -> None:
+        repo, pr_head, merge_head, _ = self._ancestry_fixture()
+        original_root = scope_verifier.ROOT
+        try:
+            scope_verifier.ROOT = repo
+            self.assertTrue(scope_verifier.is_ancestor(pr_head, merge_head))
+        finally:
+            scope_verifier.ROOT = original_root
+
+    def test_unrelated_commit_is_rejected_by_ancestry_check(self) -> None:
+        repo, _, merge_head, unrelated = self._ancestry_fixture()
+        original_root = scope_verifier.ROOT
+        try:
+            scope_verifier.ROOT = repo
+            self.assertFalse(scope_verifier.is_ancestor(unrelated, merge_head))
+        finally:
+            scope_verifier.ROOT = original_root
+
     def test_valid_readiness_snapshot(self) -> None:
         validate_readiness_snapshot(valid_snapshot())
 

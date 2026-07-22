@@ -50,6 +50,17 @@ def git(*args: str) -> str:
     return subprocess.check_output(['git', *args], cwd=ROOT, text=True).strip()
 
 
+def is_ancestor(ancestor: str, descendant: str) -> bool:
+    result = subprocess.run(
+        ['git', 'merge-base', '--is-ancestor', ancestor, descendant],
+        cwd=ROOT,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    return result.returncode == 0
+
+
 def sha256(path: pathlib.Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -71,7 +82,7 @@ def main() -> int:
     args.evidence_dir.mkdir(parents=True, exist_ok=True)
 
     head = git('rev-parse', 'HEAD')
-    if head != args.head_sha and not git('merge-base', '--is-ancestor', args.head_sha, head):
+    if head != args.head_sha and not is_ancestor(args.head_sha, head):
         raise SystemExit(f'GUARDIAN001_CHECKOUT_HEAD_INVALID:{head}:{args.head_sha}')
     subprocess.run(['git', 'merge-base', '--is-ancestor', MAIN_ANCHOR, args.base_sha], cwd=ROOT, check=True)
 
