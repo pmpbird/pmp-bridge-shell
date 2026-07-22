@@ -1,0 +1,26 @@
+{
+  "attempts": 2,
+  "authorization_consumed": true,
+  "authorized_existing_files_changed": [
+    ".github/workflows/pass2-p2c-a002-native-messageport-rehearsal-088.yml",
+    "audit/pass2/p2c-isolated-proof-rerun-008/patch_ci_lane_lifecycle_rehearsal111.py"
+  ],
+  "base_main_commit": "d109cac3b89e67e28a2ae8ffae43e28b6a8009a7",
+  "bounded_directory": "audit/pass2/p2c-post-failure-guardian-readiness-001/",
+  "candidate_runtime_changed": false,
+  "current_map_changed": false,
+  "formal_proof_executed_during_unit": false,
+  "formal_proof_result": "FAIL",
+  "immediate_attempt_sidecar": true,
+  "merge_authorized": false,
+  "navigation_timeout_ms": 30000,
+  "patch109_changed": false,
+  "persisted_data_changed": false,
+  "production_changed": false,
+  "proof_run_count_executed": 1,
+  "readiness_timeout_ms": 15000,
+  "scope": "DISPOSABLE_TEST_HARNESS_ONLY",
+  "static_tests_run": 15,
+  "status": "PASS_LOCAL_READY_FOR_ONE_UNMERGED_PR",
+  "type": "PMP_APP_ORCHESTRATOR_P2C_GUARDIAN_READINESS_REPAIR_RECEIPT_001"
+}
