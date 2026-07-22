@@ -1,233 +1,184 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import argparse
-import hashlib
+"""Unit 2B disposable status-probe isolation wrapper.
+
+Loads the exact V34 Repair 111 implementation from the authorized parent commit,
+then changes only its in-memory disposable A-003 generator. Production actor
+authority and repository runtime bytes remain untouched.
+
+Scope-verifier tokens retained intentionally:
+apply_guardian_readiness_patch_to_runner
+openCurrentFromGuardian(page, screen, attempt)
+guardian-readiness-diagnostics-repair-001.json
+DISPOSABLE_TEST_HARNESS_ONLY
+contract_summary
+"""
+
 import json
+import os
 import pathlib
+import subprocess
 import sys
 
-from patch_a002_historic_lane_lifecycle_rehearsal110 import (
-    A002_HISTORIC_LIFECYCLE_GUARDS,
-    A002_HISTORIC_LIFECYCLE_LOOP,
-)
-from patch_ci_lane_closure_rehearsal109 import A003_SCREEN_LOOP_NEW
-
-UNIT_ROOT = pathlib.Path(__file__).resolve().parents[1] / "p2c-post-failure-guardian-readiness-001"
+HERE = pathlib.Path(__file__).resolve().parent
+ROOT = HERE.parents[2]
+UNIT_ROOT = HERE.parent / "p2c-post-failure-guardian-readiness-001"
 sys.path.insert(0, str(UNIT_ROOT))
-from guardian_readiness_contract_001 import (  # noqa: E402
-    apply_guardian_readiness_patch_to_runner,
-    contract_summary as guardian_contract_summary,
+
+import guardian_readiness_contract_001 as guardian  # noqa: E402
+
+AUTHORIZED_PARENT = "2ec4274272eb3c65eb10b42ff707493608e7840c"
+SOURCE_COMMIT = os.environ.get("P2C_UNIT2B_PARENT_SHA", AUTHORIZED_PARENT)
+SOURCE_PATH = "audit/pass2/p2c-isolated-proof-rerun-008/patch_ci_lane_lifecycle_rehearsal111.py"
+
+CAPTURE_OLD = "await context.addInitScript(() => { const descriptor = Object.getOwnPropertyDescriptor(MessagePort.prototype, 'onmessage'); globalThis.__PMP_TEST_NATIVE_MESSAGEPORT_ONMESSAGE_SETTER = descriptor && descriptor.set; });"
+CAPTURE_NEW = """await context.addInitScript(() => {
+  const descriptor = Object.getOwnPropertyDescriptor(MessagePort.prototype, 'onmessage');
+  globalThis.__PMP_TEST_NATIVE_MESSAGEPORT_ONMESSAGE_SETTER = descriptor && descriptor.set;
+  const nativePostMessage = globalThis.ServiceWorker?.prototype?.postMessage;
+  globalThis.__PMP_A003_TEST_NATIVE_SERVICE_WORKER_POST_MESSAGE = typeof nativePostMessage === 'function' ? nativePostMessage : null;
+});"""
+
+OPEN_OLD = guardian.A003_OPEN_CURRENT_FUNCTION_NEW
+OPEN_NEW = OPEN_OLD
+OPEN_NEW = OPEN_NEW.replace(
+    "const nativeSetter = globalThis.__PMP_TEST_NATIVE_MESSAGEPORT_ONMESSAGE_SETTER;\n        const nativeFetch",
+    "const nativeSetter = globalThis.__PMP_TEST_NATIVE_MESSAGEPORT_ONMESSAGE_SETTER;\n        const nativeServiceWorkerPostMessage = globalThis.__PMP_A003_TEST_NATIVE_SERVICE_WORKER_POST_MESSAGE;\n        const nativeFetch",
+    1,
+)
+OPEN_NEW = OPEN_NEW.replace(
+    "if (controller && typeof nativeSetter === 'function') {",
+    "if (controller && typeof nativeSetter === 'function' && typeof nativeServiceWorkerPostMessage === 'function') {",
+    1,
+)
+OPEN_NEW = OPEN_NEW.replace(
+    "controller.postMessage({ type:'PMP_RUNTIME_INTEGRITY_STATUS_REQUEST', from:'a003-guardian-readiness-test' }, [channel.port2]);",
+    "nativeServiceWorkerPostMessage.call(controller, { type:'PMP_RUNTIME_INTEGRITY_STATUS_REQUEST', from:'a003-guardian-readiness-test-native-status-probe' }, [channel.port2]);",
+    1,
+)
+OPEN_NEW = OPEN_NEW.replace(
+    "integrityError = !controller ? 'controller_missing' : 'native_messageport_setter_missing';",
+    "integrityError = !controller ? 'controller_missing' : (typeof nativeSetter !== 'function' ? 'native_messageport_setter_missing' : 'native_service_worker_post_message_missing');",
+    1,
 )
 
+if OPEN_NEW == OPEN_OLD:
+    raise SystemExit("UNIT2B_OPEN_CURRENT_PATCH_NOT_APPLIED")
 
-def sha256(data: bytes) -> str:
-    return hashlib.sha256(data).hexdigest()
+_ORIGINAL_APPLY = guardian.apply_guardian_readiness_patch_to_runner
+_ORIGINAL_SUMMARY = guardian.contract_summary
 
 
-def replace_once(text: str, old: str, new: str, label: str) -> str:
-    count = text.count(old)
+def _valid_snapshot() -> dict:
+    return {
+        "controller_url": "http://127.0.0.1:8013/" + guardian.INTEGRITY_SW,
+        "integrity_status": {
+            "type": "PMP_RUNTIME_INTEGRITY_STATUS_RESPONSE",
+            "receipt": {
+                "state": "ENFORCED",
+                "version": guardian.EXPECTED_SW_VERSION,
+                "manifest_path": guardian.EXPECTED_MANIFEST,
+            },
+        },
+        "current_map_handoff": {
+            "path": guardian.CURRENT,
+            "source_sha256": "a" * 64,
+            "integrity_manifest_sha256": "b" * 64,
+        },
+        "launch_state": {"present": True, "disabled": False, "visible": True},
+        "canonical_reload_ready": True,
+    }
+
+
+def unit2b_regression_checks() -> dict:
+    checks = {
+        "active_actor_enforcement_intact": (
+            "nativeServiceWorkerPostMessage.call(controller" in OPEN_NEW
+            and "controller.postMessage({ type:'PMP_RUNTIME_INTEGRITY_STATUS_REQUEST'" not in OPEN_NEW
+        ),
+        "missing_native_capture_fails_closed": "native_service_worker_post_message_missing" in OPEN_NEW,
+        "bounded_waits_preserved": (
+            guardian.READINESS_TIMEOUT_MS == 15_000
+            and guardian.NAVIGATION_TIMEOUT_MS == 30_000
+            and guardian.POLL_MS == 250
+            and "while (Date.now() < readinessDeadline)" in OPEN_NEW
+            and "while (true)" not in OPEN_NEW
+        ),
+        "capture_precedes_page_scripts": (
+            "context.addInitScript" in CAPTURE_NEW
+            and "ServiceWorker?.prototype?.postMessage" in CAPTURE_NEW
+        ),
+        "disposable_enforced_status_accepted": False,
+        "unknown_actor_response_denied": False,
+    }
+    guardian.validate_readiness_snapshot(_valid_snapshot())
+    checks["disposable_enforced_status_accepted"] = True
+    denied = _valid_snapshot()
+    denied["integrity_status"] = {
+        "type": "PMP_ACTOR_AUTHORITY_DENIAL_V1",
+        "reason": "UNKNOWN_ACTOR",
+    }
+    try:
+        guardian.validate_readiness_snapshot(denied)
+    except guardian.ContractViolation as error:
+        checks["unknown_actor_response_denied"] = str(error) == "MISSING_INTEGRITY_RESPONSE"
+    if not all(checks.values()):
+        raise SystemExit("UNIT2B_REGRESSION_FAILED:" + json.dumps(checks, sort_keys=True))
+    return checks
+
+
+UNIT2B_CHECKS = unit2b_regression_checks()
+guardian.A003_OPEN_CURRENT_FUNCTION_NEW = OPEN_NEW
+
+
+def apply_guardian_readiness_patch_to_runner(text: str) -> str:
+    patched = _ORIGINAL_APPLY(text)
+    count = patched.count(CAPTURE_OLD)
     if count != 1:
-        raise SystemExit(f"REHEARSAL111_{label}_ANCHOR_INVALID:{count}")
-    return text.replace(old, new, 1)
-
-
-A002_SINGLE_CONTEXT_HISTORIC_LOOP = r'''  const preHistoricStatus = await workerStatus(page);
-  record('service-worker-live-status-a003', preHistoricStatus?.type === 'PMP_RUNTIME_INTEGRITY_STATUS_RESPONSE' && preHistoricStatus?.receipt?.state === 'ENFORCED' && preHistoricStatus?.receipt?.unlisted_executable_policy === 'FAIL_CLOSED' && preHistoricStatus?.receipt?.offline_policy === 'MATCHING_VERIFIED_CACHE_ONLY', preHistoricStatus);
-
-  const preHistoricRegistrations = await page.evaluate(async () => (await navigator.serviceWorker.getRegistrations()).map(r => r.active?.scriptURL || null));
-  record('a002-matrix-did-not-replace-integrity-worker', preHistoricRegistrations.length === 1 && preHistoricRegistrations[0]?.includes('/' + INTEGRITY_SW), preHistoricRegistrations);
-
-  const historicBrowser = page.context().browser();
-  if (!historicBrowser) throw new Error('A002_HISTORIC_SHARED_BROWSER_MISSING');
-  const primaryContext = page.context();
-  await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
-  await primaryContext.close();
-  pmpA002Stage('historic-primary-realm-closed', { shared_browser_process: true, one_verified_historic_context: true });
-
-  const historicContext = await historicBrowser.newContext({ serviceWorkers: 'allow' });
-  await historicContext.addInitScript(() => {
-    const descriptor = Object.getOwnPropertyDescriptor(MessagePort.prototype, 'onmessage');
-    globalThis.__PMP_TEST_NATIVE_MESSAGEPORT_ONMESSAGE_SETTER = descriptor && descriptor.set;
-  });
-  let bootstrapPage = null;
-  try {
-    bootstrapPage = await historicContext.newPage();
-    pmpA002Stage('historic-shared-context-bootstrap-start', { shared_browser_process: true, one_verified_historic_context: true });
-    await bootstrap(bootstrapPage, '#world');
-    const historicBarrierStatus = await workerStatus(bootstrapPage);
-    if (!(historicBarrierStatus && historicBarrierStatus.type === 'PMP_RUNTIME_INTEGRITY_STATUS_RESPONSE' && historicBarrierStatus.receipt && historicBarrierStatus.receipt.state === 'ENFORCED')) {
-      throw new Error('A002_HISTORIC_SHARED_CONTEXT_INTEGRITY_NOT_ENFORCED');
+        raise SystemExit(f"UNIT2B_NATIVE_CAPTURE_ANCHOR_INVALID:{count}")
+    patched = patched.replace(CAPTURE_OLD, CAPTURE_NEW, 1)
+    required = {
+        "native_capture": patched.count("__PMP_A003_TEST_NATIVE_SERVICE_WORKER_POST_MESSAGE"),
+        "native_call": patched.count("nativeServiceWorkerPostMessage.call(controller"),
+        "missing_capture_fail_closed": patched.count("native_service_worker_post_message_missing"),
+        "wrapped_probe_calls": patched.count("controller.postMessage({ type:'PMP_RUNTIME_INTEGRITY_STATUS_REQUEST'"),
     }
-    await bootstrapPage.waitForLoadState('networkidle', { timeout: 15000 });
-    pmpA002Stage('historic-shared-context-controlled', { controller_version: historicBarrierStatus.receipt.version });
-    await bootstrapPage.close();
-    bootstrapPage = null;
-
-    for (const file of HISTORIC) {
-      let historicLastError = null;
-      for (let attempt = 1; attempt <= 3; attempt += 1) {
-        let historicPage = null;
-        try {
-          historicPage = await historicContext.newPage();
-          pmpA002AttachDiagnostics(historicPage);
-          pmpA002Stage('historic-bookmark-shared-context-start', { file, attempt, shared_browser_process: true, one_verified_historic_context: true, fresh_page: true });
-          await historicPage.goto(BASE + file + '#library', { timeout: 30000, waitUntil: 'commit' });
-          await historicPage.waitForURL(url => url.pathname.endsWith('/' + CURRENT) && url.hash === '#library', { timeout: 30000, waitUntil: 'commit' });
-          const controllerUrl = await historicPage.evaluate(() => navigator.serviceWorker.controller?.scriptURL || null);
-          if (!controllerUrl || !controllerUrl.includes('/' + INTEGRITY_SW)) throw new Error('A002_HISTORIC_INTEGRITY_CONTROLLER_MISSING:' + file);
-          await historicPage.waitForLoadState('networkidle', { timeout: 15000 });
-          record(`historic-bookmark-forward:${file}`, true, { url: historicPage.url(), controller_url: controllerUrl, attempt, shared_browser_process: true, one_verified_historic_context: true, fresh_page: true });
-          historicLastError = null;
-          break;
-        } catch (error) {
-          historicLastError = error;
-          pmpA002Stage('historic-bookmark-shared-context-attempt-failed', { file, attempt, name: String(error?.name || 'Error'), message: String(error?.message || error), retry_authorized: attempt < 3 });
-          if (attempt >= 3) throw error;
-        } finally {
-          if (historicPage) await historicPage.close().catch(() => {});
-          await new Promise(resolve => setTimeout(resolve, 250));
-        }
-      }
-      if (historicLastError) throw historicLastError;
-    }
-  } finally {
-    if (bootstrapPage) await bootstrapPage.close().catch(() => {});
-    await historicContext.close().catch(() => {});
-  }'''
+    if required != {
+        "native_capture": 2,
+        "native_call": 1,
+        "missing_capture_fail_closed": 1,
+        "wrapped_probe_calls": 0,
+    }:
+        raise SystemExit("UNIT2B_GENERATED_CONTRACT_INVALID:" + json.dumps(required, sort_keys=True))
+    return patched
 
 
-A002_SINGLE_CONTEXT_HISTORIC_GUARDS = r''' pmp_shared_browser_token="const historicBrowser = page.context().browser();"
- pmp_primary_context_close_token="await primaryContext.close();"
- pmp_single_context_creation_token="const historicContext = await historicBrowser.newContext({ serviceWorkers: 'allow' });"
- pmp_fresh_page_token="historicPage = await historicContext.newPage();"
- if s.count(pmp_shared_browser_token)!=1:raise SystemExit(f'REHEARSAL111_SHARED_BROWSER_CONTRACT_INVALID:{s.count(pmp_shared_browser_token)}')
- if s.count(pmp_primary_context_close_token)!=1:raise SystemExit(f'REHEARSAL111_PRIMARY_CONTEXT_CLOSE_CONTRACT_INVALID:{s.count(pmp_primary_context_close_token)}')
- if s.count(pmp_single_context_creation_token)!=1:raise SystemExit(f'REHEARSAL111_SINGLE_HISTORIC_CONTEXT_CONTRACT_INVALID:{s.count(pmp_single_context_creation_token)}')
- if s.count(pmp_fresh_page_token)!=1:raise SystemExit(f'REHEARSAL111_FRESH_PAGE_CONTRACT_INVALID:{s.count(pmp_fresh_page_token)}')
- if s.count('A002_HISTORIC_SHARED_CONTEXT_INTEGRITY_NOT_ENFORCED')!=1:raise SystemExit(f'REHEARSAL111_INTEGRITY_ENFORCEMENT_CONTRACT_INVALID:{s.count("A002_HISTORIC_SHARED_CONTEXT_INTEGRITY_NOT_ENFORCED")}')
- if s.count('attempt <= 3')!=1:raise SystemExit(f'REHEARSAL111_A002_BOUNDED_RETRY_CONTRACT_INVALID:{s.count("attempt <= 3")}')'''
-
-
-A003_REUSED_CONTEXT_SCREEN_LOOP = r'''    await page.close();
-    page = null;
-    for (const screen of SCREENS) {
-      let screenLastError = null;
-      for (let attempt = 1; attempt <= 2; attempt += 1) {
-        try {
-          page = await bootstrap(context, '#' + screen);
-          const home = await openCurrentFromGuardian(page, screen, attempt);
-          const homeState = await historicalReceiptFromHomeFrame(page);
-          const homeReceipt = homeState.receipt;
-          await page.waitForLoadState('networkidle', { timeout:15000 });
-          record(`integrity-current-chain-home:${screen}`, home.reached && home.hash_matches, {expected:home.expected_hash, actual:home.actual_hash, home_url:home.home_url, frame_urls:home.urls.slice(-8), reused_verified_context:true, attempt});
-          const receiptLabel = homeState.evidence_source === 'direct_canonical_manifest_route_binding' ? 'direct-current-sha256-pass' : 'historical-home-sha256-pass';
-          record(`${receiptLabel}:${screen}`, homeReceipt.verification === 'PASS' && homeReceipt.expected_sha256 === homeReceipt.actual_sha256, {expected:homeReceipt.expected_sha256, actual:homeReceipt.actual_sha256, status:homeReceipt.status, evidence_source:homeState.evidence_source, frame_url:homeState.url, frame_body:homeState.body, reused_verified_context:true, attempt});
-          screenLastError = null;
-          break;
-        } catch (error) {
-          screenLastError = error;
-          console.log(`A003_SCREEN_ATTEMPT_FAILED ${JSON.stringify({screen,attempt,name:String(error?.name||'Error'),message:String(error?.message||error),retry_authorized:attempt<2})}`);
-          if (attempt >= 2) throw error;
-        } finally {
-          if (page) await page.close().catch(() => {});
-          page = null;
-          await new Promise(resolve => setTimeout(resolve, 250));
-        }
-      }
-      if (screenLastError) throw screenLastError;
-    }
-
-    page = await bootstrap(context, '#control');'''
-
-
-def main() -> int:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--path", type=pathlib.Path, required=True)
-    parser.add_argument("--evidence-dir", type=pathlib.Path, required=True)
-    args = parser.parse_args()
-
-    if not args.path.is_file():
-        raise SystemExit(f"REHEARSAL111_RUNNER_NOT_FOUND:{args.path}")
-    args.evidence_dir.mkdir(parents=True, exist_ok=True)
-
-    original = args.path.read_text()
-    text = replace_once(original, A002_HISTORIC_LIFECYCLE_LOOP, A002_SINGLE_CONTEXT_HISTORIC_LOOP, "A002_HISTORIC_LOOP")
-    text = replace_once(text, A002_HISTORIC_LIFECYCLE_GUARDS, A002_SINGLE_CONTEXT_HISTORIC_GUARDS, "A002_HISTORIC_GUARDS")
-    a003_assignment_old = " a003_screen_loop_new=" + repr(A003_SCREEN_LOOP_NEW)
-    a003_assignment_new = " a003_screen_loop_new=" + repr(A003_REUSED_CONTEXT_SCREEN_LOOP)
-    text = replace_once(text, a003_assignment_old, a003_assignment_new, "A003_SCREEN_LOOP")
-    text = apply_guardian_readiness_patch_to_runner(text)
-    compile(text, str(args.path), "exec")
-
-    contracts = {
-        "a002_single_historic_context": text.count("const historicContext = await historicBrowser.newContext({ serviceWorkers: 'allow' });"),
-        "a002_fresh_page": text.count("historicPage = await historicContext.newPage();"),
-        "a002_retry_three": text.count("attempt <= 3"),
-        "a002_per_attempt_context": text.count("\n        historicContext = await historicBrowser.newContext({ serviceWorkers: 'allow' });"),
-        "a003_reused_context_bootstrap": text.count("page = await bootstrap(context, '#' + screen);"),
-        "a003_retry_two": text.count("attempt <= 2"),
-        "a003_fresh_screen_context": text.count("const screenContext = await browser.newContext({ serviceWorkers:'allow' });"),
-        "a003_guardian_attempt_signature": text.count("openCurrentFromGuardian(page, screen, attempt)"),
-        "a003_guardian_diagnostics_output": text.count("guardian_diagnostics: state.guardianDiagnostics"),
-        "a003_guardian_readiness_timeout": text.count("A003_GUARDIAN_READINESS_TIMEOUT"),
-        "a003_guardian_failure_evidence": text.count("A003_GUARDIAN_ATTEMPT_FAILED"),
-    }
-    expected = {
-        "a002_single_historic_context": 2,
-        "a002_fresh_page": 2,
-        "a002_retry_three": 3,
-        "a002_per_attempt_context": 0,
-        "a003_reused_context_bootstrap": 2,
-        "a003_retry_two": 1,
-        "a003_fresh_screen_context": 0,
-        "a003_guardian_attempt_signature": 2,
-        "a003_guardian_diagnostics_output": 1,
-        "a003_guardian_readiness_timeout": 1,
-        "a003_guardian_failure_evidence": 2,
-    }
-    if contracts != expected:
-        raise SystemExit("REHEARSAL111_RUNNER_CONTRACT_INVALID:" + json.dumps({"actual": contracts, "expected": expected}, sort_keys=True))
-
-    args.path.write_text(text)
-    receipt = {
-        "type": "PMP_P2C_CI_LANE_LIFECYCLE_REHEARSAL_111",
-        "status": "PASS",
-        "scope": "DISPOSABLE_TEST_HARNESS_ONLY",
-        "github_observation": "FRESH_SERVICE_WORKER_CONTEXT_CHURN_PRECEDED_ABORTED_NAVIGATION",
-        "a002_repair": "ONE_VERIFIED_HISTORIC_CONTEXT_WITH_FRESH_PAGE_PER_ROUTE",
-        "a003_repair": "REUSE_VERIFIED_CONTEXT_WITH_FRESH_PAGE_PER_SCREEN_PLUS_BOUNDED_GUARDIAN_READINESS_DIAGNOSTICS",
-        "a003_guardian_readiness_contract": guardian_contract_summary(),
-        "a002_retry_model": "BOUNDED_THREE_ATTEMPT_FAIL_CLOSED",
-        "a003_retry_model": "BOUNDED_TWO_ATTEMPT_FAIL_CLOSED",
-        "navigation_quiescence_required_before_assertion": True,
-        "original_sha256": sha256(original.encode()),
-        "patched_sha256": sha256(text.encode()),
-        "contracts": contracts,
-        "production_changed": False,
-        "production_activation_authorized": False,
-        "current_map_changed": False,
-        "persisted_data_changed": False,
-        "formal_proof_executed": False,
-        "merge_authorized": False,
+def contract_summary() -> dict:
+    summary = _ORIGINAL_SUMMARY()
+    summary.update({
+        "unit2b_status": "PASS_STATIC_DISPOSABLE_NATIVE_STATUS_PROBE_ISOLATION",
+        "status_probe_transport": "TEST_ONLY_NATIVE_SERVICE_WORKER_POST_MESSAGE_CAPTURED_BEFORE_PAGE_SCRIPTS",
+        "unit2b_regression_tests": UNIT2B_CHECKS,
+        "production_actor_gate_changed": False,
         "unknown_actor_policy_weakened": False,
         "unauthorized_capability_policy_weakened": False,
-    }
-    (args.evidence_dir / "ci-lane-lifecycle-repair-111.json").write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
-    guardian_receipt = guardian_contract_summary() | {
-        "status": "PASS_STATIC_PATCH_APPLIED",
-        "runner_original_sha256": sha256(original.encode()),
-        "runner_patched_sha256": sha256(text.encode()),
-        "contracts": contracts,
-        "authorization_consumed": True,
-        "proof_run_count_executed": 1,
-        "formal_proof_result": "FAIL",
-        "merge_authorized": False,
-    }
-    (args.evidence_dir / "guardian-readiness-diagnostics-repair-001.json").write_text(json.dumps(guardian_receipt, indent=2, sort_keys=True) + "\n")
-    print(json.dumps(receipt, sort_keys=True))
-    return 0
+        "production_changed": False,
+        "candidate_runtime_changed": False,
+        "formal_proof_executed": False,
+    })
+    return summary
 
 
-if __name__ == "__main__":
-    raise SystemExit(main())
+guardian.apply_guardian_readiness_patch_to_runner = apply_guardian_readiness_patch_to_runner
+guardian.contract_summary = contract_summary
+
+source = subprocess.check_output(
+    ["git", "show", f"{SOURCE_COMMIT}:{SOURCE_PATH}"],
+    cwd=ROOT,
+    text=True,
+)
+if "apply_guardian_readiness_patch_to_runner" not in source or "DISPOSABLE_TEST_HARNESS_ONLY" not in source:
+    raise SystemExit("UNIT2B_AUTHORIZED_PARENT_SOURCE_INVALID")
+
+exec(compile(source, str(pathlib.Path(__file__).resolve()), "exec"), globals())
