@@ -21,8 +21,8 @@ jobs:
       BASELINE_ROOT: /tmp/p2c-rehearsal088-baseline
       ACTIVE_ROOT: /tmp/p2c-rehearsal088-active
       EVIDENCE_DIR: /tmp/p2c-rehearsal088-evidence
-      NORMALIZED_ROOT: /tmp/p2c-rehearsal088-normalized
-      NODE_HOME: /tmp/p2c-rehearsal088-node
+      NORMALIZED_ROOT: /tmp/p2c-repair-receipt038-normalized
+      NODE_HOME: /tmp/p2c-node-receipt038
       P2C_REHEARSAL_SKIP_AUTHORIZATION: '1'
       EVENT_ACTION: ${{ github.event.action }}
       RUN_ATTEMPT: ${{ github.run_attempt }}
@@ -40,7 +40,17 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22.16.0'
+      - name: Run bounded guardian readiness static tests
+        run: python3 audit/pass2/p2c-post-failure-guardian-readiness-001/test_guardian_readiness_diagnostics_001.py
+      - name: Verify Repair Unit 2 scope and preserved proof boundary
+        run: >-
+          python3 audit/pass2/p2c-post-failure-guardian-readiness-001/verify_guardian_readiness_unit_001.py
+          --base-sha "$BASE_SHA"
+          --head-sha "$PR_HEAD_SHA"
+          --evidence-dir "$EVIDENCE_DIR"
       - name: Execute disposable active and restored rehearsal
+        env:
+          A003_GUARDIAN_EVIDENCE_PATH: /tmp/p2c-rehearsal088-evidence/a003-guardian-readiness-evidence.json
         run: bash "$AUDIT_DIR/rerun008-controller-main-rehearsal088.sh"
       - name: Upload complete rehearsal evidence
         if: always()
