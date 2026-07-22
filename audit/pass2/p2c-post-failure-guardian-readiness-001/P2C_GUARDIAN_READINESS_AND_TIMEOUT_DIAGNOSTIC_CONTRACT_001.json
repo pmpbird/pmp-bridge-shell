@@ -1,0 +1,48 @@
+{
+  "candidate_runtime_changed": false,
+  "evidence_model": "immediate append-only attempt sidecar plus final A-003 result embedding and console record",
+  "fail_closed_tests": [
+    "missing controller",
+    "missing integrity response",
+    "missing Current Map handoff",
+    "canonical reload not ready",
+    "launch not ready",
+    "no navigation assignment",
+    "wrong final URL",
+    "wrong final hash",
+    "absent or invalid timeout evidence"
+  ],
+  "failure_evidence_required": [
+    "observed top-level URL/path/hash",
+    "guardian frame URL",
+    "guardian receipt/message/report",
+    "request ledger",
+    "guardian and top controller URLs",
+    "integrity status/error",
+    "Current Map handoff/error",
+    "launch state",
+    "navigation events and assignment observation",
+    "screen and attempt",
+    "bounded timeout evidence and elapsed time"
+  ],
+  "formal_proof_authority_created": false,
+  "formal_proof_executed": false,
+  "navigation_timeout_ms": 30000,
+  "no_failure_suppression": true,
+  "no_unbounded_wait": true,
+  "poll_ms": 250,
+  "production_changed": false,
+  "readiness_required": [
+    "guardian service-worker controller bound to integrity worker",
+    "enforced integrity status response",
+    "Current Map current_app handoff and manifest identity",
+    "canonical reload path and requested hash",
+    "guardian resolver loaded",
+    "launch button present, visible, and enabled"
+  ],
+  "readiness_timeout_ms": 15000,
+  "scope": "DISPOSABLE_A003_TEST_HARNESS_ONLY",
+  "screen_attempts": 2,
+  "status": "STATIC_CONTRACT_LOCKED",
+  "type": "PMP_APP_ORCHESTRATOR_P2C_GUARDIAN_READINESS_AND_TIMEOUT_DIAGNOSTIC_CONTRACT_001"
+}
