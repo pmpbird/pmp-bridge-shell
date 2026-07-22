@@ -15,11 +15,13 @@ DISPOSABLE_TEST_HARNESS_ONLY
 contract_summary
 """
 
+import ast
 import json
 import os
 import pathlib
 import subprocess
 import sys
+import tempfile
 
 HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
@@ -39,6 +41,14 @@ CAPTURE_NEW = """await context.addInitScript(() => {
   const nativePostMessage = globalThis.ServiceWorker?.prototype?.postMessage;
   globalThis.__PMP_A003_TEST_NATIVE_SERVICE_WORKER_POST_MESSAGE = typeof nativePostMessage === 'function' ? nativePostMessage : null;
 });"""
+
+
+def serialize_for_existing_double_quoted_python_literal(value: str) -> str:
+    """Return a deterministic Python-double-quoted string body."""
+    return json.dumps(value, ensure_ascii=False)[1:-1]
+
+
+CAPTURE_NEW_SERIALIZED = serialize_for_existing_double_quoted_python_literal(CAPTURE_NEW)
 
 OPEN_OLD = guardian.A003_OPEN_CURRENT_FUNCTION_NEW
 OPEN_NEW = OPEN_OLD
@@ -65,6 +75,78 @@ OPEN_NEW = OPEN_NEW.replace(
 
 if OPEN_NEW == OPEN_OLD:
     raise SystemExit("UNIT2B_OPEN_CURRENT_PATCH_NOT_APPLIED")
+
+
+def unit2b1_serialization_regression_test() -> dict:
+    complete_generated_runner = (
+        "#!/usr/bin/env python3\n"
+        "def build_generated_a003():\n"
+        " bootstrap_new=\"  " + CAPTURE_OLD
+        + "\\n  const page = await context.newPage();\"\n"
+        " return bootstrap_new\n"
+    )
+    serialized_runner = complete_generated_runner.replace(
+        CAPTURE_OLD,
+        CAPTURE_NEW_SERIALIZED,
+        1,
+    )
+    compile(
+        serialized_runner,
+        "<unit2b1-complete-generated-runner-regression>",
+        "exec",
+    )
+    tree = ast.parse(serialized_runner)
+    assignments = [
+        node for node in ast.walk(tree)
+        if isinstance(node, ast.Assign)
+        and any(
+            isinstance(target, ast.Name) and target.id == "bootstrap_new"
+            for target in node.targets
+        )
+    ]
+    if len(assignments) != 1:
+        raise SystemExit(
+            f"UNIT2B1_BOOTSTRAP_ASSIGNMENT_COUNT_INVALID:{len(assignments)}"
+        )
+    bootstrap_value = ast.literal_eval(assignments[0].value)
+    if CAPTURE_NEW not in bootstrap_value:
+        raise SystemExit("UNIT2B1_SERIALIZED_CAPTURE_VALUE_MISMATCH")
+
+    javascript = (
+        "'use strict';\n"
+        "async function captureNativeStatusProbe(context) {\n"
+        + CAPTURE_NEW + "\n"
+        "}\n"
+        + OPEN_NEW + "\n"
+    )
+    with tempfile.NamedTemporaryFile("w", suffix=".cjs", delete=False) as handle:
+        handle.write(javascript)
+        javascript_path = pathlib.Path(handle.name)
+    try:
+        node_check = subprocess.run(
+            ["node", "--check", str(javascript_path)],
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            check=False,
+        )
+    finally:
+        javascript_path.unlink(missing_ok=True)
+    if node_check.returncode:
+        raise SystemExit(
+            "UNIT2B1_GENERATED_A003_NODE_CHECK_FAILED:"
+            + node_check.stdout[-4000:]
+        )
+
+    return {
+        "complete_generated_python_runner_compile": True,
+        "serialized_capture_round_trip": True,
+        "generated_a003_node_check": "PASS",
+        "serialization": "JSON_ESCAPED_BODY_FOR_EXISTING_DOUBLE_QUOTED_PYTHON_LITERAL",
+    }
+
+
+UNIT2B1_SERIALIZATION_CHECKS = unit2b1_serialization_regression_test()
 
 _ORIGINAL_APPLY = guardian.apply_guardian_readiness_patch_to_runner
 _ORIGINAL_SUMMARY = guardian.contract_summary
@@ -137,7 +219,8 @@ def apply_guardian_readiness_patch_to_runner(text: str) -> str:
     count = patched.count(CAPTURE_OLD)
     if count != 1:
         raise SystemExit(f"UNIT2B_NATIVE_CAPTURE_ANCHOR_INVALID:{count}")
-    patched = patched.replace(CAPTURE_OLD, CAPTURE_NEW, 1)
+    patched = patched.replace(CAPTURE_OLD, CAPTURE_NEW_SERIALIZED, 1)
+    compile(patched, "<unit2b-complete-generated-runner>", "exec")
     required = {
         "native_capture": patched.count("__PMP_A003_TEST_NATIVE_SERVICE_WORKER_POST_MESSAGE"),
         "native_call": patched.count("nativeServiceWorkerPostMessage.call(controller"),
@@ -157,8 +240,11 @@ def apply_guardian_readiness_patch_to_runner(text: str) -> str:
 def contract_summary() -> dict:
     summary = _ORIGINAL_SUMMARY()
     summary.update({
-        "unit2b_status": "PASS_STATIC_DISPOSABLE_NATIVE_STATUS_PROBE_ISOLATION",
+        "unit2b_status": "PASS_STATIC_DISPOSABLE_NATIVE_STATUS_PROBE_ISOLATION_AND_SERIALIZATION",
         "status_probe_transport": "TEST_ONLY_NATIVE_SERVICE_WORKER_POST_MESSAGE_CAPTURED_BEFORE_PAGE_SCRIPTS",
+        "generated_runner_serialization": "JSON_ESCAPED_BODY_FOR_EXISTING_DOUBLE_QUOTED_PYTHON_LITERAL",
+        "complete_generated_runner_compile": True,
+        "unit2b1_serialization_regression": UNIT2B1_SERIALIZATION_CHECKS,
         "unit2b_regression_tests": UNIT2B_CHECKS,
         "production_actor_gate_changed": False,
         "unknown_actor_policy_weakened": False,
