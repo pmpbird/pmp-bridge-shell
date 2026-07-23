@@ -38,6 +38,24 @@ try {
   await guardian.click('#openBtn', { force: true });
   await page.waitForURL((url) => url.pathname.endsWith('/' + current) && url.hash === '#control', { timeout: 45000 });
 
+  await page.waitForFunction(() => {
+    try {
+      const receipt = JSON.parse(localStorage.getItem('pmp_pass75_reload_runtime_platform_gate_v1_receipt') || 'null');
+      return receipt?.version === '1.3.0-manual-release-startup-order' && receipt?.certified === true;
+    } catch { return false; }
+  }, null, { timeout: 45000 });
+  const preRelease = await page.evaluate(() => JSON.parse(localStorage.getItem('pmp_pass75_reload_runtime_platform_gate_v1_receipt')));
+  assert.equal(preRelease.released, false, 'current runtime gate must remain closed before explicit test release');
+  const releaseButton = page.locator('#pmpPass75ReloadRuntimePlatformGateV1 button[data-run="1"]');
+  assert.equal(await releaseButton.count(), 1, 'current runtime gate must expose exactly one explicit release control');
+  await releaseButton.click({ force: true });
+  await page.waitForFunction(() => {
+    try {
+      const receipt = JSON.parse(localStorage.getItem('pmp_pass75_reload_runtime_platform_gate_v1_receipt') || 'null');
+      return receipt?.released === true && receipt?.release_reason === 'manual_diagnostic_run_app_orchestrator';
+    } catch { return false; }
+  }, null, { timeout: 30000 });
+
   let controlFrame;
   for (let i = 0; i < 120; i += 1) {
     for (const frame of page.frames()) {
@@ -70,6 +88,7 @@ try {
     current_app: map.current_app.path,
     current_hash: '#control',
     current_control_room_found: true,
+    runtime_gate_manual_release_verified: true,
     a003_bootstrap_status: bootstrap.status,
     legacy_wrapper: 'pmp-current-inner-cleanbug-rgcontrols-v6.html',
     legacy_wrapper_current_authority: false,
