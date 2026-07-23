@@ -1,0 +1,104 @@
+{
+  "accepted_body_ids": [
+    "BODY-000",
+    "BODY-001",
+    "BODY-002",
+    "BODY-003",
+    "BODY-004",
+    "BODY-005",
+    "BODY-006",
+    "BODY-007",
+    "BODY-008",
+    "BODY-009",
+    "BODY-010",
+    "BODY-011",
+    "BODY-012",
+    "BODY-013",
+    "BODY-014",
+    "BODY-015",
+    "BODY-016",
+    "BODY-017",
+    "BODY-018",
+    "BODY-019",
+    "BODY-020",
+    "BODY-021"
+  ],
+  "claim_ceiling": {
+    "best_in_world": false,
+    "current_clean": false,
+    "frozen": false,
+    "full_history_lossless": false,
+    "full_transfer_proof": false,
+    "real_app_proof": false
+  },
+  "historical_pass3": {
+    "identity": {
+      "bytes": 2842,
+      "git_blob_sha": "1b2e347058808cb016178075d1c3f984d9e363b8",
+      "path": "pmp-pass3-route-handoff-freeze-v1.json",
+      "sha256": "e13c96d40b9b8b1f7aac0b95aed4ed28c8faa3eb9626cb801395e79373a8eb6f"
+    },
+    "meaning": "Route Guardian -> App Orchestrator Handoff",
+    "must_remain_read_only": true,
+    "path": "pmp-pass3-route-handoff-freeze-v1.json"
+  },
+  "hooks": [
+    "HOOK-001",
+    "HOOK-002",
+    "HOOK-003",
+    "HOOK-004",
+    "HOOK-005",
+    "HOOK-006"
+  ],
+  "manifest_record_count": 1,
+  "modern_pass3_name": "Modern Pass 3 — Hook Validation and Fail-Closed Readiness",
+  "negative_gates": [
+    "missing_body",
+    "duplicate_body",
+    "missing_manifest",
+    "missing_support_slot",
+    "missing_raw_pointer",
+    "missing_marker",
+    "overclaim"
+  ],
+  "runtime_sources": [
+    {
+      "bytes": 4233,
+      "git_blob_sha": "3386fc1906d6b9ae5195455009180042ea94de00",
+      "path": "pmp-phase3-hook-readiness-v1.js",
+      "sha256": "dc2902222e550400d11396b49c96b05842cef3be41a2cf946be0e40971a27744"
+    },
+    {
+      "bytes": 5596,
+      "git_blob_sha": "2478aedf8891d40633836302dfd4c7fadaa9f719",
+      "path": "pmp-phase3-hook-validation-execution-v1.js",
+      "sha256": "067e70205d0c90cd5e01c9ce79fdeaa83d7bb15b8256aab7514ee2caa9df7ca9"
+    }
+  ],
+  "scope": {
+    "base": "5aaa508af73a8ef43b5bcf7af3ce24768552b96d",
+    "branch": "agent/modern-pass3-hook-validation-unit1-v2",
+    "changed_paths": [
+      ".github/workflows/modern-pass3-hook-validation-unit1-v1.yml",
+      "audit/pass3/modern-hook-validation-unit1-v1.json",
+      "tools/test_modern_pass3_hook_validation_unit1_v1.py",
+      "tools/verify_modern_pass3_hook_validation_unit1_v1.py"
+    ]
+  },
+  "support_slots": [
+    "app_wiring_master_index",
+    "app_wiring_phase_1",
+    "app_wiring_phase_2",
+    "app_wiring_phase_3",
+    "app_wiring_phase_4",
+    "bug_finder_runtime_plan",
+    "hook_registry",
+    "lossless_medium",
+    "mode_selection_operator_card",
+    "real_bug_batch_proof_plan",
+    "receiver_card",
+    "saved_set_guardian_card"
+  ],
+  "type": "PMP_MODERN_PASS3_HOOK_VALIDATION_UNIT1_CONTRACT_V1",
+  "version": "1.0.0"
+}

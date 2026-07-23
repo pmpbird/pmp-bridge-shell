@@ -1,0 +1,47 @@
+name: Modern Pass 3 Hook Validation Unit 1 V1
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/modern-pass3-hook-validation-unit1-v1.yml'
+      - 'audit/pass3/modern-hook-validation-unit1-v1.json'
+      - 'tools/test_modern_pass3_hook_validation_unit1_v1.py'
+      - 'tools/verify_modern_pass3_hook_validation_unit1_v1.py'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: modern-pass3-hook-validation-unit1-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  certify-modern-pass3-unit1:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref == 'agent/modern-pass3-hook-validation-unit1-v2'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run positive and fail-closed negative tests
+        run: python3 tools/test_modern_pass3_hook_validation_unit1_v1.py
+      - name: Verify exact scope and preservation
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: >-
+          python3 tools/verify_modern_pass3_hook_validation_unit1_v1.py
+          --base-sha "$BASE_SHA"
+          --head-sha "$HEAD_SHA"
+          --output /tmp/modern-pass3-hook-validation-unit1-v1.json
+      - name: Upload deterministic Unit 1 receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: modern-pass3-hook-validation-unit1-v1
+          path: /tmp/modern-pass3-hook-validation-unit1-v1.json
+          retention-days: 90
