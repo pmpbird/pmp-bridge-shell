@@ -9,7 +9,10 @@ permissions:
 
 jobs:
   a002-native-messageport-rehearsal-088:
-    if: github.event.action == 'opened' && github.run_attempt == 1
+    if: >-
+      github.event.action == 'opened' && github.run_attempt == 1 &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref == 'agent/pass2-p2c-post-failure-guardian-readiness-001'
     runs-on: ubuntu-24.04
     env:
       SOURCE_COMMIT: 98b2e293717b81289e3b372d1fff8f5832d29fd6

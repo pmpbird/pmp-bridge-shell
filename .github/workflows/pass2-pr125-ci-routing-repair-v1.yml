@@ -1,0 +1,48 @@
+name: Pass 2 PR125 CI Routing Repair V1
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/pass2-p2b-hardening-reseal-publisher.yml'
+      - '.github/workflows/pass2-p2b-hardening-v2.yml'
+      - '.github/workflows/pass2-p2b-authority-gate.yml'
+      - '.github/workflows/pass2-p2c-a002-native-messageport-rehearsal-088.yml'
+      - '.github/workflows/pass2-pr125-ci-routing-repair-v1.yml'
+      - 'tools/test_automated_plan_real_app_v1.mjs'
+      - 'tools/verify_pr125_ci_routing_repair_v1.py'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pass2-pr125-ci-routing-repair-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  certify-routing-repair:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref == 'agent/pass2-pr125-ci-routing-repair-v1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify exact repair scope, closed-lane routing, and preserved candidate bytes
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: >-
+          python3 tools/verify_pr125_ci_routing_repair_v1.py
+          --base-sha "$BASE_SHA"
+          --head-sha "$HEAD_SHA"
+          --output /tmp/pass2-pr125-ci-routing-repair-v1.json
+      - name: Upload exact routing repair verification
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass2-pr125-ci-routing-repair-v1
+          path: /tmp/pass2-pr125-ci-routing-repair-v1.json
+          retention-days: 90

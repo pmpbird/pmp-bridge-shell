@@ -32,6 +32,11 @@ env:
 
 jobs:
   certify-p2b:
+    if: >-
+      (github.event_name == 'workflow_dispatch' && github.ref_name == 'agent/pass2-p2b-authority-gate') ||
+      (github.event_name == 'pull_request' &&
+       github.event.pull_request.head.repo.full_name == github.repository &&
+       github.event.pull_request.head.ref == 'agent/pass2-p2b-authority-gate')
     runs-on: ubuntu-latest
     timeout-minutes: 55
     steps:
