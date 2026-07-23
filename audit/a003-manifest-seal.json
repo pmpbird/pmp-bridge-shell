@@ -1,14 +1,15 @@
 {
-  "manifest_bytes": 369522,
+  "manifest_bytes": 170236,
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
-  "manifest_sha256": "740e21c0463d32f58f4a034ae1a928c55ca98e4199b2463f754d2ea47d4a0f6c",
+  "manifest_sha256": "2a023afa74b30d8e50d7ef8e0afd20cf169e97fac11633a42715c262df56365a",
   "manifest_version": "20260711A-A003-FINAL",
+  "pass2_context": "Bug Authority Phase 2A atomically adds bounded passive capture authority while preserving all pre-existing Active Bugs Found bytes and fail-closed runtime integrity.",
   "repair_id": "A-003",
   "root_self_verifiable": false,
   "root_trust_anchor": "pmp-app-current.html",
   "rule": "The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.",
-  "runtime_source_set_sha256": "e4651fab64387ab0dd2353d6acfbeae892ca415ebbea59d31621fa8abe346e2e",
-  "sealed_branch": "main",
+  "runtime_source_set_sha256": "3d964f444f137c2e33c88c14bdb9194ecaec1909235b0e49a3603dc77737cbd3",
+  "sealed_branch": "agent/pass2-bug-authority-bounded-passive-v1",
   "status": "SEALED",
   "type": "PMP_A003_MANIFEST_SEAL_V1"
 }
