@@ -1,0 +1,23 @@
+{
+  "type": "PMP_MODERN_PASS3_HOOK_RUNTIME_INTEGRATION_UNIT2_CONTRACT_V1",
+  "version": "1.0.0",
+  "modern_pass3_name": "Modern Pass 3 — Hook Validation and Fail-Closed Readiness",
+  "unit": "Unit 2 — Isolated Runtime-Integration Harness",
+  "base": "2f89607c6bd4beca00cfbc9a47b7af1f50d4e01a",
+  "branch": "agent/modern-pass3-hook-runtime-integration-unit2-v1",
+  "runtime_sources": [
+    {"path":"pmp-phase3-hook-readiness-v1.js","bytes":4233,"sha256":"dc2902222e550400d11396b49c96b05842cef3be41a2cf946be0e40971a27744","git_blob_sha":"3386fc1906d6b9ae5195455009180042ea94de00"},
+    {"path":"pmp-phase3-hook-validation-execution-v1.js","bytes":5596,"sha256":"067e70205d0c90cd5e01c9ce79fdeaa83d7bb15b8256aab7514ee2caa9df7ca9","git_blob_sha":"2478aedf8891d40633836302dfd4c7fadaa9f719"}
+  ],
+  "historical_freeze": {"path":"pmp-pass3-route-handoff-freeze-v1.json","bytes":2842,"sha256":"e13c96d40b9b8b1f7aac0b95aed4ed28c8faa3eb9626cb801395e79373a8eb6f","git_blob_sha":"1b2e347058808cb016178075d1c3f984d9e363b8"},
+  "unit1_contract": "audit/pass3/modern-hook-validation-unit1-v1.json",
+  "changed_paths": [
+    ".github/workflows/modern-pass3-hook-runtime-integration-unit2-v1.yml",
+    "audit/pass3/modern-hook-runtime-integration-unit2-v1.json",
+    "tools/run_modern_pass3_hook_runtime_integration_unit2_v1.mjs",
+    "tools/test_modern_pass3_hook_runtime_integration_unit2_v1.py",
+    "tools/verify_modern_pass3_hook_runtime_integration_unit2_v1.py"
+  ],
+  "cases": ["positive","missing_body","duplicate_body","missing_manifest","missing_support_slot","missing_body_raw_pointer","missing_support_raw_pointer","missing_marker","readiness_prerequisite_failure","overclaim_attempt"],
+  "claim_ceiling": {"real_app_proof":false,"current_clean":false,"frozen":false,"full_transfer_proof":false,"full_history_lossless":false,"best_in_world":false,"production_activation":false}
+}
