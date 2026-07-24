@@ -1,0 +1,99 @@
+{
+  "base": "2acb8f07e9ce8ce2866f54e8d66ce206b4896a1b",
+  "branch": "agent/modern-pass3-exercised-scope-closure-v1",
+  "certified_scope": {
+    "deterministic_contract_validation": true,
+    "deterministic_receipts": true,
+    "historical_freeze_preserved": true,
+    "hooks": [
+      "HOOK-001",
+      "HOOK-002",
+      "HOOK-003",
+      "HOOK-004",
+      "HOOK-005",
+      "HOOK-006"
+    ],
+    "isolated_node_vm_runtime_harness": true,
+    "positive_and_fail_closed_negative_gates": true,
+    "runtime_sources_preserved": true
+  },
+  "changed_paths": [
+    ".github/workflows/modern-pass3-exercised-scope-closure-v1.yml",
+    "audit/pass3/modern-pass3-exercised-scope-closure-v1.json",
+    "tools/test_modern_pass3_exercised_scope_closure_v1.py",
+    "tools/verify_modern_pass3_exercised_scope_closure_v1.py"
+  ],
+  "claim_ceiling": {
+    "best_in_world": false,
+    "current_clean": false,
+    "frozen": false,
+    "full_history_lossless": false,
+    "full_transfer_proof": false,
+    "production_activation": false,
+    "real_app_proof": false
+  },
+  "formal_proof": {
+    "count": 1,
+    "new_run": false,
+    "receipt082": "CONSUMED",
+    "result": "FAIL"
+  },
+  "modern_pass3_name": "Modern Pass 3 — Hook Validation and Fail-Closed Readiness",
+  "production_activation": false,
+  "protected_files": [
+    {
+      "git_blob_sha": "3386fc1906d6b9ae5195455009180042ea94de00",
+      "path": "pmp-phase3-hook-readiness-v1.js"
+    },
+    {
+      "git_blob_sha": "2478aedf8891d40633836302dfd4c7fadaa9f719",
+      "path": "pmp-phase3-hook-validation-execution-v1.js"
+    },
+    {
+      "git_blob_sha": "1b2e347058808cb016178075d1c3f984d9e363b8",
+      "path": "pmp-pass3-route-handoff-freeze-v1.json"
+    }
+  ],
+  "type": "PMP_MODERN_PASS3_EXERCISED_SCOPE_CLOSURE_V1",
+  "unit1_files": [
+    {
+      "git_blob_sha": "2d4127eda3165979d823617ae646b031500a9b1c",
+      "path": ".github/workflows/modern-pass3-hook-validation-unit1-v1.yml"
+    },
+    {
+      "git_blob_sha": "aa01c9d5c34932bd055cb104f5eceb7fdc55d296",
+      "path": "audit/pass3/modern-hook-validation-unit1-v1.json"
+    },
+    {
+      "git_blob_sha": "3c346d77e20af5d70fa6ea2c70898b2db8e29740",
+      "path": "tools/test_modern_pass3_hook_validation_unit1_v1.py"
+    },
+    {
+      "git_blob_sha": "8fa11489f5d8a54934189bee9df483a37c62ce83",
+      "path": "tools/verify_modern_pass3_hook_validation_unit1_v1.py"
+    }
+  ],
+  "unit2_files": [
+    {
+      "git_blob_sha": "ebac305a08ca2a6d4ded5eacfdfcd5f68eec9c37",
+      "path": ".github/workflows/modern-pass3-hook-runtime-integration-unit2-v1.yml"
+    },
+    {
+      "git_blob_sha": "78e3de95cb146cf92fedd8529bd1e3882d439a9b",
+      "path": "audit/pass3/modern-hook-runtime-integration-unit2-v1.json"
+    },
+    {
+      "git_blob_sha": "dacb82a3f08e89679aa105c72f1587a02d0bbd4a",
+      "path": "tools/run_modern_pass3_hook_runtime_integration_unit2_v1.mjs"
+    },
+    {
+      "git_blob_sha": "07fe38ea347eb3e554c79bf4348258c78c278e01",
+      "path": "tools/test_modern_pass3_hook_runtime_integration_unit2_v1.py"
+    },
+    {
+      "git_blob_sha": "650ec863b59ca1d5811a4994ec7c610f64e8dde8",
+      "path": "tools/verify_modern_pass3_hook_runtime_integration_unit2_v1.py"
+    }
+  ],
+  "version": "1.0.0"
+}

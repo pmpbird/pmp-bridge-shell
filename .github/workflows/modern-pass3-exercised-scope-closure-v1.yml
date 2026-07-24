@@ -1,0 +1,44 @@
+name: Modern Pass 3 Exercised Scope Closure V1
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/modern-pass3-exercised-scope-closure-v1.yml'
+      - 'audit/pass3/modern-pass3-exercised-scope-closure-v1.json'
+      - 'tools/test_modern_pass3_exercised_scope_closure_v1.py'
+      - 'tools/verify_modern_pass3_exercised_scope_closure_v1.py'
+permissions:
+  contents: read
+concurrency:
+  group: modern-pass3-exercised-scope-closure-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+jobs:
+  certify-modern-pass3-exercised-scope-closure:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref == 'agent/modern-pass3-exercised-scope-closure-v1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run closure positive and fail-closed tests
+        run: python3 tools/test_modern_pass3_exercised_scope_closure_v1.py
+      - name: Verify exact scope and preservation
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: >-
+          python3 tools/verify_modern_pass3_exercised_scope_closure_v1.py
+          --base-sha "$BASE_SHA"
+          --head-sha "$HEAD_SHA"
+          --verify-base-identities
+          --output /tmp/modern-pass3-exercised-scope-closure-v1.json
+      - name: Upload deterministic closure receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: modern-pass3-exercised-scope-closure-v1
+          path: /tmp/modern-pass3-exercised-scope-closure-v1.json
+          retention-days: 90
