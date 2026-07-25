@@ -1,0 +1,125 @@
+{
+  "type": "PMP_PASS3_SCOPE_RECONCILIATION_UNIT_PLAN_V1",
+  "version": "1.0.0",
+  "status": "AUTHORITATIVE_FOR_CURRENT_ROADMAP_PASS3",
+  "pass": 3,
+  "pass_name": "Route Guardian -> App Orchestrator Handoff",
+  "base_main_commit": "e75f48790d56dfa27278f6de969c4c2af132f9cf",
+  "purpose": "Resolve conflicting historical Pass 3 records and lock the complete bounded sequence required before Pass 4 may begin.",
+  "authority_precedence": [
+    "This record governs the remaining work of current 13-pass roadmap Pass 3.",
+    "The 13-pass roadmap fixes the Pass 3 objective but did not define internal units; this record supplies those bounded units without changing the roadmap order.",
+    "pmp-pass3-route-handoff-freeze-v1.json is preserved as historical active-path evidence only; its instruction to stop modifying Pass 3 does not close the current roadmap gap.",
+    "Modern Pass 3 Hook Validation Unit 1 and Unit 2 are preserved as historical isolated hook-validation evidence only and are not current roadmap Pass 3 units.",
+    "The Passes 1-3 completion audit remains valid evidence that the historical freeze and isolated hook proofs did not satisfy the full roadmap completion test.",
+    "PR #134 and audit/pass3/pass3-route-guardian-handoff-contract-unit1-v1.json are current roadmap Pass 3 Unit 1 truth."
+  ],
+  "locked_boundaries": {
+    "route_authority": "pmp-current-map-v12.json",
+    "resolver": "pmp-current-route-resolver-v1.js",
+    "source_role": "route_guardian",
+    "destination_role": "current_app",
+    "handoff_type": "PMP_ROUTE_HANDOFF_V1",
+    "failure_mode": "fail_closed",
+    "implicit_fallbacks": false,
+    "pr_122": "OPEN_UNMERGED_UNAUTHORIZED_DO_NOT_TOUCH",
+    "persisted_user_data": "PRESERVE",
+    "historical_records": "PRESERVE",
+    "claim_ceilings": "PRESERVE",
+    "pass4": "MUST_NOT_BEGIN_UNTIL_PASS3_CLOSURE_UNIT_MERGES"
+  },
+  "units": [
+    {
+      "unit": 1,
+      "name": "Canonical handoff contract and deterministic source validation",
+      "status": "COMPLETE",
+      "merged_pr": 134,
+      "resulting_main_commit": "e75f48790d56dfa27278f6de969c4c2af132f9cf",
+      "scope": "Contract definition, one positive case, fail-closed mutations, exact-scope verifier, and CI; no runtime activation."
+    },
+    {
+      "unit": 2,
+      "name": "Passive runtime consumer integration",
+      "status": "NOT_STARTED",
+      "objective": "Integrate the Unit 1 contract into the smallest existing runtime consumer that already receives or executes the Route Guardian handoff, without transferring route authority or inventing destinations.",
+      "required_discovery_before_edit": [
+        "Trace the live pmp-current-map-v12.json route_guardian to current_app path on verified main.",
+        "Identify the single narrowest existing consumer boundary that can validate the complete PMP_ROUTE_HANDOFF_V1 lineage before navigation.",
+        "Record the selected file and rejected alternatives in the unit audit before changing runtime bytes."
+      ],
+      "allowed_behavior": [
+        "Construct or receive the canonical map-issued handoff.",
+        "Validate all Unit 1 required fields against the same loaded current map.",
+        "Continue the already-authorized current_app navigation only after validation succeeds.",
+        "Emit bounded diagnostic evidence without persisting new user state."
+      ],
+      "forbidden_behavior": [
+        "Do not change Current Map destination truth.",
+        "Do not use alternate, historical, saved, hard-coded, owner, pointer, or implicit fallback destinations.",
+        "Do not rebuild banks, reorder levels, migrate storage, delete files, or begin Boot Status Strip work.",
+        "Do not claim browser or real-app proof."
+      ],
+      "completion": "Dedicated PR merged after deterministic positive and fail-closed consumer tests, exact-scope verification, all fresh CI, resulting-main verification, installed-file verification, snapshot refresh, and additive ZIP publication."
+    },
+    {
+      "unit": 3,
+      "name": "Isolated runtime handoff proof",
+      "status": "NOT_STARTED",
+      "objective": "Exercise the integrated consumer in an isolated runtime harness and prove valid handoffs continue while invalid, stale, incomplete, or non-map-issued handoffs fail closed without navigation.",
+      "required_cases": [
+        "Canonical current-map handoff succeeds.",
+        "Every required lineage field missing fails closed.",
+        "Wrong type, role, map path, map version, route epoch, or destination fails closed.",
+        "Historical-map, hard-coded, saved-route, owner, pointer, and implicit-fallback attempts fail closed.",
+        "Rejected handoffs produce zero navigation assignments and zero persisted-user-data writes."
+      ],
+      "forbidden_behavior": [
+        "Do not use the real production app as the proof harness.",
+        "Do not modify route authority or activate later Pass 3 behavior.",
+        "Do not claim live-browser or visual proof."
+      ],
+      "completion": "Dedicated PR merged with deterministic isolated-runtime evidence, exact-scope verification, fresh CI, resulting-main and installed-file verification, snapshot refresh, and additive ZIP publication."
+    },
+    {
+      "unit": 4,
+      "name": "Bounded live current-path observation",
+      "status": "NOT_STARTED",
+      "objective": "Observe one bounded current-path run proving Route Guardian reaches the map-issued current_app through the integrated consumer and that a deliberately invalid handoff is blocked before navigation.",
+      "required_evidence": [
+        "Verified main and exact installed-file identities before observation.",
+        "Canonical Route Guardian source and current_app destination match pmp-current-map-v12.json.",
+        "App Orchestrator is observably loaded or acknowledged at the current app boundary without taking unrelated ownership.",
+        "One controlled invalid-handoff probe is blocked before navigation.",
+        "No persisted user data, bank structure, level order, Mount Registry, Section Owner, Helper, migration, or Boot Status Strip behavior changes."
+      ],
+      "claim_ceiling": "Bounded live current-path observation only; not a certification of later passes, unrelated app behavior, or broad production correctness.",
+      "completion": "Dedicated PR merged with bounded evidence, exact-scope verification, all fresh CI, resulting-main and installed-file verification, snapshot refresh, and additive ZIP publication."
+    },
+    {
+      "unit": 5,
+      "name": "Pass 3 closure certification",
+      "status": "NOT_STARTED",
+      "objective": "Certify that Units 1-4 collectively satisfy the current roadmap handoff objective and establish the exact boundary for Pass 4.",
+      "required_checks": [
+        "All Unit 1-4 PRs are merged and their resulting main commits remain in main history.",
+        "Current Map remains sole destination authority and resolver behavior remains fail closed.",
+        "The live Route Guardian to current_app path is verified at the bounded claim scope.",
+        "App Orchestrator presence at the handoff destination is evidenced.",
+        "No unauthorized fallback, persisted-user-data mutation, history deletion, Pass 4 work, or PR #122 change occurred.",
+        "Every installed file introduced or changed by Units 1-4 matches verified main.",
+        "The embedded repository snapshot and deterministic manifest match the verified resulting main commit."
+      ],
+      "pass3_completion_test": "Pass 3 is complete only when the canonical Route Guardian handoff contract is integrated into the narrowest runtime consumer, deterministic isolated tests prove valid continuation and invalid fail-closed behavior, one bounded live current-path observation confirms the map-issued Route Guardian -> current_app -> App Orchestrator boundary, and a closure certification PR is merged and packaged.",
+      "next_after_completion": "Pass 4/13 — Boot Status Strip. No Pass 4 work may occur inside the closure unit."
+    }
+  ],
+  "execution_rule": "Complete exactly one remaining unit per move. A unit is not complete at draft or branch state; it requires fresh CI, exact-scope verification, merge, resulting-main verification, installed-file verification, snapshot refresh, and additive ZIP publication.",
+  "repair_scope": {
+    "runtime_behavior_changed": false,
+    "persisted_user_data_changed": false,
+    "current_map_changed": false,
+    "historical_evidence_deleted": false,
+    "pass3_implementation_advanced": false,
+    "claim": "Planning and authority reconciliation only."
+  }
+}
