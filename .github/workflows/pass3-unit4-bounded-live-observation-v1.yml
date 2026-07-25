@@ -1,0 +1,33 @@
+name: Pass 3 Unit 4 Bounded Live Observation
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/pass3-unit4-bounded-live-observation-v1.yml'
+      - 'audit/pass3/pass3-route-guardian-handoff-unit4-live-observation-v1.json'
+      - 'audit/pass3/pass3-unit4-bounded-live-observation.cjs'
+      - 'tools/verify_pass3_unit4_bounded_live_observation_v1.py'
+permissions:
+  contents: read
+jobs:
+  observe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-node@v4
+        with: {node-version: '20'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: npm install --no-save playwright@1.54.1
+      - run: npx playwright install --with-deps chromium
+      - name: Run one canonical observation and one invalid probe
+        run: node audit/pass3/pass3-unit4-bounded-live-observation.cjs
+      - name: Verify exact evidence-only scope
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: python tools/verify_pass3_unit4_bounded_live_observation_v1.py "$BASE_SHA"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass3-unit4-live-observation-result
+          path: audit/pass3/pass3-unit4-live-observation-result.json
