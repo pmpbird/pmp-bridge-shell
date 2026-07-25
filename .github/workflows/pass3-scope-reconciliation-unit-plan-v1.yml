@@ -1,0 +1,31 @@
+name: Pass 3 Scope Reconciliation and Unit Plan
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/pass3-scope-reconciliation-unit-plan-v1.yml'
+      - 'audit/pass3/pass3-scope-reconciliation-unit-plan-v1.json'
+      - 'tools/test_pass3_scope_reconciliation_unit_plan_v1.py'
+      - 'tools/verify_pass3_scope_reconciliation_unit_plan_v1.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run deterministic reconciliation tests
+        run: python tools/test_pass3_scope_reconciliation_unit_plan_v1.py
+      - name: Verify exact documentation-only scope
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: python tools/verify_pass3_scope_reconciliation_unit_plan_v1.py "$BASE_SHA"
