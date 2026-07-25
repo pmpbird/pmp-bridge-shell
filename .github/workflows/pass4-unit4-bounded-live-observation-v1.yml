@@ -1,0 +1,48 @@
+name: Pass 4 Unit 4 Bounded Live Observation
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - '.github/workflows/pass4-unit4-bounded-live-observation-v1.yml'
+      - 'audit/pass4/pass4-boot-status-strip-unit4-bounded-live-observation-v1.json'
+      - 'tools/run_pass4_unit4_bounded_live_observation_v1.js'
+      - 'tools/verify_pass4_unit4_bounded_live_observation_v1.py'
+permissions:
+  contents: write
+jobs:
+  observe-once:
+    if: github.event.action == 'opened'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install Playwright
+        run: npm install --no-save playwright && npx playwright install --with-deps chromium
+      - name: Start repository server
+        run: python3 -m http.server 4174 >/tmp/pass4-unit4-server.log 2>&1 &
+      - name: Consume exactly one bounded browser observation
+        run: node tools/run_pass4_unit4_bounded_live_observation_v1.js
+      - name: Preserve the consumed receipt on the PR branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add audit/pass4/pass4-boot-status-strip-unit4-bounded-live-observation-v1.json
+          git commit -m 'Pass 4 Unit 4: preserve consumed live observation receipt [skip ci]'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
+  validate-receipt:
+    if: github.event.action == 'synchronize'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate exact evidence-only scope and consumed receipt
+        run: python tools/verify_pass4_unit4_bounded_live_observation_v1.py "${{ github.event.pull_request.base.sha }}"
