@@ -1,0 +1,25 @@
+name: Pass 4 Boot Status Strip Scope Reconciliation Readiness
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/pass4-boot-status-strip-scope-reconciliation-readiness-v1.yml'
+      - 'audit/pass4/pass4-boot-status-strip-scope-reconciliation-readiness-v1.json'
+      - 'tools/test_pass4_boot_status_strip_scope_reconciliation_readiness_v1.py'
+      - 'tools/verify_pass4_boot_status_strip_scope_reconciliation_readiness_v1.py'
+permissions:
+  contents: read
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Test Pass 4 readiness reconciliation
+        run: python tools/test_pass4_boot_status_strip_scope_reconciliation_readiness_v1.py
+      - name: Verify exact documentation-only scope
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: python tools/verify_pass4_boot_status_strip_scope_reconciliation_readiness_v1.py "$BASE_SHA"
