@@ -1,0 +1,39 @@
+{
+  "type": "PMP_PASS3_ROUTE_GUARDIAN_HANDOFF_CONTRACT_UNIT1_V1",
+  "version": "1.0.0",
+  "pass": 3,
+  "unit": 1,
+  "status": "CONTRACT_DEFINED_NOT_RUNTIME_ACTIVATED",
+  "base_main_commit": "aef6024aba29b0154264e904cb0a1b431da11af3",
+  "route_authority": "pmp-current-map-v12.json",
+  "resolver": "pmp-current-route-resolver-v1.js",
+  "source_role": "route_guardian",
+  "destination_role": "current_app",
+  "handoff_type": "PMP_ROUTE_HANDOFF_V1",
+  "required_fields": [
+    "type",
+    "source_role",
+    "destination_role",
+    "map_path",
+    "map_version",
+    "route_epoch",
+    "destination_path"
+  ],
+  "positive_rule": "A handoff is valid only when the canonical resolver reads pmp-current-map-v12.json, resolves source_role route_guardian and destination_role current_app from that same map, and emits the exact map-issued destination with complete lineage fields.",
+  "fail_closed_rules": [
+    "Reject missing or malformed handoff fields.",
+    "Reject a source role other than route_guardian.",
+    "Reject a destination role other than current_app.",
+    "Reject any destination not issued by pmp-current-map-v12.json.",
+    "Reject alternate-map, historical-map, hard-coded, saved-route, owner, pointer, or implicit fallback destinations.",
+    "Reject map-version or route-epoch mismatch.",
+    "Do not navigate after rejection."
+  ],
+  "preservation": {
+    "runtime_behavior_changed": false,
+    "persisted_user_data_changed": false,
+    "historical_records_preserved": true,
+    "claim_ceiling": "Contract, deterministic source validation, and fail-closed tests only. No browser proof, real-app activation, route mutation, later Pass 3 unit, or later pass is claimed."
+  },
+  "next_unit_not_started": "Implement the smallest runtime consumer integration only after this contract unit is merged and re-read from main."
+}
