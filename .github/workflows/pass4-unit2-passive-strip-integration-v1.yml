@@ -1,0 +1,45 @@
+name: Pass 4 Unit 2 Passive Strip Integration
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/pass4-unit2-passive-strip-integration-v1.yml'
+      - 'audit/a003-manifest-seal.json'
+      - 'audit/pass4/pass4-boot-status-strip-unit2-bounded-passive-integration-v1.json'
+      - 'pmp-app-current.html'
+      - 'pmp-boot-status-strip-owner-v1.js'
+      - 'pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html'
+      - 'pmp-runtime-integrity-manifest-v1.json'
+      - 'tools/generate_pass4_unit2_integrity_updates_v1.py'
+      - 'tools/test_pass4_unit2_passive_strip_integration_v1.js'
+      - 'tools/verify_pass4_unit2_passive_strip_integration_v1.py'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Verify generated runtime integrity identities are stable
+        run: |
+          python tools/generate_pass4_unit2_integrity_updates_v1.py
+          git diff --exit-code
+      - name: Test passive strip integration
+        run: node tools/test_pass4_unit2_passive_strip_integration_v1.js
+      - name: Verify exact bounded scope and identities
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: python tools/verify_pass4_unit2_passive_strip_integration_v1.py "$BASE_SHA"
+      - name: Package verified repository snapshot
+        run: git archive --format=zip --output=pass4-unit2-verified-repository.zip HEAD
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pass4-unit2-verified-repository-snapshot
+          path: pass4-unit2-verified-repository.zip
+          if-no-files-found: error

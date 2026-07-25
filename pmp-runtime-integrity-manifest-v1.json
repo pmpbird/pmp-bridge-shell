@@ -1646,15 +1646,15 @@
       "sri": "sha256-jl3VpBxDbK5rydQnwtr6M/FtB1LLqKMX8GwRwwEYzag="
     },
     {
-      "bytes": 9454,
+      "bytes": 5440,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "d8f80730d3e3198aaa90507f81248b6f86b1bd27",
+      "git_blob_sha": "7894bca06d1a850f4648159e8445d5e8b7e568ea",
       "mime_type": "text/javascript",
       "path": "pmp-boot-status-strip-owner-v1.js",
-      "sha256_base64": "sSxZPHYHZmLT/2BW0Z+ndXlLzXR4J38F8oN+BxF3wp8=",
-      "sha256_hex": "b12c593c76076662d3ff6056d19fa775794bcd7478277f05f2837e071177c29f",
-      "sri": "sha256-sSxZPHYHZmLT/2BW0Z+ndXlLzXR4J38F8oN+BxF3wp8="
+      "sha256_base64": "yuh1YXKHgrBsdmhFVZhAf4mZ4g1JKFvghsdNL/AwVl4=",
+      "sha256_hex": "cae87561728782b06c7668455598407f8999e20d49285be086c74d2ff030565e",
+      "sri": "sha256-yuh1YXKHgrBsdmhFVZhAf4mZ4g1JKFvghsdNL/AwVl4="
     },
     {
       "bytes": 1643,
@@ -2966,15 +2966,15 @@
       "sri": "sha256-EWrEaZ2mhcvtS9o2eSEyrSII9kUZ0Eu3+X5IiZns7aU="
     },
     {
-      "bytes": 21769,
+      "bytes": 21868,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_DOCUMENT",
-      "git_blob_sha": "668ebb39b00188eb177136cfaef96e0ad7023403",
+      "git_blob_sha": "f62cdb28d1507b1731e9ca1660b6289081433147",
       "mime_type": "text/html",
       "path": "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
-      "sha256_base64": "N0KMi4+Y3awj5e8Bx9ErAYmzXwRGmcG0/3OE/Urmcqg=",
-      "sha256_hex": "37428c8b8f98ddac23e5ef01c7d12b0189b35f044699c1b4ff7384fd4ae672a8",
-      "sri": "sha256-N0KMi4+Y3awj5e8Bx9ErAYmzXwRGmcG0/3OE/Urmcqg="
+      "sha256_base64": "kkZ5kAU+TlI0izvAIYE740QYVcNlTUcZ13oSS7/Up6Q=",
+      "sha256_hex": "92467990053e4e52348b3bc021813be3441855c3654d4719d77a124bbfd4a7a4",
+      "sri": "sha256-kkZ5kAU+TlI0izvAIYE740QYVcNlTUcZ13oSS7/Up6Q="
     },
     {
       "bytes": 8346,
@@ -7781,7 +7781,7 @@
       "rule": "This is the only application bootstrap source excluded from downstream manifest self-enforcement."
     }
   ],
-  "runtime_source_set_sha256": "76c174deedff1c28fe6e489d882234b3c2b76a0dedf4829a6d134dd67aae7d58",
+  "runtime_source_set_sha256": "297eefd9efe7abd5d3ba38e2e83d15ff8226878158c8818bba7dd9eb2ebc587f",
   "source_identity_rule": "Deterministic digest of protected local, historical, external, root-anchor, and policy identities; audit/workflow-only commits do not alter this identity.",
   "type": "PMP_RUNTIME_INTEGRITY_MANIFEST_V1",
   "unlisted_executable_policy": "FAIL_CLOSED",
