@@ -1,0 +1,25 @@
+name: Pass 4 Unit 1 Current-Path Contract Boundary
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/pass4-unit1-current-path-contract-boundary-v1.yml'
+      - 'audit/pass4/pass4-boot-status-strip-unit1-current-path-contract-boundary-v1.json'
+      - 'tools/test_pass4_unit1_current_path_contract_boundary_v1.py'
+      - 'tools/verify_pass4_unit1_current_path_contract_boundary_v1.py'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Test passive contract and boundary
+        run: python tools/test_pass4_unit1_current_path_contract_boundary_v1.py
+      - name: Verify exact evidence-only scope
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: python tools/verify_pass4_unit1_current_path_contract_boundary_v1.py "$BASE_SHA"
