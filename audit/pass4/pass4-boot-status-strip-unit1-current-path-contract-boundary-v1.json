@@ -1,0 +1,56 @@
+{
+  "type": "PMP_PASS4_BOOT_STATUS_STRIP_UNIT1_CURRENT_PATH_CONTRACT_BOUNDARY_V1",
+  "version": "1.0.0",
+  "status": "EVIDENCE_ONLY_PENDING_MERGE",
+  "pass": 4,
+  "unit": 1,
+  "base_main_commit": "be1716d1ba01895ad2648c97e67b5fbbd2b091ad",
+  "roadmap_name": "Boot Status Strip",
+  "contract": {
+    "type": "PMP_BOOT_STATUS_STRIP_PASSIVE_CONTRACT_V1",
+    "actor": "Boot Status Strip",
+    "purpose": "Display passive startup status and expose slow or failure state without owning, routing, repairing, or persisting startup.",
+    "required_states": ["BOOTING", "BOOT_SLOW", "BOOT_FAILURE", "READY_ACKNOWLEDGED"],
+    "allowed_inputs": {
+      "BOOTING": ["current-path document presence", "current-app frame loading state", "App Orchestrator script presence before acknowledgement"],
+      "BOOT_SLOW": ["elapsed observation time beyond the bounded slow threshold while startup remains incomplete"],
+      "BOOT_FAILURE": ["existing fail-closed diagnostic", "script load error", "current-app frame error", "malformed or unavailable required acknowledgement"],
+      "READY_ACKNOWLEDGED": ["existing App Orchestrator acknowledgement or current report in the current-app document context"]
+    },
+    "permitted_output": ["one passive visual strip", "state label", "brief current step", "slow warning", "failure warning"],
+    "fail_passive": "If an input is absent, inaccessible, malformed, or cross-context blocked, show an unknown or failure observation without changing route, repairing startup, taking ownership, or writing storage.",
+    "required_zero_effects": {
+      "route_assignments": 0,
+      "persisted_user_data_writes": 0,
+      "app_orchestrator_ownership_transfers": 0,
+      "startup_repairs": 0
+    }
+  },
+  "selected_boundary": {
+    "startup_chain": [
+      "pmp-route-guardian-current-loader-v22.html",
+      "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html"
+    ],
+    "consumer_file": "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+    "observation_point": "Within the current-app inner document, after the existing pmp-app-orchestrator-v1.js load/acknowledgement opportunity and before any Boot Status Strip rendering or interaction.",
+    "reason": "This is the narrowest boundary that can observe App Orchestrator acknowledgement and current startup state without changing Route Guardian, reload-owner routing, App Orchestrator ownership, or startup progression.",
+    "read_only_inputs_only": true,
+    "no_runtime_change_in_unit1": true
+  },
+  "preservation": {
+    "current_map_changed": false,
+    "resolver_changed": false,
+    "route_guardian_changed": false,
+    "app_orchestrator_changed": false,
+    "runtime_changed": false,
+    "manifest_or_bootstrap_changed": false,
+    "integrity_identities_changed": false,
+    "persisted_user_data_changed": false,
+    "historical_evidence_changed": false,
+    "unit2_started": false,
+    "pass5_started": false,
+    "pr122_touched": false
+  },
+  "claim_ceiling": "Current-path passive contract and consumer-boundary selection only. No runtime integration, live visibility, Pass 4 completion, Pass 5 work, or broad production correctness is claimed."
+}
