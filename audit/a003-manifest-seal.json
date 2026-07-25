@@ -1,15 +1,14 @@
 {
   "manifest_bytes": 369522,
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
-  "manifest_sha256": "86a2ff60880839cf1ab2272eb07a8a20b5b2213292cc4a608d1a02c2abdd249e",
+  "manifest_sha256": "04dc86587a54760b9136aa625f5e4cbacc45873e484011e2743660ee5af82201",
   "manifest_version": "20260711A-A003-FINAL",
-  "pass4_context": "Pass 4 Unit 2 installs the locked passive Boot Status Strip contract at the selected current v30 inner-document boundary and refreshes only required runtime integrity identities.",
   "repair_id": "A-003",
   "root_self_verifiable": false,
   "root_trust_anchor": "pmp-app-current.html",
   "rule": "The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.",
-  "runtime_source_set_sha256": "297eefd9efe7abd5d3ba38e2e83d15ff8226878158c8818bba7dd9eb2ebc587f",
-  "sealed_branch": "agent/pass4-unit2-bounded-passive-strip-integration-v2",
+  "runtime_source_set_sha256": "3851d799453941f01ae944f280912ab448d792e115e6af0f9d021e1cde1c1d27",
+  "sealed_branch": "main",
   "status": "SEALED",
   "type": "PMP_A003_MANIFEST_SEAL_V1"
 }
