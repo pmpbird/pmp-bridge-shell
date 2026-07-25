@@ -1,0 +1,32 @@
+name: Pass 3 Route Guardian Handoff Contract Unit 1
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/pass3-route-guardian-handoff-contract-unit1-v1.yml'
+      - 'audit/pass3/pass3-route-guardian-handoff-contract-unit1-v1.json'
+      - 'tools/test_pass3_route_guardian_handoff_contract_unit1_v1.py'
+      - 'tools/verify_pass3_route_guardian_handoff_contract_unit1_v1.py'
+      - 'pmp-current-map-v12.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run deterministic positive and fail-closed tests
+        run: python tools/test_pass3_route_guardian_handoff_contract_unit1_v1.py
+      - name: Verify exact additive scope
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: python tools/verify_pass3_route_guardian_handoff_contract_unit1_v1.py "$BASE_SHA"
