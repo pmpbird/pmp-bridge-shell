@@ -1,0 +1,25 @@
+name: Pass 3 Unit 3 Isolated Handoff Proof
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/pass3-route-guardian-handoff-unit3-isolated-proof-v1.yml'
+      - 'audit/pass3/pass3-route-guardian-handoff-unit3-isolated-proof-v1.json'
+      - 'tools/run_pass3_route_guardian_handoff_unit3_isolated_proof_v1.mjs'
+      - 'tools/verify_pass3_route_guardian_handoff_unit3_isolated_proof_v1.py'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Run isolated handoff proof and exact-scope verification
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: python tools/verify_pass3_route_guardian_handoff_unit3_isolated_proof_v1.py "$BASE_SHA"
