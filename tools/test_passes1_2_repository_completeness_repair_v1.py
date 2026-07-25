@@ -15,6 +15,7 @@ def check(i,x,p):
  if not any(r.get('path')=='audit/pass2/pass2-full-roadmap-authority-definition-closure-v1.json' for r in current):g.append('pass2_current')
  old=next((r for r in records if r.get('path')=='pmp-actor-authority-policy-v1.json'),{})
  if old.get('classification')!='HISTORICAL_P2B_POLICY':g.append('old_policy_scope')
+ if old.get('current_status')!='HISTORICAL_SCOPED_AUTHORITY':g.append('historical_override')
  if x.get('precedence_rule')!='NO_RECORD_OVERRIDES_ANOTHER_OUTSIDE_ITS_DECLARED_SCOPE':g.append('crosswalk_precedence')
  stages=x.get('stages',[])
  if len(stages)!=5 or any(not s.get('scope') or not s.get('status') for s in stages):g.append('crosswalk_stages')
