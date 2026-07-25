@@ -1,0 +1,41 @@
+{
+  "type": "PMP_PASS3_PASSIVE_RUNTIME_CONSUMER_INTEGRATION_UNIT2_V1",
+  "version": "1.0.0",
+  "pass": 3,
+  "unit": 2,
+  "status": "PASSIVE_RUNTIME_CONSUMER_INTEGRATED",
+  "base_main_commit": "4ab0e7bf9b046109c973455a2bd6ce724819e190",
+  "selected_consumer": "pmp-route-guardian-current-loader-v22.html",
+  "selection_reason": "This is the single narrowest existing runtime boundary that already receives the canonical resolver-issued current_app handoff and performs the navigation assignment.",
+  "rejected_alternatives": [
+    {"path":"pmp-current-map-v12.json","reason":"It is destination authority, not a consumer; changing it would alter route truth."},
+    {"path":"pmp-current-route-resolver-v1.js","reason":"It issues handoffs; adding consumer enforcement there would collapse issuer and consumer responsibilities."},
+    {"path":"pmp-app-current.html","reason":"It is the bootstrap root and sits before the Route Guardian consumer boundary."},
+    {"path":"pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html","reason":"It is the destination side and would validate after Route Guardian navigation was already assigned."},
+    {"path":"pmp-app-orchestrator-v1.js","reason":"It loads inside the destination and is too late to block an invalid Route Guardian handoff before navigation."}
+  ],
+  "contract": {
+    "type": "PMP_ROUTE_HANDOFF_V1",
+    "source_role": "route_guardian",
+    "destination_role": "current_app",
+    "map_path": "pmp-current-map-v12.json",
+    "required_fields": ["type","source_role","destination_role","map_path","map_version","route_epoch","destination_path"]
+  },
+  "integration": {
+    "constructs_contract_view_from_resolver_handoff": true,
+    "validates_against_same_loaded_current_map": true,
+    "validation_occurs_before_build_url": true,
+    "validation_occurs_before_navigation_assignment": true,
+    "invalid_handoff_action": "throw_to_existing_fail_closed_handler",
+    "alternate_destination_lookup_added": false,
+    "new_persisted_user_state_added": false
+  },
+  "integrity": {
+    "manifest": "pmp-runtime-integrity-manifest-v1.json",
+    "changed_runtime_record": "pmp-route-guardian-current-loader-v22.html",
+    "current_map_changed": false,
+    "resolver_changed": false
+  },
+  "claim_ceiling": "Passive consumer integration and deterministic source-level positive/fail-closed tests only. No isolated runtime proof, browser proof, live-app observation, broad production certification, Unit 3, Unit 4, Unit 5, or Pass 4 work is claimed.",
+  "next_unit_not_started": "Unit 3 — Isolated runtime handoff proof"
+}
