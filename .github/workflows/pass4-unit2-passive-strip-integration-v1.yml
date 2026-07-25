@@ -36,8 +36,8 @@ jobs:
           else
             git config user.name "pmp-unit2-integrity-bot"
             git config user.email "actions@users.noreply.github.com"
-            git add pmp-runtime-integrity-manifest-v1.json audit/a003-manifest-seal.json pmp-app-current.html
-            git commit -m "Regenerate Pass 4 Unit 2 integrity identities"
+            git add pmp-boot-status-strip-owner-v1.js pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html pmp-runtime-integrity-manifest-v1.json audit/a003-manifest-seal.json pmp-app-current.html
+            git commit -m "Regenerate Pass 4 Unit 2 runtime and integrity identities"
             git push origin HEAD:${{ github.event.pull_request.head.ref }}
             echo "advanced=true" >> "$GITHUB_OUTPUT"
           fi
