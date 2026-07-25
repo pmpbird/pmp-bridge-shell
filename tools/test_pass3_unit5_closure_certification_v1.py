@@ -9,7 +9,6 @@ def main():
     u2=load('audit/pass3/pass3-route-guardian-handoff-unit2-passive-consumer-v1.json')
     u3=load('audit/pass3/pass3-route-guardian-handoff-unit3-isolated-proof-v1.json')
     u4=load('audit/pass3/pass3-route-guardian-handoff-unit4-live-observation-v1.json')
-    live=load('audit/pass3/pass3-unit4-live-observation-result.json')
     close=load('audit/pass3/pass3-route-guardian-handoff-unit5-closure-certification-v1.json')
     cmap=load('pmp-current-map-v12.json')
     assert plan['pass']==3 and len(plan['units'])==5
@@ -21,13 +20,14 @@ def main():
     assert u3['zero_navigation_assignments'] and u3['zero_persisted_user_data_writes']
     assert u4['status']=='EVIDENCE_ONLY_PENDING_MERGE'
     assert any(x['unit']==4 and x['merged_pr']==140 for x in close['completed_units'])
-    assert live['canonical']['consumer_accepted_before_navigation'] is True
-    assert live['canonical']['app_orchestrator_acknowledged'] is True
-    assert live['invalid_probe']['blocked_before_navigation'] is True
-    assert live['invalid_probe']['navigation_assignments']==0
-    assert live['invalid_probe']['persisted_user_data_writes']==0
+    evidence=close['evidence_summary']
+    assert evidence['bounded_live_canonical_runs']==1
+    assert evidence['bounded_live_invalid_probes']==1
+    assert evidence['bounded_live_invalid_navigation_assignments']==0
+    assert evidence['bounded_live_invalid_persisted_user_data_writes']==0
+    assert close['closure_findings']['app_orchestrator_acknowledged_at_current_app_boundary'] is True
     assert cmap['route_guardian']['path']=='pmp-route-guardian-current-loader-v22.html'
-    assert cmap['current_app']['path']==live['canonical']['current_app']
+    assert cmap['current_app']['path']==u4['observation']['current_app']
     guardian=(ROOT/'pmp-route-guardian-current-loader-v22.html').read_text()
     assert 'consumeCurrentAppHandoff(loaded,handoff)' in guardian
     assert guardian.index('consumeCurrentAppHandoff(loaded,handoff)') < guardian.index('resolver.buildUrl(handoff')
