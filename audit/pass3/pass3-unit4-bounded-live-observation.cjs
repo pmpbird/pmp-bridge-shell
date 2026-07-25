@@ -24,6 +24,9 @@ function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
   const result={type:'PMP_PASS3_UNIT4_BOUNDED_LIVE_OBSERVATION_V1',canonical:null,invalid_probe:null,claim_ceiling:'bounded live current-path observation only'};
   try{
     await page.goto(base+'pmp-app-current.html',{waitUntil:'domcontentloaded'});
+    await page.waitForFunction(()=>{
+      try{return JSON.parse(localStorage.getItem('pmp_a003_bootstrap_receipt_v1')||'null')?.status==='PASS'}catch(e){return false}
+    },null,{timeout:35000});
     const deadline=Date.now()+30000;
     let currentFrame=null, guardianFrame=null;
     while(Date.now()<deadline){
@@ -48,6 +51,10 @@ function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
     result.canonical={route_guardian:'pmp-route-guardian-current-loader-v22.html',current_app:'pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html',consumer_accepted_before_navigation:true,app_orchestrator_acknowledged:appOrchestratorAcknowledged,observed_url:currentFrame.url()};
     if(!appOrchestratorAcknowledged) throw new Error('App Orchestrator was not acknowledged at current_app boundary');
     const probe=await context.newPage();
+    await probe.goto(base+'pmp-app-current.html',{waitUntil:'domcontentloaded'});
+    await probe.waitForFunction(()=>{
+      try{return JSON.parse(localStorage.getItem('pmp_a003_bootstrap_receipt_v1')||'null')?.status==='PASS'}catch(e){return false}
+    },null,{timeout:35000});
     await probe.goto(base+'pmp-route-guardian-current-loader-v22.html',{waitUntil:'domcontentloaded'});
     const beforeUrl=probe.url();
     const beforeStorage=await probe.evaluate(()=>JSON.stringify(localStorage));
