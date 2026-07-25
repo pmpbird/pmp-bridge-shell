@@ -74,7 +74,7 @@ def update_integrity() -> None:
         sha256_base64=b64,
         sri="sha256-" + b64,
     )
-    manifest_bytes = (json.dumps(manifest, separators=(",", ":"), sort_keys=True) + "\n").encode("utf-8")
+    manifest_bytes = (json.dumps(manifest, indent=2, sort_keys=True) + "\n").encode("utf-8")
     MANIFEST.write_bytes(manifest_bytes)
 
     seal = json.loads(SEAL.read_text(encoding="utf-8"))
