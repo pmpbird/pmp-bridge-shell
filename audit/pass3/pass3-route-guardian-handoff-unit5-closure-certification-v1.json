@@ -1,0 +1,52 @@
+{
+  "type": "PMP_PASS3_ROUTE_GUARDIAN_HANDOFF_UNIT5_CLOSURE_CERTIFICATION_V1",
+  "version": "1.0.0",
+  "status": "PASS3_CLOSURE_PENDING_MERGE",
+  "pass": 3,
+  "unit": 5,
+  "base_main_commit": "78626ad959f42b388757038c2e1735c66ebc69e5",
+  "completed_units": [
+    {"unit": 1, "merged_pr": 134, "authority": "audit/pass3/pass3-route-guardian-handoff-contract-unit1-v1.json"},
+    {"unit": 2, "merged_pr": 136, "authority": "audit/pass3/pass3-route-guardian-handoff-unit2-passive-consumer-v1.json"},
+    {"unit": 3, "merged_pr": 139, "authority": "audit/pass3/pass3-route-guardian-handoff-unit3-isolated-proof-v1.json"},
+    {"unit": 4, "merged_pr": 140, "authority": "audit/pass3/pass3-route-guardian-handoff-unit4-live-observation-v1.json"}
+  ],
+  "closure_findings": {
+    "current_map_sole_destination_authority": true,
+    "resolver_fail_closed": true,
+    "narrowest_consumer_installed": "pmp-route-guardian-current-loader-v22.html",
+    "consumer_boundary": "after canonical current_app resolution and before URL construction or navigation",
+    "isolated_proof_consistent": true,
+    "bounded_live_observation_consistent": true,
+    "app_orchestrator_acknowledged_at_current_app_boundary": true,
+    "unauthorized_fallback_observed": false,
+    "persisted_user_data_mutated": false,
+    "historical_evidence_deleted": false,
+    "pr_122_touched": false,
+    "pass4_started": false
+  },
+  "evidence_summary": {
+    "canonical_contract": "PMP_ROUTE_HANDOFF_V1",
+    "source_role": "route_guardian",
+    "destination_role": "current_app",
+    "isolated_canonical_accepts": 1,
+    "isolated_fail_closed_rejections": 19,
+    "isolated_navigation_assignments": 0,
+    "isolated_persisted_user_data_writes": 0,
+    "bounded_live_canonical_runs": 1,
+    "bounded_live_invalid_probes": 1,
+    "bounded_live_invalid_navigation_assignments": 0,
+    "bounded_live_invalid_persisted_user_data_writes": 0
+  },
+  "preservation": {
+    "runtime_files_changed_by_unit5": false,
+    "current_map_changed_by_unit5": false,
+    "resolver_changed_by_unit5": false,
+    "manifest_or_bootstrap_changed_by_unit5": false,
+    "integrity_identities_changed_by_unit5": false,
+    "persisted_user_data_changed_by_unit5": false,
+    "claim_ceiling": "Current-roadmap Pass 3 closure certification only. No Pass 4 implementation, broad production correctness, full-history proof, or PR #122 authorization is claimed."
+  },
+  "pass3_completion": "CERTIFIED_PENDING_MERGE",
+  "next_boundary": "Pass 4 may begin only after this Unit 5 closure PR merges, resulting main and installed files are verified, the embedded snapshot is refreshed, and V95 is published."
+}
