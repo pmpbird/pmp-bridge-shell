@@ -5,11 +5,10 @@ ROOT=Path(__file__).resolve().parents[1]
 def load(path): return json.loads((ROOT/path).read_text())
 def main():
     audit=load('audit/pass4/pass4-boot-status-strip-scope-reconciliation-readiness-v1.json')
-    roadmap=load('02_AUTHORITATIVE_13_PASS_ROADMAP.json')
     authority=load('audit/pass2/pass2-full-roadmap-authority-definition-closure-v1.json')
     assert audit['pass']==4 and audit['roadmap_name']=='Boot Status Strip'
-    assert next(x for x in roadmap['roadmap'] if x['pass']==4)['name']=='Boot Status Strip'
     actor=next(x for x in authority['actors'] if x['actor']=='Boot Status Strip')
+    assert set(actor['allowed'])=={'display passive startup status','show failure/slow state'}
     assert set(actor['forbidden'])=={'change route','take app ownership','repair startup','modify storage'}
     assert audit['classification']['historical_work']=='NARROWER_HISTORICAL_COMPLETION'
     assert audit['classification']['current_path_revalidation_required'] is True
