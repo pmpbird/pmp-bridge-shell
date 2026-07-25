@@ -6233,14 +6233,14 @@
       "sri": "sha256-xkd3RsmEqJwmTMxGOdGlAjxPgGhnFhH8rqSFfi9Ja5s="
     },
     {
-      "bytes": 7497,
+      "bytes": 10091,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_DOCUMENT",
-      "git_blob_sha": "3a4178a7f5664892c5cccd1c21f80f99d26ff707",
+      "git_blob_sha": "fd6ea047e87ea33ef093d78e224167a4bebc1d86",
       "mime_type": "text/html",
       "path": "pmp-route-guardian-current-loader-v22.html",
       "sha256_base64": "x7mlIObr0rB/RrgVJ1b3cWUEWcyQw0icHm+G51VIF4M=",
-      "sha256_hex": "c7b9a520e6ebd2b07f46b8152756f771650459cc90c3489c1e6f86e755481783",
+      "sha256_hex": "67bc3464f32a10e13f5b02b077c2c0337f89e8eea612de7cbc744a8982800f61",
       "sri": "sha256-x7mlIObr0rB/RrgVJ1b3cWUEWcyQw0icHm+G51VIF4M="
     },
     {

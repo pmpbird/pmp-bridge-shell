@@ -1,0 +1,82 @@
+{
+  "type": "PMP_PASS3_ROUTE_GUARDIAN_HANDOFF_UNIT2_PASSIVE_CONSUMER_V1",
+  "version": "1.0.0",
+  "status": "IMPLEMENTED_PENDING_MERGE",
+  "pass": 3,
+  "unit": 2,
+  "base_main_commit": "4ab0e7bf9b046109c973455a2bd6ce724819e190",
+  "integrity_generation_commit": "7bbf748aec752c776343d1d06e92332d20482dda",
+  "selected_consumer": {
+    "path": "pmp-route-guardian-current-loader-v22.html",
+    "boundary": "currentAppHandoff() immediately after resolver.resolve(..., 'current_app') and before resolver.buildUrl(...) or any navigation assignment",
+    "reason": "This is the single narrowest existing runtime boundary that already receives the canonical current_app handoff and directly controls the already-authorized navigation.",
+    "rejected_alternatives": [
+      {
+        "path": "pmp-current-route-resolver-v1.js",
+        "reason": "Shared producer and authority helper; changing it would broaden Unit 2 beyond one consumer and risk affecting every route role."
+      },
+      {
+        "path": "pmp-app-current.html",
+        "reason": "Root bootstrap launches Route Guardian rather than consuming the Route Guardian-to-current_app handoff."
+      },
+      {
+        "path": "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html",
+        "reason": "Destination-side runtime occurs after Route Guardian navigation and is too late to block an invalid handoff before navigation."
+      },
+      {
+        "path": "pmp-app-orchestrator-v1.js",
+        "reason": "Loads at the destination boundary and does not own the pre-navigation Route Guardian consumer decision."
+      }
+    ]
+  },
+  "live_trace": {
+    "route_authority": "pmp-current-map-v12.json",
+    "route_guardian": "pmp-route-guardian-current-loader-v22.html",
+    "resolver": "pmp-current-route-resolver-v1.js",
+    "destination_role": "current_app",
+    "destination": "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html",
+    "sequence": [
+      "Route Guardian loads the canonical resolver.",
+      "currentAppHandoff loads the verified Current Map and resolves current_app.",
+      "consumeCurrentAppHandoff validates the complete Unit 1 lineage against the same loaded map.",
+      "resolver.buildUrl is reachable only after validation returns.",
+      "The existing navigation assignment remains unchanged and receives only the validated map-issued URL."
+    ]
+  },
+  "contract_validation": {
+    "required_fields": [
+      "type",
+      "source_role",
+      "destination_role",
+      "map_path",
+      "map_version",
+      "route_epoch",
+      "destination_path"
+    ],
+    "source_role_rule": "The active document filename must equal Current Map route_guardian.path before source_role is accepted as route_guardian.",
+    "destination_rule": "The raw resolver handoff role and path must exactly equal Current Map current_app.",
+    "lineage_rule": "Type, map path, map version, route epoch, and destination path must match the same verified Current Map and canonical resolver constants.",
+    "failure_rule": "Any mismatch throws before buildUrl and before navigation."
+  },
+  "integrity_updates": {
+    "runtime_file": "pmp-route-guardian-current-loader-v22.html",
+    "generator": "tools/generate_pass3_unit2_integrity_updates_v1.py",
+    "manifest": "pmp-runtime-integrity-manifest-v1.json",
+    "root_manifest_seal": "pmp-app-current.html",
+    "current_map_changed": false
+  },
+  "preservation": {
+    "current_map_destination_truth_changed": false,
+    "resolver_changed": false,
+    "persisted_user_data_schema_changed": false,
+    "new_persisted_user_state_added": false,
+    "existing_receipt_key_preserved": "pmp_route_guardian_v22_receipt",
+    "banks_levels_mount_registry_section_owner_helper_migrations_changed": false,
+    "historical_records_deleted": false,
+    "unit3_started": false,
+    "unit4_started": false,
+    "unit5_started": false,
+    "pass4_started": false,
+    "claim_ceiling": "Passive source integration and deterministic consumer tests only. No isolated integrated-runtime proof, browser proof, real-app observation, or Pass 3 closure is claimed."
+  }
+}
