@@ -256,7 +256,7 @@
     {"path":"pmp-actor-authority-policy-v1.json","git_blob_sha":"3b25979c6e4e461989ab9040ad6333acd91dcaa0"},
     {"path":"pmp-app-orchestrator-v1.js","git_blob_sha":"6e0f9145dca873b73f6000444b8c498ff3741629"},
     {"path":"pmp-authority-atlas-adapter-v1.js","git_blob_sha":"9223921fdf0440210d3c270582486d4414984375"},
-    {"path":"pmp-authority-rules-v1.js","git_blob_sha":"e7cb9d2e6fdb09bd8b195c1727140e94c075983a"},
+    {"path":"pmp-authority-rules-v1.js","git_blob_sha":"03dd4c536a019491ccef999f8ed43cf00cf0a171"},
     {"path":"pmp-boot-status-strip-owner-v1.js","git_blob_sha":"c97f25830781d0527e1c00209734d2ea1e51f04d"},
     {"path":"pmp-bug-bank-owner-v1.js","git_blob_sha":"8513c50a798ece88280c4bfc94644bec9d77852f"},
     {"path":"pmp-bug-watch-passive-capture-v1.js","git_blob_sha":"45ef30fec085bde5a150498b93274a791ebdd228"},
