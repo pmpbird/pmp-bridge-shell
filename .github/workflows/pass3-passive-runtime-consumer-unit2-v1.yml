@@ -1,0 +1,73 @@
+name: Pass 3 Passive Runtime Consumer Unit 2
+on:
+  push:
+    branches:
+      - agent/pass3-passive-runtime-consumer-unit2-v1
+    paths:
+      - '.github/workflows/pass3-passive-runtime-consumer-unit2-v1.yml'
+      - 'audit/pass3/pass3-passive-runtime-consumer-integration-unit2-v1.json'
+      - 'pmp-route-guardian-current-loader-v22.html'
+      - 'pmp-runtime-integrity-manifest-v1.json'
+      - 'tools/test_pass3_passive_runtime_consumer_unit2_v1.py'
+      - 'tools/verify_pass3_passive_runtime_consumer_unit2_v1.py'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/pass3-passive-runtime-consumer-unit2-v1.yml'
+      - 'audit/pass3/pass3-passive-runtime-consumer-integration-unit2-v1.json'
+      - 'pmp-route-guardian-current-loader-v22.html'
+      - 'pmp-runtime-integrity-manifest-v1.json'
+      - 'tools/test_pass3_passive_runtime_consumer_unit2_v1.py'
+      - 'tools/verify_pass3_passive_runtime_consumer_unit2_v1.py'
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref || github.ref_name }}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Rebind Route Guardian integrity identity
+        run: |
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          loader=Path('pmp-route-guardian-current-loader-v22.html')
+          manifest_path=Path('pmp-runtime-integrity-manifest-v1.json')
+          data=loader.read_bytes()
+          sha=hashlib.sha256(data).hexdigest()
+          blob=hashlib.sha1(f'blob {len(data)}\0'.encode()+data).hexdigest()
+          manifest=json.loads(manifest_path.read_text())
+          record=next(r for r in manifest['records'] if r['path']==loader.name)
+          record['bytes']=len(data)
+          record['git_blob_sha']=blob
+          record['sha256_hex']=sha
+          identity='\n'.join(f"{r['path']}\0{r['bytes']}\0{r['git_blob_sha']}\0{r['sha256_hex']}" for r in manifest['records'])
+          manifest['runtime_source_set_sha256']=hashlib.sha256(identity.encode()).hexdigest()
+          manifest_path.write_text(json.dumps(manifest,sort_keys=True,separators=(',',':'))+'\n')
+          PY
+      - name: Commit manifest binding on branch push
+        if: github.event_name == 'push'
+        run: |
+          if git diff --quiet -- pmp-runtime-integrity-manifest-v1.json; then
+            echo 'Manifest already bound.'
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add pmp-runtime-integrity-manifest-v1.json
+            git commit -m 'Rebind Route Guardian integrity manifest for Pass 3 Unit 2'
+            git push
+          fi
+      - name: Require committed manifest on pull request
+        if: github.event_name == 'pull_request'
+        run: git diff --exit-code -- pmp-runtime-integrity-manifest-v1.json
+      - name: Run deterministic consumer tests
+        run: python tools/test_pass3_passive_runtime_consumer_unit2_v1.py
+      - name: Verify exact Unit 2 scope
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || '4ab0e7bf9b046109c973455a2bd6ce724819e190' }}
+        run: python tools/verify_pass3_passive_runtime_consumer_unit2_v1.py "$BASE_SHA"
