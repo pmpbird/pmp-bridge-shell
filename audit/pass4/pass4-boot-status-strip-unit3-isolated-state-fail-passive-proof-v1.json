@@ -1,0 +1,62 @@
+{
+  "type": "PMP_PASS4_BOOT_STATUS_STRIP_UNIT3_ISOLATED_STATE_FAIL_PASSIVE_PROOF_V1",
+  "version": "1.0.0",
+  "status": "PROVEN_PENDING_MERGE",
+  "pass": 4,
+  "unit": 3,
+  "base_main_commit": "aa9ff3a77d67e3cade67010cf2d5851fcf668807",
+  "contract": "PMP_BOOT_STATUS_STRIP_PASSIVE_CONTRACT_V1",
+  "production_runtime_changed": false,
+  "proof_scope": "isolated deterministic VM harness over the installed pmp-boot-status-strip-owner-v1.js API",
+  "states_proven": {
+    "BOOTING": "valid incomplete current-path observation below 9000ms",
+    "BOOT_SLOW": "valid incomplete current-path observation at or above 9000ms",
+    "BOOT_FAILURE": "explicit failure, malformed App Orchestrator observation, unavailable required observation normalized as failure, and blocked observation normalized as failure",
+    "READY_ACKNOWLEDGED": "valid App Orchestrator acknowledgement with route and runtime ready"
+  },
+  "fail_passive_proven": {
+    "missing_observation_object": "remains passive and performs no prohibited effect",
+    "malformed_required_observation": "BOOT_FAILURE",
+    "inaccessible_required_observation": "BOOT_FAILURE",
+    "blocked_required_observation": "BOOT_FAILURE"
+  },
+  "zero_effects": {
+    "route_assignment": 0,
+    "alternate_destination_consultation": 0,
+    "localStorage_writes": 0,
+    "sessionStorage_writes": 0,
+    "indexedDB_writes": 0,
+    "app_orchestrator_ownership_transfers": 0,
+    "startup_repairs": 0,
+    "startup_delays": 0,
+    "bank_rebuilds": 0,
+    "level_reorders": 0,
+    "resident_changes": 0,
+    "mount_registry_ownership_changes": 0
+  },
+  "authority_preservation": {
+    "current_map_sole_destination_authority": true,
+    "current_map_path": "pmp-current-map-v12.json",
+    "resolver_changed": false,
+    "route_guardian_changed": false,
+    "reload_owner_changed": false,
+    "app_orchestrator_changed": false,
+    "current_inner_runtime_changed": false,
+    "runtime_manifest_changed": false,
+    "bootstrap_changed": false,
+    "a003_seal_changed": false,
+    "historical_evidence_changed": false,
+    "persisted_user_data_changed": false
+  },
+  "historical_assumptions_absent": [
+    "v16",
+    "v27",
+    "v26",
+    "v23"
+  ],
+  "unit4_started": false,
+  "pass4_complete_claimed": false,
+  "pass5_started": false,
+  "pr122_touched": false,
+  "claim_ceiling": "Isolated deterministic state and fail-passive proof only. No bounded live browser observation, Pass 4 closure, Pass 5 work, or broad production correctness is claimed."
+}
