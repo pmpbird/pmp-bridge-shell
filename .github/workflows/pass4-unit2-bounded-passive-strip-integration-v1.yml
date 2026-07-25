@@ -1,0 +1,55 @@
+name: Pass 4 Unit 2 Bounded Passive Strip Integration
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/pass4-unit2-bounded-passive-strip-integration-v1.yml'
+      - 'audit/a003-manifest-seal.json'
+      - 'audit/pass4/pass4-boot-status-strip-unit2-bounded-passive-integration-v1.json'
+      - 'pmp-app-current.html'
+      - 'pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html'
+      - 'pmp-runtime-integrity-manifest-v1.json'
+      - 'tools/apply_pass4_unit2_bounded_passive_integration_v1.py'
+      - 'tools/test_pass4_unit2_bounded_passive_integration_v1.py'
+      - 'tools/verify_pass4_unit2_bounded_passive_integration_v1.py'
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Apply deterministic bounded integration
+        id: apply
+        run: |
+          python tools/apply_pass4_unit2_bounded_passive_integration_v1.py
+          if git diff --quiet; then
+            echo "generated=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "generated=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Commit generated runtime identities
+        if: steps.apply.outputs.generated == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add audit/a003-manifest-seal.json pmp-app-current.html pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html pmp-runtime-integrity-manifest-v1.json
+          git commit -m "Pass 4 Unit 2: install passive strip and refresh integrity identities"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
+      - name: Test bounded passive integration
+        if: steps.apply.outputs.generated == 'false'
+        run: python tools/test_pass4_unit2_bounded_passive_integration_v1.py
+      - name: Verify exact Unit 2 scope
+        if: steps.apply.outputs.generated == 'false'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: python tools/verify_pass4_unit2_bounded_passive_integration_v1.py "$BASE_SHA"
