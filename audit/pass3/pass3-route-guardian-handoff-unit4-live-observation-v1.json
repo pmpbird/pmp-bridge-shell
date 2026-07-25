@@ -1,0 +1,27 @@
+{
+  "type": "PMP_PASS3_ROUTE_GUARDIAN_HANDOFF_UNIT4_LIVE_OBSERVATION_V1",
+  "version": "1.0.0",
+  "status": "EVIDENCE_ONLY_PENDING_MERGE",
+  "pass": 3,
+  "unit": 4,
+  "base_main_commit": "4cabcd501fb3d02365c2aa0a1805af5a986fb5df",
+  "observation": {
+    "canonical_runs": 1,
+    "controlled_invalid_probes": 1,
+    "route_guardian": "pmp-route-guardian-current-loader-v22.html",
+    "current_app": "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html",
+    "app_orchestrator_requirement": "loaded or acknowledged at current_app boundary",
+    "invalid_mutation": "historical map_version",
+    "required_outcome": "blocked before navigation with zero persisted-user-data writes"
+  },
+  "preservation": {
+    "runtime_files_changed": false,
+    "current_map_changed": false,
+    "resolver_changed": false,
+    "integrity_identities_changed": false,
+    "persisted_user_data_changed": false,
+    "unit5_started": false,
+    "pass4_started": false,
+    "claim_ceiling": "Bounded live current-path observation only; not broad production correctness or Pass 3 closure."
+  }
+}
