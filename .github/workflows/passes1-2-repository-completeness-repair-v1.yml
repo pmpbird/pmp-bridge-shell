@@ -1,0 +1,35 @@
+name: Passes 1-2 Repository Completeness Repair V1
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/passes1-2-repository-completeness-repair-v1.yml'
+      - 'audit/pass1/pass1-post-merge-confirmation-v1.json'
+      - 'audit/passes1-2/canonical-authority-index-v1.json'
+      - 'audit/pass2/pass2-scope-precedence-crosswalk-v1.json'
+      - 'tools/test_passes1_2_repository_completeness_repair_v1.py'
+      - 'tools/verify_passes1_2_repository_completeness_repair_v1.py'
+permissions:
+  contents: read
+jobs:
+  verify-repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run deterministic repair tests
+        run: python3 tools/test_passes1_2_repository_completeness_repair_v1.py
+      - name: Verify exact additive scope
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: python3 tools/verify_passes1_2_repository_completeness_repair_v1.py --base-sha "$BASE_SHA" --head-sha "$HEAD_SHA" --output /tmp/passes1-2-repair.json
+      - name: Upload repair receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: passes1-2-repository-completeness-repair-v1
+          path: /tmp/passes1-2-repair.json
+          retention-days: 90
