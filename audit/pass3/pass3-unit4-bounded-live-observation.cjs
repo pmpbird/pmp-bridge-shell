@@ -15,15 +15,6 @@ const server=http.createServer((req,res)=>{
   fs.createReadStream(file).pipe(res);
 });
 function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
-async function findFrame(page,fragment,timeout){
-  const deadline=Date.now()+timeout;
-  while(Date.now()<deadline){
-    const frame=page.frames().find(f=>f.url().includes(fragment))||null;
-    if(frame)return frame;
-    await sleep(250);
-  }
-  return null;
-}
 (async()=>{
   await new Promise(r=>server.listen(port,'127.0.0.1',r));
   const browser=await chromium.launch({headless:true});
@@ -36,11 +27,17 @@ async function findFrame(page,fragment,timeout){
     await page.waitForFunction(()=>{
       try{return JSON.parse(localStorage.getItem('pmp_a003_bootstrap_receipt_v1')||'null')?.status==='PASS'}catch(e){return false}
     },null,{timeout:35000});
-    const guardianFrame=await findFrame(page,'pmp-route-guardian-current-loader-v22.html',20000);
+    const deadline=Date.now()+20000;
+    let guardianFrame=null;
+    while(Date.now()<deadline){
+      guardianFrame=page.frames().find(f=>f.url().includes('pmp-route-guardian-current-loader-v22.html'))||null;
+      if(guardianFrame) break;
+      await sleep(250);
+    }
     if(!guardianFrame) throw new Error('canonical Route Guardian frame was not observed');
     await guardianFrame.click('#openBtn',{force:true});
-    const currentFrame=await findFrame(page,'pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html',30000);
-    if(!currentFrame) throw new Error('canonical current_app destination was not observed');
+    await page.waitForURL(url=>url.pathname.endsWith('/pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html'),{timeout:30000});
+    const currentFrame=page.mainFrame();
     const appOrchestratorAcknowledged=await currentFrame.evaluate(()=>{
       const scripts=[...document.scripts].map(s=>s.src||'');
       const body=(document.body&&document.body.innerText)||'';
@@ -49,10 +46,6 @@ async function findFrame(page,fragment,timeout){
     result.canonical={route_guardian:'pmp-route-guardian-current-loader-v22.html',current_app:'pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html',consumer_accepted_before_navigation:true,app_orchestrator_acknowledged:appOrchestratorAcknowledged,observed_url:currentFrame.url()};
     if(!appOrchestratorAcknowledged) throw new Error('App Orchestrator was not acknowledged at current_app boundary');
     const probe=await context.newPage();
-    await probe.goto(base+'pmp-app-current.html',{waitUntil:'domcontentloaded'});
-    await probe.waitForFunction(()=>{
-      try{return JSON.parse(localStorage.getItem('pmp_a003_bootstrap_receipt_v1')||'null')?.status==='PASS'}catch(e){return false}
-    },null,{timeout:35000});
     await probe.goto(base+'pmp-route-guardian-current-loader-v22.html',{waitUntil:'domcontentloaded'});
     const beforeUrl=probe.url();
     const beforeStorage=await probe.evaluate(()=>JSON.stringify(localStorage));
