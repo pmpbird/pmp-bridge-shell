@@ -1,0 +1,60 @@
+name: Pass 4 Unit 2 Passive Strip Integration
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/pass4-unit2-passive-strip-integration-v1.yml'
+      - 'audit/a003-manifest-seal.json'
+      - 'audit/pass4/pass4-boot-status-strip-unit2-bounded-passive-integration-v1.json'
+      - 'pmp-app-current.html'
+      - 'pmp-boot-status-strip-owner-v1.js'
+      - 'pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html'
+      - 'pmp-runtime-integrity-manifest-v1.json'
+      - 'tools/generate_pass4_unit2_integrity_updates_v1.py'
+      - 'tools/test_pass4_unit2_passive_strip_integration_v1.js'
+      - 'tools/verify_pass4_unit2_passive_strip_integration_v1.py'
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Regenerate exact runtime integrity identities
+        id: generate
+        run: |
+          python tools/generate_pass4_unit2_integrity_updates_v1.py
+          if git diff --quiet; then
+            echo "advanced=false" >> "$GITHUB_OUTPUT"
+          else
+            git config user.name "pmp-unit2-integrity-bot"
+            git config user.email "actions@users.noreply.github.com"
+            git add pmp-runtime-integrity-manifest-v1.json audit/a003-manifest-seal.json pmp-app-current.html
+            git commit -m "Regenerate Pass 4 Unit 2 integrity identities"
+            git push origin HEAD:${{ github.event.pull_request.head.ref }}
+            echo "advanced=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Test passive strip integration
+        if: steps.generate.outputs.advanced == 'false'
+        run: node tools/test_pass4_unit2_passive_strip_integration_v1.js
+      - name: Verify exact bounded scope and identities
+        if: steps.generate.outputs.advanced == 'false'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: python tools/verify_pass4_unit2_passive_strip_integration_v1.py "$BASE_SHA"
+      - name: Package verified repository snapshot
+        if: steps.generate.outputs.advanced == 'false'
+        run: git archive --format=zip --output=pass4-unit2-verified-repository.zip HEAD
+      - uses: actions/upload-artifact@v4
+        if: steps.generate.outputs.advanced == 'false'
+        with:
+          name: pass4-unit2-verified-repository-snapshot
+          path: pass4-unit2-verified-repository.zip
+          if-no-files-found: error
