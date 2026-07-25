@@ -1,0 +1,19 @@
+{
+  "type": "PMP_PASS4_BOOT_STATUS_STRIP_UNIT4_BOUNDED_LIVE_OBSERVATION_V1",
+  "version": "1.0.0",
+  "status": "AUTHORIZED_NOT_RUN",
+  "pass": 4,
+  "unit": 4,
+  "base_main_commit": "3c8c2e3813f48a7f4a0c64594aaca1a822ce0753",
+  "contract": "PMP_BOOT_STATUS_STRIP_PASSIVE_CONTRACT_V1",
+  "observation_consumed": false,
+  "observation_count": 0,
+  "browser_navigation_count": 0,
+  "production_runtime_changed": false,
+  "runtime_integrity_changed": false,
+  "unit5_started": false,
+  "pass4_complete_claimed": false,
+  "pass5_started": false,
+  "pr122_touched": false,
+  "claim_ceiling": "Exactly one bounded live startup observation only. No Pass 4 closure, Pass 5 work, repeated live proof, or broad production correctness is claimed."
+}
