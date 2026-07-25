@@ -5,7 +5,7 @@
   "pass": 4,
   "unit": 2,
   "base_main_commit": "824dd590313e44cd3d038ecf94b8fc91462ff9e5",
-  "generated_runtime_identity_commit": "453d82494e95925d1de4c64c9b2b3c2dc3feaf9f",
+  "generated_runtime_identity_commit": "d02bc5c4e47c019b42744609b717f6da6161b916",
   "contract": "PMP_BOOT_STATUS_STRIP_PASSIVE_CONTRACT_V1",
   "integration": {
     "consumer_file": "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
