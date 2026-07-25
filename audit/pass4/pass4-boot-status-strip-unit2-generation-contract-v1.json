@@ -1,0 +1,13 @@
+{
+  "type": "PMP_PASS4_UNIT2_GENERATION_CONTRACT_V1",
+  "version": "1.0.0",
+  "generated_paths": [
+    "audit/a003-manifest-seal.json",
+    "pmp-app-current.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+    "pmp-runtime-integrity-manifest-v1.json"
+  ],
+  "rule": "The dedicated Unit 2 workflow may generate and commit only these four deterministic paths on the Unit 2 branch before verification.",
+  "unit3_started": false,
+  "pass5_started": false
+}
