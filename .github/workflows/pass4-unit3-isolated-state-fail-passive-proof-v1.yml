@@ -1,0 +1,27 @@
+name: Pass 4 Unit 3 Isolated State and Fail-Passive Proof
+on:
+  pull_request:
+    paths:
+      - 'audit/pass4/pass4-boot-status-strip-unit3-isolated-state-fail-passive-proof-v1.json'
+      - 'tools/test_pass4_unit3_isolated_state_fail_passive_proof_v1.js'
+      - 'tools/verify_pass4_unit3_isolated_state_fail_passive_proof_v1.py'
+      - '.github/workflows/pass4-unit3-isolated-state-fail-passive-proof-v1.yml'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run isolated state and fail-passive proof
+        run: node tools/test_pass4_unit3_isolated_state_fail_passive_proof_v1.js
+      - name: Verify exact evidence-only Unit 3 scope
+        run: python tools/verify_pass4_unit3_isolated_state_fail_passive_proof_v1.py "${{ github.event.pull_request.base.sha }}"
