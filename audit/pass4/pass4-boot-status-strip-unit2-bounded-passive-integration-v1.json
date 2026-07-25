@@ -1,0 +1,63 @@
+{
+  "type": "PMP_PASS4_BOOT_STATUS_STRIP_UNIT2_BOUNDED_PASSIVE_INTEGRATION_V1",
+  "version": "1.0.0",
+  "status": "IMPLEMENTED_PENDING_MERGE",
+  "pass": 4,
+  "unit": 2,
+  "base_main_commit": "824dd590313e44cd3d038ecf94b8fc91462ff9e5",
+  "contract": "PMP_BOOT_STATUS_STRIP_PASSIVE_CONTRACT_V1",
+  "historical_reuse": {
+    "reused": [
+      "single passive fixed strip",
+      "shell-derived compact status presentation",
+      "bounded slow threshold",
+      "ready-state auto-clear",
+      "failure and slow visual distinction"
+    ],
+    "removed_obsolete_assumptions": [
+      "v16 Route Guardian detection",
+      "v27 reload-owner detection",
+      "v26 and v23 inner-file detection",
+      "Mount Registry readiness as a Boot Status Strip requirement",
+      "cross-frame document crawling",
+      "persistent localStorage status and receipt writes"
+    ]
+  },
+  "integration": {
+    "runtime_script": "pmp-boot-status-strip-owner-v1.js",
+    "consumer_file": "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+    "load_order": "immediately after pmp-app-orchestrator-v1.js",
+    "current_path_only": true,
+    "states": ["BOOTING", "BOOT_SLOW", "BOOT_FAILURE", "READY_ACKNOWLEDGED"],
+    "malformed_or_unavailable_input": "BOOT_FAILURE with passive visual output only",
+    "side_effects": {
+      "route_assignments": 0,
+      "persisted_user_data_writes": 0,
+      "app_orchestrator_ownership_transfers": 0,
+      "startup_repairs": 0
+    }
+  },
+  "integrity_refresh": {
+    "changed_runtime_records": [
+      "pmp-boot-status-strip-owner-v1.js",
+      "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html"
+    ],
+    "manifest": "pmp-runtime-integrity-manifest-v1.json",
+    "manifest_seal": "audit/a003-manifest-seal.json",
+    "bootstrap_root_seal": "pmp-app-current.html"
+  },
+  "preservation": {
+    "current_map_changed": false,
+    "resolver_changed": false,
+    "route_guardian_changed": false,
+    "reload_owner_changed": false,
+    "app_orchestrator_changed": false,
+    "persisted_user_data_changed": false,
+    "unit3_started": false,
+    "live_browser_observation_performed": false,
+    "pass4_complete": false,
+    "pass5_started": false,
+    "pr122_touched": false
+  },
+  "claim_ceiling": "Bounded current-path passive integration and deterministic Unit 2 tests only. No isolated integrated-runtime proof, bounded live observation, Pass 4 closure, Pass 5 work, or broad production correctness is claimed."
+}
