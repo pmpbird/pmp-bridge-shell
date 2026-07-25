@@ -77,4 +77,15 @@ function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
     await browser.close();
     await new Promise(r=>server.close(r));
   }
-})().catch(e=>{console.error(e);process.exit(1)});
+})().catch(e=>{
+  try{
+    fs.writeFileSync(path.join(root,'audit/pass3/pass3-unit4-live-observation-result.json'),JSON.stringify({
+      type:'PMP_PASS3_UNIT4_BOUNDED_LIVE_OBSERVATION_V1',
+      status:'FAIL',
+      error:{name:String(e&&e.name||'Error'),message:String(e&&e.message||e),stack:String(e&&e.stack||'')},
+      claim_ceiling:'bounded live current-path observation only'
+    },null,2)+'\n');
+  }catch(_e){}
+  console.error(e);
+  process.exit(1);
+});
