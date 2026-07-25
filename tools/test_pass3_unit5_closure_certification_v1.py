@@ -19,7 +19,8 @@ def main():
     assert u2['preservation']['current_map_destination_truth_changed'] is False
     assert u3['status']=='PASS' and u3['canonical_accepts']==1 and u3['fail_closed_rejections']==19
     assert u3['zero_navigation_assignments'] and u3['zero_persisted_user_data_writes']
-    assert u4['status']=='MERGED_VERIFIED' and u4['merged_pr']==140
+    assert u4['status']=='EVIDENCE_ONLY_PENDING_MERGE'
+    assert any(x['unit']==4 and x['merged_pr']==140 for x in close['completed_units'])
     assert live['canonical']['consumer_accepted_before_navigation'] is True
     assert live['canonical']['app_orchestrator_acknowledged'] is True
     assert live['invalid_probe']['blocked_before_navigation'] is True
