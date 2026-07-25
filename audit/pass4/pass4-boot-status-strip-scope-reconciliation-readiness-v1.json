@@ -1,0 +1,41 @@
+{
+  "type": "PMP_PASS4_BOOT_STATUS_STRIP_SCOPE_RECONCILIATION_READINESS_V1",
+  "version": "1.0.0",
+  "status": "READINESS_AUDIT_PASS",
+  "pass": 4,
+  "base_main_commit": "1fe7a2267e352f0d4d9f88581b998354d4d63676",
+  "roadmap_name": "Boot Status Strip",
+  "authority_rule": {
+    "allowed": ["display passive startup status", "show failure or slow state"],
+    "forbidden": ["change route", "take app ownership", "repair startup", "modify persisted storage"]
+  },
+  "inventory": {
+    "historical_runtime": ["pmp-boot-status-strip-owner-v1.js", "pmp-boot-shell-console-owner-v1.js", "pmp-boot-code-panel-v1.js"],
+    "historical_receipts": ["pmp-pass4-finalizer-receipt-v1.json", "pmp-pass4-freeze-receipt-v1.json", "pmp-pass5-start-receipt-v1.json"],
+    "historical_frozen_chain": ["pmp-route-guardian-current-loader-v19.html", "pmp-current-reload-owner-v28.html", "pmp-current-inner-cleanbug-rgcontrols-v29.html"],
+    "current_verified_chain": ["pmp-route-guardian-current-loader-v22.html", "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html"]
+  },
+  "classification": {
+    "historical_work": "NARROWER_HISTORICAL_COMPLETION",
+    "design_and_receipts": "REUSABLE_EVIDENCE",
+    "current_roadmap_completion": false,
+    "current_path_revalidation_required": true,
+    "bounded_integration_repair_may_be_required": true,
+    "blind_rebuild_required": false
+  },
+  "objective": "Install and certify one passive Boot Status Strip on the current verified startup path without routing, ownership, repair, or persisted-storage authority.",
+  "units": [
+    {"unit": 1, "name": "Current-path contract and consumer-boundary selection", "runtime_change": false},
+    {"unit": 2, "name": "Bounded passive strip integration or reuse repair", "runtime_change": "only the selected Boot Status Strip integration surface and deterministic integrity identities if required"},
+    {"unit": 3, "name": "Isolated state and fail-passive proof", "runtime_change": false},
+    {"unit": 4, "name": "Bounded live startup observation", "runtime_change": false},
+    {"unit": 5, "name": "Pass 4 closure certification", "runtime_change": false}
+  ],
+  "permitted_runtime_scope_for_later_unit2": ["one selected Boot Status Strip owner or current startup-shell integration surface", "deterministically required integrity records only"],
+  "forbidden_scope": ["pmp-current-map-v12.json", "pmp-current-route-resolver-v1.js", "Route Guardian destination behavior", "App Orchestrator ownership", "banks", "levels", "Mount Registry", "Section Owners", "Helpers", "migrations", "persisted user data", "historical evidence deletion"],
+  "required_states": ["booting", "slow", "failure", "ready or acknowledged"],
+  "proof_ladder": ["static authority and boundary proof", "isolated state transition proof", "zero route assignment proof", "zero persisted-user-data write proof", "bounded live startup observation", "closure certification"],
+  "claim_ceiling": "Current-roadmap Pass 4 Boot Status Strip only; no broad production correctness, Pass 5 completion, or historical full-path recertification.",
+  "exit_criteria": ["all five units merged", "current-path passive visibility observed", "slow/failure state proven without repair", "zero route change", "zero app ownership", "zero persisted-storage mutation", "resulting main and installed identities verified"],
+  "preservation": {"runtime_changed_by_audit": false, "history_rewritten": false, "pass5_started": false, "pr122_touched": false}
+}
