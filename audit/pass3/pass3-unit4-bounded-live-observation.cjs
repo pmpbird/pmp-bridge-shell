@@ -27,22 +27,17 @@ function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
     await page.waitForFunction(()=>{
       try{return JSON.parse(localStorage.getItem('pmp_a003_bootstrap_receipt_v1')||'null')?.status==='PASS'}catch(e){return false}
     },null,{timeout:35000});
-    const deadline=Date.now()+30000;
-    let currentFrame=null, guardianFrame=null;
+    const deadline=Date.now()+20000;
+    let guardianFrame=null;
     while(Date.now()<deadline){
-      for(const f of page.frames()){
-        const u=f.url();
-        if(u.includes('pmp-route-guardian-current-loader-v22.html')) guardianFrame=f;
-        if(u.includes('pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html')) currentFrame=f;
-      }
-      if(currentFrame) break;
-      if(guardianFrame){
-        const run=await guardianFrame.$('#openBtn');
-        if(run) { try{await run.click()}catch(e){} }
-      }
-      await sleep(300);
+      guardianFrame=page.frames().find(f=>f.url().includes('pmp-route-guardian-current-loader-v22.html'))||null;
+      if(guardianFrame) break;
+      await sleep(250);
     }
-    if(!currentFrame) throw new Error('canonical current_app destination was not observed');
+    if(!guardianFrame) throw new Error('canonical Route Guardian frame was not observed');
+    await guardianFrame.click('#openBtn',{force:true});
+    await page.waitForURL(url=>url.pathname.endsWith('/pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html'),{timeout:30000});
+    const currentFrame=page.mainFrame();
     const appOrchestratorAcknowledged=await currentFrame.evaluate(()=>{
       const scripts=[...document.scripts].map(s=>s.src||'');
       const body=(document.body&&document.body.innerText)||'';
