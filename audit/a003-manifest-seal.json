@@ -1,7 +1,7 @@
 {
-  "manifest_bytes": 311564,
+  "manifest_bytes": 369522,
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
-  "manifest_sha256": "4b4c01c0958ac7a26531fb52c4ad5543183b4da40c4de5d97f5a0b1d35e849d3",
+  "manifest_sha256": "c7524d664bed5118679ff031d7b07721a768793aa983964a358ac07fd419b27c",
   "manifest_version": "20260711A-A003-FINAL",
   "pass4_context": "Pass 4 Unit 2 installs the passive Boot Status Strip at the current v30 inner-document boundary and atomically refreshes required runtime integrity identities.",
   "repair_id": "A-003",
