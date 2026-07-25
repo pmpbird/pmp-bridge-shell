@@ -1,0 +1,32 @@
+{
+  "type": "PMP_PASS3_UNIT3_ISOLATED_HANDOFF_PROOF_V1",
+  "status": "PASS",
+  "scope": "isolated_node_vm_only",
+  "canonical_accepts": 1,
+  "fail_closed_rejections": 19,
+  "total_cases": 20,
+  "zero_navigation_assignments": true,
+  "zero_persisted_user_data_writes": true,
+  "cases": [
+    {"name":"canonical_current_map_handoff","accepted":true,"contract":{"type":"PMP_ROUTE_HANDOFF_V1","source_role":"route_guardian","destination_role":"current_app","map_path":"pmp-current-map-v12.json","map_version":"PMP-CURRENT-1-A003","route_epoch":"A003-20260711A","destination_path":"pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html"},"storage_delta":0,"navigation_delta":0},
+    {"name":"missing_type","accepted":false,"code":"HANDOFF_CONTRACT_INCOMPLETE","storage_delta":0,"navigation_delta":0},
+    {"name":"missing_role","accepted":false,"code":"HANDOFF_CONTRACT_INCOMPLETE","storage_delta":0,"navigation_delta":0},
+    {"name":"missing_map_path","accepted":false,"code":"HANDOFF_CONTRACT_INCOMPLETE","storage_delta":0,"navigation_delta":0},
+    {"name":"missing_map_version","accepted":false,"code":"HANDOFF_CONTRACT_INCOMPLETE","storage_delta":0,"navigation_delta":0},
+    {"name":"missing_route_epoch","accepted":false,"code":"HANDOFF_CONTRACT_INCOMPLETE","storage_delta":0,"navigation_delta":0},
+    {"name":"missing_path","accepted":false,"code":"HANDOFF_CONTRACT_INCOMPLETE","storage_delta":0,"navigation_delta":0},
+    {"name":"wrong_type","accepted":false,"code":"HANDOFF_TYPE_MISMATCH","storage_delta":0,"navigation_delta":0},
+    {"name":"wrong_role","accepted":false,"code":"HANDOFF_ROLE_MISMATCH","storage_delta":0,"navigation_delta":0},
+    {"name":"wrong_map_path","accepted":false,"code":"HANDOFF_MAP_AUTHORITY_MISMATCH","storage_delta":0,"navigation_delta":0},
+    {"name":"wrong_map_version","accepted":false,"code":"HANDOFF_MAP_LINEAGE_MISMATCH","storage_delta":0,"navigation_delta":0},
+    {"name":"wrong_route_epoch","accepted":false,"code":"HANDOFF_MAP_LINEAGE_MISMATCH","storage_delta":0,"navigation_delta":0},
+    {"name":"wrong_destination","accepted":false,"code":"HANDOFF_DESTINATION_MISMATCH","storage_delta":0,"navigation_delta":0},
+    {"name":"historical_map","accepted":false,"code":"HANDOFF_MAP_AUTHORITY_MISMATCH","storage_delta":0,"navigation_delta":0},
+    {"name":"hard_coded_destination","accepted":false,"code":"HANDOFF_DESTINATION_MISMATCH","storage_delta":0,"navigation_delta":0},
+    {"name":"saved_route_destination","accepted":false,"code":"HANDOFF_DESTINATION_MISMATCH","storage_delta":0,"navigation_delta":0},
+    {"name":"owner_destination","accepted":false,"code":"HANDOFF_DESTINATION_MISMATCH","storage_delta":0,"navigation_delta":0},
+    {"name":"pointer_destination","accepted":false,"code":"HANDOFF_DESTINATION_MISMATCH","storage_delta":0,"navigation_delta":0},
+    {"name":"implicit_fallback_destination","accepted":false,"code":"HANDOFF_DESTINATION_MISMATCH","storage_delta":0,"navigation_delta":0},
+    {"name":"wrong_source_consumer","accepted":false,"code":"HANDOFF_SOURCE_ROLE_MISMATCH","storage_delta":0,"navigation_delta":0}
+  ]
+}
