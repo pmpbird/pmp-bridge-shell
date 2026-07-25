@@ -5,6 +5,7 @@
   "pass": 3,
   "unit": 2,
   "base_main_commit": "4ab0e7bf9b046109c973455a2bd6ce724819e190",
+  "integrity_generation_commit": "7bbf748aec752c776343d1d06e92332d20482dda",
   "selected_consumer": {
     "path": "pmp-route-guardian-current-loader-v22.html",
     "boundary": "currentAppHandoff() immediately after resolver.resolve(..., 'current_app') and before resolver.buildUrl(...) or any navigation assignment",
