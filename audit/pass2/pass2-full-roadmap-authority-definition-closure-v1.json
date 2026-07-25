@@ -252,7 +252,7 @@
   "production_activation": false,
   "protected_files": [
     {"path":"audit/pass2/p2c-isolated-proof-rerun-008/P2C_RECEIPT082_FORMAL_PROOF_PR_HEAD_SEAL_084.json","git_blob_sha":"8bf4d77ec01131f19ca401aec089372b88ca2699"},
-    {"path":"pmp-active-bug-found-contract-v1.js","git_blob_sha":"4c95c3d831165ef83384bb1be7578a7c7014c16d"},
+    {"path":"pmp-active-bug-found-contract-v1.js","git_blob_sha":"b0262112a4272af7108dbb440d849197f85a9d37"},
     {"path":"pmp-actor-authority-policy-v1.json","git_blob_sha":"b8c8ea836ad51b61acf0b6c236808153c3f0da1c"},
     {"path":"pmp-app-orchestrator-v1.js","git_blob_sha":"dd64d650c00a576f4c52d21adcd57c61c7d5b5a4"},
     {"path":"pmp-authority-atlas-adapter-v1.js","git_blob_sha":"1254583e0d263c4f83f30b3cd30a5a830d0f7084"},
