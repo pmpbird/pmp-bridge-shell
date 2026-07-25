@@ -1,0 +1,32 @@
+name: V92 Exact Main Snapshot Export
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/v92-exact-main-snapshot-export.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: e5a029ec905272f8245611f7603a9d3ae46449b8
+          fetch-depth: 0
+      - name: Record exact source identity
+        run: |
+          test "$(git rev-parse HEAD)" = "e5a029ec905272f8245611f7603a9d3ae46449b8"
+          git rev-parse HEAD > EXACT_MAIN_COMMIT.txt
+      - name: Upload exact repository tree
+        uses: actions/upload-artifact@v4
+        with:
+          name: v92-exact-main-snapshot-e5a029ec
+          path: |
+            .
+            !.git/**
+          include-hidden-files: true
+          if-no-files-found: error
