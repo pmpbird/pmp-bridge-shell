@@ -1,0 +1,57 @@
+{
+  "type": "PMP_PASS4_BOOT_STATUS_STRIP_UNIT2_BOUNDED_PASSIVE_INTEGRATION_V1",
+  "version": "1.0.0",
+  "status": "IMPLEMENTED_PENDING_MERGE",
+  "pass": 4,
+  "unit": 2,
+  "base_main_commit": "824dd590313e44cd3d038ecf94b8fc91462ff9e5",
+  "contract": "PMP_BOOT_STATUS_STRIP_PASSIVE_CONTRACT_V1",
+  "integration": {
+    "consumer_file": "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+    "method": "minimal inline reuse repair inside the existing v30 launch-gate surface",
+    "historical_reuse": [
+      "single passive visual status surface",
+      "bounded slow threshold",
+      "startup-only visibility",
+      "no pointer interaction",
+      "warning-only failure display"
+    ],
+    "obsolete_assumptions_removed": [
+      "v16 Route Guardian observation",
+      "v27 reload owner observation",
+      "v26/v23 document traversal",
+      "Mount Registry as boot-completion authority",
+      "localStorage strip receipt/status writes"
+    ],
+    "states": ["BOOTING", "BOOT_SLOW", "BOOT_FAILURE", "READY_ACKNOWLEDGED"],
+    "slow_threshold_ms": 3000,
+    "fail_passive": true,
+    "runtime_scope": "one existing current-path HTML document"
+  },
+  "zero_side_effects": {
+    "route_assignments_by_strip": 0,
+    "persisted_user_data_writes_by_strip": 0,
+    "app_orchestrator_ownership_transfers": 0,
+    "startup_repairs_or_delays": 0
+  },
+  "integrity_updates": [
+    "pmp-runtime-integrity-manifest-v1.json",
+    "audit/a003-manifest-seal.json",
+    "pmp-app-current.html"
+  ],
+  "preservation": {
+    "current_map_changed": false,
+    "resolver_changed": false,
+    "route_guardian_changed": false,
+    "reload_owner_changed": false,
+    "app_orchestrator_changed": false,
+    "historical_strip_file_changed": false,
+    "persisted_user_data_changed": false,
+    "unit3_started": false,
+    "live_browser_observation_performed": false,
+    "pass4_complete_claimed": false,
+    "pass5_started": false,
+    "pr122_touched": false
+  },
+  "claim_ceiling": "Bounded current-path passive strip integration with deterministic state and zero-side-effect tests only. No isolated integrated-runtime proof, live startup observation, Pass 4 closure, Pass 5 work, or broad production correctness is claimed."
+}
