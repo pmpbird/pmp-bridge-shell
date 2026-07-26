@@ -3,13 +3,12 @@
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
   "manifest_sha256": "977e3432808b49a402454d8f86f8df027f8cb28631cbcb02aab7aee6ff59a125",
   "manifest_version": "20260711A-A003-FINAL",
-  "pass5_context": "Pass 5 Unit 3 passively loads the proven lifecycle contract and explicit-owner-event runtime behind the preserved legacy atlas boundary; no automatic transitions or storage migration are introduced.",
   "repair_id": "A-003",
   "root_self_verifiable": false,
   "root_trust_anchor": "pmp-app-current.html",
   "rule": "The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.",
   "runtime_source_set_sha256": "fb6aea52cc3ed19d5d42f93dfa9c1683fb97057319ffffeb411cfd4a46cbc058",
-  "sealed_branch": "agent/pass5-unit3-passive-lifecycle-integration-v1",
+  "sealed_branch": "main",
   "status": "SEALED",
   "type": "PMP_A003_MANIFEST_SEAL_V1"
 }
