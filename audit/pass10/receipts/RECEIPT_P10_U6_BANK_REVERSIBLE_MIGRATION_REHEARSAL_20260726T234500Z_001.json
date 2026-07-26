@@ -1,0 +1,53 @@
+{
+  "type": "PMP_PASS10_UNIT6_BANK_REVERSIBLE_MIGRATION_REHEARSAL_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P10_U6_BANK_REVERSIBLE_MIGRATION_REHEARSAL_20260726T234500Z_001",
+  "created_at": "2026-07-26T23:45:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "fa5758d63927647244722882efd092f3a59548e3",
+  "branch": "agent/pass10-unit6-bank-migration-rehearsal-v1",
+  "pass": 10,
+  "unit": "P10-U6",
+  "status": "BANK_REVERSIBLE_MIGRATION_REHEARSAL_PROVEN",
+  "evidence": "audit/pass10/pass10-bank-unit6-reversible-migration-rehearsal-v1.json",
+  "changed_paths": [
+    ".github/workflows/pass10-unit6-bank-reversible-migration-rehearsal-v1.yml",
+    "audit/pass10/pass10-bank-unit6-reversible-migration-rehearsal-v1.json",
+    "audit/pass10/receipts/RECEIPT_P10_U6_BANK_REVERSIBLE_MIGRATION_REHEARSAL_20260726T234500Z_001.json",
+    "tools/run_pass10_unit6_bank_reversible_migration_rehearsal_v1.js",
+    "tools/test_pass10_unit6_bank_reversible_migration_rehearsal_v1.js",
+    "tools/verify_pass10_unit6_bank_reversible_migration_rehearsal_v1.py"
+  ],
+  "coverage": {
+    "assertions": 102,
+    "planned_items": 8,
+    "staging_writes": 9,
+    "fault_cases": 12,
+    "rehearsal_failures": 0,
+    "artifact_roles": 9
+  },
+  "effects": {
+    "production_files_changed": false,
+    "disposable_fixture_writes_performed": true,
+    "disposable_fixture_rollback_completed": true,
+    "real_user_storage_reads": false,
+    "real_user_storage_writes": false,
+    "real_user_storage_deletes": false,
+    "persisted_user_data_changed": false,
+    "production_migration_performed": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "production_behavior_activated": false
+  },
+  "next_safe_move": {
+    "step_id": "P10-U7",
+    "instruction": "Decide whether a bounded observation is genuinely required, certify every Pass 10 unit and exit criterion, close Pass 10, and bind the exact Pass 11 entry.",
+    "requires_user_app_check_before_decision": false,
+    "perform_observation_automatically": false,
+    "requires_explicit_authority": false,
+    "persisted_user_data_change_allowed": false,
+    "production_migration_allowed": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P10-U6 disposable in-memory rehearsal only; no production migration, real user storage, deletion, observation, formal proof, or persisted-data effect."
+}
