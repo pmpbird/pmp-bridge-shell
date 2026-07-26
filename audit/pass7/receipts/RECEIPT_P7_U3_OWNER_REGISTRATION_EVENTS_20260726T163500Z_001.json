@@ -1,0 +1,50 @@
+{
+  "type": "PMP_PASS7_UNIT3_OWNER_REGISTRATION_EVENTS_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P7_U3_OWNER_REGISTRATION_EVENTS_20260726T163500Z_001",
+  "created_at": "2026-07-26T16:35:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "bf0de4f13a833b86ac830656e88e7dcab6e71d3a",
+  "branch": "agent/pass7-unit3-owner-registration-events-v1",
+  "pass": 7,
+  "unit": "P7-U3",
+  "status": "OWNER_REGISTRATION_EVENTS_PROVEN",
+  "evidence": "audit/pass7/pass7-section-owner-unit3-registration-events-v1.json",
+  "changed_paths": [
+    ".github/workflows/pass7-unit3-owner-registration-events-v1.yml",
+    "audit/pass7/pass7-section-owner-unit3-registration-events-v1.json",
+    "audit/pass7/receipts/RECEIPT_P7_U3_OWNER_REGISTRATION_EVENTS_20260726T163500Z_001.json",
+    "tools/run_pass7_unit3_owner_registration_events_v1.py",
+    "tools/test_pass7_unit3_owner_registration_events_v1.py",
+    "tools/verify_pass7_unit3_owner_registration_events_v1.py"
+  ],
+  "coverage": {
+    "event_types": 4,
+    "known_owners": 8,
+    "pending_growth_no_authority": 1,
+    "fault_cases": 17,
+    "assertions": 72,
+    "artifact_roles": 9
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "bank_mutations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false
+  },
+  "next_safe_move": {
+    "step_id": "P7-U4",
+    "instruction": "Integrate Section Owner events boundedly with Mount Registry and Diagnostics.",
+    "requires_explicit_authority": false,
+    "requires_user_app_check": false,
+    "stop_before": "Only a genuinely required hands-on app reproduction or verification in a later unit."
+  }
+}
