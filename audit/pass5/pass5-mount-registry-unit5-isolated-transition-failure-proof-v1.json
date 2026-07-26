@@ -1,0 +1,1226 @@
+{
+  "type": "PMP_PASS5_UNIT5_ISOLATED_LIFECYCLE_TRANSITION_FAILURE_PROOF_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T08:24:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "6f19ca6594b6a8950caed60d027075d2ba30eb46",
+  "mode": "ISOLATED_DETERMINISTIC_FIXTURES_ONLY",
+  "status": "PASS_ISOLATED_PROOF",
+  "components": {
+    "contract_version": "PMP_MOUNT_LIFECYCLE_CONTRACT_V1",
+    "registry_owner": "mount_registry_owner",
+    "runtime_type": "PMP_MOUNT_LIFECYCLE_RUNTIME_V1",
+    "diagnostics_view_type": "PMP_MOUNT_LIFECYCLE_DIAGNOSTICS_VIEW_V1",
+    "source_sha256": {
+      "pmp-mount-lifecycle-contract-v1.js": "bb870d8e32c39aacd7b23aa8b084ba4725c1b525d050254d2d897532f57ad10e",
+      "pmp-mount-lifecycle-runtime-v1.js": "cf2dfedd323f8b431ba69bac9a4d7a8345e4691878475a19f3458867b4b48a37",
+      "pmp-mount-lifecycle-diagnostics-view-v1.js": "70e863fc1c2ca37ba41d19d4f9027a0ef584143ac7fc97fed23a15f3fca9d34f",
+      "pmp-diagnostics-owner-v1.js": "1cefeaa8dbd87029e021776bb55f4c748a71936458141f0154f29dd47f461779"
+    }
+  },
+  "coverage": {
+    "assertions_total": 138,
+    "assertions_passed": 138,
+    "assertions_failed": 0,
+    "category_counts": {
+      "identity": 5,
+      "happy_path": 9,
+      "slow_degraded_recovery": 8,
+      "terminal_paths": 9,
+      "schema_failures": 11,
+      "authority_failures": 8,
+      "ordering_failures": 9,
+      "retention": 6,
+      "restart": 5,
+      "compatibility": 5,
+      "runtime": 15,
+      "diagnostics": 15,
+      "zero_effect_source": 33
+    },
+    "categories": [
+      "identity",
+      "happy_path",
+      "slow_degraded_recovery",
+      "terminal_paths",
+      "schema_failures",
+      "authority_failures",
+      "ordering_failures",
+      "retention",
+      "restart",
+      "compatibility",
+      "runtime",
+      "diagnostics",
+      "zero_effect_source"
+    ]
+  },
+  "assertions": [
+    {
+      "category": "identity",
+      "name": "contract version",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "identity",
+      "name": "registry owner",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "identity",
+      "name": "runtime type",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "identity",
+      "name": "Diagnostics view type",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "identity",
+      "name": "four source hashes sealed in report",
+      "pass": true,
+      "evidence": {
+        "pmp-mount-lifecycle-contract-v1.js": "bb870d8e32c39aacd7b23aa8b084ba4725c1b525d050254d2d897532f57ad10e",
+        "pmp-mount-lifecycle-runtime-v1.js": "cf2dfedd323f8b431ba69bac9a4d7a8345e4691878475a19f3458867b4b48a37",
+        "pmp-mount-lifecycle-diagnostics-view-v1.js": "70e863fc1c2ca37ba41d19d4f9027a0ef584143ac7fc97fed23a15f3fca9d34f",
+        "pmp-diagnostics-owner-v1.js": "1cefeaa8dbd87029e021776bb55f4c748a71936458141f0154f29dd47f461779"
+      }
+    },
+    {
+      "category": "happy_path",
+      "name": "accept step 1",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "happy_path",
+      "name": "accept step 2",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "happy_path",
+      "name": "accept step 3",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "happy_path",
+      "name": "accept step 4",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "happy_path",
+      "name": "accept step 5",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "happy_path",
+      "name": "final state",
+      "pass": true,
+      "evidence": {
+        "actual": "READY",
+        "expected": "READY"
+      }
+    },
+    {
+      "category": "happy_path",
+      "name": "event count",
+      "pass": true,
+      "evidence": {
+        "actual": 5,
+        "expected": 5
+      }
+    },
+    {
+      "category": "happy_path",
+      "name": "exact duplicate ignored",
+      "pass": true,
+      "evidence": {
+        "actual": "DUPLICATE_IGNORED",
+        "expected": "DUPLICATE_IGNORED"
+      }
+    },
+    {
+      "category": "happy_path",
+      "name": "duplicate does not append",
+      "pass": true,
+      "evidence": {
+        "actual": 5,
+        "expected": 5
+      }
+    },
+    {
+      "category": "slow_degraded_recovery",
+      "name": "accept step 1",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "slow_degraded_recovery",
+      "name": "accept step 2",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "slow_degraded_recovery",
+      "name": "accept step 3",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "slow_degraded_recovery",
+      "name": "accept step 4",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "slow_degraded_recovery",
+      "name": "accept step 5",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "slow_degraded_recovery",
+      "name": "accept step 6",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "slow_degraded_recovery",
+      "name": "accept step 7",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "slow_degraded_recovery",
+      "name": "recovered final state",
+      "pass": true,
+      "evidence": {
+        "actual": "READY",
+        "expected": "READY"
+      }
+    },
+    {
+      "category": "terminal_paths",
+      "name": "blocked route start",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "terminal_paths",
+      "name": "route authority blocks",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "terminal_paths",
+      "name": "blocked terminal state",
+      "pass": true,
+      "evidence": {
+        "actual": "BLOCKED",
+        "expected": "BLOCKED"
+      }
+    },
+    {
+      "category": "terminal_paths",
+      "name": "blocked rejects later transition",
+      "pass": true,
+      "evidence": {
+        "actual": "REJECTED_INVALID_TRANSITION",
+        "expected": "REJECTED_INVALID_TRANSITION"
+      }
+    },
+    {
+      "category": "terminal_paths",
+      "name": "failed route start",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "terminal_paths",
+      "name": "failed owner resolve",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "terminal_paths",
+      "name": "failed mount start",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "terminal_paths",
+      "name": "owner reports failed",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "terminal_paths",
+      "name": "failed terminal state",
+      "pass": true,
+      "evidence": {
+        "actual": "FAILED",
+        "expected": "FAILED"
+      }
+    },
+    {
+      "category": "schema_failures",
+      "name": "null input",
+      "pass": true,
+      "evidence": {
+        "actual": "REJECTED_UNAVAILABLE",
+        "expected": "REJECTED_UNAVAILABLE"
+      }
+    },
+    {
+      "category": "schema_failures",
+      "name": "empty input",
+      "pass": true,
+      "evidence": {
+        "actual": "REJECTED_MALFORMED",
+        "expected": "REJECTED_MALFORMED"
+      }
+    },
+    {
+      "category": "schema_failures",
+      "name": "contract mismatch",
+      "pass": true,
+      "evidence": {
+        "actual": "REJECTED_CONTRACT_VERSION",
+        "expected": "REJECTED_CONTRACT_VERSION"
+      }
+    },
+    {
+      "category": "schema_failures",
+      "name": "operation id malformed",
+      "pass": true,
+      "evidence": {
+        "actual": "REJECTED_OPERATION_ID",
+        "expected": "REJECTED_OPERATION_ID"
+      }
+    },
+    {
+      "category": "schema_failures",
+      "name": "sequence malformed",
+      "pass": true,
+      "evidence": {
+        "actual": "REJECTED_SEQUENCE",
+        "expected": "REJECTED_SEQUENCE"
+      }
+    },
+    {
+      "category": "schema_failures",
+      "name": "state malformed",
+      "pass": true,
+      "evidence": {
+        "actual": "REJECTED_STATE",
+        "expected": "REJECTED_STATE"
+      }
+    },
+    {
+      "category": "schema_failures",
+      "name": "reason malformed",
+      "pass": true,
+      "evidence": {
+        "actual": "REJECTED_REASON_CODE",
+        "expected": "REJECTED_REASON_CODE"
+      }
+    },
+    {
+      "category": "schema_failures",
+      "name": "time malformed",
+      "pass": true,
+      "evidence": {
+        "actual": "REJECTED_TIME",
+        "expected": "REJECTED_TIME"
+      }
+    },
+    {
+      "category": "schema_failures",
+      "name": "trust malformed",
+      "pass": true,
+      "evidence": {
+        "actual": "REJECTED_TRUST",
+        "expected": "REJECTED_TRUST"
+      }
+    },
+    {
+      "category": "schema_failures",
+      "name": "extra field rejected",
+      "pass": true,
+      "evidence": {
+        "actual": "REJECTED_MALFORMED",
+        "expected": "REJECTED_MALFORMED"
+      }
+    },
+    {
+      "category": "schema_failures",
+      "name": "dangerous details rejected",
+      "pass": true,
+      "evidence": {
+        "actual": "REJECTED_DETAILS",
+        "expected": "REJECTED_DETAILS"
+      }
+    },
+    {
+      "category": "authority_failures",
+      "name": "wrong route owner",
+      "pass": true,
+      "evidence": {
+        "actual": "REJECTED_ROUTE_AUTHORITY",
+        "expected": "REJECTED_ROUTE_AUTHORITY"
+      }
+    },
+    {
+      "category": "authority_failures",
+      "name": "source outside allowlist",
+      "pass": true,
+      "evidence": {
+        "actual": "REJECTED_SOURCE_AUTHORITY",
+        "expected": "REJECTED_SOURCE_AUTHORITY"
+      }
+    },
+    {
+      "category": "authority_failures",
+      "name": "valid route start",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "authority_failures",
+      "name": "unknown resolved owner",
+      "pass": true,
+      "evidence": {
+        "actual": "REJECTED_RESOLVED_OWNER",
+        "expected": "REJECTED_RESOLVED_OWNER"
+      }
+    },
+    {
+      "category": "authority_failures",
+      "name": "valid owner resolve",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "authority_failures",
+      "name": "wrong mount owner",
+      "pass": true,
+      "evidence": {
+        "actual": "REJECTED_MOUNT_OWNER",
+        "expected": "REJECTED_MOUNT_OWNER"
+      }
+    },
+    {
+      "category": "authority_failures",
+      "name": "observer trust rejected",
+      "pass": true,
+      "evidence": {
+        "actual": "REJECTED_NON_AUTHORITATIVE_TRUST",
+        "expected": "REJECTED_NON_AUTHORITATIVE_TRUST"
+      }
+    },
+    {
+      "category": "authority_failures",
+      "name": "inferred trust rejected",
+      "pass": true,
+      "evidence": {
+        "actual": "REJECTED_NON_AUTHORITATIVE_TRUST",
+        "expected": "REJECTED_NON_AUTHORITATIVE_TRUST"
+      }
+    },
+    {
+      "category": "ordering_failures",
+      "name": "ordering start",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "ordering_failures",
+      "name": "sequence gap",
+      "pass": true,
+      "evidence": {
+        "actual": "REJECTED_SEQUENCE_GAP",
+        "expected": "REJECTED_SEQUENCE_GAP"
+      }
+    },
+    {
+      "category": "ordering_failures",
+      "name": "ordering resolve",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "ordering_failures",
+      "name": "conflicting duplicate",
+      "pass": true,
+      "evidence": {
+        "actual": "REJECTED_DUPLICATE_CONFLICT",
+        "expected": "REJECTED_DUPLICATE_CONFLICT"
+      }
+    },
+    {
+      "category": "ordering_failures",
+      "name": "ordering mount start",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "ordering_failures",
+      "name": "stale sequence",
+      "pass": true,
+      "evidence": {
+        "actual": "REJECTED_STALE_SEQUENCE",
+        "expected": "REJECTED_STALE_SEQUENCE"
+      }
+    },
+    {
+      "category": "ordering_failures",
+      "name": "time regression",
+      "pass": true,
+      "evidence": {
+        "actual": "REJECTED_TIME_REGRESSION",
+        "expected": "REJECTED_TIME_REGRESSION"
+      }
+    },
+    {
+      "category": "ordering_failures",
+      "name": "invalid transition",
+      "pass": true,
+      "evidence": {
+        "actual": "REJECTED_INVALID_TRANSITION",
+        "expected": "REJECTED_INVALID_TRANSITION"
+      }
+    },
+    {
+      "category": "ordering_failures",
+      "name": "unknown operation cannot start later state",
+      "pass": true,
+      "evidence": {
+        "actual": "REJECTED_MISSING_OPERATION",
+        "expected": "REJECTED_MISSING_OPERATION"
+      }
+    },
+    {
+      "category": "retention",
+      "name": "capacity first event",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "retention",
+      "name": "capacity second event",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "retention",
+      "name": "event capacity rejects without deletion",
+      "pass": true,
+      "evidence": {
+        "actual": "REJECTED_EVENT_RETENTION_CAPACITY",
+        "expected": "REJECTED_EVENT_RETENTION_CAPACITY"
+      }
+    },
+    {
+      "category": "retention",
+      "name": "operation capacity rejects without deletion",
+      "pass": true,
+      "evidence": {
+        "actual": "REJECTED_RETENTION_CAPACITY",
+        "expected": "REJECTED_RETENTION_CAPACITY"
+      }
+    },
+    {
+      "category": "retention",
+      "name": "retained operation count",
+      "pass": true,
+      "evidence": {
+        "actual": 1,
+        "expected": 1
+      }
+    },
+    {
+      "category": "retention",
+      "name": "retained event count",
+      "pass": true,
+      "evidence": {
+        "actual": 2,
+        "expected": 2
+      }
+    },
+    {
+      "category": "restart",
+      "name": "valid snapshot restored",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "restart",
+      "name": "restored state",
+      "pass": true,
+      "evidence": {
+        "actual": "READY",
+        "expected": "READY"
+      }
+    },
+    {
+      "category": "restart",
+      "name": "invalid event fails closed",
+      "pass": true,
+      "evidence": {
+        "actual": "RESTORE_REJECTED_EVENT",
+        "expected": "RESTORE_REJECTED_EVENT"
+      }
+    },
+    {
+      "category": "restart",
+      "name": "invalid restore exposes no registry",
+      "pass": true,
+      "evidence": {
+        "actual": null,
+        "expected": null
+      }
+    },
+    {
+      "category": "restart",
+      "name": "malformed snapshot fails closed",
+      "pass": true,
+      "evidence": {
+        "actual": "RESTORE_REJECTED_MALFORMED",
+        "expected": "RESTORE_REJECTED_MALFORMED"
+      }
+    },
+    {
+      "category": "compatibility",
+      "name": "facade construction has zero calls",
+      "pass": true,
+      "evidence": {
+        "actual": {
+          "registry": 1,
+          "snapshot": 1,
+          "scan": 1
+        },
+        "expected": {
+          "registry": 0,
+          "snapshot": 0,
+          "scan": 0
+        }
+      }
+    },
+    {
+      "category": "compatibility",
+      "name": "explicit registry call",
+      "pass": true,
+      "evidence": {
+        "actual": {
+          "legacy": true
+        },
+        "expected": {
+          "legacy": true
+        }
+      }
+    },
+    {
+      "category": "compatibility",
+      "name": "explicit snapshot call",
+      "pass": true,
+      "evidence": {
+        "actual": {
+          "legacySnapshot": true
+        },
+        "expected": {
+          "legacySnapshot": true
+        }
+      }
+    },
+    {
+      "category": "compatibility",
+      "name": "explicit scan call",
+      "pass": true,
+      "evidence": {
+        "actual": {
+          "reason": "proof"
+        },
+        "expected": {
+          "reason": "proof"
+        }
+      }
+    },
+    {
+      "category": "compatibility",
+      "name": "only explicit calls counted",
+      "pass": true,
+      "evidence": {
+        "actual": {
+          "registry": 1,
+          "snapshot": 1,
+          "scan": 1
+        },
+        "expected": {
+          "registry": 1,
+          "snapshot": 1,
+          "scan": 1
+        }
+      }
+    },
+    {
+      "category": "runtime",
+      "name": "runtime available",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "runtime",
+      "name": "runtime creation has zero legacy calls",
+      "pass": true,
+      "evidence": {
+        "actual": {
+          "registry": 0,
+          "snapshot": 0,
+          "scan": 0
+        },
+        "expected": {
+          "registry": 0,
+          "snapshot": 0,
+          "scan": 0
+        }
+      }
+    },
+    {
+      "category": "runtime",
+      "name": "runtime starts empty",
+      "pass": true,
+      "evidence": {
+        "actual": 0,
+        "expected": 0
+      }
+    },
+    {
+      "category": "runtime",
+      "name": "explicit runtime event 1",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "runtime",
+      "name": "explicit runtime event 2",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "runtime",
+      "name": "explicit runtime event 3",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "runtime",
+      "name": "explicit runtime event 4",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "runtime",
+      "name": "explicit runtime event 5",
+      "pass": true,
+      "evidence": {
+        "actual": "ACCEPTED",
+        "expected": "ACCEPTED"
+      }
+    },
+    {
+      "category": "runtime",
+      "name": "runtime final state",
+      "pass": true,
+      "evidence": {
+        "actual": "READY",
+        "expected": "READY"
+      }
+    },
+    {
+      "category": "runtime",
+      "name": "runtime exact duplicate",
+      "pass": true,
+      "evidence": {
+        "actual": "DUPLICATE_IGNORED",
+        "expected": "DUPLICATE_IGNORED"
+      }
+    },
+    {
+      "category": "runtime",
+      "name": "install available",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "runtime",
+      "name": "duplicate install returns same object",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "runtime",
+      "name": "compatibility global installed",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "runtime",
+      "name": "missing dependencies fail closed",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "runtime",
+      "name": "missing runtime rejects event",
+      "pass": true,
+      "evidence": {
+        "actual": "REJECTED_LIFECYCLE_RUNTIME_UNAVAILABLE",
+        "expected": "REJECTED_LIFECYCLE_RUNTIME_UNAVAILABLE"
+      }
+    },
+    {
+      "category": "diagnostics",
+      "name": "empty registry view status",
+      "pass": true,
+      "evidence": {
+        "actual": "READY_EMPTY",
+        "expected": "READY_EMPTY"
+      }
+    },
+    {
+      "category": "diagnostics",
+      "name": "empty registry view operations",
+      "pass": true,
+      "evidence": {
+        "actual": 0,
+        "expected": 0
+      }
+    },
+    {
+      "category": "diagnostics",
+      "name": "populated view status",
+      "pass": true,
+      "evidence": {
+        "actual": "READY_WITH_OPERATIONS",
+        "expected": "READY_WITH_OPERATIONS"
+      }
+    },
+    {
+      "category": "diagnostics",
+      "name": "populated view operations",
+      "pass": true,
+      "evidence": {
+        "actual": 1,
+        "expected": 1
+      }
+    },
+    {
+      "category": "diagnostics",
+      "name": "view final state",
+      "pass": true,
+      "evidence": {
+        "actual": "READY",
+        "expected": "READY"
+      }
+    },
+    {
+      "category": "diagnostics",
+      "name": "raw events absent",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "diagnostics",
+      "name": "details absent",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "diagnostics",
+      "name": "repeated view deterministic",
+      "pass": true,
+      "evidence": {
+        "actual": "{\"type\":\"PMP_MOUNT_LIFECYCLE_DIAGNOSTICS_VIEW_V1\",\"version\":\"1.0.0\",\"status\":\"READY_WITH_OPERATIONS\",\"available\":true,\"registry_owner\":\"mount_registry_owner\",\"contract_version\":\"PMP_MOUNT_LIFECYCLE_CONTRACT_V1\",\"dependencies\":{\"contract_available\":true,\"legacy_atlas_available\":true},\"policy\":{\"route_authority\":\"current_map_owner\",\"max_operations\":256,\"max_events_per_operation\":64,\"retention\":\"REJECT_AT_CAPACITY_NO_EVIDENCE_DELETION\",\"restart\":\"REPLAY_VALIDATED_SNAPSHOT_ONLY\"},\"operation_count\":1,\"visible_operation_count\":1,\"operations\":[{\"operation_id\":\"pmp-mount:current-app:proof-runtime-010\",\"state\":\"READY\",\"last_sequence\":5,\"last_observed_at\":\"2026-07-26T08:30:05Z\",\"resolved_owner\":\"app_orchestrator_owner\",\"event_count\":5,\"terminal\":false}],\"rejections\":{\"total\":0,\"counts\":{},\"last\":null},\"disclosure\":{\"event_details_exposed\":false,\"raw_event_payloads_exposed\":false,\"maximum_visible_operations\":64,\"operations_truncated\":false},\"side_effects\":{\"lifecycle_events_applied\":0,\"registry_mutations\":0,\"legacy_atlas_calls\":0,\"mounts\":0,\"repairs\":0,\"route_assignments\":0,\"storage_migrations\":0,\"persisted_user_data_writes\":0}}",
+        "expected": "{\"type\":\"PMP_MOUNT_LIFECYCLE_DIAGNOSTICS_VIEW_V1\",\"version\":\"1.0.0\",\"status\":\"READY_WITH_OPERATIONS\",\"available\":true,\"registry_owner\":\"mount_registry_owner\",\"contract_version\":\"PMP_MOUNT_LIFECYCLE_CONTRACT_V1\",\"dependencies\":{\"contract_available\":true,\"legacy_atlas_available\":true},\"policy\":{\"route_authority\":\"current_map_owner\",\"max_operations\":256,\"max_events_per_operation\":64,\"retention\":\"REJECT_AT_CAPACITY_NO_EVIDENCE_DELETION\",\"restart\":\"REPLAY_VALIDATED_SNAPSHOT_ONLY\"},\"operation_count\":1,\"visible_operation_count\":1,\"operations\":[{\"operation_id\":\"pmp-mount:current-app:proof-runtime-010\",\"state\":\"READY\",\"last_sequence\":5,\"last_observed_at\":\"2026-07-26T08:30:05Z\",\"resolved_owner\":\"app_orchestrator_owner\",\"event_count\":5,\"terminal\":false}],\"rejections\":{\"total\":0,\"counts\":{},\"last\":null},\"disclosure\":{\"event_details_exposed\":false,\"raw_event_payloads_exposed\":false,\"maximum_visible_operations\":64,\"operations_truncated\":false},\"side_effects\":{\"lifecycle_events_applied\":0,\"registry_mutations\":0,\"legacy_atlas_calls\":0,\"mounts\":0,\"repairs\":0,\"route_assignments\":0,\"storage_migrations\":0,\"persisted_user_data_writes\":0}}"
+      }
+    },
+    {
+      "category": "diagnostics",
+      "name": "unavailable view passive",
+      "pass": true,
+      "evidence": {
+        "actual": "LIFECYCLE_RUNTIME_UNAVAILABLE",
+        "expected": "LIFECYCLE_RUNTIME_UNAVAILABLE"
+      }
+    },
+    {
+      "category": "diagnostics",
+      "name": "snapshot error passive",
+      "pass": true,
+      "evidence": {
+        "actual": "LIFECYCLE_SNAPSHOT_ERROR",
+        "expected": "LIFECYCLE_SNAPSHOT_ERROR"
+      }
+    },
+    {
+      "category": "diagnostics",
+      "name": "malformed snapshot passive",
+      "pass": true,
+      "evidence": {
+        "actual": "LIFECYCLE_SNAPSHOT_MALFORMED",
+        "expected": "LIFECYCLE_SNAPSHOT_MALFORMED"
+      }
+    },
+    {
+      "category": "diagnostics",
+      "name": "bounded total operation truth",
+      "pass": true,
+      "evidence": {
+        "actual": 65,
+        "expected": 65
+      }
+    },
+    {
+      "category": "diagnostics",
+      "name": "bounded visible operation count",
+      "pass": true,
+      "evidence": {
+        "actual": 64,
+        "expected": 64
+      }
+    },
+    {
+      "category": "diagnostics",
+      "name": "bounded truncation declared",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "diagnostics",
+      "name": "bounded details redacted",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-contract-v1.js excludes localStorage",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-contract-v1.js excludes sessionStorage",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-contract-v1.js excludes indexedDB",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-contract-v1.js excludes document.",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-contract-v1.js excludes fetch(",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-contract-v1.js excludes XMLHttpRequest",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-contract-v1.js excludes setTimeout(",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-contract-v1.js excludes setInterval(",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-contract-v1.js excludes location.",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-contract-v1.js excludes .src=",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-runtime-v1.js excludes localStorage",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-runtime-v1.js excludes sessionStorage",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-runtime-v1.js excludes indexedDB",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-runtime-v1.js excludes document.",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-runtime-v1.js excludes fetch(",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-runtime-v1.js excludes XMLHttpRequest",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-runtime-v1.js excludes setTimeout(",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-runtime-v1.js excludes setInterval(",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-runtime-v1.js excludes location.",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-runtime-v1.js excludes .src=",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-diagnostics-view-v1.js excludes localStorage",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-diagnostics-view-v1.js excludes sessionStorage",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-diagnostics-view-v1.js excludes indexedDB",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-diagnostics-view-v1.js excludes document.",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-diagnostics-view-v1.js excludes fetch(",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-diagnostics-view-v1.js excludes XMLHttpRequest",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-diagnostics-view-v1.js excludes setTimeout(",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-diagnostics-view-v1.js excludes setInterval(",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-diagnostics-view-v1.js excludes location.",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "pmp-mount-lifecycle-diagnostics-view-v1.js excludes .src=",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "Diagnostics view has no event application entrypoint",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "Diagnostics owner has no event application entrypoint",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "category": "zero_effect_source",
+      "name": "Diagnostics owner declares no lifecycle mutation",
+      "pass": true,
+      "evidence": null
+    }
+  ],
+  "effects": {
+    "production_files_changed": false,
+    "current_path_started": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "lifecycle_events_applied_outside_fixture": 0,
+    "registry_mutations_outside_fixture": 0,
+    "legacy_atlas_automatic_calls": 0,
+    "mounts": 0,
+    "repairs": 0,
+    "route_assignments": 0,
+    "storage_migrations": 0,
+    "persisted_user_data_writes": 0,
+    "historical_evidence_changes": 0,
+    "pr122_touched": false
+  },
+  "authority": {
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "consumed_observations_retried": false,
+    "formal_proof_retried": false
+  },
+  "next_step": {
+    "id": "P5-U6",
+    "objective": "Decide from isolated evidence whether a bounded current-path observation is required; do not run one without the applicable exact authority.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": "ONLY_IF_P5_U6_DETERMINES_A_NEW_LIVE_OBSERVATION_IS_REQUIRED"
+  },
+  "claim_ceiling": "Isolated deterministic lifecycle and read-only Diagnostics proof only. No production file change, current-path observation, app check, lifecycle event outside fixtures, persisted state change, or Pass 5 completion."
+}

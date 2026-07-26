@@ -1,0 +1,106 @@
+{
+  "schema": "PMP_APP_ORCHESTRATOR_STEP_RECEIPT_V1",
+  "receipt_id": "AO-P5-U5-ISOLATED-LIFECYCLE-PROOF-V1-001",
+  "created_at": "2026-07-26T08:24:00Z",
+  "project": "App Orchestrator",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "roadmap_version": "1.0.0",
+  "pass": 5,
+  "unit": "P5-U5",
+  "substep": "P5-U5",
+  "kind": "PROOF",
+  "status": "PASS_BOUNDED",
+  "objective": "Prove the lifecycle contract, passive runtime, legacy compatibility boundary, and read-only Diagnostics consumer across deterministic isolated transition and failure fixtures.",
+  "claim_ceiling": "Isolated deterministic fixtures only; no production file change, current-path observation, user app check, persisted state change, or Pass 5 closure.",
+  "authority": {
+    "basis": [
+      "V106 exact next move P5-U5",
+      "Merged P5-U2 through P5-U4 components",
+      "Strengthened 13-pass execution roadmap V1",
+      "Continuing ordinary in-scope authorization through Pass 13"
+    ],
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "authorization_evidence": [
+      "All lifecycle events exist only inside new in-memory test registries.",
+      "The proof does not open the PMP app or use a current-path observation or formal-proof gate."
+    ]
+  },
+  "git": {
+    "base_commit": "6f19ca6594b6a8950caed60d027075d2ba30eb46",
+    "branch": "agent/pass5-unit5-isolated-lifecycle-proof-v1",
+    "head_commit": null,
+    "pull_request": null,
+    "merge_commit": null,
+    "verified_main_commit": "6f19ca6594b6a8950caed60d027075d2ba30eb46"
+  },
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass5-unit5-isolated-lifecycle-proof-v1.yml",
+      "audit/pass5/pass5-mount-registry-unit5-isolated-transition-failure-proof-v1.json",
+      "audit/pass5/receipts/RECEIPT_P5_U5_ISOLATED_PROOF_20260726T082400Z_001.json",
+      "tools/run_pass5_unit5_isolated_lifecycle_failure_proof_v1.js",
+      "tools/verify_pass5_unit5_isolated_lifecycle_failure_proof_v1.py"
+    ],
+    "evidence_paths": [
+      "audit/pass5/pass5-mount-registry-unit5-isolated-transition-failure-proof-v1.json"
+    ],
+    "forbidden_paths_checked": [
+      "All production HTML, JavaScript, JSON, CSS, and WASM",
+      "A-003 manifest, seal, and bootstrap",
+      "Current Map and route owners",
+      "Mount Registry contract, runtime, and Diagnostics view",
+      "Existing persisted storage and user data",
+      "Consumed observation records",
+      "PR 122"
+    ],
+    "unrelated_changes_preserved": true
+  },
+  "verification": {
+    "assertions_total": 138,
+    "assertions_passed": 138,
+    "assertions_failed": 0,
+    "categories": [
+      "identity",
+      "happy_path",
+      "slow_degraded_recovery",
+      "terminal_paths",
+      "schema_failures",
+      "authority_failures",
+      "ordering_failures",
+      "retention",
+      "restart",
+      "compatibility",
+      "runtime",
+      "diagnostics",
+      "zero_effect_source"
+    ],
+    "proof_report_sha256": "6b9c1839e25da5141388e54af730adc3cece0f1c2b0bc61821270d768dc87665",
+    "proof_runner_sha256": "d4020d02829380156718fe1afc919bd539daf1ecacca6f7a76a279e01253507f",
+    "result": "PASS_ISOLATED_PROOF",
+    "evidence_complete": true
+  },
+  "effects": {
+    "production_runtime_changed": false,
+    "runtime_integrity_changed": false,
+    "current_path_started": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "historical_evidence_changed": false,
+    "github_changed": false
+  },
+  "recovery": {
+    "rollback_available": true,
+    "rollback_reference": "The audit-only proof branch can be closed or reverted without production or data rollback.",
+    "evidence_preserved": true
+  },
+  "supersedes_receipt_ids": [],
+  "next_safe_move": {
+    "step_id": "P5-U6",
+    "instruction": "Decide from isolated and existing live CI evidence whether a new bounded current-path observation is genuinely required. Do not run one without exact applicable authority.",
+    "requires_explicit_authority": "ONLY_IF_A_NEW_LIVE_OBSERVATION_IS_REQUIRED",
+    "stop_before": "Any new current-path observation or retry of a consumed observation."
+  }
+}

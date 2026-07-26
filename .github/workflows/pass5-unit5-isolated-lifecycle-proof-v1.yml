@@ -1,0 +1,31 @@
+name: Pass 5 Unit 5 Isolated Lifecycle Proof
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - '.github/workflows/pass5-unit5-isolated-lifecycle-proof-v1.yml'
+      - 'audit/pass5/pass5-mount-registry-unit5-isolated-transition-failure-proof-v1.json'
+      - 'audit/pass5/receipts/RECEIPT_P5_U5_ISOLATED_PROOF_20260726T082400Z_001.json'
+      - 'tools/run_pass5_unit5_isolated_lifecycle_failure_proof_v1.js'
+      - 'tools/verify_pass5_unit5_isolated_lifecycle_failure_proof_v1.py'
+permissions:
+  contents: read
+jobs:
+  isolated-lifecycle-proof:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Reproduce immutable isolated proof
+        run: |
+          node tools/run_pass5_unit5_isolated_lifecycle_failure_proof_v1.js /tmp/pass5-unit5-proof.json
+          cmp /tmp/pass5-unit5-proof.json audit/pass5/pass5-mount-registry-unit5-isolated-transition-failure-proof-v1.json
+      - name: Verify exact audit-only scope and all proof claims
+        run: python3 tools/verify_pass5_unit5_isolated_lifecycle_failure_proof_v1.py "${{ github.event.pull_request.base.sha }}"
