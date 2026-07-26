@@ -1,0 +1,232 @@
+{
+  "type": "PMP_PASS6_DETERMINISTIC_BROWSER_FRAME_EVENT_SCENARIO_V1",
+  "version": "1.0.0",
+  "id": "P6-U4-POSITIVE-ALL-INVARIANTS-001",
+  "timeout_ticks": 128,
+  "invariant_ids": [
+    "P6-INV-ROUTE-001",
+    "P6-INV-ROUTE-002",
+    "P6-INV-ROUTE-003",
+    "P6-INV-MOUNT-001",
+    "P6-INV-MOUNT-002",
+    "P6-INV-MOUNT-003",
+    "P6-INV-OWNER-001",
+    "P6-INV-OWNER-002",
+    "P6-INV-HELPER-001",
+    "P6-INV-HELPER-002",
+    "P6-INV-BANK-001",
+    "P6-INV-BANK-002",
+    "P6-INV-READY-001",
+    "P6-INV-STORAGE-001",
+    "P6-INV-STORAGE-002",
+    "P6-INV-DIAG-001",
+    "P6-INV-DIAG-002",
+    "P6-INV-DIAG-003",
+    "P6-INV-FX-001",
+    "P6-INV-FX-002"
+  ],
+  "required_events": [
+    "browser_started",
+    "page_created",
+    "frame_attached",
+    "frame_navigated",
+    "domcontentloaded",
+    "frame_detached",
+    "page_closed",
+    "browser_closed"
+  ],
+  "steps": [
+    {
+      "op": "launch_browser",
+      "engine": "deterministic-adapter"
+    },
+    {
+      "op": "open_page",
+      "page_id": "page-primary",
+      "main_frame_id": "frame-main",
+      "url": "https://proof.invalid/root"
+    },
+    {
+      "op": "attach_frame",
+      "page_id": "page-primary",
+      "frame_id": "frame-child",
+      "parent_frame_id": "frame-main",
+      "url": "https://proof.invalid/frame"
+    },
+    {
+      "op": "navigate_frame",
+      "frame_id": "frame-child",
+      "expected_generation": 0,
+      "url": "https://proof.invalid/frame-ready"
+    },
+    {
+      "op": "emit_event",
+      "kind": "domcontentloaded",
+      "page_id": "page-primary",
+      "frame_id": "frame-child",
+      "frame_generation": 1,
+      "invariant_ids": [
+        "P6-INV-ROUTE-001",
+        "P6-INV-ROUTE-002",
+        "P6-INV-ROUTE-003",
+        "P6-INV-MOUNT-001",
+        "P6-INV-MOUNT-002",
+        "P6-INV-MOUNT-003",
+        "P6-INV-OWNER-001",
+        "P6-INV-OWNER-002",
+        "P6-INV-HELPER-001",
+        "P6-INV-HELPER-002",
+        "P6-INV-BANK-001",
+        "P6-INV-BANK-002",
+        "P6-INV-READY-001",
+        "P6-INV-STORAGE-001",
+        "P6-INV-STORAGE-002",
+        "P6-INV-DIAG-001",
+        "P6-INV-DIAG-002",
+        "P6-INV-DIAG-003",
+        "P6-INV-FX-001",
+        "P6-INV-FX-002"
+      ],
+      "payload": {
+        "document_state": "interactive",
+        "source": "deterministic_fixture"
+      }
+    },
+    {
+      "op": "expect_event",
+      "kind": "domcontentloaded",
+      "frame_id": "frame-child"
+    },
+    {
+      "op": "assert_invariant",
+      "invariant_id": "P6-INV-ROUTE-001",
+      "outcome": "PASS",
+      "evidence_event_ids": ["E0005"]
+    },
+    {
+      "op": "assert_invariant",
+      "invariant_id": "P6-INV-ROUTE-002",
+      "outcome": "PASS",
+      "evidence_event_ids": ["E0005"]
+    },
+    {
+      "op": "assert_invariant",
+      "invariant_id": "P6-INV-ROUTE-003",
+      "outcome": "PASS",
+      "evidence_event_ids": ["E0005"]
+    },
+    {
+      "op": "assert_invariant",
+      "invariant_id": "P6-INV-MOUNT-001",
+      "outcome": "PASS",
+      "evidence_event_ids": ["E0005"]
+    },
+    {
+      "op": "assert_invariant",
+      "invariant_id": "P6-INV-MOUNT-002",
+      "outcome": "PASS",
+      "evidence_event_ids": ["E0005"]
+    },
+    {
+      "op": "assert_invariant",
+      "invariant_id": "P6-INV-MOUNT-003",
+      "outcome": "PASS",
+      "evidence_event_ids": ["E0005"]
+    },
+    {
+      "op": "assert_invariant",
+      "invariant_id": "P6-INV-OWNER-001",
+      "outcome": "PASS",
+      "evidence_event_ids": ["E0005"]
+    },
+    {
+      "op": "assert_invariant",
+      "invariant_id": "P6-INV-OWNER-002",
+      "outcome": "PASS",
+      "evidence_event_ids": ["E0005"]
+    },
+    {
+      "op": "assert_invariant",
+      "invariant_id": "P6-INV-HELPER-001",
+      "outcome": "PASS",
+      "evidence_event_ids": ["E0005"]
+    },
+    {
+      "op": "assert_invariant",
+      "invariant_id": "P6-INV-HELPER-002",
+      "outcome": "PASS",
+      "evidence_event_ids": ["E0005"]
+    },
+    {
+      "op": "assert_invariant",
+      "invariant_id": "P6-INV-BANK-001",
+      "outcome": "PASS",
+      "evidence_event_ids": ["E0005"]
+    },
+    {
+      "op": "assert_invariant",
+      "invariant_id": "P6-INV-BANK-002",
+      "outcome": "PASS",
+      "evidence_event_ids": ["E0005"]
+    },
+    {
+      "op": "assert_invariant",
+      "invariant_id": "P6-INV-READY-001",
+      "outcome": "PASS",
+      "evidence_event_ids": ["E0005"]
+    },
+    {
+      "op": "assert_invariant",
+      "invariant_id": "P6-INV-STORAGE-001",
+      "outcome": "PASS",
+      "evidence_event_ids": ["E0005"]
+    },
+    {
+      "op": "assert_invariant",
+      "invariant_id": "P6-INV-STORAGE-002",
+      "outcome": "PASS",
+      "evidence_event_ids": ["E0005"]
+    },
+    {
+      "op": "assert_invariant",
+      "invariant_id": "P6-INV-DIAG-001",
+      "outcome": "PASS",
+      "evidence_event_ids": ["E0005"]
+    },
+    {
+      "op": "assert_invariant",
+      "invariant_id": "P6-INV-DIAG-002",
+      "outcome": "PASS",
+      "evidence_event_ids": ["E0005"]
+    },
+    {
+      "op": "assert_invariant",
+      "invariant_id": "P6-INV-DIAG-003",
+      "outcome": "PASS",
+      "evidence_event_ids": ["E0005"]
+    },
+    {
+      "op": "assert_invariant",
+      "invariant_id": "P6-INV-FX-001",
+      "outcome": "PASS",
+      "evidence_event_ids": ["E0005"]
+    },
+    {
+      "op": "assert_invariant",
+      "invariant_id": "P6-INV-FX-002",
+      "outcome": "PASS",
+      "evidence_event_ids": ["E0005"]
+    },
+    {
+      "op": "detach_frame",
+      "frame_id": "frame-child"
+    },
+    {
+      "op": "close_page",
+      "page_id": "page-primary"
+    },
+    {
+      "op": "close_browser"
+    }
+  ]
+}

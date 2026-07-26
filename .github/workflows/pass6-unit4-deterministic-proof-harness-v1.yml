@@ -1,0 +1,43 @@
+name: Pass 6 Unit 4 Deterministic Proof Harness
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - '.github/workflows/pass6-unit3-cross-system-invariant-matrix-v1.yml'
+      - '.github/workflows/pass6-unit4-deterministic-proof-harness-v1.yml'
+      - 'audit/pass6/fixtures/pass6-unit4-deterministic-proof-harness-positive-v1.json'
+      - 'audit/pass6/pass6-deterministic-browser-frame-event-unit4-proof-v1.json'
+      - 'audit/pass6/receipts/RECEIPT_P6_U4_DETERMINISTIC_PROOF_HARNESS_20260726T102000Z_001.json'
+      - 'tools/pass6_deterministic_browser_frame_event_harness_v1.js'
+      - 'tools/run_pass6_unit4_deterministic_proof_harness_v1.js'
+      - 'tools/test_pass6_unit4_deterministic_proof_harness_v1.js'
+      - 'tools/verify_pass6_unit4_deterministic_proof_harness_v1.py'
+permissions:
+  contents: read
+jobs:
+  deterministic-proof-harness:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run deterministic harness meta-regressions
+        run: node tools/test_pass6_unit4_deterministic_proof_harness_v1.js
+      - name: Run exact deterministic proof fixture
+        run: node tools/run_pass6_unit4_deterministic_proof_harness_v1.js --output /tmp/pass6-unit4-harness-result.json
+      - name: Recheck P6-U3 invariant matrix
+        run: |
+          python3 tools/test_pass6_unit3_cross_system_invariant_matrix_v1.py
+          python3 tools/run_pass6_unit3_cross_system_invariant_matrix_v1.py --output /tmp/pass6-unit4-invariant-matrix.json
+      - name: Recheck complete A-003 repository integrity
+        run: python3 tools/test_a003_integrity.py --output /tmp/pass6-unit4-a003-result.json
+      - name: Verify exact bounded P6-U4 scope
+        run: python3 tools/verify_pass6_unit4_deterministic_proof_harness_v1.py "${{ github.event.pull_request.base.sha }}"
