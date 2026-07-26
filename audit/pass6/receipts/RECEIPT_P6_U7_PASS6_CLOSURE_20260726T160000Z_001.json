@@ -1,0 +1,59 @@
+{
+  "type": "PMP_PASS6_UNIT7_CLOSURE_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P6_U7_PASS6_CLOSURE_20260726T160000Z_001",
+  "created_at": "2026-07-26T16:00:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "35a0b9793322f97f6d4b6df6f78369aa0d4f8854",
+  "branch": "agent/pass6-unit7-no-blind-flying-closure-v1",
+  "pass": 6,
+  "unit": "P6-U7",
+  "status": "PASS6_CLOSED_NO_BLIND_FLYING_GATE_ACTIVE",
+  "gate": "audit/pass6/pass6-permanent-no-blind-flying-gate-v1.json",
+  "evidence": "audit/pass6/pass6-unit7-closure-certification-v1.json",
+  "changed_paths": [
+    ".github/workflows/permanent-no-blind-flying-gate-v1.yml",
+    "audit/pass6/fixtures/pass6-unit7-no-blind-flying-positive-v1.json",
+    "audit/pass6/pass6-permanent-no-blind-flying-gate-v1.json",
+    "audit/pass6/pass6-unit7-closure-certification-v1.json",
+    "audit/pass6/receipts/RECEIPT_P6_U7_PASS6_CLOSURE_20260726T160000Z_001.json",
+    "tools/run_pass6_unit7_no_blind_flying_gate_v1.py",
+    "tools/test_pass6_unit7_no_blind_flying_gate_v1.py",
+    "tools/verify_pass6_unit7_closure_v1.py"
+  ],
+  "coverage": {
+    "pass6_units_reconciled": 6,
+    "records_hash_verified": 6,
+    "receipts_hash_verified": 6,
+    "gate_assertions": 166,
+    "later_passes_gated": 7,
+    "ci_lanes": 5,
+    "artifact_roles": 9,
+    "failure_artifacts_uploaded_before_enforcement": true
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false
+  },
+  "recovery": {
+    "rollback_available": true,
+    "rollback_reference": "The repository-only permanent gate, closure evidence, tests, and CI route can be reverted without runtime or data rollback.",
+    "evidence_preserved": true
+  },
+  "next_safe_move": {
+    "step_id": "P7-U1",
+    "instruction": "Inventory sections, owners, lifecycle dependencies, and unresolved cases under the permanent no-blind-flying gate.",
+    "requires_explicit_authority": false,
+    "requires_user_app_check": false,
+    "stop_before": "Only a genuinely required hands-on app reproduction or verification in a later unit."
+  }
+}
