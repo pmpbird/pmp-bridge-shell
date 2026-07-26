@@ -1,0 +1,52 @@
+{
+  "type": "PMP_PASS10_UNIT5_BANK_FAULT_CORRUPTION_PROOF_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P10_U5_BANK_FAULT_CORRUPTION_PROOF_20260726T233000Z_001",
+  "created_at": "2026-07-26T23:30:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "d7da9baa10de4492295569c675f95b7ee5d9146b",
+  "branch": "agent/pass10-unit5-bank-safety-certification-v1",
+  "pass": 10,
+  "unit": "P10-U5",
+  "status": "BANK_FAULT_ROLLBACK_AND_CORRUPTION_CONTAINMENT_PROVEN",
+  "evidence": "audit/pass10/pass10-bank-unit5-fault-corruption-proof-v1.json",
+  "changed_paths": [
+    ".github/workflows/pass10-unit5-bank-fault-corruption-proof-v1.yml",
+    "audit/pass10/pass10-bank-unit5-fault-corruption-proof-v1.json",
+    "audit/pass10/receipts/RECEIPT_P10_U5_BANK_FAULT_CORRUPTION_PROOF_20260726T233000Z_001.json",
+    "tools/run_pass10_unit5_bank_fault_corruption_proof_v1.js",
+    "tools/test_pass10_unit5_bank_fault_corruption_proof_v1.js",
+    "tools/verify_pass10_unit5_bank_fault_corruption_proof_v1.py"
+  ],
+  "coverage": {
+    "assertions": 133,
+    "prior_assertions": 543,
+    "fault_cases": 12,
+    "large_inventory_records": 2048,
+    "unresolved_deterministic_failures": 0,
+    "artifact_roles": 9
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "user_storage_reads": false,
+    "user_storage_writes": false,
+    "user_storage_deletes": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "production_behavior_activated": false
+  },
+  "next_safe_move": {
+    "step_id": "P10-U6",
+    "instruction": "Perform the roadmap-required reversible Bank migration rehearsal using disposable fixtures only; prove exact rollback and keep production migration forbidden.",
+    "requires_explicit_authority": false,
+    "requires_user_app_check": false,
+    "persisted_user_data_change_allowed": false,
+    "production_migration_allowed": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P10-U5 disposable-fixture proof only; no production source, real user storage, migration, observation, formal proof, or persisted-data effect."
+}
