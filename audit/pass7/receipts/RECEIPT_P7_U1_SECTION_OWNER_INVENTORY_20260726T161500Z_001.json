@@ -1,0 +1,51 @@
+{
+  "type": "PMP_PASS7_UNIT1_SECTION_OWNER_INVENTORY_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P7_U1_SECTION_OWNER_INVENTORY_20260726T161500Z_001",
+  "created_at": "2026-07-26T16:15:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "35a22c1c456d19c18868c87786d462a73aa921d8",
+  "branch": "agent/pass7-unit1-section-owner-inventory-v1",
+  "pass": 7,
+  "unit": "P7-U1",
+  "status": "SECTION_OWNER_INVENTORY_PROVEN",
+  "evidence": "audit/pass7/pass7-section-owner-unit1-inventory-v1.json",
+  "changed_paths": [
+    ".github/workflows/pass7-unit1-section-owner-inventory-v1.yml",
+    "audit/pass7/pass7-section-owner-unit1-inventory-v1.json",
+    "audit/pass7/receipts/RECEIPT_P7_U1_SECTION_OWNER_INVENTORY_20260726T161500Z_001.json",
+    "tools/run_pass7_unit1_section_owner_inventory_v1.py",
+    "tools/test_pass7_unit1_section_owner_inventory_v1.py",
+    "tools/verify_pass7_unit1_section_owner_inventory_v1.py"
+  ],
+  "coverage": {
+    "owners_declared": 8,
+    "sections_inventory": 8,
+    "owner_named_root_sources": 32,
+    "unresolved_cases": 4,
+    "observed_facts": 6,
+    "inferred_conclusions": 3,
+    "assertions": 168,
+    "artifact_roles": 9
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false
+  },
+  "next_safe_move": {
+    "step_id": "P7-U2",
+    "instruction": "Define the Section Owner capability, delegation, isolation, and failure contract.",
+    "requires_explicit_authority": false,
+    "requires_user_app_check": false,
+    "stop_before": "Only a genuinely required hands-on app reproduction or verification in a later unit."
+  }
+}

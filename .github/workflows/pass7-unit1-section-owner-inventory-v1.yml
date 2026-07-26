@@ -1,0 +1,80 @@
+name: Pass 7 Unit 1 Section Owner Inventory
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - '.github/workflows/pass7-unit1-section-owner-inventory-v1.yml'
+      - 'audit/pass7/pass7-section-owner-unit1-inventory-v1.json'
+      - 'audit/pass7/receipts/RECEIPT_P7_U1_SECTION_OWNER_INVENTORY_20260726T161500Z_001.json'
+      - 'tools/run_pass7_unit1_section_owner_inventory_v1.py'
+      - 'tools/test_pass7_unit1_section_owner_inventory_v1.py'
+      - 'tools/verify_pass7_unit1_section_owner_inventory_v1.py'
+permissions:
+  contents: read
+jobs:
+  section-owner-inventory:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      ARTIFACT_ROOT: /tmp/pass7-unit1-artifacts/artifacts/attempt-001
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - id: evaluate
+        name: Inventory owners and preserve complete attempt
+        shell: bash
+        run: |
+          set +e
+          mkdir -p "$ARTIFACT_ROOT"
+          printf '%s\n' '{"command":"P7-U1 read-only section-owner inventory"}' > "$ARTIFACT_ROOT/command.json"
+          printf '%s\n' 'no stderr emitted before execution' > "$ARTIFACT_ROOT/stderr.txt"
+          python3 tools/test_pass7_unit1_section_owner_inventory_v1.py \
+            > "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+          tests_rc=$?
+          python3 tools/run_pass7_unit1_section_owner_inventory_v1.py \
+            --output "$ARTIFACT_ROOT/result.json" >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+          result_rc=$?
+          python3 tools/verify_pass7_unit1_section_owner_inventory_v1.py \
+            "${{ github.event.pull_request.base.sha }}" >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+          verify_rc=$?
+          git diff --name-only "${{ github.event.pull_request.base.sha }}...HEAD" \
+            | python3 -c 'import json,sys; print(json.dumps({"changed_paths":[x.strip() for x in sys.stdin if x.strip()]},sort_keys=True))' \
+            > "$ARTIFACT_ROOT/scope.json"
+          python3 -c 'import json,os,platform; print(json.dumps({"python":platform.python_version(),"runner":os.environ.get("RUNNER_OS"),"sha":os.environ.get("GITHUB_SHA")},sort_keys=True))' \
+            > "$ARTIFACT_ROOT/environment.json"
+          printf '%s\n' '{"required":false,"granted":false,"consumed_before":false,"consumed_after":false}' \
+            > "$ARTIFACT_ROOT/authority-state.json"
+          rc=0
+          if [ "$tests_rc" -ne 0 ] || [ "$result_rc" -ne 0 ] || [ "$verify_rc" -ne 0 ]; then rc=1; fi
+          printf '{"tests":%s,"result":%s,"verify":%s,"final":%s}\n' \
+            "$tests_rc" "$result_rc" "$verify_rc" "$rc" \
+            > "$ARTIFACT_ROOT/exit-status.json"
+          python3 - "$ARTIFACT_ROOT" <<'PY'
+          import hashlib,json,pathlib,sys
+          root=pathlib.Path(sys.argv[1])
+          rows=[]
+          for path in sorted(root.iterdir()):
+              if path.name == "artifact-manifest.json" or not path.is_file():
+                  continue
+              data=path.read_bytes()
+              rows.append({"path":path.name,"bytes":len(data),"sha256":hashlib.sha256(data).hexdigest()})
+          assert len(rows) == 8
+          assert all(row["bytes"] > 0 for row in rows)
+          (root/"artifact-manifest.json").write_text(json.dumps({"type":"PMP_P7_U1_ARTIFACT_MANIFEST_V1","records":rows},indent=2,sort_keys=True)+"\n")
+          PY
+          echo "exit_code=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Upload complete P7-U1 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass7-unit1-inventory-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pass7-unit1-artifacts/
+          if-no-files-found: error
+          retention-days: 90
+      - name: Enforce preserved result after upload
+        run: test "${{ steps.evaluate.outputs.exit_code }}" = "0"
