@@ -165,7 +165,7 @@ def main():
         assert forbidden not in workflow, forbidden
 
     assert not output("git", "status", "--porcelain"), "verification changed the worktree"
-    print("PASS: exact six-file P6-U1 diagnostic journal contract verified (116/116)")
+    print("PASS: exact ten-file P6-U1 diagnostic journal contract and integrity seal verified (116/116)")
 
 
 if __name__ == "__main__":
