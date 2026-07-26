@@ -1,0 +1,93 @@
+{
+  "type": "PMP_PASS4_BOOT_STATUS_STRIP_UNIT4_HANDS_ON_RECONCILIATION_V1",
+  "version": "1.0.0",
+  "status": "HANDS_ON_SUCCESS_RECONCILED_PENDING_GREEN_MERGE",
+  "pass": 4,
+  "unit": 4,
+  "substep": "P4-U4C",
+  "base_main_commit": "0bb3a42907ca1a2f864c1a40d1ace3f203cd7e45",
+  "contract": "PMP_BOOT_STATUS_STRIP_PASSIVE_CONTRACT_V1",
+  "user_report": {
+    "reported_at": "2026-07-26T06:35:14Z",
+    "exact_quote": "it worked, what pass are we on?",
+    "context": "The report immediately followed the five-result hands-on startup check in V101.",
+    "interpretation": "Unqualified success for the complete instructed check.",
+    "reported_results": {
+      "green_run_app_orchestrator_button_appeared": true,
+      "runtime_platform_screen_cleared_after_one_press": true,
+      "restoring_pmp_home_advanced": true,
+      "boot_status_strip_changed_from_working_to_ready": true,
+      "normal_pmp_app_opened_and_remained_usable": true
+    },
+    "independent_automated_observation": false
+  },
+  "preserved_live_observation": {
+    "pull_request": 152,
+    "state": "CLOSED_UNMERGED",
+    "sealed_head": "3281dff29e9f30ba20b1262b71d098fff703493e",
+    "preserved_branch_head": "4e9024b02a95ac268d2269bb3125055c9361b5a6",
+    "workflow_run": 30190359765,
+    "result": "FAIL_PRESERVED",
+    "observation_count": 1,
+    "static_preflight": "PASS",
+    "route_guardian_dom_activation": "PASS",
+    "route_guardian_v22_observed": true,
+    "reload_owner_v30_observed": true,
+    "diagnosis": "MANUAL_RUNTIME_PLATFORM_RELEASE_REQUIRED",
+    "retried": false
+  },
+  "combined_evidence": {
+    "four_required_states_proven_deterministically": {
+      "source": "audit/pass4/pass4-boot-status-strip-unit3-isolated-state-fail-passive-proof-v1.json",
+      "states": [
+        "BOOTING",
+        "BOOT_SLOW",
+        "BOOT_FAILURE",
+        "READY_ACKNOWLEDGED"
+      ]
+    },
+    "current_path_before_manual_boundary_observed": {
+      "source": "PR 152 / workflow 30190359765",
+      "route_guardian_v22": true,
+      "reload_owner_v30": true
+    },
+    "current_path_after_manual_boundary_reported": {
+      "source": "user hands-on report",
+      "current_inner_and_normal_app_advanced": true,
+      "boot_status_strip_working_to_ready": true
+    },
+    "zero_prohibited_effects_proven_deterministically": {
+      "source": "audit/pass4/pass4-boot-status-strip-unit3-isolated-state-fail-passive-proof-v1.json",
+      "route_changes": 0,
+      "ownership_transfers": 0,
+      "startup_repairs": 0,
+      "persisted_user_data_writes": 0
+    }
+  },
+  "protected_main_blobs": {
+    "pmp-boot-status-strip-owner-v1.js": "7894bca06d1a850f4648159e8445d5e8b7e568ea",
+    "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html": "f62cdb28d1507b1731e9ca1660b6289081433147",
+    "pmp-current-map-v12.json": "709c4d953697ada70a6bc5f29eca44c68f4f6f7d",
+    "pmp-current-route-resolver-v1.js": "3190d8ec65e4fbb653190cdab640de3d493df1c9",
+    "pmp-route-guardian-current-loader-v22.html": "fd6ea047e87ea33ef093d78e224167a4bebc1d86",
+    "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html": "ffb45fd17cd407bf22ab2c3fb911bb3e9def0754",
+    "pmp-app-orchestrator-v1.js": "6e0f9145dca873b73f6000444b8c498ff3741629",
+    "pmp-app-current.html": "7742ed0c84051a66ad41b62f7ae5c165fe9a454f",
+    "audit/a003-manifest-seal.json": "2d8cc9d3a7aaf29a7fe9114bf7fc6b45ad7b91a0"
+  },
+  "effects": {
+    "new_live_observation_performed": false,
+    "production_runtime_changed": false,
+    "runtime_integrity_changed": false,
+    "persisted_user_data_changed": false,
+    "route_changed": false,
+    "ownership_changed": false,
+    "historical_failure_evidence_changed": false,
+    "pr122_touched": false
+  },
+  "unit4_result": "PASS_BOUNDED_PENDING_GREEN_MERGE",
+  "unit5_started_by_this_closure_branch": true,
+  "pass5_started": false,
+  "next_step": "P4-U5 closure certification, then P5-U1 only after green merge and verified main.",
+  "claim_ceiling": "This reconciles the user's unqualified hands-on success report with the preserved automated boundary observation and deterministic zero-effect proofs. It is human-attested startup evidence, not a second automated observation, and becomes the verified Unit 4 closure only after green CI and merge."
+}

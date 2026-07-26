@@ -1,0 +1,83 @@
+{
+  "type": "PMP_PASS4_BOOT_STATUS_STRIP_UNIT5_CLOSURE_CERTIFICATION_V1",
+  "version": "1.0.0",
+  "status": "CERTIFIED_PENDING_GREEN_MERGE",
+  "pass": 4,
+  "unit": 5,
+  "base_main_commit": "0bb3a42907ca1a2f864c1a40d1ace3f203cd7e45",
+  "pass_name": "Boot Status Strip",
+  "unit_evidence": {
+    "P4-U1": {
+      "status": "PASS",
+      "source": "audit/pass4/pass4-boot-status-strip-unit1-current-path-contract-boundary-v1.json",
+      "merged_main": "824dd590313e44cd3d038ecf94b8fc91462ff9e5"
+    },
+    "P4-U2": {
+      "status": "PASS",
+      "source": "audit/pass4/pass4-boot-status-strip-unit2-bounded-passive-integration-v1.json",
+      "merged_main_and_integrity_seal": "aa9ff3a77d67e3cade67010cf2d5851fcf668807"
+    },
+    "P4-U3": {
+      "status": "PASS",
+      "source": "audit/pass4/pass4-boot-status-strip-unit3-isolated-state-fail-passive-proof-v1.json",
+      "merged_main": "3c8c2e3813f48a7f4a0c64594aaca1a822ce0753"
+    },
+    "P4-U4R": {
+      "status": "PASS_BOUNDED",
+      "source": "audit/pass4/pass4-boot-status-strip-unit4-route-guardian-interaction-repair-readiness-v1.json",
+      "merged_main": "0bb3a42907ca1a2f864c1a40d1ace3f203cd7e45"
+    },
+    "P4-U4C": {
+      "status": "PASS_BOUNDED_PENDING_GREEN_MERGE",
+      "source": "audit/pass4/pass4-boot-status-strip-unit4-hands-on-reconciliation-v1.json"
+    }
+  },
+  "exit_criteria": {
+    "BOOTING_proven": true,
+    "BOOT_SLOW_proven": true,
+    "BOOT_FAILURE_proven": true,
+    "READY_ACKNOWLEDGED_proven": true,
+    "current_path_observed_without_observer_selected_routing": true,
+    "route_changes_attributable_to_strip": 0,
+    "ownership_transfers_attributable_to_strip": 0,
+    "startup_repairs_attributable_to_strip": 0,
+    "persisted_user_data_writes_attributable_to_strip": 0,
+    "unit4_and_unit5_receipts_in_branch": true
+  },
+  "preserved_failures": [
+    {
+      "pull_request": 149,
+      "state": "CLOSED_UNMERGED",
+      "status": "FAIL_PRESERVED",
+      "retry_authorized": false
+    },
+    {
+      "pull_request": 150,
+      "state": "CLOSED_UNMERGED",
+      "status": "FAIL_PRESERVED",
+      "retry_authorized": false
+    },
+    {
+      "pull_request": 152,
+      "state": "CLOSED_UNMERGED",
+      "status": "FAIL_PRESERVED",
+      "retry_authorized": false
+    }
+  ],
+  "formal_proof_quarantine": {
+    "pull_request": 122,
+    "state": "OPEN_UNMERGED_UNTOUCHED",
+    "authorization": "CONSUMED_FAILED",
+    "retry_authorized": false
+  },
+  "closure_branch_scope": {
+    "evidence_and_verification_only": true,
+    "production_runtime_changed": false,
+    "runtime_integrity_changed": false,
+    "persisted_user_data_changed": false,
+    "pass5_implementation_started": false
+  },
+  "pass4_result": "PASS_BOUNDED_PENDING_GREEN_MERGE",
+  "next_step_after_verified_merge": "P5-U1 readiness audit, current mount inventory, and compatibility map.",
+  "claim_ceiling": "Pass 4 is certified within the combined deterministic, preserved automated-boundary, and human-attested current-path evidence. The certification becomes authoritative only after this exact evidence-only branch is green, merged, and GitHub main is verified."
+}
