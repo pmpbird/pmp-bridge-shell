@@ -3,13 +3,12 @@
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
   "manifest_sha256": "e4a588c8b72eb9d440e8549955a632fb95378d1c02a30634ed9d8ab6819b75db",
   "manifest_version": "20260711A-A003-FINAL",
-  "pass6_context": "Pass 6 Unit 1 adds a pure unreferenced diagnostic journal contract. It is integrity-listed but not production-loaded and performs no storage, network, DOM, route, repair, export, or persisted-user-data effect.",
   "repair_id": "A-003",
   "root_self_verifiable": false,
   "root_trust_anchor": "pmp-app-current.html",
   "rule": "The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.",
   "runtime_source_set_sha256": "7c00716242702457f27577d785df2ef8a2aad4e8fbf0cd479bc59e7be66066bc",
-  "sealed_branch": "agent/pass6-unit1-diagnostic-journal-contract-v1",
+  "sealed_branch": "main",
   "status": "SEALED",
   "type": "PMP_A003_MANIFEST_SEAL_V1"
 }
