@@ -1,0 +1,56 @@
+{
+  "type": "PMP_PASS8_UNIT1_HELPER_INVENTORY_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P8_U1_HELPER_INVENTORY_20260726T173500Z_001",
+  "created_at": "2026-07-26T17:35:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "625bdc869b57b5da1496577d9b3688d5bc122632",
+  "branch": "agent/pass8-unit1-helper-inventory-v1",
+  "pass": 8,
+  "unit": "P8-U1",
+  "status": "HELPER_INVENTORY_PROVEN",
+  "evidence": "audit/pass8/pass8-helper-unit1-inventory-v1.json",
+  "changed_paths": [
+    ".github/workflows/pass8-unit1-helper-inventory-v1.yml",
+    "audit/pass8/pass8-helper-unit1-inventory-v1.json",
+    "audit/pass8/receipts/RECEIPT_P8_U1_HELPER_INVENTORY_20260726T173500Z_001.json",
+    "tools/run_pass8_unit1_helper_inventory_v1.js",
+    "tools/test_pass8_unit1_helper_inventory_v1.js",
+    "tools/verify_pass8_unit1_helper_inventory_v1.py"
+  ],
+  "coverage": {
+    "declared_helpers": 14,
+    "legacy_helpers": 11,
+    "owner_labels": 8,
+    "unresolved_owner_labels": 8,
+    "helper_named_root_sources": 12,
+    "helper_named_undeclared_sources": 9,
+    "storage_keys": 24,
+    "panels": 3,
+    "assertions": 421,
+    "artifact_roles": 9
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_mutations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "next_safe_move": {
+    "step_id": "P8-U2",
+    "instruction": "Define explicit Helper capabilities, exact owner and slot bindings, owner-alias resolution, legacy and unknown holds, growth, revocation, and fail-closed behavior.",
+    "requires_explicit_authority": false,
+    "requires_user_app_check": false,
+    "stop_before": "Only a genuinely required hands-on app reproduction or separately authorized scarce observation."
+  }
+}
