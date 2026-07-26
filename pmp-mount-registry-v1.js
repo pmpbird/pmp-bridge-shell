@@ -51,6 +51,7 @@ pmp-continuous-run-state-bank-v1.js
 pmp-continuous-run-dashboard-stable-v1.js
 pmp-master-bank-inventory-router-v1.js
 pmp-bank-inventory-readonly-projection-v1.js
+pmp-bank-owner-projection-refresh-v1.js
 pmp-crd-prestyle-v1.js
 pmp-bug-bank-storage-migration-v1.js
 pmp-bug-bank-owner-v1.js

@@ -1,0 +1,61 @@
+{
+  "type": "PMP_PASS10_UNIT4_BANK_OWNER_PROJECTION_REFRESH_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P10_U4_BANK_OWNER_PROJECTION_REFRESH_20260726T230500Z_001",
+  "created_at": "2026-07-26T23:05:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "1fe0f44486f1e30735cbb606762fc3c0a1652f2d",
+  "branch": "agent/pass10-unit4-bank-owner-refresh-v1",
+  "pass": 10,
+  "unit": "P10-U4",
+  "status": "BANK_OWNER_PROJECTION_REFRESH_PROVEN",
+  "evidence": "audit/pass10/pass10-bank-unit4-owner-projection-refresh-v1.json",
+  "changed_paths": [
+    ".github/workflows/pass10-unit3-bank-readonly-projection-v1.yml",
+    ".github/workflows/pass10-unit4-bank-owner-projection-refresh-v1.yml",
+    "audit/a003-manifest-seal.json",
+    "audit/pass10/pass10-bank-unit4-owner-projection-refresh-v1.json",
+    "audit/pass10/receipts/RECEIPT_P10_U4_BANK_OWNER_PROJECTION_REFRESH_20260726T230500Z_001.json",
+    "pmp-app-current.html",
+    "pmp-bank-owner-projection-refresh-v1.js",
+    "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+    "pmp-master-bank-tab-v1.js",
+    "pmp-mount-registry-v1.js",
+    "pmp-runtime-integrity-manifest-v1.json",
+    "tools/generate_pass10_unit4_integrity_updates_v1.py",
+    "tools/test_pass10_unit4_bank_owner_projection_refresh_v1.js",
+    "tools/verify_pass10_unit4_bank_owner_projection_refresh_v1.py"
+  ],
+  "coverage": {
+    "unit4_assertions": 121,
+    "unit3_regression_assertions": 125,
+    "pass9_owner_regression_assertions": 234,
+    "fail_closed_cases": 10,
+    "runtime_records": 712,
+    "artifact_roles": 9
+  },
+  "effects": {
+    "production_files_changed": true,
+    "runtime_integrity_changed": true,
+    "browser_launched": false,
+    "adapter_storage_writes": false,
+    "adapter_storage_deletes": false,
+    "bank_user_data_mutations": false,
+    "continuous_run_user_data_mutations": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": true
+  },
+  "next_safe_move": {
+    "step_id": "P10-U5",
+    "instruction": "Certify fault, rollback, and persisted-data safety across the active Bank owner-refresh path and determine whether any bounded live observation is genuinely required.",
+    "requires_explicit_authority": false,
+    "requires_user_app_check": false,
+    "persisted_user_data_change_allowed": false,
+    "storage_migration_allowed": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "Active P10-U4 owner-refresh integration and deterministic evidence only; no live user-data mutation, storage migration, IndexedDB open, observation, or formal proof."
+}
