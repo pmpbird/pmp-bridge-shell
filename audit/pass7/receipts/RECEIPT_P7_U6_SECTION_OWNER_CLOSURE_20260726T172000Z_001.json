@@ -1,0 +1,58 @@
+{
+  "type": "PMP_PASS7_UNIT6_SECTION_OWNER_CLOSURE_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P7_U6_SECTION_OWNER_CLOSURE_20260726T172000Z_001",
+  "created_at": "2026-07-26T17:20:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "4a47b47b1aa6739d30adb32425ad3dd8a57ba0b3",
+  "branch": "agent/pass7-unit6-closure-certification-v1",
+  "pass": 7,
+  "unit": "P7-U6",
+  "status": "PASS7_SECTION_OWNER_RULES_CERTIFIED",
+  "pass7_result": "PASS",
+  "evidence": "audit/pass7/pass7-section-owner-unit6-closure-certification-v1.json",
+  "changed_paths": [
+    ".github/workflows/pass7-unit6-closure-certification-v1.yml",
+    "audit/pass7/pass7-section-owner-unit6-closure-certification-v1.json",
+    "audit/pass7/receipts/RECEIPT_P7_U6_SECTION_OWNER_CLOSURE_20260726T172000Z_001.json",
+    "tools/test_pass7_unit6_closure_certification_v1.py",
+    "tools/verify_pass7_unit6_closure_certification_v1.py"
+  ],
+  "coverage": {
+    "predecessor_units": 5,
+    "prior_assertions": 710,
+    "closure_assertions": 203,
+    "exit_criteria": 16,
+    "diagnostic_routes": 6,
+    "artifact_roles": 9
+  },
+  "observation_decision": {
+    "new_scarce_observation_required": false,
+    "new_scarce_observation_performed": false,
+    "special_authority_consumed": false,
+    "consumed_observation_retried": false
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_mutations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "next_safe_move": {
+    "step_id": "P8-U1",
+    "instruction": "Inventory current Helper sources, assigned owners, slots, side effects, unknowns, and legacy conflicts without granting helper authority.",
+    "requires_explicit_authority": false,
+    "requires_user_app_check": false,
+    "stop_before": "Only a genuinely required hands-on app reproduction or separately authorized scarce observation."
+  }
+}

@@ -1,0 +1,273 @@
+{
+  "type": "PMP_PASS7_SECTION_OWNER_UNIT6_CLOSURE_CERTIFICATION_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T17:20:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "4a47b47b1aa6739d30adb32425ad3dd8a57ba0b3",
+  "branch": "agent/pass7-unit6-closure-certification-v1",
+  "pass": 7,
+  "unit": "P7-U6",
+  "unit_id": "P7-U6",
+  "status": "PASS7_SECTION_OWNER_RULES_CERTIFIED",
+  "objective": "Certify Pass 7 from the complete deterministic, repository-integrity, live-runtime CI, visual CI, and permanent-gate record without consuming an unnecessary scarce observation.",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass7-unit6-closure-certification-v1.yml",
+      "audit/pass7/pass7-section-owner-unit6-closure-certification-v1.json",
+      "audit/pass7/receipts/RECEIPT_P7_U6_SECTION_OWNER_CLOSURE_20260726T172000Z_001.json",
+      "tools/test_pass7_unit6_closure_certification_v1.py",
+      "tools/verify_pass7_unit6_closure_certification_v1.py"
+    ],
+    "implementation_paths": []
+  },
+  "inputs": {
+    "p7_u1": "audit/pass7/pass7-section-owner-unit1-inventory-v1.json",
+    "p7_u1_sha256": "c895188d438b457f3625d1f453a16acb4723dd6c563dfa596f54f610d9172cba",
+    "p7_u2": "audit/pass7/pass7-section-owner-unit2-capability-contract-v1.json",
+    "p7_u2_sha256": "eb755a2d43b2a4331dae62dc90c8a2d4260c83ffd1f42f8c3024d27c875dd06b",
+    "p7_u3": "audit/pass7/pass7-section-owner-unit3-registration-events-v1.json",
+    "p7_u3_sha256": "549bc56f87bb17ac8abbbeb877c82cb730863e96320b5a339559ab4d4a3649fe",
+    "p7_u4": "audit/pass7/pass7-section-owner-unit4-mount-diagnostics-integration-v1.json",
+    "p7_u4_sha256": "ec9799a5f8e2a62770ff7fc15495da0aa5fb9fbedaf9959c1673e65d28457e5a",
+    "p7_u5": "audit/pass7/pass7-section-owner-unit5-isolation-restart-denial-proof-v1.json",
+    "p7_u5_sha256": "48cac564adc890491d16a99288839d9218d2ebd8e6eaae1035d930bf74865ed8",
+    "test": "tools/test_pass7_unit6_closure_certification_v1.py",
+    "test_sha256": "db281e1f675da48ade350300b053b4044ca64fc5fda130b39ebcdd894246cd18"
+  },
+  "evidence_summary": {
+    "prior_assertions": 710,
+    "units": [
+      {
+        "unit_id": "P7-U1",
+        "status": "SECTION_OWNER_INVENTORY_PROVEN",
+        "assertions": 168,
+        "merged_main": "be269c98b703a0a5b1695c9e6f7bc5b333ab1ac7"
+      },
+      {
+        "unit_id": "P7-U2",
+        "status": "SECTION_OWNER_CAPABILITY_CONTRACT_PROVEN",
+        "assertions": 115,
+        "merged_main": "bf0de4f13a833b86ac830656e88e7dcab6e71d3a"
+      },
+      {
+        "unit_id": "P7-U3",
+        "status": "OWNER_REGISTRATION_EVENTS_PROVEN",
+        "assertions": 72,
+        "merged_main": "3b54adf01a6dd39b16f5967b65069b295068524c"
+      },
+      {
+        "unit_id": "P7-U4",
+        "status": "OWNER_MOUNT_DIAGNOSTICS_INTEGRATION_PROVEN",
+        "assertions": 137,
+        "merged_main": "4ed25e626ff36a6ef795a26a001cd44a920c2329"
+      },
+      {
+        "unit_id": "P7-U5",
+        "status": "OWNER_ISOLATION_RESTART_DENIAL_PROVEN",
+        "assertions": 218,
+        "merged_main": "4a47b47b1aa6739d30adb32425ad3dd8a57ba0b3"
+      }
+    ],
+    "github_heads": {
+      "p7_u4": {
+        "pull_request": 172,
+        "head_commit": "dd64a4866898689a62642e17d78c1196d529be16",
+        "dedicated_workflow": 30211347549,
+        "permanent_gate": 30211347512,
+        "all_required_checks_green": true
+      },
+      "p7_u5": {
+        "pull_request": 173,
+        "head_commit": "875d1ddd25fdc0c92a8f3a8aec48d107ed5389f2",
+        "dedicated_workflow": 30212082724,
+        "permanent_gate": 30212082736,
+        "all_required_checks_green": true
+      }
+    }
+  },
+  "observation_sufficiency": {
+    "decision": "NEW_SCARCE_OBSERVATION_NOT_REQUIRED",
+    "new_observation_performed": false,
+    "special_authority_consumed": false,
+    "retry_of_consumed_observation": false,
+    "user_app_check_required": false,
+    "formal_proof_required": false,
+    "rationale": "The Pass 7 changes are passive explicit-event owner registration, a redacted read-only view, exact capability validation, and an uninvoked atomic restart API. Their applicable behavior is exhaustively deterministic and both production heads passed the repository's ordinary A-002 live-runtime, A-003 integrity, real-app visual, source-identity, static authorization, Packet 015, dedicated, and permanent-gate workflows. No canonical Pass 7 invariant requires spending a scarce hands-on or exactly-once observation.",
+    "basis": {
+      "p7_u4_deterministic_assertions": 137,
+      "p7_u5_deterministic_assertions": 218,
+      "p7_u4_ci_live_runtime_run": 30211347508,
+      "p7_u4_ci_real_app_visual_run": 30211347557,
+      "p7_u5_ci_live_runtime_run": 30212082678,
+      "p7_u5_ci_real_app_visual_run": 30212082709,
+      "p7_u5_a003_integrity_run": 30212082694,
+      "p7_u5_permanent_gate_run": 30212082736
+    },
+    "prior_hands_on_evidence": {
+      "source": "audit/pass4/pass4-boot-status-strip-unit4-hands-on-reconciliation-v1.json",
+      "context_only": true,
+      "used_as_pass7_specific_proof": false,
+      "new_execution": false
+    },
+    "claim_ceiling": "This is an evidence-sufficiency decision, not a new live observation, hands-on execution, formal proof, or retry authorization."
+  },
+  "exit_criteria": {
+    "inventory_locked": true,
+    "explicit_capabilities_fail_closed": true,
+    "delegation_bounded_and_revocable": true,
+    "owner_events_versioned_and_chained": true,
+    "growth_visible_pending_no_authority": true,
+    "production_integration_passive": true,
+    "mount_registry_single_owner_preserved": true,
+    "diagnostics_read_only_and_redacted": true,
+    "exact_owner_capability_binding_enforced": true,
+    "duplicate_and_stale_inputs_fail_closed": true,
+    "restart_replay_atomic": true,
+    "shared_operation_identities_preserved": true,
+    "bank_and_continuous_run_separate": true,
+    "zero_persisted_user_data_writes": true,
+    "permanent_gate_green": true,
+    "all_required_github_checks_green": true
+  },
+  "pass9_boundary": {
+    "bank_owner": "bank_screen_owner",
+    "bank_section": "bank",
+    "continuous_run_owner": "continuous_run_level_owner",
+    "continuous_run_section": "continuous_run",
+    "cross_delegation": "FORBIDDEN",
+    "meaning_of_exit_criterion": "Pass 7 certifies separate authority identities and sections only.",
+    "still_required_in_pass9": "Pass 9 substantive Bank and Continuous Run ownership split, concurrency, restart, handoff, cancellation, persisted-data, and app-level repair verification."
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "static_contract",
+    "diagnostic_matrix_update": {
+      "status": "CONFIRMED_UNCHANGED",
+      "applicable_matrix": "audit/pass7/pass7-section-owner-unit5-isolation-restart-denial-proof-v1.json",
+      "rationale": "P7-U5 already supplies the final exact-capability, duplicate, stale, growth, restart, and zero-effect matrix. P7-U6 only traces and certifies the accumulated evidence."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass7/pass7-section-owner-unit1-inventory-v1.json",
+      "audit/pass7/pass7-section-owner-unit2-capability-contract-v1.json",
+      "audit/pass7/pass7-section-owner-unit3-registration-events-v1.json",
+      "audit/pass7/pass7-section-owner-unit4-mount-diagnostics-integration-v1.json",
+      "audit/pass7/pass7-section-owner-unit5-isolation-restart-denial-proof-v1.json",
+      "audit/pass7/pass7-section-owner-unit6-closure-certification-v1.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass7_unit6_closure_certification_v1.py"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass7_unit6_closure_certification_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass7/receipts/RECEIPT_P7_U6_SECTION_OWNER_CLOSURE_20260726T172000Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "P7-U1 through P7-U5 have immutable records and receipts with 710 passing deterministic assertions.",
+        "evidence_paths": [
+          "audit/pass7/pass7-section-owner-unit1-inventory-v1.json",
+          "audit/pass7/pass7-section-owner-unit2-capability-contract-v1.json",
+          "audit/pass7/pass7-section-owner-unit3-registration-events-v1.json",
+          "audit/pass7/pass7-section-owner-unit4-mount-diagnostics-integration-v1.json",
+          "audit/pass7/pass7-section-owner-unit5-isolation-restart-denial-proof-v1.json"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The exact P7-U4 and P7-U5 production heads passed dedicated, permanent-gate, A-002 live-runtime, A-003 integrity, and real-app visual CI.",
+        "evidence_paths": [
+          "audit/pass7/pass7-section-owner-unit4-mount-diagnostics-integration-v1.json",
+          "audit/pass7/pass7-section-owner-unit5-isolation-restart-denial-proof-v1.json",
+          "audit/pass7/pass7-section-owner-unit6-closure-certification-v1.json"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "A new scarce observation would duplicate already sufficient applicable evidence and is not required to certify the passive Pass 7 authority boundary.",
+        "basis_evidence_paths": [
+          "audit/pass7/pass7-section-owner-unit4-mount-diagnostics-integration-v1.json",
+          "audit/pass7/pass7-section-owner-unit5-isolation-restart-denial-proof-v1.json",
+          "audit/pass7/pass7-section-owner-unit6-closure-certification-v1.json"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "NOT_APPLICABLE",
+      "cases": [],
+      "rationale": "P7-U6 is evidence-only closure; fault injection is exhaustively covered by P7-U4 and P7-U5."
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "verification": {
+    "assertions_total": 203,
+    "assertions_passed": 203,
+    "assertions_failed": 0,
+    "exact_scope": "PASS",
+    "input_hashes": "PASS",
+    "unit_traceability": "PASS",
+    "exit_criteria": "PASS",
+    "observation_sufficiency": "PASS",
+    "pass9_boundary_preserved": "PASS",
+    "permanent_gate_binding": "PASS"
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_mutations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "retry_authorized": false
+  },
+  "no_retry_gates": {
+    "consumed_observation_prs": [149, 150, 152],
+    "formal_proof_pr": 122,
+    "formal_proof_authorization": "CONSUMED_FAILED",
+    "retry_authorized": false
+  },
+  "pass7_result": "PASS",
+  "next_step": {
+    "id": "P8-U1",
+    "objective": "Inventory current Helper sources, assigned owners, slots, side effects, unknowns, and legacy conflicts without granting helper authority.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "Pass 7 Section Owner Rules and Universal Owner Growth Awareness only. Bank and Continuous Run remain separate authority boundaries but their substantive Pass 9 repair is not started; no live observation, formal proof, persisted-data change, storage migration, or production activation occurred."
+}
