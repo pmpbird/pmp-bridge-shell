@@ -1,0 +1,89 @@
+{
+  "type": "PMP_PASS5_MOUNT_REGISTRY_DIAGNOSTICS_UNIT3_PASSIVE_INTEGRATION_V1",
+  "version": "1.0.0",
+  "status": "PASSIVE_INTEGRATION_PROVEN_PENDING_MERGE",
+  "created_at": "2026-07-26T07:45:26Z",
+  "pass": 5,
+  "unit": 3,
+  "base_main_commit": "bb556d956b9d46095513651419d07e367caaaec6",
+  "contract_source": "audit/pass5/pass5-mount-registry-diagnostics-unit2-lifecycle-contract-v1.json",
+  "implementation": {
+    "contract_file": "pmp-mount-lifecycle-contract-v1.js",
+    "runtime_file": "pmp-mount-lifecycle-runtime-v1.js",
+    "legacy_atlas_file": "pmp-mount-registry-v1.js",
+    "load_boundary": "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+    "load_order": [
+      "pmp-pass2-atlas-adapter-v2.js",
+      "pmp-mount-lifecycle-contract-v1.js",
+      "pmp-mount-registry-v1.js",
+      "pmp-mount-lifecycle-runtime-v1.js",
+      "pmp-authority-rules-v1.js"
+    ],
+    "mode": "PASSIVE_EXPLICIT_OWNER_EVENTS_ONLY",
+    "production_loaded": true,
+    "automatic_lifecycle_events": false,
+    "storage_migration": false,
+    "legacy_atlas_replaced": false
+  },
+  "runtime_policy": {
+    "registry_owner": "mount_registry_owner",
+    "route_authority": "current_map_owner",
+    "allowed_mount_owners": [
+      "app_orchestrator_owner",
+      "bank_screen_owner"
+    ],
+    "allowed_sources": [
+      "current_map_owner",
+      "app_orchestrator_owner",
+      "bank_screen_owner"
+    ],
+    "default_max_operations": 256,
+    "default_max_events_per_operation": 64,
+    "owner_event_entrypoint": "applyOwnerEvent",
+    "observer_events_advance_state": false,
+    "inferred_events_advance_state": false
+  },
+  "compatibility": {
+    "legacy_global_preserved": "PMPMountRegistryV1",
+    "new_runtime_global": "PMPMountLifecycleRuntimeV1",
+    "new_compatibility_global": "PMPMountRegistryLifecycleCompatibilityV1",
+    "automatic_legacy_calls": false,
+    "explicit_legacy_registry_snapshot_scan_preserved": true,
+    "initial_lifecycle_operation_count": 0,
+    "duplicate_install_reuses_registry": true,
+    "missing_dependency_behavior": "FAIL_CLOSED_NO_PARTIAL_REGISTRY"
+  },
+  "proof_matrix": {
+    "exact_load_order": "PASS",
+    "empty_initial_registry": "PASS",
+    "explicit_owner_happy_path": "PASS",
+    "observer_and_inferred_rejection": "PASS",
+    "duplicate_event_idempotence": "PASS",
+    "legacy_facade_no_automatic_calls": "PASS",
+    "explicit_legacy_calls_preserved": "PASS",
+    "missing_dependency_fail_closed": "PASS",
+    "duplicate_install_idempotence": "PASS",
+    "no_storage_dom_network_timer_or_route_effects": "PASS",
+    "runtime_integrity_identity": "PASS",
+    "completed_pass_workflow_routing_isolation": "PASS"
+  },
+  "effects": {
+    "current_runtime_load_chain_changed": true,
+    "runtime_integrity_changed": true,
+    "existing_mount_atlas_changed": false,
+    "existing_storage_changed": false,
+    "persisted_user_data_changed": false,
+    "diagnostics_ui_changed": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "pr122_touched": false,
+    "stale_ci_routing_repaired": true
+  },
+  "next_step": {
+    "id": "P5-U4",
+    "objective": "Add bounded read-only Diagnostics visibility for lifecycle dependency, operation, state, and failure facts without synthesizing events or changing owners.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false
+  },
+  "claim_ceiling": "Passive production loading, exact lifecycle registry identity, and explicit owner-event API only. No automatic lifecycle events, legacy atlas replacement, storage migration, Diagnostics UI, live observation, or Pass 5 completion is claimed."
+}
