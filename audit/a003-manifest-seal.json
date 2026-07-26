@@ -3,13 +3,12 @@
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
   "manifest_sha256": "11bd172cc5527f11b50cda8b98599e7d5fe7b10c4f96f14b2f18fcd90866c2bc",
   "manifest_version": "20260711A-A003-FINAL",
-  "pass8_context": "P8-U4 production-loads a passive explicit Helper registration adapter under the exact P8-U2 capability and P8-U3 event contracts, requires the canonical Section Owner registration, and exposes only a bounded redacted Diagnostics view. No Helper behavior, Bank mutation, route, mount, repair, storage migration, or persisted-user-data effect is activated.",
   "repair_id": "A-003",
   "root_self_verifiable": false,
   "root_trust_anchor": "pmp-app-current.html",
   "rule": "The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.",
   "runtime_source_set_sha256": "13db53dcf1fafe5faa8051f02d011cd99499a6a728484188b42201359e017058",
-  "sealed_branch": "agent/pass8-unit4-helper-owner-diagnostics-integration-v1",
+  "sealed_branch": "main",
   "status": "SEALED",
   "type": "PMP_A003_MANIFEST_SEAL_V1"
 }
