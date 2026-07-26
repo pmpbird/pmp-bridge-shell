@@ -6,9 +6,7 @@ on:
     paths:
       - '.github/workflows/pass3-route-guardian-handoff-unit2-passive-consumer-v1.yml'
       - 'audit/pass3/pass3-route-guardian-handoff-unit2-passive-consumer-v1.json'
-      - 'pmp-app-current.html'
       - 'pmp-route-guardian-current-loader-v22.html'
-      - 'pmp-runtime-integrity-manifest-v1.json'
       - 'tools/generate_pass3_unit2_integrity_updates_v1.py'
       - 'tools/test_pass3_route_guardian_handoff_unit2_passive_consumer_v1.py'
       - 'tools/verify_pass3_route_guardian_handoff_unit2_passive_consumer_v1.py'
@@ -25,16 +23,31 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Detect bounded Pass 3 Unit 2 implementation scope
+        id: unit_scope
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [[ -z "$BASE_SHA" ]]; then
+            echo "active=true" >> "$GITHUB_OUTPUT"
+          elif git diff --quiet "$BASE_SHA...HEAD" -- pmp-route-guardian-current-loader-v22.html; then
+            echo "active=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "active=true" >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/setup-python@v5
+        if: steps.unit_scope.outputs.active == 'true'
         with:
           python-version: '3.12'
       - uses: actions/setup-node@v4
+        if: steps.unit_scope.outputs.active == 'true'
         with:
           node-version: '22'
       - name: Regenerate protected runtime integrity bytes
+        if: steps.unit_scope.outputs.active == 'true'
         run: python tools/generate_pass3_unit2_integrity_updates_v1.py
       - name: Commit deterministic integrity updates when required
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && steps.unit_scope.outputs.active == 'true'
         run: |
           if [[ -n "$(git status --porcelain -- pmp-runtime-integrity-manifest-v1.json pmp-app-current.html)" ]]; then
             git config user.name "github-actions[bot]"
@@ -44,8 +57,10 @@ jobs:
             git push origin HEAD:${{ github.head_ref }}
           fi
       - name: Run deterministic positive and fail-closed consumer tests
+        if: steps.unit_scope.outputs.active == 'true'
         run: python tools/test_pass3_route_guardian_handoff_unit2_passive_consumer_v1.py
       - name: Verify exact Unit 2 scope
+        if: steps.unit_scope.outputs.active == 'true'
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: python tools/verify_pass3_route_guardian_handoff_unit2_passive_consumer_v1.py "$BASE_SHA"

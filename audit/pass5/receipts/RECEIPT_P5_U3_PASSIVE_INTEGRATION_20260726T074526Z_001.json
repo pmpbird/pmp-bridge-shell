@@ -37,6 +37,8 @@
   },
   "scope": {
     "changed_paths": [
+      ".github/workflows/pass3-route-guardian-handoff-unit2-passive-consumer-v1.yml",
+      ".github/workflows/pass4-unit2-passive-strip-integration-v1.yml",
       ".github/workflows/pass5-unit3-passive-lifecycle-integration-v1.yml",
       "audit/a003-manifest-seal.json",
       "audit/pass5/pass5-mount-registry-diagnostics-unit3-passive-integration-v1.json",
@@ -73,7 +75,8 @@
       "Legacy facade zero automatic calls",
       "Missing dependency fail-closed behavior",
       "Forbidden-effect source scan",
-      "Exact eleven-file scope and A-003 identity verifier"
+      "Completed Pass 3 and Pass 4 workflow routing isolation",
+      "Exact thirteen-file scope and A-003 identity verifier"
     ],
     "workflows": [],
     "result": "Prepared for deterministic local and pull-request verification.",

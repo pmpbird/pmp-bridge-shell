@@ -9,6 +9,8 @@ from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
 EXPECTED={
+    '.github/workflows/pass3-route-guardian-handoff-unit2-passive-consumer-v1.yml',
+    '.github/workflows/pass4-unit2-passive-strip-integration-v1.yml',
     '.github/workflows/pass5-unit3-passive-lifecycle-integration-v1.yml',
     'audit/a003-manifest-seal.json',
     'audit/pass5/pass5-mount-registry-diagnostics-unit3-passive-integration-v1.json',
@@ -148,12 +150,20 @@ def main():
     workflow=(ROOT/'.github/workflows/pass5-unit3-passive-lifecycle-integration-v1.yml').read_text()
     for forbidden in ('workflow_dispatch','playwright','http.server','npm install','pip install'):
         assert forbidden not in workflow,forbidden
+    pass3_workflow=(ROOT/'.github/workflows/pass3-route-guardian-handoff-unit2-passive-consumer-v1.yml').read_text()
+    pass4_workflow=(ROOT/'.github/workflows/pass4-unit2-passive-strip-integration-v1.yml').read_text()
+    assert "git diff --quiet \"$BASE_SHA...HEAD\" -- pmp-route-guardian-current-loader-v22.html" in pass3_workflow
+    assert "git diff --quiet \"$BASE_SHA...HEAD\" -- pmp-boot-status-strip-owner-v1.js" in pass4_workflow
+    assert "'pmp-app-current.html'" not in pass3_workflow
+    assert "'pmp-runtime-integrity-manifest-v1.json'" not in pass3_workflow
+    assert "'pmp-app-current.html'" not in pass4_workflow
+    assert "'pmp-runtime-integrity-manifest-v1.json'" not in pass4_workflow
 
     subprocess.check_call(['node','tools/test_pass5_unit2_mount_lifecycle_contract_v1.js'],cwd=ROOT)
     subprocess.check_call(['node','tools/test_pass5_unit3_passive_lifecycle_integration_v1.js'],cwd=ROOT)
     subprocess.check_call([sys.executable,'tools/generate_pass5_unit3_integrity_updates_v1.py'],cwd=ROOT)
     assert not output('git','status','--porcelain'),'integrity generation is not idempotent'
-    print('PASS: exact eleven-file P5-U3 passive lifecycle integration verified')
+    print('PASS: exact thirteen-file P5-U3 passive lifecycle integration and stale-CI routing repair verified')
 
 if __name__=='__main__':
     main()

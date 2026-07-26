@@ -64,7 +64,8 @@
     "missing_dependency_fail_closed": "PASS",
     "duplicate_install_idempotence": "PASS",
     "no_storage_dom_network_timer_or_route_effects": "PASS",
-    "runtime_integrity_identity": "PASS"
+    "runtime_integrity_identity": "PASS",
+    "completed_pass_workflow_routing_isolation": "PASS"
   },
   "effects": {
     "current_runtime_load_chain_changed": true,
@@ -75,7 +76,8 @@
     "diagnostics_ui_changed": false,
     "live_observation_performed": false,
     "formal_proof_performed": false,
-    "pr122_touched": false
+    "pr122_touched": false,
+    "stale_ci_routing_repaired": true
   },
   "next_step": {
     "id": "P5-U4",
