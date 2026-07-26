@@ -1,0 +1,357 @@
+{
+  "type": "PMP_PASS9_BANK_CONTINUOUS_RUN_UNIT2_OWNER_CONTRACT_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T19:30:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "d6651068be6b07cdea79d80d02089ead1a66275e",
+  "branch": "agent/pass9-unit2-bank-continuous-run-owner-contract-v1",
+  "pass": 9,
+  "unit": "P9-U2",
+  "unit_id": "P9-U2",
+  "status": "BANK_CONTINUOUS_RUN_OWNER_CONTRACT_PROVEN",
+  "objective": "Define and prove separate fail-closed Bank Owner and Continuous Run Owner authority, exact cross-owner requests and SHA-256 receipts, persistence, concurrency, cancellation, restart, handoff, duplicate, and compatibility rules without changing production behavior or persisted data.",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass9-unit2-bank-continuous-run-owner-contract-v1.yml",
+      "audit/pass9/pass9-bank-continuous-run-unit2-owner-contract-v1.json",
+      "audit/pass9/receipts/RECEIPT_P9_U2_BANK_CONTINUOUS_RUN_OWNER_CONTRACT_20260726T193000Z_001.json",
+      "tools/run_pass9_unit2_bank_continuous_run_owner_contract_v1.js",
+      "tools/test_pass9_unit2_bank_continuous_run_owner_contract_v1.js",
+      "tools/verify_pass9_unit2_bank_continuous_run_owner_contract_v1.py"
+    ],
+    "implementation_paths": []
+  },
+  "inputs": {
+    "unit1_inventory": "audit/pass9/pass9-bank-continuous-run-unit1-inventory-v1.json",
+    "unit1_inventory_sha256": "380e5638a5dc822fe6b784484e28454754408a299c7507c0d7ee557c74f5d641",
+    "pass7_owner_contract": "audit/pass7/pass7-section-owner-unit2-capability-contract-v1.json",
+    "pass7_owner_contract_sha256": "eb755a2d43b2a4331dae62dc90c8a2d4260c83ffd1f42f8c3024d27c875dd06b",
+    "cross_system_invariant_catalog": "audit/pass6/pass6-cross-system-invariant-catalog-v1.json",
+    "cross_system_invariant_catalog_sha256": "e8e89d3d50dc88ef2809d5bca4ef77e988d19bb196ebc58393c7b1398ac302a0",
+    "continuous_run_state": "pmp-continuous-run-state-bank-v1.js",
+    "continuous_run_state_sha256": "7d1bb53a1f7d166e43d98224928e22b6a3aac0827176e865df6428365319c98b",
+    "bank_router": "pmp-master-bank-inventory-router-v1.js",
+    "bank_router_sha256": "7f12b21e7256b628c11e9f82cac62257fc71bab3e7c961d6f95914eab62b1585",
+    "runner": "tools/run_pass9_unit2_bank_continuous_run_owner_contract_v1.js",
+    "runner_sha256": "7d61b54535143713f02bba56c3c7a93e940774148c2db9d86f1d80082fbabdcb",
+    "test": "tools/test_pass9_unit2_bank_continuous_run_owner_contract_v1.js",
+    "test_sha256": "19225240cb8c2e7fd095c6fcdd1ecd408b8e1df6009d214d081093c81da2951e"
+  },
+  "owner_contract": {
+    "contract_version": "PMP_BANK_CONTINUOUS_RUN_OWNER_CONTRACT_V1",
+    "receipt_version": "PMP_BANK_CONTINUOUS_RUN_OWNER_RECEIPT_V1",
+    "model": "SEPARATE_OWNERS_FAIL_CLOSED_REQUEST_RECEIPT",
+    "owners": {
+      "bank": {
+        "owner_id": "bank_screen_owner",
+        "section_id": "bank",
+        "controls": [
+          "bank facts",
+          "authorized durable writes",
+          "bank shell",
+          "inventory identity",
+          "persistence receipts"
+        ],
+        "resource_prefix": "bank:",
+        "accepted_actions": [
+          "READ_FACTS",
+          "READ_INVENTORY",
+          "PROPOSE_WRITE",
+          "COMMIT_WRITE"
+        ]
+      },
+      "continuous_run": {
+        "owner_id": "continuous_run_level_owner",
+        "section_id": "continuous_run",
+        "controls": [
+          "run lifecycle",
+          "level progression",
+          "concurrency",
+          "cancellation",
+          "resume intent"
+        ],
+        "resource_prefix": "continuous_run:",
+        "accepted_actions": [
+          "READ_RUN_STATE",
+          "START_RUN",
+          "ADVANCE_LEVEL",
+          "PAUSE_RUN",
+          "CANCEL_RUN",
+          "RESUME_RUN",
+          "HANDOFF_RUN",
+          "RESTORE_RUN"
+        ]
+      }
+    },
+    "request_fields": [
+      "contract_version",
+      "operation_id",
+      "request_id",
+      "requester_owner",
+      "target_owner",
+      "action",
+      "resource",
+      "expected_version",
+      "payload_sha256",
+      "issued_at",
+      "expires_at",
+      "cancellation_epoch",
+      "capability"
+    ],
+    "receipt_fields": [
+      "receipt_version",
+      "operation_id",
+      "request_id",
+      "requester_owner",
+      "target_owner",
+      "action",
+      "resource",
+      "decision",
+      "code",
+      "resource_version_before",
+      "resource_version_after",
+      "cancellation_epoch",
+      "request_sha256",
+      "previous_receipt_sha256",
+      "receipt_sha256"
+    ],
+    "mutating_actions": [
+      "COMMIT_WRITE",
+      "START_RUN",
+      "ADVANCE_LEVEL",
+      "PAUSE_RUN",
+      "CANCEL_RUN",
+      "RESUME_RUN",
+      "HANDOFF_RUN",
+      "RESTORE_RUN"
+    ],
+    "forbidden_actions": [
+      "DELETE_BANK",
+      "CLEAR_BANK",
+      "CLEAR_CURRENT_STATE",
+      "MANUAL_CLEAR",
+      "DIRECT_STORAGE_WRITE",
+      "MIGRATE_STORAGE",
+      "TAKE_OWNERSHIP",
+      "COPY_AUTHORITY_BETWEEN_FRAMES"
+    ],
+    "failure_codes": [
+      "DENIED_MALFORMED",
+      "DENIED_CONTRACT_VERSION",
+      "DENIED_OPERATION_ID",
+      "DENIED_REQUEST_ID",
+      "DENIED_OWNER",
+      "DENIED_CROSS_DELEGATION",
+      "DENIED_ACTION",
+      "DENIED_RESOURCE",
+      "DENIED_EXPECTED_VERSION",
+      "DENIED_PAYLOAD_HASH",
+      "DENIED_TIME",
+      "DENIED_EXPIRED",
+      "DENIED_CAPABILITY",
+      "DENIED_DUPLICATE_CONFLICT",
+      "DENIED_STALE_CANCELLATION",
+      "DENIED_CANCELLATION_ADVANCE",
+      "DENIED_RESTART_SHAPE"
+    ],
+    "compatibility": {
+      "legacy_globals_are_identity_hints_only": true,
+      "copied_cross_frame_apis_convey_authority": false,
+      "active_tab_conveys_ownership": false,
+      "filename_conveys_authority": false,
+      "existing_persisted_keys_preserved": [
+        "pmp_continuous_run_state_bank_v1",
+        "pmp_continuous_run_state_receipts_v1",
+        "pmp_continuous_run_state_manifest_v1"
+      ],
+      "storage_migration": "FORBIDDEN_IN_P9_U2_AND_P9_U3"
+    },
+    "persistence": {
+      "durable_writer": "bank_screen_owner",
+      "request_owner_for_run_state": "continuous_run_level_owner",
+      "algorithm": "SHA-256",
+      "append_only_receipt_chain": true,
+      "delete_or_clear_default": "DENY"
+    },
+    "concurrency": {
+      "exact_expected_version": true,
+      "one_active_lease_per_run_resource": true,
+      "duplicate_same_operation_and_digest": "RETURN_IDENTICAL_RECEIPT_NO_NEW_EFFECT",
+      "duplicate_same_operation_different_digest": "DENY",
+      "cancellation_epoch": "MONOTONIC",
+      "restart": "ATOMIC_SNAPSHOT_OR_EMPTY",
+      "handoff": "EXACT_EXPECTED_VERSION_AND_CAPABILITY"
+    }
+  },
+  "contract_verification": {
+    "canonical_owners": 2,
+    "bank_actions": 4,
+    "continuous_run_actions": 8,
+    "forbidden_actions": 8,
+    "failure_codes": 17,
+    "request_fields": 13,
+    "receipt_fields": 15,
+    "assertions": 229,
+    "result_sha256": "820ce64adc40e7f6e3bfc6fa4077f4a636c56e72d9aa0d41dc48ba1eeec6bb87"
+  },
+  "observed_facts": [
+    {
+      "claim_type": "OBSERVED",
+      "fact": "P9-U1 identified nine active ownership, persistence, cross-frame, duplicate-load, recurring-painter, claim-boundary, and integrity conflicts.",
+      "evidence_paths": [
+        "audit/pass9/pass9-bank-continuous-run-unit1-inventory-v1.json"
+      ]
+    },
+    {
+      "claim_type": "OBSERVED",
+      "fact": "The active Continuous Run state source self-persists three existing keys, while the active Bank router exposes direct write and delete APIs.",
+      "evidence_paths": [
+        "pmp-continuous-run-state-bank-v1.js",
+        "pmp-master-bank-inventory-router-v1.js",
+        "audit/pass9/pass9-bank-continuous-run-unit1-inventory-v1.json"
+      ]
+    }
+  ],
+  "inferred_conclusions": [
+    {
+      "claim_type": "INFERRED",
+      "conclusion": "P9-U3 must preserve the working Bank surface and all existing persisted keys while routing authority through separate owners and exact receipted requests.",
+      "basis_evidence_paths": [
+        "audit/pass9/pass9-bank-continuous-run-unit1-inventory-v1.json",
+        "audit/pass9/pass9-bank-continuous-run-unit2-owner-contract-v1.json"
+      ]
+    },
+    {
+      "claim_type": "INFERRED",
+      "conclusion": "Active tab, filename, copied cross-frame APIs, or legacy globals cannot establish authority; they may only identify compatibility routes.",
+      "basis_evidence_paths": [
+        "audit/pass9/pass9-bank-continuous-run-unit1-inventory-v1.json"
+      ]
+    }
+  ],
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "static_contract",
+    "diagnostic_matrix_update": {
+      "status": "CONFIRMED_UNCHANGED",
+      "applicable_matrix": "audit/pass8/pass8-helper-unit5-isolation-restart-denial-proof-v1.json",
+      "rationale": "P9-U2 is a pure static owner contract. It changes no runtime path and deterministically proves Bank/Continuous Run request, receipt, version, duplicate, restart, handoff, cancellation, and denial semantics."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass9/pass9-bank-continuous-run-unit1-inventory-v1.json",
+      "audit/pass9/pass9-bank-continuous-run-unit2-owner-contract-v1.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass9_unit2_bank_continuous_run_owner_contract_v1.js"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass9_unit2_bank_continuous_run_owner_contract_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass9/receipts/RECEIPT_P9_U2_BANK_CONTINUOUS_RUN_OWNER_CONTRACT_20260726T193000Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "P9-U1 proved nine current conflicts and bound exact P9-U2 owner, request, failure, and compatibility requirements.",
+        "evidence_paths": [
+          "audit/pass9/pass9-bank-continuous-run-unit1-inventory-v1.json"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "Separate owner identities, exact resource versions, monotonic cancellation, atomic restart, idempotent duplicates, and SHA-256 chained receipts are required before P9-U3 production integration.",
+        "basis_evidence_paths": [
+          "audit/pass9/pass9-bank-continuous-run-unit1-inventory-v1.json",
+          "audit/pass9/pass9-bank-continuous-run-unit2-owner-contract-v1.json"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "missing required request field",
+        "wrong contract version",
+        "invalid operation or request identity",
+        "unknown or same owner",
+        "forbidden or unknown action",
+        "wrong resource owner domain",
+        "stale or invalid expected version",
+        "invalid payload hash",
+        "invalid or expired time window",
+        "wrong capability",
+        "duplicate operation conflict",
+        "stale or non-advancing cancellation",
+        "invalid restart snapshot",
+        "post-cancel stale resume",
+        "tampered result hash"
+      ]
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "verification": {
+    "assertions_total": 229,
+    "assertions_passed": 229,
+    "assertions_failed": 0,
+    "exact_scope": "PASS",
+    "source_hashes": "PASS",
+    "separate_owner_bindings": "PASS",
+    "request_and_receipt_schema": "PASS",
+    "persistence_compatibility_and_forbidden_actions": "PASS",
+    "duplicate_version_cancellation_restart_and_handoff": "PASS",
+    "failure_injection": "PASS",
+    "zero_effects": "PASS",
+    "permanent_gate_binding": "PASS"
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_mutations": false,
+    "continuous_run_mutations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P9-U3",
+    "objective": "Implement the passive production Bank Owner / Continuous Run Owner boundary and compatibility integration, preserving existing persisted keys and Bank behavior while removing implicit authority, direct clear/delete, repeated cross-frame scans, and duplicate active loads.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P9-U2 is a pure static contract simulation. It does not repair Bank or Continuous Run, change a production file, mutate or migrate persisted data, activate behavior, perform a live observation, or run formal proof."
+}

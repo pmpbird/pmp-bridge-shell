@@ -1,0 +1,57 @@
+{
+  "type": "PMP_PASS9_UNIT2_BANK_CONTINUOUS_RUN_OWNER_CONTRACT_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P9_U2_BANK_CONTINUOUS_RUN_OWNER_CONTRACT_20260726T193000Z_001",
+  "created_at": "2026-07-26T19:30:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "d6651068be6b07cdea79d80d02089ead1a66275e",
+  "branch": "agent/pass9-unit2-bank-continuous-run-owner-contract-v1",
+  "pass": 9,
+  "unit": "P9-U2",
+  "status": "BANK_CONTINUOUS_RUN_OWNER_CONTRACT_PROVEN",
+  "evidence": "audit/pass9/pass9-bank-continuous-run-unit2-owner-contract-v1.json",
+  "changed_paths": [
+    ".github/workflows/pass9-unit2-bank-continuous-run-owner-contract-v1.yml",
+    "audit/pass9/pass9-bank-continuous-run-unit2-owner-contract-v1.json",
+    "audit/pass9/receipts/RECEIPT_P9_U2_BANK_CONTINUOUS_RUN_OWNER_CONTRACT_20260726T193000Z_001.json",
+    "tools/run_pass9_unit2_bank_continuous_run_owner_contract_v1.js",
+    "tools/test_pass9_unit2_bank_continuous_run_owner_contract_v1.js",
+    "tools/verify_pass9_unit2_bank_continuous_run_owner_contract_v1.py"
+  ],
+  "coverage": {
+    "canonical_owners": 2,
+    "bank_actions": 4,
+    "continuous_run_actions": 8,
+    "forbidden_actions": 8,
+    "failure_codes": 17,
+    "request_fields": 13,
+    "receipt_fields": 15,
+    "assertions": 229,
+    "artifact_roles": 9
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_mutations": false,
+    "continuous_run_mutations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "next_safe_move": {
+    "step_id": "P9-U3",
+    "instruction": "Implement the passive production Bank Owner / Continuous Run Owner boundary and compatibility integration under the exact P9-U2 contract, preserving existing persisted keys and user data.",
+    "requires_explicit_authority": false,
+    "requires_user_app_check": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "Static P9-U2 contract only; no production behavior, Bank state, Continuous Run state, persisted data, scarce observation, or formal proof changed."
+}
