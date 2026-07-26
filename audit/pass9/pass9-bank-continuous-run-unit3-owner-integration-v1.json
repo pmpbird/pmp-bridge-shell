@@ -27,6 +27,7 @@
       "pmp-continuous-run-bank-order-frame-loader-v1.js",
       "pmp-continuous-run-state-bank-v1.js",
       "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+      "pmp-helper-owner-integration-v1.js",
       "pmp-master-bank-inventory-router-v1.js",
       "pmp-master-bank-tab-v1.js",
       "pmp-runtime-integrity-manifest-v1.json",
@@ -46,6 +47,7 @@
       "pmp-continuous-run-bank-order-frame-loader-v1.js",
       "pmp-continuous-run-state-bank-v1.js",
       "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+      "pmp-helper-owner-integration-v1.js",
       "pmp-master-bank-inventory-router-v1.js",
       "pmp-master-bank-tab-v1.js"
     ]
@@ -58,9 +60,9 @@
     "legacy_inner_v4": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
     "legacy_inner_v4_sha256": "821005d20de4679d48e94f54046fee3bba05dc1cafdf7e2bf2b02b15f8405d59",
     "generator": "tools/generate_pass9_unit3_integrity_updates_v1.py",
-    "generator_sha256": "2557f42bfcba387ff4e1814acc3336265f23f9f40ea94be4975c5b88d60c1a24",
+    "generator_sha256": "5368caf06d1ed1794f9e22e711d757aac01b9aac5550dd6c60dc3a9d2f6c8bc2",
     "test": "tools/test_pass9_unit3_bank_continuous_run_owner_integration_v1.js",
-    "test_sha256": "c1b2c83afc8a779dad7d34a861baa981042a656e74bce6c8b7c9761fb44ce1a2"
+    "test_sha256": "8b3b33fd40e2eedd1f85fbb4d12491c25949b5cbfa923bd0c33b5c686a9c8afc"
   },
   "integration": {
     "model": "SEPARATE_OWNERS_ATOMIC_BANK_COMMIT_EVENT_DRIVEN_RENDER",
@@ -98,18 +100,19 @@
     "bank_router_sha256": "7e10583e9c7b0d942bb3ea6905a17338089b6424dbc72211020ff2f27f635b39",
     "bank_shell_owner_sha256": "d70f29beff0169adfb49c351c18f99e4704d0e9de9ac42ccb07aa057478512f1",
     "continuous_run_surface_owner_sha256": "74e3fd55be1d0bb5244fee07dcebc8ce979629a88cc0b29e5faafb5a717c95d9",
+    "helper_owner_integration_sha256": "7d4ceb3584e5070d38b97a03c020d2f44664d631962b4fc56b1b1c373239e65a",
     "inner_sha256": "00972baf087960f6538b53a23c65d6f717598cfd9f8814bb599865fd78d81211"
   },
   "runtime_integrity": {
     "runtime_records": 710,
-    "manifest_sha256": "d692bf582e60809dfd3c95cbabee26ab22ddca7c8627dccf972347124b98f8bd",
-    "runtime_source_set_sha256": "61bccefa4df407b158f4d71ddc1370f831d4091f51f9ae0bd3f79914f5249f39",
-    "seal_sha256": "1261e496c2ec1ce368d0f937ae7ad7d90df78ac47c600293a8207c5e70d9138c",
-    "bootstrap_sha256": "46b2dd341eac50d5a94cc5c809d848251c51cca45514ba3b76c24aed861a7efb"
+    "manifest_sha256": "5efab9d43e704f27237a63da15ebede6156ee9d5476995848e0d866ede96613a",
+    "runtime_source_set_sha256": "254d5822377d96a270c486b079229cf5b22f0c3c1e3d5aa54c0d364a2578060a",
+    "seal_sha256": "7713af38d7dd687ea92f1148d2b70bf4ee09602857fe6781ee8df06e4a9c36aa",
+    "bootstrap_sha256": "e37e30db122fdd8110beb60f34c0f4e197b48cac2882bb6ebd15916f962cfbe8"
   },
   "diagnostic_and_proof_matrix": {
     "type": "PMP_PASS9_UNIT3_BANK_CONTINUOUS_RUN_INTEGRATION_MATRIX_V1",
-    "assertions": 233,
+    "assertions": 234,
     "invariants": [
       "load performs zero persisted-storage reads, writes, or deletes",
       "only Bank Owner commits exact allowlisted durable bundles",
@@ -181,7 +184,7 @@
     "observed_facts": [
       {
         "claim_type": "OBSERVED",
-        "fact": "Two hundred thirty-three deterministic assertions prove the bounded production integration, exact failure denials, atomic rollback, data preservation, expiration and monotonic cancellation, owner-routed Connections deletion, read-only Bank detail opening, and non-recurring owner renderer.",
+        "fact": "Two hundred thirty-four deterministic assertions prove the bounded production integration, exact failure denials, atomic rollback, data preservation, expiration and monotonic cancellation, owner-routed Connections deletion, read-only Bank detail opening, the exact Helper growth-source binding, and non-recurring owner renderer.",
         "evidence_paths": [
           "tools/test_pass9_unit3_bank_continuous_run_owner_integration_v1.js",
           "audit/pass9/pass9-bank-continuous-run-unit3-owner-integration-v1.json"
@@ -239,8 +242,8 @@
     }
   },
   "verification": {
-    "assertions_total": 233,
-    "assertions_passed": 233,
+    "assertions_total": 234,
+    "assertions_passed": 234,
     "assertions_failed": 0,
     "exact_scope": "PASS",
     "runtime_integrity": "PASS",

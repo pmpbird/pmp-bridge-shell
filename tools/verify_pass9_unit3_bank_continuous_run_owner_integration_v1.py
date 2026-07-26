@@ -27,6 +27,7 @@ MASTER = ROOT / "pmp-master-bank-tab-v1.js"
 RUN_OWNER = ROOT / "pmp-bank-screen-owner-v1.js"
 BRIDGE = ROOT / "pmp-bank-owner-dependency-bridge-v1.js"
 LOADER = ROOT / "pmp-continuous-run-bank-order-frame-loader-v1.js"
+HELPER_OWNER = ROOT / "pmp-helper-owner-integration-v1.js"
 CONNECTION_DELETE = ROOT / "pmp-connections-bank-packet-delete-v1.js"
 DIAGNOSTIC = ROOT / "pmp-bank-continuous-run-owner-split-diagnostic-v1.js"
 MODE_SHIM = ROOT / "pmp-bank-mode1-hide-unchecked-v1.js"
@@ -51,6 +52,7 @@ EXPECTED = {
     "pmp-continuous-run-bank-order-frame-loader-v1.js",
     "pmp-continuous-run-state-bank-v1.js",
     "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+    "pmp-helper-owner-integration-v1.js",
     "pmp-master-bank-inventory-router-v1.js",
     "pmp-master-bank-tab-v1.js",
     "pmp-runtime-integrity-manifest-v1.json",
@@ -70,6 +72,7 @@ IMPLEMENTATION = {
     "pmp-continuous-run-bank-order-frame-loader-v1.js",
     "pmp-continuous-run-state-bank-v1.js",
     "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+    "pmp-helper-owner-integration-v1.js",
     "pmp-master-bank-inventory-router-v1.js",
     "pmp-master-bank-tab-v1.js",
 }
@@ -90,6 +93,7 @@ INTEGRATION_HASHES = {
     "bank_router_sha256": ROUTER,
     "bank_shell_owner_sha256": MASTER,
     "continuous_run_surface_owner_sha256": RUN_OWNER,
+    "helper_owner_integration_sha256": HELPER_OWNER,
     "inner_sha256": INNER,
 }
 
@@ -191,7 +195,7 @@ def main() -> None:
     match = re.search(r"integration \((\d+)/(\d+)\)", test_output)
     assert match and match.group(1) == match.group(2)
     assertions = int(match.group(1))
-    assert assertions == report["verification"]["assertions_passed"] == 233
+    assert assertions == report["verification"]["assertions_passed"] == 234
     assert report["verification"]["assertions_total"] == assertions
     assert report["verification"]["assertions_failed"] == 0
     assert receipt["coverage"]["assertions"] == assertions
@@ -318,7 +322,7 @@ def main() -> None:
     assert gate["status"] == "PASS", gate
     assert gate["unit_id"] == "P9-U3"
     assert gate["gate_records"] == 1
-    assert gate["summary"]["runtime_paths"] == 13
+    assert gate["summary"]["runtime_paths"] == 14
     assert gate["errors"] == []
 
     workflow = WORKFLOW.read_text()
@@ -371,7 +375,7 @@ def main() -> None:
     assert report["next_step"]["requires_new_explicit_authority"] is False
     assert receipt["next_safe_move"]["step_id"] == "P9-U4"
     print(
-        "PASS: exact twenty-one-file P9-U3 Bank/Continuous Run owner integration "
+        "PASS: exact twenty-two-file P9-U3 Bank/Continuous Run owner integration "
         f"verified ({assertions}/{assertions}, gate PASS)"
     )
 

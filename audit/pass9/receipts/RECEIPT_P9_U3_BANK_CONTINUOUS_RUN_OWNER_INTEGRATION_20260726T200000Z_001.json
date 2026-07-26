@@ -26,6 +26,7 @@
     "pmp-continuous-run-bank-order-frame-loader-v1.js",
     "pmp-continuous-run-state-bank-v1.js",
     "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+    "pmp-helper-owner-integration-v1.js",
     "pmp-master-bank-inventory-router-v1.js",
     "pmp-master-bank-tab-v1.js",
     "pmp-runtime-integrity-manifest-v1.json",
@@ -34,11 +35,11 @@
     "tools/verify_pass9_unit3_bank_continuous_run_owner_integration_v1.py"
   ],
   "coverage": {
-    "runtime_paths": 13,
+    "runtime_paths": 14,
     "canonical_owners": 2,
     "request_fields": 13,
     "receipt_fields": 15,
-    "assertions": 233,
+    "assertions": 234,
     "fault_cases": 16,
     "artifact_roles": 9,
     "runtime_integrity_records": 710

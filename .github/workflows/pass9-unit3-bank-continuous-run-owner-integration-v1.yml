@@ -18,6 +18,7 @@ on:
       - 'pmp-continuous-run-bank-order-frame-loader-v1.js'
       - 'pmp-continuous-run-state-bank-v1.js'
       - 'pmp-current-inner-cleanbug-rgcontrols-v23.html'
+      - 'pmp-helper-owner-integration-v1.js'
       - 'pmp-master-bank-inventory-router-v1.js'
       - 'pmp-master-bank-tab-v1.js'
       - 'pmp-runtime-integrity-manifest-v1.json'
@@ -61,7 +62,7 @@ jobs:
             > "$ARTIFACT_ROOT/scope.json"
           python3 -c 'import json,os,platform; print(json.dumps({"python":platform.python_version(),"node":os.popen("node --version").read().strip(),"runner":os.environ.get("RUNNER_OS"),"sha":os.environ.get("GITHUB_SHA")},sort_keys=True))' \
             > "$ARTIFACT_ROOT/environment.json"
-          python3 -c 'import json; print(json.dumps({"type":"PMP_P9_U3_OWNER_INTEGRATION_RESULT_V1","status":"PASS" if int("'"$tests_rc"'")==0 and int("'"$verify_rc"'")==0 else "FAIL","assertions":233,"persisted_user_data_changed":False,"formal_proof_performed":False},sort_keys=True))' \
+          python3 -c 'import json; print(json.dumps({"type":"PMP_P9_U3_OWNER_INTEGRATION_RESULT_V1","status":"PASS" if int("'"$tests_rc"'")==0 and int("'"$verify_rc"'")==0 else "FAIL","assertions":234,"persisted_user_data_changed":False,"formal_proof_performed":False},sort_keys=True))' \
             > "$ARTIFACT_ROOT/result.json"
           printf '%s\n' '{"required":false,"granted":false,"consumed_before":false,"consumed_after":false}' \
             > "$ARTIFACT_ROOT/authority-state.json"

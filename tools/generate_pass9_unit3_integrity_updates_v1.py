@@ -20,6 +20,7 @@ RUNTIME_PATHS = (
     "pmp-bank-screen-owner-v1.js",
     "pmp-bank-owner-dependency-bridge-v1.js",
     "pmp-continuous-run-bank-order-frame-loader-v1.js",
+    "pmp-helper-owner-integration-v1.js",
     "pmp-connections-bank-packet-delete-v1.js",
     "pmp-bank-continuous-run-owner-split-diagnostic-v1.js",
     "pmp-bank-mode1-hide-unchecked-v1.js",

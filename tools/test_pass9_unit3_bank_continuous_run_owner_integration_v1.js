@@ -404,6 +404,7 @@ const masterSource = source('pmp-master-bank-tab-v1.js');
 const ownerSource = source('pmp-bank-screen-owner-v1.js');
 const bridgeSource = source('pmp-bank-owner-dependency-bridge-v1.js');
 const loaderSource = source('pmp-continuous-run-bank-order-frame-loader-v1.js');
+const helperOwnerSource = source('pmp-helper-owner-integration-v1.js');
 const modeSource = source('pmp-bank-mode1-hide-unchecked-v1.js');
 const cleanerSource = source('pmp-bank-scoped-test-data-cleaner-v1.js');
 const diagnosticSource = source('pmp-bank-continuous-run-owner-split-diagnostic-v1.js');
@@ -451,6 +452,10 @@ check(bridgeSource.includes('mutable_apis_copied:0'), 'dependency bridge reports
 check(!loaderSource.includes('setInterval('), 'frame loader no recurring scan');
 check(loaderSource.includes('EVENT_DRIVEN_NEW_DOCUMENT_ONCE'), 'frame loader event-driven mode');
 check(loaderSource.includes('bank_owner_duplicate_injection_attempted:false'), 'frame loader duplicate denial');
+check(
+  helperOwnerSource.includes(crypto.createHash('sha256').update(loaderSource).digest('hex')),
+  'Helper Owner binds the exact repaired frame-loader source hash'
+);
 check(!modeSource.includes('document.'), 'legacy mode shim no DOM');
 check(!modeSource.includes('localStorage'), 'legacy mode shim no storage');
 check(!modeSource.includes('setInterval('), 'legacy mode shim no interval');
