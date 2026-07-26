@@ -12,6 +12,7 @@
   "objective": "Implement and deterministically prove one read-only Bank inventory projection from Bank-owner facts, loaded between the owner router and Bank tab, with stable identity, visible quarantine, reference-only historic data, exact source-byte preservation, no raw-payload exposure, and no UI write, delete, migration, Helper, or active-tab authority.",
   "scope": {
     "changed_paths": [
+      ".github/workflows/pass9-unit3-bank-continuous-run-owner-integration-v1.yml",
       ".github/workflows/pass10-unit3-bank-readonly-projection-v1.yml",
       "audit/a003-manifest-seal.json",
       "audit/pass10/pass10-bank-unit3-readonly-projection-v1.json",
@@ -86,6 +87,13 @@
     "single_projection_load": true,
     "single_bank_tab_load": true,
     "mount_registry_binding": true
+  },
+  "ci_compatibility_repair": {
+    "workflow": ".github/workflows/pass9-unit3-bank-continuous-run-owner-integration-v1.yml",
+    "historical_exact_scope_base": "1c2ae85266e6ded5f62e4e45e956c5b3fb026d54",
+    "later_base_mode": "FULL_234_ASSERTION_REGRESSION_ONLY",
+    "historical_evidence_mutated": false,
+    "regression_assertions_preserved": 234
   },
   "deterministic_matrix": {
     "type": "PMP_PASS10_UNIT3_BANK_READONLY_PROJECTION_MATRIX_V1",

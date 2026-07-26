@@ -3,6 +3,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
     paths:
+      - '.github/workflows/pass9-unit3-bank-continuous-run-owner-integration-v1.yml'
       - '.github/workflows/pass10-unit3-bank-readonly-projection-v1.yml'
       - 'audit/a003-manifest-seal.json'
       - 'audit/pass10/pass10-bank-unit3-readonly-projection-v1.json'

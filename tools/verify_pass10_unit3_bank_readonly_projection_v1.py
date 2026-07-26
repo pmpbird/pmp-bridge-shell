@@ -25,6 +25,7 @@ GENERATOR = ROOT / "tools/generate_pass10_unit3_integrity_updates_v1.py"
 TEST = ROOT / "tools/test_pass10_unit3_bank_readonly_projection_v1.js"
 GATE = ROOT / "tools/run_pass6_unit7_no_blind_flying_gate_v1.py"
 EXPECTED = {
+    ".github/workflows/pass9-unit3-bank-continuous-run-owner-integration-v1.yml",
     ".github/workflows/pass10-unit3-bank-readonly-projection-v1.yml",
     "audit/a003-manifest-seal.json",
     "audit/pass10/pass10-bank-unit3-readonly-projection-v1.json",
@@ -162,6 +163,20 @@ def main() -> None:
     assert integration["single_projection_load"] is True
     assert integration["single_bank_tab_load"] is True
     assert integration["mount_registry_binding"] is True
+
+    compatibility = report["ci_compatibility_repair"]
+    assert compatibility == {
+        "workflow": (
+            ".github/workflows/"
+            "pass9-unit3-bank-continuous-run-owner-integration-v1.yml"
+        ),
+        "historical_exact_scope_base": (
+            "1c2ae85266e6ded5f62e4e45e956c5b3fb026d54"
+        ),
+        "later_base_mode": "FULL_234_ASSERTION_REGRESSION_ONLY",
+        "historical_evidence_mutated": False,
+        "regression_assertions_preserved": 234,
+    }
 
     projection = PROJECTION.read_text()
     master = MASTER.read_text()
@@ -301,7 +316,7 @@ def main() -> None:
     assert report["next_step"]["persisted_user_data_change_allowed"] is False
     assert receipt["next_safe_move"]["step_id"] == "P10-U4"
     print(
-        "PASS: exact thirteen-file P10-U3 Bank read-only projection verified "
+        "PASS: exact fourteen-file P10-U3 Bank read-only projection verified "
         "(125/125, gate PASS, integrity resealed, P10-U4 ready)"
     )
 
