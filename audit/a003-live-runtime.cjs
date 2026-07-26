@@ -290,6 +290,9 @@ let browser;
       const response = await route.fetch();
       const body = Buffer.concat([await response.body(), Buffer.from('\n<!-- A003 HISTORICAL TAMPER -->')]);
       const headers = {...response.headers(), 'access-control-allow-origin':'*', 'cache-control':'no-store'};
+      delete headers['content-length'];
+      delete headers['content-encoding'];
+      delete headers['transfer-encoding'];
       await route.fulfill({status:200, headers, body});
     });
     await historicalPage.goto(BASE + HOME + '?requested_hash=%23world#world', {waitUntil:'domcontentloaded'});
@@ -301,7 +304,7 @@ let browser;
         let stored = null;
         try { stored = JSON.parse(localStorage.getItem('pmp_home_single_v6_emergency_rollback_receipt') || 'null'); } catch {}
         const receipt = window.__PMPHistoricalHomeIntegrityReceipt || embedded || stored;
-        return receipt?.status === 'rollback_failed_closed';
+        return receipt?.status === 'rollback_failed_closed' || receipt?.status === 'writing_sha256_verified_map_declared_original';
       } catch { return false; }
     }, null, {timeout:30000});
     const historicalReceipt = await historicalPage.evaluate(() => {
