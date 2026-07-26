@@ -3,13 +3,12 @@
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
   "manifest_sha256": "7f94473e0cc4c65c01291ba7358fcd7d64423ca323e744b0b16e6b14465ddbd8",
   "manifest_version": "20260711A-A003-FINAL",
-  "pass10_context": "P10-U4 adds one bounded owner-refresh adapter between the read-only projection and Bank tab. Only an exact accepted Bank-owner receipt present in the owner boundary refreshes the projection once. Wrong-owner, duplicate, stale, malformed, Helper, active-tab, and direct UI events fail closed. The adapter and tab expose no write, delete, migration, raw-payload, timer, or retry surface.",
   "repair_id": "A-003",
   "root_self_verifiable": false,
   "root_trust_anchor": "pmp-app-current.html",
   "rule": "The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.",
   "runtime_source_set_sha256": "5b5efca9367d9c501a498b1c50d5b28daea48a7571463d75ebd0c4174997c008",
-  "sealed_branch": "agent/pass10-unit4-bank-owner-refresh-v1",
+  "sealed_branch": "main",
   "status": "SEALED",
   "type": "PMP_A003_MANIFEST_SEAL_V1"
 }
