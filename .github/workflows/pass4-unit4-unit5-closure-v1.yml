@@ -1,0 +1,31 @@
+name: Pass 4 Unit 4 Reconciliation and Unit 5 Closure
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - '.github/workflows/pass4-unit4-unit5-closure-v1.yml'
+      - 'audit/pass4/pass4-boot-status-strip-unit4-hands-on-reconciliation-v1.json'
+      - 'audit/pass4/pass4-boot-status-strip-unit5-closure-certification-v1.json'
+      - 'audit/pass4/receipts/RECEIPT_P4_U4_UNIT_CLOSURE_20260726T063514Z_001.json'
+      - 'audit/pass4/receipts/RECEIPT_P4_U5_PASS_CLOSURE_20260726T063514Z_001.json'
+      - 'tools/test_pass4_unit4_unit5_closure_v1.py'
+      - 'tools/verify_pass4_unit4_unit5_closure_v1.py'
+permissions:
+  contents: read
+jobs:
+  deterministic-pass4-closure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Verify Unit 4 reconciliation and Unit 5 closure
+        run: python3 tools/test_pass4_unit4_unit5_closure_v1.py
+      - name: Verify exact evidence-only closure scope
+        run: python3 tools/verify_pass4_unit4_unit5_closure_v1.py "${{ github.event.pull_request.base.sha }}"

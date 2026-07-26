@@ -1,0 +1,93 @@
+{
+  "schema": "PMP_APP_ORCHESTRATOR_STEP_RECEIPT_V1",
+  "receipt_id": "AO-P4-U4C-HANDS-ON-RECONCILIATION-V1-001",
+  "created_at": "2026-07-26T06:35:14Z",
+  "project": "App Orchestrator",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "roadmap_version": "1.0.0",
+  "pass": 4,
+  "unit": "P4-U4",
+  "substep": "P4-U4C",
+  "kind": "UNIT_CLOSURE",
+  "status": "PASS_BOUNDED",
+  "objective": "Reconcile the successful hands-on startup check with the preserved Unit 4 observation and deterministic Boot Status Strip proofs.",
+  "claim_ceiling": "Human-attested current-path completion combined with deterministic state and zero-effect proof; no second automated live observation and no production or user-data change.",
+  "authority": {
+    "basis": [
+      "V101 P4-U4H exact hands-on check",
+      "User report: it worked, what pass are we on?",
+      "Continuing Pass 2 through Pass 13 ordinary in-scope authorization"
+    ],
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "authorization_evidence": [
+      "The user performed the manual product action; this reconciliation does not dispatch or retry a bounded live workflow."
+    ]
+  },
+  "git": {
+    "base_commit": "0bb3a42907ca1a2f864c1a40d1ace3f203cd7e45",
+    "branch": "agent/pass4-unit4-reconciliation-unit5-closure-v1",
+    "head_commit": null,
+    "pull_request": null,
+    "merge_commit": null,
+    "verified_main_commit": "0bb3a42907ca1a2f864c1a40d1ace3f203cd7e45"
+  },
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass4-unit4-unit5-closure-v1.yml",
+      "audit/pass4/pass4-boot-status-strip-unit4-hands-on-reconciliation-v1.json",
+      "audit/pass4/pass4-boot-status-strip-unit5-closure-certification-v1.json",
+      "audit/pass4/receipts/RECEIPT_P4_U4_UNIT_CLOSURE_20260726T063514Z_001.json",
+      "audit/pass4/receipts/RECEIPT_P4_U5_PASS_CLOSURE_20260726T063514Z_001.json",
+      "tools/test_pass4_unit4_unit5_closure_v1.py",
+      "tools/verify_pass4_unit4_unit5_closure_v1.py"
+    ],
+    "evidence_paths": [
+      "audit/pass4/pass4-boot-status-strip-unit4-hands-on-reconciliation-v1.json",
+      "audit/pass4/pass4-boot-status-strip-unit5-closure-certification-v1.json",
+      "V101 workflow run 30190359765 and closed PR 152"
+    ],
+    "forbidden_paths_checked": [
+      "current route and resolver",
+      "Route Guardian and reload owner",
+      "current inner runtime and Boot Status Strip owner",
+      "App Orchestrator and bootstrap",
+      "runtime integrity identities",
+      "persisted user data",
+      "PR 122"
+    ],
+    "unrelated_changes_preserved": true
+  },
+  "verification": {
+    "tests": [
+      "Pass 4 Unit 1 contract test",
+      "Pass 4 Unit 2 passive integration test",
+      "Pass 4 Unit 3 isolated state and fail-passive proof",
+      "Pass 4 Unit 4 deterministic interaction repair proof",
+      "Pass 4 Unit 4/5 closure verifier"
+    ],
+    "workflows": [],
+    "result": "Prepared for deterministic local and pull-request verification.",
+    "evidence_complete": true
+  },
+  "effects": {
+    "production_runtime_changed": false,
+    "runtime_integrity_changed": false,
+    "persisted_user_data_changed": false,
+    "historical_evidence_changed": false,
+    "github_changed": false
+  },
+  "recovery": {
+    "rollback_available": true,
+    "rollback_reference": "Close the evidence-only pull request before merge or revert its merge without touching production runtime.",
+    "evidence_preserved": true
+  },
+  "supersedes_receipt_ids": [],
+  "next_safe_move": {
+    "step_id": "P4-U5",
+    "instruction": "Run deterministic closure verification, obtain green CI, merge, and verify GitHub main.",
+    "requires_explicit_authority": false,
+    "stop_before": "Pass 5 implementation before the Pass 4 closure merge is verified."
+  }
+}
