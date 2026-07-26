@@ -1,0 +1,243 @@
+{
+  "type": "PMP_PASS10_BANK_UNIT6_REVERSIBLE_MIGRATION_REHEARSAL_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T23:45:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "fa5758d63927647244722882efd092f3a59548e3",
+  "branch": "agent/pass10-unit6-bank-migration-rehearsal-v1",
+  "pass": 10,
+  "unit": "P10-U6",
+  "unit_id": "P10-U6",
+  "status": "BANK_REVERSIBLE_MIGRATION_REHEARSAL_PROVEN",
+  "objective": "Perform and deterministically prove the roadmap-required reversible Bank migration rehearsal in an isolated in-memory workspace, including preflight, stable mapping, quarantine, exact-byte preservation, idempotence, interruption recovery, explicit rollback, and production-target denial.",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass10-unit6-bank-reversible-migration-rehearsal-v1.yml",
+      "audit/pass10/pass10-bank-unit6-reversible-migration-rehearsal-v1.json",
+      "audit/pass10/receipts/RECEIPT_P10_U6_BANK_REVERSIBLE_MIGRATION_REHEARSAL_20260726T234500Z_001.json",
+      "tools/run_pass10_unit6_bank_reversible_migration_rehearsal_v1.js",
+      "tools/test_pass10_unit6_bank_reversible_migration_rehearsal_v1.js",
+      "tools/verify_pass10_unit6_bank_reversible_migration_rehearsal_v1.py"
+    ],
+    "implementation_paths": []
+  },
+  "inputs": {
+    "unit2_contract_sha256": "64314c8ab3f1c1d92c7e315bc4b1c023e799549b08fbe56b37c412a00faa47cb",
+    "unit5_proof_sha256": "2a783ea1c060184101e663efe347ce882a9c861471fb6cd00fd3e476d4fd510a",
+    "owner_boundary_sha256": "2d5f2f6015ee7096a07387b82c4478c88bb6423464d9fd11302705df73286fbd",
+    "readonly_projection_sha256": "f1fd84964967b6b4842b51db7c2a3b4c38bdda3ad18d3d96f73b7ad138ee22fc",
+    "owner_refresh_adapter_sha256": "6ec10deef2b14727afc74e72938d0c512b68c30126c6ff92a3883f8751b559e8",
+    "bank_tab_sha256": "dd4c856c34bbc324e1dcb78ccbf2efb288cfff84f70e3d6914c813a2985c3505",
+    "runner_sha256": "569a7de354514d237934fb961a08e5809d4a8f0544e9aa484e057b7c09bd84a3",
+    "test_sha256": "8b015dda7c52996dc325fe02521cf26f26991d06ca7ff98220ba982a0e076488"
+  },
+  "rehearsal": {
+    "model": "DISPOSABLE_IN_MEMORY_STAGING_EXACT_ROLLBACK_NO_PRODUCTION_TARGET",
+    "assertions": 102,
+    "assertions_passed": 102,
+    "assertions_failed": 0,
+    "source_namespaces": 5,
+    "present_source_byte_sets": 4,
+    "planned_items": 8,
+    "active_items": 2,
+    "reference_only_items": 1,
+    "quarantined_items": 4,
+    "unavailable_items": 1,
+    "staging_writes": 9,
+    "staging_deletes": 0,
+    "idempotent_repeat_writes": 0,
+    "idempotent_repeat_deletes": 0,
+    "interruption_after_writes": 3,
+    "interruption_exact_rollback": true,
+    "interruption_receipt_emitted": false,
+    "explicit_rollback_exact": true,
+    "source_bytes_unchanged": true,
+    "unrelated_bytes_unchanged": true,
+    "stable_identity_and_provenance": true,
+    "collision_payloads_preserved": 2,
+    "delete_authority": "DENY",
+    "production_target": "DENIED_PRODUCTION_TARGET",
+    "source_preimage_change": "DENIED_SOURCE_PREIMAGE_CHANGED",
+    "tampered_plan": "DENIED_PLAN_INTEGRITY",
+    "rehearsal_failures": 0
+  },
+  "migration_boundary": {
+    "target": "DISPOSABLE_FIXTURE_STAGING_ONLY",
+    "production_migration_allowed": false,
+    "real_user_storage_accessed": false,
+    "real_user_storage_reads": 0,
+    "real_user_storage_writes": 0,
+    "real_user_storage_deletes": 0,
+    "persisted_user_data_changed": false,
+    "deletion_performed": false,
+    "silent_rewrite_performed": false,
+    "fixture_workspace_restored": true
+  },
+  "observation_decision_input": {
+    "rehearsal_failures": 0,
+    "production_migration_performed": false,
+    "real_user_storage_accessed": false,
+    "user_app_check_required_now": false,
+    "bounded_observation_performed": false,
+    "bounded_observation_authority_consumed": false,
+    "pass10_closure_unit_ready": true
+  },
+  "observed_facts": [
+    {
+      "claim_type": "OBSERVED",
+      "fact": "The disposable migration plan mapped eight items with stable identity and provenance, preserved collision, orphan, corrupt, historic, and unavailable states, and changed no source bytes while staging.",
+      "evidence_paths": [
+        "tools/run_pass10_unit6_bank_reversible_migration_rehearsal_v1.js",
+        "tools/test_pass10_unit6_bank_reversible_migration_rehearsal_v1.js"
+      ]
+    },
+    {
+      "claim_type": "OBSERVED",
+      "fact": "Interrupted staging rolled back exactly with no receipt; full staging was idempotent and explicit rollback restored the exact baseline.",
+      "evidence_paths": [
+        "tools/run_pass10_unit6_bank_reversible_migration_rehearsal_v1.js",
+        "tools/test_pass10_unit6_bank_reversible_migration_rehearsal_v1.js"
+      ]
+    }
+  ],
+  "inferred_conclusions": [
+    {
+      "claim_type": "INFERRED",
+      "conclusion": "P10-U7 can decide the bounded-observation question and close Pass 10 without a user app check unless the complete evidence chain exposes a new unresolved live-only claim.",
+      "basis_evidence_paths": [
+        "audit/pass10/pass10-bank-unit5-fault-corruption-proof-v1.json",
+        "audit/pass10/pass10-bank-unit6-reversible-migration-rehearsal-v1.json"
+      ]
+    }
+  ],
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_integration",
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/pass10/pass10-bank-unit6-reversible-migration-rehearsal-v1.json",
+      "rationale": "P10-U6 adds disposable migration preflight, forward mapping, stable identity, quarantine, idempotence, interruption recovery, exact rollback, source-tamper denial, plan-tamper denial, and production-target denial evidence."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass10/pass10-bank-unit5-fault-corruption-proof-v1.json",
+      "audit/pass10/pass10-bank-unit6-reversible-migration-rehearsal-v1.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass10_unit6_bank_reversible_migration_rehearsal_v1.js"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass10_unit6_bank_reversible_migration_rehearsal_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass10/receipts/RECEIPT_P10_U6_BANK_REVERSIBLE_MIGRATION_REHEARSAL_20260726T234500Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The P10-U6 disposable rehearsal completed forward staging, idempotent repeat, interruption rollback, explicit rollback, and three denial cases with zero real-user-storage access.",
+        "evidence_paths": [
+          "tools/test_pass10_unit6_bank_reversible_migration_rehearsal_v1.js"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "The Pass 10 closure unit can remain static and deterministic while it decides whether any bounded observation is genuinely required.",
+        "basis_evidence_paths": [
+          "audit/pass10/pass10-bank-unit6-reversible-migration-rehearsal-v1.json"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "interruption after third staging write",
+        "production target request",
+        "source preimage changed after plan",
+        "migration plan integrity tampered",
+        "identity collision with distinct payloads",
+        "orphan namespace",
+        "corrupt governed record",
+        "unavailable declared source",
+        "historic source presented for migration",
+        "idempotent repeat",
+        "explicit rollback",
+        "unrelated byte preservation"
+      ]
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "verification": {
+    "exact_scope": "PASS",
+    "input_hashes": "PASS",
+    "preflight": "PASS",
+    "forward_mapping": "PASS",
+    "stable_identity_and_provenance": "PASS",
+    "quarantine_and_reference_only": "PASS",
+    "disposable_apply": "PASS",
+    "idempotence": "PASS",
+    "interruption_recovery": "PASS",
+    "explicit_rollback": "PASS",
+    "denial_matrix": "PASS",
+    "source_and_unrelated_bytes": "PASS",
+    "production_migration_denied": "PASS",
+    "observation_decision_input": "PASS",
+    "p10_unit5_regression": "PASS",
+    "permanent_gate_binding": "PASS",
+    "assertions_total": 102,
+    "assertions_passed": 102,
+    "assertions_failed": 0
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "disposable_fixture_writes_performed": true,
+    "disposable_fixture_rollback_completed": true,
+    "real_user_storage_reads": false,
+    "real_user_storage_writes": false,
+    "real_user_storage_deletes": false,
+    "persisted_user_data_changed": false,
+    "production_migration_performed": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "production_behavior_activated": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P10-U7",
+    "objective": "Decide whether a bounded observation is genuinely required, certify every Pass 10 unit and exit criterion, close Pass 10, and bind the exact Pass 11 entry.",
+    "requires_user_app_check_before_decision": false,
+    "perform_observation_automatically": false,
+    "requires_new_explicit_authority": false,
+    "persisted_user_data_change_allowed": false,
+    "production_migration_allowed": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P10-U6 disposable in-memory reversible migration rehearsal only. No production migration, real user storage access, deletion, persisted-data change, live observation, or formal proof occurred."
+}
