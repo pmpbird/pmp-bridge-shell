@@ -1,0 +1,60 @@
+{
+  "type": "PMP_PASS8_UNIT5_HELPER_ISOLATION_RESTART_DENIAL_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P8_U5_HELPER_ISOLATION_RESTART_DENIAL_20260726T185000Z_001",
+  "created_at": "2026-07-26T18:50:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "dbf80f16ca11c3a09309931176d80e2b97549b3a",
+  "branch": "agent/pass8-unit5-helper-isolation-restart-denial-v1",
+  "pass": 8,
+  "unit": "P8-U5",
+  "status": "HELPER_ISOLATION_RESTART_DENIAL_PROVEN",
+  "evidence": "audit/pass8/pass8-helper-unit5-isolation-restart-denial-proof-v1.json",
+  "changed_paths": [
+    ".github/workflows/pass8-unit5-helper-isolation-restart-denial-v1.yml",
+    "audit/pass8/pass8-helper-unit5-isolation-restart-denial-proof-v1.json",
+    "audit/pass8/receipts/RECEIPT_P8_U5_HELPER_ISOLATION_RESTART_DENIAL_20260726T185000Z_001.json",
+    "tools/run_pass8_unit5_helper_isolation_restart_denial_v1.js",
+    "tools/test_pass8_unit5_helper_isolation_restart_denial_v1.js",
+    "tools/verify_pass8_unit5_helper_isolation_restart_denial_v1.py"
+  ],
+  "coverage": {
+    "eligible_helpers": 12,
+    "held_declared_helpers": 2,
+    "unknown_sources": 9,
+    "missing_owner_denials": 12,
+    "binding_faults_denied": 96,
+    "growth_helpers": 1,
+    "non_growth_denials": 11,
+    "restart_entries": 12,
+    "restart_tamper_cases": 4,
+    "diagnostic_event_bound": 128,
+    "assertions": 251,
+    "artifact_roles": 9
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_mutations": false,
+    "helper_ownership_changes": false,
+    "helper_behavior_activations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "next_safe_move": {
+    "step_id": "P8-U6",
+    "instruction": "Close Pass 8 with cross-unit evidence sufficiency, invariant coverage, regression, authority, effect, and exact-next-move certification.",
+    "requires_explicit_authority": false,
+    "requires_user_app_check": false,
+    "stop_before": "Only a genuinely required hands-on app reproduction or separately authorized scarce observation."
+  }
+}

@@ -1,0 +1,255 @@
+{
+  "type": "PMP_PASS8_HELPER_UNIT5_ISOLATION_RESTART_DENIAL_PROOF_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T18:50:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "dbf80f16ca11c3a09309931176d80e2b97549b3a",
+  "branch": "agent/pass8-unit5-helper-isolation-restart-denial-v1",
+  "pass": 8,
+  "unit": "P8-U5",
+  "unit_id": "P8-U5",
+  "status": "HELPER_ISOLATION_RESTART_DENIAL_PROVEN",
+  "objective": "Prove the production Helper Owner integration's exact capability and owner isolation, held and unknown denial, growth, duplicate and stale handling, revocation, atomic restart, bounded redaction, and zero external effects.",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass8-unit5-helper-isolation-restart-denial-v1.yml",
+      "audit/pass8/pass8-helper-unit5-isolation-restart-denial-proof-v1.json",
+      "audit/pass8/receipts/RECEIPT_P8_U5_HELPER_ISOLATION_RESTART_DENIAL_20260726T185000Z_001.json",
+      "tools/run_pass8_unit5_helper_isolation_restart_denial_v1.js",
+      "tools/test_pass8_unit5_helper_isolation_restart_denial_v1.js",
+      "tools/verify_pass8_unit5_helper_isolation_restart_denial_v1.py"
+    ],
+    "implementation_paths": []
+  },
+  "inputs": {
+    "unit4_integration": "audit/pass8/pass8-helper-unit4-owner-diagnostics-integration-v1.json",
+    "unit4_integration_sha256": "6f440afa01351b83241cde9e6ba7019abff681333236383596222e64c0594d5b",
+    "production_runtime": "pmp-helper-owner-integration-v1.js",
+    "production_runtime_sha256": "4ecb4164d638ec6476e82335f702664309e14d63fdf7e0a71318d06a980e7b3b",
+    "production_diagnostics_view": "pmp-helper-owner-diagnostics-view-v1.js",
+    "production_diagnostics_view_sha256": "4c65433e305acdd2fcce961774575ce1a583834f7d475312516728d563af2ae9",
+    "runner": "tools/run_pass8_unit5_helper_isolation_restart_denial_v1.js",
+    "runner_sha256": "aff04375e185c4437bbcf2f19a4af697c4e84a113cb06d4ba7be3048ec7a1d8b",
+    "test": "tools/test_pass8_unit5_helper_isolation_restart_denial_v1.js",
+    "test_sha256": "79093bd4b88a30f9c281e7f750e7dd7ad7cf7f3495c7c7c8f455ff758232a3de"
+  },
+  "proof": {
+    "model": "DETERMINISTIC_PRODUCTION_INTEGRATION_ISOLATION_MATRIX",
+    "declared_helpers": 14,
+    "eligible_static_helpers": 12,
+    "eligible_registration_successes": 12,
+    "held_declared_helpers": 2,
+    "held_declared_denials": 2,
+    "unknown_sources_held": 9,
+    "unknown_helper_denials": 9,
+    "missing_section_owner_denials": 12,
+    "binding_faults": 96,
+    "binding_faults_denied": 96,
+    "binding_faults_per_helper": 8,
+    "declared_growth_helpers": 1,
+    "growth_observations_accepted_no_authority": 1,
+    "non_growth_observation_denials": 11,
+    "duplicate_policy": "IDENTICAL_IGNORE_CONFLICT_DENY",
+    "stale_sequence_result": "REJECTED_STALE_SEQUENCE",
+    "sequence_gap_result": "REJECTED_SEQUENCE_GAP",
+    "chain_mismatch_result": "REJECTED_EVENT_CHAIN",
+    "revocation_epoch": 1,
+    "revoked_status_persists_after_evidence_update": true,
+    "revoked_behavior_authorized": false,
+    "restart_entries": 12,
+    "restart_operation_identities_preserved": true,
+    "restart_registered_helpers_preserved": 12,
+    "restart_tamper_cases": 4,
+    "restart_tamper_result": "FAIL_CLOSED_EMPTY",
+    "restart_missing_owner_result": "FAIL_CLOSED_EMPTY",
+    "diagnostic_source_events": 130,
+    "diagnostic_visible_events": 128,
+    "diagnostic_events_truncated": true,
+    "capability_ids_exposed": false,
+    "helper_source_hashes_exposed": false,
+    "raw_authority_payloads_exposed": false,
+    "source_versions_exposed": false,
+    "authority_grants": 0,
+    "behavior_authorizations": 0,
+    "external_effects": 0
+  },
+  "diagnostic_and_proof_matrix": {
+    "type": "PMP_PASS8_HELPER_ISOLATION_RESTART_DENIAL_MATRIX_V1",
+    "version": "1.0.0",
+    "invariants": [
+      {
+        "id": "P8-INV-HELPER-ALL-ELIGIBLE-001",
+        "statement": "Every eligible Helper registers only under its exact source, owner, section, slot, growth, and static-event authority binding.",
+        "coverage": "12 helpers x 8 injected binding faults"
+      },
+      {
+        "id": "P8-INV-HELPER-HOLD-002",
+        "statement": "Legacy, declaration-conflict, unknown, and non-declared growth Helpers remain denied or pending with no authority.",
+        "coverage": "2 held declarations + 9 unknown sources + 11 non-growth helpers"
+      },
+      {
+        "id": "P8-INV-HELPER-OWNER-003",
+        "statement": "Every Helper requires the exact canonical Section Owner registration before its event can enter the journal.",
+        "coverage": "12 missing-owner denials"
+      },
+      {
+        "id": "P8-INV-HELPER-CHAIN-004",
+        "statement": "Duplicate conflicts, stale or gapped sequences, and broken SHA-256 chains cannot mutate Helper state.",
+        "coverage": "identical duplicate, conflict, stale, gap, and chain mismatch"
+      },
+      {
+        "id": "P8-INV-HELPER-RESTART-005",
+        "statement": "Restart restores the exact complete journal and operation identities or exposes empty state on count, digest, head, snapshot, or owner failure.",
+        "coverage": "12-entry exact replay + 4 tamper cases + missing-owner replay"
+      },
+      {
+        "id": "P8-INV-HELPER-DIAGNOSTICS-006",
+        "statement": "Diagnostics exposes at most 128 redacted events and cannot reveal capability IDs, source hashes, raw authority, or source versions.",
+        "coverage": "130-event truncation and disclosure matrix"
+      },
+      {
+        "id": "P8-INV-HELPER-EFFECTS-007",
+        "statement": "All accepted and denied cases produce zero Helper behavior, mount, route, Bank, repair, storage, user-data, live-observation, and formal-proof effects.",
+        "coverage": "all matrices"
+      }
+    ],
+    "runner": "tools/run_pass8_unit5_helper_isolation_restart_denial_v1.js",
+    "deterministic_test": "tools/test_pass8_unit5_helper_isolation_restart_denial_v1.js",
+    "assertions": 251
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_integration",
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/pass8/pass8-helper-unit5-isolation-restart-denial-proof-v1.json",
+      "rationale": "P8-U5 expands the production Helper integration matrix across every eligible and held declaration, all unknown sources, owner absence, exact bindings, growth, revocation, restart tamper, redaction, and zero effects."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass8/pass8-helper-unit5-isolation-restart-denial-proof-v1.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass8_unit5_helper_isolation_restart_denial_v1.js"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass8_unit5_helper_isolation_restart_denial_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass8/receipts/RECEIPT_P8_U5_HELPER_ISOLATION_RESTART_DENIAL_20260726T185000Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "P8-U4 production-loads an empty passive Helper event runtime only after the Section Owner runtime and exposes a read-only redacted view.",
+        "evidence_paths": [
+          "audit/pass8/pass8-helper-unit4-owner-diagnostics-integration-v1.json"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The deterministic P8-U5 matrix exercises all twelve eligible Helpers, both held declarations, and all nine unknown Helper sources.",
+        "evidence_paths": [
+          "tools/run_pass8_unit5_helper_isolation_restart_denial_v1.js"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "The production Helper integration satisfies its isolation and recoverability contract and is ready for Pass 8 closure certification.",
+        "basis_evidence_paths": [
+          "audit/pass8/pass8-helper-unit4-owner-diagnostics-integration-v1.json",
+          "audit/pass8/pass8-helper-unit5-isolation-restart-denial-proof-v1.json"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "legacy and declaration-conflict Helpers",
+        "nine unknown Helper sources",
+        "missing Section Owner for every eligible Helper",
+        "source hash mismatch",
+        "canonical owner and section mismatch",
+        "slot and growth mismatch",
+        "root authorizer, capability, and decision mismatch",
+        "undeclared growth",
+        "identical and conflicting duplicate",
+        "stale and gapped sequence",
+        "broken event chain",
+        "revocation and stale revocation",
+        "restart count tamper",
+        "restart entry-digest tamper",
+        "restart head and snapshot tamper",
+        "restart missing owner",
+        "bounded Diagnostics overflow and redaction"
+      ]
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "verification": {
+    "assertions_total": 251,
+    "assertions_passed": 251,
+    "assertions_failed": 0,
+    "exact_scope": "PASS",
+    "input_hashes": "PASS",
+    "all_eligible_helper_bindings": "PASS",
+    "held_unknown_growth_and_owner_absence": "PASS",
+    "duplicate_stale_chain_and_revocation": "PASS",
+    "atomic_restart_and_tamper": "PASS",
+    "bounded_diagnostics_redaction": "PASS",
+    "zero_external_effects": "PASS",
+    "unit4_regression": "PASS",
+    "permanent_gate_binding": "PASS"
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_mutations": false,
+    "helper_ownership_changes": false,
+    "helper_behavior_activations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P8-U6",
+    "objective": "Close Pass 8 with cross-unit evidence sufficiency, invariant coverage, regression, authority, effect, and exact-next-move certification.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P8-U5 isolated deterministic proof only. Pass 8 is not yet closed; no Helper behavior is activated; Bank and Continuous Run are not repaired; no live observation, formal proof, storage migration, or persisted user-data change occurs."
+}
