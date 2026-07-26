@@ -3,8 +3,6 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
     paths:
-      - '.github/workflows/pass6-unit3-cross-system-invariant-matrix-v1.yml'
-      - '.github/workflows/pass6-unit4-deterministic-proof-harness-v1.yml'
       - 'audit/pass6/fixtures/pass6-unit4-deterministic-proof-harness-positive-v1.json'
       - 'audit/pass6/pass6-deterministic-browser-frame-event-unit4-proof-v1.json'
       - 'audit/pass6/receipts/RECEIPT_P6_U4_DETERMINISTIC_PROOF_HARNESS_20260726T102000Z_001.json'

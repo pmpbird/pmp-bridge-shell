@@ -1,0 +1,93 @@
+{
+  "type": "PMP_PASS6_CI_LANE_ARTIFACT_POLICY_V1",
+  "version": "1.0.0",
+  "pass": 6,
+  "unit": "P6-U5",
+  "policy": {
+    "missing_required_check": "FAIL_CLOSED",
+    "missing_artifact": "FAIL_CLOSED",
+    "scope_mismatch": "FAIL_CLOSED",
+    "flake_detected": "FAIL_CLOSED_AND_PRESERVE_ALL_ATTEMPTS",
+    "automatic_retry": "FORBIDDEN",
+    "failed_attempt_erasure": "FORBIDDEN",
+    "special_lane_retry": "FORBIDDEN_WITHOUT_NEW_EXPLICIT_AUTHORITY",
+    "green_requires": "ONE_COMPLETE_DETERMINISTIC_PASSING_ATTEMPT_WITH_ALL_CHECKS_AND_ARTIFACTS"
+  },
+  "required_checks": [
+    "exact_scope",
+    "source_identity",
+    "deterministic_tests",
+    "evidence_manifest",
+    "artifact_manifest",
+    "receipt"
+  ],
+  "artifact_roles": [
+    "command",
+    "stdout",
+    "stderr",
+    "exit_status",
+    "result",
+    "scope",
+    "environment",
+    "authority_state",
+    "manifest"
+  ],
+  "artifact_contract": {
+    "per_attempt_directory": "artifacts/<attempt_id>/",
+    "path_must_be_relative": true,
+    "path_traversal_forbidden": true,
+    "bytes_must_be_positive": true,
+    "sha256_required": true,
+    "duplicate_role_forbidden": true,
+    "unknown_role_forbidden": true,
+    "retention": "DURABLE_WITH_IMMUTABLE_RECEIPT_AND_CHECKPOINT",
+    "upload_even_when_test_fails": true,
+    "enforce_result_after_upload": true
+  },
+  "lanes": {
+    "static_contract": {
+      "class": "DETERMINISTIC",
+      "authority": "NONE",
+      "max_attempts": 1,
+      "retry_policy": "NO_AUTOMATIC_RETRY",
+      "required_artifact_roles": "ALL"
+    },
+    "deterministic_integration": {
+      "class": "DETERMINISTIC",
+      "authority": "NONE",
+      "max_attempts": 1,
+      "retry_policy": "NO_AUTOMATIC_RETRY",
+      "required_artifact_roles": "ALL"
+    },
+    "deterministic_browser_harness": {
+      "class": "DETERMINISTIC_SYNTHETIC_BROWSER_ADAPTER",
+      "authority": "NONE",
+      "max_attempts": 1,
+      "retry_policy": "NO_AUTOMATIC_RETRY",
+      "required_artifact_roles": "ALL"
+    },
+    "bounded_live_observation": {
+      "class": "SCARCE_LIVE",
+      "authority": "EXPLICIT_SEALED_SINGLE_USE",
+      "max_attempts": 1,
+      "retry_policy": "NEVER_RETRY_CONSUMED_AUTHORITY",
+      "required_artifact_roles": "ALL"
+    },
+    "formal_proof_exactly_once": {
+      "class": "EXACTLY_ONCE",
+      "authority": "EXPLICIT_SEALED_EXACTLY_ONCE",
+      "max_attempts": 1,
+      "retry_policy": "NEVER_RETRY_CONSUMED_AUTHORITY",
+      "required_artifact_roles": "ALL"
+    }
+  },
+  "result_states": [
+    "PASS",
+    "FAIL_CLOSED",
+    "FLAKE_DETECTED_FAIL",
+    "AUTHORITY_REJECTED",
+    "ARTIFACT_INCOMPLETE",
+    "SCOPE_REJECTED"
+  ],
+  "claim_ceiling": "This policy can certify CI evidence completeness and deterministic lane handling only. It cannot authorize or execute a live observation, formal proof, production change, repair, migration, or persisted-user-data mutation."
+}

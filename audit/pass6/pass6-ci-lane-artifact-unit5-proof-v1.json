@@ -1,0 +1,103 @@
+{
+  "type": "PMP_PASS6_CI_LANE_ARTIFACT_UNIT5_PROOF_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T10:40:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "8b389e244913f8727444478ccc9e681795ab0529",
+  "branch": "agent/pass6-unit5-ci-evidence-policy-v1",
+  "pass": 6,
+  "unit": "P6-U5",
+  "status": "CI_EVIDENCE_POLICY_PROVEN",
+  "objective": "Build CI lanes, exact-scope verification, flake policy, and durable artifact preservation around the deterministic proof infrastructure.",
+  "changed_paths": [
+    ".github/workflows/pass6-unit4-deterministic-proof-harness-v1.yml",
+    ".github/workflows/pass6-unit5-ci-evidence-policy-v1.yml",
+    "audit/pass6/fixtures/pass6-unit5-ci-evidence-envelope-positive-v1.json",
+    "audit/pass6/pass6-ci-lane-artifact-policy-v1.json",
+    "audit/pass6/pass6-ci-lane-artifact-unit5-proof-v1.json",
+    "audit/pass6/receipts/RECEIPT_P6_U5_CI_EVIDENCE_POLICY_20260726T104000Z_001.json",
+    "tools/run_pass6_unit5_ci_evidence_policy_v1.py",
+    "tools/test_pass6_unit5_ci_evidence_policy_v1.py",
+    "tools/verify_pass6_unit5_ci_evidence_policy_v1.py"
+  ],
+  "inputs": {
+    "policy": "audit/pass6/pass6-ci-lane-artifact-policy-v1.json",
+    "policy_sha256": "a783eee03bcfc63abed0e6107d5654d001f17595fb5f9c51c8f664b3bcba6dad",
+    "fixture": "audit/pass6/fixtures/pass6-unit5-ci-evidence-envelope-positive-v1.json",
+    "fixture_sha256": "a41dd25b1de0994ce4e9f9bb775a9b63f62fd25b1bf47768fbae596519539a75",
+    "runner": "tools/run_pass6_unit5_ci_evidence_policy_v1.py",
+    "runner_sha256": "ae2ef77daee898961fc03e840f2949e0386c975f40e2fccdeaaddb3649806d58",
+    "test": "tools/test_pass6_unit5_ci_evidence_policy_v1.py",
+    "test_sha256": "87f0bc68998735876887bebd61cdcb88a4a9f0d84c17074ff86848447400b7fb"
+  },
+  "policy_coverage": {
+    "lanes": 5,
+    "required_checks": 6,
+    "required_artifact_roles_per_attempt": 9,
+    "max_attempts_per_lane": 1,
+    "automatic_retry_allowed": false,
+    "failed_attempt_erasure_allowed": false,
+    "special_lane_retry_allowed": false,
+    "failure_upload_before_enforcement": true
+  },
+  "baseline_evaluation": {
+    "status": "PASS",
+    "lane": "deterministic_browser_harness",
+    "attempts": 1,
+    "artifacts": 9,
+    "checks_required": 6,
+    "checks_passed": 6,
+    "scope_paths": 4,
+    "flake_detected": false,
+    "result_sha256": "7ed39e3cf6ec683c37562c491dadcaf600963fe06efbd542d9c7b003eaa26a49"
+  },
+  "verification": {
+    "assertions_total": 469,
+    "assertions_passed": 469,
+    "assertions_failed": 0,
+    "exact_scope": "PASS",
+    "required_check_set": "PASS",
+    "artifact_role_path_bytes_and_hash_contract": "PASS",
+    "failed_attempt_preservation": "PASS",
+    "flake_false_green_rejection": "PASS",
+    "scarce_live_authority_binding": "PASS",
+    "exactly_once_authority_binding": "PASS",
+    "consumed_authority_retry_rejection": "PASS",
+    "deterministic_repeated_evaluation": "PASS"
+  },
+  "ci_routing_repair": {
+    "workflow": ".github/workflows/pass6-unit4-deterministic-proof-harness-v1.yml",
+    "repair": "Freeze completed P6-U4 routing to its immutable fixture, proof, receipt, harness, runner, test, and verifier sentinels.",
+    "p6_u4_evidence_modified": false,
+    "standing_a003_coverage_preserved": true
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "consumed_observation_prs": [149, 150, 152],
+    "formal_proof_pr": 122,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P6-U6",
+    "objective": "Prove fault preservation for timeouts, animation, nested frames, malformed state, missing dependencies, duplicate events, restart, and partial failure.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P6-U5 CI lane classification, evidence completeness, exact-scope, flake rejection, and artifact-preservation policy only. No live observation, production behavior, repair, migration, formal proof, or persisted-user-data change."
+}
