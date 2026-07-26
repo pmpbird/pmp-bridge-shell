@@ -123,7 +123,7 @@ jobs:
 
           assertion_old = """  record(`bootstrap-tamper-block:${pathName}`, text.includes(expectedCode) && !src, { expected_code:expectedCode, iframe_src:src, diagnostic:text.slice(0,1200) });"""
           assertion_new = """  const acceptedCodes = expectedCode === 'BOOTSTRAP_SOURCE_DIGEST_MISMATCH' ? [expectedCode, 'BOOTSTRAP_HTTP_FAILED'] : [expectedCode];
-  record(`bootstrap-tamper-block:${pathName}`, acceptedCodes.some(code => text.includes(code)) && !src, { expected_code:expectedCode, accepted_codes:acceptedCodes, iframe_src:src, diagnostic:text.slice(0,1200) });"""
+          record(`bootstrap-tamper-block:${pathName}`, acceptedCodes.some(code => text.includes(code)) && !src, { expected_code:expectedCode, accepted_codes:acceptedCodes, iframe_src:src, diagnostic:text.slice(0,1200) });"""
           if assertion_old not in text:
               raise SystemExit('Expected bootstrap tamper assertion was not found.')
           text = text.replace(assertion_old, assertion_new, 1)
