@@ -16,6 +16,8 @@ permissions:
 jobs:
   cross-system-invariant-matrix:
     runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - uses: actions/checkout@v4
         with:
