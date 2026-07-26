@@ -1,0 +1,57 @@
+{
+  "type": "PMP_PASS9_UNIT1_BANK_CONTINUOUS_RUN_INVENTORY_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P9_U1_BANK_CONTINUOUS_RUN_INVENTORY_20260726T192000Z_001",
+  "created_at": "2026-07-26T19:20:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "92069614248bce9aea81822ad6df1cf1a030f6a8",
+  "branch": "agent/pass9-unit1-bank-continuous-run-inventory-v1",
+  "pass": 9,
+  "unit": "P9-U1",
+  "status": "BANK_CONTINUOUS_RUN_INVENTORY_PROVEN",
+  "evidence": "audit/pass9/pass9-bank-continuous-run-unit1-inventory-v1.json",
+  "changed_paths": [
+    ".github/workflows/pass9-unit1-bank-continuous-run-inventory-v1.yml",
+    "audit/pass9/pass9-bank-continuous-run-unit1-inventory-v1.json",
+    "audit/pass9/receipts/RECEIPT_P9_U1_BANK_CONTINUOUS_RUN_INVENTORY_20260726T192000Z_001.json",
+    "tools/run_pass9_unit1_bank_continuous_run_inventory_v1.py",
+    "tools/test_pass9_unit1_bank_continuous_run_inventory_v1.py",
+    "tools/verify_pass9_unit1_bank_continuous_run_inventory_v1.py"
+  ],
+  "coverage": {
+    "active_chain_frames": 4,
+    "direct_script_occurrences": 120,
+    "relevant_occurrences": 37,
+    "unique_relevant_sources": 35,
+    "duplicate_sources": 2,
+    "storage_writer_sources": 24,
+    "recurring_interval_sources": 19,
+    "conflicts": 9,
+    "historic_working_points": 3,
+    "assertions": 135
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_mutations": false,
+    "continuous_run_mutations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "next_safe_move": {
+    "step_id": "P9-U2",
+    "instruction": "Lock separate Bank Owner and Continuous Run Owner contracts, operation-scoped requests and receipts, durable-write authority, concurrency, cancellation, restart, duplicate, and compatibility behavior without changing production behavior.",
+    "requires_explicit_authority": false,
+    "requires_user_app_check": false,
+    "stop_before": "Only a later genuine hands-on app reproduction or protected authority gate."
+  }
+}
