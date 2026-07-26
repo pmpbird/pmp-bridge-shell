@@ -284,8 +284,7 @@ let browser;
     await expectBootstrapFailure(INTEGRITY_SW, 'BOOTSTRAP_SOURCE_DIGEST_MISMATCH');
     await expectBootstrapFailure(RESOLVER, 'BOOTSTRAP_SOURCE_DIGEST_MISMATCH');
 
-    const historicalContext = await browser.newContext({serviceWorkers:'allow'});
-    const historicalPage = await bootstrap(historicalContext, '#world');
+    const historicalContext = await browser.newContext({serviceWorkers:'block'});
     await historicalContext.route('https://raw.githubusercontent.com/pmpbird/pmp-bridge-shell/7ac7213aeeeb8bb55692a4985e0fa80a547cff4e/pmp-home-single-v6.html*', async route => {
       const response = await route.fetch();
       const body = Buffer.concat([await response.body(), Buffer.from('\n<!-- A003 HISTORICAL TAMPER -->')]);
@@ -295,6 +294,8 @@ let browser;
       delete headers['transfer-encoding'];
       await route.fulfill({status:200, headers, body});
     });
+    const historicalPage = await historicalContext.newPage();
+    historicalPage.setDefaultTimeout(30000);
     await historicalPage.goto(BASE + HOME + '?requested_hash=%23world#world', {waitUntil:'domcontentloaded'});
     await historicalPage.waitForFunction(() => {
       try {
