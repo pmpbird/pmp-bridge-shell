@@ -53,6 +53,8 @@ async function initializeChain(){try{if(!resolver)throw new Error('PMP Current R
 initializeChain();
 frame.addEventListener('load',()=>{clearPreframe('frame_loaded_world_safe');shellReceipt('inner_frame_loaded')});[PRE_MS+450,PRE_MS+900,PRE_MS+1500,PRE_MS+2200].forEach(ms=>setTimeout(()=>{if(!routeFailed)clearPreframe('repeat_world_safe_'+ms)},ms));
 </script>
+<script src="pmp-diagnostic-journal-contract-v1.js?fresh=pass6-unit2-readonly-journal-20260726A"></script>
+<script src="pmp-diagnostic-journal-readonly-view-export-v1.js?fresh=pass6-unit2-readonly-journal-20260726A"></script>
 <script src="pmp-app-orchestrator-v1.js?fresh=app-orchestrator-final-clean-startup-certification-20260709A"></script>
 <script src="pmp-boot-status-strip-owner-v1.js?fresh=pass4-unit2-current-path-20260725A"></script>
 <script src="pmp-pass2-atlas-adapter-v2.js?fresh=pass2-atlas-pass5-stable-20260704I"></script>

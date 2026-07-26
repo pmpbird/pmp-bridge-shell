@@ -1,0 +1,68 @@
+{
+  "type": "PMP_PASS6_UNIT2_READONLY_JOURNAL_VIEW_EXPORT_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P6_U2_READONLY_VIEW_EXPORT_20260726T093700Z_001",
+  "created_at": "2026-07-26T09:37:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "97d4e7447810de4db8bd62a54e74b738f90f269f",
+  "branch": "agent/pass6-unit2-readonly-journal-view-export-v1",
+  "pass": 6,
+  "unit": "P6-U2",
+  "status": "READONLY_VIEW_EXPORT_PROVEN",
+  "evidence": "audit/pass6/pass6-diagnostic-journal-unit2-readonly-view-export-v1.json",
+  "changed_paths": [
+    ".github/workflows/pass6-unit1-diagnostic-journal-contract-v1.yml",
+    ".github/workflows/pass6-unit2-readonly-journal-view-export-v1.yml",
+    "audit/a003-manifest-seal.json",
+    "audit/pass6/pass6-diagnostic-journal-unit2-readonly-view-export-v1.json",
+    "audit/pass6/receipts/RECEIPT_P6_U2_READONLY_VIEW_EXPORT_20260726T093700Z_001.json",
+    "pmp-app-current.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+    "pmp-diagnostic-journal-readonly-view-export-v1.js",
+    "pmp-diagnostics-owner-v1.js",
+    "pmp-runtime-integrity-manifest-v1.json",
+    "tools/generate_pass6_unit2_integrity_updates_v1.py",
+    "tools/test_pass6_unit2_readonly_journal_view_export_v1.js",
+    "tools/verify_pass6_unit2_readonly_journal_view_export_v1.py"
+  ],
+  "verification": {
+    "assertions_total": 226,
+    "assertions_passed": 226,
+    "assertions_failed": 0,
+    "view_export_sha256": "449f7cd53967a77dd61582ffe3eb2f727179d2c3053755c07f5089f45226bfd1",
+    "test_sha256": "7a4fc0bbfc283a5be72852fdc8c2684b244aaa3ff947b7c4a47e812829db943c",
+    "result": "PASS"
+  },
+  "bounds": {
+    "visible_entries": 128,
+    "export_entries": 256,
+    "export_bytes": 262144,
+    "journal_capacity": 256,
+    "journal_retention_ms": 604800000
+  },
+  "effects": {
+    "production_load_chain_changed": true,
+    "diagnostics_ui_changed": true,
+    "journal_append_path_added": false,
+    "journal_restore_path_added": false,
+    "journal_persisted": false,
+    "synthetic_journal_events_added": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false
+  },
+  "recovery": {
+    "rollback_available": true,
+    "rollback_reference": "Revert the bounded view/export module and its two production load bindings; no data rollback or migration is required.",
+    "evidence_preserved": true
+  },
+  "supersedes_receipt_ids": [],
+  "next_safe_move": {
+    "step_id": "P6-U3",
+    "instruction": "Build the cross-system invariant and regression matrix.",
+    "requires_explicit_authority": false,
+    "requires_user_app_check": false,
+    "stop_before": "Only a genuinely required hands-on app reproduction or verification in a later unit."
+  }
+}
