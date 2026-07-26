@@ -284,18 +284,26 @@ let browser;
     await expectBootstrapFailure(INTEGRITY_SW, 'BOOTSTRAP_SOURCE_DIGEST_MISMATCH');
     await expectBootstrapFailure(RESOLVER, 'BOOTSTRAP_SOURCE_DIGEST_MISMATCH');
 
-    const historicalContext = await browser.newContext({serviceWorkers:'block'});
-    await historicalContext.route('https://raw.githubusercontent.com/pmpbird/pmp-bridge-shell/7ac7213aeeeb8bb55692a4985e0fa80a547cff4e/pmp-home-single-v6.html*', async route => {
-      const response = await route.fetch();
-      const body = Buffer.concat([await response.body(), Buffer.from('\n<!-- A003 HISTORICAL TAMPER -->')]);
-      const headers = {...response.headers(), 'access-control-allow-origin':'*', 'cache-control':'no-store'};
-      delete headers['content-length'];
-      delete headers['content-encoding'];
-      delete headers['transfer-encoding'];
-      await route.fulfill({status:200, headers, body});
+    const historicalContext = await browser.newContext({serviceWorkers:'allow'});
+    await historicalContext.addInitScript(() => {
+      const nativeFetch = window.fetch.bind(window);
+      window.fetch = async (...args) => {
+        const response = await nativeFetch(...args);
+        const input = args[0];
+        const url = typeof input === 'string' ? input : String(input?.url || '');
+        if (!url.includes('raw.githubusercontent.com/pmpbird/pmp-bridge-shell/7ac7213aeeeb8bb55692a4985e0fa80a547cff4e/pmp-home-single-v6.html')) return response;
+        const original = new Uint8Array(await response.arrayBuffer());
+        const suffix = new TextEncoder().encode('\n<!-- A003 HISTORICAL TAMPER -->');
+        const tampered = new Uint8Array(original.length + suffix.length);
+        tampered.set(original);
+        tampered.set(suffix, original.length);
+        const headers = new Headers(response.headers);
+        headers.delete('content-length');
+        headers.delete('content-encoding');
+        return new Response(tampered, { status:response.status, statusText:response.statusText, headers });
+      };
     });
-    const historicalPage = await historicalContext.newPage();
-    historicalPage.setDefaultTimeout(30000);
+    const historicalPage = await bootstrap(historicalContext, '#world');
     await historicalPage.goto(BASE + HOME + '?requested_hash=%23world#world', {waitUntil:'domcontentloaded'});
     await historicalPage.waitForFunction(() => {
       try {
