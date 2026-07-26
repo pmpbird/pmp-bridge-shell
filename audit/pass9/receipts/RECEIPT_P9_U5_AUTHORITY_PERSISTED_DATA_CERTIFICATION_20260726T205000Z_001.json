@@ -1,0 +1,58 @@
+{
+  "type": "PMP_PASS9_UNIT5_AUTHORITY_PERSISTED_DATA_CERTIFICATION_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P9_U5_AUTHORITY_PERSISTED_DATA_CERTIFICATION_20260726T205000Z_001",
+  "created_at": "2026-07-26T20:50:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "eb2b40e3023d236bda1a16c0971d92779bfcd225",
+  "branch": "agent/pass9-unit5-authority-persisted-data-certification-v1",
+  "pass": 9,
+  "unit": "P9-U5",
+  "status": "AUTHORITY_SEPARATION_AND_PERSISTED_DATA_CERTIFIED",
+  "evidence": "audit/pass9/pass9-bank-continuous-run-unit5-authority-persisted-data-certification-v1.json",
+  "changed_paths": [
+    ".github/workflows/pass9-unit5-authority-persisted-data-certification-v1.yml",
+    "audit/pass9/pass9-bank-continuous-run-unit5-authority-persisted-data-certification-v1.json",
+    "audit/pass9/receipts/RECEIPT_P9_U5_AUTHORITY_PERSISTED_DATA_CERTIFICATION_20260726T205000Z_001.json",
+    "tools/run_pass9_unit5_authority_persisted_data_certification_v1.js",
+    "tools/test_pass9_unit5_authority_persisted_data_certification_v1.js",
+    "tools/verify_pass9_unit5_authority_persisted_data_certification_v1.py"
+  ],
+  "coverage": {
+    "assertions": 143,
+    "invariants": 7,
+    "completed_evidence_units": 4,
+    "cumulative_prior_assertions": 836,
+    "governed_persisted_keys": 9,
+    "canonical_owners": 2,
+    "request_fields": 13,
+    "receipt_fields": 15,
+    "artifact_roles": 9
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_user_data_mutations": false,
+    "continuous_run_user_data_mutations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "next_safe_move": {
+    "step_id": "P9-U6",
+    "instruction": "Decide from the complete deterministic and existing observation record whether a new bounded Bank observation is genuinely required; issue a no-observation-required waiver when evidence is sufficient.",
+    "requires_explicit_authority_before_decision": false,
+    "requires_user_app_check_before_decision": false,
+    "perform_observation_automatically": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P9-U5 static and deterministic cross-unit certification only. Pass 9 is not yet closed; no production source, user persisted data, storage migration, scarce live observation, or formal proof is changed or consumed."
+}

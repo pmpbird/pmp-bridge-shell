@@ -1,0 +1,280 @@
+{
+  "type": "PMP_PASS9_BANK_CONTINUOUS_RUN_UNIT5_AUTHORITY_PERSISTED_DATA_CERTIFICATION_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T20:50:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "eb2b40e3023d236bda1a16c0971d92779bfcd225",
+  "branch": "agent/pass9-unit5-authority-persisted-data-certification-v1",
+  "pass": 9,
+  "unit": "P9-U5",
+  "unit_id": "P9-U5",
+  "status": "AUTHORITY_SEPARATION_AND_PERSISTED_DATA_CERTIFIED",
+  "objective": "Certify authority separation and persisted-data preservation across the P9-U1 inventory, P9-U2 contract, P9-U3 production repair, and P9-U4 exhaustive behavior proof without changing production or user data.",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass9-unit5-authority-persisted-data-certification-v1.yml",
+      "audit/pass9/pass9-bank-continuous-run-unit5-authority-persisted-data-certification-v1.json",
+      "audit/pass9/receipts/RECEIPT_P9_U5_AUTHORITY_PERSISTED_DATA_CERTIFICATION_20260726T205000Z_001.json",
+      "tools/run_pass9_unit5_authority_persisted_data_certification_v1.js",
+      "tools/test_pass9_unit5_authority_persisted_data_certification_v1.js",
+      "tools/verify_pass9_unit5_authority_persisted_data_certification_v1.py"
+    ],
+    "implementation_paths": []
+  },
+  "inputs": {
+    "unit1_inventory": "audit/pass9/pass9-bank-continuous-run-unit1-inventory-v1.json",
+    "unit1_inventory_sha256": "380e5638a5dc822fe6b784484e28454754408a299c7507c0d7ee557c74f5d641",
+    "unit2_contract": "audit/pass9/pass9-bank-continuous-run-unit2-owner-contract-v1.json",
+    "unit2_contract_sha256": "a2bda0b8b2171d8843d52334a07bdda0e3f517f557751f9464bd9c8ff2e526c5",
+    "unit3_integration": "audit/pass9/pass9-bank-continuous-run-unit3-owner-integration-v1.json",
+    "unit3_integration_sha256": "7082b32b0a29981b132269d2f481b075fa1a1a7a7a74a58d485c72b39e24e58f",
+    "unit4_proof": "audit/pass9/pass9-bank-continuous-run-unit4-exhaustive-proof-v1.json",
+    "unit4_proof_sha256": "aeb796ac7714c632387a0094a693d28e99aa177839ac748263f8fa94daa80d6f",
+    "owner_boundary": "pmp-bank-continuous-run-owner-boundary-v1.js",
+    "owner_boundary_sha256": "2d5f2f6015ee7096a07387b82c4478c88bb6423464d9fd11302705df73286fbd",
+    "continuous_run_state": "pmp-continuous-run-state-bank-v1.js",
+    "continuous_run_state_sha256": "ab1d780e81ce82dfff13827c3c93e1c4e6a44302660f7625823123e0a32e6460",
+    "bank_router": "pmp-master-bank-inventory-router-v1.js",
+    "bank_router_sha256": "7e10583e9c7b0d942bb3ea6905a17338089b6424dbc72211020ff2f27f635b39",
+    "runner": "tools/run_pass9_unit5_authority_persisted_data_certification_v1.js",
+    "runner_sha256": "69d13431d530987bdb45d76ead58597642b9916846fcfcdf3aa3bab6d2d83df1",
+    "test": "tools/test_pass9_unit5_authority_persisted_data_certification_v1.js",
+    "test_sha256": "3a4286bab8c3ccb30bfb070b79dec3002dbe0b8d82a12835f2a24aca5671ed19"
+  },
+  "certification": {
+    "model": "CROSS_UNIT_EXACT_SOURCE_AUTHORITY_AND_DATA_CERTIFICATION",
+    "assertions": 143,
+    "completed_evidence_units": 4,
+    "cumulative_prior_assertions": 836,
+    "original_conflicts_identified": 9,
+    "canonical_owners": 2,
+    "bank_owner": "bank_screen_owner",
+    "continuous_run_owner": "continuous_run_level_owner",
+    "owners_distinct": true,
+    "durable_writer": "bank_screen_owner",
+    "run_state_requester": "continuous_run_level_owner",
+    "request_fields": 13,
+    "receipt_fields": 15,
+    "receipt_algorithm": "SHA-256_CHAINED",
+    "governed_persisted_keys": 9,
+    "bank_governed_keys": 4,
+    "continuous_run_governed_keys": 5,
+    "active_runtime_order": "BOUNDARY_THEN_STATE_AND_ROUTER_THEN_BANK_SHELL_THEN_CONTINUOUS_RUN_OWNER",
+    "active_boundary_occurrences": 1,
+    "active_state_occurrences": 1,
+    "active_router_occurrences": 1,
+    "active_bank_shell_occurrences": 1,
+    "active_continuous_run_owner_occurrences": 1,
+    "active_legacy_mode_occurrences": 0,
+    "active_legacy_cleaner_occurrences": 0,
+    "state_direct_storage_writes": 0,
+    "state_direct_storage_deletes": 0,
+    "router_direct_storage_writes": 0,
+    "connections_delete_direct_storage_writes": 0,
+    "first_load_storage_calls": {
+      "get": 0,
+      "set": 0,
+      "remove": 0
+    },
+    "repeated_load_storage_calls": {
+      "get": 0,
+      "set": 0,
+      "remove": 0
+    },
+    "atomic_rollback_exact_restore_cases": 2,
+    "bounded_receipts_retained": 256,
+    "visible_receipts": 32,
+    "unrelated_bytes_preserved_across_all_matrices": true,
+    "delete_or_clear_default": "DENY",
+    "user_persisted_data_touched": false,
+    "storage_migration_performed": false
+  },
+  "diagnostic_and_proof_matrix": {
+    "type": "PMP_PASS9_UNIT5_AUTHORITY_PERSISTED_DATA_MATRIX_V1",
+    "version": "1.0.0",
+    "invariants": [
+      {
+        "id": "P9-INV-AUTHORITY-001",
+        "statement": "Bank Owner is the sole durable writer and Continuous Run Owner controls lifecycle only through exact receipted Bank requests.",
+        "coverage": "P9-U2 contract, P9-U3 sources, and thirteen-field request/fifteen-field receipt schema"
+      },
+      {
+        "id": "P9-INV-IDENTITY-002",
+        "statement": "Active tab, filename, copied cross-frame APIs, compatibility aliases, and load order cannot create or transfer authority.",
+        "coverage": "contract flags, dependency bridge, exact active chain, and one canonical owner load per role"
+      },
+      {
+        "id": "P9-INV-PERSISTENCE-003",
+        "statement": "All nine governed Bank and Continuous Run keys are exact-scope; state, router, and Connections deletion contain no direct storage writer outside the Bank boundary.",
+        "coverage": "four Bank keys, five Continuous Run keys, and exact source inspection"
+      },
+      {
+        "id": "P9-INV-PRESERVATION-004",
+        "statement": "Load, repeat load, stale concurrency, cancellation denial, duplicate conflict, general denial, rollback, restart, corrupt-state read, and denied delete preserve exact prior and unrelated bytes.",
+        "coverage": "all P9-U4 preservation matrices"
+      },
+      {
+        "id": "P9-INV-DELETION-005",
+        "statement": "Delete and clear deny by default; Connections binary cleanup occurs only after exact user-confirmed Bank commit.",
+        "coverage": "default denial, wrong capability denial, exact capability commit, and source order"
+      },
+      {
+        "id": "P9-INV-DIAGNOSTIC-006",
+        "statement": "Cross-owner receipts are SHA-256 chained, bounded, and available through a read-only non-automatic diagnostic snapshot.",
+        "coverage": "260-commit stress, 256 retained, 32 visible, and zero diagnostic writes/deletes"
+      },
+      {
+        "id": "P9-INV-EFFECTS-007",
+        "statement": "P9-U5 changes no production source or runtime integrity, touches no user data, performs no migration, and consumes no scarce observation or formal proof.",
+        "coverage": "exact six-file certification scope and zero-effect declaration"
+      }
+    ],
+    "runner": "tools/run_pass9_unit5_authority_persisted_data_certification_v1.js",
+    "deterministic_test": "tools/test_pass9_unit5_authority_persisted_data_certification_v1.js",
+    "assertions": 143
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_integration",
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/pass9/pass9-bank-continuous-run-unit5-authority-persisted-data-certification-v1.json",
+      "rationale": "P9-U5 binds the complete inventory, contract, repair, exhaustive proof, exact active source, authority separation, persistence scope, Diagnostics, and zero-effect record."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass9/pass9-bank-continuous-run-unit1-inventory-v1.json",
+      "audit/pass9/pass9-bank-continuous-run-unit2-owner-contract-v1.json",
+      "audit/pass9/pass9-bank-continuous-run-unit3-owner-integration-v1.json",
+      "audit/pass9/pass9-bank-continuous-run-unit4-exhaustive-proof-v1.json",
+      "audit/pass9/pass9-bank-continuous-run-unit5-authority-persisted-data-certification-v1.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass9_unit5_authority_persisted_data_certification_v1.js"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass9_unit5_authority_persisted_data_certification_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass9/receipts/RECEIPT_P9_U5_AUTHORITY_PERSISTED_DATA_CERTIFICATION_20260726T205000Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "One hundred forty-three deterministic assertions bind all four prior Pass 9 units to the exact merged production owner boundary and active runtime chain.",
+        "evidence_paths": [
+          "tools/run_pass9_unit5_authority_persisted_data_certification_v1.js",
+          "tools/test_pass9_unit5_authority_persisted_data_certification_v1.js"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "All nine governed persisted keys are owner-scoped, all load paths are zero-effect, and every P9-U4 denial and rollback preservation matrix passes.",
+        "evidence_paths": [
+          "audit/pass9/pass9-bank-continuous-run-unit4-exhaustive-proof-v1.json",
+          "tools/run_pass9_unit5_authority_persisted_data_certification_v1.js"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "P9-U6 can decide whether any additional bounded observation is genuinely required without first asking the user to inspect the app.",
+        "basis_evidence_paths": [
+          "audit/pass9/pass9-bank-continuous-run-unit3-owner-integration-v1.json",
+          "audit/pass9/pass9-bank-continuous-run-unit4-exhaustive-proof-v1.json",
+          "audit/pass9/pass9-bank-continuous-run-unit5-authority-persisted-data-certification-v1.json"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "stale concurrent writer",
+        "cancellation epoch gap",
+        "stale cancellation",
+        "identical duplicate",
+        "conflicting duplicate",
+        "malformed request",
+        "wrong owner or target",
+        "wrong resource or version",
+        "wrong payload or capability",
+        "expired request",
+        "wrong durable storage scope",
+        "storage unavailable",
+        "partial existing-key write failure",
+        "partial absent-key write failure",
+        "corrupt restart state",
+        "unconfirmed delete",
+        "wrong delete capability",
+        "receipt history overflow"
+      ]
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "verification": {
+    "assertions_total": 143,
+    "assertions_passed": 143,
+    "assertions_failed": 0,
+    "exact_scope": "PASS",
+    "input_hashes": "PASS",
+    "cross_unit_evidence_chain": "PASS",
+    "owner_identity_and_authority_separation": "PASS",
+    "exact_persisted_key_scope": "PASS",
+    "active_runtime_single_owner_order": "PASS",
+    "load_denial_rollback_restart_and_delete_preservation": "PASS",
+    "sha256_receipt_and_read_only_diagnostics": "PASS",
+    "unit4_regression": "PASS",
+    "zero_external_effects": "PASS",
+    "permanent_gate_binding": "PASS"
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_user_data_mutations": false,
+    "continuous_run_user_data_mutations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P9-U6",
+    "objective": "Decide from the complete deterministic and existing observation record whether a new bounded Bank observation is genuinely required; issue a no-observation-required waiver when evidence is sufficient.",
+    "requires_user_app_check_before_decision": false,
+    "requires_new_explicit_authority_before_decision": false,
+    "perform_observation_automatically": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P9-U5 static and deterministic cross-unit certification only. Pass 9 is not yet closed; no production source, user persisted data, storage migration, scarce live observation, or formal proof is changed or consumed."
+}
