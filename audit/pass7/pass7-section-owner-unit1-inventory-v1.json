@@ -1,0 +1,208 @@
+{
+  "type": "PMP_PASS7_SECTION_OWNER_UNIT1_INVENTORY_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T16:15:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "35a22c1c456d19c18868c87786d462a73aa921d8",
+  "branch": "agent/pass7-unit1-section-owner-inventory-v1",
+  "pass": 7,
+  "unit": "P7-U1",
+  "unit_id": "P7-U1",
+  "status": "SECTION_OWNER_INVENTORY_PROVEN",
+  "objective": "Inventory sections, owners, lifecycle dependencies, consumers, and unresolved cases without granting authority from appearance.",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass7-unit1-section-owner-inventory-v1.yml",
+      "audit/pass7/pass7-section-owner-unit1-inventory-v1.json",
+      "audit/pass7/receipts/RECEIPT_P7_U1_SECTION_OWNER_INVENTORY_20260726T161500Z_001.json",
+      "tools/run_pass7_unit1_section_owner_inventory_v1.py",
+      "tools/test_pass7_unit1_section_owner_inventory_v1.py",
+      "tools/verify_pass7_unit1_section_owner_inventory_v1.py"
+    ],
+    "implementation_paths": []
+  },
+  "inputs": {
+    "section_owner_registry": "pmp-section-owner-registry-v1.js",
+    "section_owner_registry_sha256": "9944464a1ac464b508b88bc16e0c929f7567e972a990c5e3cbb7c1b989e3d01a",
+    "legacy_owner_diagnostics": "pmp-owner-diagnostics-foundation-v1.js",
+    "legacy_owner_diagnostics_sha256": "7f7d26dcb824e1ba759c470f292d4e920a0e65508b881807666cd939f6b070c8",
+    "diagnostics_owner": "pmp-diagnostics-owner-v1.js",
+    "diagnostics_owner_sha256": "179aa730ce64e8bbbc18ebf8c25997ec2cfda75f555963b83d2b9e6635d5b1b6",
+    "app_orchestrator": "pmp-app-orchestrator-v1.js",
+    "app_orchestrator_sha256": "34da622cb3924624fedfaa110ad38ae16fb3aa4b40d595ae2446f8f92855fe91",
+    "mount_lifecycle_runtime": "pmp-mount-lifecycle-runtime-v1.js",
+    "mount_lifecycle_runtime_sha256": "cf2dfedd323f8b431ba69bac9a4d7a8345e4691878475a19f3458867b4b48a37",
+    "runner": "tools/run_pass7_unit1_section_owner_inventory_v1.py",
+    "runner_sha256": "a8ef9c42876d5ae76c4a18a15def466b48b7f43275420bc42fb96ddeabc443fc",
+    "test": "tools/test_pass7_unit1_section_owner_inventory_v1.py",
+    "test_sha256": "7d8c0fbb1707d0e1c4bdb105ec206ed1e9e2026311892c021ffbb607ecc6b2e7"
+  },
+  "inventory": {
+    "declared_owners": [
+      {"id": "app_orchestrator_owner", "section": "app_orchestrator", "source_candidate_count": 1},
+      {"id": "reload_current_owner", "section": "current_reload", "source_candidate_count": 1},
+      {"id": "mount_registry_owner", "section": "mount_registry", "source_candidate_count": 2},
+      {"id": "bank_screen_owner", "section": "bank", "source_candidate_count": 2},
+      {"id": "continuous_run_level_owner", "section": "continuous_run", "source_candidate_count": 2},
+      {"id": "resident_30b_owner", "section": "resident_30b", "source_candidate_count": 0},
+      {"id": "source_gate_owner", "section": "source_gate", "source_candidate_count": 0},
+      {"id": "diagnostics_owner", "section": "diagnostics", "source_candidate_count": 2}
+    ],
+    "owners_declared": 8,
+    "sections_inventory": 8,
+    "owners_with_source_candidates": 6,
+    "owners_without_source_candidates": 2,
+    "owner_named_root_sources": 32,
+    "unregistered_owner_named_sources": 25,
+    "observed_facts": 6,
+    "inferred_conclusions": 3,
+    "unresolved_cases": [
+      {
+        "kind": "CONTRADICTORY_PRESENCE_MODELS",
+        "disposition": "Do not treat either boot or legacy snapshot as complete runtime truth."
+      },
+      {
+        "kind": "NO_DEDICATED_SOURCE_CANDIDATE",
+        "owners": ["resident_30b_owner", "source_gate_owner"],
+        "disposition": "Do not infer implementation authority from declaration alone."
+      },
+      {
+        "kind": "UNREGISTERED_OWNER_NAMED_SOURCES",
+        "source_count": 25,
+        "disposition": "Do not auto-register or grant authority based on filenames."
+      },
+      {
+        "kind": "BANK_CONTINUOUS_RUN_OVERLAP",
+        "owners": ["bank_screen_owner", "continuous_run_level_owner"],
+        "disposition": "Defer the explicit authority split to the documented Bank/Continuous Run pass."
+      }
+    ],
+    "result_sha256": "6b015ffe7179cecb240b615dd6ffa72c399a8db3a2b4554ad02d90f81e256b52"
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "static_contract",
+    "diagnostic_matrix_update": {
+      "status": "CONFIRMED_UNCHANGED",
+      "applicable_matrix": "audit/pass6/pass6-cross-system-invariant-catalog-v1.json",
+      "rationale": "P7-U1 is a read-only inventory. New Section Owner invariants begin with the P7-U2 contract after the observed inventory is locked."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass7/pass7-section-owner-unit1-inventory-v1.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass7_unit1_section_owner_inventory_v1.py"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass7_unit1_section_owner_inventory_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass7/receipts/RECEIPT_P7_U1_SECTION_OWNER_INVENTORY_20260726T161500Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The current section registry declares exactly eight owner identities.",
+        "evidence_paths": [
+          "pmp-section-owner-registry-v1.js",
+          "audit/pass7/pass7-section-owner-unit1-inventory-v1.json"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The boot registry and legacy diagnostics foundation use contradictory presence assumptions.",
+        "evidence_paths": [
+          "pmp-section-owner-registry-v1.js",
+          "pmp-owner-diagnostics-foundation-v1.js"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The source tree contains more owner-named files than registered owner identities.",
+        "evidence_paths": [
+          "audit/pass7/pass7-section-owner-unit1-inventory-v1.json"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "Owner appearance and owner-like filenames cannot safely grant authority.",
+        "basis_evidence_paths": [
+          "pmp-section-owner-registry-v1.js",
+          "pmp-owner-diagnostics-foundation-v1.js",
+          "audit/pass7/pass7-section-owner-unit1-inventory-v1.json"
+        ]
+      },
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "Bank and Continuous Run require an explicit later authority-separation contract.",
+        "basis_evidence_paths": [
+          "pmp-bank-continuous-run-owner-split-diagnostic-v1.js",
+          "audit/pass7/pass7-section-owner-unit1-inventory-v1.json"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "NOT_APPLICABLE",
+      "cases": [],
+      "rationale": "The unit reads tracked source and creates no registration or lifecycle transition."
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "verification": {
+    "assertions_total": 168,
+    "assertions_passed": 168,
+    "assertions_failed": 0,
+    "exact_scope": "PASS",
+    "source_hashes": "PASS",
+    "observed_inferred_separation": "PASS",
+    "unresolved_cases_fail_passive": "PASS",
+    "permanent_gate_binding": "PASS"
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P7-U2",
+    "objective": "Define the Section Owner capability, delegation, isolation, and failure contract.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P7-U1 read-only inventory only. No owner registration, activation, delegation, production behavior, live observation, formal proof, migration, or persisted-user-data change."
+}
