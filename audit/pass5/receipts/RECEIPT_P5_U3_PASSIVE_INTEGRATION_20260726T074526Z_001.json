@@ -1,0 +1,101 @@
+{
+  "schema": "PMP_APP_ORCHESTRATOR_STEP_RECEIPT_V1",
+  "receipt_id": "AO-P5-U3-PASSIVE-LIFECYCLE-INTEGRATION-V1-001",
+  "created_at": "2026-07-26T07:45:26Z",
+  "project": "App Orchestrator",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "roadmap_version": "1.0.0",
+  "pass": 5,
+  "unit": "P5-U3",
+  "substep": "P5-U3",
+  "kind": "IMPLEMENTATION",
+  "status": "PASS_BOUNDED",
+  "objective": "Passively load the proven lifecycle contract and one in-memory explicit-owner-event runtime behind the preserved legacy atlas compatibility boundary.",
+  "claim_ceiling": "Passive runtime integration only; no automatic lifecycle events, legacy atlas replacement, storage migration, Diagnostics UI, live observation, or Pass 5 closure.",
+  "authority": {
+    "basis": [
+      "V104 exact next move P5-U3",
+      "Merged P5-U2 lifecycle contract",
+      "Strengthened 13-pass execution roadmap V1",
+      "Continuing ordinary in-scope authorization through Pass 13"
+    ],
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "authorization_evidence": [
+      "The runtime accepts only explicit owner-attested events through its named entrypoint.",
+      "No observation or formal-proof authority is used."
+    ]
+  },
+  "git": {
+    "base_commit": "bb556d956b9d46095513651419d07e367caaaec6",
+    "branch": "agent/pass5-unit3-passive-lifecycle-integration-v1",
+    "head_commit": null,
+    "pull_request": null,
+    "merge_commit": null,
+    "verified_main_commit": "bb556d956b9d46095513651419d07e367caaaec6"
+  },
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass5-unit3-passive-lifecycle-integration-v1.yml",
+      "audit/a003-manifest-seal.json",
+      "audit/pass5/pass5-mount-registry-diagnostics-unit3-passive-integration-v1.json",
+      "audit/pass5/receipts/RECEIPT_P5_U3_PASSIVE_INTEGRATION_20260726T074526Z_001.json",
+      "pmp-app-current.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+      "pmp-mount-lifecycle-runtime-v1.js",
+      "pmp-runtime-integrity-manifest-v1.json",
+      "tools/generate_pass5_unit3_integrity_updates_v1.py",
+      "tools/test_pass5_unit3_passive_lifecycle_integration_v1.js",
+      "tools/verify_pass5_unit3_passive_lifecycle_integration_v1.py"
+    ],
+    "evidence_paths": [
+      "audit/pass5/pass5-mount-registry-diagnostics-unit3-passive-integration-v1.json"
+    ],
+    "forbidden_paths_checked": [
+      "P5-U2 lifecycle contract",
+      "Existing Mount Registry atlas",
+      "App Orchestrator and Current Map owners",
+      "Diagnostics UI",
+      "Existing persisted storage and user data",
+      "Consumed observation records",
+      "PR 122"
+    ],
+    "unrelated_changes_preserved": true
+  },
+  "verification": {
+    "tests": [
+      "P5-U2 pure contract regression",
+      "Empty initial lifecycle registry",
+      "Explicit owner-attested happy path",
+      "Observer and inferred rejection",
+      "Duplicate event and install idempotence",
+      "Legacy facade zero automatic calls",
+      "Missing dependency fail-closed behavior",
+      "Forbidden-effect source scan",
+      "Exact eleven-file scope and A-003 identity verifier"
+    ],
+    "workflows": [],
+    "result": "Prepared for deterministic local and pull-request verification.",
+    "evidence_complete": true
+  },
+  "effects": {
+    "production_runtime_changed": true,
+    "runtime_integrity_changed": true,
+    "persisted_user_data_changed": false,
+    "historical_evidence_changed": false,
+    "github_changed": false
+  },
+  "recovery": {
+    "rollback_available": true,
+    "rollback_reference": "The additive contract and runtime script tags can be reverted without storage or data rollback.",
+    "evidence_preserved": true
+  },
+  "supersedes_receipt_ids": [],
+  "next_safe_move": {
+    "step_id": "P5-U4",
+    "instruction": "Add bounded read-only lifecycle facts to Diagnostics without synthesizing lifecycle events or changing runtime ownership.",
+    "requires_explicit_authority": false,
+    "stop_before": "Any automatic lifecycle event production, storage migration, or live observation."
+  }
+}
