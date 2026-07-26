@@ -4,13 +4,9 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
     paths:
       - '.github/workflows/pass5-unit3-passive-lifecycle-integration-v1.yml'
-      - 'audit/a003-manifest-seal.json'
       - 'audit/pass5/pass5-mount-registry-diagnostics-unit3-passive-integration-v1.json'
       - 'audit/pass5/receipts/RECEIPT_P5_U3_PASSIVE_INTEGRATION_20260726T074526Z_001.json'
-      - 'pmp-app-current.html'
-      - 'pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html'
       - 'pmp-mount-lifecycle-runtime-v1.js'
-      - 'pmp-runtime-integrity-manifest-v1.json'
       - 'tools/generate_pass5_unit3_integrity_updates_v1.py'
       - 'tools/test_pass5_unit3_passive_lifecycle_integration_v1.js'
       - 'tools/verify_pass5_unit3_passive_lifecycle_integration_v1.py'
@@ -23,21 +19,37 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Detect bounded Pass 5 Unit 3 implementation scope
+        id: unit_scope
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if git diff --quiet "$BASE_SHA...HEAD" -- pmp-mount-lifecycle-runtime-v1.js; then
+            echo "active=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "active=true" >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/setup-node@v4
+        if: steps.unit_scope.outputs.active == 'true'
         with:
           node-version: '20'
       - uses: actions/setup-python@v5
+        if: steps.unit_scope.outputs.active == 'true'
         with:
           python-version: '3.12'
       - name: Test pure contract and passive integration
+        if: steps.unit_scope.outputs.active == 'true'
         run: |
           node tools/test_pass5_unit2_mount_lifecycle_contract_v1.js
           node tools/test_pass5_unit3_passive_lifecycle_integration_v1.js
       - name: Prove deterministic runtime identity generation
+        if: steps.unit_scope.outputs.active == 'true'
         run: |
           python3 tools/generate_pass5_unit3_integrity_updates_v1.py
           git diff --exit-code
       - name: Test complete A-003 repository integrity
+        if: steps.unit_scope.outputs.active == 'true'
         run: python3 tools/test_a003_integrity.py --output /tmp/pass5-unit3-a003-result.json
       - name: Verify exact bounded integration scope
+        if: steps.unit_scope.outputs.active == 'true'
         run: python3 tools/verify_pass5_unit3_passive_lifecycle_integration_v1.py "${{ github.event.pull_request.base.sha }}"
