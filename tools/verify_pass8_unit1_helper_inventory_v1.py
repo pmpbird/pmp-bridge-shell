@@ -38,7 +38,7 @@ SOURCE_INPUTS = {
     "test_sha256": TEST,
 }
 EXPECTED_COUNTS = {
-    "tracked_files": 1877,
+    "tracked_files": 1883,
     "declared_helpers": 14,
     "declared_unique_ids": 14,
     "declared_unique_files": 14,

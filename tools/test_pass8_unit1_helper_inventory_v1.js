@@ -11,7 +11,7 @@ equal(result.type,'PMP_PASS8_UNIT1_HELPER_INVENTORY_RESULT_V1','result type');
 equal(result.version,'1.0.0','result version');
 equal(result.status,'PASS','result status');
 equal(inventory.verifyResultHash(result),true,'result hash');
-equal(result.counts.tracked_files,1877,'tracked main files');
+equal(result.counts.tracked_files,1883,'tracked pull-request-head files');
 equal(result.counts.declared_helpers,14,'declared helper count');
 equal(result.counts.declared_unique_ids,14,'unique helper IDs');
 equal(result.counts.declared_unique_files,14,'unique helper files');
