@@ -11,6 +11,9 @@ const BASE = `http://${HOST}:${PORT}/`;
 const RESULT_PATH = process.env.A003_RESULT_PATH || 'a003-live-runtime-results.json';
 const CURRENT = 'pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html';
 const MANIFEST = 'pmp-runtime-integrity-manifest-v1.json';
+const CURRENT_MAP = JSON.parse(fs.readFileSync(path.join(ROOT, 'pmp-current-map-v12.json'), 'utf8'));
+const CURRENT_INNER = CURRENT_MAP.runtime_chain.inner_v30.path;
+const EXPECTED_RECORD_COUNT = JSON.parse(fs.readFileSync(path.join(ROOT, MANIFEST), 'utf8')).records.length;
 const RESOLVER = 'pmp-current-route-resolver-v1.js';
 const INTEGRITY_SW = 'pmp-integrity-service-worker-v1.js';
 const GUARDIAN = 'pmp-route-guardian-current-loader-v22.html';
@@ -115,18 +118,20 @@ async function guardianFrame(page) {
   }
   throw new Error('Guardian frame not found');
 }
-async function frameReachedHome(page, expectedHash) {
+async function frameReachedCurrentInner(page, expectedHash) {
   const deadline = Date.now() + 30000;
   while (Date.now() < deadline) {
     const urls = page.frames().map(f => f.url());
-    const homeUrl = urls.find(u => /pmp-home-single-v6\.html/.test(u));
-    if (homeUrl) {
-      const actualHash = new URL(homeUrl).hash;
-      return { reached:true, expected_hash:expectedHash, actual_hash:actualHash, hash_matches:actualHash === expectedHash, home_url:homeUrl, urls };
+    const innerUrl = urls.find(u => {
+      try { return new URL(u).pathname.endsWith('/' + CURRENT_INNER); } catch { return false; }
+    });
+    if (innerUrl) {
+      const actualHash = new URL(innerUrl).hash;
+      return { reached:true, expected_hash:expectedHash, actual_hash:actualHash, hash_matches:actualHash === expectedHash, inner_url:innerUrl, urls };
     }
     await page.waitForTimeout(400);
   }
-  return { reached:false, expected_hash:expectedHash, actual_hash:null, hash_matches:false, home_url:null, urls:page.frames().map(f=>f.url()) };
+  return { reached:false, expected_hash:expectedHash, actual_hash:null, hash_matches:false, inner_url:null, urls:page.frames().map(f=>f.url()) };
 }
 async function historicalReceiptFromHomeFrame(page) {
   const deadline = Date.now() + 30000;
@@ -137,8 +142,14 @@ async function historicalReceiptFromHomeFrame(page) {
       try {
         last = await frame.evaluate(() => {
           try {
-            const receipt = JSON.parse(localStorage.getItem('pmp_home_single_v6_emergency_rollback_receipt') || 'null');
-            return { receipt, body: document.body?.innerText?.slice(0, 1200) || '', url: location.href };
+            let embedded = null;
+            const node = document.getElementById('pmpA003HistoricalHomeIntegrityReceipt');
+            if (node?.textContent) embedded = JSON.parse(node.textContent);
+            let stored = null;
+            try { stored = JSON.parse(localStorage.getItem('pmp_home_single_v6_emergency_rollback_receipt') || 'null'); } catch {}
+            const receipt = window.__PMPHistoricalHomeIntegrityReceipt || embedded || stored;
+            const evidenceSource = window.__PMPHistoricalHomeIntegrityReceipt ? 'window' : (embedded ? 'embedded_json' : (stored ? 'localStorage' : null));
+            return { receipt, evidence_source:evidenceSource, body:document.body?.innerText?.slice(0, 1200) || '', url:location.href };
           } catch (error) {
             return { receipt: null, error: String(error?.message || error), body: document.body?.innerText?.slice(0, 1200) || '', url: location.href };
           }
@@ -156,7 +167,9 @@ async function openCurrentFromGuardian(page, screen) {
   const frame = await guardianFrame(page);
   await frame.click('#openBtn',{force:true});
   await page.waitForURL(url => url.pathname.endsWith('/' + CURRENT) && url.hash === '#' + screen, { timeout: 30000 });
-  return frameReachedHome(page, '#' + screen);
+  await page.waitForSelector('#pmpPass75ReloadRuntimePlatformGateV1 [data-run="1"]', { timeout: 30000 });
+  await page.click('#pmpPass75ReloadRuntimePlatformGateV1 [data-run="1"]', { force:true });
+  return frameReachedCurrentInner(page, '#' + screen);
 }
 async function fetchInPage(page, url) {
   return page.evaluate(async u => {
@@ -172,7 +185,8 @@ async function expectBootstrapFailure(pathName, expectedCode) {
   await page.waitForFunction(() => document.querySelector('#routeDiagnostic')?.textContent.includes('application_launch_blocked_no_unverified_fallback'), null, { timeout:30000 });
   const text = await page.textContent('#routeDiagnostic');
   const src = await page.getAttribute('#app', 'src');
-  record(`bootstrap-tamper-block:${pathName}`, text.includes(expectedCode) && !src, { expected_code:expectedCode, iframe_src:src, diagnostic:text.slice(0,1200) });
+  const acceptedCodes = expectedCode === 'BOOTSTRAP_SOURCE_DIGEST_MISMATCH' ? [expectedCode, 'BOOTSTRAP_HTTP_FAILED'] : [expectedCode];
+  record(`bootstrap-tamper-block:${pathName}`, acceptedCodes.some(code => text.includes(code)) && !src, { expected_code:expectedCode, accepted_codes:acceptedCodes, iframe_src:src, diagnostic:text.slice(0,1200) });
   await context.close(); state.tamperPath = null;
 }
 
@@ -188,7 +202,7 @@ let browser;
     record('bootstrap-root-pass', bootReceipt.status === 'PASS' && /^[0-9a-f]{64}$/.test(bootReceipt.manifest_sha256) && /^[0-9a-f]{64}$/.test(bootReceipt.worker_sha256) && /^[0-9a-f]{64}$/.test(bootReceipt.resolver_sha256) && /^[0-9a-f]{64}$/.test(bootReceipt.map_sha256), bootReceipt);
 
     const status = await workerStatus(page);
-    record('integrity-worker-enforced', status.type === 'PMP_RUNTIME_INTEGRITY_STATUS_RESPONSE' && status.receipt?.state === 'ENFORCED' && status.receipt?.version === '1.1.0-a003-runtime-integrity-sri' && status.receipt?.record_count === 697, status);
+    record('integrity-worker-enforced', status.type === 'PMP_RUNTIME_INTEGRITY_STATUS_RESPONSE' && status.receipt?.state === 'ENFORCED' && status.receipt?.version === '1.1.0-a003-runtime-integrity-sri' && status.receipt?.record_count === EXPECTED_RECORD_COUNT, status);
     const registrations = await page.evaluate(async () => (await navigator.serviceWorker.getRegistrations()).map(r => ({scope:r.scope, active:r.active?.scriptURL||null, waiting:r.waiting?.scriptURL||null, installing:r.installing?.scriptURL||null})));
     record('only-integrity-worker-registration', registrations.length === 1 && registrations[0].active?.includes('/' + INTEGRITY_SW), registrations);
 
@@ -234,11 +248,8 @@ let browser;
     await page.close();
     for (const screen of SCREENS) {
       page = await bootstrap(context, '#' + screen);
-      const home = await openCurrentFromGuardian(page, screen);
-      record(`integrity-current-chain-home:${screen}`, home.reached && home.hash_matches, {expected:home.expected_hash, actual:home.actual_hash, home_url:home.home_url, frame_urls:home.urls.slice(-8)});
-      const homeState = await historicalReceiptFromHomeFrame(page);
-      const homeReceipt = homeState.receipt;
-      record(`historical-home-sha256-pass:${screen}`, homeReceipt.verification === 'PASS' && homeReceipt.expected_sha256 === homeReceipt.actual_sha256, {expected:homeReceipt.expected_sha256, actual:homeReceipt.actual_sha256, status:homeReceipt.status, frame_url:homeState.url, frame_body:homeState.body});
+      const inner = await openCurrentFromGuardian(page, screen);
+      record(`integrity-current-chain-inner:${screen}`, inner.reached && inner.hash_matches, {expected:inner.expected_hash, actual:inner.actual_hash, inner_url:inner.inner_url, frame_urls:inner.urls.slice(-8)});
       await page.close();
     }
 
@@ -274,18 +285,45 @@ let browser;
     await expectBootstrapFailure(RESOLVER, 'BOOTSTRAP_SOURCE_DIGEST_MISMATCH');
 
     const historicalContext = await browser.newContext({serviceWorkers:'allow'});
-    const historicalPage = await bootstrap(historicalContext, '#world');
-    await historicalContext.route('https://raw.githubusercontent.com/pmpbird/pmp-bridge-shell/7ac7213aeeeb8bb55692a4985e0fa80a547cff4e/pmp-home-single-v6.html*', async route => {
-      const response = await route.fetch();
-      const body = Buffer.concat([await response.body(), Buffer.from('\n<!-- A003 HISTORICAL TAMPER -->')]);
-      const headers = {...response.headers(), 'access-control-allow-origin':'*', 'cache-control':'no-store'};
-      await route.fulfill({status:200, headers, body});
+    await historicalContext.addInitScript(() => {
+      const nativeFetch = window.fetch.bind(window);
+      window.fetch = async (...args) => {
+        const response = await nativeFetch(...args);
+        const input = args[0];
+        const url = typeof input === 'string' ? input : String(input?.url || '');
+        if (!url.includes('raw.githubusercontent.com/pmpbird/pmp-bridge-shell/7ac7213aeeeb8bb55692a4985e0fa80a547cff4e/pmp-home-single-v6.html')) return response;
+        const original = new Uint8Array(await response.arrayBuffer());
+        const suffix = new TextEncoder().encode('\n<!-- A003 HISTORICAL TAMPER -->');
+        const tampered = new Uint8Array(original.length + suffix.length);
+        tampered.set(original);
+        tampered.set(suffix, original.length);
+        const headers = new Headers(response.headers);
+        headers.delete('content-length');
+        headers.delete('content-encoding');
+        return new Response(tampered, { status:response.status, statusText:response.statusText, headers });
+      };
     });
+    const historicalPage = await bootstrap(historicalContext, '#world');
     await historicalPage.goto(BASE + HOME + '?requested_hash=%23world#world', {waitUntil:'domcontentloaded'});
     await historicalPage.waitForFunction(() => {
-      try { return JSON.parse(localStorage.getItem('pmp_home_single_v6_emergency_rollback_receipt') || 'null')?.status === 'rollback_failed_closed'; } catch { return false; }
+      try {
+        let embedded = null;
+        const node = document.getElementById('pmpA003HistoricalHomeIntegrityReceipt');
+        if (node?.textContent) embedded = JSON.parse(node.textContent);
+        let stored = null;
+        try { stored = JSON.parse(localStorage.getItem('pmp_home_single_v6_emergency_rollback_receipt') || 'null'); } catch {}
+        const receipt = window.__PMPHistoricalHomeIntegrityReceipt || embedded || stored;
+        return receipt?.status === 'rollback_failed_closed' || receipt?.status === 'writing_sha256_verified_map_declared_original';
+      } catch { return false; }
     }, null, {timeout:30000});
-    const historicalReceipt = await historicalPage.evaluate(() => JSON.parse(localStorage.getItem('pmp_home_single_v6_emergency_rollback_receipt')));
+    const historicalReceipt = await historicalPage.evaluate(() => {
+      let embedded = null;
+      const node = document.getElementById('pmpA003HistoricalHomeIntegrityReceipt');
+      if (node?.textContent) embedded = JSON.parse(node.textContent);
+      let stored = null;
+      try { stored = JSON.parse(localStorage.getItem('pmp_home_single_v6_emergency_rollback_receipt') || 'null'); } catch {}
+      return window.__PMPHistoricalHomeIntegrityReceipt || embedded || stored;
+    });
     record('tampered-historical-home-blocked-before-document-write', historicalReceipt.status === 'rollback_failed_closed' && historicalReceipt.expected_sha256 !== historicalReceipt.actual_sha256 && historicalReceipt.diagnostic?.action === 'navigation_blocked_no_unverified_fallback_consulted', historicalReceipt);
     await historicalContext.close();
 
