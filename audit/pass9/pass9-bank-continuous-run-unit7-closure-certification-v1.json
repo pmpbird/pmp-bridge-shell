@@ -1,0 +1,285 @@
+{
+  "type": "PMP_PASS9_BANK_CONTINUOUS_RUN_UNIT7_CLOSURE_CERTIFICATION_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T21:25:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "af568da490374d10be3acb069f1225f728e5c02f",
+  "branch": "agent/pass9-unit7-closure-certification-v1",
+  "pass": 9,
+  "unit": "P9-U7",
+  "unit_id": "P9-U7",
+  "status": "PASS9_BANK_CONTINUOUS_RUN_COMPLETE",
+  "objective": "Close Pass 9 by certifying every unit, exit criterion, invariant, authority boundary, effect boundary, receipt, permanent gate, and the exact read-only Pass 10 entry without launching the app or changing persisted user data.",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass9-unit7-closure-certification-v1.yml",
+      "audit/pass9/pass9-bank-continuous-run-unit7-closure-certification-v1.json",
+      "audit/pass9/receipts/RECEIPT_P9_U7_PASS9_BANK_CONTINUOUS_RUN_COMPLETE_20260726T212500Z_001.json",
+      "tools/run_pass9_unit7_closure_certification_v1.js",
+      "tools/test_pass9_unit7_closure_certification_v1.js",
+      "tools/verify_pass9_unit7_closure_certification_v1.py"
+    ],
+    "implementation_paths": []
+  },
+  "inputs": {
+    "p9_u1_sha256": "380e5638a5dc822fe6b784484e28454754408a299c7507c0d7ee557c74f5d641",
+    "p9_u2_sha256": "a2bda0b8b2171d8843d52334a07bdda0e3f517f557751f9464bd9c8ff2e526c5",
+    "p9_u3_sha256": "7082b32b0a29981b132269d2f481b075fa1a1a7a7a74a58d485c72b39e24e58f",
+    "p9_u4_sha256": "aeb796ac7714c632387a0094a693d28e99aa177839ac748263f8fa94daa80d6f",
+    "p9_u5_sha256": "8106eb92d12564a2516efe1a05070db39ecf0b6aea62fcc86d8e8f430eeb76e9",
+    "p9_u6_sha256": "b9e3c5b9a601f3f8f0ba5cf2c07da3538e9374693108808a540893ee9bc0ec92",
+    "runner_sha256": "c5e31092321f48fe34aa2b9b707f1fc36e3277d3a5c755ed762bb643d3ce12d3",
+    "test_sha256": "fc58f12adcfd32029ec1e25939b904e68c14b1fef08433b3ee23962452724423"
+  },
+  "evidence_summary": {
+    "completed_units": 6,
+    "prior_assertions": 1038,
+    "prior_assertions_failed": 0,
+    "units": [
+      {
+        "unit_id": "P9-U1",
+        "status": "BANK_CONTINUOUS_RUN_INVENTORY_PROVEN",
+        "assertions": 135
+      },
+      {
+        "unit_id": "P9-U2",
+        "status": "BANK_CONTINUOUS_RUN_OWNER_CONTRACT_PROVEN",
+        "assertions": 229
+      },
+      {
+        "unit_id": "P9-U3",
+        "status": "BANK_CONTINUOUS_RUN_OWNER_INTEGRATION_PROVEN",
+        "assertions": 234,
+        "production_repair": true
+      },
+      {
+        "unit_id": "P9-U4",
+        "status": "BANK_CONTINUOUS_RUN_EXHAUSTIVE_BEHAVIOR_PROVEN",
+        "assertions": 238
+      },
+      {
+        "unit_id": "P9-U5",
+        "status": "AUTHORITY_SEPARATION_AND_PERSISTED_DATA_CERTIFIED",
+        "assertions": 143
+      },
+      {
+        "unit_id": "P9-U6",
+        "status": "BOUNDED_OBSERVATION_NOT_REQUIRED",
+        "assertions": 59
+      }
+    ],
+    "receipt_chain": [
+      "P9-U1->P9-U2",
+      "P9-U2->P9-U3",
+      "P9-U3->P9-U4",
+      "P9-U4->P9-U5",
+      "P9-U5->P9-U6",
+      "P9-U6->P9-U7"
+    ],
+    "merged_production_repair_main": "834f396de0869d5b1adbcdea5dbbe35722a9f581",
+    "latest_verified_main": "af568da490374d10be3acb069f1225f728e5c02f",
+    "all_required_checks_green": true
+  },
+  "closure": {
+    "model": "STATIC_CROSS_UNIT_EXACT_RECEIPT_AND_EXIT_CRITERIA_CERTIFICATION",
+    "pass9_result": "PASS",
+    "bank_and_continuous_run_repair_complete": true,
+    "production_repair_unit": "P9-U3",
+    "bank_owner": "bank_screen_owner",
+    "continuous_run_owner": "continuous_run_level_owner",
+    "durable_writer": "bank_screen_owner",
+    "run_state_requester": "continuous_run_level_owner",
+    "owners_distinct": true,
+    "governed_persisted_keys": 9,
+    "request_fields": 13,
+    "receipt_fields": 15,
+    "receipt_algorithm": "SHA-256_CHAINED",
+    "active_runtime_order": "BOUNDARY_THEN_STATE_AND_ROUTER_THEN_BANK_SHELL_THEN_CONTINUOUS_RUN_OWNER",
+    "active_owner_component_occurrences": 5,
+    "concurrency_cases": 4,
+    "cancellation_cases": 5,
+    "restart_handoff_cases": 2,
+    "duplicate_cases": 4,
+    "atomic_rollback_exact_restore_cases": 2,
+    "bounded_receipts_retained": 256,
+    "visible_diagnostic_receipts": 32,
+    "unrelated_persisted_bytes_preserved": true,
+    "delete_or_clear_default": "DENY",
+    "observation_decision": "BOUNDED_OBSERVATION_NOT_REQUIRED",
+    "observation_performed": false,
+    "observation_authority_consumed": false
+  },
+  "exit_criteria": {
+    "every_unit_present_ordered_green_and_receipted": true,
+    "all_1038_prior_assertions_green": true,
+    "bank_owner_controls_bank_facts": true,
+    "bank_owner_controls_authorized_persistence": true,
+    "bank_owner_is_only_durable_writer": true,
+    "continuous_run_owner_controls_run_lifecycle": true,
+    "continuous_run_owner_does_not_own_bank": true,
+    "cross_owner_requests_explicit_and_fail_closed": true,
+    "cross_owner_results_sha256_receipted_and_diagnosable": true,
+    "active_runtime_owner_components_unique_and_ordered": true,
+    "restart_concurrency_and_cancellation_cannot_corrupt_bank": true,
+    "duplicates_do_not_duplicate_effects_or_receipts": true,
+    "atomic_rollback_restores_exact_bytes": true,
+    "unknown_corrupt_restart_preserves_raw_bytes_and_fails_closed": true,
+    "destructive_bank_action_denied_by_default": true,
+    "unrelated_persisted_bytes_preserved": true,
+    "no_persisted_user_data_changed_by_certification": true,
+    "no_storage_migration": true,
+    "no_formal_proof_consumed": true,
+    "no_new_observation_required_or_consumed": true,
+    "permanent_no_blind_flying_gate_bound": true,
+    "all_required_github_checks_green": true,
+    "exact_pass10_entry_defined": true
+  },
+  "pass10_boundary": {
+    "entry_unit": "P10-U1",
+    "pass_name": "Bank Tab / Bank Inventory Rebuild",
+    "objective": "Reconcile the current and historical Bank inventory and schemas read-only before changing the Bank tab or persisted data.",
+    "mode": "READ_ONLY_INVENTORY_RECONCILIATION",
+    "bank_tab_change_allowed": false,
+    "persisted_user_data_change_allowed": false,
+    "storage_migration_allowed": false,
+    "hands_on_app_check_required": false,
+    "new_explicit_authority_required": false
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "static_contract",
+    "diagnostic_matrix_update": {
+      "status": "CONFIRMED_UNCHANGED",
+      "applicable_matrix": "audit/pass9/pass9-bank-continuous-run-unit4-exhaustive-proof-v1.json",
+      "rationale": "P9-U4 is the exhaustive deterministic Bank and Continuous Run fault matrix. P9-U7 only binds the complete immutable evidence and adds no behavior."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass9/pass9-bank-continuous-run-unit1-inventory-v1.json",
+      "audit/pass9/pass9-bank-continuous-run-unit2-owner-contract-v1.json",
+      "audit/pass9/pass9-bank-continuous-run-unit3-owner-integration-v1.json",
+      "audit/pass9/pass9-bank-continuous-run-unit4-exhaustive-proof-v1.json",
+      "audit/pass9/pass9-bank-continuous-run-unit5-authority-persisted-data-certification-v1.json",
+      "audit/pass9/pass9-bank-continuous-run-unit6-bounded-observation-decision-v1.json",
+      "audit/pass9/pass9-bank-continuous-run-unit7-closure-certification-v1.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass9_unit7_closure_certification_v1.js"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass9_unit7_closure_certification_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass9/receipts/RECEIPT_P9_U7_PASS9_BANK_CONTINUOUS_RUN_COMPLETE_20260726T212500Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "P9-U1 through P9-U6 have immutable reports and receipts with 1,038 passing assertions and zero failures.",
+        "evidence_paths": [
+          "audit/pass9/pass9-bank-continuous-run-unit1-inventory-v1.json",
+          "audit/pass9/pass9-bank-continuous-run-unit6-bounded-observation-decision-v1.json"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The repaired active runtime has one ordered Bank boundary, state owner, router, Bank shell owner, and Continuous Run owner, and every production write routes through the Bank owner.",
+        "evidence_paths": [
+          "audit/pass9/pass9-bank-continuous-run-unit3-owner-integration-v1.json",
+          "audit/pass9/pass9-bank-continuous-run-unit5-authority-persisted-data-certification-v1.json"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "Pass 9 can close and P10-U1 can begin read-only because the owner repair, fault proof, persisted-data certification, and observation decision are complete with no unresolved failures.",
+        "basis_evidence_paths": [
+          "audit/pass9/pass9-bank-continuous-run-unit4-exhaustive-proof-v1.json",
+          "audit/pass9/pass9-bank-continuous-run-unit5-authority-persisted-data-certification-v1.json",
+          "audit/pass9/pass9-bank-continuous-run-unit6-bounded-observation-decision-v1.json"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "NOT_APPLICABLE",
+      "cases": [],
+      "rationale": "P9-U7 is static evidence-only closure. P9-U4 already exhaustively covers concurrency, cancellation, restart, handoff, duplicate, stale, denial, rollback, deletion, corruption, and receipt-bound faults."
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "verification": {
+    "assertions_total": 102,
+    "assertions_passed": 102,
+    "assertions_failed": 0,
+    "exact_scope": "PASS",
+    "input_hashes": "PASS",
+    "unit_traceability": "PASS",
+    "receipt_chain": "PASS",
+    "owner_boundaries": "PASS",
+    "exit_criteria": "PASS",
+    "observation_boundary": "PASS",
+    "pass10_boundary": "PASS",
+    "permanent_gate_binding": "PASS"
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_user_data_mutations": false,
+    "continuous_run_user_data_mutations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "retry_authorized": false
+  },
+  "no_retry_gates": {
+    "consumed_observation_prs": [
+      149,
+      150,
+      152
+    ],
+    "consumed_failed_formal_proof_pr": 122,
+    "retry_authorized": false
+  },
+  "pass9_result": "PASS",
+  "next_step": {
+    "id": "P10-U1",
+    "objective": "Reconcile the current and historical Bank inventory and schemas read-only before changing the Bank tab or persisted data.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "persisted_user_data_change_allowed": false,
+    "storage_migration_allowed": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "Pass 9 Bank Owner and Continuous Run Owner split, production repair, deterministic proof, authority and persisted-data certification, and no-observation-required decision are complete. This static closure performs no app launch, observation, formal proof, user-data change, storage migration, or new production behavior; P10-U1 is read-only inventory reconciliation."
+}
