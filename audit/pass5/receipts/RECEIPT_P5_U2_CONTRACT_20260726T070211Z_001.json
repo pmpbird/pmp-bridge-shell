@@ -1,0 +1,96 @@
+{
+  "schema": "PMP_APP_ORCHESTRATOR_STEP_RECEIPT_V1",
+  "receipt_id": "AO-P5-U2-MOUNT-LIFECYCLE-CONTRACT-V1-001",
+  "created_at": "2026-07-26T07:02:11Z",
+  "project": "App Orchestrator",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "roadmap_version": "1.0.0",
+  "pass": 5,
+  "unit": "P5-U2",
+  "substep": "P5-U2",
+  "kind": "CONTRACT",
+  "status": "PASS_BOUNDED",
+  "objective": "Define and deterministically prove the pure mount-lifecycle schema, registry ownership, operation IDs, transitions, retention, restart behavior, default failures, and legacy atlas compatibility facade.",
+  "claim_ceiling": "Pure unreferenced contract only; no production integration, runtime identity change, storage access, Diagnostics UI change, live observation, or Pass 5 closure.",
+  "authority": {
+    "basis": [
+      "V103 exact next move P5-U2",
+      "Merged P5-U1 readiness inventory",
+      "Strengthened 13-pass execution roadmap V1",
+      "Continuing ordinary in-scope authorization through Pass 13"
+    ],
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "authorization_evidence": [
+      "The new module is not referenced by production and has no storage, DOM, network, or timer access."
+    ]
+  },
+  "git": {
+    "base_commit": "8ca3ea78d51f69ebec0c1a445bf895dd6d1be812",
+    "branch": "agent/pass5-unit2-mount-lifecycle-contract-v1",
+    "head_commit": null,
+    "pull_request": null,
+    "merge_commit": null,
+    "verified_main_commit": "8ca3ea78d51f69ebec0c1a445bf895dd6d1be812"
+  },
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass5-unit2-mount-lifecycle-contract-v1.yml",
+      "audit/pass5/pass5-mount-registry-diagnostics-unit2-lifecycle-contract-v1.json",
+      "audit/pass5/receipts/RECEIPT_P5_U2_CONTRACT_20260726T070211Z_001.json",
+      "pmp-mount-lifecycle-contract-v1.js",
+      "tools/test_pass5_unit2_mount_lifecycle_contract_v1.js",
+      "tools/verify_pass5_unit2_mount_lifecycle_contract_v1.py"
+    ],
+    "evidence_paths": [
+      "audit/pass5/pass5-mount-registry-diagnostics-unit2-lifecycle-contract-v1.json"
+    ],
+    "forbidden_paths_checked": [
+      "Current runtime load chain",
+      "Existing Mount Registry atlas",
+      "Current Map and route owners",
+      "Runtime integrity manifest, seal, and bootstrap",
+      "Existing persisted storage",
+      "Diagnostics UI",
+      "Persisted user data",
+      "PR 122"
+    ],
+    "unrelated_changes_preserved": true
+  },
+  "verification": {
+    "tests": [
+      "Valid and degraded lifecycle paths",
+      "Authority and trust rejection",
+      "Duplicate, stale, gap, and time-regression handling",
+      "Malformed and unavailable input",
+      "Retention without evidence deletion",
+      "Restart replay validation",
+      "Legacy facade compatibility",
+      "Forbidden-effect token scan",
+      "Exact six-file scope verifier"
+    ],
+    "workflows": [],
+    "result": "Prepared for deterministic local and pull-request verification.",
+    "evidence_complete": true
+  },
+  "effects": {
+    "production_runtime_changed": false,
+    "runtime_integrity_changed": false,
+    "persisted_user_data_changed": false,
+    "historical_evidence_changed": false,
+    "github_changed": false
+  },
+  "recovery": {
+    "rollback_available": true,
+    "rollback_reference": "Unreferenced contract branch can be closed or reverted without production rollback.",
+    "evidence_preserved": true
+  },
+  "supersedes_receipt_ids": [],
+  "next_safe_move": {
+    "step_id": "P5-U3",
+    "instruction": "Passively integrate the proven lifecycle registry behind the legacy atlas compatibility boundary and regenerate required runtime identities.",
+    "requires_explicit_authority": false,
+    "stop_before": "Any production integration before P5-U2 is green, merged, synchronized, and checkpointed."
+  }
+}
