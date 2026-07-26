@@ -1,0 +1,122 @@
+{
+  "type": "PMP_PASS6_CROSS_SYSTEM_INVARIANT_UNIT3_MATRIX_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T09:55:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "094bfa198e9d28296da28985fe513f255a3bd0f1",
+  "branch": "agent/pass6-unit3-cross-system-invariant-matrix-v1",
+  "pass": 6,
+  "unit": "P6-U3",
+  "status": "CROSS_SYSTEM_INVARIANT_MATRIX_PROVEN",
+  "objective": "Build the cross-system invariant and regression matrix covering routes, mounts, owners, helpers, banks, readiness, storage, diagnostic evidence, and forbidden effects.",
+  "changed_paths": [
+    ".github/workflows/pass6-unit2-readonly-journal-view-export-v1.yml",
+    ".github/workflows/pass6-unit3-cross-system-invariant-matrix-v1.yml",
+    "audit/pass6/pass6-cross-system-invariant-catalog-v1.json",
+    "audit/pass6/pass6-cross-system-invariant-unit3-matrix-v1.json",
+    "audit/pass6/receipts/RECEIPT_P6_U3_CROSS_SYSTEM_MATRIX_20260726T095500Z_001.json",
+    "tools/run_pass6_unit3_cross_system_invariant_matrix_v1.py",
+    "tools/test_pass6_unit3_cross_system_invariant_matrix_v1.py",
+    "tools/verify_pass6_unit3_cross_system_invariant_matrix_v1.py"
+  ],
+  "catalog": {
+    "path": "audit/pass6/pass6-cross-system-invariant-catalog-v1.json",
+    "type": "PMP_PASS6_CROSS_SYSTEM_INVARIANT_CATALOG_V1",
+    "version": "1.0.0",
+    "repository_ref": "094bfa198e9d28296da28985fe513f255a3bd0f1",
+    "file_sha256": "e8e89d3d50dc88ef2809d5bca4ef77e988d19bb196ebc58393c7b1398ac302a0",
+    "stable_content_sha256": "7cb2a5ba0b227bc77ab7c4b1edcd31953a5544e15e124229956c0eb6f5fd59cf"
+  },
+  "matrix": {
+    "invariants_total": 20,
+    "invariants_passed": 20,
+    "invariants_failed": 0,
+    "required_subsystems": 9,
+    "covered_subsystems": 9,
+    "required_scenarios": 9,
+    "covered_scenarios": 9,
+    "subsystems": {
+      "routes": 3,
+      "mounts": 3,
+      "owners": 2,
+      "helpers": 2,
+      "banks": 2,
+      "readiness": 1,
+      "storage": 2,
+      "diagnostics": 3,
+      "forbidden_effects": 2
+    },
+    "scenarios": [
+      "positive",
+      "denial",
+      "stale",
+      "malformed",
+      "duplicate",
+      "restart",
+      "partial_failure",
+      "missing_evidence",
+      "forbidden_effect"
+    ],
+    "current_enforcement_and_future_gate_distinguished": true,
+    "later_pass_completion_claimed": false
+  },
+  "failure_policy": {
+    "missing_invariant": "FAIL",
+    "missing_subsystem": "FAIL",
+    "missing_scenario": "FAIL",
+    "missing_evidence": "FAIL",
+    "missing_deterministic_test": "FAIL",
+    "unknown_probe": "FAIL",
+    "probe_mismatch": "FAIL",
+    "duplicate_invariant_id": "FAIL",
+    "malformed_catalog_or_invariant": "FAIL",
+    "fail_open_path": false
+  },
+  "verification": {
+    "assertions_total": 316,
+    "assertions_passed": 316,
+    "assertions_failed": 0,
+    "catalog_sha256": "e8e89d3d50dc88ef2809d5bca4ef77e988d19bb196ebc58393c7b1398ac302a0",
+    "runner_sha256": "2eb365f56cc7186772f58302ddc024ca3748282afdb1bd67e1e12b17d101ae01",
+    "test_sha256": "74d87fb32e8003ecfd6805ccbc7ce80669fc0645e6d4a16f9889447f2207056e",
+    "deterministic_repeated_evaluation": true,
+    "git_object_fallback_for_sparse_worktree": true,
+    "result": "PASS"
+  },
+  "ci_routing_repair": {
+    "workflow": ".github/workflows/pass6-unit2-readonly-journal-view-export-v1.yml",
+    "reason": "The completed P6-U2 exact-scope workflow still routed on shared runtime and integrity paths and would replay a historic branch-specific generator during later work.",
+    "repair": "Freeze the completed workflow to its immutable audit, receipt, generator, test, and verifier sentinels. Standing A-003 and the active unit workflow continue to cover current runtime changes.",
+    "p6_u2_evidence_modified": false,
+    "standing_a003_coverage_preserved": true
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "storage_writes": false,
+    "network_requests": false,
+    "route_changes": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "pr122_touched": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "consumed_observation_prs": [149, 150, 152],
+    "formal_proof_pr": 122,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P6-U4",
+    "objective": "Build a reusable deterministic browser, frame, and event proof harness that consumes the invariant catalog and preserves exact failure evidence.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P6-U3 invariant catalog, deterministic source-anchor matrix, missing-evidence rejection, and CI routing only. No live browser observation, later-pass completion, production behavior change, repair, migration, formal proof, or persisted-user-data change."
+}

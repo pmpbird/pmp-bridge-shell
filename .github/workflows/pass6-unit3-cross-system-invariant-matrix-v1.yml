@@ -1,0 +1,43 @@
+name: Pass 6 Unit 3 Cross-System Invariant Matrix
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - '.github/workflows/pass6-unit2-readonly-journal-view-export-v1.yml'
+      - '.github/workflows/pass6-unit3-cross-system-invariant-matrix-v1.yml'
+      - 'audit/pass6/pass6-cross-system-invariant-catalog-v1.json'
+      - 'audit/pass6/pass6-cross-system-invariant-unit3-matrix-v1.json'
+      - 'audit/pass6/receipts/RECEIPT_P6_U3_CROSS_SYSTEM_MATRIX_20260726T095500Z_001.json'
+      - 'tools/run_pass6_unit3_cross_system_invariant_matrix_v1.py'
+      - 'tools/test_pass6_unit3_cross_system_invariant_matrix_v1.py'
+      - 'tools/verify_pass6_unit3_cross_system_invariant_matrix_v1.py'
+permissions:
+  contents: read
+jobs:
+  cross-system-invariant-matrix:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run invariant matrix meta-regressions
+        run: python3 tools/test_pass6_unit3_cross_system_invariant_matrix_v1.py
+      - name: Run exact cross-system invariant matrix
+        run: python3 tools/run_pass6_unit3_cross_system_invariant_matrix_v1.py --output /tmp/pass6-unit3-matrix.json
+      - name: Run linked diagnostic and lifecycle regressions
+        run: |
+          node tools/test_pass6_unit1_diagnostic_journal_contract_v1.js
+          node tools/test_pass6_unit2_readonly_journal_view_export_v1.js
+          node tools/run_pass5_unit5_isolated_lifecycle_failure_proof_v1.js /tmp/pass6-unit3-lifecycle-regression.json
+      - name: Recheck complete A-003 repository integrity
+        run: python3 tools/test_a003_integrity.py --output /tmp/pass6-unit3-a003-result.json
+      - name: Verify exact bounded P6-U3 scope
+        run: python3 tools/verify_pass6_unit3_cross_system_invariant_matrix_v1.py "${{ github.event.pull_request.base.sha }}"

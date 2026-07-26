@@ -1,0 +1,346 @@
+{
+  "type": "PMP_PASS6_CROSS_SYSTEM_INVARIANT_CATALOG_V1",
+  "version": "1.0.0",
+  "pass": 6,
+  "unit": "P6-U3",
+  "repository_ref": "094bfa198e9d28296da28985fe513f255a3bd0f1",
+  "policy": {
+    "missing_invariant": "FAIL",
+    "missing_evidence": "FAIL",
+    "missing_deterministic_test": "FAIL",
+    "unknown_probe": "FAIL",
+    "probe_mismatch": "FAIL",
+    "future_gate_rule": "A future-pass invariant may pass this matrix only when its current safe boundary and later evidence route are both explicit.",
+    "claim_rule": "Matrix PASS proves invariant coverage and exact source anchors, not completion of a later pass or a live app outcome."
+  },
+  "required_subsystems": [
+    "routes",
+    "mounts",
+    "owners",
+    "helpers",
+    "banks",
+    "readiness",
+    "storage",
+    "diagnostics",
+    "forbidden_effects"
+  ],
+  "required_scenarios": [
+    "positive",
+    "denial",
+    "stale",
+    "malformed",
+    "duplicate",
+    "restart",
+    "partial_failure",
+    "missing_evidence",
+    "forbidden_effect"
+  ],
+  "invariants": [
+    {
+      "id": "P6-INV-ROUTE-001",
+      "subsystem": "routes",
+      "statement": "The Current Map is the sole route authority and implicit fallbacks are forbidden.",
+      "owner": "current_map_owner",
+      "enforcement": "CURRENT_ENFORCED",
+      "failure_behavior": "FAIL_CLOSED",
+      "scenarios": ["positive", "denial", "stale", "malformed"],
+      "evidence_paths": ["pmp-current-map-v12.json", "pmp-current-route-resolver-v1.js"],
+      "deterministic_test_paths": ["tools/test_a003_integrity.py"],
+      "probes": [
+        {"kind": "json_equals", "path": "pmp-current-map-v12.json", "pointer": "/route_contract/sole_authority", "expected": "pmp-current-map-v12.json"},
+        {"kind": "json_equals", "path": "pmp-current-map-v12.json", "pointer": "/route_contract/implicit_fallbacks", "expected": false},
+        {"kind": "contains", "path": "pmp-current-route-resolver-v1.js", "token": "FAILURE_POLICY_INVALID"}
+      ]
+    },
+    {
+      "id": "P6-INV-ROUTE-002",
+      "subsystem": "routes",
+      "statement": "Every resolved role requires an exact runtime-integrity record.",
+      "owner": "current_map_owner",
+      "enforcement": "CURRENT_ENFORCED",
+      "failure_behavior": "FAIL_CLOSED",
+      "scenarios": ["positive", "missing_evidence", "partial_failure"],
+      "evidence_paths": ["pmp-runtime-integrity-manifest-v1.json", "pmp-current-route-resolver-v1.js", "audit/a003-manifest-seal.json"],
+      "deterministic_test_paths": ["tools/test_a003_integrity.py"],
+      "probes": [
+        {"kind": "json_equals", "path": "pmp-current-map-v12.json", "pointer": "/route_contract/runtime_integrity_required", "expected": true},
+        {"kind": "contains", "path": "pmp-current-route-resolver-v1.js", "token": "ROLE_INTEGRITY_RECORD_MISSING"},
+        {"kind": "contains", "path": "pmp-integrity-service-worker-v1.js", "token": "UNLISTED_EXECUTABLE_SOURCE"}
+      ]
+    },
+    {
+      "id": "P6-INV-ROUTE-003",
+      "subsystem": "routes",
+      "statement": "Route Guardian cannot register a replacement Service Worker or consult an unverified fallback.",
+      "owner": "route_guardian",
+      "enforcement": "CURRENT_ENFORCED",
+      "failure_behavior": "FAIL_CLOSED",
+      "scenarios": ["denial", "forbidden_effect"],
+      "evidence_paths": ["pmp-route-guardian-current-loader-v22.html"],
+      "deterministic_test_paths": ["tools/test_a003_integrity.py"],
+      "probes": [
+        {"kind": "excludes", "path": "pmp-route-guardian-current-loader-v22.html", "token": "serviceWorker.register"},
+        {"kind": "contains", "path": "pmp-route-guardian-current-loader-v22.html", "token": "navigation_blocked_no_unverified_fallback_consulted"}
+      ]
+    },
+    {
+      "id": "P6-INV-MOUNT-001",
+      "subsystem": "mounts",
+      "statement": "Only declared route and section owners may advance a mount lifecycle operation.",
+      "owner": "mount_registry_owner",
+      "enforcement": "CURRENT_ENFORCED",
+      "failure_behavior": "FAIL_CLOSED_NO_PARTIAL_REGISTRY",
+      "scenarios": ["positive", "denial", "partial_failure"],
+      "evidence_paths": ["pmp-mount-lifecycle-contract-v1.js", "pmp-mount-lifecycle-runtime-v1.js"],
+      "deterministic_test_paths": ["tools/test_pass5_unit2_mount_lifecycle_contract_v1.js", "tools/test_pass5_unit3_passive_lifecycle_integration_v1.js"],
+      "probes": [
+        {"kind": "contains", "path": "pmp-mount-lifecycle-contract-v1.js", "token": "REJECTED_ROUTE_AUTHORITY"},
+        {"kind": "contains", "path": "pmp-mount-lifecycle-runtime-v1.js", "token": "FAIL_CLOSED_NO_PARTIAL_REGISTRY"}
+      ]
+    },
+    {
+      "id": "P6-INV-MOUNT-002",
+      "subsystem": "mounts",
+      "statement": "Duplicate, stale, malformed, and restart lifecycle inputs are deterministic.",
+      "owner": "mount_registry_owner",
+      "enforcement": "CURRENT_ENFORCED",
+      "failure_behavior": "REJECT_NO_MUTATION",
+      "scenarios": ["duplicate", "stale", "malformed", "restart"],
+      "evidence_paths": ["pmp-mount-lifecycle-contract-v1.js", "audit/pass5/pass5-mount-registry-unit5-isolated-transition-failure-proof-v1.json"],
+      "deterministic_test_paths": ["tools/run_pass5_unit5_isolated_lifecycle_failure_proof_v1.js"],
+      "probes": [
+        {"kind": "contains", "path": "pmp-mount-lifecycle-contract-v1.js", "token": "REPLAY_VALIDATED_SNAPSHOT_ONLY"},
+        {"kind": "json_equals", "path": "audit/pass5/pass5-mount-registry-unit5-isolated-transition-failure-proof-v1.json", "pointer": "/coverage/assertions_passed", "expected": 138}
+      ]
+    },
+    {
+      "id": "P6-INV-MOUNT-003",
+      "subsystem": "mounts",
+      "statement": "Diagnostics may read a redacted lifecycle snapshot but cannot apply events, mount, repair, or reroute.",
+      "owner": "diagnostics_owner",
+      "enforcement": "CURRENT_ENFORCED",
+      "failure_behavior": "FAIL_PASSIVE",
+      "scenarios": ["positive", "denial", "forbidden_effect"],
+      "evidence_paths": ["pmp-mount-lifecycle-diagnostics-view-v1.js", "audit/pass5/pass5-mount-registry-unit7-closure-certification-v1.json"],
+      "deterministic_test_paths": ["tools/test_pass5_unit4_readonly_lifecycle_diagnostics_v1.js"],
+      "probes": [
+        {"kind": "contains", "path": "pmp-mount-lifecycle-diagnostics-view-v1.js", "token": "raw_event_payloads_exposed:false"},
+        {"kind": "excludes", "path": "pmp-mount-lifecycle-diagnostics-view-v1.js", "token": "applyOwnerEvent"}
+      ]
+    },
+    {
+      "id": "P6-INV-OWNER-001",
+      "subsystem": "owners",
+      "statement": "Unknown actors and unauthorized capabilities are blocked before side effects.",
+      "owner": "app_orchestrator",
+      "enforcement": "CURRENT_POLICY_BOUNDARY",
+      "failure_behavior": "BLOCK_BEFORE_SIDE_EFFECT",
+      "scenarios": ["denial", "malformed", "forbidden_effect"],
+      "evidence_paths": ["pmp-actor-authority-policy-v1.json", "audit/pass2/pass2-full-roadmap-authority-definition-closure-v1.json"],
+      "deterministic_test_paths": ["tools/test_pass2_full_roadmap_authority_definition_closure_v1.py"],
+      "probes": [
+        {"kind": "json_equals", "path": "pmp-actor-authority-policy-v1.json", "pointer": "/unknown_actor_policy", "expected": "BLOCK_BEFORE_SIDE_EFFECT"},
+        {"kind": "json_equals", "path": "pmp-actor-authority-policy-v1.json", "pointer": "/unauthorized_capability_policy", "expected": "BLOCK_BEFORE_SIDE_EFFECT"}
+      ]
+    },
+    {
+      "id": "P6-INV-OWNER-002",
+      "subsystem": "owners",
+      "statement": "Section owners remain bounded to their declared visible section and cannot take over routes, storage migration, Bank rebuild, or another section.",
+      "owner": "section_owner_registry",
+      "enforcement": "CURRENT_DECLARATION_LATER_PASS7_HARDENING",
+      "failure_behavior": "DENY_AND_DIAGNOSE",
+      "scenarios": ["denial", "duplicate", "partial_failure"],
+      "evidence_paths": ["pmp-section-owner-registry-v1.js"],
+      "deterministic_test_paths": ["tools/test_pass2_full_roadmap_authority_definition_closure_v1.py"],
+      "probes": [
+        {"kind": "contains", "path": "pmp-section-owner-registry-v1.js", "token": "No UI movement, route mutation, storage migration, Bank rebuild, or ownership takeover."},
+        {"kind": "contains", "path": "pmp-section-owner-registry-v1.js", "token": "conflict_count"}
+      ]
+    },
+    {
+      "id": "P6-INV-HELPER-001",
+      "subsystem": "helpers",
+      "statement": "A helper assists its assigned owner and never becomes an owner.",
+      "owner": "app_orchestrator",
+      "enforcement": "CURRENT_DECLARATION_LATER_PASS8_HARDENING",
+      "failure_behavior": "HOLD_UNKNOWN_HELPER",
+      "scenarios": ["positive", "denial", "missing_evidence"],
+      "evidence_paths": ["pmp-pass8-helper-rules-v1.js"],
+      "deterministic_test_paths": ["tools/test_pass2_full_roadmap_authority_definition_closure_v1.py"],
+      "probes": [
+        {"kind": "contains", "path": "pmp-pass8-helper-rules-v1.js", "token": "helper_assists_owner_does_not_become_owner"},
+        {"kind": "contains", "path": "pmp-pass8-helper-rules-v1.js", "token": "held_by_app_orchestrator_shown_in_diagnostics_not_allowed_to_act_freely"}
+      ]
+    },
+    {
+      "id": "P6-INV-HELPER-002",
+      "subsystem": "helpers",
+      "statement": "Every helper declares owner, slot, allowed actions, forbidden actions, storage keys, panels, and growth source.",
+      "owner": "app_orchestrator",
+      "enforcement": "CURRENT_DECLARATION_LATER_PASS8_HARDENING",
+      "failure_behavior": "HOLD_UNKNOWN_HELPER",
+      "scenarios": ["malformed", "missing_evidence", "partial_failure"],
+      "evidence_paths": ["pmp-pass8-helper-rules-v1.js"],
+      "deterministic_test_paths": ["tools/test_pass2_full_roadmap_authority_definition_closure_v1.py"],
+      "probes": [
+        {"kind": "contains", "path": "pmp-pass8-helper-rules-v1.js", "token": "helper_must_declare"},
+        {"kind": "contains", "path": "pmp-pass8-helper-rules-v1.js", "token": "growth_source_if_it_adds_anything"}
+      ]
+    },
+    {
+      "id": "P6-INV-BANK-001",
+      "subsystem": "banks",
+      "statement": "Bug Watch is passive and cannot fix, repair, delete, reroute, rebuild, migrate, or classify fixed.",
+      "owner": "bug_bank_owner",
+      "enforcement": "CURRENT_ENFORCED",
+      "failure_behavior": "DENY_AND_APPEND_RECEIPT_ONLY",
+      "scenarios": ["denial", "duplicate", "forbidden_effect"],
+      "evidence_paths": ["pmp-bug-watch-passive-capture-v1.js", "pmp-authority-rules-v1.js"],
+      "deterministic_test_paths": ["tools/test_pass2_full_roadmap_authority_definition_closure_v1.py"],
+      "probes": [
+        {"kind": "contains", "path": "pmp-bug-watch-passive-capture-v1.js", "token": "FORBIDDEN_ACTIONS"},
+        {"kind": "contains", "path": "pmp-bug-watch-passive-capture-v1.js", "token": "passiveOnly:true"},
+        {"kind": "contains", "path": "pmp-authority-rules-v1.js", "token": "classify_fixed"}
+      ]
+    },
+    {
+      "id": "P6-INV-BANK-002",
+      "subsystem": "banks",
+      "statement": "Bank Owner and Continuous Run Owner completion remains a Pass 9 gate; current diagnostics are read-only and cannot certify it early.",
+      "owner": "bank_screen_owner",
+      "enforcement": "FUTURE_GATE_PASS9",
+      "failure_behavior": "KEEP_UNCERTIFIED_AND_DIAGNOSE",
+      "scenarios": ["positive", "missing_evidence", "partial_failure"],
+      "evidence_paths": ["pmp-bank-continuous-run-owner-split-diagnostic-v1.js", "audit/pass2/pass2-full-roadmap-authority-definition-closure-v1.json"],
+      "deterministic_test_paths": ["tools/test_pass6_unit2_readonly_journal_view_export_v1.js"],
+      "probes": [
+        {"kind": "contains", "path": "pmp-bank-continuous-run-owner-split-diagnostic-v1.js", "token": "Pass 9 certification may read this permanent diagnostic, but this diagnostic itself is not Pass 9."},
+        {"kind": "contains", "path": "pmp-bank-continuous-run-owner-split-diagnostic-v1.js", "token": "No Bank rebuild, no DOM patch, no panel move, no route change, no storage migration."}
+      ]
+    },
+    {
+      "id": "P6-INV-READY-001",
+      "subsystem": "readiness",
+      "statement": "Missing readiness evidence cannot become a complete or certified result.",
+      "owner": "readiness_gate",
+      "enforcement": "CURRENT_DIAGNOSTIC_GATE_LATER_HARDENING",
+      "failure_behavior": "MISSING_PROOF_OR_BLOCKED",
+      "scenarios": ["missing_evidence", "partial_failure", "denial"],
+      "evidence_paths": ["pmp-pass-revalidation-gate-001-v1.js", "pmp-phase3-hook-readiness-v1.js"],
+      "deterministic_test_paths": ["tools/test_pass2_full_roadmap_authority_definition_closure_v1.py"],
+      "probes": [
+        {"kind": "contains", "path": "pmp-pass-revalidation-gate-001-v1.js", "token": "missing_proof"},
+        {"kind": "contains", "path": "pmp-phase3-hook-readiness-v1.js", "token": "phase3_hook_validation_blocked_or_with_gaps"}
+      ]
+    },
+    {
+      "id": "P6-INV-STORAGE-001",
+      "subsystem": "storage",
+      "statement": "Safe Writer route handoff cannot overwrite storage, rebuild Bank, or invent a fallback route.",
+      "owner": "safe_writer_owner",
+      "enforcement": "CURRENT_ENFORCED",
+      "failure_behavior": "FAIL_CLOSED",
+      "scenarios": ["denial", "stale", "forbidden_effect"],
+      "evidence_paths": ["pmp-safe-writer-current-return-fix-v1.js", "pmp-current-map-v12.json"],
+      "deterministic_test_paths": ["tools/test_a003_integrity.py"],
+      "probes": [
+        {"kind": "contains", "path": "pmp-safe-writer-current-return-fix-v1.js", "token": "No storage overwrite, Bank rebuild, or fallback route."},
+        {"kind": "contains", "path": "pmp-safe-writer-current-return-fix-v1.js", "token": "navigation_blocked_no_fallback_consulted"}
+      ]
+    },
+    {
+      "id": "P6-INV-STORAGE-002",
+      "subsystem": "storage",
+      "statement": "No routine diagnostics or proof unit gains storage migration or persisted-user-data authority.",
+      "owner": "app_orchestrator",
+      "enforcement": "CURRENT_ENFORCED",
+      "failure_behavior": "FAIL_PASSIVE",
+      "scenarios": ["denial", "forbidden_effect", "missing_evidence"],
+      "evidence_paths": ["audit/pass5/pass5-mount-registry-unit7-closure-certification-v1.json", "audit/pass6/pass6-diagnostic-journal-unit2-readonly-view-export-v1.json"],
+      "deterministic_test_paths": ["tools/test_pass6_unit2_readonly_journal_view_export_v1.js"],
+      "probes": [
+        {"kind": "json_equals", "path": "audit/pass5/pass5-mount-registry-unit7-closure-certification-v1.json", "pointer": "/safety/storage_migration_performed", "expected": false},
+        {"kind": "json_equals", "path": "audit/pass6/pass6-diagnostic-journal-unit2-readonly-view-export-v1.json", "pointer": "/effects/persisted_user_data_changed", "expected": false}
+      ]
+    },
+    {
+      "id": "P6-INV-DIAG-001",
+      "subsystem": "diagnostics",
+      "statement": "Observed facts, derived facts, and inferred conclusions are distinct and carry compatible trust and evidence.",
+      "owner": "diagnostics_owner",
+      "enforcement": "CURRENT_ENFORCED",
+      "failure_behavior": "REJECT_FAIL_PASSIVE",
+      "scenarios": ["positive", "malformed", "missing_evidence"],
+      "evidence_paths": ["pmp-diagnostic-journal-contract-v1.js", "audit/pass6/pass6-diagnostic-journal-unit1-contract-v1.json"],
+      "deterministic_test_paths": ["tools/test_pass6_unit1_diagnostic_journal_contract_v1.js"],
+      "probes": [
+        {"kind": "contains", "path": "pmp-diagnostic-journal-contract-v1.js", "token": "OBSERVED_FACT"},
+        {"kind": "contains", "path": "pmp-diagnostic-journal-contract-v1.js", "token": "INFERENCE_BASIS_REQUIRED"},
+        {"kind": "contains", "path": "pmp-diagnostic-journal-contract-v1.js", "token": "FACT_CANNOT_USE_INFERRED_TRUST"}
+      ]
+    },
+    {
+      "id": "P6-INV-DIAG-002",
+      "subsystem": "diagnostics",
+      "statement": "Journal views expose only validated redacted entries and bounded deterministic exports.",
+      "owner": "diagnostics_owner",
+      "enforcement": "CURRENT_ENFORCED",
+      "failure_behavior": "REJECT_FAIL_PASSIVE",
+      "scenarios": ["positive", "malformed", "forbidden_effect"],
+      "evidence_paths": ["pmp-diagnostic-journal-readonly-view-export-v1.js", "audit/pass6/pass6-diagnostic-journal-unit2-readonly-view-export-v1.json"],
+      "deterministic_test_paths": ["tools/test_pass6_unit2_readonly_journal_view_export_v1.js"],
+      "probes": [
+        {"kind": "contains", "path": "pmp-diagnostic-journal-readonly-view-export-v1.js", "token": "JOURNAL_ENTRY_MALFORMED_OR_UNREDACTED"},
+        {"kind": "contains", "path": "pmp-diagnostic-journal-readonly-view-export-v1.js", "token": "MAX_EXPORT_BYTES=262144"},
+        {"kind": "excludes", "path": "pmp-diagnostic-journal-readonly-view-export-v1.js", "token": "localStorage"}
+      ]
+    },
+    {
+      "id": "P6-INV-DIAG-003",
+      "subsystem": "diagnostics",
+      "statement": "A required evidence path or deterministic test cannot be absent while the matrix reports green.",
+      "owner": "diagnostics_owner",
+      "enforcement": "CURRENT_ENFORCED",
+      "failure_behavior": "MATRIX_FAIL",
+      "scenarios": ["missing_evidence", "malformed", "partial_failure"],
+      "evidence_paths": ["tools/run_pass6_unit3_cross_system_invariant_matrix_v1.py"],
+      "deterministic_test_paths": ["tools/test_pass6_unit3_cross_system_invariant_matrix_v1.py"],
+      "probes": [
+        {"kind": "contains", "path": "tools/run_pass6_unit3_cross_system_invariant_matrix_v1.py", "token": "MISSING_EVIDENCE"},
+        {"kind": "contains", "path": "tools/run_pass6_unit3_cross_system_invariant_matrix_v1.py", "token": "MISSING_DETERMINISTIC_TEST"}
+      ]
+    },
+    {
+      "id": "P6-INV-FX-001",
+      "subsystem": "forbidden_effects",
+      "statement": "Authority Rules globally deny silent authority gain, automatic repair, reroute, destructive storage, and fixed classification.",
+      "owner": "app_orchestrator",
+      "enforcement": "CURRENT_ENFORCED",
+      "failure_behavior": "DENY",
+      "scenarios": ["denial", "forbidden_effect"],
+      "evidence_paths": ["pmp-authority-rules-v1.js"],
+      "deterministic_test_paths": ["tools/test_pass2_full_roadmap_authority_definition_closure_v1.py"],
+      "probes": [
+        {"kind": "contains", "path": "pmp-authority-rules-v1.js", "token": "silent_authority_gain"},
+        {"kind": "contains", "path": "pmp-authority-rules-v1.js", "token": "overwrite_storage"},
+        {"kind": "contains", "path": "pmp-authority-rules-v1.js", "token": "auto_repair"}
+      ]
+    },
+    {
+      "id": "P6-INV-FX-002",
+      "subsystem": "forbidden_effects",
+      "statement": "The Pass 6 matrix itself performs no production mutation, route change, repair, storage write, network action, live observation, or formal proof.",
+      "owner": "diagnostics_owner",
+      "enforcement": "CURRENT_ENFORCED",
+      "failure_behavior": "FAIL_PASSIVE",
+      "scenarios": ["forbidden_effect", "denial"],
+      "evidence_paths": ["tools/run_pass6_unit3_cross_system_invariant_matrix_v1.py"],
+      "deterministic_test_paths": ["tools/test_pass6_unit3_cross_system_invariant_matrix_v1.py"],
+      "probes": [
+        {"kind": "contains", "path": "tools/run_pass6_unit3_cross_system_invariant_matrix_v1.py", "token": "\"persisted_user_data_writes\": 0"},
+        {"kind": "excludes", "path": "tools/run_pass6_unit3_cross_system_invariant_matrix_v1.py", "token": "requests."}
+      ]
+    }
+  ]
+}
