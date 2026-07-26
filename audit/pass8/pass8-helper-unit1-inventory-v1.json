@@ -1,0 +1,255 @@
+{
+  "type": "PMP_PASS8_HELPER_UNIT1_INVENTORY_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T17:35:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "625bdc869b57b5da1496577d9b3688d5bc122632",
+  "branch": "agent/pass8-unit1-helper-inventory-v1",
+  "pass": 8,
+  "unit": "P8-U1",
+  "unit_id": "P8-U1",
+  "status": "HELPER_INVENTORY_PROVEN",
+  "objective": "Inventory Helper declarations, source files, owner labels, slots, actions, storage keys, panels, growth, legacy records, and unresolved conflicts without granting Helper authority.",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass8-unit1-helper-inventory-v1.yml",
+      "audit/pass8/pass8-helper-unit1-inventory-v1.json",
+      "audit/pass8/receipts/RECEIPT_P8_U1_HELPER_INVENTORY_20260726T173500Z_001.json",
+      "tools/run_pass8_unit1_helper_inventory_v1.js",
+      "tools/test_pass8_unit1_helper_inventory_v1.js",
+      "tools/verify_pass8_unit1_helper_inventory_v1.py"
+    ],
+    "implementation_paths": []
+  },
+  "inputs": {
+    "helper_rules": "pmp-pass8-helper-rules-v1.js",
+    "helper_rules_sha256": "a58811725145ccb197c603f573cbf04898bc71e507035db767ead77a82125d2e",
+    "legacy_helper_registry": "pmp-helper-registry-v1.js",
+    "legacy_helper_registry_sha256": "299e607133df55ed74f7bade798cb96e76566cefd3fd73b87da63f2b64650dbf",
+    "pass7_owner_inventory": "audit/pass7/pass7-section-owner-unit1-inventory-v1.json",
+    "pass7_owner_inventory_sha256": "c895188d438b457f3625d1f453a16acb4723dd6c563dfa596f54f610d9172cba",
+    "pass7_closure": "audit/pass7/pass7-section-owner-unit6-closure-certification-v1.json",
+    "pass7_closure_sha256": "11764a76cd376ffe97b18055e3d209f3c8738fcb400b2eeed08d1f5575057f64",
+    "runner": "tools/run_pass8_unit1_helper_inventory_v1.js",
+    "runner_sha256": "fc5ed997a1c3f7b9a593ea002c1f8e585df06c1bb7711d3458ec0e3a96649634",
+    "test": "tools/test_pass8_unit1_helper_inventory_v1.js",
+    "test_sha256": "42155fb06ce504cee2616c7d0f80d00ec9dfc45a01d24a1dd95a1777c3e2e192"
+  },
+  "inventory": {
+    "tracked_files": 1877,
+    "declared_helpers": 14,
+    "declared_unique_ids": 14,
+    "declared_unique_files": 14,
+    "declared_files_present": 14,
+    "declared_files_missing": 0,
+    "accepted_helpers": 12,
+    "diagnostic_only_helpers": 1,
+    "legacy_helpers_declared": 1,
+    "growth_helpers": 1,
+    "declared_owner_labels": 8,
+    "exact_pass7_owner_label_matches": 0,
+    "unresolved_owner_labels": 8,
+    "legacy_registry_helpers": 11,
+    "helper_named_root_sources": 12,
+    "helper_named_undeclared_sources": 9,
+    "storage_keys": 24,
+    "panel_ids": 3,
+    "duplicate_ids": 0,
+    "duplicate_files": 0,
+    "result_sha256": "8b20b5fe804fe396a19f50161506323d70c962956332610daad2440d24a50cda"
+  },
+  "conflicts": {
+    "owner_labels_not_exact_pass7_ids": [
+      "active_path_discovery_owner",
+      "app_orchestrator",
+      "bug_bank_owner",
+      "continuous_run_owner",
+      "mount_registry",
+      "runtime_health_monitor",
+      "runtime_version_manager",
+      "safe_writer_owner"
+    ],
+    "helper_named_sources_without_pass8_declaration": [
+      "pmp-continuous-run-helper-conflict-blocker-v1.js",
+      "pmp-helper-bank-live-inspector-v1.js",
+      "pmp-helper-bank-live-inspector-v2.js",
+      "pmp-helper-problem-display-sync-v1.js",
+      "pmp-helper-problem-memory-v1.js",
+      "pmp-helper-problem-type-only-v1.js",
+      "pmp-helper-problem-type-seeds-v1.js",
+      "pmp-helper-symptom-watcher-v1.js",
+      "pmp-p15-helper-tidy-v1.js"
+    ],
+    "legacy_registry_parent_owner_vocabulary": "P7_OWNER_IDS",
+    "pass8_rules_owner_vocabulary": "NON_P7_ALIASES_AND_ADDITIONAL_DOMAINS",
+    "missing_declared_files": [],
+    "duplicate_ids": [],
+    "duplicate_files": [],
+    "disposition": "HOLD_AS_OBSERVED_CONFLICT_NO_AUTHORITY_UNTIL_P8_U2_CONTRACT"
+  },
+  "observed_facts": [
+    {
+      "claim_type": "OBSERVED",
+      "fact": "The existing Pass 8 rules declare fourteen unique Helper IDs and files, and every declared file is tracked.",
+      "evidence_paths": [
+        "pmp-pass8-helper-rules-v1.js",
+        "tools/run_pass8_unit1_helper_inventory_v1.js"
+      ]
+    },
+    {
+      "claim_type": "OBSERVED",
+      "fact": "All eight owner labels in the existing Pass 8 rules differ from the exact Pass 7 owner IDs or represent additional unresolved domains.",
+      "evidence_paths": [
+        "pmp-pass8-helper-rules-v1.js",
+        "audit/pass7/pass7-section-owner-unit1-inventory-v1.json",
+        "audit/pass8/pass8-helper-unit1-inventory-v1.json"
+      ]
+    },
+    {
+      "claim_type": "OBSERVED",
+      "fact": "Nine root Helper-named executable sources lack a Pass 8 declaration.",
+      "evidence_paths": [
+        "audit/pass8/pass8-helper-unit1-inventory-v1.json",
+        "tools/run_pass8_unit1_helper_inventory_v1.js"
+      ]
+    },
+    {
+      "claim_type": "OBSERVED",
+      "fact": "The legacy registry declares eleven Helpers using Pass 7-style parent-owner IDs, but a sandboxed static run observes no live parent owners.",
+      "evidence_paths": [
+        "pmp-helper-registry-v1.js",
+        "audit/pass8/pass8-helper-unit1-inventory-v1.json"
+      ]
+    }
+  ],
+  "inferred_conclusions": [
+    {
+      "claim_type": "INFERRED",
+      "conclusion": "Pass 8 requires an explicit owner-alias and additional-domain resolution contract before any existing Helper declaration can authorize behavior.",
+      "basis_evidence_paths": [
+        "audit/pass7/pass7-section-owner-unit1-inventory-v1.json",
+        "audit/pass8/pass8-helper-unit1-inventory-v1.json"
+      ]
+    },
+    {
+      "claim_type": "INFERRED",
+      "conclusion": "Helper-named files outside the declaration must remain held as evidence; filenames and appearance cannot imply Helper authority.",
+      "basis_evidence_paths": [
+        "audit/pass8/pass8-helper-unit1-inventory-v1.json"
+      ]
+    }
+  ],
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "static_contract",
+    "diagnostic_matrix_update": {
+      "status": "CONFIRMED_UNCHANGED",
+      "applicable_matrix": "audit/pass7/pass7-section-owner-unit5-isolation-restart-denial-proof-v1.json",
+      "rationale": "P8-U1 is a read-only inventory. It preserves the Pass 7 owner isolation matrix while identifying inputs for the P8-U2 Helper contract."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass8/pass8-helper-unit1-inventory-v1.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass8_unit1_helper_inventory_v1.js"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass8_unit1_helper_inventory_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass8/receipts/RECEIPT_P8_U1_HELPER_INVENTORY_20260726T173500Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "Fourteen unique Pass 8 declarations exist and all their files are tracked.",
+        "evidence_paths": [
+          "pmp-pass8-helper-rules-v1.js",
+          "audit/pass8/pass8-helper-unit1-inventory-v1.json"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "Eight owner labels and nine undeclared Helper-named sources require explicit resolution.",
+        "evidence_paths": [
+          "audit/pass8/pass8-helper-unit1-inventory-v1.json"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "No current Helper declaration should gain production authority before P8-U2 resolves owner aliases and unknown source disposition.",
+        "basis_evidence_paths": [
+          "audit/pass8/pass8-helper-unit1-inventory-v1.json"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "NOT_APPLICABLE",
+      "cases": [],
+      "rationale": "P8-U1 evaluates tracked sources in a sandbox with in-memory storage and performs no Helper action."
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "verification": {
+    "assertions_total": 421,
+    "assertions_passed": 421,
+    "assertions_failed": 0,
+    "exact_scope": "PASS",
+    "source_hashes": "PASS",
+    "declaration_shape": "PASS",
+    "owner_conflict_inventory": "PASS",
+    "unknown_source_inventory": "PASS",
+    "sandbox_zero_effect": "PASS",
+    "permanent_gate_binding": "PASS"
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_mutations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P8-U2",
+    "objective": "Define explicit Helper capabilities, exact owner and slot bindings, owner-alias resolution, legacy and unknown holds, growth, revocation, and fail-closed behavior.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P8-U1 read-only static inventory only. No Helper is activated, authorized, mounted, rerouted, migrated, or allowed to write persisted user data; no scarce observation or formal proof is performed."
+}
