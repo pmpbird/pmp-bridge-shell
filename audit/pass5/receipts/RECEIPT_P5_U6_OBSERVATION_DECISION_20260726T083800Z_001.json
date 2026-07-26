@@ -1,0 +1,94 @@
+{
+  "schema": "PMP_APP_ORCHESTRATOR_STEP_RECEIPT_V1",
+  "receipt_id": "AO-P5-U6-OBSERVATION-SUFFICIENCY-DECISION-V1-001",
+  "created_at": "2026-07-26T08:38:00Z",
+  "project": "App Orchestrator",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "roadmap_version": "1.0.0",
+  "pass": 5,
+  "unit": "P5-U6",
+  "substep": "P5-U6",
+  "kind": "DECISION",
+  "status": "PASS_BOUNDED",
+  "objective": "Decide whether Pass 5 requires a newly authorized current-path observation after the complete isolated proof and existing live current-path integrity evidence.",
+  "decision": "NEW_CURRENT_PATH_OBSERVATION_NOT_REQUIRED",
+  "claim_ceiling": "Evidence decision only; no production change, live observation, formal proof, app interaction, persisted-state change, or Pass 5 closure.",
+  "authority": {
+    "basis": [
+      "V107 exact next move P5-U6",
+      "Strengthened roadmap conditional P5-U6 wording: if authorized and required",
+      "Merged P5-U1 through P5-U5 evidence",
+      "Continuing ordinary in-scope authorization through Pass 13"
+    ],
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "authorization_evidence": [
+      "The unit performs a static evidence sufficiency decision only.",
+      "No current-path observation, consumed observation retry, or formal proof occurs."
+    ]
+  },
+  "git": {
+    "base_commit": "da45468bb06ded75aa847b335cce6fdd5dd1e987",
+    "branch": "agent/pass5-unit6-observation-decision-v1",
+    "head_commit": null,
+    "pull_request": null,
+    "merge_commit": null,
+    "verified_main_commit": "da45468bb06ded75aa847b335cce6fdd5dd1e987"
+  },
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass5-unit6-observation-sufficiency-decision-v1.yml",
+      "audit/pass5/pass5-mount-registry-unit6-observation-sufficiency-decision-v1.json",
+      "audit/pass5/receipts/RECEIPT_P5_U6_OBSERVATION_DECISION_20260726T083800Z_001.json",
+      "tools/verify_pass5_unit6_observation_sufficiency_decision_v1.py"
+    ],
+    "evidence_paths": [
+      "audit/pass5/pass5-mount-registry-unit6-observation-sufficiency-decision-v1.json"
+    ],
+    "unrelated_changes_preserved": true
+  },
+  "verification": {
+    "prior_units_verified": [
+      "P5-U1",
+      "P5-U2",
+      "P5-U3",
+      "P5-U4",
+      "P5-U5"
+    ],
+    "pass5_exit_criteria_proven": 4,
+    "live_current_path_runs_referenced": [
+      30193705682,
+      30194281350,
+      30194701694
+    ],
+    "merged_main_deployment_run": 30194760893,
+    "p5_u5_assertions_passed": 138,
+    "p5_u5_assertions_failed": 0,
+    "production_source_changes_after_p5_u4_seal": 0,
+    "result": "OBSERVATION_NOT_REQUIRED",
+    "evidence_complete": true
+  },
+  "effects": {
+    "production_runtime_changed": false,
+    "current_path_started": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "github_changed": false
+  },
+  "recovery": {
+    "rollback_available": true,
+    "rollback_reference": "The audit-only decision branch can be closed or reverted without runtime or data rollback.",
+    "evidence_preserved": true
+  },
+  "supersedes_receipt_ids": [],
+  "next_safe_move": {
+    "step_id": "P5-U7",
+    "instruction": "Certify Pass 5 closure from the merged P5-U1 through P5-U6 evidence and transition to P6-U1.",
+    "requires_explicit_authority": false,
+    "requires_user_app_check": false,
+    "stop_before": "Only a genuinely required hands-on app reproduction or verification in a later unit."
+  }
+}

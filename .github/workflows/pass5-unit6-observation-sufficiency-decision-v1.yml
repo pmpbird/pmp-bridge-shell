@@ -1,0 +1,23 @@
+name: Pass 5 Unit 6 Observation Sufficiency Decision
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - '.github/workflows/pass5-unit6-observation-sufficiency-decision-v1.yml'
+      - 'audit/pass5/pass5-mount-registry-unit6-observation-sufficiency-decision-v1.json'
+      - 'audit/pass5/receipts/RECEIPT_P5_U6_OBSERVATION_DECISION_20260726T083800Z_001.json'
+      - 'tools/verify_pass5_unit6_observation_sufficiency_decision_v1.py'
+permissions:
+  contents: read
+jobs:
+  observation-sufficiency-decision:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify exact audit-only scope and evidence decision
+        run: python3 tools/verify_pass5_unit6_observation_sufficiency_decision_v1.py "${{ github.event.pull_request.base.sha }}"
