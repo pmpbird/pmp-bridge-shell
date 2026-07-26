@@ -1,0 +1,284 @@
+{
+  "type": "PMP_PASS8_HELPER_UNIT4_OWNER_DIAGNOSTICS_INTEGRATION_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T18:30:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "2f74b835016cd6e0e24802f7b6127374017571d3",
+  "branch": "agent/pass8-unit4-helper-owner-diagnostics-integration-v1",
+  "pass": 8,
+  "unit": "P8-U4",
+  "unit_id": "P8-U4",
+  "status": "HELPER_OWNER_DIAGNOSTICS_INTEGRATION_PROVEN",
+  "objective": "Production-load a passive explicit Helper event adapter bound to the exact P8-U2 capability contract, P8-U3 registration contract, canonical Section Owner runtime, and a redacted read-only Diagnostics view.",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass7-unit5-owner-isolation-restart-denial-proof-v1.yml",
+      ".github/workflows/pass8-unit4-helper-owner-diagnostics-integration-v1.yml",
+      "audit/a003-manifest-seal.json",
+      "audit/pass8/pass8-helper-unit4-owner-diagnostics-integration-v1.json",
+      "audit/pass8/receipts/RECEIPT_P8_U4_HELPER_OWNER_DIAGNOSTICS_INTEGRATION_20260726T183000Z_001.json",
+      "pmp-app-current.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+      "pmp-diagnostics-owner-v1.js",
+      "pmp-helper-owner-diagnostics-view-v1.js",
+      "pmp-helper-owner-integration-v1.js",
+      "pmp-runtime-integrity-manifest-v1.json",
+      "tools/generate_pass8_unit4_integrity_updates_v1.py",
+      "tools/test_pass8_unit4_helper_owner_diagnostics_integration_v1.js",
+      "tools/verify_pass8_unit4_helper_owner_diagnostics_integration_v1.py"
+    ],
+    "implementation_paths": [
+      "pmp-app-current.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+      "pmp-diagnostics-owner-v1.js",
+      "pmp-helper-owner-diagnostics-view-v1.js",
+      "pmp-helper-owner-integration-v1.js"
+    ]
+  },
+  "inputs": {
+    "unit2_capability_contract": "audit/pass8/pass8-helper-unit2-capability-contract-v1.json",
+    "unit2_capability_contract_sha256": "3600a04f945a029f897f9ebc17ac3471a93cfd1cb5641d18eb70053f37ebf1b0",
+    "unit3_registration_events": "audit/pass8/pass8-helper-unit3-registration-events-v1.json",
+    "unit3_registration_events_sha256": "6307a8c8dbfe06f549fa64da2550b5e34ef9242773c8e3fe63c6924c9cbef3b0",
+    "generator": "tools/generate_pass8_unit4_integrity_updates_v1.py",
+    "generator_sha256": "6865b58e261a571456262cfcb04a1a5c6afe8103d5e68c73a59caafb6907549a",
+    "pass7_unit5_compatibility_workflow": ".github/workflows/pass7-unit5-owner-isolation-restart-denial-proof-v1.yml",
+    "pass7_unit5_compatibility_workflow_sha256": "b6fe646b61b0a4cd3700a2b3121d78e2bd6e82ba1608f47f694af32edf0a8bae",
+    "test": "tools/test_pass8_unit4_helper_owner_diagnostics_integration_v1.js",
+    "test_sha256": "0962c3c4d51d0fee390f13e61dd8d244a3c2e831cd19bc48b46325009b46881a"
+  },
+  "integration": {
+    "runtime": "pmp-helper-owner-integration-v1.js",
+    "runtime_sha256": "4ecb4164d638ec6476e82335f702664309e14d63fdf7e0a71318d06a980e7b3b",
+    "runtime_mode": "PASSIVE_EXPLICIT_HELPER_EVENTS_ONLY",
+    "capability_contract_version": "PMP_HELPER_CAPABILITY_CONTRACT_V1",
+    "event_version": "PMP_HELPER_REGISTRATION_EVENT_V1",
+    "journal_version": "PMP_HELPER_REGISTRATION_JOURNAL_V1",
+    "event_digest_algorithm": "SHA-256_CANONICAL_JSON_MATCHES_P8_U3",
+    "root_authority": "app_orchestrator_owner",
+    "growth_observer": "diagnostics_owner",
+    "section_owner_dependency": "PMP_SECTION_OWNER_MOUNT_REGISTRY_SNAPSHOT_V1",
+    "section_owner_registration_required": true,
+    "declared_helpers": 14,
+    "eligible_static_helpers": 12,
+    "held_declared_helpers": 2,
+    "unknown_sources_held": 9,
+    "automatic_helper_events": 0,
+    "helpers_registered_at_boot": 0,
+    "helper_behavior_activations": 0,
+    "authority_grants": 0,
+    "diagnostics_view": "pmp-helper-owner-diagnostics-view-v1.js",
+    "diagnostics_view_sha256": "4c65433e305acdd2fcce961774575ce1a583834f7d475312516728d563af2ae9",
+    "diagnostics_owner_sha256": "49981117f2edef80c02c46825c683d81cf0b0b248a30641acd31efba03b2733f",
+    "diagnostics_access": "READ_ONLY_BOUNDED_REDACTED",
+    "shared_operation_identities": true,
+    "capability_ids_exposed": false,
+    "helper_source_hashes_exposed": false,
+    "raw_authority_payloads_exposed": false,
+    "source_versions_exposed": false,
+    "maximum_visible_events": 128,
+    "atomic_restart_policy": "EXACT_SEALED_PACKAGE_OR_EMPTY"
+  },
+  "ci_compatibility_repair": {
+    "workflow": ".github/workflows/pass7-unit5-owner-isolation-restart-denial-proof-v1.yml",
+    "failure_run": 30214778986,
+    "failure_job": 89826923795,
+    "observed_root_cause": "The P7-U5 regression test passed 218/218, but its immutable exact-scope verifier was unconditionally invoked with the later P8-U4 base commit.",
+    "repair": "Run the immutable P7-U5 exact-scope verifier only at its sealed base and preserve the 218/218 runtime regression test on later units.",
+    "scope_or_safety_relaxation": false
+  },
+  "diagnostic_and_proof_matrix": {
+    "type": "PMP_PASS8_HELPER_OWNER_DIAGNOSTIC_PROOF_MATRIX_V1",
+    "version": "1.0.0",
+    "invariants": [
+      {
+        "id": "P8-INV-HELPER-CONTRACT-001",
+        "statement": "Every Helper event binds the exact P8-U2 source hash, canonical owner, section, slot, disposition, growth source, and P8-U3 authority shape.",
+        "scenarios": ["positive", "source_mismatch", "owner_mismatch", "slot_mismatch", "forged_authority"],
+        "failure": "REJECT_NO_JOURNAL_NO_AUTHORITY"
+      },
+      {
+        "id": "P8-INV-HELPER-OWNER-001",
+        "statement": "A Helper event is accepted only when its canonical Section Owner is already registered.",
+        "scenarios": ["positive", "missing_runtime", "missing_owner", "cross_owner"],
+        "failure": "REJECT_NO_REGISTRATION"
+      },
+      {
+        "id": "P8-INV-HELPER-HOLD-001",
+        "statement": "Legacy, declaration-conflict, unknown, and pending-growth Helpers remain held and receive no behavioral authority.",
+        "scenarios": ["legacy", "safe_writer_conflict", "unknown", "growth"],
+        "failure": "HOLD_NO_BEHAVIOR"
+      },
+      {
+        "id": "P8-INV-HELPER-JOURNAL-001",
+        "statement": "Helper state is a global monotonic SHA-256 chain restored atomically from an exact sealed package or empty.",
+        "scenarios": ["positive", "duplicate", "stale", "chain_mismatch", "tampered_restore"],
+        "failure": "REJECT_OR_EMPTY_NO_PARTIAL_STATE"
+      },
+      {
+        "id": "P8-INV-HELPER-DIAGNOSTICS-001",
+        "statement": "Diagnostics is bounded and read-only and exposes no capability ID, Helper source hash, raw authority, source version, or mutation entrypoint.",
+        "scenarios": ["positive", "missing_runtime", "malformed_snapshot", "bounded_events"],
+        "failure": "READONLY_UNAVAILABLE_OR_REDACTED"
+      },
+      {
+        "id": "P8-INV-HELPER-EFFECTS-001",
+        "statement": "Helper integration cannot activate Helper behavior, mount, reroute, repair, mutate Bank, migrate storage, or write persisted user data.",
+        "scenarios": ["boot", "positive", "denial", "restart"],
+        "failure": "ZERO_EXTERNAL_EFFECT"
+      }
+    ],
+    "deterministic_test": "tools/test_pass8_unit4_helper_owner_diagnostics_integration_v1.js",
+    "assertions": 443
+  },
+  "runtime_integrity": {
+    "manifest": "pmp-runtime-integrity-manifest-v1.json",
+    "manifest_sha256": "11bd172cc5527f11b50cda8b98599e7d5fe7b10c4f96f14b2f18fcd90866c2bc",
+    "runtime_source_set_sha256": "13db53dcf1fafe5faa8051f02d011cd99499a6a728484188b42201359e017058",
+    "runtime_records": 709,
+    "seal": "audit/a003-manifest-seal.json",
+    "seal_sha256": "535b13ce0d5c5e1bde61ad4f14a2bb40a5f0d72bd18a0b5d657ce13b02b4e9d5",
+    "bootstrap_sha256": "c0c3a16a709b6f250f2ed97ea9c105719d72690f712fb80bd554011373ae7ea3",
+    "inner_sha256": "8722ca7b159d2a77c2eb8ba684db95b99683a9bd00a7426fc356a3eefc4461e6"
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_integration",
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/pass8/pass8-helper-unit4-owner-diagnostics-integration-v1.json",
+      "rationale": "P8-U4 adds the first production Helper Owner integration matrix, covering exact static bindings, Section Owner dependency, holds, SHA-256 restart, redaction, and zero external effects."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass8/pass8-helper-unit4-owner-diagnostics-integration-v1.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass8_unit4_helper_owner_diagnostics_integration_v1.js"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass8_unit4_helper_owner_diagnostics_integration_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass8/receipts/RECEIPT_P8_U4_HELPER_OWNER_DIAGNOSTICS_INTEGRATION_20260726T183000Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "P8-U2 proves twelve eligible static Helper templates, two held declarations, and nine held undeclared sources.",
+        "evidence_paths": [
+          "audit/pass8/pass8-helper-unit2-capability-contract-v1.json"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "P8-U3 defines the exact versioned global SHA-256 Helper event journal and atomic restoration contract.",
+        "evidence_paths": [
+          "audit/pass8/pass8-helper-unit3-registration-events-v1.json"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The production load order installs the Helper runtime after the Section Owner runtime and installs the read-only view before Authority Rules.",
+        "evidence_paths": [
+          "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "The bounded integration is ready for isolated conflict, restart, growth, revocation, and denial proof but does not yet close Pass 8.",
+        "basis_evidence_paths": [
+          "audit/pass8/pass8-helper-unit4-owner-diagnostics-integration-v1.json",
+          "tools/test_pass8_unit4_helper_owner_diagnostics_integration_v1.js"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "missing or unregistered Section Owner",
+        "wrong event or capability contract version",
+        "unknown, legacy, or conflict-held Helper",
+        "source hash mismatch",
+        "owner or section mismatch",
+        "slot or growth mismatch",
+        "forged root or growth authority",
+        "duplicate or conflicting event",
+        "duplicate operation",
+        "stale or gapped sequence and epoch",
+        "event-chain mismatch",
+        "update before registration",
+        "stale revocation",
+        "tampered journal count, digest, head, or snapshot",
+        "atomic empty restoration",
+        "bounded Diagnostics truncation and redaction"
+      ]
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "verification": {
+    "assertions_total": 443,
+    "assertions_passed": 443,
+    "assertions_failed": 0,
+    "exact_scope": "PASS",
+    "runtime_integrity": "PASS",
+    "capability_and_event_bindings": "PASS",
+    "section_owner_dependency": "PASS",
+    "legacy_conflict_unknown_and_growth_holds": "PASS",
+    "sha256_restart_and_atomic_empty_restore": "PASS",
+    "diagnostics_redaction": "PASS",
+    "zero_external_effects": "PASS",
+    "permanent_gate_binding": "PASS"
+  },
+  "effects": {
+    "production_files_changed": true,
+    "runtime_integrity_changed": true,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_mutations": false,
+    "helper_ownership_changes": false,
+    "helper_behavior_activations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P8-U5",
+    "objective": "Prove Helper isolation, duplicate and stale events, owner absence, held and unknown denial, growth, revocation, restart, redaction, and zero-effect behavior across the production integration.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P8-U4 bounded passive production integration only. No Helper behavior is activated or granted authority; Pass 8 is not closed; Bank and Continuous Run are not repaired; no live observation, formal proof, persisted user-data change, or storage migration occurs."
+}
