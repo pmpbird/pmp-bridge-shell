@@ -1,0 +1,306 @@
+{
+  "type": "PMP_PASS10_BANK_UNIT4_OWNER_PROJECTION_REFRESH_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T23:05:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "1fe0f44486f1e30735cbb606762fc3c0a1652f2d",
+  "branch": "agent/pass10-unit4-bank-owner-refresh-v1",
+  "pass": 10,
+  "unit": "P10-U4",
+  "unit_id": "P10-U4",
+  "status": "BANK_OWNER_PROJECTION_REFRESH_PROVEN",
+  "objective": "Integrate and deterministically prove one bounded Bank-owner projection refresh path so only an exact accepted owner receipt refreshes the read-only projection once, while wrong-owner, duplicate, stale, malformed, Helper, active-tab, and direct UI events fail closed without adding a mutation, migration, timer, or retry surface.",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass10-unit3-bank-readonly-projection-v1.yml",
+      ".github/workflows/pass10-unit4-bank-owner-projection-refresh-v1.yml",
+      "audit/a003-manifest-seal.json",
+      "audit/pass10/pass10-bank-unit4-owner-projection-refresh-v1.json",
+      "audit/pass10/receipts/RECEIPT_P10_U4_BANK_OWNER_PROJECTION_REFRESH_20260726T230500Z_001.json",
+      "pmp-app-current.html",
+      "pmp-bank-owner-projection-refresh-v1.js",
+      "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+      "pmp-master-bank-tab-v1.js",
+      "pmp-mount-registry-v1.js",
+      "pmp-runtime-integrity-manifest-v1.json",
+      "tools/generate_pass10_unit4_integrity_updates_v1.py",
+      "tools/test_pass10_unit4_bank_owner_projection_refresh_v1.js",
+      "tools/verify_pass10_unit4_bank_owner_projection_refresh_v1.py"
+    ],
+    "implementation_paths": [
+      "pmp-app-current.html",
+      "pmp-bank-owner-projection-refresh-v1.js",
+      "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+      "pmp-master-bank-tab-v1.js",
+      "pmp-mount-registry-v1.js"
+    ]
+  },
+  "inputs": {
+    "unit3_report": "audit/pass10/pass10-bank-unit3-readonly-projection-v1.json",
+    "unit3_report_sha256": "a3c9b10fcd9821dd7bef884bad33eaa433d9bea8bd8b3108092aaf22f5b27a98",
+    "owner_refresh_adapter": "pmp-bank-owner-projection-refresh-v1.js",
+    "owner_refresh_adapter_sha256": "6ec10deef2b14727afc74e72938d0c512b68c30126c6ff92a3883f8751b559e8",
+    "readonly_projection": "pmp-bank-inventory-readonly-projection-v1.js",
+    "readonly_projection_sha256": "f1fd84964967b6b4842b51db7c2a3b4c38bdda3ad18d3d96f73b7ad138ee22fc",
+    "owner_boundary": "pmp-bank-continuous-run-owner-boundary-v1.js",
+    "owner_boundary_sha256": "2d5f2f6015ee7096a07387b82c4478c88bb6423464d9fd11302705df73286fbd",
+    "bank_tab": "pmp-master-bank-tab-v1.js",
+    "bank_tab_sha256": "dd4c856c34bbc324e1dcb78ccbf2efb288cfff84f70e3d6914c813a2985c3505",
+    "active_inner": "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+    "active_inner_sha256": "92f4234fee0063c275e84860cbeecbd32bec6b55d4bae1d95f040e8fbc94f1d1",
+    "mount_registry": "pmp-mount-registry-v1.js",
+    "mount_registry_sha256": "dd3085a36a4beaaa33d3b3a6a8191a42ce7522d24bdc5d0ecdfa0665d01738a3",
+    "integrity_generator": "tools/generate_pass10_unit4_integrity_updates_v1.py",
+    "integrity_generator_sha256": "7386c48880667359eafebda5682fbabd83cb2d72ced2bc7f43661b4c1581ef00",
+    "test": "tools/test_pass10_unit4_bank_owner_projection_refresh_v1.js",
+    "test_sha256": "e538eff6bbd3b1f350393464f12df66198d8c7508c85977baedd204d048a72ac"
+  },
+  "integration": {
+    "model": "EXACT_OWNER_RECEIPT_ONE_PROJECTION_REFRESH_SANITIZED_UI_EVENT",
+    "adapter_version": "1.0.0-pass10-unit4-owner-refresh-20260726A",
+    "bank_tab_version": "4.0.0-pass10-unit4-owner-refresh-20260726A",
+    "owner": "bank_screen_owner",
+    "owner_event": "pmp:bank-owner-write-committed",
+    "sanitized_projection_event": "pmp:bank-inventory-projection-refreshed",
+    "accepted_event_projection_refreshes": 1,
+    "automatic_retry_limit": 0,
+    "recurring_timers": 0,
+    "adapter_storage_reads": 0,
+    "adapter_storage_writes": 0,
+    "adapter_storage_deletes": 0,
+    "raw_payloads_exposed": 0,
+    "write_apis_exposed": 0,
+    "delete_apis_exposed": 0,
+    "migration_apis_exposed": 0,
+    "helper_registration_conveys_authority": false,
+    "active_tab_conveys_authority": false,
+    "direct_ui_event_conveys_authority": false,
+    "receipt_validation": [
+      "receipt version",
+      "Bank requester owner",
+      "Bank target owner",
+      "ALLOW and COMMITTED decision",
+      "resource and monotonic version binding",
+      "current owner-boundary resource version",
+      "SHA-256 receipt body",
+      "presence in bounded owner receipt chain"
+    ],
+    "fail_closed_cases": [
+      "dependency unavailable",
+      "malformed event",
+      "wrong requester owner",
+      "wrong target owner or decision",
+      "duplicate receipt",
+      "stale boundary version",
+      "nonsequential owner version",
+      "invalid receipt hash",
+      "receipt absent from owner boundary",
+      "direct UI refresh event"
+    ],
+    "production_load_order": [
+      "pmp-bank-continuous-run-owner-boundary-v1.js",
+      "pmp-master-bank-inventory-router-v1.js",
+      "pmp-bank-inventory-readonly-projection-v1.js",
+      "pmp-bank-owner-projection-refresh-v1.js",
+      "pmp-master-bank-tab-v1.js"
+    ],
+    "single_adapter_load": true,
+    "single_adapter_mount": true,
+    "bank_tab_raw_owner_listener_removed": true,
+    "bank_tab_cached_projection_render": true,
+    "explicit_user_refresh_preserved": true
+  },
+  "deterministic_matrix": {
+    "type": "PMP_PASS10_UNIT4_BANK_OWNER_PROJECTION_REFRESH_MATRIX_V1",
+    "assertions": 121,
+    "assertions_passed": 121,
+    "assertions_failed": 0,
+    "fixtures": [
+      "accepted Bank-owner commit",
+      "duplicate owner receipt",
+      "conflicting operation replay",
+      "stale expected version",
+      "wrong-owner copied receipt",
+      "malformed event",
+      "direct UI refresh event",
+      "pre-adapter stale receipt",
+      "missing owner dependencies"
+    ],
+    "regressions": {
+      "p10_unit3_readonly_projection": "125/125 PASS",
+      "p9_unit3_bank_continuous_run_owner_integration": "234/234 PASS"
+    }
+  },
+  "runtime_integrity": {
+    "runtime_records": 712,
+    "manifest_sha256": "7f94473e0cc4c65c01291ba7358fcd7d64423ca323e744b0b16e6b14465ddbd8",
+    "runtime_source_set_sha256": "5b5efca9367d9c501a498b1c50d5b28daea48a7571463d75ebd0c4174997c008",
+    "seal_sha256": "f36d317582544f5cb2eb65dd698f5d9c1db1772fe47a1096171237fb9893cec5",
+    "bootstrap_sha256": "377d8a81c2586b893d5cc70a8d4b063b120111dfdc5c8e31fc2f8ba0458ce2c0"
+  },
+  "observed_facts": [
+    {
+      "claim_type": "OBSERVED",
+      "fact": "One accepted Bank-owner fixture commit produced one owner event, one projection snapshot, and one sanitized refresh event; the adapter added no storage write or delete.",
+      "evidence_paths": [
+        "tools/test_pass10_unit4_bank_owner_projection_refresh_v1.js"
+      ]
+    },
+    {
+      "claim_type": "OBSERVED",
+      "fact": "Wrong-owner, duplicate, stale, malformed, direct UI, and unavailable-dependency cases produced no additional projection refresh.",
+      "evidence_paths": [
+        "tools/test_pass10_unit4_bank_owner_projection_refresh_v1.js"
+      ]
+    },
+    {
+      "claim_type": "OBSERVED",
+      "fact": "The active chain loads one adapter after the read-only projection and before the Bank tab; the Bank tab no longer consumes the raw owner-write event.",
+      "evidence_paths": [
+        "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+        "pmp-master-bank-tab-v1.js",
+        "pmp-mount-registry-v1.js"
+      ]
+    }
+  ],
+  "inferred_conclusions": [
+    {
+      "claim_type": "INFERRED",
+      "conclusion": "P10-U5 can certify fault, rollback, and persisted-data safety across the active owner-refresh path without user app inspection because owner receipt validation, exactly-once projection refresh, source-byte preservation, and denial paths are deterministic.",
+      "basis_evidence_paths": [
+        "audit/pass10/pass10-bank-unit3-readonly-projection-v1.json",
+        "audit/pass10/pass10-bank-unit4-owner-projection-refresh-v1.json"
+      ]
+    }
+  ],
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_integration",
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/pass10/pass10-bank-unit4-owner-projection-refresh-v1.json",
+      "rationale": "P10-U4 changes the active owner-event to Bank-projection update path and therefore adds exact receipt, replay, stale-version, wrong-owner, direct UI, dependency, cached-render, load-order, and integrity evidence."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass10/pass10-bank-unit3-readonly-projection-v1.json",
+      "audit/pass10/pass10-bank-unit4-owner-projection-refresh-v1.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass10_unit4_bank_owner_projection_refresh_v1.js"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass10_unit4_bank_owner_projection_refresh_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass10/receipts/RECEIPT_P10_U4_BANK_OWNER_PROJECTION_REFRESH_20260726T230500Z_001.json"
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "dependency unavailable",
+        "malformed event",
+        "wrong requester owner",
+        "wrong target owner or decision",
+        "duplicate receipt",
+        "stale boundary version",
+        "nonsequential owner version",
+        "invalid receipt hash",
+        "receipt absent from owner boundary",
+        "direct UI refresh event"
+      ]
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    },
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "One accepted Bank-owner fixture commit produced one owner event, one projection snapshot, and one sanitized refresh event; the adapter added no storage write or delete.",
+        "evidence_paths": [
+          "tools/test_pass10_unit4_bank_owner_projection_refresh_v1.js"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "Wrong-owner, duplicate, stale, malformed, direct UI, and unavailable-dependency cases produced no additional projection refresh.",
+        "evidence_paths": [
+          "tools/test_pass10_unit4_bank_owner_projection_refresh_v1.js"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "The active Bank tab and helper registrations cannot independently refresh the projection because the Bank tab consumes only the adapter's sanitized, receipt-bound event.",
+        "basis_evidence_paths": [
+          "pmp-bank-owner-projection-refresh-v1.js",
+          "pmp-master-bank-tab-v1.js"
+        ]
+      }
+    ]
+  },
+  "verification": {
+    "exact_scope": "PASS",
+    "unit3_projection_binding": "PASS",
+    "exact_owner_receipt_validation": "PASS",
+    "accepted_event_exactly_once_refresh": "PASS",
+    "wrong_owner_duplicate_stale_malformed_denial": "PASS",
+    "direct_ui_no_authority": "PASS",
+    "cached_bank_tab_render": "PASS",
+    "active_load_order_and_singletons": "PASS",
+    "p10_unit3_regression": "PASS",
+    "p9_unit3_regression": "PASS",
+    "runtime_integrity_reseal": "PASS",
+    "zero_persisted_user_data_change": "PASS",
+    "permanent_gate_binding": "PASS"
+  },
+  "effects": {
+    "production_files_changed": true,
+    "runtime_integrity_changed": true,
+    "browser_launched": false,
+    "network_requests": false,
+    "fixture_storage_writes": 3,
+    "adapter_storage_writes": 0,
+    "adapter_storage_deletes": 0,
+    "route_changes": false,
+    "bank_user_data_mutations": false,
+    "continuous_run_user_data_mutations": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": true
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P10-U5",
+    "objective": "Certify fault, rollback, and persisted-data safety across the active Bank owner-refresh path and determine whether any bounded live observation is genuinely required.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "persisted_user_data_change_allowed": false,
+    "storage_migration_allowed": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P10-U4 proves the active Bank-owner projection refresh path statically and deterministically. It does not claim a user-observed live app result, change or migrate persisted user data, open IndexedDB, perform a scarce observation, or run formal proof."
+}
