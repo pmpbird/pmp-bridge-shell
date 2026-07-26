@@ -1,13 +1,13 @@
 {
   "algorithm": "SHA-256",
   "counts": {
-    "executable_records": 709,
+    "executable_records": 710,
     "external_errors": 0,
     "external_records": 3,
     "historical_records": 1,
     "map_declared_covered": 42,
     "map_declared_paths": 42,
-    "runtime_records": 709,
+    "runtime_records": 710,
     "style_records": 0
   },
   "external_records": [
@@ -1316,15 +1316,26 @@
       "sri": "sha256-kDn/gIUtCrCqulvX3nlGCS8TA8JShsinRaPNQwNW9l8="
     },
     {
-      "bytes": 9945,
+      "bytes": 11763,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "76be79f2c315b2fb37e373f3a3c6082c17b8e682",
+      "git_blob_sha": "6c529c277131b9b3e1b4e768c89d1dfd27710093",
+      "mime_type": "text/javascript",
+      "path": "pmp-bank-continuous-run-owner-boundary-v1.js",
+      "sha256_base64": "LV8vYBXucJagc4e4LER4yIu2QjRk2f0RMCcF33Mob70=",
+      "sha256_hex": "2d5f2f6015ee7096a07387b82c4478c88bb6423464d9fd11302705df73286fbd",
+      "sri": "sha256-LV8vYBXucJagc4e4LER4yIu2QjRk2f0RMCcF33Mob70="
+    },
+    {
+      "bytes": 10713,
+      "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
+      "execution_class": "EXECUTABLE_SCRIPT",
+      "git_blob_sha": "fd7113e2734502cec08322397c8b921fad101d2c",
       "mime_type": "text/javascript",
       "path": "pmp-bank-continuous-run-owner-split-diagnostic-v1.js",
-      "sha256_base64": "Dlaj0wOhLidzqsitjzLdc+dtOvVmbyIdqUolurgzsmQ=",
-      "sha256_hex": "0e56a3d303a12e2773aac8ad8f32dd73e76d3af5666f221da94a25bab833b264",
-      "sri": "sha256-Dlaj0wOhLidzqsitjzLdc+dtOvVmbyIdqUolurgzsmQ="
+      "sha256_base64": "fnW2Km9gVMAoY+fEtlJCiIUhmDk5uWk/rmL7jWmLJTU=",
+      "sha256_hex": "7e75b62a6f6054c02863e7c4b65242888521983939b9693fae62fb8d698b2535",
+      "sri": "sha256-fnW2Km9gVMAoY+fEtlJCiIUhmDk5uWk/rmL7jWmLJTU="
     },
     {
       "bytes": 1178,
@@ -1470,15 +1481,15 @@
       "sri": "sha256-xOx1RSwfraRicSFTphIk+WXpAeZ7gtwqCbe7ec+1eeA="
     },
     {
-      "bytes": 14407,
+      "bytes": 892,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "4eee0fd8bf886788f30567207fb4cab51c353a75",
+      "git_blob_sha": "fea5d2fe91437e1ebfa565f4620d5f2c4c58a1ee",
       "mime_type": "text/javascript",
       "path": "pmp-bank-mode1-hide-unchecked-v1.js",
-      "sha256_base64": "RftOjx65mrLqnCmFybR67gfzd3MSEbTU1H0nFMhrnwE=",
-      "sha256_hex": "45fb4e8f1eb99ab2ea9c2985c9b47aee07f377731211b4d4d47d2714c86b9f01",
-      "sri": "sha256-RftOjx65mrLqnCmFybR67gfzd3MSEbTU1H0nFMhrnwE="
+      "sha256_base64": "usivXaDEndENsQ0SB3d/BnS/3bNIVGvGPewUFplEzsw=",
+      "sha256_hex": "bac8af5da0c49dd10db10d1207777f0674bfddb348546bc63dec14169944cecc",
+      "sri": "sha256-usivXaDEndENsQ0SB3d/BnS/3bNIVGvGPewUFplEzsw="
     },
     {
       "bytes": 1510,
@@ -1492,15 +1503,15 @@
       "sri": "sha256-ajqBEwd9RLYzv/U/Wh7RjubLMbDhh4ZnSICC9HJrgSo="
     },
     {
-      "bytes": 3420,
+      "bytes": 3341,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "bb20945c1c0db5475e09d0f4d3628a3aa8bb7e8d",
+      "git_blob_sha": "9a47ec9b73b4e11812f4fc4b51ee6726f3dffab8",
       "mime_type": "text/javascript",
       "path": "pmp-bank-owner-dependency-bridge-v1.js",
-      "sha256_base64": "S6GK8uEfjGU1FZsgiX6J+II95tIn1cz2X3JdJPssOH4=",
-      "sha256_hex": "4ba18af2e11f8c6535159b20897e89f8823de6d227d5ccf65f725d24fb2c387e",
-      "sri": "sha256-S6GK8uEfjGU1FZsgiX6J+II95tIn1cz2X3JdJPssOH4="
+      "sha256_base64": "XwZvBBO61DeKRzvQHe8GhZUW0a7kAQuHnc2fpvxuTQE=",
+      "sha256_hex": "5f066f0413bad4378a473bd01def06859516d1aee4010b879dcd9fa6fc6e4d01",
+      "sri": "sha256-XwZvBBO61DeKRzvQHe8GhZUW0a7kAQuHnc2fpvxuTQE="
     },
     {
       "bytes": 3179,
@@ -1547,26 +1558,26 @@
       "sri": "sha256-/UH3B4Me81ihgu+wPQ04SHI4q4s5yZAZPgAC+ycAgag="
     },
     {
-      "bytes": 9755,
+      "bytes": 924,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "9e19c945ebf86f529a77c867a2dd0ca357e149e3",
+      "git_blob_sha": "4bccc0ad182393b546aaa7b1a1a64fab15253113",
       "mime_type": "text/javascript",
       "path": "pmp-bank-scoped-test-data-cleaner-v1.js",
-      "sha256_base64": "GQvlW8ii6ZT/yMyDuh9sCNIS7g1cSj+BxLzAvs+Rh2c=",
-      "sha256_hex": "190be55bc8a2e994ffc8cc83ba1f6c08d212ee0d5c4a3f81c4bcc0becf918767",
-      "sri": "sha256-GQvlW8ii6ZT/yMyDuh9sCNIS7g1cSj+BxLzAvs+Rh2c="
+      "sha256_base64": "nS7yhG/UG/S4YylGC4BVgOF9Dclz6HTTmxQOrjLrX9c=",
+      "sha256_hex": "9d2ef2846fd41bf4b86329460b805580e17d0dc973e874d39b140eae32eb5fd7",
+      "sri": "sha256-nS7yhG/UG/S4YylGC4BVgOF9Dclz6HTTmxQOrjLrX9c="
     },
     {
-      "bytes": 20354,
+      "bytes": 21577,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "925f64be3bfcbc24db945eb9ed78ad398c8a8f31",
+      "git_blob_sha": "2e7cf5035e70b573e9d69e0040e8895303af4de0",
       "mime_type": "text/javascript",
       "path": "pmp-bank-screen-owner-v1.js",
-      "sha256_base64": "h8+pZ3IFg9eOAQpJ8jx6dRQQ7WgBL7gNLSoWnuF37Oc=",
-      "sha256_hex": "87cfa967720583d78e010a49f23c7a751410ed68012fb80d2d2a169ee177ece7",
-      "sri": "sha256-h8+pZ3IFg9eOAQpJ8jx6dRQQ7WgBL7gNLSoWnuF37Oc="
+      "sha256_base64": "dOP9Vb4dC7UkT+4H3OvIzpeWKaiMwLKeX6r7WnF8ldk=",
+      "sha256_hex": "74e3fd55be1d0bb5244fee07dcebc8ce979629a88cc0b29e5faafb5a717c95d9",
+      "sri": "sha256-dOP9Vb4dC7UkT+4H3OvIzpeWKaiMwLKeX6r7WnF8ldk="
     },
     {
       "bytes": 14933,
@@ -2020,15 +2031,15 @@
       "sri": "sha256-utyu3vFgoqyjKYqemPGdhdDrclOAo2uwG3MhXvNuqTM="
     },
     {
-      "bytes": 3902,
+      "bytes": 4604,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "f7963a8726fb7132fbeec735227b75285103340e",
+      "git_blob_sha": "a041494b4d20b6413cd7c49d86279a0429c9d69d",
       "mime_type": "text/javascript",
       "path": "pmp-connections-bank-packet-delete-v1.js",
-      "sha256_base64": "CDkM2R6dY431hC9kG8DjOYIzeGPh5ee2B+QlDUCjez8=",
-      "sha256_hex": "08390cd91e9d638df5842f641bc0e33982337863e1e5e7b607e4250d40a37b3f",
-      "sri": "sha256-CDkM2R6dY431hC9kG8DjOYIzeGPh5ee2B+QlDUCjez8="
+      "sha256_base64": "TxmHmXvWfpc4Lawa9VyBGQ5rUG76w5f4HRUux4p8yfQ=",
+      "sha256_hex": "4f1987997bd67e97382dac1af55c81190e6b506efac397f81d152ec78a7cc9f4",
+      "sri": "sha256-TxmHmXvWfpc4Lawa9VyBGQ5rUG76w5f4HRUux4p8yfQ="
     },
     {
       "bytes": 3421,
@@ -2163,15 +2174,15 @@
       "sri": "sha256-i7nLqktZyE+5Hw4mnbM516JQpiyd5eYR2w3h191Inhw="
     },
     {
-      "bytes": 10437,
+      "bytes": 10779,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "648e34bb25b35f9634cbad03442bfa84eea1535a",
+      "git_blob_sha": "cbed73a055f06fa6076fcce4c3ad3388c7f910fe",
       "mime_type": "text/javascript",
       "path": "pmp-continuous-run-bank-order-frame-loader-v1.js",
-      "sha256_base64": "nLV/zbpkX5EApUdgEddlbA0fb/1QIGeTVF9mPm29JJM=",
-      "sha256_hex": "9cb57fcdba645f9100a5476011d7656c0d1f6ffd50206793545f663e6dbd2493",
-      "sri": "sha256-nLV/zbpkX5EApUdgEddlbA0fb/1QIGeTVF9mPm29JJM="
+      "sha256_base64": "45l+ae/BbfE2HbEs/vkUUWWHTB+/BjOlVz/p3MetE84=",
+      "sha256_hex": "e3997e69efc16df1361db12cfef9145165874c1fbf0633a5573fe9dcc7ad13ce",
+      "sri": "sha256-45l+ae/BbfE2HbEs/vkUUWWHTB+/BjOlVz/p3MetE84="
     },
     {
       "bytes": 83,
@@ -2526,15 +2537,15 @@
       "sri": "sha256-uL7BMwmXJeD0UcrDOc8faN8Ef2WwO8fGTImod3lVa+k="
     },
     {
-      "bytes": 9180,
+      "bytes": 10320,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "462de8007e860912d4eaaabb4324b400541511c4",
+      "git_blob_sha": "94ad2b1bb8860d31d93b68492efe172914e0da71",
       "mime_type": "text/javascript",
       "path": "pmp-continuous-run-state-bank-v1.js",
-      "sha256_base64": "fRu1Oh99Fm5D2YIkko4itqOqwIJxduhl32QoNlMZyYs=",
-      "sha256_hex": "7d1bb53a1f7d166e43d98224928e22b6a3aac0827176e865df6428365319c98b",
-      "sri": "sha256-fRu1Oh99Fm5D2YIkko4itqOqwIJxduhl32QoNlMZyYs="
+      "sha256_base64": "qx14DoHOgt//E4J8PJPhxOakQwJmD3YlgjEj4KMuZGA=",
+      "sha256_hex": "ab1d780e81ce82dfff13827c3c93e1c4e6a44302660f7625823123e0a32e6460",
+      "sri": "sha256-qx14DoHOgt//E4J8PJPhxOakQwJmD3YlgjEj4KMuZGA="
     },
     {
       "bytes": 6676,
@@ -2889,15 +2900,15 @@
       "sri": "sha256-2YaDyhFd0QRkBo7hsbbbSM41/T07ZsUBsWVfulpJ4Ig="
     },
     {
-      "bytes": 8137,
+      "bytes": 7966,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_DOCUMENT",
-      "git_blob_sha": "be958ff0aef60f9648cf450f1d17ca44d6193618",
+      "git_blob_sha": "d0d5d6444c75fd1b7315efa6a97d001fa73ea4ec",
       "mime_type": "text/html",
       "path": "pmp-current-inner-cleanbug-rgcontrols-v23.html",
-      "sha256_base64": "annxDMNtw53wdSHEo7uUaXLse3q3ljf1bh1FWEcxMfw=",
-      "sha256_hex": "6a79f10cc36dc39df07521c4a3bb946972ec7b7ab79637f56e1d4558473131fc",
-      "sri": "sha256-annxDMNtw53wdSHEo7uUaXLse3q3ljf1bh1FWEcxMfw="
+      "sha256_base64": "AJcrrwh5YPZTi1OiPGXW9xdZjP2fiBS7WZhl/XjYEhE=",
+      "sha256_hex": "00972baf087960f6538b53a23c65d6f717598cfd9f8814bb599865fd78d81211",
+      "sri": "sha256-AJcrrwh5YPZTi1OiPGXW9xdZjP2fiBS7WZhl/XjYEhE="
     },
     {
       "bytes": 2428,
@@ -4605,26 +4616,26 @@
       "sri": "sha256-Pd84B/VFCZzYOc97lbGyNDfpxuRrP5rhgdAdZiI1bWU="
     },
     {
-      "bytes": 6973,
+      "bytes": 9302,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "a25a533b680d937b5d47eb484dfc110fdb275461",
+      "git_blob_sha": "78342fa55edd89715faaafae5bfc6265e8dd99ee",
       "mime_type": "text/javascript",
       "path": "pmp-master-bank-inventory-router-v1.js",
-      "sha256_base64": "fxKyHnJWtijBHp+CysYiV/xxurPnyWHW+VkU6rYrFYU=",
-      "sha256_hex": "7f12b21e7256b628c11e9f82cac62257fc71bab3e7c961d6f95914eab62b1585",
-      "sri": "sha256-fxKyHnJWtijBHp+CysYiV/xxurPnyWHW+VkU6rYrFYU="
+      "sha256_base64": "fhBYPpx7DZQrs+ppBaFzOAibZCTbxyIRAg/y8n9jWzk=",
+      "sha256_hex": "7e10583e9c7b0d942bb3ea6905a17338089b6424dbc72211020ff2f27f635b39",
+      "sri": "sha256-fhBYPpx7DZQrs+ppBaFzOAibZCTbxyIRAg/y8n9jWzk="
     },
     {
-      "bytes": 13842,
+      "bytes": 13764,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "1f7586da4e3d9d9287cd23d3c7add28cfd776741",
+      "git_blob_sha": "852ce2f3bac849b97e3ec13532d84bc783c7e753",
       "mime_type": "text/javascript",
       "path": "pmp-master-bank-tab-v1.js",
-      "sha256_base64": "DMYwk3CuK4nwlqw3nUj/T8PoTgO6RKQTTxhyD48Uy5Y=",
-      "sha256_hex": "0cc6309370ae2b89f096ac379d48ff4fc3e84e03ba44a4134f18720f8f14cb96",
-      "sri": "sha256-DMYwk3CuK4nwlqw3nUj/T8PoTgO6RKQTTxhyD48Uy5Y="
+      "sha256_base64": "1w8pvv8Baa37ScNRwY+Z5HBNDp3prELMsHqgV0eFEvE=",
+      "sha256_hex": "d70f29beff0169adfb49c351c18f99e4704d0e9de9ac42ccb07aa057478512f1",
+      "sri": "sha256-1w8pvv8Baa37ScNRwY+Z5HBNDp3prELMsHqgV0eFEvE="
     },
     {
       "bytes": 7422,
@@ -7880,7 +7891,7 @@
       "rule": "This is the only application bootstrap source excluded from downstream manifest self-enforcement."
     }
   ],
-  "runtime_source_set_sha256": "13db53dcf1fafe5faa8051f02d011cd99499a6a728484188b42201359e017058",
+  "runtime_source_set_sha256": "61bccefa4df407b158f4d71ddc1370f831d4091f51f9ae0bd3f79914f5249f39",
   "source_identity_rule": "Deterministic digest of protected local, historical, external, root-anchor, and policy identities; audit/workflow-only commits do not alter this identity.",
   "type": "PMP_RUNTIME_INTEGRITY_MANIFEST_V1",
   "unlisted_executable_policy": "FAIL_CLOSED",

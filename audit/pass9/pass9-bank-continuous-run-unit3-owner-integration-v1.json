@@ -1,0 +1,287 @@
+{
+  "type": "PMP_PASS9_BANK_CONTINUOUS_RUN_UNIT3_OWNER_INTEGRATION_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T20:00:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "1c2ae85266e6ded5f62e4e45e956c5b3fb026d54",
+  "branch": "agent/pass9-unit3-bank-continuous-run-owner-integration-v1",
+  "pass": 9,
+  "unit": "P9-U3",
+  "unit_id": "P9-U3",
+  "status": "BANK_CONTINUOUS_RUN_OWNER_INTEGRATION_PROVEN",
+  "objective": "Repair the production Bank and Continuous Run boundary under the exact P9-U2 contract: one Bank durable writer, one Continuous Run lifecycle owner, owner-boundary and state-module load-time zero persisted-data effects, atomic scoped commits with rollback, exact user-confirmed deletion, SHA-256 receipts, and event-driven single-owner rendering.",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass9-unit3-bank-continuous-run-owner-integration-v1.yml",
+      "audit/a003-manifest-seal.json",
+      "audit/pass9/pass9-bank-continuous-run-unit3-owner-integration-v1.json",
+      "audit/pass9/receipts/RECEIPT_P9_U3_BANK_CONTINUOUS_RUN_OWNER_INTEGRATION_20260726T200000Z_001.json",
+      "pmp-app-current.html",
+      "pmp-bank-continuous-run-owner-boundary-v1.js",
+      "pmp-bank-continuous-run-owner-split-diagnostic-v1.js",
+      "pmp-bank-mode1-hide-unchecked-v1.js",
+      "pmp-bank-owner-dependency-bridge-v1.js",
+      "pmp-bank-scoped-test-data-cleaner-v1.js",
+      "pmp-bank-screen-owner-v1.js",
+      "pmp-connections-bank-packet-delete-v1.js",
+      "pmp-continuous-run-bank-order-frame-loader-v1.js",
+      "pmp-continuous-run-state-bank-v1.js",
+      "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+      "pmp-master-bank-inventory-router-v1.js",
+      "pmp-master-bank-tab-v1.js",
+      "pmp-runtime-integrity-manifest-v1.json",
+      "tools/generate_pass9_unit3_integrity_updates_v1.py",
+      "tools/test_pass9_unit3_bank_continuous_run_owner_integration_v1.js",
+      "tools/verify_pass9_unit3_bank_continuous_run_owner_integration_v1.py"
+    ],
+    "implementation_paths": [
+      "pmp-app-current.html",
+      "pmp-bank-continuous-run-owner-boundary-v1.js",
+      "pmp-bank-continuous-run-owner-split-diagnostic-v1.js",
+      "pmp-bank-mode1-hide-unchecked-v1.js",
+      "pmp-bank-owner-dependency-bridge-v1.js",
+      "pmp-bank-scoped-test-data-cleaner-v1.js",
+      "pmp-bank-screen-owner-v1.js",
+      "pmp-connections-bank-packet-delete-v1.js",
+      "pmp-continuous-run-bank-order-frame-loader-v1.js",
+      "pmp-continuous-run-state-bank-v1.js",
+      "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+      "pmp-master-bank-inventory-router-v1.js",
+      "pmp-master-bank-tab-v1.js"
+    ]
+  },
+  "inputs": {
+    "unit1_inventory": "audit/pass9/pass9-bank-continuous-run-unit1-inventory-v1.json",
+    "unit1_inventory_sha256": "380e5638a5dc822fe6b784484e28454754408a299c7507c0d7ee557c74f5d641",
+    "unit2_owner_contract": "audit/pass9/pass9-bank-continuous-run-unit2-owner-contract-v1.json",
+    "unit2_owner_contract_sha256": "a2bda0b8b2171d8843d52334a07bdda0e3f517f557751f9464bd9c8ff2e526c5",
+    "legacy_inner_v4": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+    "legacy_inner_v4_sha256": "821005d20de4679d48e94f54046fee3bba05dc1cafdf7e2bf2b02b15f8405d59",
+    "generator": "tools/generate_pass9_unit3_integrity_updates_v1.py",
+    "generator_sha256": "2557f42bfcba387ff4e1814acc3336265f23f9f40ea94be4975c5b88d60c1a24",
+    "test": "tools/test_pass9_unit3_bank_continuous_run_owner_integration_v1.js",
+    "test_sha256": "c1b2c83afc8a779dad7d34a861baa981042a656e74bce6c8b7c9761fb44ce1a2"
+  },
+  "integration": {
+    "model": "SEPARATE_OWNERS_ATOMIC_BANK_COMMIT_EVENT_DRIVEN_RENDER",
+    "contract_version": "PMP_BANK_CONTINUOUS_RUN_OWNER_CONTRACT_V1",
+    "receipt_version": "PMP_BANK_CONTINUOUS_RUN_OWNER_RECEIPT_V1",
+    "bank_owner": "bank_screen_owner",
+    "continuous_run_owner": "continuous_run_level_owner",
+    "boundary_version": "1.0.0-pass9-unit3-owner-boundary",
+    "request_fields": 13,
+    "receipt_fields": 15,
+    "receipt_algorithm": "SHA-256_CHAINED",
+    "existing_persisted_keys_preserved": [
+      "pmp_continuous_run_state_bank_v1",
+      "pmp_continuous_run_state_receipts_v1",
+      "pmp_continuous_run_state_manifest_v1"
+    ],
+    "boundary_and_state_load_storage_reads": 0,
+    "boundary_and_state_load_storage_writes": 0,
+    "boundary_and_state_load_storage_deletes": 0,
+    "boundary_and_state_load_persisted_user_data_changed": false,
+    "atomic_write_rollback": true,
+    "unrelated_storage_preserved": true,
+    "expired_requests_denied": true,
+    "cancellation_epoch": "MONOTONIC_NO_GAPS",
+    "bank_detail_open_is_read_only": true,
+    "storage_migration": "FORBIDDEN",
+    "delete_or_clear_default": "DENY",
+    "explicit_delete_confirmation_required": true,
+    "copied_mutable_cross_frame_apis": 0,
+    "recurring_bank_painters": 0,
+    "duplicate_active_owner_injections": 0,
+    "render_mode": "EVENT_DRIVEN_NEW_DOCUMENT_ONCE",
+    "boundary_sha256": "2d5f2f6015ee7096a07387b82c4478c88bb6423464d9fd11302705df73286fbd",
+    "continuous_run_state_sha256": "ab1d780e81ce82dfff13827c3c93e1c4e6a44302660f7625823123e0a32e6460",
+    "bank_router_sha256": "7e10583e9c7b0d942bb3ea6905a17338089b6424dbc72211020ff2f27f635b39",
+    "bank_shell_owner_sha256": "d70f29beff0169adfb49c351c18f99e4704d0e9de9ac42ccb07aa057478512f1",
+    "continuous_run_surface_owner_sha256": "74e3fd55be1d0bb5244fee07dcebc8ce979629a88cc0b29e5faafb5a717c95d9",
+    "inner_sha256": "00972baf087960f6538b53a23c65d6f717598cfd9f8814bb599865fd78d81211"
+  },
+  "runtime_integrity": {
+    "runtime_records": 710,
+    "manifest_sha256": "d692bf582e60809dfd3c95cbabee26ab22ddca7c8627dccf972347124b98f8bd",
+    "runtime_source_set_sha256": "61bccefa4df407b158f4d71ddc1370f831d4091f51f9ae0bd3f79914f5249f39",
+    "seal_sha256": "1261e496c2ec1ce368d0f937ae7ad7d90df78ac47c600293a8207c5e70d9138c",
+    "bootstrap_sha256": "46b2dd341eac50d5a94cc5c809d848251c51cca45514ba3b76c24aed861a7efb"
+  },
+  "diagnostic_and_proof_matrix": {
+    "type": "PMP_PASS9_UNIT3_BANK_CONTINUOUS_RUN_INTEGRATION_MATRIX_V1",
+    "assertions": 233,
+    "invariants": [
+      "load performs zero persisted-storage reads, writes, or deletes",
+      "only Bank Owner commits exact allowlisted durable bundles",
+      "Continuous Run owns lifecycle and receives chained Bank receipts",
+      "wrong owner, key scope, version, action, capability, duplicate, and delete authority fail closed",
+      "atomic failure restores exact prior bytes and preserves unrelated storage",
+      "production loads one owner chain and uses event-driven rendering without recurring painters"
+    ],
+    "fault_cases": 16
+  },
+  "observed_facts": [
+    {
+      "claim_type": "OBSERVED",
+      "fact": "The deterministic integration loaded the owner boundary and state module against seeded persisted bytes without any load-time storage read, write, or delete.",
+      "evidence_paths": [
+        "tools/test_pass9_unit3_bank_continuous_run_owner_integration_v1.js"
+      ]
+    },
+    {
+      "claim_type": "OBSERVED",
+      "fact": "The production chain now loads the Bank/Continuous Run owner boundary before state and routing sources, while duplicate active owner scripts are excluded from the frame loader.",
+      "evidence_paths": [
+        "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+        "pmp-continuous-run-bank-order-frame-loader-v1.js"
+      ]
+    },
+    {
+      "claim_type": "OBSERVED",
+      "fact": "Injected atomic write failure restored exact prior persisted bytes, and all default clear/delete, wrong-scope, wrong-owner, wrong-version, and wrong-capability cases denied.",
+      "evidence_paths": [
+        "tools/test_pass9_unit3_bank_continuous_run_owner_integration_v1.js",
+        "pmp-bank-continuous-run-owner-boundary-v1.js"
+      ]
+    }
+  ],
+  "inferred_conclusions": [
+    {
+      "claim_type": "INFERRED",
+      "conclusion": "P9-U4 may now exhaustively prove concurrency, cancellation, restart, handoff, repeated load, and denial behavior without asking the user to inspect the app.",
+      "basis_evidence_paths": [
+        "audit/pass9/pass9-bank-continuous-run-unit2-owner-contract-v1.json",
+        "audit/pass9/pass9-bank-continuous-run-unit3-owner-integration-v1.json"
+      ]
+    }
+  ],
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_integration",
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/pass9/pass9-bank-continuous-run-unit3-owner-integration-v1.json",
+      "rationale": "P9-U3 is the production Bank/Continuous Run repair and adds deterministic owner, persistence, rollback, deletion, load, renderer, duplicate, and integrity evidence."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass9/pass9-bank-continuous-run-unit1-inventory-v1.json",
+      "audit/pass9/pass9-bank-continuous-run-unit2-owner-contract-v1.json",
+      "audit/pass9/pass9-bank-continuous-run-unit3-owner-integration-v1.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass9_unit3_bank_continuous_run_owner_integration_v1.js"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass9_unit3_bank_continuous_run_owner_integration_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass9/receipts/RECEIPT_P9_U3_BANK_CONTINUOUS_RUN_OWNER_INTEGRATION_20260726T200000Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "Two hundred thirty-three deterministic assertions prove the bounded production integration, exact failure denials, atomic rollback, data preservation, expiration and monotonic cancellation, owner-routed Connections deletion, read-only Bank detail opening, and non-recurring owner renderer.",
+        "evidence_paths": [
+          "tools/test_pass9_unit3_bank_continuous_run_owner_integration_v1.js",
+          "audit/pass9/pass9-bank-continuous-run-unit3-owner-integration-v1.json"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "The repaired Bank/Continuous Run production boundary is ready for the P9-U4 exhaustive restart, handoff, concurrency, cancellation, repeated-load, and denial proof.",
+        "basis_evidence_paths": [
+          "audit/pass9/pass9-bank-continuous-run-unit2-owner-contract-v1.json",
+          "audit/pass9/pass9-bank-continuous-run-unit3-owner-integration-v1.json"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "wrong owner",
+        "wrong durable storage key scope",
+        "wrong expected version",
+        "wrong action",
+        "wrong capability",
+        "default clear",
+        "default delete",
+        "manual clear with wrong capability",
+        "manual delete with wrong capability",
+        "expired request",
+        "stale or gapped cancellation epoch",
+        "same operation with conflicting payload",
+        "atomic write failure after a partial bundle",
+        "boundary unavailable",
+        "legacy duplicate owner injection",
+        "recurring painter reintroduction"
+      ]
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "verification": {
+    "assertions_total": 233,
+    "assertions_passed": 233,
+    "assertions_failed": 0,
+    "exact_scope": "PASS",
+    "runtime_integrity": "PASS",
+    "separate_owner_bindings": "PASS",
+    "load_zero_effects": "PASS",
+    "atomic_exact_scope_and_rollback": "PASS",
+    "delete_clear_default_deny": "PASS",
+    "sha256_receipt_chain": "PASS",
+    "event_driven_single_owner_rendering": "PASS",
+    "persisted_and_unrelated_data_preservation": "PASS",
+    "permanent_gate_binding": "PASS"
+  },
+  "effects": {
+    "production_files_changed": true,
+    "runtime_integrity_changed": true,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_mutations": false,
+    "continuous_run_mutations": false,
+    "repairs": true,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": true
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P9-U4",
+    "objective": "Exhaustively prove concurrency, cancellation, restart, handoff, repeated-load, duplicate, stale-version, denial, diagnostics, and preserved-data behavior across the repaired production integration.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P9-U3 proves the bounded production Bank/Continuous Run repair statically and deterministically. It does not claim a user-observed live app result, mutate or migrate the user's persisted data, perform a scarce live observation, or run formal proof."
+}

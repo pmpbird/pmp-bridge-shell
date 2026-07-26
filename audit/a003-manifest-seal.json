@@ -1,14 +1,15 @@
 {
-  "manifest_bytes": 374259,
+  "manifest_bytes": 374790,
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
-  "manifest_sha256": "11bd172cc5527f11b50cda8b98599e7d5fe7b10c4f96f14b2f18fcd90866c2bc",
+  "manifest_sha256": "d692bf582e60809dfd3c95cbabee26ab22ddca7c8627dccf972347124b98f8bd",
   "manifest_version": "20260711A-A003-FINAL",
+  "pass9_context": "P9-U3 production-loads the exact P9-U2 Bank Owner and Continuous Run Owner boundary before legacy compatibility sources. Read paths and load are non-persisting; Bank Owner performs atomic exact-key commits; clear/delete deny by default; copied cross-frame authority, duplicate active loaders, recurring Bank painters, and FNV persistence seals are removed. Existing persisted keys and bytes are not migrated.",
   "repair_id": "A-003",
   "root_self_verifiable": false,
   "root_trust_anchor": "pmp-app-current.html",
   "rule": "The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.",
-  "runtime_source_set_sha256": "13db53dcf1fafe5faa8051f02d011cd99499a6a728484188b42201359e017058",
-  "sealed_branch": "main",
+  "runtime_source_set_sha256": "61bccefa4df407b158f4d71ddc1370f831d4091f51f9ae0bd3f79914f5249f39",
+  "sealed_branch": "agent/pass9-unit3-bank-continuous-run-owner-integration-v1",
   "status": "SEALED",
   "type": "PMP_A003_MANIFEST_SEAL_V1"
 }
