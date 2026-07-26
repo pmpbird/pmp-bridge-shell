@@ -1,0 +1,30 @@
+name: Pass 5 Unit 2 Mount Lifecycle Contract
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - '.github/workflows/pass5-unit2-mount-lifecycle-contract-v1.yml'
+      - 'audit/pass5/pass5-mount-registry-diagnostics-unit2-lifecycle-contract-v1.json'
+      - 'audit/pass5/receipts/RECEIPT_P5_U2_CONTRACT_20260726T070211Z_001.json'
+      - 'pmp-mount-lifecycle-contract-v1.js'
+      - 'tools/test_pass5_unit2_mount_lifecycle_contract_v1.js'
+      - 'tools/verify_pass5_unit2_mount_lifecycle_contract_v1.py'
+permissions:
+  contents: read
+jobs:
+  deterministic-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test lifecycle contract and compatibility facade
+        run: node tools/test_pass5_unit2_mount_lifecycle_contract_v1.js
+      - name: Verify exact pure-contract scope
+        run: python3 tools/verify_pass5_unit2_mount_lifecycle_contract_v1.py "${{ github.event.pull_request.base.sha }}"

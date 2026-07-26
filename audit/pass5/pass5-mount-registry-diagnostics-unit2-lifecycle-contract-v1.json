@@ -1,0 +1,144 @@
+{
+  "type": "PMP_PASS5_MOUNT_REGISTRY_DIAGNOSTICS_UNIT2_LIFECYCLE_CONTRACT_V1",
+  "version": "1.0.0",
+  "status": "PURE_CONTRACT_PROVEN_PENDING_MERGE",
+  "created_at": "2026-07-26T07:02:11Z",
+  "pass": 5,
+  "unit": 2,
+  "base_main_commit": "8ca3ea78d51f69ebec0c1a445bf895dd6d1be812",
+  "readiness_source": "audit/pass5/pass5-mount-registry-diagnostics-unit1-readiness-inventory-v1.json",
+  "implementation": {
+    "file": "pmp-mount-lifecycle-contract-v1.js",
+    "contract_version": "PMP_MOUNT_LIFECYCLE_CONTRACT_V1",
+    "implementation_version": "1.0.0",
+    "registry_owner": "mount_registry_owner",
+    "mode": "PURE_UNREFERENCED_CONTRACT",
+    "production_loaded": false,
+    "storage_access": false,
+    "dom_access": false,
+    "network_access": false,
+    "timer_access": false
+  },
+  "event_schema": {
+    "required_fields": [
+      "contract_version",
+      "operation_id",
+      "monotonic_sequence",
+      "owner",
+      "source",
+      "state",
+      "reason_code",
+      "observed_at",
+      "trust"
+    ],
+    "optional_fields": [
+      "details"
+    ],
+    "operation_id_format": "pmp-mount:<scope>:<nonce>",
+    "reason_code_format": "UPPER_SNAKE_CASE",
+    "timestamp_format": "RFC3339 UTC",
+    "maximum_details_canonical_bytes": 4096
+  },
+  "states": {
+    "active": [
+      "ROUTE_REQUESTED",
+      "OWNER_RESOLVED",
+      "MOUNT_STARTED",
+      "MOUNTED",
+      "READY"
+    ],
+    "failure_or_degraded": [
+      "SLOW",
+      "DEGRADED",
+      "BLOCKED",
+      "FAILED"
+    ],
+    "terminal": [
+      "BLOCKED",
+      "FAILED"
+    ]
+  },
+  "authority": {
+    "route_states": "ROUTE_REQUESTED and OWNER_RESOLVED require the exact configured route authority as owner and source.",
+    "owner_resolution": "OWNER_RESOLVED must name one allowlisted mount owner in details.resolved_owner.",
+    "mount_states": "MOUNT_STARTED and all later states require the resolved owner as both owner and source.",
+    "trust": "Only OWNER_ATTESTED events can advance authoritative lifecycle state.",
+    "observer_rule": "OBSERVER_REPORTED and INFERRED facts are diagnostics-only and are rejected by the authoritative transition API.",
+    "implicit_owner_discovery": false
+  },
+  "deterministic_outcomes": {
+    "valid_event": "ACCEPTED",
+    "exact_duplicate": "DUPLICATE_IGNORED without mutation",
+    "conflicting_duplicate": "REJECTED_DUPLICATE_CONFLICT",
+    "stale_sequence": "REJECTED_STALE_SEQUENCE",
+    "sequence_gap": "REJECTED_SEQUENCE_GAP",
+    "time_regression": "REJECTED_TIME_REGRESSION",
+    "invalid_transition": "REJECTED_INVALID_TRANSITION",
+    "unknown_operation_after_start": "REJECTED_MISSING_OPERATION",
+    "unauthorized_actor": "REJECTED_*_AUTHORITY",
+    "non_authoritative_trust": "REJECTED_NON_AUTHORITATIVE_TRUST",
+    "malformed_or_unavailable": "REJECTED_* without lifecycle mutation",
+    "capacity_reached": "REJECTED_*_RETENTION_CAPACITY without deleting evidence"
+  },
+  "retention": {
+    "default_max_operations": 256,
+    "default_max_events_per_operation": 64,
+    "policy": "REJECT_AT_CAPACITY_NO_EVIDENCE_DELETION",
+    "historical_receipts": "External evidence remains append-only and is never deleted by this contract."
+  },
+  "restart": {
+    "policy": "REPLAY_VALIDATED_SNAPSHOT_ONLY",
+    "accepted": "Every stored event replays through the same schema, authority, sequence, time, and transition checks.",
+    "failure": "Malformed or invalid snapshot fails closed and exposes no partially restored registry."
+  },
+  "legacy_compatibility_facade": {
+    "preserved_members": [
+      "version",
+      "registry",
+      "snapshot",
+      "scan",
+      "atlasBuckets",
+      "keys"
+    ],
+    "added_read_only_members": [
+      "lifecycleContractVersion",
+      "lifecycleRegistryOwner",
+      "lifecycleSnapshot"
+    ],
+    "automatic_legacy_scan": false,
+    "storage_migration": false,
+    "global_installation": false,
+    "production_use_deferred_to": "P5-U3"
+  },
+  "proof_matrix": {
+    "happy_path": "PASS",
+    "slow_and_degraded_path": "PASS",
+    "authority_denials": "PASS",
+    "duplicate_and_stale_events": "PASS",
+    "sequence_and_time_regressions": "PASS",
+    "invalid_transitions": "PASS",
+    "malformed_and unavailable_input": "PASS",
+    "retention_without_deletion": "PASS",
+    "restart_replay": "PASS",
+    "legacy_facade_no_automatic_calls": "PASS",
+    "no_storage_dom_network_or_timers": "PASS"
+  },
+  "effects": {
+    "production_runtime_changed": false,
+    "runtime_integrity_changed": false,
+    "existing_mount_atlas_changed": false,
+    "existing_storage_changed": false,
+    "persisted_user_data_changed": false,
+    "diagnostics_ui_changed": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "pr122_touched": false
+  },
+  "next_step": {
+    "id": "P5-U3",
+    "objective": "Integrate the lifecycle registry passively behind the proven compatibility boundary, with exact runtime identity regeneration and no legacy storage migration.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false
+  },
+  "claim_ceiling": "Pure unreferenced contract, in-memory registry, restart validator, and legacy compatibility facade only. No production loading, persisted storage, runtime identity change, Diagnostics UI change, live observation, or Pass 5 completion is claimed."
+}
