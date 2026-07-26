@@ -1,0 +1,319 @@
+{
+  "type": "PMP_PASS10_BANK_UNIT1_INVENTORY_RECONCILIATION_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T21:20:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "1e4576f4f5e0f74448fc3ed846574d852edfea65",
+  "branch": "agent/pass10-unit1-bank-inventory-reconciliation-v1",
+  "pass": 10,
+  "unit": "P10-U1",
+  "unit_id": "P10-U1",
+  "status": "BANK_INVENTORY_RECONCILIATION_PROVEN",
+  "objective": "Reconcile current and historical Bank source declarations, storage namespaces, identities, and schemas from repository evidence only, without reading live user records, changing the Bank tab, writing storage, or migrating data.",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass10-unit1-bank-inventory-reconciliation-v1.yml",
+      "audit/pass10/pass10-bank-unit1-inventory-reconciliation-v1.json",
+      "audit/pass10/receipts/RECEIPT_P10_U1_BANK_INVENTORY_RECONCILIATION_20260726T212000Z_001.json",
+      "tools/run_pass10_unit1_bank_inventory_reconciliation_v1.js",
+      "tools/test_pass10_unit1_bank_inventory_reconciliation_v1.js",
+      "tools/verify_pass10_unit1_bank_inventory_reconciliation_v1.py"
+    ],
+    "implementation_paths": []
+  },
+  "inputs": {
+    "pass9_closure_sha256": "0da1bfa83401d6bcc9c38b24c68bde26280a56eb0832b4805670096247fde0ec",
+    "owner_boundary_sha256": "2d5f2f6015ee7096a07387b82c4478c88bb6423464d9fd11302705df73286fbd",
+    "inventory_router_sha256": "7e10583e9c7b0d942bb3ea6905a17338089b6424dbc72211020ff2f27f635b39",
+    "bank_tab_sha256": "d70f29beff0169adfb49c351c18f99e4704d0e9de9ac42ccb07aa057478512f1",
+    "continuous_run_state_sha256": "ab1d780e81ce82dfff13827c3c93e1c4e6a44302660f7625823123e0a32e6460",
+    "continuous_run_owner_sha256": "74e3fd55be1d0bb5244fee07dcebc8ce979629a88cc0b29e5faafb5a717c95d9",
+    "runner_sha256": "8fe0ea05bf03151e9e70b8d95cd87ca669ae74c862eeb5163eabd3cc443800e3",
+    "test_sha256": "6e0ff7446fc844a65299330a741629a4daa681a0b46c38ea3cddd29fca8f8ef2"
+  },
+  "inventory": {
+    "mode": "STATIC_REPOSITORY_SCHEMA_CENSUS_READ_ONLY",
+    "root_bank_named_sources": 63,
+    "source_extensions": {
+      "js": 45,
+      "html": 15,
+      "json": 3
+    },
+    "source_roles": {
+      "canonical_owner_chain": 5,
+      "diagnostic_or_rehearsal": 23,
+      "historical_compatibility_or_auxiliary": 35
+    },
+    "source_catalog_sha256": "98c309a90ad001b1996dd1b751f4a27ffdf5b0ff9bb74d3d2157a05b4f5098d9",
+    "canonical_owner_sources": [
+      "pmp-bank-continuous-run-owner-boundary-v1.js",
+      "pmp-continuous-run-state-bank-v1.js",
+      "pmp-master-bank-inventory-router-v1.js",
+      "pmp-master-bank-tab-v1.js",
+      "pmp-bank-screen-owner-v1.js"
+    ],
+    "governed_local_storage_keys": 9,
+    "bank_owner_keys": 4,
+    "continuous_run_requested_keys": 5,
+    "canonical_bank_families": 13,
+    "canonical_record_required_fields": 12,
+    "canonical_record_optional_fields": 3,
+    "helper_index_item_fields": 8,
+    "project_registry_fields": 7,
+    "protected_project_seed_ids": 3,
+    "secondary_indexeddb_namespaces": 2,
+    "historic_inventory_output_namespaces": 3,
+    "live_user_records_read": false
+  },
+  "schema_reconciliation": {
+    "canonical_inventory": {
+      "key": "pmp_master_bank_inventory_v1",
+      "type": "PMP_MASTER_BANK_INVENTORY_V1",
+      "owner": "bank_screen_owner",
+      "bank_ids": [
+        "world",
+        "continuous_run",
+        "connections",
+        "library",
+        "workshop",
+        "helper",
+        "protection",
+        "bug_memory",
+        "migration",
+        "ui_control_surface",
+        "settings_preferences",
+        "test_verification",
+        "master"
+      ],
+      "record_identity": "record_id",
+      "record_required_fields": [
+        "record_id",
+        "record_type",
+        "owning_bank",
+        "source_tab",
+        "active_system",
+        "action",
+        "summary",
+        "helper_id",
+        "allowed_references",
+        "write_permissions",
+        "created_at",
+        "updated_at"
+      ],
+      "record_optional_fields": [
+        "payload",
+        "payload_key",
+        "project_state_id"
+      ]
+    },
+    "project_registry": {
+      "key": "pmp_bank_project_registry_v1",
+      "type": "BANK_PROJECT_REGISTRY_V1",
+      "identity": "id",
+      "fields": [
+        "id",
+        "name",
+        "category",
+        "status",
+        "item_count",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    "continuous_run_state": {
+      "keys": [
+        "pmp_continuous_run_state_bank_v1",
+        "pmp_continuous_run_state_receipts_v1",
+        "pmp_continuous_run_state_manifest_v1"
+      ],
+      "type": "PMP_UNIVERSAL_CONTINUOUS_WORK_ENGINE_STATE_V1",
+      "legacy_type": "PMP_PERSISTENT_CONTINUOUS_RUN_STATE_BANK_V1",
+      "compatibility_aliases_retained": true
+    },
+    "connections_deposits": {
+      "index_key": "pmp_connections_bank_chat_memory_deposits_v1",
+      "index_fields": [
+        "records",
+        "categories",
+        "updated_at"
+      ],
+      "indexeddb": "pmp_connections_bank_deposits_db_v1/deposits"
+    },
+    "staging_transfer_store": {
+      "manifest_key": "pmp_continuous_run_bank_transfer_store_manifest_v1",
+      "receipt_key": "pmp_continuous_run_bank_transfer_store_receipts_v1",
+      "indexeddb": "pmp_continuous_run_bank_transfer_store_db_v1/items",
+      "classification": "OUTSIDE_P9_NINE_KEY_OWNER_SET_REQUIRES_P10_CONTRACT_CLASSIFICATION"
+    },
+    "historic_inventory_output": {
+      "keys": [
+        "pmp_connection_bank_inventory_v1",
+        "pmp_connection_protected_bank_registry_v1",
+        "pmp_connection_bank_inventory_receipt_v1"
+      ],
+      "classification": "HISTORIC_READ_SCAN_OUTPUT_NOT_CANONICAL_INVENTORY"
+    }
+  },
+  "findings": [
+    {
+      "id": "P10-I001-MULTIPLE-IDENTITY-DOMAINS",
+      "status": "REQUIRES_P10_U2_CONTRACT"
+    },
+    {
+      "id": "P10-I002-SECONDARY-NAMESPACES-OUTSIDE-NINE-KEY-SET",
+      "status": "REQUIRES_P10_U2_CONTRACT"
+    },
+    {
+      "id": "P10-I003-SCHEMA-VERSION-AND-LEGACY-ALIAS-DRIFT",
+      "status": "REQUIRES_P10_U2_CONTRACT"
+    },
+    {
+      "id": "P10-I004-OPTIONAL-PAYLOAD-SHAPES",
+      "status": "REQUIRES_P10_U2_CONTRACT"
+    },
+    {
+      "id": "P10-I005-HISTORIC-INVENTORY-IS-NOT-CANONICAL",
+      "status": "REQUIRES_P10_U2_CONTRACT"
+    },
+    {
+      "id": "P10-I006-NO-LIVE-USER-DATA-CENSUS-IN-STATIC-UNIT",
+      "status": "PRESERVE_AND_DEFER_BOUNDED_REPRESENTATION_AND_PROOF"
+    }
+  ],
+  "policy": {
+    "canonical_inventory_key": "pmp_master_bank_inventory_v1",
+    "canonical_inventory_owner": "bank_screen_owner",
+    "unknown_or_orphan_policy": "QUARANTINE_PRESERVE_EXACT_BYTES_NEVER_SILENTLY_DELETE",
+    "historic_namespace_policy": "CLASSIFY_AND_REFERENCE_NEVER_SILENTLY_MERGE",
+    "p10_u1_live_data_access": "FORBIDDEN_AND_NOT_PERFORMED",
+    "p10_u1_writes": "NONE"
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "static_contract",
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/pass10/pass10-bank-unit1-inventory-reconciliation-v1.json",
+      "rationale": "P10-U1 adds the exact static source, namespace, identity, and schema census that constrains the P10-U2 contract."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass9/pass9-bank-continuous-run-unit7-closure-certification-v1.json",
+      "audit/pass10/pass10-bank-unit1-inventory-reconciliation-v1.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass10_unit1_bank_inventory_reconciliation_v1.js"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass10_unit1_bank_inventory_reconciliation_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass10/receipts/RECEIPT_P10_U1_BANK_INVENTORY_RECONCILIATION_20260726T212000Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "Sixty-three root Bank-named source records are enumerated and SHA-256 bound; five form the canonical owner chain.",
+        "evidence_paths": [
+          "tools/run_pass10_unit1_bank_inventory_reconciliation_v1.js",
+          "tools/test_pass10_unit1_bank_inventory_reconciliation_v1.js"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The canonical repository declarations contain thirteen Bank families, nine governed LocalStorage keys, multiple record identity domains, compatibility aliases, and two secondary IndexedDB namespaces.",
+        "evidence_paths": [
+          "audit/pass10/pass10-bank-unit1-inventory-reconciliation-v1.json"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "P10-U2 must define identity, provenance, compatibility, quarantine, and no-deletion rules before any Bank tab representation or migration rehearsal.",
+        "basis_evidence_paths": [
+          "audit/pass10/pass10-bank-unit1-inventory-reconciliation-v1.json"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "missing canonical source",
+        "canonical source hash mismatch",
+        "missing governed key declaration",
+        "missing canonical bank family",
+        "missing record identity field",
+        "missing project identity field",
+        "missing legacy alias",
+        "missing secondary namespace",
+        "source catalog count drift",
+        "unexpected live-data or write effect"
+      ]
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "verification": {
+    "assertions_total": 110,
+    "assertions_passed": 110,
+    "assertions_failed": 0,
+    "exact_scope": "PASS",
+    "input_hashes": "PASS",
+    "source_catalog": "PASS",
+    "namespace_reconciliation": "PASS",
+    "schema_reconciliation": "PASS",
+    "identity_findings": "PASS",
+    "zero_effect_boundary": "PASS",
+    "permanent_gate_binding": "PASS"
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_user_data_mutations": false,
+    "continuous_run_user_data_mutations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P10-U2",
+    "objective": "Define canonical Bank inventory identity, provenance, schema-version, quarantine, compatibility, and no-deletion contracts from this reconciliation.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "persisted_user_data_change_allowed": false,
+    "storage_migration_allowed": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P10-U1 static repository source and declared-schema reconciliation only. No live user records were read; no Bank tab, production source, storage, user data, migration, observation, or formal proof was changed or consumed."
+}

@@ -1,0 +1,57 @@
+{
+  "type": "PMP_PASS10_UNIT1_BANK_INVENTORY_RECONCILIATION_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P10_U1_BANK_INVENTORY_RECONCILIATION_20260726T212000Z_001",
+  "created_at": "2026-07-26T21:20:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "1e4576f4f5e0f74448fc3ed846574d852edfea65",
+  "branch": "agent/pass10-unit1-bank-inventory-reconciliation-v1",
+  "pass": 10,
+  "unit": "P10-U1",
+  "status": "BANK_INVENTORY_RECONCILIATION_PROVEN",
+  "evidence": "audit/pass10/pass10-bank-unit1-inventory-reconciliation-v1.json",
+  "changed_paths": [
+    ".github/workflows/pass10-unit1-bank-inventory-reconciliation-v1.yml",
+    "audit/pass10/pass10-bank-unit1-inventory-reconciliation-v1.json",
+    "audit/pass10/receipts/RECEIPT_P10_U1_BANK_INVENTORY_RECONCILIATION_20260726T212000Z_001.json",
+    "tools/run_pass10_unit1_bank_inventory_reconciliation_v1.js",
+    "tools/test_pass10_unit1_bank_inventory_reconciliation_v1.js",
+    "tools/verify_pass10_unit1_bank_inventory_reconciliation_v1.py"
+  ],
+  "inventory": {
+    "source_records": 63,
+    "source_catalog_sha256": "98c309a90ad001b1996dd1b751f4a27ffdf5b0ff9bb74d3d2157a05b4f5098d9",
+    "canonical_owner_sources": 5,
+    "governed_local_storage_keys": 9,
+    "canonical_bank_families": 13,
+    "reconciliation_findings": 6,
+    "live_user_records_read": false
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_user_data_mutations": false,
+    "continuous_run_user_data_mutations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "next_safe_move": {
+    "step_id": "P10-U2",
+    "instruction": "Define canonical Bank inventory identity, provenance, schema-version, quarantine, compatibility, and no-deletion contracts from this reconciliation.",
+    "requires_explicit_authority": false,
+    "requires_user_app_check": false,
+    "persisted_user_data_change_allowed": false,
+    "storage_migration_allowed": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P10-U1 static repository source and declared-schema reconciliation only. No live user records were read and no production, storage, user-data, observation, or formal-proof effect occurred."
+}
