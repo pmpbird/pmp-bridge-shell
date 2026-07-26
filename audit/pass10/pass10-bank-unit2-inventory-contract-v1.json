@@ -1,0 +1,323 @@
+{
+  "type": "PMP_PASS10_BANK_UNIT2_INVENTORY_CONTRACT_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T22:00:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "83e0e46918ad3dc7253b7f6c3de918fdc4812c4f",
+  "branch": "agent/pass10-unit2-bank-inventory-contract-v1",
+  "pass": 10,
+  "unit": "P10-U2",
+  "unit_id": "P10-U2",
+  "status": "BANK_INVENTORY_CONTRACT_PROVEN",
+  "objective": "Define and deterministically prove canonical Bank inventory identity, provenance, schema-version, quarantine, compatibility, read-only representation, and no-deletion rules from the six P10-U1 findings without changing the Bank tab, production behavior, live storage, or persisted user data.",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass10-unit2-bank-inventory-contract-v1.yml",
+      "audit/pass10/pass10-bank-unit2-inventory-contract-v1.json",
+      "audit/pass10/receipts/RECEIPT_P10_U2_BANK_INVENTORY_CONTRACT_20260726T220000Z_001.json",
+      "tools/run_pass10_unit2_bank_inventory_contract_v1.js",
+      "tools/test_pass10_unit2_bank_inventory_contract_v1.js",
+      "tools/verify_pass10_unit2_bank_inventory_contract_v1.py"
+    ],
+    "implementation_paths": []
+  },
+  "inputs": {
+    "unit1_inventory": "audit/pass10/pass10-bank-unit1-inventory-reconciliation-v1.json",
+    "unit1_inventory_sha256": "c73a8c352bdd06871170058abcab4c17aef5385217bf7e5ed1878636fd34988c",
+    "pass9_closure": "audit/pass9/pass9-bank-continuous-run-unit7-closure-certification-v1.json",
+    "pass9_closure_sha256": "0da1bfa83401d6bcc9c38b24c68bde26280a56eb0832b4805670096247fde0ec",
+    "runner": "tools/run_pass10_unit2_bank_inventory_contract_v1.js",
+    "runner_sha256": "55b10dc1993e9fb596c92950b29f3fa15c0f5c873f1ef57d47e54ffa31e0eb9f",
+    "test": "tools/test_pass10_unit2_bank_inventory_contract_v1.js",
+    "test_sha256": "c9e6610eb7fbe97418d81da59e1c8588f46d9898e7511240ec74302583039dbb"
+  },
+  "inventory_contract": {
+    "contract_version": "PMP_CANONICAL_BANK_INVENTORY_CONTRACT_V1",
+    "item_version": "PMP_CANONICAL_BANK_INVENTORY_ITEM_V1",
+    "model": "OWNER_FACTS_TO_READ_ONLY_CANONICAL_PROJECTION_FAIL_CLOSED",
+    "contract_sha256": "bd38fb4de3a5c9fa666a4e3265b6dda9eb64fee40d125244e5fb56b2498306b4",
+    "canonical_inventory_key": "pmp_master_bank_inventory_v1",
+    "canonical_inventory_owner": "bank_screen_owner",
+    "canonical_bank_families": 13,
+    "canonical_identity": {
+      "algorithm": "SHA-256",
+      "preimage_fields": [
+        "contract_version",
+        "source_storage_kind",
+        "source_namespace",
+        "source_native_id"
+      ],
+      "canonical_prefix": "bank-item:v1:",
+      "missing_native_identity_prefix": "bank-quarantine:v1:",
+      "native_identity_preserved": true,
+      "payload_exact_bytes_preserved": true,
+      "identity_collision": "QUARANTINE_ALL_COLLIDING_ITEMS_PRESERVE_EACH_PAYLOAD"
+    },
+    "source_schema": {
+      "required_fields": 9,
+      "canonical_projection_fields": 18,
+      "declared_namespace_rules": 16,
+      "accepted_schema_types": 9,
+      "unknown_schema": "QUARANTINE_NO_SILENT_UPGRADE"
+    },
+    "namespace_classification": {
+      "p9_governed_local_storage_keys": 9,
+      "connections_binary_namespace": "OWNER_GOVERNED_BINARY_PAYLOAD",
+      "transfer_store_namespaces": 3,
+      "transfer_store_policy": "AUXILIARY_READ_ONLY_UNTIL_OWNER_UPDATE",
+      "historic_inventory_namespaces": 3,
+      "historic_inventory_policy": "HISTORIC_REFERENCE_ONLY_NOT_CANONICAL"
+    },
+    "provenance": {
+      "native_storage_kind_required": true,
+      "native_namespace_required": true,
+      "native_identity_required_or_quarantined": true,
+      "owning_bank_required": true,
+      "owner_id_required": true,
+      "schema_type_and_version_required": true,
+      "payload_sha256_required": true,
+      "payload_byte_length_required": true,
+      "compatibility_aliases_preserved_as_references": true,
+      "aliases_convey_authority": false
+    },
+    "quarantine": {
+      "policy": "PRESERVE_EXACT_BYTES_NEVER_SILENTLY_DELETE",
+      "reason_codes": 15,
+      "unknown_namespace": "QUARANTINE",
+      "unknown_or_orphan_owner": "QUARANTINE",
+      "identity_collision": "QUARANTINE_EACH_PAYLOAD",
+      "corrupt_record": "QUARANTINE",
+      "unavailable_payload": "PRESERVE_INDEX_FACT_AND_MARK_UNAVAILABLE",
+      "stale_record": "PRESERVE_AND_MARK_STALE"
+    },
+    "compatibility": {
+      "legacy_aliases": "SOURCE_NATIVE_REFERENCE_ONLY",
+      "historic_inventory": "REFERENCE_ONLY_NOT_CANONICAL",
+      "adapters": "PURE_READ_ONLY",
+      "silent_alias_merge": "FORBIDDEN",
+      "silent_schema_upgrade": "FORBIDDEN",
+      "storage_migration": "FORBIDDEN_IN_P10_U2_THROUGH_P10_U5",
+      "active_tab_conveys_authority": false,
+      "helper_registration_conveys_bank_authority": false
+    },
+    "no_deletion": {
+      "default": "DENY",
+      "bank_tab_delete_api": "FORBIDDEN",
+      "automatic_delete_for_any_state": false,
+      "exact_user_confirmation_required": true,
+      "exact_owner_capability_required": true,
+      "exact_expected_version_required": true,
+      "exact_payload_sha256_required": true,
+      "append_only_receipt_required": true,
+      "production_delete_enabled": false
+    },
+    "read_only_representation": {
+      "source": "OWNER_FACTS",
+      "unknown_namespaces_visible_as_quarantine": true,
+      "raw_payload_exposed_to_ui": false,
+      "write_api_exposed_to_ui": false,
+      "delete_api_exposed_to_ui": false,
+      "migration_api_exposed_to_ui": false,
+      "recurring_polling_required": false,
+      "owner_event_updates_only": true
+    }
+  },
+  "finding_resolutions": [
+    {
+      "finding_id": "P10-I001-MULTIPLE-IDENTITY-DOMAINS",
+      "resolution": "Stable SHA-256 projection identity binds storage kind, namespace, and native identity while preserving every source-native identity and exact payload."
+    },
+    {
+      "finding_id": "P10-I002-SECONDARY-NAMESPACES-OUTSIDE-NINE-KEY-SET",
+      "resolution": "Connections binary storage is owner-governed; all three transfer-store namespaces are read-only until a P10-U4 owner update."
+    },
+    {
+      "finding_id": "P10-I003-SCHEMA-VERSION-AND-LEGACY-ALIAS-DRIFT",
+      "resolution": "Schema type and version remain explicit; legacy aliases are reference-only and cannot authorize, merge, or silently upgrade data."
+    },
+    {
+      "finding_id": "P10-I004-OPTIONAL-PAYLOAD-SHAPES",
+      "resolution": "Every projection binds payload SHA-256 and byte length while retaining the exact raw bytes outside the UI projection."
+    },
+    {
+      "finding_id": "P10-I005-HISTORIC-INVENTORY-IS-NOT-CANONICAL",
+      "resolution": "All three historic inventory namespaces are reference-only, non-canonical, non-writable, and never silently merged."
+    },
+    {
+      "finding_id": "P10-I006-NO-LIVE-USER-DATA-CENSUS-IN-STATIC-UNIT",
+      "resolution": "Unknown live facts remain visible as quarantine under P10-U3 and are proven through bounded fixtures before any observation; P10-U2 performs no live census."
+    }
+  ],
+  "contract_verification": {
+    "namespace_rules": 16,
+    "canonical_banks": 13,
+    "required_source_fields": 9,
+    "canonical_item_fields": 18,
+    "quarantine_reason_codes": 15,
+    "inventory_states": 8,
+    "finding_resolutions": 6,
+    "assertions": 187,
+    "result_sha256": "8c5a8176930b17c2e2b2aaa0554b1a9d64ec83e3fae680d7042a2b9ffc493c85"
+  },
+  "observed_facts": [
+    {
+      "claim_type": "OBSERVED",
+      "fact": "P10-U1 SHA-bound 63 Bank-related sources and found multiple identity domains, secondary namespaces, schema and alias drift, optional payload shapes, historic inventory output, and a deliberate no-live-data boundary.",
+      "evidence_paths": [
+        "audit/pass10/pass10-bank-unit1-inventory-reconciliation-v1.json"
+      ]
+    },
+    {
+      "claim_type": "OBSERVED",
+      "fact": "Pass 9 already established separate Bank and Continuous Run owners; active tab state and Helper registration do not convey Bank write authority.",
+      "evidence_paths": [
+        "audit/pass9/pass9-bank-continuous-run-unit7-closure-certification-v1.json",
+        "pmp-bank-continuous-run-owner-boundary-v1.js"
+      ]
+    }
+  ],
+  "inferred_conclusions": [
+    {
+      "claim_type": "INFERRED",
+      "conclusion": "P10-U3 can safely add a read-only Bank projection only if it consumes owner facts, exposes no mutation API, preserves unknown data as quarantine, and does not use Helper registration or active-tab state as authority.",
+      "basis_evidence_paths": [
+        "audit/pass10/pass10-bank-unit1-inventory-reconciliation-v1.json",
+        "audit/pass10/pass10-bank-unit2-inventory-contract-v1.json"
+      ]
+    }
+  ],
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "static_contract",
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/pass10/pass10-bank-unit2-inventory-contract-v1.json",
+      "rationale": "P10-U2 adds deterministic identity, namespace, schema, compatibility, quarantine, collision, exact-byte preservation, and no-deletion fixtures that constrain P10-U3."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass10/pass10-bank-unit1-inventory-reconciliation-v1.json",
+      "audit/pass10/pass10-bank-unit2-inventory-contract-v1.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass10_unit2_bank_inventory_contract_v1.js"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass10_unit2_bank_inventory_contract_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass10/receipts/RECEIPT_P10_U2_BANK_INVENTORY_CONTRACT_20260726T220000Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "P10-U1 recorded exactly six unresolved Bank identity, namespace, schema, payload, historic, and live-data boundary findings.",
+        "evidence_paths": [
+          "audit/pass10/pass10-bank-unit1-inventory-reconciliation-v1.json"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "A deterministic read-only canonical projection with fail-closed quarantine is required before changing the visible Bank tab.",
+        "basis_evidence_paths": [
+          "audit/pass10/pass10-bank-unit1-inventory-reconciliation-v1.json",
+          "audit/pass10/pass10-bank-unit2-inventory-contract-v1.json"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "missing required source field",
+        "missing native identity",
+        "unknown namespace",
+        "unknown owning Bank",
+        "wrong owner",
+        "unknown schema type",
+        "unknown schema version",
+        "payload SHA-256 mismatch",
+        "malformed compatibility alias",
+        "missing binary payload",
+        "source unavailable",
+        "stale source",
+        "orphaned owner",
+        "corrupt record",
+        "identity collision with distinct payloads",
+        "historic namespace presented as canonical",
+        "auxiliary namespace write request",
+        "tampered deterministic result"
+      ]
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "verification": {
+    "assertions_total": 187,
+    "assertions_passed": 187,
+    "assertions_failed": 0,
+    "exact_scope": "PASS",
+    "input_hashes": "PASS",
+    "identity_determinism": "PASS",
+    "namespace_classification": "PASS",
+    "schema_version_compatibility": "PASS",
+    "quarantine_and_collision": "PASS",
+    "exact_byte_preservation": "PASS",
+    "no_deletion_contract": "PASS",
+    "read_only_representation_contract": "PASS",
+    "six_findings_resolved": "PASS",
+    "zero_effect_boundary": "PASS",
+    "permanent_gate_binding": "PASS"
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_reads": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_user_data_mutations": false,
+    "continuous_run_user_data_mutations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P10-U3",
+    "objective": "Implement the read-only Bank tab inventory projection from owner facts under this exact contract, with unknown and orphaned data visible as quarantine and no write, delete, or migration API.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "persisted_user_data_change_allowed": false,
+    "storage_migration_allowed": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P10-U2 static contract and deterministic fixture proof only. No Bank tab, production source, live storage, persisted user data, migration, observation, or formal proof was changed or consumed."
+}
