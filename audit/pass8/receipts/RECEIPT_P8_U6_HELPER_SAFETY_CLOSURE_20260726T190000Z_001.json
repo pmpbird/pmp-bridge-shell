@@ -1,0 +1,60 @@
+{
+  "type": "PMP_PASS8_UNIT6_HELPER_SAFETY_CLOSURE_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P8_U6_HELPER_SAFETY_CLOSURE_20260726T190000Z_001",
+  "created_at": "2026-07-26T19:00:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "06a0ad231cba79c52cab349b233e9b28ecdb096b",
+  "branch": "agent/pass8-unit6-helper-safety-closure-v1",
+  "pass": 8,
+  "unit": "P8-U6",
+  "status": "PASS8_HELPER_RULES_CERTIFIED",
+  "pass8_result": "PASS",
+  "evidence": "audit/pass8/pass8-helper-unit6-closure-certification-v1.json",
+  "changed_paths": [
+    ".github/workflows/pass8-unit6-helper-safety-closure-v1.yml",
+    "audit/pass8/pass8-helper-unit6-closure-certification-v1.json",
+    "audit/pass8/receipts/RECEIPT_P8_U6_HELPER_SAFETY_CLOSURE_20260726T190000Z_001.json",
+    "tools/test_pass8_unit6_helper_safety_closure_v1.py",
+    "tools/verify_pass8_unit6_helper_safety_closure_v1.py"
+  ],
+  "coverage": {
+    "predecessor_units": 5,
+    "prior_assertions": 1525,
+    "closure_assertions": 180,
+    "exit_criteria": 18,
+    "diagnostic_routes": 6,
+    "artifact_roles": 9
+  },
+  "observation_decision": {
+    "new_scarce_observation_required": false,
+    "new_scarce_observation_performed": false,
+    "special_authority_consumed": false,
+    "consumed_observation_retried": false
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_mutations": false,
+    "helper_ownership_changes": false,
+    "helper_behavior_activations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "next_safe_move": {
+    "step_id": "P9-U1",
+    "instruction": "Inventory the exact current Bank and Continuous Run production boundary and failures before changing behavior; continue toward the P9-U3 production repair.",
+    "requires_explicit_authority": false,
+    "requires_user_app_check": false,
+    "stop_before": "Only the later genuine hands-on app reproduction or verification gate, or another materially broader action."
+  }
+}

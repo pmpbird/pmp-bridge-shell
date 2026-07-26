@@ -1,0 +1,284 @@
+{
+  "type": "PMP_PASS8_HELPER_UNIT6_CLOSURE_CERTIFICATION_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T19:00:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "06a0ad231cba79c52cab349b233e9b28ecdb096b",
+  "branch": "agent/pass8-unit6-helper-safety-closure-v1",
+  "pass": 8,
+  "unit": "P8-U6",
+  "unit_id": "P8-U6",
+  "status": "PASS8_HELPER_RULES_CERTIFIED",
+  "objective": "Close Pass 8 from the complete Helper inventory, capability, event, passive production integration, isolation, restart, denial, diagnostics, CI, and permanent-gate record without activating Helper behavior or spending a scarce observation.",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass8-unit6-helper-safety-closure-v1.yml",
+      "audit/pass8/pass8-helper-unit6-closure-certification-v1.json",
+      "audit/pass8/receipts/RECEIPT_P8_U6_HELPER_SAFETY_CLOSURE_20260726T190000Z_001.json",
+      "tools/test_pass8_unit6_helper_safety_closure_v1.py",
+      "tools/verify_pass8_unit6_helper_safety_closure_v1.py"
+    ],
+    "implementation_paths": []
+  },
+  "inputs": {
+    "p8_u1": "audit/pass8/pass8-helper-unit1-inventory-v1.json",
+    "p8_u1_sha256": "1144fc7c272b0c565843851955e51fdf143dc114b4de7d221152402c56fefb0a",
+    "p8_u2": "audit/pass8/pass8-helper-unit2-capability-contract-v1.json",
+    "p8_u2_sha256": "3600a04f945a029f897f9ebc17ac3471a93cfd1cb5641d18eb70053f37ebf1b0",
+    "p8_u3": "audit/pass8/pass8-helper-unit3-registration-events-v1.json",
+    "p8_u3_sha256": "6307a8c8dbfe06f549fa64da2550b5e34ef9242773c8e3fe63c6924c9cbef3b0",
+    "p8_u4": "audit/pass8/pass8-helper-unit4-owner-diagnostics-integration-v1.json",
+    "p8_u4_sha256": "6f440afa01351b83241cde9e6ba7019abff681333236383596222e64c0594d5b",
+    "p8_u5": "audit/pass8/pass8-helper-unit5-isolation-restart-denial-proof-v1.json",
+    "p8_u5_sha256": "4b1a7ce0774024595c9074aae7f65e8a1f0c182ea726332d435e7ac57bef10cb",
+    "test": "tools/test_pass8_unit6_helper_safety_closure_v1.py",
+    "test_sha256": "2473a19ad2a4dbe7c54c535ad4fa791d8f5c7012381c53b7c05d85edf219691d"
+  },
+  "evidence_summary": {
+    "prior_assertions": 1525,
+    "units": [
+      {
+        "unit_id": "P8-U1",
+        "status": "HELPER_INVENTORY_PROVEN",
+        "assertions": 421,
+        "merged_main": "40a3334564aa1d8385c523a40835ad085580da2e"
+      },
+      {
+        "unit_id": "P8-U2",
+        "status": "HELPER_CAPABILITY_CONTRACT_PROVEN",
+        "assertions": 255,
+        "merged_main": "74c969586918cb2ee82122d184294a28e9b92edb"
+      },
+      {
+        "unit_id": "P8-U3",
+        "status": "HELPER_REGISTRATION_EVENTS_PROVEN",
+        "assertions": 155,
+        "merged_main": "2f74b835016cd6e0e24802f7b6127374017571d3"
+      },
+      {
+        "unit_id": "P8-U4",
+        "status": "HELPER_OWNER_DIAGNOSTICS_INTEGRATION_PROVEN",
+        "assertions": 443,
+        "merged_main": "dbf80f16ca11c3a09309931176d80e2b97549b3a"
+      },
+      {
+        "unit_id": "P8-U5",
+        "status": "HELPER_ISOLATION_RESTART_DENIAL_PROVEN",
+        "assertions": 251,
+        "merged_main": "06a0ad231cba79c52cab349b233e9b28ecdb096b"
+      }
+    ],
+    "github_heads": {
+      "p8_u4": {
+        "pull_request": 178,
+        "head_commit": "6183c119a3812328f7c29cb9d0bf54887b8f0ecf",
+        "dedicated_workflow": 30214933285,
+        "permanent_gate": 30214933287,
+        "all_required_checks_green": true
+      },
+      "p8_u5": {
+        "pull_request": 179,
+        "head_commit": "d0abde70392fb1573162fa83e3a2fb9a6868b779",
+        "dedicated_workflow": 30215402866,
+        "permanent_gate": 30215402913,
+        "postmerge_integrity": 30215494578,
+        "postmerge_packet": 30215494568,
+        "all_required_checks_green": true
+      }
+    }
+  },
+  "observation_sufficiency": {
+    "decision": "NEW_SCARCE_OBSERVATION_NOT_REQUIRED",
+    "new_observation_performed": false,
+    "special_authority_consumed": false,
+    "retry_of_consumed_observation": false,
+    "user_app_check_required": false,
+    "formal_proof_required": false,
+    "rationale": "Pass 8 installs only an empty passive Helper event runtime and read-only redacted Diagnostics view. It grants no behavior authority, and the deterministic matrices cover every eligible Helper, every held or unknown source, exact bindings, owner absence, growth, revocation, duplicate, stale, chain, restart, tamper, redaction, and zero-effect case.",
+    "basis": {
+      "p8_u4_deterministic_assertions": 443,
+      "p8_u5_deterministic_assertions": 251,
+      "p8_u4_dedicated_run": 30214933285,
+      "p8_u4_permanent_gate_run": 30214933287,
+      "p8_u5_dedicated_run": 30215402866,
+      "p8_u5_permanent_gate_run": 30215402913,
+      "p8_u5_postmerge_integrity_run": 30215494578
+    },
+    "claim_ceiling": "This is evidence-only Pass 8 closure, not a new live observation, hands-on app execution, formal proof, Helper activation, Bank repair, or persisted-data change."
+  },
+  "exit_criteria": {
+    "inventory_locked": true,
+    "declared_and_unknown_sources_accounted_for": true,
+    "explicit_capabilities_fail_closed": true,
+    "exact_source_owner_section_slot_binding_enforced": true,
+    "legacy_conflict_and_unknown_sources_held": true,
+    "growth_pending_without_authority": true,
+    "events_versioned_monotonic_and_sha256_chained": true,
+    "duplicates_stale_gaps_and_chain_faults_fail_closed": true,
+    "section_owner_registration_required": true,
+    "production_integration_passive": true,
+    "helper_behavior_authority_zero": true,
+    "restart_replay_atomic_or_empty": true,
+    "revocation_persists": true,
+    "diagnostics_read_only_bounded_and_redacted": true,
+    "zero_persisted_user_data_writes": true,
+    "bank_and_continuous_run_unmodified": true,
+    "permanent_gate_green": true,
+    "all_required_github_checks_green": true
+  },
+  "pass9_boundary": {
+    "entry_unit": "P9-U1",
+    "bank_owner": "bank_screen_owner",
+    "bank_section": "bank",
+    "continuous_run_owner": "continuous_run_level_owner",
+    "continuous_run_section": "continuous_run",
+    "cross_delegation": "FORBIDDEN",
+    "current_state": "AUTHORITY_IDENTITIES_SEPARATE_BUT_SUBSTANTIVE_BANK_CONTINUOUS_RUN_REPAIR_NOT_STARTED",
+    "required_inventory": [
+      "current production Bank and Continuous Run source paths",
+      "authority and ownership crossings",
+      "concurrency and cancellation paths",
+      "restart and handoff paths",
+      "persisted-data reads and writes",
+      "known Continuous Run bank failure modes"
+    ],
+    "actual_repair_target": "P9-U3",
+    "meaning_of_pass8_completion": "Helper authority safety is certified; the Bank and Continuous Run behavior still require Pass 9 inventory, contract, implementation, proof, and app verification."
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "static_contract",
+    "diagnostic_matrix_update": {
+      "status": "CONFIRMED_UNCHANGED",
+      "applicable_matrix": "audit/pass8/pass8-helper-unit5-isolation-restart-denial-proof-v1.json",
+      "rationale": "P8-U5 is the final exhaustive Helper isolation, restart, denial, diagnostics, and zero-effect matrix. P8-U6 only traces and certifies the accumulated evidence."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass8/pass8-helper-unit1-inventory-v1.json",
+      "audit/pass8/pass8-helper-unit2-capability-contract-v1.json",
+      "audit/pass8/pass8-helper-unit3-registration-events-v1.json",
+      "audit/pass8/pass8-helper-unit4-owner-diagnostics-integration-v1.json",
+      "audit/pass8/pass8-helper-unit5-isolation-restart-denial-proof-v1.json",
+      "audit/pass8/pass8-helper-unit6-closure-certification-v1.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass8_unit6_helper_safety_closure_v1.py"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass8_unit6_helper_safety_closure_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass8/receipts/RECEIPT_P8_U6_HELPER_SAFETY_CLOSURE_20260726T190000Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "P8-U1 through P8-U5 have immutable records and receipts with 1,525 passing deterministic assertions.",
+        "evidence_paths": [
+          "audit/pass8/pass8-helper-unit1-inventory-v1.json",
+          "audit/pass8/pass8-helper-unit2-capability-contract-v1.json",
+          "audit/pass8/pass8-helper-unit3-registration-events-v1.json",
+          "audit/pass8/pass8-helper-unit4-owner-diagnostics-integration-v1.json",
+          "audit/pass8/pass8-helper-unit5-isolation-restart-denial-proof-v1.json"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The exact P8-U4 production head and P8-U5 isolation head passed their dedicated and permanent-gate workflows, and P8-U5 passed post-merge integrity checks.",
+        "evidence_paths": [
+          "audit/pass8/pass8-helper-unit4-owner-diagnostics-integration-v1.json",
+          "audit/pass8/pass8-helper-unit5-isolation-restart-denial-proof-v1.json",
+          "audit/pass8/pass8-helper-unit6-closure-certification-v1.json"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "Pass 8 can close without duplicating a scarce observation because its production integration is passive and its applicable behavior is exhaustively deterministic.",
+        "basis_evidence_paths": [
+          "audit/pass8/pass8-helper-unit4-owner-diagnostics-integration-v1.json",
+          "audit/pass8/pass8-helper-unit5-isolation-restart-denial-proof-v1.json"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "NOT_APPLICABLE",
+      "cases": [],
+      "rationale": "P8-U6 is evidence-only closure; fault injection is exhaustively covered by P8-U4 and P8-U5."
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "verification": {
+    "assertions_total": 180,
+    "assertions_passed": 180,
+    "assertions_failed": 0,
+    "exact_scope": "PASS",
+    "input_hashes": "PASS",
+    "unit_traceability": "PASS",
+    "exit_criteria": "PASS",
+    "observation_sufficiency": "PASS",
+    "pass9_boundary_preserved": "PASS",
+    "permanent_gate_binding": "PASS"
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_mutations": false,
+    "helper_ownership_changes": false,
+    "helper_behavior_activations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "retry_authorized": false
+  },
+  "no_retry_gates": {
+    "consumed_observation_prs": [
+      149,
+      150,
+      152
+    ],
+    "formal_proof_pr": 122,
+    "retry_authorized": false
+  },
+  "pass8_result": "PASS",
+  "next_step": {
+    "id": "P9-U1",
+    "objective": "Inventory the current production Bank and Continuous Run boundary, ownership, concurrency, cancellation, restart, handoff, persisted-data, and failure paths before changing behavior.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "Pass 8 Helper authority safety is certified. This closure does not claim that Bank or Continuous Run is repaired; substantive Pass 9 begins at P9-U1 and the production repair target is P9-U3."
+}
