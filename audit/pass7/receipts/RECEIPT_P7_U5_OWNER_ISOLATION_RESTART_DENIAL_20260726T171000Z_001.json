@@ -1,0 +1,67 @@
+{
+  "type": "PMP_PASS7_UNIT5_OWNER_ISOLATION_RESTART_DENIAL_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P7_U5_OWNER_ISOLATION_RESTART_DENIAL_20260726T171000Z_001",
+  "created_at": "2026-07-26T17:10:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "4ed25e626ff36a6ef795a26a001cd44a920c2329",
+  "branch": "agent/pass7-unit5-owner-isolation-restart-denial-proof-v1",
+  "pass": 7,
+  "unit": "P7-U5",
+  "status": "OWNER_ISOLATION_RESTART_DENIAL_PROVEN",
+  "evidence": "audit/pass7/pass7-section-owner-unit5-isolation-restart-denial-proof-v1.json",
+  "changed_paths": [
+    ".github/workflows/pass7-unit5-owner-isolation-restart-denial-proof-v1.yml",
+    ".github/workflows/pass7-unit4-owner-mount-diagnostics-integration-v1.yml",
+    "audit/a003-manifest-seal.json",
+    "audit/pass7/pass7-section-owner-unit5-isolation-restart-denial-proof-v1.json",
+    "audit/pass7/receipts/RECEIPT_P7_U5_OWNER_ISOLATION_RESTART_DENIAL_20260726T171000Z_001.json",
+    "pmp-app-current.html",
+    "pmp-runtime-integrity-manifest-v1.json",
+    "pmp-section-owner-mount-integration-v1.js",
+    "tools/generate_pass7_unit5_integrity_updates_v1.py",
+    "tools/test_pass7_unit5_owner_isolation_restart_denial_v1.js",
+    "tools/verify_pass7_unit5_owner_isolation_restart_denial_v1.py"
+  ],
+  "coverage": {
+    "known_owners": 8,
+    "isolated_sections": 8,
+    "cross_section_denials": 8,
+    "cross_owner_capability_denials": 8,
+    "proof_invariants": 6,
+    "fault_cases": 24,
+    "assertions": 218,
+    "runtime_records": 707,
+    "artifact_roles": 9
+  },
+  "hardening": {
+    "exact_owner_capability_binding": true,
+    "atomic_restart_replay": true,
+    "partial_restart_state_exposed": false,
+    "shared_operation_identities_preserved": true,
+    "authority_grants": 0
+  },
+  "effects": {
+    "production_files_changed": true,
+    "runtime_integrity_changed": true,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_mutations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "next_safe_move": {
+    "step_id": "P7-U6",
+    "instruction": "Review evidence sufficiency and close Pass 7 without spending a scarce observation unless a canonical gate proves one is required and authorized.",
+    "requires_explicit_authority": false,
+    "requires_user_app_check": false,
+    "stop_before": "Only a genuinely required and separately authorized scarce observation or hands-on app verification."
+  }
+}
