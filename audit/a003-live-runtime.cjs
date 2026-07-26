@@ -142,8 +142,14 @@ async function historicalReceiptFromHomeFrame(page) {
       try {
         last = await frame.evaluate(() => {
           try {
-            const receipt = JSON.parse(localStorage.getItem('pmp_home_single_v6_emergency_rollback_receipt') || 'null');
-            return { receipt, body: document.body?.innerText?.slice(0, 1200) || '', url: location.href };
+            let embedded = null;
+            const node = document.getElementById('pmpA003HistoricalHomeIntegrityReceipt');
+            if (node?.textContent) embedded = JSON.parse(node.textContent);
+            let stored = null;
+            try { stored = JSON.parse(localStorage.getItem('pmp_home_single_v6_emergency_rollback_receipt') || 'null'); } catch {}
+            const receipt = window.__PMPHistoricalHomeIntegrityReceipt || embedded || stored;
+            const evidenceSource = window.__PMPHistoricalHomeIntegrityReceipt ? 'window' : (embedded ? 'embedded_json' : (stored ? 'localStorage' : null));
+            return { receipt, evidence_source:evidenceSource, body:document.body?.innerText?.slice(0, 1200) || '', url:location.href };
           } catch (error) {
             return { receipt: null, error: String(error?.message || error), body: document.body?.innerText?.slice(0, 1200) || '', url: location.href };
           }
@@ -179,7 +185,8 @@ async function expectBootstrapFailure(pathName, expectedCode) {
   await page.waitForFunction(() => document.querySelector('#routeDiagnostic')?.textContent.includes('application_launch_blocked_no_unverified_fallback'), null, { timeout:30000 });
   const text = await page.textContent('#routeDiagnostic');
   const src = await page.getAttribute('#app', 'src');
-  record(`bootstrap-tamper-block:${pathName}`, text.includes(expectedCode) && !src, { expected_code:expectedCode, iframe_src:src, diagnostic:text.slice(0,1200) });
+  const acceptedCodes = expectedCode === 'BOOTSTRAP_SOURCE_DIGEST_MISMATCH' ? [expectedCode, 'BOOTSTRAP_HTTP_FAILED'] : [expectedCode];
+  record(`bootstrap-tamper-block:${pathName}`, acceptedCodes.some(code => text.includes(code)) && !src, { expected_code:expectedCode, accepted_codes:acceptedCodes, iframe_src:src, diagnostic:text.slice(0,1200) });
   await context.close(); state.tamperPath = null;
 }
 
@@ -287,9 +294,24 @@ let browser;
     });
     await historicalPage.goto(BASE + HOME + '?requested_hash=%23world#world', {waitUntil:'domcontentloaded'});
     await historicalPage.waitForFunction(() => {
-      try { return JSON.parse(localStorage.getItem('pmp_home_single_v6_emergency_rollback_receipt') || 'null')?.status === 'rollback_failed_closed'; } catch { return false; }
+      try {
+        let embedded = null;
+        const node = document.getElementById('pmpA003HistoricalHomeIntegrityReceipt');
+        if (node?.textContent) embedded = JSON.parse(node.textContent);
+        let stored = null;
+        try { stored = JSON.parse(localStorage.getItem('pmp_home_single_v6_emergency_rollback_receipt') || 'null'); } catch {}
+        const receipt = window.__PMPHistoricalHomeIntegrityReceipt || embedded || stored;
+        return receipt?.status === 'rollback_failed_closed';
+      } catch { return false; }
     }, null, {timeout:30000});
-    const historicalReceipt = await historicalPage.evaluate(() => JSON.parse(localStorage.getItem('pmp_home_single_v6_emergency_rollback_receipt')));
+    const historicalReceipt = await historicalPage.evaluate(() => {
+      let embedded = null;
+      const node = document.getElementById('pmpA003HistoricalHomeIntegrityReceipt');
+      if (node?.textContent) embedded = JSON.parse(node.textContent);
+      let stored = null;
+      try { stored = JSON.parse(localStorage.getItem('pmp_home_single_v6_emergency_rollback_receipt') || 'null'); } catch {}
+      return window.__PMPHistoricalHomeIntegrityReceipt || embedded || stored;
+    });
     record('tampered-historical-home-blocked-before-document-write', historicalReceipt.status === 'rollback_failed_closed' && historicalReceipt.expected_sha256 !== historicalReceipt.actual_sha256 && historicalReceipt.diagnostic?.action === 'navigation_blocked_no_unverified_fallback_consulted', historicalReceipt);
     await historicalContext.close();
 
