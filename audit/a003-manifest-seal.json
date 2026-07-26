@@ -3,13 +3,12 @@
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
   "manifest_sha256": "2aeb0c14a5316929e4ece146cf739b376688b419f73e7f8a8ce7985cb7e9e191",
   "manifest_version": "20260711A-A003-FINAL",
-  "pass7_context": "P7-U4 production-loads a passive capability-bound Section Owner event adapter under mount_registry_owner and a redacted read-only Diagnostics view. Appearance grants no authority; no mount, route, Bank, repair, storage migration, or persisted-user-data effect is introduced.",
   "repair_id": "A-003",
   "root_self_verifiable": false,
   "root_trust_anchor": "pmp-app-current.html",
   "rule": "The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.",
   "runtime_source_set_sha256": "63ecf5f7c2b7d894b7f7fd7bbc9168f7952afcef0c3dea969c862ebc06811e50",
-  "sealed_branch": "agent/pass7-unit4-owner-mount-diagnostics-integration-v1",
+  "sealed_branch": "main",
   "status": "SEALED",
   "type": "PMP_A003_MANIFEST_SEAL_V1"
 }
