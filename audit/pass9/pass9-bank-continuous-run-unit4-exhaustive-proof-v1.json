@@ -1,0 +1,290 @@
+{
+  "type": "PMP_PASS9_BANK_CONTINUOUS_RUN_UNIT4_EXHAUSTIVE_PROOF_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T20:40:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "834f396de0869d5b1adbcdea5dbbe35722a9f581",
+  "branch": "agent/pass9-unit4-bank-continuous-run-exhaustive-proof-v1",
+  "pass": 9,
+  "unit": "P9-U4",
+  "unit_id": "P9-U4",
+  "status": "BANK_CONTINUOUS_RUN_EXHAUSTIVE_BEHAVIOR_PROVEN",
+  "objective": "Exhaustively prove concurrency, atomic rollback, cancellation, restart, handoff, repeated-load, duplicate, stale-version, denial, diagnostics, bounded receipt, and preserved-data behavior against the exact merged P9-U3 production integration.",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass9-unit4-bank-continuous-run-exhaustive-proof-v1.yml",
+      "audit/pass9/pass9-bank-continuous-run-unit4-exhaustive-proof-v1.json",
+      "audit/pass9/receipts/RECEIPT_P9_U4_BANK_CONTINUOUS_RUN_EXHAUSTIVE_PROOF_20260726T204000Z_001.json",
+      "tools/run_pass9_unit4_bank_continuous_run_exhaustive_proof_v1.js",
+      "tools/test_pass9_unit4_bank_continuous_run_exhaustive_proof_v1.js",
+      "tools/verify_pass9_unit4_bank_continuous_run_exhaustive_proof_v1.py"
+    ],
+    "implementation_paths": []
+  },
+  "inputs": {
+    "unit3_integration": "audit/pass9/pass9-bank-continuous-run-unit3-owner-integration-v1.json",
+    "unit3_integration_sha256": "7082b32b0a29981b132269d2f481b075fa1a1a7a7a74a58d485c72b39e24e58f",
+    "owner_boundary": "pmp-bank-continuous-run-owner-boundary-v1.js",
+    "owner_boundary_sha256": "2d5f2f6015ee7096a07387b82c4478c88bb6423464d9fd11302705df73286fbd",
+    "continuous_run_state": "pmp-continuous-run-state-bank-v1.js",
+    "continuous_run_state_sha256": "ab1d780e81ce82dfff13827c3c93e1c4e6a44302660f7625823123e0a32e6460",
+    "bank_router": "pmp-master-bank-inventory-router-v1.js",
+    "bank_router_sha256": "7e10583e9c7b0d942bb3ea6905a17338089b6424dbc72211020ff2f27f635b39",
+    "diagnostic": "pmp-bank-continuous-run-owner-split-diagnostic-v1.js",
+    "diagnostic_sha256": "7e75b62a6f6054c02863e7c4b65242888521983939b9693fae62fb8d698b2535",
+    "runner": "tools/run_pass9_unit4_bank_continuous_run_exhaustive_proof_v1.js",
+    "runner_sha256": "9f75af623c79e24de251351d4b3b76081ff4ba18f04edce976ebd559932cbad1",
+    "test": "tools/test_pass9_unit4_bank_continuous_run_exhaustive_proof_v1.js",
+    "test_sha256": "d49555fdad75038a05fcdc6c596d6e62615f5f68e8ecc56c90e6ab00cd5f033a"
+  },
+  "proof": {
+    "model": "DETERMINISTIC_EXACT_MERGED_PRODUCTION_SOURCE_FAULT_MATRIX",
+    "assertions": 238,
+    "core_sources_loaded": 4,
+    "first_load_storage_reads": 0,
+    "first_load_storage_writes": 0,
+    "first_load_storage_deletes": 0,
+    "repeated_load_storage_reads": 0,
+    "repeated_load_storage_writes": 0,
+    "repeated_load_storage_deletes": 0,
+    "concurrency_cases": 4,
+    "stale_concurrent_result": "DENIED_EXPECTED_VERSION",
+    "cancellation_cases": 5,
+    "cancellation_gap_result": "DENIED_CANCELLATION_ADVANCE",
+    "cancellation_stale_result": "DENIED_STALE_CANCELLATION",
+    "duplicate_cases": 4,
+    "identical_duplicate_new_writes": 0,
+    "identical_duplicate_new_receipts": 0,
+    "conflicting_duplicate_result": "DENIED_DUPLICATE_CONFLICT",
+    "authorization_denial_cases": 16,
+    "commit_denial_cases": 5,
+    "atomic_rollback_cases": 2,
+    "atomic_rollback_exact_restore_cases": 2,
+    "restart_handoff_cases": 2,
+    "restart_load_storage_reads": 0,
+    "restart_load_storage_writes": 0,
+    "restart_load_storage_deletes": 0,
+    "corrupt_restart_result": "FAIL_CLOSED_IN_MEMORY_RAW_BYTES_PRESERVED",
+    "router_delete_cases": 3,
+    "default_delete_result": "DELETE_DENIED_BY_DEFAULT",
+    "wrong_capability_delete_result": "DELETE_DENIED_BY_DEFAULT",
+    "exact_confirmed_delete_result": "COMMITTED",
+    "bounded_receipt_commits": 260,
+    "retained_receipts": 256,
+    "visible_diagnostic_receipts": 32,
+    "source_policy_checks": 14,
+    "unrelated_persisted_bytes_preserved": true,
+    "fixture_only_storage": true,
+    "user_persisted_data_touched": false
+  },
+  "diagnostic_and_proof_matrix": {
+    "type": "PMP_PASS9_UNIT4_BANK_CONTINUOUS_RUN_EXHAUSTIVE_MATRIX_V1",
+    "version": "1.0.0",
+    "invariants": [
+      {
+        "id": "P9-INV-LOAD-001",
+        "statement": "First and repeated owner, state, router, and diagnostic loads perform zero persisted-storage reads, writes, or deletes and do not auto-run Diagnostics.",
+        "coverage": "two full core loads against exact seeded bytes"
+      },
+      {
+        "id": "P9-INV-CONCURRENCY-002",
+        "statement": "Exactly one writer wins a resource version; stale competitors have zero effect, exact-version retries succeed, and independent resources progress independently.",
+        "coverage": "four concurrency cases and exact receipt-chain verification"
+      },
+      {
+        "id": "P9-INV-CANCELLATION-003",
+        "statement": "Cancellation epochs are monotonic with no gaps; stale or gapped epochs cannot change any persisted byte.",
+        "coverage": "initial, gap, advance, stale, and same-current-epoch cases"
+      },
+      {
+        "id": "P9-INV-DUPLICATE-004",
+        "statement": "An identical operation returns the exact prior result with no new write or receipt, while a conflicting duplicate denies with no effect.",
+        "coverage": "accepted replay, conflicting replay, denied replay, and resource-version checks"
+      },
+      {
+        "id": "P9-INV-DENIAL-005",
+        "statement": "Every malformed, wrong-contract, identity, owner, action, resource, version, payload, time, capability, cancellation, storage-scope, unavailable-storage, and unconfirmed-delete case fails closed.",
+        "coverage": "sixteen authorization and five commit/storage denial cases"
+      },
+      {
+        "id": "P9-INV-ATOMICITY-006",
+        "statement": "Injected partial write failure restores exact prior bytes, including restoring an originally absent key to absence, and does not advance the resource version.",
+        "coverage": "existing-key and absent-key rollback cases"
+      },
+      {
+        "id": "P9-INV-RESTART-HANDOFF-007",
+        "statement": "An exact stopped-run handoff is recoverable after a fresh runtime load; load and export remain read-only; explicit resume is receipted; corrupt state fails closed in memory without rewriting raw bytes.",
+        "coverage": "exact handoff/restart/resume and corrupt-state restart"
+      },
+      {
+        "id": "P9-INV-DIAGNOSTICS-008",
+        "statement": "Router read paths and owner-boundary diagnostic snapshots do not persist, and delete is possible only with exact user confirmation and capability.",
+        "coverage": "inventory, route, helper, diagnostic, default delete, wrong capability, and exact delete"
+      },
+      {
+        "id": "P9-INV-RECEIPT-009",
+        "statement": "The SHA-256 receipt chain remains valid and bounded after more than 256 accepted commits while retaining a verifiable link to hidden history.",
+        "coverage": "260 accepted fixture commits, 256 retained receipts, and 32 visible receipts"
+      },
+      {
+        "id": "P9-INV-PRESERVATION-010",
+        "statement": "Every matrix preserves unrelated exact persisted bytes and never migrates or touches user storage.",
+        "coverage": "all isolated in-memory fixtures plus fourteen static source policies"
+      }
+    ],
+    "runner": "tools/run_pass9_unit4_bank_continuous_run_exhaustive_proof_v1.js",
+    "deterministic_test": "tools/test_pass9_unit4_bank_continuous_run_exhaustive_proof_v1.js",
+    "assertions": 238
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_integration",
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/pass9/pass9-bank-continuous-run-unit4-exhaustive-proof-v1.json",
+      "rationale": "P9-U4 expands the exact merged production integration matrix across concurrency, cancellation, restart, handoff, repeat load, duplicate, denial, atomic rollback, Diagnostics, receipt bounds, and preserved data."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass9/pass9-bank-continuous-run-unit3-owner-integration-v1.json",
+      "audit/pass9/pass9-bank-continuous-run-unit4-exhaustive-proof-v1.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass9_unit4_bank_continuous_run_exhaustive_proof_v1.js"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass9_unit4_bank_continuous_run_exhaustive_proof_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass9/receipts/RECEIPT_P9_U4_BANK_CONTINUOUS_RUN_EXHAUSTIVE_PROOF_20260726T204000Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "Two hundred thirty-eight deterministic assertions execute the exact merged P9-U3 owner boundary, state, router, and diagnostic sources against isolated seeded storage.",
+        "evidence_paths": [
+          "tools/run_pass9_unit4_bank_continuous_run_exhaustive_proof_v1.js",
+          "tools/test_pass9_unit4_bank_continuous_run_exhaustive_proof_v1.js"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "Stale concurrency, cancellation gaps, stale cancellation, duplicate conflicts, every denial class, and injected partial writes preserve exact prior fixture bytes.",
+        "evidence_paths": [
+          "tools/run_pass9_unit4_bank_continuous_run_exhaustive_proof_v1.js"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "The merged production integration is ready for P9-U5 authority-separation and persisted-data certification without a hands-on app check.",
+        "basis_evidence_paths": [
+          "audit/pass9/pass9-bank-continuous-run-unit3-owner-integration-v1.json",
+          "audit/pass9/pass9-bank-continuous-run-unit4-exhaustive-proof-v1.json"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "stale concurrent expected version",
+        "independent resource concurrency",
+        "cancellation epoch gap",
+        "stale cancellation epoch",
+        "identical duplicate replay",
+        "conflicting duplicate replay",
+        "denied duplicate replay",
+        "missing request",
+        "wrong contract version",
+        "invalid operation identity",
+        "invalid request identity",
+        "wrong requester owner",
+        "wrong target owner",
+        "forbidden action",
+        "wrong resource domain",
+        "stale expected version",
+        "invalid payload hash",
+        "invalid time",
+        "reversed time window",
+        "expired request",
+        "wrong capability",
+        "payload binding mismatch",
+        "wrong durable storage scope",
+        "storage unavailable",
+        "unconfirmed deletion",
+        "wrong deletion capability",
+        "partial existing-key write failure",
+        "partial absent-key write failure",
+        "corrupt restart state",
+        "repeated core source load",
+        "bounded receipt history overflow"
+      ]
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "verification": {
+    "assertions_total": 238,
+    "assertions_passed": 238,
+    "assertions_failed": 0,
+    "exact_scope": "PASS",
+    "input_hashes": "PASS",
+    "load_and_repeated_load": "PASS",
+    "concurrency_cancellation_and_duplicates": "PASS",
+    "denial_and_atomic_rollback": "PASS",
+    "restart_handoff_and_corruption_containment": "PASS",
+    "router_diagnostics_and_deletion_authority": "PASS",
+    "bounded_sha256_receipt_chain": "PASS",
+    "preserved_fixture_data": "PASS",
+    "unit3_regression": "PASS",
+    "permanent_gate_binding": "PASS"
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_user_data_mutations": false,
+    "continuous_run_user_data_mutations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P9-U5",
+    "objective": "Certify authority separation and persisted-data preservation across the P9-U1 inventory, P9-U2 contract, P9-U3 repair, and P9-U4 exhaustive behavior evidence.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P9-U4 isolated deterministic proof only. Fixture storage writes do not touch user data. Pass 9 is not yet closed; no live observation, formal proof, storage migration, or persisted user-data change occurs."
+}
