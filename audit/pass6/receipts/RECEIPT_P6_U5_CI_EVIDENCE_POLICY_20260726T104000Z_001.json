@@ -1,0 +1,58 @@
+{
+  "type": "PMP_PASS6_UNIT5_CI_EVIDENCE_POLICY_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P6_U5_CI_EVIDENCE_POLICY_20260726T104000Z_001",
+  "created_at": "2026-07-26T10:40:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "8b389e244913f8727444478ccc9e681795ab0529",
+  "branch": "agent/pass6-unit5-ci-evidence-policy-v1",
+  "pass": 6,
+  "unit": "P6-U5",
+  "status": "CI_EVIDENCE_POLICY_PROVEN",
+  "policy": "audit/pass6/pass6-ci-lane-artifact-policy-v1.json",
+  "evidence": "audit/pass6/pass6-ci-lane-artifact-unit5-proof-v1.json",
+  "changed_paths": [
+    ".github/workflows/pass6-unit4-deterministic-proof-harness-v1.yml",
+    ".github/workflows/pass6-unit5-ci-evidence-policy-v1.yml",
+    "audit/pass6/fixtures/pass6-unit5-ci-evidence-envelope-positive-v1.json",
+    "audit/pass6/pass6-ci-lane-artifact-policy-v1.json",
+    "audit/pass6/pass6-ci-lane-artifact-unit5-proof-v1.json",
+    "audit/pass6/receipts/RECEIPT_P6_U5_CI_EVIDENCE_POLICY_20260726T104000Z_001.json",
+    "tools/run_pass6_unit5_ci_evidence_policy_v1.py",
+    "tools/test_pass6_unit5_ci_evidence_policy_v1.py",
+    "tools/verify_pass6_unit5_ci_evidence_policy_v1.py"
+  ],
+  "coverage": {
+    "ci_lanes": 5,
+    "required_checks": 6,
+    "artifact_roles": 9,
+    "meta_regression_assertions": 469,
+    "max_attempts_per_lane": 1,
+    "failure_artifacts_uploaded_before_enforcement": true
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false
+  },
+  "recovery": {
+    "rollback_available": true,
+    "rollback_reference": "The repository-only policy, fixture, evaluator, tests, evidence, and CI route can be reverted without runtime or data rollback.",
+    "evidence_preserved": true
+  },
+  "next_safe_move": {
+    "step_id": "P6-U6",
+    "instruction": "Run deterministic fault injection and prove exact failure preservation.",
+    "requires_explicit_authority": false,
+    "requires_user_app_check": false,
+    "stop_before": "Only a genuinely required hands-on app reproduction or verification in a later unit."
+  }
+}
