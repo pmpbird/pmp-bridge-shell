@@ -1,0 +1,62 @@
+{
+  "type": "PMP_PASS9_UNIT7_BANK_CONTINUOUS_RUN_CLOSURE_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P9_U7_PASS9_BANK_CONTINUOUS_RUN_COMPLETE_20260726T212500Z_001",
+  "created_at": "2026-07-26T21:25:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "af568da490374d10be3acb069f1225f728e5c02f",
+  "branch": "agent/pass9-unit7-closure-certification-v1",
+  "pass": 9,
+  "unit": "P9-U7",
+  "status": "PASS9_BANK_CONTINUOUS_RUN_COMPLETE",
+  "pass9_result": "PASS",
+  "evidence": "audit/pass9/pass9-bank-continuous-run-unit7-closure-certification-v1.json",
+  "changed_paths": [
+    ".github/workflows/pass9-unit7-closure-certification-v1.yml",
+    "audit/pass9/pass9-bank-continuous-run-unit7-closure-certification-v1.json",
+    "audit/pass9/receipts/RECEIPT_P9_U7_PASS9_BANK_CONTINUOUS_RUN_COMPLETE_20260726T212500Z_001.json",
+    "tools/run_pass9_unit7_closure_certification_v1.js",
+    "tools/test_pass9_unit7_closure_certification_v1.js",
+    "tools/verify_pass9_unit7_closure_certification_v1.py"
+  ],
+  "closure": {
+    "completed_units": 7,
+    "prior_assertions": 1038,
+    "closure_assertions": 102,
+    "bank_and_continuous_run_repair_complete": true,
+    "bank_owner": "bank_screen_owner",
+    "continuous_run_owner": "continuous_run_level_owner",
+    "durable_writer": "bank_screen_owner",
+    "all_exit_criteria_pass": true,
+    "observation_required": false,
+    "observation_performed": false,
+    "observation_authority_consumed": false
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_user_data_mutations": false,
+    "continuous_run_user_data_mutations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "next_safe_move": {
+    "step_id": "P10-U1",
+    "instruction": "Reconcile the current and historical Bank inventory and schemas read-only before changing the Bank tab or persisted data.",
+    "requires_explicit_authority": false,
+    "requires_user_app_check": false,
+    "persisted_user_data_change_allowed": false,
+    "storage_migration_allowed": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "Static Pass 9 closure only. The Bank and Continuous Run repair is complete and green. No app launch, scarce observation, formal proof, user-data change, migration, or new production behavior occurs."
+}
