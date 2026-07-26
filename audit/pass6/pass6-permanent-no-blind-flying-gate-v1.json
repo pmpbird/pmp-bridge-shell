@@ -1,0 +1,64 @@
+{
+  "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_V1",
+  "version": "1.0.0",
+  "pass": 6,
+  "unit": "P6-U7",
+  "status": "ACTIVE_ON_MERGE",
+  "applies_to_passes": [7, 8, 9, 10, 11, 12, 13],
+  "goal": "No later implementation unit may merge without an applicable deterministic test, diagnostic evidence route, classified CI lane, complete artifacts, and explicit observed-versus-inferred claims.",
+  "activation_scope": [
+    ".github/workflows/permanent-no-blind-flying-gate-v1.yml",
+    "audit/pass6/fixtures/pass6-unit7-no-blind-flying-positive-v1.json",
+    "audit/pass6/pass6-permanent-no-blind-flying-gate-v1.json",
+    "audit/pass6/pass6-unit7-closure-certification-v1.json",
+    "audit/pass6/receipts/RECEIPT_P6_U7_PASS6_CLOSURE_20260726T160000Z_001.json",
+    "tools/run_pass6_unit7_no_blind_flying_gate_v1.py",
+    "tools/test_pass6_unit7_no_blind_flying_gate_v1.py",
+    "tools/verify_pass6_unit7_closure_v1.py"
+  ],
+  "later_unit_record_contract": {
+    "record_location": "audit/pass<7-13>/",
+    "exactly_one_canonical_gate_binding_record": true,
+    "unit_id_pattern": "^P(?:[7-9]|1[0-3])-U[1-9][0-9]*$",
+    "exact_changed_scope_required": true,
+    "implementation_paths_must_be_declared": true,
+    "ci_lane_must_exist_in_pass6_policy": true,
+    "diagnostic_matrix_update_required": true,
+    "diagnostic_evidence_routes_required": true,
+    "deterministic_test_paths_required": true,
+    "verifier_paths_required": true,
+    "receipt_paths_required": true,
+    "observed_facts_require_evidence": true,
+    "inferred_conclusions_require_basis": true,
+    "fault_injection_or_reasoned_not_applicable_required": true,
+    "all_pass6_artifact_roles_required": true,
+    "upload_before_enforcement_required": true,
+    "automatic_retry_forbidden": true,
+    "special_authority_must_remain_separate": true
+  },
+  "implementation_detection": {
+    "later_pass_audit_pattern": "^audit/pass(?:[7-9]|1[0-3])/",
+    "runtime_extensions": [".js", ".html", ".css", ".mjs", ".cjs", ".ts", ".tsx", ".jsx"],
+    "runtime_excluded_prefixes": [".github/", "audit/", "tools/", "docs/"],
+    "missing_later_unit_record": "FAIL_CLOSED",
+    "multiple_gate_binding_records": "FAIL_CLOSED",
+    "missing_or_false_evidence": "FAIL_CLOSED"
+  },
+  "allowed_non_implementation_scope": {
+    "description": "A pull request with no later-pass record and no runtime implementation path may pass as non-implementation scope.",
+    "does_not_certify_a_roadmap_unit": true
+  },
+  "required_result_states": [
+    "PASS",
+    "NON_IMPLEMENTATION_SCOPE",
+    "ACTIVATION_SCOPE",
+    "FAIL_CLOSED"
+  ],
+  "no_retry_gates": {
+    "consumed_observation_prs": [149, 150, 152],
+    "formal_proof_pr": 122,
+    "formal_proof_authorization": "CONSUMED_FAILED",
+    "retry_authorized": false
+  },
+  "claim_ceiling": "This gate certifies later-unit deterministic and diagnostic evidence completeness only. It cannot authorize or perform a live observation, formal proof, production activation, migration, repair, or persisted-user-data mutation."
+}

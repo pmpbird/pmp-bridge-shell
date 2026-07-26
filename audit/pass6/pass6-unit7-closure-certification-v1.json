@@ -1,0 +1,132 @@
+{
+  "type": "PMP_PASS6_UNIT7_CLOSURE_CERTIFICATION_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T16:00:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "35a0b9793322f97f6d4b6df6f78369aa0d4f8854",
+  "branch": "agent/pass6-unit7-no-blind-flying-closure-v1",
+  "pass": 6,
+  "unit": "P6-U7",
+  "status": "PASS6_CLOSED_NO_BLIND_FLYING_GATE_ACTIVE",
+  "objective": "Certify Pass 6 closure and activate the permanent no-blind-flying gate for all later implementation units.",
+  "changed_paths": [
+    ".github/workflows/permanent-no-blind-flying-gate-v1.yml",
+    "audit/pass6/fixtures/pass6-unit7-no-blind-flying-positive-v1.json",
+    "audit/pass6/pass6-permanent-no-blind-flying-gate-v1.json",
+    "audit/pass6/pass6-unit7-closure-certification-v1.json",
+    "audit/pass6/receipts/RECEIPT_P6_U7_PASS6_CLOSURE_20260726T160000Z_001.json",
+    "tools/run_pass6_unit7_no_blind_flying_gate_v1.py",
+    "tools/test_pass6_unit7_no_blind_flying_gate_v1.py",
+    "tools/verify_pass6_unit7_closure_v1.py"
+  ],
+  "completed_units": [
+    {
+      "unit": "P6-U1",
+      "status": "PURE_CONTRACT_PROVEN",
+      "record": "audit/pass6/pass6-diagnostic-journal-unit1-contract-v1.json",
+      "record_sha256": "8c0477b4b51e5c456536df01bce9e004a6b0ea7b2c29b81a51b78348ca488425",
+      "receipt": "audit/pass6/receipts/RECEIPT_P6_U1_CONTRACT_20260726T090200Z_001.json",
+      "receipt_sha256": "539e84746916f376994440bfb0a59525253ed2fe60429fc6fac4b04f5a122cf2"
+    },
+    {
+      "unit": "P6-U2",
+      "status": "READONLY_VIEW_EXPORT_PROVEN",
+      "record": "audit/pass6/pass6-diagnostic-journal-unit2-readonly-view-export-v1.json",
+      "record_sha256": "2f7136e1b97208f7801ab95b01b5c8a33f475e8ecb79309da9c7645175be1886",
+      "receipt": "audit/pass6/receipts/RECEIPT_P6_U2_READONLY_VIEW_EXPORT_20260726T093700Z_001.json",
+      "receipt_sha256": "b6c375ba2d50801b313216d7c17007dd1f45c72a319efe3d60bc9dc0fb283ac5"
+    },
+    {
+      "unit": "P6-U3",
+      "status": "CROSS_SYSTEM_INVARIANT_MATRIX_PROVEN",
+      "record": "audit/pass6/pass6-cross-system-invariant-unit3-matrix-v1.json",
+      "record_sha256": "6522d2ea46597004f33bc5fa4542f2a0bbc6e935103069c0b7f996e64f631687",
+      "receipt": "audit/pass6/receipts/RECEIPT_P6_U3_CROSS_SYSTEM_MATRIX_20260726T095500Z_001.json",
+      "receipt_sha256": "8fa19569de1ac4bbc04761b6ec64a760d177bd54f96426d2dd3ba131991f7616"
+    },
+    {
+      "unit": "P6-U4",
+      "status": "DETERMINISTIC_PROOF_HARNESS_PROVEN",
+      "record": "audit/pass6/pass6-deterministic-browser-frame-event-unit4-proof-v1.json",
+      "record_sha256": "70d8941f67923bb61d42494920a217f2ec5b98f8039fd53a613382ed41b425df",
+      "receipt": "audit/pass6/receipts/RECEIPT_P6_U4_DETERMINISTIC_PROOF_HARNESS_20260726T102000Z_001.json",
+      "receipt_sha256": "4e80cfc52623b72f28f806c16a9c7065c7958582a86e3166f66b649e965599f2"
+    },
+    {
+      "unit": "P6-U5",
+      "status": "CI_EVIDENCE_POLICY_PROVEN",
+      "record": "audit/pass6/pass6-ci-lane-artifact-unit5-proof-v1.json",
+      "record_sha256": "1b86bebc221a7f8f5435af721588b40ec4374c1dd5f9e6d979718e49d8cc32c3",
+      "receipt": "audit/pass6/receipts/RECEIPT_P6_U5_CI_EVIDENCE_POLICY_20260726T104000Z_001.json",
+      "receipt_sha256": "bd70470af95f921351d881ffb4a0e62e6844c84afbdc36aee2f3d8c42ddf598f"
+    },
+    {
+      "unit": "P6-U6",
+      "status": "DETERMINISTIC_FAULT_PRESERVATION_PROVEN",
+      "record": "audit/pass6/pass6-deterministic-fault-injection-unit6-proof-v1.json",
+      "record_sha256": "a70119f4a1409782e58ffd758b8c1ab6e7de0781273b77e84d71336a70e786eb",
+      "receipt": "audit/pass6/receipts/RECEIPT_P6_U6_DETERMINISTIC_FAULT_INJECTION_20260726T154500Z_001.json",
+      "receipt_sha256": "025d1bce35a7df34b9c13267e5b0a8be9a63191eccf58e136b87f12871abbc3b"
+    }
+  ],
+  "gate_inputs": {
+    "contract": "audit/pass6/pass6-permanent-no-blind-flying-gate-v1.json",
+    "contract_sha256": "ba5e7638e23bd12d6eeab5c221574d2171c8c6ea295f09d7826068a32422b077",
+    "positive_fixture": "audit/pass6/fixtures/pass6-unit7-no-blind-flying-positive-v1.json",
+    "positive_fixture_sha256": "1f399b978979f500f752f52fe7cc91ecd0c05c6c824ceed6a48130bddc3c53c3",
+    "runner": "tools/run_pass6_unit7_no_blind_flying_gate_v1.py",
+    "runner_sha256": "6442989b86f2869bc6cd4f76176140562bf5e696b16448071d9180c343b17967",
+    "test": "tools/test_pass6_unit7_no_blind_flying_gate_v1.py",
+    "test_sha256": "f70ba7a620a08e7e809995a8b96c3de939e394c0948c50996614c7c32002dbdf",
+    "positive_result_sha256": "103c69296e6dcea56dd840e9447fc00776da4bd8fbfe3619025e38fce91a77b6"
+  },
+  "closure_coverage": {
+    "units_required": 6,
+    "units_reconciled": 6,
+    "records_hash_verified": 6,
+    "receipts_hash_verified": 6,
+    "gate_assertions_total": 166,
+    "gate_assertions_passed": 166,
+    "later_passes_gated": 7,
+    "ci_lanes_available": 5,
+    "artifact_roles_required": 9
+  },
+  "exit_criteria": {
+    "every_later_pass_has_deterministic_test_and_diagnostic_route_gate": "PASS",
+    "observed_facts_distinguished_from_inferred_conclusions": "PASS",
+    "ci_missing_evidence_cannot_report_green": "PASS",
+    "failure_artifacts_upload_before_enforcement": "PASS",
+    "scarce_live_proof_requires_rehearsed_harness": "PASS",
+    "later_units_must_update_applicable_diagnostic_and_proof_matrix": "PASS"
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "consumed_observation_prs": [149, 150, 152],
+    "formal_proof_pr": 122,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P7-U1",
+    "pass": 7,
+    "objective": "Inventory sections, owners, lifecycle dependencies, and unresolved cases under the permanent no-blind-flying gate.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "Pass 6 closure and permanent static gate activation only. No Pass 7 implementation, live observation, production behavior, repair, migration, formal proof, or persisted-user-data change."
+}

@@ -1,0 +1,107 @@
+{
+  "type": "PMP_PASS6_NO_BLIND_FLYING_GATE_FIXTURE_V1",
+  "version": "1.0.0",
+  "changed_paths": [
+    "audit/pass7/pass7-section-owner-unit1-inventory-v1.json",
+    "audit/pass7/receipts/RECEIPT_P7_U1_INVENTORY_FIXTURE_001.json",
+    "tools/test_pass7_unit1_inventory_fixture_v1.py",
+    "tools/verify_pass7_unit1_inventory_fixture_v1.py"
+  ],
+  "existing_paths": [
+    "audit/pass6/pass6-cross-system-invariant-catalog-v1.json",
+    "audit/pass7/pass7-section-owner-unit1-inventory-v1.json",
+    "audit/pass7/receipts/RECEIPT_P7_U1_INVENTORY_FIXTURE_001.json",
+    "tools/test_pass7_unit1_inventory_fixture_v1.py",
+    "tools/verify_pass7_unit1_inventory_fixture_v1.py"
+  ],
+  "records": [
+    {
+      "path": "audit/pass7/pass7-section-owner-unit1-inventory-v1.json",
+      "payload": {
+        "type": "PMP_PASS7_SECTION_OWNER_UNIT1_INVENTORY_FIXTURE_V1",
+        "version": "1.0.0",
+        "unit_id": "P7-U1",
+        "status": "INVENTORY_PROVEN",
+        "scope": {
+          "changed_paths": [
+            "audit/pass7/pass7-section-owner-unit1-inventory-v1.json",
+            "audit/pass7/receipts/RECEIPT_P7_U1_INVENTORY_FIXTURE_001.json",
+            "tools/test_pass7_unit1_inventory_fixture_v1.py",
+            "tools/verify_pass7_unit1_inventory_fixture_v1.py"
+          ],
+          "implementation_paths": []
+        },
+        "no_blind_flying_gate": {
+          "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+          "version": "1.0.0",
+          "ci_lane": "static_contract",
+          "diagnostic_matrix_update": {
+            "status": "CONFIRMED_UNCHANGED",
+            "applicable_matrix": "audit/pass6/pass6-cross-system-invariant-catalog-v1.json",
+            "rationale": "Read-only inventory establishes inputs before new owner invariants are added."
+          },
+          "diagnostic_evidence_routes": [
+            "audit/pass7/pass7-section-owner-unit1-inventory-v1.json"
+          ],
+          "deterministic_test_paths": [
+            "tools/test_pass7_unit1_inventory_fixture_v1.py"
+          ],
+          "verifier_paths": [
+            "tools/verify_pass7_unit1_inventory_fixture_v1.py"
+          ],
+          "receipt_paths": [
+            "audit/pass7/receipts/RECEIPT_P7_U1_INVENTORY_FIXTURE_001.json"
+          ],
+          "observed_facts": [
+            {
+              "claim_type": "OBSERVED",
+              "fact": "The fixture inventory record is present in exact scope.",
+              "evidence_paths": [
+                "audit/pass7/pass7-section-owner-unit1-inventory-v1.json"
+              ]
+            }
+          ],
+          "inferred_conclusions": [
+            {
+              "claim_type": "INFERRED",
+              "conclusion": "Contract design can proceed without runtime mutation.",
+              "basis_evidence_paths": [
+                "audit/pass7/pass7-section-owner-unit1-inventory-v1.json"
+              ]
+            }
+          ],
+          "fault_injection": {
+            "status": "NOT_APPLICABLE",
+            "cases": [],
+            "rationale": "This inventory fixture performs no lifecycle transition."
+          },
+          "required_artifact_roles": [
+            "command",
+            "stdout",
+            "stderr",
+            "exit_status",
+            "result",
+            "scope",
+            "environment",
+            "authority_state",
+            "manifest"
+          ],
+          "upload_before_enforcement": true,
+          "automatic_retry": false,
+          "special_authority": {
+            "required": false,
+            "granted": false,
+            "consumed": false
+          }
+        }
+      }
+    }
+  ],
+  "expected": {
+    "status": "PASS",
+    "mode": "LATER_IMPLEMENTATION_UNIT",
+    "unit_id": "P7-U1",
+    "gate_records": 1,
+    "errors": []
+  }
+}
