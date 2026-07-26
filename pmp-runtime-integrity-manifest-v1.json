@@ -1,13 +1,13 @@
 {
   "algorithm": "SHA-256",
   "counts": {
-    "executable_records": 703,
+    "executable_records": 704,
     "external_errors": 0,
     "external_records": 3,
     "historical_records": 1,
     "map_declared_covered": 42,
     "map_declared_paths": 42,
-    "runtime_records": 703,
+    "runtime_records": 704,
     "style_records": 0
   },
   "external_records": [
@@ -3459,6 +3459,17 @@
       "sha256_base64": "tA2g1AfbY3RiggiLbxzWgSvdFwtUGZ7DTuhUyYxn3LA=",
       "sha256_hex": "b40da0d407db63746282088b6f1cd6812bdd170b54199ec34ee854c98c67dcb0",
       "sri": "sha256-tA2g1AfbY3RiggiLbxzWgSvdFwtUGZ7DTuhUyYxn3LA="
+    },
+    {
+      "bytes": 16320,
+      "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
+      "execution_class": "EXECUTABLE_SCRIPT",
+      "git_blob_sha": "870c279bd7144841a599cc0668919dcc0b0da7ae",
+      "mime_type": "text/javascript",
+      "path": "pmp-diagnostic-journal-contract-v1.js",
+      "sha256_base64": "P+wf/uERD26nG+K23uEZMz0cgcshMbPD9zZH6j6khhE=",
+      "sha256_hex": "3fec1ffee1110f6ea71be2b6dee119333d1c81cb2131b3c3f73647ea3ea48611",
+      "sri": "sha256-P+wf/uERD26nG+K23uEZMz0cgcshMbPD9zZH6j6khhE="
     },
     {
       "bytes": 7724,
@@ -7814,7 +7825,7 @@
       "rule": "This is the only application bootstrap source excluded from downstream manifest self-enforcement."
     }
   ],
-  "runtime_source_set_sha256": "c22103c975cdda0a58b6190481b5b9d95b4de8c1885b5932ee79c794da50797e",
+  "runtime_source_set_sha256": "7c00716242702457f27577d785df2ef8a2aad4e8fbf0cd479bc59e7be66066bc",
   "source_identity_rule": "Deterministic digest of protected local, historical, external, root-anchor, and policy identities; audit/workflow-only commits do not alter this identity.",
   "type": "PMP_RUNTIME_INTEGRITY_MANIFEST_V1",
   "unlisted_executable_policy": "FAIL_CLOSED",

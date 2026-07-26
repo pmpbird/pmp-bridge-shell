@@ -141,7 +141,7 @@
   },
   "effects": {
     "production_load_chain_changed": false,
-    "runtime_integrity_changed": false,
+    "runtime_integrity_changed": true,
     "diagnostics_ui_changed": false,
     "diagnostic_journal_persisted": false,
     "bug_watch_changed": false,
@@ -166,5 +166,15 @@
     "requires_new_explicit_authority": false,
     "stop_after": false
   },
-  "claim_ceiling": "Pure unreferenced diagnostic journal contract and deterministic isolated tests only. No production loading, journal persistence, Diagnostics UI change, export integration, live observation, app interaction, or Pass 6 closure."
+  "ci_repair": {
+    "trigger": "A-003 correctly rejected the new root executable because it was not yet present in the complete generated runtime set.",
+    "failed_run": 30195746082,
+    "failed_job": 89776860631,
+    "failed_test": "Manifest covers complete generated runtime set",
+    "unlisted_path": "pmp-diagnostic-journal-contract-v1.js",
+    "repair": "Add the exact contract bytes to the deterministic runtime integrity manifest and atomically reseal the manifest, audit seal, and root bootstrap digest without loading the contract.",
+    "production_load_reference_added": false,
+    "special_authority_consumed": false
+  },
+  "claim_ceiling": "Pure unreferenced diagnostic journal contract, deterministic isolated tests, and required exact-source integrity seal only. No production loading, journal persistence, Diagnostics UI change, export integration, live observation, app interaction, or Pass 6 closure."
 }

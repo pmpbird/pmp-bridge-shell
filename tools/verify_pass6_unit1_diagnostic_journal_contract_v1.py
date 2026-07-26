@@ -16,15 +16,16 @@ EXPECTED = {
     "audit/pass6/pass6-diagnostic-journal-unit1-contract-v1.json",
     "audit/pass6/receipts/RECEIPT_P6_U1_CONTRACT_20260726T090200Z_001.json",
     "pmp-diagnostic-journal-contract-v1.js",
+    "pmp-app-current.html",
+    "pmp-runtime-integrity-manifest-v1.json",
+    "audit/a003-manifest-seal.json",
+    "tools/generate_pass6_unit1_integrity_updates_v1.py",
     "tools/test_pass6_unit1_diagnostic_journal_contract_v1.js",
     "tools/verify_pass6_unit1_diagnostic_journal_contract_v1.py",
 }
 PROTECTED = {
-    "pmp-app-current.html",
     "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
     "pmp-current-map-v12.json",
-    "pmp-runtime-integrity-manifest-v1.json",
-    "audit/a003-manifest-seal.json",
     "pmp-diagnostics-owner-v1.js",
     "pmp-diagnostics-bottom-tab-forcer-v1.js",
     "pmp-mount-lifecycle-contract-v1.js",
@@ -71,7 +72,12 @@ def main():
     assert report["next_step"]["id"] == "P6-U2"
     assert report["next_step"]["requires_user_app_check"] is False
     assert report["next_step"]["requires_new_explicit_authority"] is False
-    assert all(value is False for value in report["effects"].values())
+    assert report["effects"]["runtime_integrity_changed"] is True
+    assert all(
+        value is False
+        for key, value in report["effects"].items()
+        if key != "runtime_integrity_changed"
+    )
     assert report["authority"]["special_authority_type"] == "NONE"
     assert report["authority"]["special_authority_consumed"] is False
     assert report["authority"]["retry_authorized"] is False
@@ -103,12 +109,35 @@ def main():
         assert forbidden not in source, forbidden
 
     for loader in (
-        "pmp-app-current.html",
         "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
         "pmp-current-map-v12.json",
         "pmp-diagnostics-owner-v1.js",
     ):
         assert CONTRACT.name not in (ROOT / loader).read_text(), loader
+
+    manifest = json.loads((ROOT / "pmp-runtime-integrity-manifest-v1.json").read_text())
+    records = {row["path"]: row for row in manifest["records"]}
+    assert CONTRACT.name in records
+    assert records[CONTRACT.name]["sha256_hex"] == sha(CONTRACT)
+    seal = json.loads((ROOT / "audit/a003-manifest-seal.json").read_text())
+    manifest_sha = sha(ROOT / "pmp-runtime-integrity-manifest-v1.json")
+    assert seal["manifest_sha256"] == manifest_sha
+    assert seal["sealed_branch"] == "agent/pass6-unit1-diagnostic-journal-contract-v1"
+    assert seal["runtime_source_set_sha256"] == manifest["runtime_source_set_sha256"]
+    bootstrap = (ROOT / "pmp-app-current.html").read_text()
+    assert f"const MANIFEST_SHA256='{manifest_sha}';" in bootstrap
+    assert CONTRACT.name not in bootstrap
+
+    output("python3", "tools/generate_pass6_unit1_integrity_updates_v1.py")
+    assert not output(
+        "git",
+        "diff",
+        "--name-only",
+        "--",
+        "pmp-runtime-integrity-manifest-v1.json",
+        "pmp-app-current.html",
+        "audit/a003-manifest-seal.json",
+    ), "integrity identities are not deterministic"
 
     result = output("node", str(TEST))
     assert result == "PASS: P6-U1 diagnostic journal contract (116 assertions)", result
@@ -121,6 +150,7 @@ def main():
     assert receipt["verification"]["assertions_failed"] == 0
     assert receipt["verification"]["production_load_references"] == 0
     assert receipt["effects"]["production_runtime_changed"] is False
+    assert receipt["effects"]["runtime_integrity_changed"] is True
 
     workflow = (
         ROOT / ".github/workflows/pass6-unit1-diagnostic-journal-contract-v1.yml"
