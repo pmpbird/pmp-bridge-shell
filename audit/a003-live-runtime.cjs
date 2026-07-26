@@ -11,6 +11,7 @@ const BASE = `http://${HOST}:${PORT}/`;
 const RESULT_PATH = process.env.A003_RESULT_PATH || 'a003-live-runtime-results.json';
 const CURRENT = 'pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html';
 const MANIFEST = 'pmp-runtime-integrity-manifest-v1.json';
+const EXPECTED_RECORD_COUNT = JSON.parse(fs.readFileSync(path.join(ROOT, MANIFEST), 'utf8')).records.length;
 const RESOLVER = 'pmp-current-route-resolver-v1.js';
 const INTEGRITY_SW = 'pmp-integrity-service-worker-v1.js';
 const GUARDIAN = 'pmp-route-guardian-current-loader-v22.html';
@@ -188,7 +189,7 @@ let browser;
     record('bootstrap-root-pass', bootReceipt.status === 'PASS' && /^[0-9a-f]{64}$/.test(bootReceipt.manifest_sha256) && /^[0-9a-f]{64}$/.test(bootReceipt.worker_sha256) && /^[0-9a-f]{64}$/.test(bootReceipt.resolver_sha256) && /^[0-9a-f]{64}$/.test(bootReceipt.map_sha256), bootReceipt);
 
     const status = await workerStatus(page);
-    record('integrity-worker-enforced', status.type === 'PMP_RUNTIME_INTEGRITY_STATUS_RESPONSE' && status.receipt?.state === 'ENFORCED' && status.receipt?.version === '1.1.0-a003-runtime-integrity-sri' && status.receipt?.record_count === 697, status);
+    record('integrity-worker-enforced', status.type === 'PMP_RUNTIME_INTEGRITY_STATUS_RESPONSE' && status.receipt?.state === 'ENFORCED' && status.receipt?.version === '1.1.0-a003-runtime-integrity-sri' && status.receipt?.record_count === EXPECTED_RECORD_COUNT, status);
     const registrations = await page.evaluate(async () => (await navigator.serviceWorker.getRegistrations()).map(r => ({scope:r.scope, active:r.active?.scriptURL||null, waiting:r.waiting?.scriptURL||null, installing:r.installing?.scriptURL||null})));
     record('only-integrity-worker-registration', registrations.length === 1 && registrations[0].active?.includes('/' + INTEGRITY_SW), registrations);
 
