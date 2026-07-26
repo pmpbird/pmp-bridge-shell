@@ -1,20 +1,70 @@
 {
   "type": "PMP_PASS4_BOOT_STATUS_STRIP_UNIT4_LIVE_OBSERVATION_RESULT_V2",
   "version": "2.0.0",
-  "status": "AWAITING_AUTHORIZED_OBSERVATION",
+  "status": "FAIL_PRESERVED",
+  "pass": 4,
+  "unit": 4,
+  "substep": "P4-U4O",
   "authorized_base_main_commit": "0bb3a42907ca1a2f864c1a40d1ace3f203cd7e45",
+  "authorized_head_commit": "3281dff29e9f30ba20b1262b71d098fff703493e",
   "authorized_branch": "agent/pass4-unit4-bounded-live-observation-v2",
-  "authorization_consumed": false,
-  "observation_consumed": false,
-  "observation_count": 0,
-  "browser_launch_count": 0,
-  "browser_navigation_count": 0,
+  "pull_request": 152,
+  "workflow_run_id": 30190359765,
+  "authorization_consumed": true,
+  "observation_consumed": true,
+  "observation_count": 1,
+  "browser_launch_count": 1,
+  "browser_navigation_count": 1,
+  "entry": "http://127.0.0.1:4176/pmp-app-current.html",
+  "started_at": "2026-07-26T06:02:59.427Z",
+  "activation": {
+    "frame_url": "http://127.0.0.1:4176/pmp-route-guardian-current-loader-v22.html?fresh=current-entry-A003-20260711A-1785045779722&handoff_role=route_guardian&integrity_manifest_sha256=04dc86587a54760b9136aa625f5e4cbacc45873e484011e2743660ee5af82201&map_version=PMP-CURRENT-1-A003&requested_hash=%23control&route_authority=pmp-current-map-v12.json&route_epoch=A003-20260711A&route_guardian_policy=current_map&source_sha256=67bc3464f32a10e13f5b02b077c2c0337f89e8eea612de7cbc744a8982800f61#control",
+    "locator": "#openBtn",
+    "activation": {
+      "id": "openBtn",
+      "tag_name": "BUTTON",
+      "method": "DOM_ELEMENT_CLICK"
+    }
+  },
+  "frame_roles_observed": [
+    "top",
+    "route_guardian_v22",
+    "reload_owner_v30",
+    "other"
+  ],
+  "frame_url_history": [
+    "http://127.0.0.1:4176/pmp-app-current.html",
+    "http://127.0.0.1:4176/pmp-route-guardian-current-loader-v22.html?fresh=current-entry-A003-20260711A-1785045779722&handoff_role=route_guardian&integrity_manifest_sha256=04dc86587a54760b9136aa625f5e4cbacc45873e484011e2743660ee5af82201&map_version=PMP-CURRENT-1-A003&requested_hash=%23control&route_authority=pmp-current-map-v12.json&route_epoch=A003-20260711A&route_guardian_policy=current_map&source_sha256=67bc3464f32a10e13f5b02b077c2c0337f89e8eea612de7cbc744a8982800f61#control",
+    "http://127.0.0.1:4176/pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html?fresh=rg22-pass3-unit2-consumer-20260725A-pmp-current-reload-owner-v30-a003-integrity-20260711A-1785045780232&handoff_role=current_app&integrity_manifest_sha256=04dc86587a54760b9136aa625f5e4cbacc45873e484011e2743660ee5af82201&map_version=PMP-CURRENT-1-A003&requested_hash=%23control&route_authority=pmp-current-map-v12.json&route_epoch=A003-20260711A&route_guardian_policy=current_map&source_sha256=d397ff8a97ad15afc100a72bda615993273fb49ea4939a1afb871c422a3522c5#control",
+    "about:blank"
+  ],
+  "observed_states": [],
+  "booting_observed": false,
+  "ready_acknowledged_observed": false,
+  "boot_slow_naturally_observed": false,
+  "boot_failure_naturally_observed": false,
+  "boot_status_strip_api_assigned": false,
+  "app_orchestrator_acknowledged": false,
+  "zero_effect_evidence": {
+    "strip_declared_side_effects": null
+  },
+  "console_errors": [],
+  "page_errors": [],
   "production_runtime_changed": false,
   "runtime_integrity_changed": false,
   "persisted_user_data_changed": false,
+  "historical_failure_evidence_changed": false,
   "unit5_started": false,
+  "pass4_complete_claimed": false,
   "pass5_started": false,
   "formal_proof_run": false,
   "pr122_touched": false,
-  "claim_ceiling": "Placeholder only. No live observation or completion is claimed."
+  "retry_authorized": false,
+  "claim_ceiling": "Exactly one newly sealed bounded live startup observation. No retry, formal proof, production activation, persisted-user-data mutation, Unit 5, Pass 5, or broad production correctness is claimed.",
+  "observer_installation": {
+    "installation": "BROWSER_CONTEXT_ADD_INIT_SCRIPT",
+    "applies_to_existing_and_new_frames": true
+  },
+  "failure_reason": "Required nested-frame states, acknowledgement, exact counts, or zero-effect evidence were incomplete.",
+  "finished_at": "2026-07-26T06:03:30.245Z"
 }
