@@ -1,0 +1,74 @@
+{
+  "type": "PMP_PASS4_BOOT_STATUS_STRIP_UNIT4_LIVE_OBSERVATION_HEAD_SEAL_V2",
+  "version": "2.0.0",
+  "status": "SEALED_EXACT_FINAL_PREOBSERVATION_HEAD",
+  "created_at": "2026-07-26T05:55:48Z",
+  "authorized_base_main_commit": "0bb3a42907ca1a2f864c1a40d1ace3f203cd7e45",
+  "authorized_branch": "agent/pass4-unit4-bounded-live-observation-v2",
+  "sealed_parent_commit": "765057da5d0fb15e0d0796904b55a27ccf0cb2b2",
+  "seal_commit_rule": "This file must be the only path changed between sealed_parent_commit and the pull-request head presented to pull_request.opened.",
+  "expected_preobservation_diff": [
+    ".github/workflows/pass4-unit4-bounded-live-observation-v2.yml",
+    "audit/pass4/pass4-boot-status-strip-unit4-live-observation-authorization-v2.json",
+    "audit/pass4/pass4-boot-status-strip-unit4-live-observation-directive-v2.json",
+    "audit/pass4/pass4-boot-status-strip-unit4-live-observation-head-seal-v2.json",
+    "audit/pass4/pass4-boot-status-strip-unit4-live-observation-result-v2.json",
+    "tools/run_pass4_unit4_bounded_live_observation_v2.js",
+    "tools/test_pass4_unit4_bounded_live_observation_v2.js",
+    "tools/verify_pass4_unit4_bounded_live_observation_v2.py"
+  ],
+  "bindings": {
+    ".github/workflows/pass4-unit4-bounded-live-observation-v2.yml": {
+      "sha256": "52e96bff04a900b791fed2d32b536bced13c4fe8ca2ec517098f00b48597f70a",
+      "git_blob_sha": "e0026f2a14eb7f6c7b539bb8478b6730014f4cf0"
+    },
+    "audit/pass4/pass4-boot-status-strip-unit4-live-observation-authorization-v2.json": {
+      "sha256": "27455d3dfe18ebf3d90b0ff93de0ed7aa30f94fc43113d5fd4544e7d656b8124",
+      "git_blob_sha": "23414fa266ba88d15f3ee357f5886a610f72d0ae"
+    },
+    "audit/pass4/pass4-boot-status-strip-unit4-live-observation-directive-v2.json": {
+      "sha256": "ac05d5273c0578ceb61e8af7f55e19d458228f7e83c9f083427322315570aaa6",
+      "git_blob_sha": "810391cc569ef36fc870b25bb06d5cd28b5f1a69"
+    },
+    "audit/pass4/pass4-boot-status-strip-unit4-live-observation-result-v2.json": {
+      "sha256": "39dedfeb1ef5952577a4c2d7a888975299c3c5a00c0109086d830766744ae9ef",
+      "git_blob_sha": "e570d5dbfd3b91c3b4194e43a6b3e03c9e4be025"
+    },
+    "tools/run_pass4_unit4_bounded_live_observation_v2.js": {
+      "sha256": "fac8903475acef45d85eb625bd2e16e9b8ee2a84422a1c4cfbeac429167e2979",
+      "git_blob_sha": "bf9fb817ffc45b01b042566ffff4ac5ebf0bf73f"
+    },
+    "tools/test_pass4_unit4_bounded_live_observation_v2.js": {
+      "sha256": "99938b3e53233ad0aca0de2f1f0cc4802fe883d1513692e0e25c7718733a8db2",
+      "git_blob_sha": "e345e113e110950927184b2eae5f4d4ab33d2394"
+    },
+    "tools/verify_pass4_unit4_bounded_live_observation_v2.py": {
+      "sha256": "21cfc93d498428959a51dc633be5be8777c6399627aef257816981d2ee7cc161",
+      "git_blob_sha": "1d015909fe84bc3b3bc8d0f13f533c92552fc76c"
+    },
+    "tools/pass4_unit4_route_guardian_interaction_boundary_v1.js": {
+      "sha256": "e5ce2c6a82cdeecaceaa6e117b02bbb2cbb9400f32143cc18d8d535dad7b17ca",
+      "git_blob_sha": "edb2bbc80233c7657a377d0469bdc3f924d58e47"
+    },
+    "tools/test_pass4_unit4_route_guardian_interaction_repair_v1.js": {
+      "sha256": "4d2507ba743c71d36934cf0b36e2e7ed70fdc42117be5ff7304cf10e71c5d33a",
+      "git_blob_sha": "c7d890227b2d1675d19ce40ef39c1311de492031"
+    },
+    "tools/verify_pass4_unit4_route_guardian_interaction_repair_v1.py": {
+      "sha256": "f13728dc98df3df8f53ee1ec6df3c20c0c7bb3d3890df87738e6bb932794e27e",
+      "git_blob_sha": "cd0dc8389fb18aefcd94745dc4c16e4f559f23ee"
+    },
+    "audit/pass4/pass4-boot-status-strip-unit4-route-guardian-interaction-repair-readiness-v1.json": {
+      "sha256": "227cf623f044b95a7a2b2b684c4914083070fb6e780205a8c7478d7ceafaa06a",
+      "git_blob_sha": "dcba1118b36df8d4eb206062d7bca82939f2c1e3"
+    }
+  },
+  "authorization_consumed": false,
+  "observation_started": false,
+  "authorized_observation_count": 1,
+  "previously_executed_count": 0,
+  "retry_authorized": false,
+  "formal_proof_authorized": false,
+  "unit5_authorized": false,
+  "pass5_authorized": false
+}
