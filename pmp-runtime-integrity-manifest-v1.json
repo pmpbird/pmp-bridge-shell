@@ -1,13 +1,13 @@
 {
   "algorithm": "SHA-256",
   "counts": {
-    "executable_records": 705,
+    "executable_records": 707,
     "external_errors": 0,
     "external_records": 3,
     "historical_records": 1,
     "map_declared_covered": 42,
     "map_declared_paths": 42,
-    "runtime_records": 705,
+    "runtime_records": 707,
     "style_records": 0
   },
   "external_records": [
@@ -2966,15 +2966,15 @@
       "sri": "sha256-EWrEaZ2mhcvtS9o2eSEyrSII9kUZ0Eu3+X5IiZns7aU="
     },
     {
-      "bytes": 22422,
+      "bytes": 22662,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_DOCUMENT",
-      "git_blob_sha": "1e9abaffd5882e6488baffbb7a2d666ef0b87fc9",
+      "git_blob_sha": "821a100dfe96ead5b2bccf22845d41559c0c5240",
       "mime_type": "text/html",
       "path": "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
-      "sha256_base64": "4aypF7PhwRYONn6DKDJSXccbXKrgV6DehBK+YF6jWzA=",
-      "sha256_hex": "e1aca917b3e1c1160e367e832832525dc71b5caae057a0de8412be605ea35b30",
-      "sri": "sha256-4aypF7PhwRYONn6DKDJSXccbXKrgV6DehBK+YF6jWzA="
+      "sha256_base64": "oorGfuvQBcCM73mx70Fd5nox51gVCe5XmS/V9/4Fn6A=",
+      "sha256_hex": "a28ac67eebd005c08cef79b1ef415de67a31e7581509ee57992fd5f7fe059fa0",
+      "sri": "sha256-oorGfuvQBcCM73mx70Fd5nox51gVCe5XmS/V9/4Fn6A="
     },
     {
       "bytes": 8346,
@@ -3494,15 +3494,15 @@
       "sri": "sha256-bOhUI/8e2KM+SWAg7C3c2IA4W20qHj0msSBBoCMQjqI="
     },
     {
-      "bytes": 28934,
+      "bytes": 31097,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "2961765b2efe28ba91993bd560c2c9c64a20baf4",
+      "git_blob_sha": "033bf4eaf29e5a85dea616619356dcdda0a54832",
       "mime_type": "text/javascript",
       "path": "pmp-diagnostics-owner-v1.js",
-      "sha256_base64": "F5qnMM5k6Lu8GOv4wlmX7Cz9p19VWWO4PSueZjXVsbY=",
-      "sha256_hex": "179aa730ce64e8bbbc18ebf8c25997ec2cfda75f555963b83d2b9e6635d5b1b6",
-      "sri": "sha256-F5qnMM5k6Lu8GOv4wlmX7Cz9p19VWWO4PSueZjXVsbY="
+      "sha256_base64": "lPQlgw737FgQqbGBM/Ltu+qYb1GGO0ZXYJXHxCimOs8=",
+      "sha256_hex": "94f425830ef7ec5810a9b18133f2edbbea986f51863b46576095c7c428a63acf",
+      "sri": "sha256-lPQlgw737FgQqbGBM/Ltu+qYb1GGO0ZXYJXHxCimOs8="
     },
     {
       "bytes": 4693,
@@ -7047,6 +7047,28 @@
       "sri": "sha256-EtqInZDMobyg4wqhV5TCc750sT3l+ZJdmMIN4uh15sE="
     },
     {
+      "bytes": 5060,
+      "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
+      "execution_class": "EXECUTABLE_SCRIPT",
+      "git_blob_sha": "db2c7733200d5b23d8e335d9fde397e88f043087",
+      "mime_type": "text/javascript",
+      "path": "pmp-section-owner-diagnostics-view-v1.js",
+      "sha256_base64": "igLKfWRwGizKIJRaT6XecgmQp5W5OlCVMrd/4FcQPRU=",
+      "sha256_hex": "8a02ca7d64701a2cca20945a4fa5de720990a795b93a509532b77fe057103d15",
+      "sri": "sha256-igLKfWRwGizKIJRaT6XecgmQp5W5OlCVMrd/4FcQPRU="
+    },
+    {
+      "bytes": 11790,
+      "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
+      "execution_class": "EXECUTABLE_SCRIPT",
+      "git_blob_sha": "18aa6beaffa39397834706e7db47561eacaaf026",
+      "mime_type": "text/javascript",
+      "path": "pmp-section-owner-mount-integration-v1.js",
+      "sha256_base64": "pdhS304mdZDQcyKQOq2rBYHMlqy2cDp8xk224wG0NGA=",
+      "sha256_hex": "a5d852df4e267590d07322903aadab0581cc96acb6703a7cc64db6e301b43460",
+      "sri": "sha256-pdhS304mdZDQcyKQOq2rBYHMlqy2cDp8xk224wG0NGA="
+    },
+    {
       "bytes": 4639,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
@@ -7836,7 +7858,7 @@
       "rule": "This is the only application bootstrap source excluded from downstream manifest self-enforcement."
     }
   ],
-  "runtime_source_set_sha256": "e180d79873eabca057319f17e8858e2a8e261686ebaa23254881e10668080918",
+  "runtime_source_set_sha256": "63ecf5f7c2b7d894b7f7fd7bbc9168f7952afcef0c3dea969c862ebc06811e50",
   "source_identity_rule": "Deterministic digest of protected local, historical, external, root-anchor, and policy identities; audit/workflow-only commits do not alter this identity.",
   "type": "PMP_RUNTIME_INTEGRITY_MANIFEST_V1",
   "unlisted_executable_policy": "FAIL_CLOSED",
