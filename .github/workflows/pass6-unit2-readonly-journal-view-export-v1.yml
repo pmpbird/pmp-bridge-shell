@@ -1,0 +1,46 @@
+name: Pass 6 Unit 2 Read-Only Journal View and Export
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - '.github/workflows/pass6-unit1-diagnostic-journal-contract-v1.yml'
+      - '.github/workflows/pass6-unit2-readonly-journal-view-export-v1.yml'
+      - 'audit/a003-manifest-seal.json'
+      - 'audit/pass6/pass6-diagnostic-journal-unit2-readonly-view-export-v1.json'
+      - 'audit/pass6/receipts/RECEIPT_P6_U2_READONLY_VIEW_EXPORT_20260726T093700Z_001.json'
+      - 'pmp-app-current.html'
+      - 'pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html'
+      - 'pmp-diagnostic-journal-readonly-view-export-v1.js'
+      - 'pmp-diagnostics-owner-v1.js'
+      - 'pmp-runtime-integrity-manifest-v1.json'
+      - 'tools/generate_pass6_unit2_integrity_updates_v1.py'
+      - 'tools/test_pass6_unit2_readonly_journal_view_export_v1.js'
+      - 'tools/verify_pass6_unit2_readonly_journal_view_export_v1.py'
+permissions:
+  contents: read
+jobs:
+  readonly-journal-view-export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run prior contract and current view-export matrices
+        run: |
+          node tools/test_pass6_unit1_diagnostic_journal_contract_v1.js
+          node tools/test_pass6_unit2_readonly_journal_view_export_v1.js
+          node tools/test_pass5_unit4_readonly_lifecycle_diagnostics_v1.js
+      - name: Reproduce exact runtime integrity identities
+        run: |
+          python3 tools/generate_pass6_unit2_integrity_updates_v1.py
+          git diff --exit-code -- pmp-runtime-integrity-manifest-v1.json pmp-app-current.html audit/a003-manifest-seal.json
+      - name: Test complete A-003 repository integrity
+        run: python3 tools/test_a003_integrity.py --output /tmp/pass6-unit2-a003-result.json
+      - name: Verify exact bounded P6-U2 scope
+        run: python3 tools/verify_pass6_unit2_readonly_journal_view_export_v1.py "${{ github.event.pull_request.base.sha }}"

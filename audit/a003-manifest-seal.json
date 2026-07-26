@@ -1,14 +1,15 @@
 {
-  "manifest_bytes": 371618,
+  "manifest_bytes": 372155,
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
-  "manifest_sha256": "e4a588c8b72eb9d440e8549955a632fb95378d1c02a30634ed9d8ab6819b75db",
+  "manifest_sha256": "4d9e78b6ab23c6962660524498d7048c3bbf99ea37e600780da431643fd5b648",
   "manifest_version": "20260711A-A003-FINAL",
+  "pass6_context": "Pass 6 Unit 2 production-loads the pure journal contract and a read-only view/export adapter, then adds a Diagnostics card backed by an ephemeral empty journal. The owner has no append or restore path; export is manual, redacted, deterministic, and bounded to 256 entries and 262144 bytes.",
   "repair_id": "A-003",
   "root_self_verifiable": false,
   "root_trust_anchor": "pmp-app-current.html",
   "rule": "The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.",
-  "runtime_source_set_sha256": "7c00716242702457f27577d785df2ef8a2aad4e8fbf0cd479bc59e7be66066bc",
-  "sealed_branch": "main",
+  "runtime_source_set_sha256": "e180d79873eabca057319f17e8858e2a8e261686ebaa23254881e10668080918",
+  "sealed_branch": "agent/pass6-unit2-readonly-journal-view-export-v1",
   "status": "SEALED",
   "type": "PMP_A003_MANIFEST_SEAL_V1"
 }

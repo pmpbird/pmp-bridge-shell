@@ -1,0 +1,147 @@
+{
+  "type": "PMP_PASS6_DIAGNOSTIC_JOURNAL_UNIT2_READONLY_VIEW_EXPORT_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T09:37:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "97d4e7447810de4db8bd62a54e74b738f90f269f",
+  "branch": "agent/pass6-unit2-readonly-journal-view-export-v1",
+  "pass": 6,
+  "unit": "P6-U2",
+  "status": "READONLY_VIEW_EXPORT_PROVEN",
+  "objective": "Add read-only diagnostic journal views and bounded export behind the P6-U1 contract without introducing mutation, route, repair, or persisted-user-data authority.",
+  "changed_paths": [
+    ".github/workflows/pass6-unit1-diagnostic-journal-contract-v1.yml",
+    ".github/workflows/pass6-unit2-readonly-journal-view-export-v1.yml",
+    "audit/a003-manifest-seal.json",
+    "audit/pass6/pass6-diagnostic-journal-unit2-readonly-view-export-v1.json",
+    "audit/pass6/receipts/RECEIPT_P6_U2_READONLY_VIEW_EXPORT_20260726T093700Z_001.json",
+    "pmp-app-current.html",
+    "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+    "pmp-diagnostic-journal-readonly-view-export-v1.js",
+    "pmp-diagnostics-owner-v1.js",
+    "pmp-runtime-integrity-manifest-v1.json",
+    "tools/generate_pass6_unit2_integrity_updates_v1.py",
+    "tools/test_pass6_unit2_readonly_journal_view_export_v1.js",
+    "tools/verify_pass6_unit2_readonly_journal_view_export_v1.py"
+  ],
+  "source_contract": {
+    "path": "pmp-diagnostic-journal-contract-v1.js",
+    "version": "1.0.0",
+    "changed": false,
+    "production_loaded": true,
+    "load_order": [
+      "pmp-diagnostic-journal-contract-v1.js",
+      "pmp-diagnostic-journal-readonly-view-export-v1.js",
+      "pmp-app-orchestrator-v1.js",
+      "pmp-diagnostics-owner-v1.js"
+    ]
+  },
+  "view_export_contract": {
+    "path": "pmp-diagnostic-journal-readonly-view-export-v1.js",
+    "version": "1.0.0",
+    "view_type": "PMP_DIAGNOSTIC_JOURNAL_READONLY_VIEW_V1",
+    "export_type": "PMP_DIAGNOSTIC_JOURNAL_BOUNDED_EXPORT_V1",
+    "visible_entry_default": 64,
+    "visible_entry_maximum": 128,
+    "export_entry_default": 128,
+    "export_entry_maximum": 256,
+    "export_byte_maximum": 262144,
+    "view_source": "validated P6-U1 journal read and diagnostics APIs only",
+    "export_order": "contract sequence order with oldest entries removed first only to satisfy the byte ceiling",
+    "integrity_label": "PMP_STABLE_FINGERPRINT_V1",
+    "cryptographic_digest_claimed": false,
+    "unvalidated_or_unredacted_entry_behavior": "REJECT_FAIL_PASSIVE"
+  },
+  "diagnostics_integration": {
+    "owner": "pmp-diagnostics-owner-v1",
+    "card_id": "diagnostic_journal",
+    "journal_lifetime": "EPHEMERAL_IN_MEMORY_FOR_CURRENT_OWNER_LIFETIME",
+    "initial_state": "EMPTY",
+    "synthetic_events_added": false,
+    "append_path_exposed": false,
+    "restore_path_exposed": false,
+    "snapshot_path_exposed": false,
+    "view_api": "readDiagnosticJournal",
+    "manual_export_api": "exportDiagnosticJournal",
+    "manual_ui_action": "Copy Bounded Journal Export",
+    "journal_storage_key": null,
+    "persisted_user_data_authority": false
+  },
+  "compatibility_boundary": {
+    "p6_u1_zero_limit_behavior_observed": "The P6-U1 journal uses slice(-limit), so limit zero would select the full list.",
+    "p6_u2_safe_handling": "The adapter resolves a validated zero limit to an empty list without calling journal.read.",
+    "source_contract_modified": false,
+    "consumer_exposure": "ZERO"
+  },
+  "privacy_and_authority": {
+    "contract_redaction_required": true,
+    "unvalidated_raw_entries_exposed": false,
+    "persisted_user_data_included_in_export": false,
+    "journal_append_authority": false,
+    "journal_restore_authority": false,
+    "route_authority": false,
+    "repair_authority": false,
+    "network_authority": false,
+    "storage_migration_authority": false,
+    "bank_authority": false,
+    "clipboard_effect": "MANUAL_USER_ACTION_ONLY_AND_BOUNDED_TEXT_ONLY"
+  },
+  "verification": {
+    "assertions_total": 226,
+    "assertions_passed": 226,
+    "assertions_failed": 0,
+    "coverage": [
+      "missing, malformed, throwing, and unredacted journal rejection",
+      "empty, populated, filtered, zero-limit, and truncated read-only views",
+      "fact-kind, trust, and severity counts",
+      "contract redaction preservation",
+      "deterministic bounded export and stable fingerprints",
+      "large-entry byte-bound omission and accounting",
+      "zero append, restore, storage, network, DOM, route, repair, and user-data effects",
+      "production script load order",
+      "Diagnostics Owner card, APIs, ephemeral state, and no journal persistence"
+    ],
+    "view_export_sha256": "449f7cd53967a77dd61582ffe3eb2f727179d2c3053755c07f5089f45226bfd1",
+    "diagnostics_owner_sha256": "179aa730ce64e8bbbc18ebf8c25997ec2cfda75f555963b83d2b9e6635d5b1b6",
+    "current_inner_sha256": "e1aca917b3e1c1160e367e832832525dc71b5caae057a0de8412be605ea35b30",
+    "test_sha256": "7a4fc0bbfc283a5be72852fdc8c2684b244aaa3ff947b7c4a47e812829db943c",
+    "runtime_manifest_records": 705,
+    "runtime_source_set_sha256": "e180d79873eabca057319f17e8858e2a8e261686ebaa23254881e10668080918",
+    "manifest_sha256": "4d9e78b6ab23c6962660524498d7048c3bbf99ea37e600780da431643fd5b648",
+    "result": "PASS"
+  },
+  "ci_routing_repair": {
+    "workflow": ".github/workflows/pass6-unit1-diagnostic-journal-contract-v1.yml",
+    "reason": "The completed P6-U1 exact-scope workflow still routed on shared runtime integrity paths and would replay a historic branch-specific generator against P6-U2.",
+    "repair": "Freeze the completed unit workflow to its immutable audit, receipt, generator, test, and verifier sentinels. Current executable and shared integrity changes remain covered by standing A-003 and the active P6-U2 workflow.",
+    "p6_u1_evidence_modified": false,
+    "standing_a003_coverage_preserved": true
+  },
+  "effects": {
+    "production_load_chain_changed": true,
+    "diagnostics_ui_changed": true,
+    "journal_persisted": false,
+    "synthetic_journal_events_added": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "pr122_touched": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "consumed_observation_prs": [149, 150, 152],
+    "formal_proof_pr": 122,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P6-U3",
+    "objective": "Build the cross-system invariant and regression matrix covering routes, mounts, owners, helpers, banks, readiness, storage, diagnostic evidence, and forbidden effects.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P6-U2 read-only view, bounded export, Diagnostics integration, deterministic proof, and exact runtime integrity binding only. No journal producer integration, persistence, live observation, formal proof, migration, repair, Bank change, or persisted-user-data change."
+}
