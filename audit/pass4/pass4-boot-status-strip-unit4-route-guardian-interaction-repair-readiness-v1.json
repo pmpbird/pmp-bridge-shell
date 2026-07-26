@@ -1,0 +1,95 @@
+{
+  "type": "PMP_PASS4_BOOT_STATUS_STRIP_UNIT4_ROUTE_GUARDIAN_INTERACTION_REPAIR_READINESS_V1",
+  "version": "1.0.0",
+  "status": "DETERMINISTIC_REPAIR_READY",
+  "pass": 4,
+  "unit": 4,
+  "current_substep": "P4-U4R",
+  "base_main_commit": "3c8c2e3813f48a7f4a0c64594aaca1a822ce0753",
+  "contract": "PMP_BOOT_STATUS_STRIP_PASSIVE_CONTRACT_V1",
+  "failure_sources": [
+    {
+      "pull_request": 149,
+      "head_commit": "8a7aa23460079ae589e885a284c505484803c401",
+      "state": "CLOSED_UNMERGED",
+      "receipt_status": "FAIL_PRESERVED",
+      "receipt_sha256": "b97d8973a11efac718e66358202241f31baf25f3aeaa30b96c36ce42075bb37c",
+      "authorization_consumed": true
+    },
+    {
+      "pull_request": 150,
+      "head_commit": "59015cb81aaf8b0074bb4e0b59ee8322e8133833",
+      "state": "CLOSED_UNMERGED",
+      "receipt_status": "FAIL_PRESERVED",
+      "receipt_sha256": "7d589edd59bdbbdb4e762fa1fba288fdc6c818eabdc90e44bbd94f82afb265b2",
+      "authorization_consumed": true
+    }
+  ],
+  "root_cause": {
+    "surface": "pmp-route-guardian-current-loader-v22.html#openBtn",
+    "css_class": "runFlash",
+    "animation": "pmpRunFlash 1s infinite",
+    "geometry_change": "transform scale cycles from 1 to 1.035 to 1",
+    "failed_action": "Playwright locator.click waited for stable geometry and timed out",
+    "production_failure_proven": false
+  },
+  "repair": {
+    "scope": "EVIDENCE_HARNESS_ONLY",
+    "method": "Find exactly one Route Guardian v22 frame, locate exactly one #openBtn, and invoke its DOM click boundary through locator.evaluate(button => button.click()).",
+    "installed_handler_boundary_preserved": true,
+    "launch_function_called_directly": false,
+    "force_click_used": false,
+    "frame_url_assigned": false,
+    "observer_selected_destination": false
+  },
+  "deterministic_proof": {
+    "route_guardian_frame_found": true,
+    "installed_button_handler_invocations": 1,
+    "dom_click_invocations": 1,
+    "playwright_action_click_invocations": 0,
+    "animated_geometry_blocked_activation": false,
+    "browser_navigation_count_before": 1,
+    "browser_navigation_count_after": 1,
+    "observer_selected_destination": null,
+    "observer_installation": "BROWSER_CONTEXT_ADD_INIT_SCRIPT",
+    "observer_snapshot_covers_every_frame": true,
+    "roles_exercised": [
+      "top",
+      "route_guardian_v22",
+      "reload_owner_v30",
+      "current_inner_v30"
+    ]
+  },
+  "exact_scope": [
+    ".github/workflows/pass4-unit4-route-guardian-interaction-repair-readiness-v1.yml",
+    "audit/pass4/pass4-boot-status-strip-unit4-route-guardian-interaction-repair-readiness-v1.json",
+    "tools/pass4_unit4_route_guardian_interaction_boundary_v1.js",
+    "tools/test_pass4_unit4_route_guardian_interaction_repair_v1.js",
+    "tools/verify_pass4_unit4_route_guardian_interaction_repair_v1.py"
+  ],
+  "live_observation_performed": false,
+  "live_observation_count": 0,
+  "new_live_observation_authorized": false,
+  "production_runtime_changed": false,
+  "runtime_integrity_changed": false,
+  "persisted_user_data_changed": false,
+  "historical_failure_evidence_changed": false,
+  "unit4_complete_claimed": false,
+  "unit5_started": false,
+  "pass4_complete_claimed": false,
+  "pass5_started": false,
+  "pr122_touched": false,
+  "next_gate": {
+    "step": "P4-U4A",
+    "status": "BLOCKED_AUTHORITY",
+    "required": "Explicit authorization for one newly sealed bounded live Unit 4 observation.",
+    "must_bind": [
+      "merged deterministic repair commit",
+      "new observation runner head",
+      "exact workflow",
+      "exact one-run safeguard",
+      "unconsumed new authorization"
+    ]
+  },
+  "claim_ceiling": "The Route Guardian interaction boundary is deterministically ready. No live startup state, Unit 4 completion, Pass 4 closure, production correctness, or Pass 5 work is claimed."
+}
