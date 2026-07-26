@@ -10,6 +10,7 @@ from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+BASE_MAIN_COMMIT = "92069614248bce9aea81822ad6df1cf1a030f6a8"
 MAP_PATH = "pmp-current-map-v12.json"
 MANIFEST_PATH = "pmp-runtime-integrity-manifest-v1.json"
 SAFE_AREA_PATH = "pmp-safe-area-surface-fill-v1.js"
@@ -304,9 +305,7 @@ def main() -> None:
     result = {
         "type": "PMP_PASS9_UNIT1_BANK_CONTINUOUS_RUN_INVENTORY_RESULT_V1",
         "version": "1.0.0",
-        "repository_commit": subprocess.check_output(
-            ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
-        ).strip(),
+        "repository_commit": BASE_MAIN_COMMIT,
         "active_chain": {
             "map": MAP_PATH,
             "frames": FRAME_PATHS,

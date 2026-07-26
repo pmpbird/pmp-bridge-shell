@@ -38,7 +38,7 @@
     "historic_fix_002_sha256": "c9c4cfb2451d8a488675cd616768d5f666c3e6e304d5449d4a9f59f44e088f3a",
     "historic_working_point_sha256": "e4e0b2ecee5f6cd422f120fa935dc02418fed8b4b7b31e8cc136d4bc5ff72410",
     "runner": "tools/run_pass9_unit1_bank_continuous_run_inventory_v1.py",
-    "runner_sha256": "c3d83b81a235cba69b4a6e8cf49df8ed92ec6d18b0f3fd93b4d35bca69074938",
+    "runner_sha256": "f63a73376079e029800159d75c6be4efa010caaff1c22bc2b8272afd75d49ded",
     "test": "tools/test_pass9_unit1_bank_continuous_run_inventory_v1.py",
     "test_sha256": "79d36462d403fa63411a080bb32d7e5f5d6c8fba2d6c2b383c7c176846a872b1"
   },
