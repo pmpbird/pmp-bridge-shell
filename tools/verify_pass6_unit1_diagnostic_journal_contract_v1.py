@@ -181,7 +181,7 @@ def main():
         ), stale_trigger
 
     assert not output("git", "status", "--porcelain"), "verification changed the worktree"
-    print("PASS: exact ten-file P6-U1 diagnostic journal contract and integrity seal verified (116/116)")
+    print("PASS: exact eleven-file P6-U1 contract, integrity seal, and CI routing verified (116/116)")
 
 
 if __name__ == "__main__":
