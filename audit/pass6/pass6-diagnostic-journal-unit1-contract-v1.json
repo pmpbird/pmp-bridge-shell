@@ -1,0 +1,189 @@
+{
+  "schema": "PMP_PASS6_DIAGNOSTIC_JOURNAL_UNIT1_CONTRACT_V1",
+  "record_id": "P6-U1-DIAGNOSTIC-JOURNAL-CONTRACT-20260726-001",
+  "created_at": "2026-07-26T09:02:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "9fccfd5200b91d1352739d5f62aadd5d7e075814",
+  "status": "PURE_CONTRACT_PROVEN",
+  "pass": 6,
+  "unit": "P6-U1",
+  "objective": "Define a versioned, privacy-preserving, bounded, fail-passive diagnostic journal contract that keeps observed facts distinct from inferred conclusions.",
+  "readiness_inventory": {
+    "base_repository_records": 1788,
+    "diagnostic_named_paths": 28,
+    "receipt_named_paths": 165,
+    "journal_named_paths": 0,
+    "export_named_paths": 5,
+    "audit_json_paths": 348,
+    "root_diagnostic_javascript_paths": 11,
+    "representative_sources": [
+      {
+        "path": "pmp-diagnostics-owner-v1.js",
+        "observed": [
+          "Aggregates multiple localStorage reports.",
+          "Can copy a full combined report.",
+          "Already consumes the P5 redacted lifecycle view."
+        ],
+        "gap_locked_for_later_units": "No shared journal-level provenance, universal redaction, retention, or export contract."
+      },
+      {
+        "path": "pmp-owner-diagnostics-foundation-v1.js",
+        "observed": [
+          "Writes repeated diagnostic snapshots and receipts to localStorage.",
+          "Carries explicit side-effect declarations."
+        ],
+        "gap_locked_for_later_units": "No shared bounded journal or cross-source fact classification."
+      },
+      {
+        "path": "pmp-bug-catalog-engine-v1.js",
+        "observed": [
+          "Accepts raw Bug Cards and stores normalized catalog state.",
+          "Carries privacy-sensitive flags but no shared field-level redactor."
+        ],
+        "gap_locked_for_later_units": "Bug Watch integration must use a bounded redacted adapter, not raw catalog persistence."
+      },
+      {
+        "path": "pmp-mount-lifecycle-diagnostics-view-v1.js",
+        "observed": [
+          "Provides the strongest existing redacted read-only pattern.",
+          "Bounds operation visibility and hides raw events and details."
+        ],
+        "gap_locked_for_later_units": "Pattern is lifecycle-specific rather than a universal diagnostic journal."
+      },
+      {
+        "path": "control-pack/pmp-file-trust-ledger-v2.json",
+        "observed": [
+          "Defines file action trust levels and a protected-unknown default."
+        ],
+        "gap_locked_for_later_units": "File action trust is not diagnostic fact provenance."
+      }
+    ],
+    "conclusion": "The repository contains extensive receipts and diagnostic reports but no universal journal contract. A pure unreferenced contract is required before any production journal, view, or export integration."
+  },
+  "contract": {
+    "path": "pmp-diagnostic-journal-contract-v1.js",
+    "version": "1.0.0",
+    "entry_type": "PMP_DIAGNOSTIC_JOURNAL_ENTRY_V1",
+    "snapshot_type": "PMP_DIAGNOSTIC_JOURNAL_SNAPSHOT_V1",
+    "fact_kinds": [
+      "OBSERVED_FACT",
+      "DERIVED_FACT",
+      "INFERRED_CONCLUSION"
+    ],
+    "trust_levels": [
+      "OWNER_ATTESTED",
+      "SYSTEM_VERIFIED",
+      "OBSERVER_REPORTED",
+      "INFERRED"
+    ],
+    "severity_levels": [
+      "DEBUG",
+      "INFO",
+      "NOTICE",
+      "WARNING",
+      "ERROR",
+      "CRITICAL"
+    ],
+    "authority_rules": [
+      "An inferred conclusion must carry INFERRED trust and at least one evidence reference.",
+      "An observed or derived fact cannot carry INFERRED trust.",
+      "A derived fact must cite at least one evidence reference.",
+      "The journal records diagnostic facts only and grants no mount, repair, route, storage, or owner authority."
+    ],
+    "redaction_rules": [
+      "Sensitive field names are replaced with a fixed redaction marker.",
+      "Credential-like string values are replaced with the same marker.",
+      "Strings, arrays, object keys, and nesting depth are bounded.",
+      "Snapshots contain only already-redacted entries."
+    ],
+    "retention_rules": [
+      "Capacity is explicit, bounded from 1 through 4096, and defaults to 256.",
+      "Retention is explicit, bounded to 90 days, and defaults to 7 days.",
+      "Expired entries are pruned before accepted appends and after restore.",
+      "Capacity eviction is deterministic oldest-first."
+    ],
+    "ordering_and_restart_rules": [
+      "Recorded timestamps cannot regress.",
+      "Observations beyond bounded future drift are rejected.",
+      "Exact duplicate event identifiers are idempotent.",
+      "Conflicting duplicates are rejected without mutation.",
+      "Snapshots validate identity, configuration, sequence, time, entry fingerprints, and aggregate checksum before restore."
+    ],
+    "fail_passive_rules": [
+      "Invalid append input does not mutate entries.",
+      "Invalid snapshot restore preserves the prior journal.",
+      "Rejections are bounded and expose only code and field.",
+      "The pure contract performs no storage, network, DOM, route, repair, or user-data effect."
+    ]
+  },
+  "verification": {
+    "test": "tools/test_pass6_unit1_diagnostic_journal_contract_v1.js",
+    "assertions_total": 116,
+    "assertions_passed": 116,
+    "assertions_failed": 0,
+    "coverage": [
+      "identity and vocabulary",
+      "observed, derived, and inferred separation",
+      "trust and evidence basis enforcement",
+      "idempotent and conflicting duplicates",
+      "time and schema failures",
+      "field and value redaction",
+      "string, array, key, and depth bounds",
+      "capacity eviction and retention expiration",
+      "snapshot restart and tamper rejection",
+      "configuration and read bounds",
+      "fail-passive mutation checks",
+      "zero storage, network, DOM, route, repair, and user-data effects"
+    ],
+    "contract_sha256": "3fec1ffee1110f6ea71be2b6dee119333d1c81cb2131b3c3f73647ea3ea48611",
+    "test_sha256": "4d19bfecb72dce1fb869c9978592ff0d6b196af04f827edf048df8c8c156b8a4",
+    "result": "PASS"
+  },
+  "effects": {
+    "production_load_chain_changed": false,
+    "runtime_integrity_changed": true,
+    "diagnostics_ui_changed": false,
+    "diagnostic_journal_persisted": false,
+    "bug_watch_changed": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "pr122_touched": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "consumed_observation_prs": [149, 150, 152],
+    "formal_proof_pr": 122,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P6-U2",
+    "objective": "Add read-only diagnostic journal views and bounded export behind the pure contract without introducing mutation, route, repair, or persisted-user-data authority.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  },
+  "ci_repair": {
+    "trigger": "A-003 correctly rejected the new root executable because it was not yet present in the complete generated runtime set.",
+    "failed_run": 30195746082,
+    "failed_job": 89776860631,
+    "failed_test": "Manifest covers complete generated runtime set",
+    "unlisted_path": "pmp-diagnostic-journal-contract-v1.js",
+    "repair": "Add the exact contract bytes to the deterministic runtime integrity manifest and atomically reseal the manifest, audit seal, and root bootstrap digest without loading the contract.",
+    "production_load_reference_added": false,
+    "special_authority_consumed": false
+  },
+  "stale_workflow_routing_repair": {
+    "failed_run": 30195907235,
+    "failed_job": 89777295146,
+    "workflow": "Pass 5 Unit 4 Read-Only Lifecycle Diagnostics",
+    "cause": "The completed exact-scope P5-U4 workflow was still routed by shared manifest, bootstrap, and integrity-seal paths, so it reran its historic generator against the newer P6 seal.",
+    "repair": "Route the immutable completed-unit workflow only from its own workflow, audit record, receipt, generator, test, and verifier sentinels. Shared production and integrity files remain covered by standing A-003 and current pass checks.",
+    "later_diagnostics_changes_hidden": false,
+    "standing_a003_checks_preserved": true
+  },
+  "claim_ceiling": "Pure unreferenced diagnostic journal contract, deterministic isolated tests, and required exact-source integrity seal only. No production loading, journal persistence, Diagnostics UI change, export integration, live observation, app interaction, or Pass 6 closure."
+}
