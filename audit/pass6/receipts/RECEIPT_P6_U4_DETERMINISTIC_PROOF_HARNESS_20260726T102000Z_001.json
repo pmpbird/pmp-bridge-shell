@@ -1,0 +1,58 @@
+{
+  "type": "PMP_PASS6_UNIT4_DETERMINISTIC_PROOF_HARNESS_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P6_U4_DETERMINISTIC_PROOF_HARNESS_20260726T102000Z_001",
+  "created_at": "2026-07-26T10:20:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "8720d27964d715bcd3f1b29289ab8381b61e0711",
+  "branch": "agent/pass6-unit4-deterministic-proof-harness-v1",
+  "pass": 6,
+  "unit": "P6-U4",
+  "status": "DETERMINISTIC_PROOF_HARNESS_PROVEN",
+  "evidence": "audit/pass6/pass6-deterministic-browser-frame-event-unit4-proof-v1.json",
+  "fixture": "audit/pass6/fixtures/pass6-unit4-deterministic-proof-harness-positive-v1.json",
+  "changed_paths": [
+    ".github/workflows/pass6-unit3-cross-system-invariant-matrix-v1.yml",
+    ".github/workflows/pass6-unit4-deterministic-proof-harness-v1.yml",
+    "audit/pass6/fixtures/pass6-unit4-deterministic-proof-harness-positive-v1.json",
+    "audit/pass6/pass6-deterministic-browser-frame-event-unit4-proof-v1.json",
+    "audit/pass6/receipts/RECEIPT_P6_U4_DETERMINISTIC_PROOF_HARNESS_20260726T102000Z_001.json",
+    "tools/pass6_deterministic_browser_frame_event_harness_v1.js",
+    "tools/run_pass6_unit4_deterministic_proof_harness_v1.js",
+    "tools/test_pass6_unit4_deterministic_proof_harness_v1.js",
+    "tools/verify_pass6_unit4_deterministic_proof_harness_v1.py"
+  ],
+  "coverage": {
+    "catalog_invariants_consumed": 20,
+    "subsystems_covered": 9,
+    "deterministic_events": 8,
+    "frames_observed": 2,
+    "meta_regression_assertions": 372,
+    "forbidden_effect_classes": 8
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false
+  },
+  "recovery": {
+    "rollback_available": true,
+    "rollback_reference": "The repository-only harness, fixture, tests, evidence, and CI route can be reverted without runtime or data rollback.",
+    "evidence_preserved": true
+  },
+  "next_safe_move": {
+    "step_id": "P6-U5",
+    "instruction": "Build CI lanes, exact-scope verification, flake policy, and durable artifact preservation.",
+    "requires_explicit_authority": false,
+    "requires_user_app_check": false,
+    "stop_before": "Only a genuinely required hands-on app reproduction or verification in a later unit."
+  }
+}

@@ -3,8 +3,6 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
     paths:
-      - '.github/workflows/pass6-unit2-readonly-journal-view-export-v1.yml'
-      - '.github/workflows/pass6-unit3-cross-system-invariant-matrix-v1.yml'
       - 'audit/pass6/pass6-cross-system-invariant-catalog-v1.json'
       - 'audit/pass6/pass6-cross-system-invariant-unit3-matrix-v1.json'
       - 'audit/pass6/receipts/RECEIPT_P6_U3_CROSS_SYSTEM_MATRIX_20260726T095500Z_001.json'

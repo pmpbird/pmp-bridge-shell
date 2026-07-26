@@ -1,0 +1,113 @@
+{
+  "type": "PMP_PASS6_DETERMINISTIC_BROWSER_FRAME_EVENT_UNIT4_PROOF_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T10:20:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "8720d27964d715bcd3f1b29289ab8381b61e0711",
+  "branch": "agent/pass6-unit4-deterministic-proof-harness-v1",
+  "pass": 6,
+  "unit": "P6-U4",
+  "status": "DETERMINISTIC_PROOF_HARNESS_PROVEN",
+  "objective": "Build a reusable deterministic browser, frame, and event proof harness that consumes the invariant catalog and preserves exact failure evidence.",
+  "changed_paths": [
+    ".github/workflows/pass6-unit3-cross-system-invariant-matrix-v1.yml",
+    ".github/workflows/pass6-unit4-deterministic-proof-harness-v1.yml",
+    "audit/pass6/fixtures/pass6-unit4-deterministic-proof-harness-positive-v1.json",
+    "audit/pass6/pass6-deterministic-browser-frame-event-unit4-proof-v1.json",
+    "audit/pass6/receipts/RECEIPT_P6_U4_DETERMINISTIC_PROOF_HARNESS_20260726T102000Z_001.json",
+    "tools/pass6_deterministic_browser_frame_event_harness_v1.js",
+    "tools/run_pass6_unit4_deterministic_proof_harness_v1.js",
+    "tools/test_pass6_unit4_deterministic_proof_harness_v1.js",
+    "tools/verify_pass6_unit4_deterministic_proof_harness_v1.py"
+  ],
+  "harness": {
+    "path": "tools/pass6_deterministic_browser_frame_event_harness_v1.js",
+    "type": "PMP_PASS6_DETERMINISTIC_BROWSER_FRAME_EVENT_HARNESS_V1",
+    "version": "1.0.0",
+    "adapter_contract": "PMP_PASS6_DETERMINISTIC_BROWSER_ADAPTER_V1",
+    "deterministic_clock": "MONOTONIC_INTEGER_TICKS",
+    "sha256": "a9e296008a091cdb9ee59370e8c1626f4b1ffe626ad64fdf16078460e458e5c5"
+  },
+  "inputs": {
+    "catalog": "audit/pass6/pass6-cross-system-invariant-catalog-v1.json",
+    "catalog_sha256": "e8e89d3d50dc88ef2809d5bca4ef77e988d19bb196ebc58393c7b1398ac302a0",
+    "fixture": "audit/pass6/fixtures/pass6-unit4-deterministic-proof-harness-positive-v1.json",
+    "fixture_sha256": "8479c6d9ede8ced4cbc6a0c34af8a8e14ffb07232f5fd5555169accb9890b608",
+    "runner": "tools/run_pass6_unit4_deterministic_proof_harness_v1.js",
+    "runner_sha256": "924134afd828330f73cc36b7b7a4044b16236c2dc718a99f90dbb510698621e6",
+    "test": "tools/test_pass6_unit4_deterministic_proof_harness_v1.js",
+    "test_sha256": "49aad9c3d9d05225a57f00fbe58d543446ba4624fe019836cd65ae8097c3eb1a"
+  },
+  "baseline_proof": {
+    "status": "PASS",
+    "invariants_required": 20,
+    "invariants_passed": 20,
+    "subsystems_covered": 9,
+    "events_captured": 8,
+    "frames_observed": 2,
+    "final_tick": 8,
+    "teardown_calls": 1,
+    "result_sha256": "b8768a74fed4c4990c50de3582371794f1ec75bce52c5b0bfebb011730b8a409",
+    "repeated_evaluation_identical": true
+  },
+  "verification": {
+    "assertions_total": 372,
+    "assertions_passed": 372,
+    "assertions_failed": 0,
+    "catalog_identity_and_completeness": "PASS",
+    "frame_identity_generation_and_lifecycle": "PASS",
+    "event_order_and_hashing": "PASS",
+    "invariant_evidence_binding": "PASS",
+    "timeout_and_teardown": "PASS",
+    "failure_and_secondary_failure_preservation": "PASS",
+    "forbidden_effect_rejection": "PASS",
+    "tamper_rejection": "PASS"
+  },
+  "failure_policy": {
+    "missing_catalog_invariant": "FAIL",
+    "missing_required_event": "FAIL",
+    "missing_invariant_assertion": "FAIL",
+    "missing_or_unbound_evidence": "FAIL",
+    "duplicate_or_stale_frame": "FAIL",
+    "deterministic_timeout": "FAIL",
+    "incomplete_teardown": "FAIL",
+    "forbidden_effect": "FAIL",
+    "primary_failure_overwritten_by_teardown": false,
+    "silent_pass_path": false
+  },
+  "ci_routing_repair": {
+    "workflow": ".github/workflows/pass6-unit3-cross-system-invariant-matrix-v1.yml",
+    "repair": "Freeze completed P6-U3 routing to its immutable catalog, evidence, receipt, runner, test, and verifier sentinels.",
+    "p6_u3_evidence_modified": false,
+    "standing_a003_coverage_preserved": true
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "consumed_observation_prs": [149, 150, 152],
+    "formal_proof_pr": 122,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P6-U5",
+    "objective": "Build CI lanes, exact-scope verification, flake policy, and durable artifact preservation around the deterministic proof infrastructure.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P6-U4 reusable deterministic harness contract, synthetic adapter proof, and exact failure evidence only. No live browser observation, production integration, later-pass completion, repair, migration, formal proof, or persisted-user-data change."
+}
