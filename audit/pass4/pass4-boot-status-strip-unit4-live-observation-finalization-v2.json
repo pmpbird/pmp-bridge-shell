@@ -1,0 +1,98 @@
+{
+  "type": "PMP_PASS4_BOOT_STATUS_STRIP_UNIT4_LIVE_OBSERVATION_FINALIZATION_V2",
+  "version": "2.0.0",
+  "status": "FAIL_PRESERVED",
+  "created_at": "2026-07-26T06:06:25Z",
+  "project": "App Orchestrator",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "pass": 4,
+  "unit": 4,
+  "substep": "P4-U4O",
+  "authorized_base_main_commit": "0bb3a42907ca1a2f864c1a40d1ace3f203cd7e45",
+  "sealed_preobservation_head_commit": "3281dff29e9f30ba20b1262b71d098fff703493e",
+  "observation_result_commit": "1fc935df0161c3612ecde4350053ee28ba37ddbc",
+  "branch": "agent/pass4-unit4-bounded-live-observation-v2",
+  "pull_request": 152,
+  "pull_request_disposition": "CLOSE_UNMERGED_AFTER_PRESERVATION",
+  "workflow_run_id": 30190359765,
+  "workflow_run_url": "https://github.com/pmpbird/pmp-bridge-shell/actions/runs/30190359765",
+  "workflow_job_id": 89762411211,
+  "workflow_conclusion": "failure",
+  "observation_status": "FAIL_PRESERVED",
+  "authorization_consumed": true,
+  "observation_consumed": true,
+  "observation_count": 1,
+  "retry_authorized": false,
+  "result_receipt": {
+    "path": "audit/pass4/pass4-boot-status-strip-unit4-live-observation-result-v2.json",
+    "sha256": "e1c3d5b8c46e4a6d86ded92e01087b889157b8b4ea9e0b6abdda6d07a658e85a",
+    "source": "Exact bytes recovered from GitHub Actions artifact 8628355565 and independently matched to the workflow log."
+  },
+  "github_artifact": {
+    "id": 8628355565,
+    "name": "pass4-unit4-bounded-live-observation-v2",
+    "size_in_bytes": 1728,
+    "archive_sha256": "7c4f1850cad91a69ef36a2d792d2fb7fa946f601c32bc6301e80cb108893baaa",
+    "crc_verified": true,
+    "result_entry_sha256_verified": true,
+    "expires_at": "2026-10-24T06:02:08Z"
+  },
+  "truthful_observations": {
+    "fresh_exact_head_static_preflight": "PASS",
+    "deterministic_route_guardian_interaction_repair": "PASS",
+    "route_guardian_dom_click_activation": "PASS",
+    "route_guardian_frame_observed": true,
+    "reload_owner_v30_frame_observed": true,
+    "reload_owner_child_frame_url": "about:blank",
+    "current_inner_v30_frame_observed": false,
+    "boot_status_strip_states_observed": [],
+    "browser_launch_count": 1,
+    "browser_navigation_count": 1
+  },
+  "failure_classification": {
+    "category": "EXPECTED_MANUAL_RUNTIME_PLATFORM_RELEASE_GATE_REACHED",
+    "production_boot_status_strip_failure_proven": false,
+    "interaction_repair_failure_proven": false,
+    "diagnosis": "The reload owner delegates its continuation to PMPPass75ReloadRuntimePlatformGateV1.run(afterRuntime). The installed gate certifies its systems but intentionally invokes afterRuntime only when the user presses its Run App Orchestrator button. The automated bounded observer did not impersonate that hands-on product action, so the reload-owner child remained about:blank and the current-inner frame never loaded.",
+    "reload_owner_source": {
+      "path": "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html",
+      "sha256": "d397ff8a97ad15afc100a72bda615993273fb49ea4939a1afb871c422a3522c5",
+      "git_blob_sha": "ffb45fd17cd407bf22ab2c3fb911bb3e9def0754"
+    },
+    "manual_gate_source": {
+      "path": "pmp-pass75-reload-runtime-platform-gate-v1.js",
+      "version": "1.3.0-manual-release-startup-order",
+      "sha256": "203e1d0096f517e66b06f0534d991ab54555f936a5d2be42d9e8b2fa57fd5042",
+      "git_blob_sha": "37c6d75d2b4ef478ceaa690a24dc67bec89bbf08",
+      "source_rule": "manual release only: App Orchestrator remains hidden until button press"
+    }
+  },
+  "hands_on_app_check": {
+    "required": true,
+    "reason": "The roadmap has reached a real product interaction boundary that deliberately waits for the user.",
+    "check": [
+      "Open the normal PMP app.",
+      "On the dark Runtime Platform screen, wait until Runtime Certification is ready and the green Run App Orchestrator button appears.",
+      "Press Run App Orchestrator exactly once.",
+      "Confirm the app advances past Restoring PMP Home instead of remaining on the runtime screen.",
+      "Report whether the Boot Status Strip appears, changes from working/BOOTING to ready, and then the PMP app opens normally."
+    ],
+    "do_not_do": [
+      "Do not press the button repeatedly.",
+      "Do not intentionally trigger failure or slow states.",
+      "Do not alter or clear PMP data."
+    ]
+  },
+  "preservation": {
+    "production_runtime_changed": false,
+    "runtime_integrity_changed": false,
+    "persisted_user_data_changed": false,
+    "historical_failure_evidence_changed": false,
+    "formal_proof_run": false,
+    "pr122_touched": false,
+    "unit5_started": false,
+    "pass5_started": false
+  },
+  "exact_next_safe_move": "Stop for the user's hands-on Runtime Platform release check. Do not rerun this consumed observation. After the user reports the result, determine whether a newly authorized observation is necessary or whether the hands-on evidence truthfully closes the product interaction gate.",
+  "claim_ceiling": "The exactly-once observation and its failure evidence are preserved. The deterministic Route Guardian repair passed and the manual Runtime Platform release boundary was reached. Unit 4 and Pass 4 are not complete."
+}
