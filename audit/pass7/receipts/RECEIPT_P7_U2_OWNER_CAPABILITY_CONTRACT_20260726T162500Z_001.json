@@ -1,0 +1,51 @@
+{
+  "type": "PMP_PASS7_UNIT2_OWNER_CAPABILITY_CONTRACT_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P7_U2_OWNER_CAPABILITY_CONTRACT_20260726T162500Z_001",
+  "created_at": "2026-07-26T16:25:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "be269c98b703a0a5b1695c9e6f7bc5b333ab1ac7",
+  "branch": "agent/pass7-unit2-owner-capability-contract-v1",
+  "pass": 7,
+  "unit": "P7-U2",
+  "status": "SECTION_OWNER_CAPABILITY_CONTRACT_PROVEN",
+  "evidence": "audit/pass7/pass7-section-owner-unit2-capability-contract-v1.json",
+  "changed_paths": [
+    ".github/workflows/pass7-unit2-owner-capability-contract-v1.yml",
+    "audit/pass7/pass7-section-owner-unit2-capability-contract-v1.json",
+    "audit/pass7/receipts/RECEIPT_P7_U2_OWNER_CAPABILITY_CONTRACT_20260726T162500Z_001.json",
+    "tools/run_pass7_unit2_owner_capability_contract_v1.py",
+    "tools/test_pass7_unit2_owner_capability_contract_v1.py",
+    "tools/verify_pass7_unit2_owner_capability_contract_v1.py"
+  ],
+  "coverage": {
+    "owners_contract_bound": 8,
+    "sections_isolated": 8,
+    "delegation_maximum_depth": 2,
+    "fault_cases": 15,
+    "assertions": 115,
+    "artifact_roles": 9
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "bank_mutations": false,
+    "helper_ownership_changes": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false
+  },
+  "next_safe_move": {
+    "step_id": "P7-U3",
+    "instruction": "Define versioned owner-registration and growth-awareness events.",
+    "requires_explicit_authority": false,
+    "requires_user_app_check": false,
+    "stop_before": "Only a genuinely required hands-on app reproduction or verification in a later unit."
+  }
+}

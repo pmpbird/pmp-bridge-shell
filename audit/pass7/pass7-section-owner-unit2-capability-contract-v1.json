@@ -1,0 +1,326 @@
+{
+  "type": "PMP_PASS7_SECTION_OWNER_UNIT2_CAPABILITY_CONTRACT_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T16:25:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "be269c98b703a0a5b1695c9e6f7bc5b333ab1ac7",
+  "branch": "agent/pass7-unit2-owner-capability-contract-v1",
+  "pass": 7,
+  "unit": "P7-U2",
+  "unit_id": "P7-U2",
+  "status": "SECTION_OWNER_CAPABILITY_CONTRACT_PROVEN",
+  "objective": "Define explicit Section Owner capabilities, bounded delegation, isolation, revocation, and fail-closed failure behavior without activating production behavior.",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass7-unit2-owner-capability-contract-v1.yml",
+      "audit/pass7/pass7-section-owner-unit2-capability-contract-v1.json",
+      "audit/pass7/receipts/RECEIPT_P7_U2_OWNER_CAPABILITY_CONTRACT_20260726T162500Z_001.json",
+      "tools/run_pass7_unit2_owner_capability_contract_v1.py",
+      "tools/test_pass7_unit2_owner_capability_contract_v1.py",
+      "tools/verify_pass7_unit2_owner_capability_contract_v1.py"
+    ],
+    "implementation_paths": []
+  },
+  "inputs": {
+    "unit1_inventory": "audit/pass7/pass7-section-owner-unit1-inventory-v1.json",
+    "unit1_inventory_sha256": "c895188d438b457f3625d1f453a16acb4723dd6c563dfa596f54f610d9172cba",
+    "section_owner_registry": "pmp-section-owner-registry-v1.js",
+    "section_owner_registry_sha256": "9944464a1ac464b508b88bc16e0c929f7567e972a990c5e3cbb7c1b989e3d01a",
+    "actor_authority_policy": "pmp-actor-authority-policy-v1.json",
+    "actor_authority_policy_sha256": "97baf15fb840b6af050ed5bdb5dd963fca857a129343295d470eed65c08c17dc",
+    "cross_system_invariant_catalog": "audit/pass6/pass6-cross-system-invariant-catalog-v1.json",
+    "cross_system_invariant_catalog_sha256": "e8e89d3d50dc88ef2809d5bca4ef77e988d19bb196ebc58393c7b1398ac302a0",
+    "runner": "tools/run_pass7_unit2_owner_capability_contract_v1.py",
+    "runner_sha256": "f7a251482adf1a3a07350f7e7f6833fe3f35ad5559a4a677866b208cdce38524",
+    "test": "tools/test_pass7_unit2_owner_capability_contract_v1.py",
+    "test_sha256": "7a1792d0262f740d9174574a27254338f1679edc502d2ca1d9c04869020c4047"
+  },
+  "capability_contract": {
+    "contract_version": "PMP_SECTION_OWNER_CAPABILITY_CONTRACT_V1",
+    "model": "EXPLICIT_CAPABILITY_FAIL_CLOSED",
+    "root_grant_authority": "app_orchestrator_owner",
+    "required_capability_fields": [
+      "contract_version",
+      "capability_id",
+      "owner_id",
+      "section_id",
+      "subject_id",
+      "granted_by",
+      "actions",
+      "resources",
+      "issued_at",
+      "expires_at",
+      "delegable",
+      "delegation_depth",
+      "parent_capability_id",
+      "revocation_epoch"
+    ],
+    "owners": {
+      "app_orchestrator_owner": {
+        "section_id": "app_orchestrator",
+        "allowed_actions": ["observe_status", "publish_status"],
+        "allowed_resources": ["section:app_orchestrator"]
+      },
+      "reload_current_owner": {
+        "section_id": "current_reload",
+        "allowed_actions": ["observe_reload", "request_reload"],
+        "allowed_resources": ["section:current_reload"]
+      },
+      "mount_registry_owner": {
+        "section_id": "mount_registry",
+        "allowed_actions": ["observe_mount", "request_mount"],
+        "allowed_resources": ["section:mount_registry"]
+      },
+      "bank_screen_owner": {
+        "section_id": "bank",
+        "allowed_actions": ["read_bank", "render_bank_detail"],
+        "allowed_resources": ["section:bank"]
+      },
+      "continuous_run_level_owner": {
+        "section_id": "continuous_run",
+        "allowed_actions": ["read_run", "render_level_status"],
+        "allowed_resources": ["section:continuous_run"]
+      },
+      "resident_30b_owner": {
+        "section_id": "resident_30b",
+        "allowed_actions": ["read_resident", "render_resident"],
+        "allowed_resources": ["section:resident_30b"]
+      },
+      "source_gate_owner": {
+        "section_id": "source_gate",
+        "allowed_actions": ["import_reference", "inspect_source"],
+        "allowed_resources": ["section:source_gate"]
+      },
+      "diagnostics_owner": {
+        "section_id": "diagnostics",
+        "allowed_actions": ["publish_diagnostic", "read_diagnostics"],
+        "allowed_resources": ["section:diagnostics"]
+      }
+    },
+    "delegation": {
+      "maximum_depth": 2,
+      "same_owner_required": true,
+      "same_section_required": true,
+      "action_subset_required": true,
+      "resource_subset_required": true,
+      "expiry_may_not_expand": true,
+      "authority_expansion": "FORBIDDEN",
+      "revocation": "MONOTONIC_CASCADING",
+      "stale_epoch": "REJECT_BEFORE_SIDE_EFFECT"
+    },
+    "globally_forbidden_actions": [
+      "route_mutation",
+      "bank_mutation",
+      "helper_ownership",
+      "other_section_mutation",
+      "storage_migration",
+      "persisted_user_data_write",
+      "production_activation",
+      "ownership_takeover"
+    ],
+    "unresolved_owner_policy": "NO_CAPABILITY_UNTIL_EXPLICITLY_RESOLVED",
+    "unknown_owner_policy": "REJECT_BEFORE_SIDE_EFFECT",
+    "duplicate_owner_policy": "FAIL_CLOSED_AND_DIAGNOSE",
+    "stale_capability_policy": "REJECT_BEFORE_SIDE_EFFECT",
+    "operation_identity_policy": "UNIQUE_OPERATION_ID_REQUIRED",
+    "bank_continuous_run_policy": "SEPARATE_OWNERS_AND_SECTIONS_NO_CROSS_DELEGATION_PASS9_REMAINS_REQUIRED",
+    "failure_codes": [
+      "REJECTED_MALFORMED",
+      "REJECTED_OPERATION_ID",
+      "REJECTED_TIME",
+      "REJECTED_EVENT_TYPE",
+      "REJECTED_CAPABILITY_SHAPE",
+      "REJECTED_CONTRACT_VERSION",
+      "REJECTED_CAPABILITY_IDENTITY",
+      "REJECTED_EMPTY_ACTIONS",
+      "REJECTED_EMPTY_RESOURCES",
+      "REJECTED_DUPLICATE_ACTION",
+      "REJECTED_DUPLICATE_RESOURCE",
+      "REJECTED_ACTION",
+      "REJECTED_RESOURCE",
+      "REJECTED_EXPIRY",
+      "REJECTED_DELEGATION_FLAG",
+      "REJECTED_DELEGATION_DEPTH",
+      "REJECTED_PARENT_ID",
+      "REJECTED_REVOCATION_EPOCH",
+      "REJECTED_DUPLICATE_OPERATION",
+      "REJECTED_DUPLICATE_CAPABILITY",
+      "REJECTED_UNDECLARED_OWNER",
+      "REJECTED_OWNER_SECTION_MISMATCH",
+      "REJECTED_ACTION_OUTSIDE_OWNER",
+      "REJECTED_RESOURCE_OUTSIDE_SECTION",
+      "REJECTED_GLOBALLY_FORBIDDEN_ACTION",
+      "REJECTED_ROOT_GRANT_SHAPE",
+      "REJECTED_ROOT_GRANT_AUTHORITY",
+      "REJECTED_ROOT_SUBJECT",
+      "REJECTED_PARENT_MISSING",
+      "REJECTED_PARENT_REVOKED",
+      "REJECTED_PARENT_NOT_DELEGABLE",
+      "REJECTED_DELEGATOR_AUTHORITY",
+      "REJECTED_CROSS_OWNER_DELEGATION",
+      "REJECTED_DELEGATED_ACTION_EXPANSION",
+      "REJECTED_DELEGATED_RESOURCE_EXPANSION",
+      "REJECTED_DELEGATED_EXPIRY_EXPANSION",
+      "REJECTED_CAPABILITY_MISSING",
+      "REJECTED_REVOCATION_AUTHORITY",
+      "REJECTED_STALE_REVOCATION",
+      "REJECTED_CAPABILITY_REVOKED",
+      "REJECTED_SUBJECT_MISMATCH",
+      "REJECTED_NOT_YET_VALID",
+      "REJECTED_EXPIRED",
+      "REJECTED_ACTION_NOT_GRANTED",
+      "REJECTED_RESOURCE_NOT_GRANTED"
+    ],
+    "failure_effect": "DENY_NO_RUNTIME_OR_EXTERNAL_SIDE_EFFECT_AND_EMIT_OPERATION_CODE"
+  },
+  "contract_verification": {
+    "owners_contract_bound": 8,
+    "sections_isolated": 8,
+    "positive_events": 5,
+    "positive_accepted": 4,
+    "revocation_cascade_members": 2,
+    "denial_scenarios": 4,
+    "result_sha256": "b32c25e82cdb1f8b35ab0b7cd16f8abd8dd5761688a30c7cbbd76d916a1377ad"
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "static_contract",
+    "diagnostic_matrix_update": {
+      "status": "CONFIRMED_UNCHANGED",
+      "applicable_matrix": "audit/pass6/pass6-cross-system-invariant-catalog-v1.json",
+      "rationale": "P6-INV-OWNER-001 and P6-INV-OWNER-002 already require fail-closed capability and section isolation; this unit supplies the versioned P7 contract and deterministic evidence without changing the permanent matrix."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass7/pass7-section-owner-unit2-capability-contract-v1.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass7_unit2_owner_capability_contract_v1.py"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass7_unit2_owner_capability_contract_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass7/receipts/RECEIPT_P7_U2_OWNER_CAPABILITY_CONTRACT_20260726T162500Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The locked P7-U1 inventory declares eight owner identities mapped to eight distinct sections.",
+        "evidence_paths": [
+          "audit/pass7/pass7-section-owner-unit1-inventory-v1.json"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The permanent invariant catalog already requires unknown actors and cross-section authority to fail closed.",
+        "evidence_paths": [
+          "audit/pass6/pass6-cross-system-invariant-catalog-v1.json"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The current section registry states that route mutation, storage migration, Bank rebuild, and ownership takeover are outside its rule.",
+        "evidence_paths": [
+          "pmp-section-owner-registry-v1.js"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "Explicit expiring capabilities with subset-only delegation are required before owner registration can safely become dynamic.",
+        "basis_evidence_paths": [
+          "audit/pass7/pass7-section-owner-unit1-inventory-v1.json",
+          "pmp-actor-authority-policy-v1.json"
+        ]
+      },
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "Bank and Continuous Run must remain separate owner and section boundaries until Pass 9 supplies the substantive split.",
+        "basis_evidence_paths": [
+          "audit/pass7/pass7-section-owner-unit1-inventory-v1.json",
+          "audit/pass7/pass7-section-owner-unit2-capability-contract-v1.json"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "malformed capability",
+        "unknown owner",
+        "owner-section mismatch",
+        "cross-section resource",
+        "globally forbidden action",
+        "wrong root grantor",
+        "cross-owner delegation",
+        "delegated authority expansion",
+        "excessive delegation depth",
+        "duplicate capability",
+        "duplicate operation",
+        "expired capability",
+        "stale revocation",
+        "unauthorized revocation",
+        "cascading revocation denial"
+      ]
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "verification": {
+    "assertions_total": 115,
+    "assertions_passed": 115,
+    "assertions_failed": 0,
+    "exact_scope": "PASS",
+    "source_hashes": "PASS",
+    "capability_schema": "PASS",
+    "delegation_isolation": "PASS",
+    "revocation_and_failure_contract": "PASS",
+    "permanent_gate_binding": "PASS"
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "bank_mutations": false,
+    "helper_ownership_changes": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P7-U3",
+    "objective": "Define versioned owner-registration and growth-awareness events.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P7-U2 pure static contract only. No owner registration, activation, production delegation, route change, Bank or Continuous Run repair, storage migration, live observation, formal proof, or persisted-user-data change."
+}
