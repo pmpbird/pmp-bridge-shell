@@ -1,0 +1,29 @@
+name: Pass 4 Unit 4 Route Guardian Interaction Repair Readiness
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - '.github/workflows/pass4-unit4-route-guardian-interaction-repair-readiness-v1.yml'
+      - 'audit/pass4/pass4-boot-status-strip-unit4-route-guardian-interaction-repair-readiness-v1.json'
+      - 'tools/pass4_unit4_route_guardian_interaction_boundary_v1.js'
+      - 'tools/test_pass4_unit4_route_guardian_interaction_repair_v1.js'
+      - 'tools/verify_pass4_unit4_route_guardian_interaction_repair_v1.py'
+permissions:
+  contents: read
+jobs:
+  deterministic-interaction-repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Prove animated Route Guardian interaction boundary
+        run: node tools/test_pass4_unit4_route_guardian_interaction_repair_v1.js
+      - name: Verify exact evidence-harness-only scope
+        run: python tools/verify_pass4_unit4_route_guardian_interaction_repair_v1.py "${{ github.event.pull_request.base.sha }}"
