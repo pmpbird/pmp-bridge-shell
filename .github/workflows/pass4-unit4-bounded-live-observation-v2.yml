@@ -1,0 +1,87 @@
+name: Pass 4 Unit 4 Bounded Live Observation V2
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
+    paths:
+      - '.github/workflows/pass4-unit4-bounded-live-observation-v2.yml'
+      - 'audit/pass4/pass4-boot-status-strip-unit4-live-observation-authorization-v2.json'
+      - 'audit/pass4/pass4-boot-status-strip-unit4-live-observation-directive-v2.json'
+      - 'audit/pass4/pass4-boot-status-strip-unit4-live-observation-head-seal-v2.json'
+      - 'audit/pass4/pass4-boot-status-strip-unit4-live-observation-result-v2.json'
+      - 'audit/pass4/pass4-boot-status-strip-unit4-live-observation-finalization-v2.json'
+      - 'tools/run_pass4_unit4_bounded_live_observation_v2.js'
+      - 'tools/test_pass4_unit4_bounded_live_observation_v2.js'
+      - 'tools/verify_pass4_unit4_bounded_live_observation_v2.py'
+permissions:
+  contents: write
+jobs:
+  preflight-and-observe-once:
+    if: github.event.action == 'opened'
+    runs-on: ubuntu-latest
+    env:
+      BASE_SHA: ${{ github.event.pull_request.base.sha }}
+      PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+      PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+      EVENT_ACTION: ${{ github.event.action }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify fresh exact-head static authorization preflight
+        run: python tools/verify_pass4_unit4_bounded_live_observation_v2.py preflight
+      - name: Re-prove deterministic interaction and observer boundaries
+        run: |
+          node tools/test_pass4_unit4_route_guardian_interaction_repair_v1.js
+          node tools/test_pass4_unit4_bounded_live_observation_v2.js
+      - name: Install bounded browser dependency
+        run: npm install --no-save playwright@1.54.1 && npx playwright install --with-deps chromium
+      - name: Start disposable static server
+        run: python3 -m http.server 4176 >/tmp/pass4-unit4-v2-server.log 2>&1 &
+      - id: observe
+        name: Consume exactly one authorized observation
+        run: node tools/run_pass4_unit4_bounded_live_observation_v2.js
+      - name: Verify preserved working-tree result
+        run: python tools/verify_pass4_unit4_bounded_live_observation_v2.py working-result
+      - name: Preserve the immutable observation result
+        run: |
+          test "$(git diff --name-only)" = "audit/pass4/pass4-boot-status-strip-unit4-live-observation-result-v2.json"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add audit/pass4/pass4-boot-status-strip-unit4-live-observation-result-v2.json
+          git commit -m 'Pass 4 Unit 4: preserve bounded observation V2 result'
+          git push origin "HEAD:${PR_HEAD_REF}"
+      - name: Enforce truthful observation outcome
+        run: python tools/verify_pass4_unit4_bounded_live_observation_v2.py enforce-pass
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pass4-unit4-bounded-live-observation-v2
+          path: audit/pass4/pass4-boot-status-strip-unit4-live-observation-result-v2.json
+  validate-preserved-result:
+    if: github.event.action == 'synchronize'
+    runs-on: ubuntu-latest
+    env:
+      BASE_SHA: ${{ github.event.pull_request.base.sha }}
+      PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+      PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+      EVENT_ACTION: ${{ github.event.action }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate exactly-once chain and preserved result
+        run: python tools/verify_pass4_unit4_bounded_live_observation_v2.py post-observation

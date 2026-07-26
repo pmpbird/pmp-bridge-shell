@@ -1,0 +1,45 @@
+{
+  "type": "PMP_PASS4_BOOT_STATUS_STRIP_UNIT4_LIVE_OBSERVATION_AUTHORIZATION_V2",
+  "version": "2.0.0",
+  "status": "AUTHORIZED_UNCONSUMED",
+  "created_at": "2026-07-26T05:55:48Z",
+  "project": "App Orchestrator",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "pass": 4,
+  "unit": 4,
+  "substep": "P4-U4A",
+  "authorized_base_main_commit": "0bb3a42907ca1a2f864c1a40d1ace3f203cd7e45",
+  "authorized_branch": "agent/pass4-unit4-bounded-live-observation-v2",
+  "authorization_source": "User message in Codex task 019f7cbd-2c87-7c22-b4be-c894cf95e9be",
+  "authorization_text": "I authorize exactly one newly sealed Pass 4 Unit 4 bounded live observation from merged commit 0bb3a42907ca1a2f864c1a40d1ace3f203cd7e45. After preserving its result, continue through the roadmap without stopping until my hands-on use of the PMP app is genuinely required, such as reproducing or verifying the Continuous Run bug. Do not retry consumed observations or formal proofs without separate authority.",
+  "observation_runs_authorized": 1,
+  "observation_runs_previously_executed_under_this_authorization": 0,
+  "authorization_consumed": false,
+  "observation_started": false,
+  "formal_proof_authorized": false,
+  "formal_proof_authorization_consumed_by_this_move": false,
+  "production_activation_authorized": false,
+  "persisted_user_data_mutation_authorized": false,
+  "merge_authorized_after_verified_pass": true,
+  "prior_consumed_observations": [
+    {
+      "pull_request": 149,
+      "status": "FAIL_PRESERVED",
+      "authorization_consumed": true,
+      "must_not_rerun": true
+    },
+    {
+      "pull_request": 150,
+      "status": "FAIL_PRESERVED",
+      "authorization_consumed": true,
+      "must_not_rerun": true
+    }
+  ],
+  "quarantined_formal_proof_pull_request": {
+    "pull_request": 122,
+    "authorization_consumed_failed": true,
+    "retry_authorized": false,
+    "must_remain_untouched": true
+  },
+  "claim_ceiling": "Exactly one newly sealed bounded Pass 4 Unit 4 live startup observation. No formal proof, production activation, persisted-user-data mutation, Unit 5, Pass 5, or retry is authorized."
+}
