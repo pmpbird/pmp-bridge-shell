@@ -5,6 +5,8 @@ on:
     paths:
       - '.github/workflows/pass9-unit3-bank-continuous-run-owner-integration-v1.yml'
       - '.github/workflows/pass10-unit3-bank-readonly-projection-v1.yml'
+      - 'audit/pass2/p2c-isolated-proof-rerun-008/patch_a002_bounded_navigation_wait_retry_rehearsal115.py'
+      - 'audit/pass2/p2c-isolated-proof-rerun-008/patch_runtime_nodepath_and_messageport_rehearsal090.py'
       - 'audit/a003-manifest-seal.json'
       - 'audit/pass10/pass10-bank-unit3-readonly-projection-v1.json'
       - 'audit/pass10/receipts/RECEIPT_P10_U3_BANK_READONLY_PROJECTION_20260726T223500Z_001.json'

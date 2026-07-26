@@ -32,6 +32,7 @@ ci_lane_lifecycle = here / 'patch_ci_lane_lifecycle_rehearsal111.py'
 a002_single_page_historic_matrix = here / 'patch_a002_single_page_historic_matrix_rehearsal112.py'
 a002_bounded_fresh_process_retry = here / 'patch_a002_bounded_fresh_process_retry_rehearsal113.py'
 http_server_log_backpressure = here / 'patch_http_server_log_backpressure_rehearsal114.py'
+a002_bounded_navigation_wait_retry = here / 'patch_a002_bounded_navigation_wait_retry_rehearsal115.py'
 bundle_root = pathlib.Path(a.bundle_root)
 prepare_target = bundle_root / 'prepare_disposable_proof_002.py'
 policy_target = bundle_root / 'policy-template.json'
@@ -186,4 +187,11 @@ subprocess.run([
     '--evidence-dir', a.evidence_dir,
 ], check=True)
 
-print('REHEARSAL114_HTTP_SERVER_LOG_BACKPRESSURE_AND_PRIOR_REPAIRS_APPLIED')
+subprocess.run([
+    sys.executable,
+    str(a002_bounded_navigation_wait_retry),
+    '--path', str(target),
+    '--evidence-dir', a.evidence_dir,
+], check=True)
+
+print('REHEARSAL115_BOUNDED_NAVIGATION_WAIT_RETRY_AND_PRIOR_REPAIRS_APPLIED')

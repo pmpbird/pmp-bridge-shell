@@ -24,9 +24,21 @@ BOOTSTRAP = ROOT / "pmp-app-current.html"
 GENERATOR = ROOT / "tools/generate_pass10_unit3_integrity_updates_v1.py"
 TEST = ROOT / "tools/test_pass10_unit3_bank_readonly_projection_v1.js"
 GATE = ROOT / "tools/run_pass6_unit7_no_blind_flying_gate_v1.py"
+A002_RETRY_PATCHER = (
+    ROOT
+    / "audit/pass2/p2c-isolated-proof-rerun-008/"
+    "patch_a002_bounded_navigation_wait_retry_rehearsal115.py"
+)
+A002_REHEARSAL_CONTROLLER = (
+    ROOT
+    / "audit/pass2/p2c-isolated-proof-rerun-008/"
+    "patch_runtime_nodepath_and_messageport_rehearsal090.py"
+)
 EXPECTED = {
     ".github/workflows/pass9-unit3-bank-continuous-run-owner-integration-v1.yml",
     ".github/workflows/pass10-unit3-bank-readonly-projection-v1.yml",
+    "audit/pass2/p2c-isolated-proof-rerun-008/patch_a002_bounded_navigation_wait_retry_rehearsal115.py",
+    "audit/pass2/p2c-isolated-proof-rerun-008/patch_runtime_nodepath_and_messageport_rehearsal090.py",
     "audit/a003-manifest-seal.json",
     "audit/pass10/pass10-bank-unit3-readonly-projection-v1.json",
     "audit/pass10/receipts/RECEIPT_P10_U3_BANK_READONLY_PROJECTION_20260726T223500Z_001.json",
@@ -177,6 +189,39 @@ def main() -> None:
         "historical_evidence_mutated": False,
         "regression_assertions_preserved": 234,
     }
+    rehearsal = report["a002_rehearsal_repair"]
+    assert rehearsal == {
+        "failed_run": 30223196034,
+        "observed_progress_assertions": 8,
+        "observed_assertion_failures": 0,
+        "observed_failure": "PAGE_WAITFORURL_TIMEOUT",
+        "repair": (
+            "EXTEND_EXISTING_ONE_RETRY_NAVIGATION_CLASSIFIER_TO_WAITFORURL"
+        ),
+        "attempt_limit": 2,
+        "fresh_process_per_attempt": True,
+        "assertions_weakened": False,
+        "production_changed": False,
+        "formal_proof_performed": False,
+    }
+    patcher = A002_RETRY_PATCHER.read_text()
+    controller = A002_REHEARSAL_CONTROLLER.read_text()
+    for token in (
+        "'page.goto' in message",
+        "'page.waitForURL' in message",
+        "'ERR_ABORTED' in message",
+        "payload.get('tests_failed')!=0",
+        "payload.get('tests_passed')<=0",
+        "for attempt in (1,2):",
+        "NAVIGATION_TIMEOUT_ONLY",
+    ):
+        assert token in patcher
+    patcher_name = A002_RETRY_PATCHER.name
+    assert controller.count(patcher_name) == 1
+    assert controller.count("str(a002_bounded_navigation_wait_retry)") == 1
+    assert controller.index("str(http_server_log_backpressure)") < (
+        controller.index("str(a002_bounded_navigation_wait_retry)")
+    )
 
     projection = PROJECTION.read_text()
     master = MASTER.read_text()
@@ -316,7 +361,7 @@ def main() -> None:
     assert report["next_step"]["persisted_user_data_change_allowed"] is False
     assert receipt["next_safe_move"]["step_id"] == "P10-U4"
     print(
-        "PASS: exact fourteen-file P10-U3 Bank read-only projection verified "
+        "PASS: exact sixteen-file P10-U3 Bank read-only projection verified "
         "(125/125, gate PASS, integrity resealed, P10-U4 ready)"
     )
 
