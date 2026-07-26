@@ -1,0 +1,229 @@
+{
+  "type": "PMP_PASS7_SECTION_OWNER_UNIT3_REGISTRATION_EVENTS_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T16:35:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "bf0de4f13a833b86ac830656e88e7dcab6e71d3a",
+  "branch": "agent/pass7-unit3-owner-registration-events-v1",
+  "pass": 7,
+  "unit": "P7-U3",
+  "unit_id": "P7-U3",
+  "status": "OWNER_REGISTRATION_EVENTS_PROVEN",
+  "objective": "Define versioned owner-registration and universal growth-awareness events that preserve shared operation identities while granting no implicit authority.",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass7-unit3-owner-registration-events-v1.yml",
+      "audit/pass7/pass7-section-owner-unit3-registration-events-v1.json",
+      "audit/pass7/receipts/RECEIPT_P7_U3_OWNER_REGISTRATION_EVENTS_20260726T163500Z_001.json",
+      "tools/run_pass7_unit3_owner_registration_events_v1.py",
+      "tools/test_pass7_unit3_owner_registration_events_v1.py",
+      "tools/verify_pass7_unit3_owner_registration_events_v1.py"
+    ],
+    "implementation_paths": []
+  },
+  "inputs": {
+    "unit1_inventory": "audit/pass7/pass7-section-owner-unit1-inventory-v1.json",
+    "unit1_inventory_sha256": "c895188d438b457f3625d1f453a16acb4723dd6c563dfa596f54f610d9172cba",
+    "unit2_capability_contract": "audit/pass7/pass7-section-owner-unit2-capability-contract-v1.json",
+    "unit2_capability_contract_sha256": "eb755a2d43b2a4331dae62dc90c8a2d4260c83ffd1f42f8c3024d27c875dd06b",
+    "cross_system_invariant_catalog": "audit/pass6/pass6-cross-system-invariant-catalog-v1.json",
+    "cross_system_invariant_catalog_sha256": "e8e89d3d50dc88ef2809d5bca4ef77e988d19bb196ebc58393c7b1398ac302a0",
+    "runner": "tools/run_pass7_unit3_owner_registration_events_v1.py",
+    "runner_sha256": "122ad9f208cd9eec2bb60af49095751c4884213668a8743719ef669abcedcb88",
+    "test": "tools/test_pass7_unit3_owner_registration_events_v1.py",
+    "test_sha256": "765989842cb3873d9db0c824593fcd6c7f80d6acf12390f8d24b0768ab9d861f"
+  },
+  "event_contract": {
+    "event_version": "PMP_SECTION_OWNER_REGISTRATION_EVENT_V1",
+    "capability_contract_version": "PMP_SECTION_OWNER_CAPABILITY_CONTRACT_V1",
+    "event_types": [
+      "OWNER_REGISTERED",
+      "OWNER_UPDATED",
+      "OWNER_REMOVED",
+      "OWNER_GROWTH_OBSERVED"
+    ],
+    "required_fields": [
+      "event_version",
+      "event_id",
+      "operation_id",
+      "monotonic_sequence",
+      "registry_epoch",
+      "event_type",
+      "owner_id",
+      "section_id",
+      "source_version",
+      "observed_at",
+      "previous_event_digest",
+      "authority"
+    ],
+    "authority_fields": [
+      "contract_version",
+      "authorizer",
+      "subject_id",
+      "capability_id",
+      "decision",
+      "action"
+    ],
+    "accepted_known_owner_policy": "EXACT_OWNER_SECTION_AND_ROOT_CAPABILITY_BINDING_REQUIRED",
+    "unknown_owner_policy": "GROWTH_OBSERVED_PENDING_NO_AUTHORITY_ONLY",
+    "appearance_grants_authority": false,
+    "growth_observer": "diagnostics_owner",
+    "growth_decision": "OBSERVED_ONLY_NO_AUTHORITY",
+    "operation_identity": "SHARED_BY_REGISTRY_JOURNAL_AND_DIAGNOSTICS",
+    "event_chain": "MONOTONIC_SEQUENCE_EPOCH_AND_PREVIOUS_DIGEST",
+    "duplicates": {
+      "exact_event": "IGNORE_NO_MUTATION",
+      "conflicting_event": "REJECT_FAIL_CLOSED",
+      "operation_identity_reuse": "REJECT_FAIL_CLOSED"
+    },
+    "restart": "REPLAY_ONLY_VALIDATED_CHAINED_JOURNAL",
+    "failure_effect": "REJECT_NO_REGISTRATION_NO_AUTHORITY_NO_EXTERNAL_SIDE_EFFECT"
+  },
+  "event_verification": {
+    "known_owners_available": 8,
+    "event_types": 4,
+    "scenario_events": 3,
+    "scenario_accepted": 3,
+    "registered_owners": 1,
+    "pending_growth": 1,
+    "authority_grants": 0,
+    "shared_operation_identities": true,
+    "result_sha256": "1986c655f8c3b645373102c2b96c8977dc55f007a05263c7247677c900448a1b"
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "static_contract",
+    "diagnostic_matrix_update": {
+      "status": "CONFIRMED_UNCHANGED",
+      "applicable_matrix": "audit/pass6/pass6-cross-system-invariant-catalog-v1.json",
+      "rationale": "The permanent owner invariants already require explicit authority and fail-closed conflicts; P7-U3 adds deterministic event and shared-operation evidence without changing the matrix."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass7/pass7-section-owner-unit3-registration-events-v1.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass7_unit3_owner_registration_events_v1.py"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass7_unit3_owner_registration_events_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass7/receipts/RECEIPT_P7_U3_OWNER_REGISTRATION_EVENTS_20260726T163500Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "P7-U1 identified owner-like sources that are not registered and therefore cannot be treated as authoritative.",
+        "evidence_paths": [
+          "audit/pass7/pass7-section-owner-unit1-inventory-v1.json"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "P7-U2 requires explicit capabilities and forbids authority from unknown-owner appearance.",
+        "evidence_paths": [
+          "audit/pass7/pass7-section-owner-unit2-capability-contract-v1.json"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "Growth must be observable as pending evidence before it may be reviewed for registration authority.",
+        "basis_evidence_paths": [
+          "audit/pass7/pass7-section-owner-unit1-inventory-v1.json",
+          "audit/pass7/pass7-section-owner-unit2-capability-contract-v1.json"
+        ]
+      },
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "Registry and diagnostic consumers must retain the same operation identity to prevent contradictory owner histories.",
+        "basis_evidence_paths": [
+          "audit/pass6/pass6-cross-system-invariant-catalog-v1.json",
+          "audit/pass7/pass7-section-owner-unit3-registration-events-v1.json"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "malformed event",
+        "wrong event version",
+        "wrong capability-contract version",
+        "unknown-owner registration",
+        "owner-section mismatch",
+        "forged registration authority",
+        "forged growth observer",
+        "stale sequence",
+        "sequence gap",
+        "epoch gap",
+        "event-chain mismatch",
+        "time regression",
+        "exact duplicate",
+        "conflicting duplicate",
+        "duplicate operation identity",
+        "update before registration",
+        "remove before registration"
+      ]
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "verification": {
+    "assertions_total": 72,
+    "assertions_passed": 72,
+    "assertions_failed": 0,
+    "exact_scope": "PASS",
+    "source_hashes": "PASS",
+    "event_schema": "PASS",
+    "growth_no_authority": "PASS",
+    "shared_operation_identity": "PASS",
+    "failure_behavior": "PASS",
+    "permanent_gate_binding": "PASS"
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "bank_mutations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P7-U4",
+    "objective": "Integrate Section Owner events boundedly with Mount Registry and Diagnostics.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P7-U3 pure static event contract only. No production owner is registered, updated, removed, or granted authority; no live observation, formal proof, Bank repair, storage migration, or persisted-user-data change occurred."
+}
