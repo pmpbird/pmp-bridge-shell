@@ -1,0 +1,222 @@
+{
+  "type": "PMP_PASS8_HELPER_UNIT3_REGISTRATION_EVENTS_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T18:05:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "74c969586918cb2ee82122d184294a28e9b92edb",
+  "branch": "agent/pass8-unit3-helper-registration-events-v1",
+  "pass": 8,
+  "unit": "P8-U3",
+  "unit_id": "P8-U3",
+  "status": "HELPER_REGISTRATION_EVENTS_PROVEN",
+  "objective": "Define versioned, append-only, restart-safe Helper registration, update, revocation, removal, growth, and denial events under the P8-U2 capability contract.",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass8-unit3-helper-registration-events-v1.yml",
+      "audit/pass8/pass8-helper-unit3-registration-events-v1.json",
+      "audit/pass8/receipts/RECEIPT_P8_U3_HELPER_REGISTRATION_EVENTS_20260726T180500Z_001.json",
+      "tools/run_pass8_unit3_helper_registration_events_v1.js",
+      "tools/test_pass8_unit3_helper_registration_events_v1.js",
+      "tools/verify_pass8_unit3_helper_registration_events_v1.py"
+    ],
+    "implementation_paths": []
+  },
+  "inputs": {
+    "unit2_contract": "audit/pass8/pass8-helper-unit2-capability-contract-v1.json",
+    "unit2_contract_sha256": "3600a04f945a029f897f9ebc17ac3471a93cfd1cb5641d18eb70053f37ebf1b0",
+    "unit2_runner": "tools/run_pass8_unit2_helper_capability_contract_v1.js",
+    "unit2_runner_sha256": "389f05633ddb7e4b22da2062605859870acce4b020252e9c654ea72e26f6b570",
+    "runner": "tools/run_pass8_unit3_helper_registration_events_v1.js",
+    "runner_sha256": "350734d60d337d0d03019c7d4c478f3a480f0fc1067d785ca1442e8083e58105",
+    "test": "tools/test_pass8_unit3_helper_registration_events_v1.js",
+    "test_sha256": "546fd7b47596020e58e6b9e4fd02eccf24995e880c14d952654f67ea0517df05"
+  },
+  "registration_contract": {
+    "event_version": "PMP_HELPER_REGISTRATION_EVENT_V1",
+    "journal_version": "PMP_HELPER_REGISTRATION_JOURNAL_V1",
+    "model": "APPEND_ONLY_DIGEST_CHAIN_FAIL_CLOSED",
+    "event_types": [
+      "HELPER_REGISTERED",
+      "HELPER_UPDATED",
+      "HELPER_REVOKED",
+      "HELPER_REMOVED",
+      "HELPER_GROWTH_OBSERVED"
+    ],
+    "required_event_fields": [
+      "event_version",
+      "event_id",
+      "operation_id",
+      "monotonic_sequence",
+      "registry_epoch",
+      "event_type",
+      "helper_id",
+      "helper_source_sha256",
+      "canonical_owner_id",
+      "section_id",
+      "slot",
+      "source_version",
+      "growth_source",
+      "observed_at",
+      "previous_event_digest",
+      "authority"
+    ],
+    "required_authority_fields": [
+      "contract_version",
+      "authorizer",
+      "capability_id",
+      "decision",
+      "action",
+      "revocation_epoch"
+    ],
+    "registration_authorizer": "app_orchestrator_owner",
+    "growth_observer": "diagnostics_owner",
+    "growth_policy": "OBSERVED_PENDING_NO_AUTHORITY",
+    "revocation_policy": "MONOTONIC_FAIL_CLOSED",
+    "duplicate_event_policy": "IDENTICAL_IGNORE_CONFLICT_DENY",
+    "duplicate_operation_policy": "DENY",
+    "chain_policy": "GLOBAL_MONOTONIC_SEQUENCE_EPOCH_AND_PREVIOUS_DIGEST",
+    "restore_policy": "ATOMIC_EXACT_PACKAGE_OR_EMPTY",
+    "denial_policy": "REJECT_BEFORE_JOURNAL_OR_STATE_MUTATION",
+    "held_helper_policy": "NO_REGISTRATION_EVENT",
+    "unknown_helper_policy": "NO_REGISTRATION_EVENT",
+    "failure_effect": "DENY_NO_RUNTIME_OR_EXTERNAL_SIDE_EFFECT_AND_EMIT_OPERATION_CODE"
+  },
+  "event_verification": {
+    "eligible_helpers": 12,
+    "event_types": 5,
+    "required_event_fields": 16,
+    "required_authority_fields": 6,
+    "held_declared_helpers": 2,
+    "unknown_sources_held": 9,
+    "scenario_events": 3,
+    "scenario_registered_helpers": 1,
+    "scenario_pending_growth": 1,
+    "result_sha256": "7b5ff6de792da4b63382323b8123724f54b02bb2acbf284e9746a3ff3f2a2adf"
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "static_contract",
+    "diagnostic_matrix_update": {
+      "status": "CONFIRMED_UNCHANGED",
+      "applicable_matrix": "audit/pass7/pass7-section-owner-unit5-isolation-restart-denial-proof-v1.json",
+      "rationale": "P8-U3 is a pure in-memory event contract. It adds Helper journal, replay, and restoration evidence without changing the P7 runtime isolation matrix."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass8/pass8-helper-unit3-registration-events-v1.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass8_unit3_helper_registration_events_v1.js"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass8_unit3_helper_registration_events_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass8/receipts/RECEIPT_P8_U3_HELPER_REGISTRATION_EVENTS_20260726T180500Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "P8-U2 permits twelve static capability templates while holding two declarations and nine undeclared sources.",
+        "evidence_paths": [
+          "audit/pass8/pass8-helper-unit2-capability-contract-v1.json"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The P8-U2 growth capability is bound to one exact Helper, owner, section, slot, and growth source.",
+        "evidence_paths": [
+          "audit/pass8/pass8-helper-unit2-capability-contract-v1.json"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "Registration state must be reconstructible only from a complete digest-validated journal package, otherwise startup must expose empty fail-closed state.",
+        "basis_evidence_paths": [
+          "audit/pass8/pass8-helper-unit2-capability-contract-v1.json",
+          "audit/pass7/pass7-section-owner-unit3-registration-events-v1.json"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "malformed event",
+        "unknown or held Helper",
+        "source, owner, section, slot, or growth mismatch",
+        "forged authority",
+        "duplicate or conflicting event",
+        "duplicate operation",
+        "stale or gapped sequence and epoch",
+        "broken digest chain",
+        "time regression",
+        "update or revoke before registration",
+        "stale revocation",
+        "tampered journal count, entry digest, head, or snapshot seal",
+        "atomic empty restoration on any package failure"
+      ]
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "verification": {
+    "assertions_total": 155,
+    "assertions_passed": 155,
+    "assertions_failed": 0,
+    "exact_scope": "PASS",
+    "source_hashes": "PASS",
+    "event_and_authority_schema": "PASS",
+    "registration_growth_revocation_and_denial": "PASS",
+    "atomic_restart_restoration": "PASS",
+    "permanent_gate_binding": "PASS"
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_mutations": false,
+    "helper_ownership_changes": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P8-U4",
+    "objective": "Integrate the P8-U2 capability and P8-U3 registration contracts with the Section Owner runtime and read-only Diagnostics without activating held Helpers.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P8-U3 pure static event and restart contract only. No Helper is registered, activated, mounted, rerouted, migrated, or granted production authority; no Bank behavior, persisted user data, live observation, or formal proof changes."
+}

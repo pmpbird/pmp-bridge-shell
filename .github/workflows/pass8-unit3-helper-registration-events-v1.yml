@@ -1,0 +1,80 @@
+name: Pass 8 Unit 3 Helper Registration Events
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - '.github/workflows/pass8-unit3-helper-registration-events-v1.yml'
+      - 'audit/pass8/pass8-helper-unit3-registration-events-v1.json'
+      - 'audit/pass8/receipts/RECEIPT_P8_U3_HELPER_REGISTRATION_EVENTS_20260726T180500Z_001.json'
+      - 'tools/run_pass8_unit3_helper_registration_events_v1.js'
+      - 'tools/test_pass8_unit3_helper_registration_events_v1.js'
+      - 'tools/verify_pass8_unit3_helper_registration_events_v1.py'
+permissions:
+  contents: read
+jobs:
+  helper-registration-events:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      ARTIFACT_ROOT: /tmp/pass8-unit3-artifacts/artifacts/attempt-001
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - id: evaluate
+        name: Verify events and preserve complete attempt
+        shell: bash
+        run: |
+          set +e
+          mkdir -p "$ARTIFACT_ROOT"
+          printf '%s\n' '{"command":"P8-U3 versioned Helper registration, growth, revocation, denial, and atomic restart events"}' > "$ARTIFACT_ROOT/command.json"
+          printf '%s\n' 'no stderr emitted before execution' > "$ARTIFACT_ROOT/stderr.txt"
+          node tools/test_pass8_unit3_helper_registration_events_v1.js \
+            > "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+          tests_rc=$?
+          python3 tools/verify_pass8_unit3_helper_registration_events_v1.py \
+            "${{ github.event.pull_request.base.sha }}" >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+          verify_rc=$?
+          git diff --name-only "${{ github.event.pull_request.base.sha }}...HEAD" \
+            | python3 -c 'import json,sys; print(json.dumps({"changed_paths":[x.strip() for x in sys.stdin if x.strip()]},sort_keys=True))' \
+            > "$ARTIFACT_ROOT/scope.json"
+          python3 -c 'import json,os,platform; print(json.dumps({"python":platform.python_version(),"node":os.popen("node --version").read().strip(),"runner":os.environ.get("RUNNER_OS"),"sha":os.environ.get("GITHUB_SHA")},sort_keys=True))' \
+            > "$ARTIFACT_ROOT/environment.json"
+          node tools/run_pass8_unit3_helper_registration_events_v1.js > "$ARTIFACT_ROOT/result.json"
+          printf '%s\n' '{"required":false,"granted":false,"consumed_before":false,"consumed_after":false}' \
+            > "$ARTIFACT_ROOT/authority-state.json"
+          rc=0
+          if [ "$tests_rc" -ne 0 ] || [ "$verify_rc" -ne 0 ]; then rc=1; fi
+          printf '{"tests":%s,"verify":%s,"final":%s}\n' \
+            "$tests_rc" "$verify_rc" "$rc" > "$ARTIFACT_ROOT/exit-status.json"
+          python3 - "$ARTIFACT_ROOT" <<'PY'
+          import hashlib,json,pathlib,sys
+          root=pathlib.Path(sys.argv[1])
+          rows=[]
+          for path in sorted(root.iterdir()):
+              if path.name == "artifact-manifest.json" or not path.is_file():
+                  continue
+              data=path.read_bytes()
+              rows.append({"path":path.name,"bytes":len(data),"sha256":hashlib.sha256(data).hexdigest()})
+          assert len(rows) == 8
+          assert all(row["bytes"] > 0 for row in rows)
+          (root/"artifact-manifest.json").write_text(json.dumps({"type":"PMP_P8_U3_ARTIFACT_MANIFEST_V1","records":rows},indent=2,sort_keys=True)+"\n")
+          PY
+          echo "exit_code=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Upload complete P8-U3 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass8-unit3-registration-events-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pass8-unit3-artifacts/
+          if-no-files-found: error
+          retention-days: 90
+      - name: Enforce preserved result after upload
+        run: test "${{ steps.evaluate.outputs.exit_code }}" = "0"
