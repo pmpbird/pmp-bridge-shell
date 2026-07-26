@@ -1,0 +1,62 @@
+{
+  "type": "PMP_PASS10_UNIT7A_BANK_HANDS_ON_READINESS_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P10_U7A_BANK_HANDS_ON_READINESS_20260726T233200Z_001",
+  "created_at": "2026-07-26T23:32:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "bfba6e36272cb98ffe1e2b28b8d881be4e537304",
+  "branch": "agent/pass10-unit7-bank-closure-certification-v1",
+  "pass": 10,
+  "unit": "P10-U7",
+  "substep": "P10-U7A",
+  "status": "HANDS_ON_APP_CHECK_REQUIRED",
+  "evidence": "audit/pass10/pass10-bank-unit7-hands-on-readiness-v1.json",
+  "changed_paths": [
+    ".github/workflows/pass10-unit7-bank-hands-on-readiness-v1.yml",
+    "audit/pass10/pass10-bank-unit7-hands-on-readiness-v1.json",
+    "audit/pass10/receipts/RECEIPT_P10_U7A_BANK_HANDS_ON_READINESS_20260726T233200Z_001.json",
+    "tools/run_pass10_unit7_bank_hands_on_readiness_v1.js",
+    "tools/test_pass10_unit7_bank_hands_on_readiness_v1.js",
+    "tools/verify_pass10_unit7_bank_hands_on_readiness_v1.py"
+  ],
+  "readiness": {
+    "assertions": 75,
+    "completed_units": 6,
+    "cumulative_prior_assertions": 778,
+    "unresolved_assertion_failures": 0,
+    "live_only_claims": 3
+  },
+  "decision": {
+    "hands_on_check_required": true,
+    "hands_on_check_performed": false,
+    "pass10_complete": false,
+    "automated_observation_performed": false,
+    "observation_authority_consumed": false,
+    "formal_proof_performed": false
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "storage_deletes": false,
+    "bank_user_data_mutations": false,
+    "continuous_run_user_data_mutations": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false
+  },
+  "next_safe_move": {
+    "step_id": "P10-U7B",
+    "instruction": "Ask the user to perform the exact six-step read-only Bank and Continuous Run Bank stability check, then reconcile the result and close Pass 10 only if all checks pass.",
+    "requires_user_app_check": true,
+    "requires_explicit_authority": false,
+    "persisted_user_data_change_allowed": false,
+    "storage_migration_allowed": false,
+    "automated_observation_allowed": false,
+    "stop_after_readiness_merge": true
+  },
+  "claim_ceiling": "P10-U7A readiness only; no app check has yet occurred and Pass 10 remains open."
+}

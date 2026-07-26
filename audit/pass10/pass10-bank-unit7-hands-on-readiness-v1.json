@@ -1,0 +1,278 @@
+{
+  "type": "PMP_PASS10_BANK_UNIT7_HANDS_ON_READINESS_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T23:32:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "bfba6e36272cb98ffe1e2b28b8d881be4e537304",
+  "branch": "agent/pass10-unit7-bank-closure-certification-v1",
+  "pass": 10,
+  "unit": "P10-U7",
+  "unit_id": "P10-U7",
+  "substep": "P10-U7A",
+  "status": "HANDS_ON_APP_CHECK_REQUIRED",
+  "objective": "Certify deterministic readiness for one short, read-only user check of real PMP Bank and Continuous Run Bank visual stability before Pass 10 closure.",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass10-unit7-bank-hands-on-readiness-v1.yml",
+      "audit/pass10/pass10-bank-unit7-hands-on-readiness-v1.json",
+      "audit/pass10/receipts/RECEIPT_P10_U7A_BANK_HANDS_ON_READINESS_20260726T233200Z_001.json",
+      "tools/run_pass10_unit7_bank_hands_on_readiness_v1.js",
+      "tools/test_pass10_unit7_bank_hands_on_readiness_v1.js",
+      "tools/verify_pass10_unit7_bank_hands_on_readiness_v1.py"
+    ],
+    "implementation_paths": []
+  },
+  "inputs": {
+    "p10_u1_sha256": "c73a8c352bdd06871170058abcab4c17aef5385217bf7e5ed1878636fd34988c",
+    "p10_u2_sha256": "64314c8ab3f1c1d92c7e315bc4b1c023e799549b08fbe56b37c412a00faa47cb",
+    "p10_u3_sha256": "a3c9b10fcd9821dd7bef884bad33eaa433d9bea8bd8b3108092aaf22f5b27a98",
+    "p10_u4_sha256": "152da65a89cd73403e20c028eb6358cc80b0ae0f9277780e66d28b9f35f0d7f8",
+    "p10_u5_sha256": "2a783ea1c060184101e663efe347ce882a9c861471fb6cd00fd3e476d4fd510a",
+    "p10_u6_sha256": "2fa79aaf633b4ccb97db4f95276c88fe87c042c3babeed4a284368c3e36fb0a8",
+    "bank_tab_sha256": "dd4c856c34bbc324e1dcb78ccbf2efb288cfff84f70e3d6914c813a2985c3505",
+    "owner_refresh_sha256": "6ec10deef2b14727afc74e72938d0c512b68c30126c6ff92a3883f8751b559e8",
+    "continuous_run_owner_sha256": "74e3fd55be1d0bb5244fee07dcebc8ce979629a88cc0b29e5faafb5a717c95d9",
+    "runner_sha256": "055e88165549d620764e94587bf50ca058d81fd16122fefca37378ff65abeef9",
+    "test_sha256": "14002edebcef832c494f57824825131fe646164db8f335acf6c0759600f2bee7"
+  },
+  "deterministic_readiness": {
+    "result": "PASS",
+    "assertions": 75,
+    "completed_units": 6,
+    "cumulative_prior_assertions": 778,
+    "unresolved_assertion_failures": 0,
+    "all_effect_boundaries_preserved": true,
+    "all_required_github_checks_green": true,
+    "verified_main": "bfba6e36272cb98ffe1e2b28b8d881be4e537304",
+    "unit_rows": [
+      {
+        "unit_id": "P10-U1",
+        "status": "BANK_INVENTORY_RECONCILIATION_PROVEN",
+        "assertions": 110
+      },
+      {
+        "unit_id": "P10-U2",
+        "status": "BANK_INVENTORY_CONTRACT_PROVEN",
+        "assertions": 187
+      },
+      {
+        "unit_id": "P10-U3",
+        "status": "BANK_READONLY_PROJECTION_PROVEN",
+        "assertions": 125
+      },
+      {
+        "unit_id": "P10-U4",
+        "status": "BANK_OWNER_PROJECTION_REFRESH_PROVEN",
+        "assertions": 121
+      },
+      {
+        "unit_id": "P10-U5",
+        "status": "BANK_FAULT_ROLLBACK_AND_CORRUPTION_CONTAINMENT_PROVEN",
+        "assertions": 133
+      },
+      {
+        "unit_id": "P10-U6",
+        "status": "BANK_REVERSIBLE_MIGRATION_REHEARSAL_PROVEN",
+        "assertions": 102
+      }
+    ]
+  },
+  "decision": {
+    "result": "HANDS_ON_APP_CHECK_REQUIRED",
+    "bounded_hands_on_check_required": true,
+    "basis": "Pass 10 changed the visible Bank projection and owner-driven refresh path. Deterministic evidence proves ownership, exactly-once refresh, fault containment, and rollback, but cannot establish that the real PMP screen remains visually stable across waits, refreshes, and navigation.",
+    "unresolved_live_only_claims": [
+      {
+        "id": "BANK_HOME_SINGLE_STABLE_PROJECTION",
+        "claim": "The real PMP Bank home displays one stable canonical inventory without blanking, flicker, or duplicate Bank buttons."
+      },
+      {
+        "id": "OWNER_REFRESH_VISUALLY_EXACTLY_ONCE",
+        "claim": "Repeated read-only refresh and Bank navigation do not cause helpers, active tabs, or duplicate listeners to repaint conflicting content."
+      },
+      {
+        "id": "CONTINUOUS_RUN_SINGLE_OWNER_STACK",
+        "claim": "Continuous Run Bank displays one stable Continuous Run owner stack and remains usable after leaving and reopening it."
+      }
+    ],
+    "pass10_complete": false,
+    "observation_performed": false,
+    "automated_observation_performed": false,
+    "observation_authority_consumed": false,
+    "formal_proof_performed": false
+  },
+  "hands_on_check": {
+    "mode": "USER_HANDS_ON_READ_ONLY_APP_CHECK",
+    "target": "current PMP app from verified GitHub main bfba6e36272cb98ffe1e2b28b8d881be4e537304",
+    "steps": [
+      {
+        "number": 1,
+        "instruction": "Open the PMP app normally and open the Bank tab.",
+        "pass_condition": "The Bank screen opens and the canonical Bank list becomes visible."
+      },
+      {
+        "number": 2,
+        "instruction": "Wait 10 seconds without pressing anything.",
+        "pass_condition": "The Bank list stays visible and does not flicker, blank, reorder repeatedly, or duplicate buttons."
+      },
+      {
+        "number": 3,
+        "instruction": "Press Refresh Read-Only View three times.",
+        "pass_condition": "The same Bank buttons remain present once each after every refresh."
+      },
+      {
+        "number": 4,
+        "instruction": "Open Continuous Run Bank and wait 10 seconds.",
+        "pass_condition": "Exactly one Run State Summary and one Continuous Run owner stack appear with no duplicate sections or controls."
+      },
+      {
+        "number": 5,
+        "instruction": "Return to Banks, then reopen Continuous Run Bank.",
+        "pass_condition": "The same single stable Continuous Run view returns and remains usable."
+      },
+      {
+        "number": 6,
+        "instruction": "Do not import, save, delete, clear, or migrate anything during this check.",
+        "pass_condition": "The check remains read-only and changes no user data."
+      }
+    ],
+    "requested_response": "Reply either “all six checks passed” or identify the first numbered check that failed and describe what stayed visible.",
+    "persisted_user_data_change_expected": false,
+    "automated_observation": false,
+    "scarce_observation_authority_required": false
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "static_contract",
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/pass10/pass10-bank-unit7-hands-on-readiness-v1.json",
+      "rationale": "P10-U7A identifies the exact three claims that remain live-only, constrains the user check to six read-only steps, and prevents premature Pass 10 closure."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass10/pass10-bank-unit3-readonly-projection-v1.json",
+      "audit/pass10/pass10-bank-unit4-owner-projection-refresh-v1.json",
+      "audit/pass10/pass10-bank-unit5-fault-corruption-proof-v1.json",
+      "audit/pass10/pass10-bank-unit6-reversible-migration-rehearsal-v1.json",
+      "audit/pass10/pass10-bank-unit7-hands-on-readiness-v1.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass10_unit7_bank_hands_on_readiness_v1.js"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass10_unit7_bank_hands_on_readiness_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass10/receipts/RECEIPT_P10_U7A_BANK_HANDS_ON_READINESS_20260726T233200Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "All six predecessor units are green with 778 passing assertions and zero unresolved assertion failures.",
+        "evidence_paths": [
+          "tools/test_pass10_unit7_bank_hands_on_readiness_v1.js"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "One short read-only user check is the smallest sufficient evidence for the remaining visual stability claims.",
+        "basis_evidence_paths": [
+          "audit/pass10/pass10-bank-unit4-owner-projection-refresh-v1.json",
+          "audit/pass10/pass10-bank-unit7-hands-on-readiness-v1.json"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "duplicate owner receipt",
+        "wrong-owner refresh",
+        "direct UI event",
+        "duplicate helper registration",
+        "duplicate active-tab event",
+        "large inventory",
+        "collision and orphan",
+        "corrupt record",
+        "interrupted migration staging",
+        "explicit rollback"
+      ],
+      "rationale": "P10-U5 and P10-U6 already cover deterministic fault behavior. P10-U7A adds only a read-only visual stability gate."
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "verification": {
+    "assertions_total": 75,
+    "assertions_passed": 75,
+    "assertions_failed": 0,
+    "exact_scope": "PASS",
+    "input_hashes": "PASS",
+    "six_unit_traceability": "PASS",
+    "visual_claim_gap_identified": "PASS",
+    "hands_on_steps_bounded_read_only": "PASS",
+    "no_authority_consumed": "PASS",
+    "permanent_gate_binding": "PASS"
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "storage_deletes": false,
+    "route_changes": false,
+    "bank_user_data_mutations": false,
+    "continuous_run_user_data_mutations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "retry_authorized": false
+  },
+  "no_retry_gates": {
+    "consumed_observation_prs": [
+      149,
+      150,
+      152
+    ],
+    "consumed_failed_formal_proof_pr": 122,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P10-U7B",
+    "objective": "Receive the user’s six-result read-only Bank stability check, reconcile the hands-on evidence, close Pass 10 if green, and bind P11-U1.",
+    "requires_user_app_check": true,
+    "requires_new_explicit_authority": false,
+    "persisted_user_data_change_allowed": false,
+    "storage_migration_allowed": false,
+    "automated_observation_allowed": false,
+    "stop_after_readiness_merge": true
+  },
+  "claim_ceiling": "P10-U7A deterministic readiness only. Pass 10 is not complete and no hands-on check, production change, persisted-data change, migration, automated observation, or formal proof has occurred."
+}
