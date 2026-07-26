@@ -1,0 +1,96 @@
+{
+  "type": "PMP_PASS6_DETERMINISTIC_FAULT_INJECTION_CATALOG_V1",
+  "version": "1.0.0",
+  "pass": 6,
+  "unit": "P6-U6",
+  "base_harness": "tools/pass6_deterministic_browser_frame_event_harness_v1.js",
+  "baseline_scenario": "audit/pass6/fixtures/pass6-unit4-deterministic-proof-harness-positive-v1.json",
+  "ci_evidence_policy": "audit/pass6/pass6-ci-lane-artifact-policy-v1.json",
+  "clock": "MONOTONIC_INTEGER_TICKS",
+  "execution": {
+    "lane": "deterministic_browser_harness",
+    "attempts": 1,
+    "automatic_retry": false,
+    "special_authority_required": false,
+    "failed_attempt_erasure": false,
+    "preserve_primary_and_secondary_failures": true,
+    "upload_before_enforcement": true
+  },
+  "faults": [
+    {
+      "id": "P6-U6-TIMEOUT-001",
+      "category": "timeout",
+      "injection": "ADVANCE_BEYOND_DETERMINISTIC_DEADLINE",
+      "expected_primary_failure": "SCENARIO_TIMEOUT",
+      "expected_secondary_failures": []
+    },
+    {
+      "id": "P6-U6-ANIMATION-001",
+      "category": "animation",
+      "injection": "ANIMATION_NEVER_SETTLES",
+      "expected_primary_failure": "ANIMATION_SETTLE_TIMEOUT",
+      "expected_secondary_failures": []
+    },
+    {
+      "id": "P6-U6-NESTED-FRAME-001",
+      "category": "nested_frames",
+      "injection": "DETACH_PARENT_WITH_ACTIVE_GRANDCHILD",
+      "expected_primary_failure": "ACTIVE_CHILD_FRAME_REMAINS",
+      "expected_secondary_failures": []
+    },
+    {
+      "id": "P6-U6-MALFORMED-STATE-001",
+      "category": "malformed_state",
+      "injection": "NULL_SCENARIO_STEP",
+      "expected_primary_failure": "STEP_MALFORMED",
+      "expected_secondary_failures": []
+    },
+    {
+      "id": "P6-U6-MISSING-DEPENDENCY-001",
+      "category": "missing_dependencies",
+      "injection": "REQUIRED_ADAPTER_DEPENDENCY_ABSENT",
+      "expected_primary_failure": "DEPENDENCY_MISSING",
+      "expected_secondary_failures": []
+    },
+    {
+      "id": "P6-U6-DUPLICATE-EVENT-001",
+      "category": "duplicate_events",
+      "injection": "REPLAY_IDENTICAL_LIFECYCLE_EVENT",
+      "expected_primary_failure": "DUPLICATE_EVENT_DETECTED",
+      "expected_secondary_failures": []
+    },
+    {
+      "id": "P6-U6-RESTART-001",
+      "category": "restart",
+      "injection": "FAIL_THEN_RESTART_AS_ONE_PRESERVED_CASE",
+      "expected_primary_failure": "ADAPTER_OPERATION_FAILED",
+      "expected_secondary_failures": []
+    },
+    {
+      "id": "P6-U6-PARTIAL-FAILURE-001",
+      "category": "partial_failure",
+      "injection": "PRIMARY_OPERATION_AND_SECONDARY_TEARDOWN_FAILURE",
+      "expected_primary_failure": "ADAPTER_OPERATION_FAILED",
+      "expected_secondary_failures": ["TEARDOWN_FAILED"]
+    }
+  ],
+  "required_categories": [
+    "timeout",
+    "animation",
+    "nested_frames",
+    "malformed_state",
+    "missing_dependencies",
+    "duplicate_events",
+    "restart",
+    "partial_failure"
+  ],
+  "result_states": [
+    "FAULT_PRESERVED",
+    "FAULT_NOT_OBSERVED",
+    "PRIMARY_FAILURE_MISMATCH",
+    "SECONDARY_FAILURE_MISMATCH",
+    "EVIDENCE_INVALID",
+    "FORBIDDEN_EFFECT_OBSERVED"
+  ],
+  "claim_ceiling": "Deterministic synthetic fault preservation only. This catalog does not authorize a live observation, formal proof, production change, repair, migration, or persisted-user-data mutation."
+}
