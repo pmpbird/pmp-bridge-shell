@@ -12,6 +12,7 @@ TEST = ROOT / "tools/test_pass6_unit1_diagnostic_journal_contract_v1.js"
 REPORT = ROOT / "audit/pass6/pass6-diagnostic-journal-unit1-contract-v1.json"
 RECEIPT = ROOT / "audit/pass6/receipts/RECEIPT_P6_U1_CONTRACT_20260726T090200Z_001.json"
 EXPECTED = {
+    ".github/workflows/pass5-unit4-readonly-lifecycle-diagnostics-v1.yml",
     ".github/workflows/pass6-unit1-diagnostic-journal-contract-v1.yml",
     "audit/pass6/pass6-diagnostic-journal-unit1-contract-v1.json",
     "audit/pass6/receipts/RECEIPT_P6_U1_CONTRACT_20260726T090200Z_001.json",
@@ -163,6 +164,21 @@ def main():
         "pip install",
     ):
         assert forbidden not in workflow, forbidden
+
+    completed_unit_workflow = (
+        ROOT / ".github/workflows/pass5-unit4-readonly-lifecycle-diagnostics-v1.yml"
+    ).read_text()
+    for stale_trigger in (
+        "audit/a003-manifest-seal.json",
+        "pmp-app-current.html",
+        "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+        "pmp-diagnostics-owner-v1.js",
+        "pmp-mount-lifecycle-diagnostics-view-v1.js",
+        "pmp-runtime-integrity-manifest-v1.json",
+    ):
+        assert (
+            f"      - '{stale_trigger}'" not in completed_unit_workflow
+        ), stale_trigger
 
     assert not output("git", "status", "--porcelain"), "verification changed the worktree"
     print("PASS: exact ten-file P6-U1 diagnostic journal contract and integrity seal verified (116/116)")

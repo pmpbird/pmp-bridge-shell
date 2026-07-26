@@ -3,16 +3,9 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
     paths:
-      - '.github/workflows/pass5-unit3-passive-lifecycle-integration-v1.yml'
       - '.github/workflows/pass5-unit4-readonly-lifecycle-diagnostics-v1.yml'
-      - 'audit/a003-manifest-seal.json'
       - 'audit/pass5/pass5-mount-registry-diagnostics-unit4-readonly-view-v1.json'
       - 'audit/pass5/receipts/RECEIPT_P5_U4_READONLY_DIAGNOSTICS_20260726T080923Z_001.json'
-      - 'pmp-app-current.html'
-      - 'pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html'
-      - 'pmp-diagnostics-owner-v1.js'
-      - 'pmp-mount-lifecycle-diagnostics-view-v1.js'
-      - 'pmp-runtime-integrity-manifest-v1.json'
       - 'tools/generate_pass5_unit4_integrity_updates_v1.py'
       - 'tools/test_pass5_unit4_readonly_lifecycle_diagnostics_v1.js'
       - 'tools/verify_pass5_unit4_readonly_lifecycle_diagnostics_v1.py'

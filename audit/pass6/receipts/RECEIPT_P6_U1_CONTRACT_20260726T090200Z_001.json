@@ -33,6 +33,7 @@
   },
   "scope": {
     "changed_paths": [
+      ".github/workflows/pass5-unit4-readonly-lifecycle-diagnostics-v1.yml",
       ".github/workflows/pass6-unit1-diagnostic-journal-contract-v1.yml",
       "audit/a003-manifest-seal.json",
       "audit/pass6/pass6-diagnostic-journal-unit1-contract-v1.json",

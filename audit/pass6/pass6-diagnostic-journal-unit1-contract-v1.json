@@ -176,5 +176,14 @@
     "production_load_reference_added": false,
     "special_authority_consumed": false
   },
+  "stale_workflow_routing_repair": {
+    "failed_run": 30195907235,
+    "failed_job": 89777295146,
+    "workflow": "Pass 5 Unit 4 Read-Only Lifecycle Diagnostics",
+    "cause": "The completed exact-scope P5-U4 workflow was still routed by shared manifest, bootstrap, and integrity-seal paths, so it reran its historic generator against the newer P6 seal.",
+    "repair": "Route the immutable completed-unit workflow only from its own workflow, audit record, receipt, generator, test, and verifier sentinels. Shared production and integrity files remain covered by standing A-003 and current pass checks.",
+    "later_diagnostics_changes_hidden": false,
+    "standing_a003_checks_preserved": true
+  },
   "claim_ceiling": "Pure unreferenced diagnostic journal contract, deterministic isolated tests, and required exact-source integrity seal only. No production loading, journal persistence, Diagnostics UI change, export integration, live observation, app interaction, or Pass 6 closure."
 }
