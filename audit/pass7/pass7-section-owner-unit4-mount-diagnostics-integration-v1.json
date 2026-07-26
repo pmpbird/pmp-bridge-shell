@@ -1,0 +1,253 @@
+{
+  "type": "PMP_PASS7_SECTION_OWNER_UNIT4_MOUNT_DIAGNOSTICS_INTEGRATION_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T16:50:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "3b54adf01a6dd39b16f5967b65069b295068524c",
+  "branch": "agent/pass7-unit4-owner-mount-diagnostics-integration-v1",
+  "pass": 7,
+  "unit": "P7-U4",
+  "unit_id": "P7-U4",
+  "status": "OWNER_MOUNT_DIAGNOSTICS_INTEGRATION_PROVEN",
+  "objective": "Production-load a bounded capability-bound Section Owner event adapter under Mount Registry ownership and a redacted read-only Diagnostics view.",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass7-unit4-owner-mount-diagnostics-integration-v1.yml",
+      "audit/a003-manifest-seal.json",
+      "audit/pass7/pass7-section-owner-unit4-mount-diagnostics-integration-v1.json",
+      "audit/pass7/receipts/RECEIPT_P7_U4_OWNER_MOUNT_DIAGNOSTICS_INTEGRATION_20260726T165000Z_001.json",
+      "pmp-app-current.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+      "pmp-diagnostics-owner-v1.js",
+      "pmp-runtime-integrity-manifest-v1.json",
+      "pmp-section-owner-diagnostics-view-v1.js",
+      "pmp-section-owner-mount-integration-v1.js",
+      "tools/generate_pass7_unit4_integrity_updates_v1.py",
+      "tools/test_pass7_unit4_owner_mount_diagnostics_integration_v1.js",
+      "tools/verify_pass7_unit4_owner_mount_diagnostics_integration_v1.py"
+    ],
+    "implementation_paths": [
+      "pmp-app-current.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+      "pmp-diagnostics-owner-v1.js",
+      "pmp-section-owner-diagnostics-view-v1.js",
+      "pmp-section-owner-mount-integration-v1.js"
+    ]
+  },
+  "inputs": {
+    "unit2_capability_contract": "audit/pass7/pass7-section-owner-unit2-capability-contract-v1.json",
+    "unit2_capability_contract_sha256": "eb755a2d43b2a4331dae62dc90c8a2d4260c83ffd1f42f8c3024d27c875dd06b",
+    "unit3_registration_events": "audit/pass7/pass7-section-owner-unit3-registration-events-v1.json",
+    "unit3_registration_events_sha256": "549bc56f87bb17ac8abbbeb877c82cb730863e96320b5a339559ab4d4a3649fe",
+    "generator": "tools/generate_pass7_unit4_integrity_updates_v1.py",
+    "generator_sha256": "1a7c7548f3e80addc95d33dabb84ae0b52ea1b1a261788f1d37ab0a5ecb74444",
+    "test": "tools/test_pass7_unit4_owner_mount_diagnostics_integration_v1.js",
+    "test_sha256": "f708dfee77816b9697aa79ee835a5617f5057456d850d254af4699c75db4aad9"
+  },
+  "integration": {
+    "runtime": "pmp-section-owner-mount-integration-v1.js",
+    "runtime_sha256": "a5d852df4e267590d07322903aadab0581cc96acb6703a7cc64db6e301b43460",
+    "runtime_owner": "mount_registry_owner",
+    "runtime_mode": "PASSIVE_EXPLICIT_OWNER_EVENTS_ONLY",
+    "capability_contract_version": "PMP_SECTION_OWNER_CAPABILITY_CONTRACT_V1",
+    "event_version": "PMP_SECTION_OWNER_REGISTRATION_EVENT_V1",
+    "known_owners": 8,
+    "known_sections": 8,
+    "appearance_grants_authority": false,
+    "mount_lifecycle_events": 0,
+    "legacy_atlas_calls": 0,
+    "automatic_events": 0,
+    "diagnostics_view": "pmp-section-owner-diagnostics-view-v1.js",
+    "diagnostics_view_sha256": "8a02ca7d64701a2cca20945a4fa5de720990a795b93a509532b77fe057103d15",
+    "diagnostics_owner_sha256": "94f425830ef7ec5810a9b18133f2edbbea986f51863b46576095c7c428a63acf",
+    "diagnostics_access": "READ_ONLY_REDACTED",
+    "shared_operation_identities": true,
+    "capability_ids_exposed": false,
+    "raw_authority_payloads_exposed": false,
+    "source_versions_exposed": false,
+    "maximum_visible_events": 128
+  },
+  "diagnostic_and_proof_matrix": {
+    "type": "PMP_PASS7_SECTION_OWNER_DIAGNOSTIC_PROOF_MATRIX_V1",
+    "version": "1.0.0",
+    "invariants": [
+      {
+        "id": "P7-INV-OWNER-AUTH-001",
+        "statement": "Known owners register only with exact owner-section and capability-contract authority.",
+        "scenarios": ["positive", "unknown", "cross_section", "forged_authority"],
+        "failure": "REJECT_NO_REGISTRATION_NO_AUTHORITY"
+      },
+      {
+        "id": "P7-INV-OWNER-GROWTH-001",
+        "statement": "Unknown owner growth is visible only as pending evidence and grants no authority.",
+        "scenarios": ["positive_growth", "forged_observer", "unknown_registration"],
+        "failure": "HOLD_PENDING_NO_AUTHORITY"
+      },
+      {
+        "id": "P7-INV-OWNER-IDENTITY-001",
+        "statement": "Registry journal and Diagnostics retain the same operation identities.",
+        "scenarios": ["positive", "duplicate_event", "duplicate_operation", "chain_mismatch"],
+        "failure": "REJECT_CONFLICT_NO_PARTIAL_HISTORY"
+      },
+      {
+        "id": "P7-INV-OWNER-DIAGNOSTICS-001",
+        "statement": "Diagnostics is bounded, redacted, and has no owner-event application entrypoint.",
+        "scenarios": ["positive", "malformed_snapshot", "missing_runtime", "bounded_events"],
+        "failure": "READONLY_UNAVAILABLE_OR_REDACTED"
+      },
+      {
+        "id": "P7-INV-OWNER-EFFECTS-001",
+        "statement": "Owner integration cannot mount, reroute, repair, mutate Bank, migrate storage, or write persisted user data.",
+        "scenarios": ["positive", "denial", "malformed", "duplicate", "stale"],
+        "failure": "ZERO_EXTERNAL_EFFECT"
+      }
+    ],
+    "deterministic_test": "tools/test_pass7_unit4_owner_mount_diagnostics_integration_v1.js",
+    "assertions": 137
+  },
+  "runtime_integrity": {
+    "manifest": "pmp-runtime-integrity-manifest-v1.json",
+    "manifest_sha256": "2aeb0c14a5316929e4ece146cf739b376688b419f73e7f8a8ce7985cb7e9e191",
+    "runtime_source_set_sha256": "63ecf5f7c2b7d894b7f7fd7bbc9168f7952afcef0c3dea969c862ebc06811e50",
+    "runtime_records": 707,
+    "seal": "audit/a003-manifest-seal.json",
+    "seal_sha256": "0476f929683247561f7624988b07a2f515c5f871e51690c3a3ec96aba3c1038a",
+    "bootstrap_sha256": "78cbbb3a77ea36c2889abb84d0070a6dd6786b517cc9e953139efb50b32c7df9",
+    "inner_sha256": "a28ac67eebd005c08cef79b1ef415de67a31e7581509ee57992fd5f7fe059fa0"
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_integration",
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/pass7/pass7-section-owner-unit4-mount-diagnostics-integration-v1.json",
+      "rationale": "P7-U4 adds the first Pass 7 owner-specific diagnostic and proof matrix, covering capability authority, growth, shared identity, redaction, and zero external effects."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass7/pass7-section-owner-unit4-mount-diagnostics-integration-v1.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass7_unit4_owner_mount_diagnostics_integration_v1.js"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass7_unit4_owner_mount_diagnostics_integration_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass7/receipts/RECEIPT_P7_U4_OWNER_MOUNT_DIAGNOSTICS_INTEGRATION_20260726T165000Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The P7-U2 contract defines eight bounded owner-section capability pairs.",
+        "evidence_paths": [
+          "audit/pass7/pass7-section-owner-unit2-capability-contract-v1.json"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The P7-U3 event contract requires shared operation identities and pending growth with no implicit authority.",
+        "evidence_paths": [
+          "audit/pass7/pass7-section-owner-unit3-registration-events-v1.json"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The production runtime loads the owner adapter after Mount Lifecycle and loads the read-only view before Authority Rules.",
+        "evidence_paths": [
+          "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "The bounded integration is ready for isolated conflict, restart, and denial proof but not yet Pass 7 closure.",
+        "basis_evidence_paths": [
+          "audit/pass7/pass7-section-owner-unit4-mount-diagnostics-integration-v1.json",
+          "tools/test_pass7_unit4_owner_mount_diagnostics_integration_v1.js"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "missing runtime",
+        "malformed snapshot",
+        "wrong event version",
+        "wrong capability-contract version",
+        "unknown registration",
+        "cross-section registration",
+        "forged registration authority",
+        "forged growth observer",
+        "duplicate event",
+        "conflicting duplicate",
+        "duplicate operation",
+        "stale sequence",
+        "sequence gap",
+        "event-chain mismatch",
+        "update before registration",
+        "redaction secrets"
+      ]
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "verification": {
+    "assertions_total": 137,
+    "assertions_passed": 137,
+    "assertions_failed": 0,
+    "exact_scope": "PASS",
+    "runtime_integrity": "PASS",
+    "mount_registry_boundary": "PASS",
+    "diagnostics_redaction": "PASS",
+    "shared_operation_identity": "PASS",
+    "zero_external_effects": "PASS",
+    "permanent_gate_binding": "PASS"
+  },
+  "effects": {
+    "production_files_changed": true,
+    "runtime_integrity_changed": true,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_mutations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P7-U5",
+    "objective": "Prove isolation, duplicate-owner, stale-owner, growth, restart, and denial behavior.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P7-U4 bounded integration only. It does not close Pass 7, certify a live app observation, repair Bank or Continuous Run, migrate storage, change persisted user data, or run formal proof."
+}
