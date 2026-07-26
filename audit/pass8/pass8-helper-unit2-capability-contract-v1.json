@@ -1,0 +1,364 @@
+{
+  "type": "PMP_PASS8_HELPER_UNIT2_CAPABILITY_CONTRACT_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T17:50:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "40a3334564aa1d8385c523a40835ad085580da2e",
+  "branch": "agent/pass8-unit2-helper-capability-contract-v1",
+  "pass": 8,
+  "unit": "P8-U2",
+  "unit_id": "P8-U2",
+  "status": "HELPER_CAPABILITY_CONTRACT_PROVEN",
+  "objective": "Define explicit Helper capabilities, exact canonical owner and slot bindings, owner-label resolution, legacy and unknown holds, growth, revocation, and fail-closed behavior without activating production Helpers.",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass8-unit2-helper-capability-contract-v1.yml",
+      "audit/pass8/pass8-helper-unit2-capability-contract-v1.json",
+      "audit/pass8/receipts/RECEIPT_P8_U2_HELPER_CAPABILITY_CONTRACT_20260726T175000Z_001.json",
+      "tools/run_pass8_unit2_helper_capability_contract_v1.js",
+      "tools/test_pass8_unit2_helper_capability_contract_v1.js",
+      "tools/verify_pass8_unit2_helper_capability_contract_v1.py"
+    ],
+    "implementation_paths": []
+  },
+  "inputs": {
+    "unit1_inventory": "audit/pass8/pass8-helper-unit1-inventory-v1.json",
+    "unit1_inventory_sha256": "1144fc7c272b0c565843851955e51fdf143dc114b4de7d221152402c56fefb0a",
+    "helper_rules": "pmp-pass8-helper-rules-v1.js",
+    "helper_rules_sha256": "a58811725145ccb197c603f573cbf04898bc71e507035db767ead77a82125d2e",
+    "pass7_owner_contract": "audit/pass7/pass7-section-owner-unit2-capability-contract-v1.json",
+    "pass7_owner_contract_sha256": "eb755a2d43b2a4331dae62dc90c8a2d4260c83ffd1f42f8c3024d27c875dd06b",
+    "cross_system_invariant_catalog": "audit/pass6/pass6-cross-system-invariant-catalog-v1.json",
+    "cross_system_invariant_catalog_sha256": "e8e89d3d50dc88ef2809d5bca4ef77e988d19bb196ebc58393c7b1398ac302a0",
+    "runner": "tools/run_pass8_unit2_helper_capability_contract_v1.js",
+    "runner_sha256": "389f05633ddb7e4b22da2062605859870acce4b020252e9c654ea72e26f6b570",
+    "test": "tools/test_pass8_unit2_helper_capability_contract_v1.js",
+    "test_sha256": "1acc8ad066443e65e9c6a1794617471f228da23a1c6115b16788c398bc1e628d"
+  },
+  "helper_contract": {
+    "contract_version": "PMP_HELPER_CAPABILITY_CONTRACT_V1",
+    "model": "EXPLICIT_HELPER_CAPABILITY_FAIL_CLOSED",
+    "root_grant_authority": "app_orchestrator_owner",
+    "required_capability_fields": [
+      "contract_version",
+      "capability_id",
+      "helper_id",
+      "helper_file",
+      "helper_source_sha256",
+      "declared_owner_label",
+      "canonical_owner_id",
+      "section_id",
+      "slot",
+      "registration",
+      "actions",
+      "resources",
+      "guard_requirements",
+      "growth_source",
+      "granted_by",
+      "issued_at",
+      "expires_at",
+      "revocation_epoch"
+    ],
+    "owner_bindings": {
+      "app_orchestrator": {
+        "binding_kind": "OWNER_ALIAS",
+        "canonical_owner_id": "app_orchestrator_owner",
+        "section_id": "app_orchestrator",
+        "guard_requirements": []
+      },
+      "mount_registry": {
+        "binding_kind": "OWNER_ALIAS",
+        "canonical_owner_id": "mount_registry_owner",
+        "section_id": "mount_registry",
+        "guard_requirements": []
+      },
+      "continuous_run_owner": {
+        "binding_kind": "OWNER_ALIAS",
+        "canonical_owner_id": "continuous_run_level_owner",
+        "section_id": "continuous_run",
+        "guard_requirements": []
+      },
+      "active_path_discovery_owner": {
+        "binding_kind": "BOUNDED_SUBDOMAIN",
+        "canonical_owner_id": "app_orchestrator_owner",
+        "section_id": "app_orchestrator",
+        "guard_requirements": []
+      },
+      "runtime_health_monitor": {
+        "binding_kind": "BOUNDED_SUBDOMAIN",
+        "canonical_owner_id": "diagnostics_owner",
+        "section_id": "diagnostics",
+        "guard_requirements": []
+      },
+      "runtime_version_manager": {
+        "binding_kind": "BOUNDED_SUBDOMAIN",
+        "canonical_owner_id": "diagnostics_owner",
+        "section_id": "diagnostics",
+        "guard_requirements": []
+      },
+      "bug_bank_owner": {
+        "binding_kind": "GUARDED_SUBDOMAIN",
+        "canonical_owner_id": "bank_screen_owner",
+        "section_id": "bank",
+        "guard_requirements": [
+          "bounded_bug_authority_lease",
+          "private_owner_token",
+          "unexpired_lease",
+          "formal_handoff"
+        ]
+      },
+      "safe_writer_owner": {
+        "binding_kind": "HELD_SUBDOMAIN",
+        "canonical_owner_id": "reload_current_owner",
+        "section_id": "current_reload",
+        "guard_requirements": []
+      }
+    },
+    "explicit_helper_holds": {
+      "safe_writer_current_return_fix": "DECLARATION_AND_SOURCE_ROUTE_BEHAVIOR_REQUIRE_LATER_EXPLICIT_OWNER_RECONCILIATION"
+    },
+    "unknown_helper_sources": [
+      "pmp-continuous-run-helper-conflict-blocker-v1.js",
+      "pmp-helper-bank-live-inspector-v1.js",
+      "pmp-helper-bank-live-inspector-v2.js",
+      "pmp-helper-problem-display-sync-v1.js",
+      "pmp-helper-problem-memory-v1.js",
+      "pmp-helper-problem-type-only-v1.js",
+      "pmp-helper-problem-type-seeds-v1.js",
+      "pmp-helper-symptom-watcher-v1.js",
+      "pmp-p15-helper-tidy-v1.js"
+    ],
+    "legacy_policy": "HOLD_NO_ACTIVE_CAPABILITY",
+    "unknown_source_policy": "HOLD_NO_CAPABILITY",
+    "filename_authority_policy": "NEVER_INFER_AUTHORITY",
+    "growth_policy": "EXACT_DECLARED_SOURCE_OWNER_SLOT_AND_GROWTH_BINDING",
+    "revocation_policy": "MONOTONIC_FAIL_CLOSED",
+    "globally_forbidden_actions": [
+      "ownership_takeover",
+      "other_owner_mutation",
+      "other_section_mutation",
+      "route_mutation",
+      "bank_mutation",
+      "bank_rebuild",
+      "storage_migration",
+      "persisted_user_data_write",
+      "production_activation",
+      "unbounded_timer",
+      "classify_fixed",
+      "repair"
+    ],
+    "failure_codes": [
+      "REJECTED_MALFORMED",
+      "REJECTED_OPERATION_ID",
+      "REJECTED_TIME",
+      "REJECTED_EVENT_TYPE",
+      "REJECTED_CAPABILITY_SHAPE",
+      "REJECTED_CONTRACT_VERSION",
+      "REJECTED_CAPABILITY_ID",
+      "REJECTED_DUPLICATE_OPERATION",
+      "REJECTED_DUPLICATE_CAPABILITY",
+      "REJECTED_UNDECLARED_SOURCE",
+      "REJECTED_UNKNOWN_HELPER",
+      "REJECTED_LEGACY_HELPER_HELD",
+      "REJECTED_HELPER_CONFLICT_HELD",
+      "REJECTED_HELPER_FILE_BINDING",
+      "REJECTED_SOURCE_HASH",
+      "REJECTED_OWNER_ALIAS",
+      "REJECTED_OWNER_BINDING",
+      "REJECTED_SLOT_BINDING",
+      "REJECTED_REGISTRATION_BINDING",
+      "REJECTED_ACTION_BINDING",
+      "REJECTED_RESOURCE_BINDING",
+      "REJECTED_GUARD_BINDING",
+      "REJECTED_GROWTH_SOURCE",
+      "REJECTED_ROOT_GRANT_AUTHORITY",
+      "REJECTED_EXPIRY",
+      "REJECTED_REVOCATION_EPOCH",
+      "REJECTED_CAPABILITY_MISSING",
+      "REJECTED_CAPABILITY_REVOKED",
+      "REJECTED_HELPER_IDENTITY",
+      "REJECTED_ACTION_NOT_GRANTED",
+      "REJECTED_RESOURCE_NOT_GRANTED",
+      "REJECTED_GUARD_REQUIREMENTS",
+      "REJECTED_NOT_YET_VALID",
+      "REJECTED_EXPIRED",
+      "REJECTED_REVOCATION_AUTHORITY",
+      "REJECTED_STALE_REVOCATION"
+    ],
+    "failure_effect": "DENY_NO_RUNTIME_OR_EXTERNAL_SIDE_EFFECT_AND_EMIT_OPERATION_CODE"
+  },
+  "contract_verification": {
+    "declared_helpers": 14,
+    "eligible_static_capabilities": 12,
+    "held_declared_helpers": 2,
+    "owner_labels_resolved": 8,
+    "guarded_helpers": 2,
+    "growth_helpers": 1,
+    "legacy_helpers_held": 1,
+    "unknown_sources_held": 9,
+    "result_sha256": "cd03d66f5232dbc725118e3e3988c305b5f98a9439e987004dd0021eb6616adc"
+  },
+  "observed_facts": [
+    {
+      "claim_type": "OBSERVED",
+      "fact": "The P8-U1 inventory proved fourteen declarations, eight non-canonical owner labels, one legacy declaration, one growth declaration, and nine undeclared Helper-named sources.",
+      "evidence_paths": [
+        "audit/pass8/pass8-helper-unit1-inventory-v1.json"
+      ]
+    },
+    {
+      "claim_type": "OBSERVED",
+      "fact": "The permanent invariant catalog separately recognizes bug_bank_owner and safe_writer_owner safety boundaries.",
+      "evidence_paths": [
+        "audit/pass6/pass6-cross-system-invariant-catalog-v1.json"
+      ]
+    }
+  ],
+  "inferred_conclusions": [
+    {
+      "claim_type": "INFERRED",
+      "conclusion": "Bug-domain Helpers require the existing bounded Bug Authority lease, token, expiry, and handoff guards in addition to their canonical Bank section binding.",
+      "basis_evidence_paths": [
+        "audit/pass6/pass6-cross-system-invariant-catalog-v1.json",
+        "pmp-bug-watch-passive-capture-v1.js"
+      ]
+    },
+    {
+      "claim_type": "INFERRED",
+      "conclusion": "The Safe Writer helper must remain held until its declared storage-helper role and source route behavior receive an explicit later owner reconciliation.",
+      "basis_evidence_paths": [
+        "pmp-pass8-helper-rules-v1.js",
+        "pmp-safe-writer-current-return-fix-v1.js"
+      ]
+    }
+  ],
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "static_contract",
+    "diagnostic_matrix_update": {
+      "status": "CONFIRMED_UNCHANGED",
+      "applicable_matrix": "audit/pass7/pass7-section-owner-unit5-isolation-restart-denial-proof-v1.json",
+      "rationale": "P8-U2 is a pure static contract. It preserves the P7 isolation matrix and adds deterministic Helper-specific denial coverage without activating a Helper."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass8/pass8-helper-unit2-capability-contract-v1.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass8_unit2_helper_capability_contract_v1.js"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass8_unit2_helper_capability_contract_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass8/receipts/RECEIPT_P8_U2_HELPER_CAPABILITY_CONTRACT_20260726T175000Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "P8-U1 found fourteen Helper declarations and nine undeclared Helper-named sources.",
+        "evidence_paths": [
+          "audit/pass8/pass8-helper-unit1-inventory-v1.json"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "Pass 7 provides eight canonical Section Owner identities and fail-closed capability boundaries.",
+        "evidence_paths": [
+          "audit/pass7/pass7-section-owner-unit2-capability-contract-v1.json"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "A Helper capability must bind exact source hash, Helper identity, canonical owner, section, slot, actions, resources, guards, and growth source before authorization.",
+        "basis_evidence_paths": [
+          "audit/pass7/pass7-section-owner-unit2-capability-contract-v1.json",
+          "audit/pass8/pass8-helper-unit1-inventory-v1.json"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "malformed capability",
+        "unknown Helper",
+        "undeclared source",
+        "legacy Helper",
+        "held Helper conflict",
+        "source hash mismatch",
+        "owner alias mismatch",
+        "canonical owner or section mismatch",
+        "slot mismatch",
+        "action or resource mismatch",
+        "guard mismatch",
+        "growth mismatch",
+        "duplicate capability or operation",
+        "expired capability",
+        "unauthorized or stale revocation",
+        "revoked capability use"
+      ]
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "verification": {
+    "assertions_total": 255,
+    "assertions_passed": 255,
+    "assertions_failed": 0,
+    "exact_scope": "PASS",
+    "source_hashes": "PASS",
+    "owner_and_slot_bindings": "PASS",
+    "legacy_and_unknown_holds": "PASS",
+    "guard_growth_revocation_and_failure_contract": "PASS",
+    "permanent_gate_binding": "PASS"
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_mutations": false,
+    "helper_ownership_changes": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P8-U3",
+    "objective": "Define versioned Helper registration, growth, revocation, denial, and restart-safe journal events under the P8-U2 capability contract.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P8-U2 pure static contract only. No Helper is registered, activated, mounted, rerouted, migrated, or granted production authority; no Bank behavior, persisted user data, live observation, or formal proof changes."
+}

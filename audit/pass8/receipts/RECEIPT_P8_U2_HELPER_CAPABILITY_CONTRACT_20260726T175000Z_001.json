@@ -1,0 +1,56 @@
+{
+  "type": "PMP_PASS8_UNIT2_HELPER_CAPABILITY_CONTRACT_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P8_U2_HELPER_CAPABILITY_CONTRACT_20260726T175000Z_001",
+  "created_at": "2026-07-26T17:50:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "40a3334564aa1d8385c523a40835ad085580da2e",
+  "branch": "agent/pass8-unit2-helper-capability-contract-v1",
+  "pass": 8,
+  "unit": "P8-U2",
+  "status": "HELPER_CAPABILITY_CONTRACT_PROVEN",
+  "evidence": "audit/pass8/pass8-helper-unit2-capability-contract-v1.json",
+  "changed_paths": [
+    ".github/workflows/pass8-unit2-helper-capability-contract-v1.yml",
+    "audit/pass8/pass8-helper-unit2-capability-contract-v1.json",
+    "audit/pass8/receipts/RECEIPT_P8_U2_HELPER_CAPABILITY_CONTRACT_20260726T175000Z_001.json",
+    "tools/run_pass8_unit2_helper_capability_contract_v1.js",
+    "tools/test_pass8_unit2_helper_capability_contract_v1.js",
+    "tools/verify_pass8_unit2_helper_capability_contract_v1.py"
+  ],
+  "coverage": {
+    "declared_helpers": 14,
+    "eligible_static_capabilities": 12,
+    "held_declared_helpers": 2,
+    "owner_labels_resolved": 8,
+    "guarded_helpers": 2,
+    "growth_helpers": 1,
+    "unknown_sources_held": 9,
+    "assertions": 255,
+    "artifact_roles": 9
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_mutations": false,
+    "helper_ownership_changes": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "next_safe_move": {
+    "step_id": "P8-U3",
+    "instruction": "Define versioned Helper registration, growth, revocation, denial, and restart-safe journal events under the P8-U2 capability contract.",
+    "requires_explicit_authority": false,
+    "requires_user_app_check": false,
+    "stop_before": "Only a genuinely required hands-on app reproduction or separately authorized scarce observation."
+  }
+}
