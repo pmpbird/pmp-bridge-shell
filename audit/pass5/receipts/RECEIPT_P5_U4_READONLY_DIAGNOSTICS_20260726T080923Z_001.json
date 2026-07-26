@@ -1,0 +1,104 @@
+{
+  "schema": "PMP_APP_ORCHESTRATOR_STEP_RECEIPT_V1",
+  "receipt_id": "AO-P5-U4-READONLY-LIFECYCLE-DIAGNOSTICS-V1-001",
+  "created_at": "2026-07-26T08:09:23Z",
+  "project": "App Orchestrator",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "roadmap_version": "1.0.0",
+  "pass": 5,
+  "unit": "P5-U4",
+  "substep": "P5-U4",
+  "kind": "IMPLEMENTATION",
+  "status": "PASS_BOUNDED",
+  "objective": "Add a redacted read-only lifecycle registry view to the existing Diagnostics Mount Registry card without granting event, mount, route, repair, storage, or ownership authority.",
+  "claim_ceiling": "Read-only Diagnostics consumer only; no lifecycle event application, registry mutation, tab ownership change, storage migration, live observation, or Pass 5 closure.",
+  "authority": {
+    "basis": [
+      "V105 exact next move P5-U4",
+      "Merged P5-U3 passive lifecycle runtime",
+      "Strengthened 13-pass execution roadmap V1",
+      "Continuing ordinary in-scope authorization through Pass 13"
+    ],
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "authorization_evidence": [
+      "The consumer receives only the read-only lifecycle snapshot function.",
+      "No live observation or formal-proof authority is used."
+    ]
+  },
+  "git": {
+    "base_commit": "b1a16f7fc5c03dd62d34ab95aadddc218fdf7ecf",
+    "branch": "agent/pass5-unit4-readonly-diagnostics-v1",
+    "head_commit": null,
+    "pull_request": null,
+    "merge_commit": null,
+    "verified_main_commit": "b1a16f7fc5c03dd62d34ab95aadddc218fdf7ecf"
+  },
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass5-unit3-passive-lifecycle-integration-v1.yml",
+      ".github/workflows/pass5-unit4-readonly-lifecycle-diagnostics-v1.yml",
+      "audit/a003-manifest-seal.json",
+      "audit/pass5/pass5-mount-registry-diagnostics-unit4-readonly-view-v1.json",
+      "audit/pass5/receipts/RECEIPT_P5_U4_READONLY_DIAGNOSTICS_20260726T080923Z_001.json",
+      "pmp-app-current.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+      "pmp-diagnostics-owner-v1.js",
+      "pmp-mount-lifecycle-diagnostics-view-v1.js",
+      "pmp-runtime-integrity-manifest-v1.json",
+      "tools/generate_pass5_unit4_integrity_updates_v1.py",
+      "tools/test_pass5_unit4_readonly_lifecycle_diagnostics_v1.js",
+      "tools/verify_pass5_unit4_readonly_lifecycle_diagnostics_v1.py"
+    ],
+    "evidence_paths": [
+      "audit/pass5/pass5-mount-registry-diagnostics-unit4-readonly-view-v1.json"
+    ],
+    "forbidden_paths_checked": [
+      "P5-U2 lifecycle contract",
+      "P5-U3 lifecycle runtime",
+      "Existing Mount Registry atlas",
+      "Diagnostics bottom-tab owner",
+      "App Orchestrator, Current Map, and route owners",
+      "Existing persisted storage and user data",
+      "Consumed observation records",
+      "PR 122"
+    ],
+    "unrelated_changes_preserved": true
+  },
+  "verification": {
+    "tests": [
+      "Empty and unavailable lifecycle views",
+      "Snapshot exception and malformed snapshot fail-passive behavior",
+      "Redacted deterministic operation and rejection facts",
+      "Repeated read without mutation",
+      "64-operation visible bound",
+      "Existing Mount Registry card and Diagnostics owner preservation",
+      "Forbidden-effect source scan",
+      "Completed P5-U3 workflow routing isolation",
+      "Exact thirteen-file scope and A-003 identity verifier"
+    ],
+    "workflows": [],
+    "result": "Prepared for deterministic local and pull-request verification.",
+    "evidence_complete": true
+  },
+  "effects": {
+    "production_runtime_changed": true,
+    "runtime_integrity_changed": true,
+    "persisted_user_data_changed": false,
+    "historical_evidence_changed": false,
+    "github_changed": false
+  },
+  "recovery": {
+    "rollback_available": true,
+    "rollback_reference": "The additive view script, load tag, and Diagnostics projection can be reverted without registry, storage, or user-data rollback.",
+    "evidence_preserved": true
+  },
+  "supersedes_receipt_ids": [],
+  "next_safe_move": {
+    "step_id": "P5-U5",
+    "instruction": "Run the isolated deterministic lifecycle transition and failure proof, including the read-only Diagnostics consumer.",
+    "requires_explicit_authority": false,
+    "stop_before": "Any current-path live observation or user app interaction before P5-U5 is merged and checkpointed."
+  }
+}
