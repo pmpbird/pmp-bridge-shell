@@ -12,6 +12,7 @@
   "objective": "Production-load a passive explicit Helper event adapter bound to the exact P8-U2 capability contract, P8-U3 registration contract, canonical Section Owner runtime, and a redacted read-only Diagnostics view.",
   "scope": {
     "changed_paths": [
+      ".github/workflows/pass7-unit5-owner-isolation-restart-denial-proof-v1.yml",
       ".github/workflows/pass8-unit4-helper-owner-diagnostics-integration-v1.yml",
       "audit/a003-manifest-seal.json",
       "audit/pass8/pass8-helper-unit4-owner-diagnostics-integration-v1.json",
@@ -41,6 +42,8 @@
     "unit3_registration_events_sha256": "6307a8c8dbfe06f549fa64da2550b5e34ef9242773c8e3fe63c6924c9cbef3b0",
     "generator": "tools/generate_pass8_unit4_integrity_updates_v1.py",
     "generator_sha256": "6865b58e261a571456262cfcb04a1a5c6afe8103d5e68c73a59caafb6907549a",
+    "pass7_unit5_compatibility_workflow": ".github/workflows/pass7-unit5-owner-isolation-restart-denial-proof-v1.yml",
+    "pass7_unit5_compatibility_workflow_sha256": "b6fe646b61b0a4cd3700a2b3121d78e2bd6e82ba1608f47f694af32edf0a8bae",
     "test": "tools/test_pass8_unit4_helper_owner_diagnostics_integration_v1.js",
     "test_sha256": "0962c3c4d51d0fee390f13e61dd8d244a3c2e831cd19bc48b46325009b46881a"
   },
@@ -75,6 +78,14 @@
     "source_versions_exposed": false,
     "maximum_visible_events": 128,
     "atomic_restart_policy": "EXACT_SEALED_PACKAGE_OR_EMPTY"
+  },
+  "ci_compatibility_repair": {
+    "workflow": ".github/workflows/pass7-unit5-owner-isolation-restart-denial-proof-v1.yml",
+    "failure_run": 30214778986,
+    "failure_job": 89826923795,
+    "observed_root_cause": "The P7-U5 regression test passed 218/218, but its immutable exact-scope verifier was unconditionally invoked with the later P8-U4 base commit.",
+    "repair": "Run the immutable P7-U5 exact-scope verifier only at its sealed base and preserve the 218/218 runtime regression test on later units.",
+    "scope_or_safety_relaxation": false
   },
   "diagnostic_and_proof_matrix": {
     "type": "PMP_PASS8_HELPER_OWNER_DIAGNOSTIC_PROOF_MATRIX_V1",

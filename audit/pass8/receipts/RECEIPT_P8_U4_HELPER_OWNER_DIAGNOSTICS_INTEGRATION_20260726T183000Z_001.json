@@ -11,6 +11,7 @@
   "status": "HELPER_OWNER_DIAGNOSTICS_INTEGRATION_PROVEN",
   "evidence": "audit/pass8/pass8-helper-unit4-owner-diagnostics-integration-v1.json",
   "changed_paths": [
+    ".github/workflows/pass7-unit5-owner-isolation-restart-denial-proof-v1.yml",
     ".github/workflows/pass8-unit4-helper-owner-diagnostics-integration-v1.yml",
     "audit/a003-manifest-seal.json",
     "audit/pass8/pass8-helper-unit4-owner-diagnostics-integration-v1.json",
@@ -33,6 +34,7 @@
     "event_types": 5,
     "restart_tamper_cases": 4,
     "diagnostic_event_bound": 128,
+    "ci_compatibility_repairs": 1,
     "assertions": 443,
     "artifact_roles": 9
   },

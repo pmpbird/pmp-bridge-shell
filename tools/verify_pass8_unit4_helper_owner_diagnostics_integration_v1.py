@@ -24,6 +24,7 @@ TEST = ROOT / "tools/test_pass8_unit4_helper_owner_diagnostics_integration_v1.js
 WORKFLOW = ROOT / ".github/workflows/pass8-unit4-helper-owner-diagnostics-integration-v1.yml"
 GATE_RUNNER = ROOT / "tools/run_pass6_unit7_no_blind_flying_gate_v1.py"
 EXPECTED = {
+    ".github/workflows/pass7-unit5-owner-isolation-restart-denial-proof-v1.yml",
     ".github/workflows/pass8-unit4-helper-owner-diagnostics-integration-v1.yml",
     "audit/a003-manifest-seal.json",
     "audit/pass8/pass8-helper-unit4-owner-diagnostics-integration-v1.json",
@@ -49,6 +50,8 @@ SOURCE_INPUTS = {
     "unit2_capability_contract_sha256": ROOT / "audit/pass8/pass8-helper-unit2-capability-contract-v1.json",
     "unit3_registration_events_sha256": ROOT / "audit/pass8/pass8-helper-unit3-registration-events-v1.json",
     "generator_sha256": GENERATOR,
+    "pass7_unit5_compatibility_workflow_sha256": ROOT
+    / ".github/workflows/pass7-unit5-owner-isolation-restart-denial-proof-v1.yml",
     "test_sha256": TEST,
 }
 
@@ -192,6 +195,21 @@ def main() -> None:
 
     workflow = WORKFLOW.read_text()
     assert workflow_paths(workflow) == EXPECTED
+    compatibility_workflow = (
+        ROOT / ".github/workflows/pass7-unit5-owner-isolation-restart-denial-proof-v1.yml"
+    ).read_text()
+    assert (
+        'if [ "${{ github.event.pull_request.base.sha }}" = '
+        '"4ed25e626ff36a6ef795a26a001cd44a920c2329" ]; then'
+    ) in compatibility_workflow
+    assert "immutable exact-scope verifier skipped" in compatibility_workflow
+    assert compatibility_workflow.index(
+        "node tools/test_pass7_unit5_owner_isolation_restart_denial_v1.js"
+    ) < compatibility_workflow.index("immutable exact-scope verifier skipped")
+    compatibility = report["ci_compatibility_repair"]
+    assert compatibility["failure_run"] == 30214778986
+    assert compatibility["failure_job"] == 89826923795
+    assert compatibility["scope_or_safety_relaxation"] is False
     for required in (
         "if: always()",
         "actions/upload-artifact@v4",
@@ -221,7 +239,7 @@ def main() -> None:
     assert report["next_step"]["requires_user_app_check"] is False
     assert receipt["next_safe_move"]["step_id"] == "P8-U5"
     print(
-        "PASS: exact thirteen-file P8-U4 bounded Helper Owner and Diagnostics "
+        "PASS: exact fourteen-file P8-U4 bounded Helper Owner and Diagnostics "
         f"integration verified ({assertions}/{assertions}, gate PASS)"
     )
 
