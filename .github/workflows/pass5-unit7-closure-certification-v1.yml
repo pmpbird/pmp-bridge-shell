@@ -1,0 +1,23 @@
+name: Pass 5 Unit 7 Closure Certification
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - '.github/workflows/pass5-unit7-closure-certification-v1.yml'
+      - 'audit/pass5/pass5-mount-registry-unit7-closure-certification-v1.json'
+      - 'audit/pass5/receipts/RECEIPT_P5_U7_CLOSURE_20260726T084800Z_001.json'
+      - 'tools/verify_pass5_unit7_closure_certification_v1.py'
+permissions:
+  contents: read
+jobs:
+  pass5-closure-certification:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify exact audit-only closure and all Pass 5 claims
+        run: python3 tools/verify_pass5_unit7_closure_certification_v1.py "${{ github.event.pull_request.base.sha }}"
