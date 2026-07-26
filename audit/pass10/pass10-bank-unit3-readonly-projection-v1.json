@@ -1,0 +1,284 @@
+{
+  "type": "PMP_PASS10_BANK_UNIT3_READONLY_PROJECTION_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T22:35:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "3e29393933c2b8ce71cc6f9ddcc70aff96f4416f",
+  "branch": "agent/pass10-unit3-bank-readonly-projection-v1",
+  "pass": 10,
+  "unit": "P10-U3",
+  "unit_id": "P10-U3",
+  "status": "BANK_READONLY_PROJECTION_PROVEN",
+  "objective": "Implement and deterministically prove one read-only Bank inventory projection from Bank-owner facts, loaded between the owner router and Bank tab, with stable identity, visible quarantine, reference-only historic data, exact source-byte preservation, no raw-payload exposure, and no UI write, delete, migration, Helper, or active-tab authority.",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass10-unit3-bank-readonly-projection-v1.yml",
+      "audit/a003-manifest-seal.json",
+      "audit/pass10/pass10-bank-unit3-readonly-projection-v1.json",
+      "audit/pass10/receipts/RECEIPT_P10_U3_BANK_READONLY_PROJECTION_20260726T223500Z_001.json",
+      "pmp-app-current.html",
+      "pmp-bank-inventory-readonly-projection-v1.js",
+      "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+      "pmp-master-bank-tab-v1.js",
+      "pmp-mount-registry-v1.js",
+      "pmp-runtime-integrity-manifest-v1.json",
+      "tools/generate_pass10_unit3_integrity_updates_v1.py",
+      "tools/test_pass10_unit3_bank_readonly_projection_v1.js",
+      "tools/verify_pass10_unit3_bank_readonly_projection_v1.py"
+    ],
+    "implementation_paths": [
+      "pmp-app-current.html",
+      "pmp-bank-inventory-readonly-projection-v1.js",
+      "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+      "pmp-master-bank-tab-v1.js",
+      "pmp-mount-registry-v1.js"
+    ]
+  },
+  "inputs": {
+    "unit2_contract": "audit/pass10/pass10-bank-unit2-inventory-contract-v1.json",
+    "unit2_contract_sha256": "64314c8ab3f1c1d92c7e315bc4b1c023e799549b08fbe56b37c412a00faa47cb",
+    "projection": "pmp-bank-inventory-readonly-projection-v1.js",
+    "projection_sha256": "f1fd84964967b6b4842b51db7c2a3b4c38bdda3ad18d3d96f73b7ad138ee22fc",
+    "bank_tab": "pmp-master-bank-tab-v1.js",
+    "bank_tab_sha256": "2c9c02d4015057746fafe7074a96e6a6a8396fc9729cfe552fcdb644875ac176",
+    "active_inner": "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+    "active_inner_sha256": "b49b02c250cf07bab1b8010d8aa9bcc7b41459df20a85bbf23dc2c9d19d90d27",
+    "mount_registry": "pmp-mount-registry-v1.js",
+    "mount_registry_sha256": "81f47f2b3c9e1ecd7e2cae08efea5ed85fd047653dee13b91edad10fe3062033",
+    "integrity_generator": "tools/generate_pass10_unit3_integrity_updates_v1.py",
+    "integrity_generator_sha256": "fb9bef39f18d27552b3a388c35dda60185a0c0fa2cd08994e6d0410dc5e585e4",
+    "test": "tools/test_pass10_unit3_bank_readonly_projection_v1.js",
+    "test_sha256": "9e266b50932fefa9e05b1a3dca9a5fab1f27d0a8662cecdfe3c005ecfda4b84d"
+  },
+  "integration": {
+    "model": "ONE_BANK_OWNER_READONLY_PROJECTION_EVENT_OR_USER_REFRESH",
+    "contract_version": "PMP_CANONICAL_BANK_INVENTORY_CONTRACT_V1",
+    "projection_version": "1.0.0-pass10-unit3-readonly-projection-20260726A",
+    "bank_tab_version": "3.0.0-pass10-unit3-readonly-projection-20260726A",
+    "owner": "bank_screen_owner",
+    "canonical_bank_families": 13,
+    "local_storage_namespace_rules": 14,
+    "indexeddb_namespace_declarations": 2,
+    "indexeddb_opened_by_unit": 0,
+    "load_storage_reads": 0,
+    "load_storage_writes": 0,
+    "load_storage_deletes": 0,
+    "snapshot_storage_writes": 0,
+    "snapshot_storage_deletes": 0,
+    "raw_payloads_exposed": 0,
+    "write_apis_exposed": 0,
+    "delete_apis_exposed": 0,
+    "migration_apis_exposed": 0,
+    "recurring_projection_painters": 0,
+    "helper_registration_conveys_authority": false,
+    "active_tab_conveys_authority": false,
+    "filename_conveys_authority": false,
+    "unknown_or_orphan_policy": "QUARANTINE_PRESERVE_EXACT_BYTES_NEVER_SILENTLY_DELETE",
+    "historic_namespace_policy": "REFERENCE_ONLY_NEVER_SILENTLY_MERGE",
+    "refresh_mode": "EXPLICIT_USER_OR_OWNER_EVENT_ONLY",
+    "production_load_order": [
+      "pmp-bank-continuous-run-owner-boundary-v1.js",
+      "pmp-continuous-run-state-bank-v1.js",
+      "pmp-master-bank-inventory-router-v1.js",
+      "pmp-bank-inventory-readonly-projection-v1.js",
+      "pmp-master-bank-tab-v1.js"
+    ],
+    "single_projection_load": true,
+    "single_bank_tab_load": true,
+    "mount_registry_binding": true
+  },
+  "deterministic_matrix": {
+    "type": "PMP_PASS10_UNIT3_BANK_READONLY_PROJECTION_MATRIX_V1",
+    "assertions": 125,
+    "fixtures": [
+      "current master inventory records",
+      "current Helper index facts",
+      "Continuous Run project registry",
+      "historic connection inventory",
+      "corrupt governed namespace",
+      "unknown Bank namespace",
+      "unrelated user storage",
+      "identity collision",
+      "owner boundary unavailable"
+    ],
+    "proven_invariants": [
+      "projection and owner boundary load perform zero storage reads, writes, or deletes",
+      "snapshot performs bounded reads and zero writes or deletes",
+      "all source bytes remain exact after repeated snapshots",
+      "unknown, corrupt, and colliding facts remain visible as quarantine",
+      "historic inventory remains reference-only with no write authority",
+      "raw payload bytes or content never enter the UI projection",
+      "Helper registration and active-tab state never establish Bank authority",
+      "projection exposes no write, delete, migration, recurring painter, or IndexedDB-open path",
+      "active production load order contains exactly one projection before exactly one Bank tab"
+    ],
+    "fault_cases": 9
+  },
+  "runtime_integrity": {
+    "runtime_records": 711,
+    "manifest_sha256": "fa94acffd222d5f77b2c9eaf6acafb07ade07d54cb339f41620252ab44992d15",
+    "runtime_source_set_sha256": "4157a9dc0b5231483193ff180b93925e425c0e0930f9bb2c3b1b2a8939c6ed6a",
+    "seal_sha256": "b3cf715e8b1f153ecdbbced5fb884c4b907f703e57a4778bdcabb285f942b3a7",
+    "bootstrap_sha256": "9e844c21f2c269de091f71a81b239517db149b57c4ecf8a0ec16c98cd30882a1"
+  },
+  "observed_facts": [
+    {
+      "claim_type": "OBSERVED",
+      "fact": "The deterministic projection loaded with zero storage effects, then read seeded owner facts without changing any source byte or exposing any raw payload.",
+      "evidence_paths": [
+        "tools/test_pass10_unit3_bank_readonly_projection_v1.js"
+      ]
+    },
+    {
+      "claim_type": "OBSERVED",
+      "fact": "The active v23 inner chain loads one read-only projection after the Bank owner router and before one Bank tab; the mount registry binds the projection once.",
+      "evidence_paths": [
+        "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+        "pmp-mount-registry-v1.js"
+      ]
+    },
+    {
+      "claim_type": "OBSERVED",
+      "fact": "The Bank tab now renders sanitized projection items and exports only the read-only projection and summary facts; it contains no direct record write or delete call.",
+      "evidence_paths": [
+        "pmp-master-bank-tab-v1.js",
+        "pmp-bank-inventory-readonly-projection-v1.js"
+      ]
+    }
+  ],
+  "inferred_conclusions": [
+    {
+      "claim_type": "INFERRED",
+      "conclusion": "P10-U4 can add bounded owner-driven projection update integration without user app inspection because P10-U3 already proves the read-only representation, authority exclusions, exact-byte preservation, and active load order deterministically.",
+      "basis_evidence_paths": [
+        "audit/pass10/pass10-bank-unit2-inventory-contract-v1.json",
+        "audit/pass10/pass10-bank-unit3-readonly-projection-v1.json"
+      ]
+    }
+  ],
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_integration",
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/pass10/pass10-bank-unit3-readonly-projection-v1.json",
+      "rationale": "P10-U3 changes the active Bank representation and therefore adds deterministic load, read, identity, quarantine, collision, no-authority, no-mutation, load-order, and runtime-integrity evidence."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass10/pass10-bank-unit1-inventory-reconciliation-v1.json",
+      "audit/pass10/pass10-bank-unit2-inventory-contract-v1.json",
+      "audit/pass10/pass10-bank-unit3-readonly-projection-v1.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass10_unit3_bank_readonly_projection_v1.js"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass10_unit3_bank_readonly_projection_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass10/receipts/RECEIPT_P10_U3_BANK_READONLY_PROJECTION_20260726T223500Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "One hundred twenty-five deterministic assertions cover current, historic, corrupt, unknown, colliding, unrelated, and unavailable Bank facts while proving zero source mutation and zero raw-payload exposure.",
+        "evidence_paths": [
+          "tools/test_pass10_unit3_bank_readonly_projection_v1.js"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "Owner-driven update integration may proceed only through explicit owner events and must preserve the projection's absent write/delete/migration surface.",
+        "basis_evidence_paths": [
+          "audit/pass10/pass10-bank-unit3-readonly-projection-v1.json"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "corrupt governed namespace",
+        "unknown Bank namespace",
+        "unknown owner and schema",
+        "duplicate identity with distinct payloads",
+        "historic inventory presented alongside current facts",
+        "unrelated user key present",
+        "owner boundary unavailable",
+        "projection repeat refresh",
+        "raw payload disclosure attempt"
+      ]
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "verification": {
+    "assertions_total": 125,
+    "assertions_passed": 125,
+    "assertions_failed": 0,
+    "exact_scope": "PASS",
+    "unit2_contract_binding": "PASS",
+    "read_only_projection": "PASS",
+    "identity_and_provenance": "PASS",
+    "quarantine_collision_and_historic": "PASS",
+    "source_byte_preservation": "PASS",
+    "raw_payload_non_disclosure": "PASS",
+    "helper_and_active_tab_no_authority": "PASS",
+    "active_load_order_and_singletons": "PASS",
+    "runtime_integrity_reseal": "PASS",
+    "zero_persisted_data_change": "PASS",
+    "permanent_gate_binding": "PASS"
+  },
+  "effects": {
+    "production_files_changed": true,
+    "runtime_integrity_changed": true,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "storage_deletes": false,
+    "route_changes": false,
+    "mount_registry_binding_changed": true,
+    "bank_user_data_mutations": false,
+    "continuous_run_user_data_mutations": false,
+    "repairs": true,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": true
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P10-U4",
+    "objective": "Integrate bounded owner-driven Bank inventory updates so accepted Bank-owner commits refresh the read-only projection exactly once while wrong-owner, duplicate, stale, and direct UI mutations fail closed.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "persisted_user_data_change_allowed": false,
+    "storage_migration_allowed": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P10-U3 proves the active read-only Bank projection statically and deterministically. It does not claim a user-observed live app result, change or migrate persisted user data, open IndexedDB, perform a scarce observation, or run formal proof."
+}
