@@ -1,0 +1,26 @@
+name: Pass 5 Unit 1 Mount Readiness Audit
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - '.github/workflows/pass5-unit1-mount-readiness-audit-v1.yml'
+      - 'audit/pass5/pass5-mount-registry-diagnostics-unit1-readiness-inventory-v1.json'
+      - 'audit/pass5/receipts/RECEIPT_P5_U1_READINESS_20260726T065204Z_001.json'
+      - 'tools/test_pass5_unit1_mount_readiness_inventory_v1.py'
+      - 'tools/verify_pass5_unit1_mount_readiness_inventory_v1.py'
+permissions:
+  contents: read
+jobs:
+  deterministic-readiness-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test mount inventory and compatibility boundary
+        run: python3 tools/test_pass5_unit1_mount_readiness_inventory_v1.py
+      - name: Verify exact evidence-only Unit 1 scope
+        run: python3 tools/verify_pass5_unit1_mount_readiness_inventory_v1.py "${{ github.event.pull_request.base.sha }}"
