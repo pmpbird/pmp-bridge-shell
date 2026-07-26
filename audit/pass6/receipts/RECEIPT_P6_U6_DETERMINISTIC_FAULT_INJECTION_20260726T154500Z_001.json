@@ -1,0 +1,59 @@
+{
+  "type": "PMP_PASS6_UNIT6_DETERMINISTIC_FAULT_INJECTION_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P6_U6_DETERMINISTIC_FAULT_INJECTION_20260726T154500Z_001",
+  "created_at": "2026-07-26T15:45:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "d66f8a32aae8b4c26699032a2dce18d6d41c6e8c",
+  "branch": "agent/pass6-unit6-fault-injection-v1",
+  "pass": 6,
+  "unit": "P6-U6",
+  "status": "DETERMINISTIC_FAULT_PRESERVATION_PROVEN",
+  "catalog": "audit/pass6/pass6-fault-injection-catalog-v1.json",
+  "evidence": "audit/pass6/pass6-deterministic-fault-injection-unit6-proof-v1.json",
+  "changed_paths": [
+    ".github/workflows/pass6-unit6-deterministic-fault-injection-v1.yml",
+    "audit/pass6/pass6-deterministic-fault-injection-unit6-proof-v1.json",
+    "audit/pass6/pass6-fault-injection-catalog-v1.json",
+    "audit/pass6/receipts/RECEIPT_P6_U6_DETERMINISTIC_FAULT_INJECTION_20260726T154500Z_001.json",
+    "tools/run_pass6_unit6_fault_injection_v1.js",
+    "tools/test_pass6_unit6_fault_injection_v1.js",
+    "tools/verify_pass6_unit6_fault_injection_v1.py"
+  ],
+  "coverage": {
+    "fault_categories": 8,
+    "faults_preserved": 8,
+    "primary_failures_preserved": 8,
+    "secondary_failure_sets_preserved": 8,
+    "meta_regression_assertions": 233,
+    "restart_sequences": 1,
+    "automatic_retries": 0,
+    "artifact_roles": 9,
+    "failure_artifacts_uploaded_before_enforcement": true
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false
+  },
+  "recovery": {
+    "rollback_available": true,
+    "rollback_reference": "The repository-only fault catalog, runner, tests, evidence, and CI route can be reverted without runtime or data rollback.",
+    "evidence_preserved": true
+  },
+  "next_safe_move": {
+    "step_id": "P6-U7",
+    "instruction": "Certify Pass 6 closure and activate the permanent no-blind-flying gate.",
+    "requires_explicit_authority": false,
+    "requires_user_app_check": false,
+    "stop_before": "Only a genuinely required hands-on app reproduction or verification in a later unit."
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "type": "PMP_PASS6_DETERMINISTIC_FAULT_INJECTION_UNIT6_PROOF_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T15:45:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "d66f8a32aae8b4c26699032a2dce18d6d41c6e8c",
+  "branch": "agent/pass6-unit6-fault-injection-v1",
+  "pass": 6,
+  "unit": "P6-U6",
+  "status": "DETERMINISTIC_FAULT_PRESERVATION_PROVEN",
+  "objective": "Prove deterministic fault preservation for timeouts, animation, nested frames, malformed state, missing dependencies, duplicate events, restart, and partial failure.",
+  "changed_paths": [
+    ".github/workflows/pass6-unit6-deterministic-fault-injection-v1.yml",
+    "audit/pass6/pass6-deterministic-fault-injection-unit6-proof-v1.json",
+    "audit/pass6/pass6-fault-injection-catalog-v1.json",
+    "audit/pass6/receipts/RECEIPT_P6_U6_DETERMINISTIC_FAULT_INJECTION_20260726T154500Z_001.json",
+    "tools/run_pass6_unit6_fault_injection_v1.js",
+    "tools/test_pass6_unit6_fault_injection_v1.js",
+    "tools/verify_pass6_unit6_fault_injection_v1.py"
+  ],
+  "inputs": {
+    "fault_catalog": "audit/pass6/pass6-fault-injection-catalog-v1.json",
+    "fault_catalog_sha256": "71f399d2db8e1e3e5c6eeb614b62c806fae6aa9f6cb9cb4d50b689304b58db2f",
+    "invariant_catalog": "audit/pass6/pass6-cross-system-invariant-catalog-v1.json",
+    "invariant_catalog_sha256": "e8e89d3d50dc88ef2809d5bca4ef77e988d19bb196ebc58393c7b1398ac302a0",
+    "baseline_scenario": "audit/pass6/fixtures/pass6-unit4-deterministic-proof-harness-positive-v1.json",
+    "baseline_scenario_sha256": "8479c6d9ede8ced4cbc6a0c34af8a8e14ffb07232f5fd5555169accb9890b608",
+    "ci_evidence_policy": "audit/pass6/pass6-ci-lane-artifact-policy-v1.json",
+    "ci_evidence_policy_sha256": "a783eee03bcfc63abed0e6107d5654d001f17595fb5f9c51c8f664b3bcba6dad",
+    "harness": "tools/pass6_deterministic_browser_frame_event_harness_v1.js",
+    "harness_sha256": "a9e296008a091cdb9ee59370e8c1626f4b1ffe626ad64fdf16078460e458e5c5",
+    "runner": "tools/run_pass6_unit6_fault_injection_v1.js",
+    "runner_sha256": "796e3cf1bc156b0891538c3ea2fd3991e7a96a6b2b0765c6b95f15ede61394e8",
+    "test": "tools/test_pass6_unit6_fault_injection_v1.js",
+    "test_sha256": "9c6bb9c7754d2722995c69d85d9bbc73cba026261ef09ccee1c5674f47245c4c"
+  },
+  "fault_coverage": {
+    "required": 8,
+    "executed": 8,
+    "preserved": 8,
+    "categories": [
+      "timeout",
+      "animation",
+      "nested_frames",
+      "malformed_state",
+      "missing_dependencies",
+      "duplicate_events",
+      "restart",
+      "partial_failure"
+    ],
+    "primary_failures_preserved": 8,
+    "secondary_failure_sets_preserved": 8,
+    "restart_sequences": 1,
+    "automatic_retries": 0,
+    "forbidden_effects": 0
+  },
+  "baseline_evaluation": {
+    "status": "PASS",
+    "assertions_total": 233,
+    "assertions_passed": 233,
+    "assertions_failed": 0,
+    "result_sha256": "1301be5f4763702d6639d3eb39e08f314c3b7efa91b7752199ba8f8c086d60f9"
+  },
+  "evidence_policy": {
+    "lane": "deterministic_browser_harness",
+    "attempts": 1,
+    "automatic_retry": false,
+    "special_authority_required": false,
+    "special_authority_consumed": false,
+    "artifact_roles": 9,
+    "failure_upload_before_enforcement": true,
+    "failed_attempt_erasure": false
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "consumed_observation_prs": [149, 150, 152],
+    "formal_proof_pr": 122,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P6-U7",
+    "objective": "Certify Pass 6 closure and activate the permanent no-blind-flying gate for later implementation units.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P6-U6 deterministic synthetic fault preservation only. No live observation, production behavior, repair, migration, formal proof, persisted-user-data change, Pass 6 closure, or later-pass implementation."
+}
