@@ -1,0 +1,186 @@
+{
+  "type": "PMP_PASS9_BANK_CONTINUOUS_RUN_UNIT6_BOUNDED_OBSERVATION_DECISION_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T21:00:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "91072a4f8320c9f5764626c35dd8d5a897c128ba",
+  "branch": "agent/pass9-unit6-bounded-observation-decision-v1",
+  "pass": 9,
+  "unit": "P9-U6",
+  "unit_id": "P9-U6",
+  "status": "BOUNDED_OBSERVATION_NOT_REQUIRED",
+  "objective": "Decide whether a new bounded Bank observation is genuinely required for Pass 9 closure from the complete deterministic and existing observation record without launching the app or consuming scarce authority.",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass9-unit6-bounded-observation-decision-v1.yml",
+      "audit/pass9/pass9-bank-continuous-run-unit6-bounded-observation-decision-v1.json",
+      "audit/pass9/receipts/RECEIPT_P9_U6_BOUNDED_OBSERVATION_NOT_REQUIRED_20260726T210000Z_001.json",
+      "tools/run_pass9_unit6_bounded_observation_decision_v1.js",
+      "tools/test_pass9_unit6_bounded_observation_decision_v1.js",
+      "tools/verify_pass9_unit6_bounded_observation_decision_v1.py"
+    ],
+    "implementation_paths": []
+  },
+  "inputs": {
+    "unit3_integration_sha256": "7082b32b0a29981b132269d2f481b075fa1a1a7a7a74a58d485c72b39e24e58f",
+    "unit4_proof_sha256": "aeb796ac7714c632387a0094a693d28e99aa177839ac748263f8fa94daa80d6f",
+    "unit5_certification_sha256": "8106eb92d12564a2516efe1a05070db39ecf0b6aea62fcc86d8e8f430eeb76e9",
+    "runner_sha256": "e8cffb24a788bdbd6e0a53c8c0d4a2ab28d4d37648fea7fc78d73f0797a34c7f",
+    "test_sha256": "17d83aa2ce865dfe9babd8044955a6b256134f76635a75e420cd90f56292e150"
+  },
+  "decision": {
+    "result": "BOUNDED_OBSERVATION_NOT_REQUIRED",
+    "assertions": 59,
+    "completed_evidence_units": 5,
+    "cumulative_prior_assertions": 979,
+    "unresolved_verification_failures": 0,
+    "production_repair_complete": true,
+    "exhaustive_behavior_complete": true,
+    "authority_data_certified": true,
+    "prior_user_verified_working_point_present": true,
+    "new_visual_claim_required_for_pass9_exit": false,
+    "observation_required": false,
+    "observation_performed": false,
+    "observation_authority_requested": false,
+    "observation_authority_consumed": false,
+    "retry_of_consumed_observation_authorized": false,
+    "basis": "The exact merged repair, exhaustive fault matrix, authority and persisted-data certification, existing historic user-verified working point, and zero unresolved verification failures make a new observation duplicative rather than necessary for Pass 9 closure.",
+    "claim_boundary": "This waiver does not create a new user-observed visual claim. It certifies only that no additional scarce observation is required for the documented Pass 9 exit criteria."
+  },
+  "diagnostic_and_proof_matrix": {
+    "type": "PMP_PASS9_UNIT6_OBSERVATION_NECESSITY_MATRIX_V1",
+    "invariants": [
+      "all five prior Pass 9 units are green and permanently gate-bound",
+      "production repair, exhaustive fault behavior, and authority/data certification are complete",
+      "no unresolved deterministic or CI failure remains",
+      "no new visual claim is required by the Pass 9 exit criteria",
+      "no observation may run or be retried as part of this decision"
+    ],
+    "assertions": 59
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_integration",
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/pass9/pass9-bank-continuous-run-unit6-bounded-observation-decision-v1.json",
+      "rationale": "P9-U6 records an evidence-sufficiency decision and consumes no live authority."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass9/pass9-bank-continuous-run-unit4-exhaustive-proof-v1.json",
+      "audit/pass9/pass9-bank-continuous-run-unit5-authority-persisted-data-certification-v1.json",
+      "audit/pass9/pass9-bank-continuous-run-unit6-bounded-observation-decision-v1.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass9_unit6_bounded_observation_decision_v1.js"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass9_unit6_bounded_observation_decision_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass9/receipts/RECEIPT_P9_U6_BOUNDED_OBSERVATION_NOT_REQUIRED_20260726T210000Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "Fifty-nine assertions bind 979 prior assertions, zero unresolved failures, complete repair/proof/certification, and no required new visual claim.",
+        "evidence_paths": [
+          "tools/test_pass9_unit6_bounded_observation_decision_v1.js"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "A new scarce observation would be duplicative and P9-U7 closure can proceed.",
+        "basis_evidence_paths": [
+          "audit/pass9/pass9-bank-continuous-run-unit5-authority-persisted-data-certification-v1.json",
+          "audit/pass9/pass9-bank-continuous-run-unit6-bounded-observation-decision-v1.json"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "missing prior unit",
+        "prior assertion failure",
+        "repair incomplete",
+        "exhaustive behavior incomplete",
+        "authority certification incomplete",
+        "owner-order uncertainty",
+        "persisted-key uncertainty",
+        "user-data effect",
+        "storage migration",
+        "unresolved concurrency coverage",
+        "unresolved cancellation coverage",
+        "unresolved denial coverage",
+        "unresolved rollback coverage",
+        "unresolved restart coverage",
+        "unresolved receipt-bound coverage",
+        "required new visual claim"
+      ]
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "verification": {
+    "assertions_total": 59,
+    "assertions_passed": 59,
+    "assertions_failed": 0,
+    "exact_scope": "PASS",
+    "input_hashes": "PASS",
+    "evidence_sufficiency": "PASS",
+    "no_observation_required": "PASS",
+    "no_authority_consumed": "PASS",
+    "unit5_regression": "PASS",
+    "permanent_gate_binding": "PASS"
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_user_data_mutations": false,
+    "continuous_run_user_data_mutations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P9-U7",
+    "objective": "Close Pass 9 by certifying every unit, exit criterion, invariant, authority boundary, effect boundary, workflow, receipt, and exact Pass 10 next move.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P9-U6 static evidence-sufficiency decision only. No app launch, new visual claim, observation, formal proof, production change, persisted-data change, or migration occurs."
+}

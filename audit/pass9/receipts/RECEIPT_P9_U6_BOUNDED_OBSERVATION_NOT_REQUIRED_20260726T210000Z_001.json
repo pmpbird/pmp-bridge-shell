@@ -1,0 +1,52 @@
+{
+  "type": "PMP_PASS9_UNIT6_BOUNDED_OBSERVATION_NOT_REQUIRED_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P9_U6_BOUNDED_OBSERVATION_NOT_REQUIRED_20260726T210000Z_001",
+  "created_at": "2026-07-26T21:00:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "91072a4f8320c9f5764626c35dd8d5a897c128ba",
+  "branch": "agent/pass9-unit6-bounded-observation-decision-v1",
+  "pass": 9,
+  "unit": "P9-U6",
+  "status": "BOUNDED_OBSERVATION_NOT_REQUIRED",
+  "evidence": "audit/pass9/pass9-bank-continuous-run-unit6-bounded-observation-decision-v1.json",
+  "changed_paths": [
+    ".github/workflows/pass9-unit6-bounded-observation-decision-v1.yml",
+    "audit/pass9/pass9-bank-continuous-run-unit6-bounded-observation-decision-v1.json",
+    "audit/pass9/receipts/RECEIPT_P9_U6_BOUNDED_OBSERVATION_NOT_REQUIRED_20260726T210000Z_001.json",
+    "tools/run_pass9_unit6_bounded_observation_decision_v1.js",
+    "tools/test_pass9_unit6_bounded_observation_decision_v1.js",
+    "tools/verify_pass9_unit6_bounded_observation_decision_v1.py"
+  ],
+  "decision": {
+    "observation_required": false,
+    "observation_performed": false,
+    "observation_authority_consumed": false,
+    "retry_authorized": false
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_user_data_mutations": false,
+    "continuous_run_user_data_mutations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "next_safe_move": {
+    "step_id": "P9-U7",
+    "instruction": "Close Pass 9 by certifying every unit, exit criterion, invariant, authority boundary, effect boundary, workflow, receipt, and exact Pass 10 next move.",
+    "requires_explicit_authority": false,
+    "requires_user_app_check": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P9-U6 static evidence-sufficiency decision only. No app launch, new visual claim, observation, formal proof, production change, persisted-data change, or migration occurs."
+}
