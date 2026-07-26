@@ -1,0 +1,60 @@
+{
+  "type": "PMP_PASS10_UNIT2_BANK_INVENTORY_CONTRACT_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P10_U2_BANK_INVENTORY_CONTRACT_20260726T220000Z_001",
+  "created_at": "2026-07-26T22:00:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "83e0e46918ad3dc7253b7f6c3de918fdc4812c4f",
+  "branch": "agent/pass10-unit2-bank-inventory-contract-v1",
+  "pass": 10,
+  "unit": "P10-U2",
+  "status": "BANK_INVENTORY_CONTRACT_PROVEN",
+  "evidence": "audit/pass10/pass10-bank-unit2-inventory-contract-v1.json",
+  "changed_paths": [
+    ".github/workflows/pass10-unit2-bank-inventory-contract-v1.yml",
+    "audit/pass10/pass10-bank-unit2-inventory-contract-v1.json",
+    "audit/pass10/receipts/RECEIPT_P10_U2_BANK_INVENTORY_CONTRACT_20260726T220000Z_001.json",
+    "tools/run_pass10_unit2_bank_inventory_contract_v1.js",
+    "tools/test_pass10_unit2_bank_inventory_contract_v1.js",
+    "tools/verify_pass10_unit2_bank_inventory_contract_v1.py"
+  ],
+  "coverage": {
+    "p10_u1_findings_resolved": 6,
+    "canonical_banks": 13,
+    "namespace_rules": 16,
+    "required_source_fields": 9,
+    "canonical_item_fields": 18,
+    "quarantine_reason_codes": 15,
+    "fault_cases": 18,
+    "assertions": 187,
+    "artifact_roles": 9
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_reads": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_user_data_mutations": false,
+    "continuous_run_user_data_mutations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "next_safe_move": {
+    "step_id": "P10-U3",
+    "instruction": "Implement the read-only Bank tab inventory projection from owner facts under the P10-U2 identity, provenance, quarantine, compatibility, and no-deletion contract.",
+    "requires_explicit_authority": false,
+    "requires_user_app_check": false,
+    "persisted_user_data_change_allowed": false,
+    "storage_migration_allowed": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "Static P10-U2 contract only; no Bank tab, production behavior, live storage, persisted data, observation, migration, or formal proof changed."
+}
