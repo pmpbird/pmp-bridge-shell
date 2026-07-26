@@ -1,14 +1,15 @@
 {
-  "manifest_bytes": 374790,
+  "manifest_bytes": 375322,
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
-  "manifest_sha256": "5efab9d43e704f27237a63da15ebede6156ee9d5476995848e0d866ede96613a",
+  "manifest_sha256": "fa94acffd222d5f77b2c9eaf6acafb07ade07d54cb339f41620252ab44992d15",
   "manifest_version": "20260711A-A003-FINAL",
+  "pass10_context": "P10-U3 adds one Bank-owner read-only projection between the existing owner router and Bank tab. It preserves native identities and source bytes, quarantines unknown or conflicting facts, treats historic inventory as reference-only, exposes no raw payload or write/delete/migration API, and gives Helper registration and active-tab state no Bank authority.",
   "repair_id": "A-003",
   "root_self_verifiable": false,
   "root_trust_anchor": "pmp-app-current.html",
   "rule": "The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.",
-  "runtime_source_set_sha256": "254d5822377d96a270c486b079229cf5b22f0c3c1e3d5aa54c0d364a2578060a",
-  "sealed_branch": "main",
+  "runtime_source_set_sha256": "4157a9dc0b5231483193ff180b93925e425c0e0930f9bb2c3b1b2a8939c6ed6a",
+  "sealed_branch": "agent/pass10-unit3-bank-readonly-projection-v1",
   "status": "SEALED",
   "type": "PMP_A003_MANIFEST_SEAL_V1"
 }
