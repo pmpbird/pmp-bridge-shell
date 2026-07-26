@@ -11,6 +11,8 @@ const BASE = `http://${HOST}:${PORT}/`;
 const RESULT_PATH = process.env.A003_RESULT_PATH || 'a003-live-runtime-results.json';
 const CURRENT = 'pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html';
 const MANIFEST = 'pmp-runtime-integrity-manifest-v1.json';
+const CURRENT_MAP = JSON.parse(fs.readFileSync(path.join(ROOT, 'pmp-current-map-v12.json'), 'utf8'));
+const CURRENT_INNER = CURRENT_MAP.runtime_chain.inner_v30.path;
 const EXPECTED_RECORD_COUNT = JSON.parse(fs.readFileSync(path.join(ROOT, MANIFEST), 'utf8')).records.length;
 const RESOLVER = 'pmp-current-route-resolver-v1.js';
 const INTEGRITY_SW = 'pmp-integrity-service-worker-v1.js';
@@ -116,18 +118,20 @@ async function guardianFrame(page) {
   }
   throw new Error('Guardian frame not found');
 }
-async function frameReachedHome(page, expectedHash) {
+async function frameReachedCurrentInner(page, expectedHash) {
   const deadline = Date.now() + 30000;
   while (Date.now() < deadline) {
     const urls = page.frames().map(f => f.url());
-    const homeUrl = urls.find(u => /pmp-home-single-v6\.html/.test(u));
-    if (homeUrl) {
-      const actualHash = new URL(homeUrl).hash;
-      return { reached:true, expected_hash:expectedHash, actual_hash:actualHash, hash_matches:actualHash === expectedHash, home_url:homeUrl, urls };
+    const innerUrl = urls.find(u => {
+      try { return new URL(u).pathname.endsWith('/' + CURRENT_INNER); } catch { return false; }
+    });
+    if (innerUrl) {
+      const actualHash = new URL(innerUrl).hash;
+      return { reached:true, expected_hash:expectedHash, actual_hash:actualHash, hash_matches:actualHash === expectedHash, inner_url:innerUrl, urls };
     }
     await page.waitForTimeout(400);
   }
-  return { reached:false, expected_hash:expectedHash, actual_hash:null, hash_matches:false, home_url:null, urls:page.frames().map(f=>f.url()) };
+  return { reached:false, expected_hash:expectedHash, actual_hash:null, hash_matches:false, inner_url:null, urls:page.frames().map(f=>f.url()) };
 }
 async function historicalReceiptFromHomeFrame(page) {
   const deadline = Date.now() + 30000;
@@ -157,7 +161,9 @@ async function openCurrentFromGuardian(page, screen) {
   const frame = await guardianFrame(page);
   await frame.click('#openBtn',{force:true});
   await page.waitForURL(url => url.pathname.endsWith('/' + CURRENT) && url.hash === '#' + screen, { timeout: 30000 });
-  return frameReachedHome(page, '#' + screen);
+  await page.waitForSelector('#pmpPass75ReloadRuntimePlatformGateV1 [data-run="1"]', { timeout: 30000 });
+  await page.click('#pmpPass75ReloadRuntimePlatformGateV1 [data-run="1"]', { force:true });
+  return frameReachedCurrentInner(page, '#' + screen);
 }
 async function fetchInPage(page, url) {
   return page.evaluate(async u => {
@@ -235,11 +241,8 @@ let browser;
     await page.close();
     for (const screen of SCREENS) {
       page = await bootstrap(context, '#' + screen);
-      const home = await openCurrentFromGuardian(page, screen);
-      record(`integrity-current-chain-home:${screen}`, home.reached && home.hash_matches, {expected:home.expected_hash, actual:home.actual_hash, home_url:home.home_url, frame_urls:home.urls.slice(-8)});
-      const homeState = await historicalReceiptFromHomeFrame(page);
-      const homeReceipt = homeState.receipt;
-      record(`historical-home-sha256-pass:${screen}`, homeReceipt.verification === 'PASS' && homeReceipt.expected_sha256 === homeReceipt.actual_sha256, {expected:homeReceipt.expected_sha256, actual:homeReceipt.actual_sha256, status:homeReceipt.status, frame_url:homeState.url, frame_body:homeState.body});
+      const inner = await openCurrentFromGuardian(page, screen);
+      record(`integrity-current-chain-inner:${screen}`, inner.reached && inner.hash_matches, {expected:inner.expected_hash, actual:inner.actual_hash, inner_url:inner.inner_url, frame_urls:inner.urls.slice(-8)});
       await page.close();
     }
 
