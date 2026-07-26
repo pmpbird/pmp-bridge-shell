@@ -3,16 +3,8 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
     paths:
-      - '.github/workflows/pass6-unit1-diagnostic-journal-contract-v1.yml'
-      - '.github/workflows/pass6-unit2-readonly-journal-view-export-v1.yml'
-      - 'audit/a003-manifest-seal.json'
       - 'audit/pass6/pass6-diagnostic-journal-unit2-readonly-view-export-v1.json'
       - 'audit/pass6/receipts/RECEIPT_P6_U2_READONLY_VIEW_EXPORT_20260726T093700Z_001.json'
-      - 'pmp-app-current.html'
-      - 'pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html'
-      - 'pmp-diagnostic-journal-readonly-view-export-v1.js'
-      - 'pmp-diagnostics-owner-v1.js'
-      - 'pmp-runtime-integrity-manifest-v1.json'
       - 'tools/generate_pass6_unit2_integrity_updates_v1.py'
       - 'tools/test_pass6_unit2_readonly_journal_view_export_v1.js'
       - 'tools/verify_pass6_unit2_readonly_journal_view_export_v1.py'
