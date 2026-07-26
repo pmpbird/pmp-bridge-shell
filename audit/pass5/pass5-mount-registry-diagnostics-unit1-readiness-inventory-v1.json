@@ -1,0 +1,271 @@
+{
+  "type": "PMP_PASS5_MOUNT_REGISTRY_DIAGNOSTICS_UNIT1_READINESS_INVENTORY_V1",
+  "version": "1.0.0",
+  "status": "READINESS_AUDIT_PASS",
+  "created_at": "2026-07-26T06:52:04Z",
+  "pass": 5,
+  "unit": 1,
+  "base_main_commit": "f6eb161eceb269cb2a15e02f52683b2f6ad835e4",
+  "goal": "Inventory the current mount and diagnostics system, identify compatibility boundaries, and lock the safe starting point for a versioned mount-lifecycle registry.",
+  "current_route": {
+    "authority": "pmp-current-map-v12.json",
+    "entry": "pmp-app-current.html",
+    "route_guardian": "pmp-route-guardian-current-loader-v22.html",
+    "reload_owner": "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html",
+    "current_inner": "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+    "failure_mode": "fail_closed",
+    "implicit_fallbacks": false
+  },
+  "current_registry": {
+    "file": "pmp-mount-registry-v1.js",
+    "runtime_version": "1.6.3-v30-live-atlas-support-cluster3-20260709A",
+    "owner_string": "pmp-mount-registry-v1",
+    "mode": "active_path_registry_only",
+    "actual_role": "Passive current/support/historic file atlas with DOM-derived live-file discovery.",
+    "not_yet_present": [
+      "A mount-lifecycle event contract",
+      "Operation IDs",
+      "The shared ROUTE_REQUESTED to READY lifecycle vocabulary",
+      "Per-owner authoritative transition enforcement",
+      "Duplicate and stale lifecycle-event rejection",
+      "Restart continuity rules",
+      "Explicit retention and redaction rules",
+      "A read-only lifecycle diagnostics model"
+    ],
+    "atlas_counts": {
+      "static_current": 81,
+      "support_reachable": 66,
+      "historic": 18,
+      "dynamic_live_files": "DOM-derived at runtime"
+    },
+    "persistent_system_keys": [
+      "pmp_mount_registry_v1",
+      "pmp_mount_registry_v1_receipt",
+      "pmp_mount_registry_live_snapshot_v1",
+      "pmp_mount_registry_missing_expected_v1"
+    ],
+    "write_behavior": "scan() overwrites all four localStorage records on initial load, scheduled scans, and a recurring 9000ms interval.",
+    "default_for_unlisted_files": "NON_BOOT_OUTSIDE_ACTIVE_ATLAS"
+  },
+  "load_and_mutation_chain": [
+    {
+      "order": 1,
+      "actor": "pmp-app-orchestrator-v1.js",
+      "role": "Early loader and consumer",
+      "behavior": "Executes before the parser reaches the direct registry script tag and may asynchronously request pmp-mount-registry-v1.js, then calls scan().",
+      "compatibility_risk": "The later direct script tag can create a second registry IIFE with duplicate schedules and storage writers."
+    },
+    {
+      "order": 2,
+      "actor": "pmp-pass2-atlas-adapter-v2.js",
+      "role": "Pre-install global wrapper",
+      "behavior": "Installs a configurable PMPMountRegistryV1 getter/setter and wraps the later registry API.",
+      "compatibility_risk": "Adds obsolete map v10, Route Guardian v17, reload owner v27, and inner v26 paths to ACTIVE_CURRENT_APP."
+    },
+    {
+      "order": 3,
+      "actor": "pmp-mount-registry-v1.js",
+      "role": "Primary atlas producer",
+      "behavior": "Publishes registry(), snapshot(), scan(), atlasBuckets, and four storage keys."
+    },
+    {
+      "order": 4,
+      "actor": "pmp-phase8-atlas-marker-v1.js",
+      "role": "In-place API and report patcher",
+      "behavior": "Overwrites registry/snapshot/scan functions, changes the public version, adds Phase 8 file slots, and invokes scan().",
+      "compatibility_risk": "Runtime identity and result shape depend on script order rather than a declared contract."
+    },
+    {
+      "order": 5,
+      "actor": "pmp-pass1r-version-aligner-v1.js",
+      "role": "Persistent record and public API version rewriter",
+      "behavior": "Reads the API or stored atlas, rewrites registry and receipt versions to 1.5.4, and schedules repeated writes.",
+      "compatibility_risk": "Stored and in-memory versions can regress from the primary 1.6.3 implementation identity."
+    },
+    {
+      "order": 6,
+      "actor": "pmp-active-path-discovery-machine-v1.js",
+      "role": "Atlas consumer",
+      "behavior": "Reads registry() or the persisted atlas, performs passive path discovery, and writes separate discovery reports."
+    }
+  ],
+  "reload_owner_bridge": {
+    "file": "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html",
+    "injected_file": "pmp-mount-registry-v1-cachelift-20260706b.js",
+    "observed_actual_role": "The cachelift file injects pmp-continuous-run-bank-order-frame-loader-v1.js into nested documents.",
+    "classification": "Compatibility bridge, not a mount-lifecycle fact producer.",
+    "risk": "Its name implies registry ownership while its behavior belongs to the Continuous Run loader chain."
+  },
+  "ownership_inventory": {
+    "primary_file_claim": "pmp-mount-registry-v1 owns the active-path atlas",
+    "section_owner_registry_claim": "mount_registry_owner is active with active_path_atlas_only scope",
+    "helper_registry_claim": "mount_registry_helper belongs to app_orchestrator_owner",
+    "app_orchestrator_role": "Loader, scanner initiator, and receipt consumer",
+    "diagnostics_role": "Read-only display intent, but it writes diagnostic report and receipt metadata",
+    "readiness_conclusion": "Pass 5 must distinguish the authoritative lifecycle registry owner from helpers, loaders, adapters, and diagnostics."
+  },
+  "diagnostics_inventory": {
+    "owner": "pmp-diagnostics-owner-v1.js",
+    "bottom_tab_owner": "pmp-diagnostics-bottom-tab-forcer-v1.js",
+    "loader": "pmp-safe-area-surface-fill-v1.js",
+    "current_mount_view": "Mount Registry Status reads only pmp_mount_registry_v1_receipt and otherwise renders the generic stored report.",
+    "bottom_tab_behavior": "Creates one Diagnostics tab in the existing bottom-tab host and renders an overlay screen.",
+    "gaps": [
+      "No normalized mount transition list",
+      "No operation-ID correlation",
+      "No observed-versus-inferred trust label",
+      "No stale or duplicate event visibility",
+      "No restart or unavailable-registry state",
+      "No bounded export specific to mount lifecycle"
+    ]
+  },
+  "compatibility_map": {
+    "must_preserve": [
+      "window.PMPMountRegistryV1 global availability",
+      "registry(), snapshot(), and scan() compatibility during migration",
+      "Existing four pmp_mount_registry_* system evidence keys",
+      "ACTIVE_CURRENT_APP, SUPPORT_REACHABLE, LIVE_RUNTIME_OBSERVED, and HISTORIC_SUPPORT_ONLY atlas buckets",
+      "Current Map sole route authority",
+      "Existing Diagnostics bottom-tab placement and label",
+      "Safe Writer behavior and all persisted user payloads",
+      "Historical and consumed evidence"
+    ],
+    "must_not_promote_to_lifecycle_truth": [
+      "Atlas file slots",
+      "DOM presence alone",
+      "The cachelift Continuous Run loader bridge",
+      "Stale adapter-injected current paths",
+      "A version string rewritten by an aligner",
+      "Diagnostics inferences"
+    ],
+    "required_additive_boundary": [
+      "A separately versioned mount-lifecycle contract and event API",
+      "One explicit lifecycle registry owner",
+      "Owner-issued operation IDs and monotonic sequences",
+      "Deterministic duplicate, stale, malformed, restart, and unavailable-input behavior",
+      "A compatibility facade for legacy atlas consumers",
+      "A read-only diagnostics projection that cannot emit transitions"
+    ]
+  },
+  "unit2_contract_lock": {
+    "shared_states": [
+      "ROUTE_REQUESTED",
+      "OWNER_RESOLVED",
+      "MOUNT_STARTED",
+      "MOUNTED",
+      "READY"
+    ],
+    "failure_states": [
+      "SLOW",
+      "DEGRADED",
+      "BLOCKED",
+      "FAILED"
+    ],
+    "required_fields": [
+      "contract_version",
+      "operation_id",
+      "monotonic_sequence",
+      "owner",
+      "source",
+      "state",
+      "reason_code",
+      "observed_at"
+    ],
+    "default_failure": "Unknown, malformed, stale, duplicate-conflicting, or unavailable authority fails passive or closed according to the caller's authority; diagnostics never invents a transition.",
+    "storage_rule": "P5-U2 defines schema and pure transition semantics only. It does not migrate, delete, or rewrite existing storage.",
+    "implementation_deferred_to": "P5-U3"
+  },
+  "source_identities": {
+    "pmp-mount-registry-v1.js": {
+      "git_blob_sha": "dadb4963b1828ad34d9bd5bcc7a82b5fc281554a",
+      "bytes": 11955,
+      "sha256": "95ef4e87c1c555713279e4bde57bb48778d8ca8c4b2022fb2f1255c7f1a968a1"
+    },
+    "pmp-pass2-atlas-adapter-v2.js": {
+      "git_blob_sha": "39fbaaa5e5e88447feed917bca85fc322922ac9c",
+      "bytes": 3508,
+      "sha256": "b2782a45c85c5127d8676c909adb6a7fb5f33e0942da6e12add0135380fd4eda"
+    },
+    "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html": {
+      "git_blob_sha": "f62cdb28d1507b1731e9ca1660b6289081433147",
+      "bytes": 21868,
+      "sha256": "92467990053e4e52348b3bc021813be3441855c3654d4719d77a124bbfd4a7a4"
+    },
+    "pmp-app-orchestrator-v1.js": {
+      "git_blob_sha": "6e0f9145dca873b73f6000444b8c498ff3741629",
+      "bytes": 18969,
+      "sha256": "34da622cb3924624fedfaa110ad38ae16fb3aa4b40d595ae2446f8f92855fe91"
+    },
+    "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html": {
+      "git_blob_sha": "ffb45fd17cd407bf22ab2c3fb911bb3e9def0754",
+      "bytes": 9912,
+      "sha256": "d397ff8a97ad15afc100a72bda615993273fb49ea4939a1afb871c422a3522c5"
+    },
+    "pmp-mount-registry-v1-cachelift-20260706b.js": {
+      "git_blob_sha": "7eb61a6db6c2ca8471ef2f5b9c4e61eb56f5d6b1",
+      "bytes": 3112,
+      "sha256": "69728a2dc0a585227225ec9c24ea98a7d9d56ec47e9c748507f856f1846fb4d8"
+    },
+    "pmp-safe-area-surface-fill-v1.js": {
+      "git_blob_sha": "bf7415cfc210ea0a23c83a301e9426cbdc68331f",
+      "bytes": 7753,
+      "sha256": "dbeb2e637cae7379e22f4560757a2b5d21b1f22cadf9501d5d5f0bd9ce922a0e"
+    },
+    "pmp-diagnostics-owner-v1.js": {
+      "git_blob_sha": "80036bcf384cc1233f68dfd1e9445b71b58d90e9",
+      "bytes": 23519,
+      "sha256": "6552ff492d98b6f48917bbc543dff6cefa88bda5832ceefd7faf9fe0cb3f450c"
+    },
+    "pmp-diagnostics-bottom-tab-forcer-v1.js": {
+      "git_blob_sha": "7c1a4718e0baac307f5a00a30a38a14153676876",
+      "bytes": 7724,
+      "sha256": "6ce85423ff1ed8a33e496020ec2ddcd880385b6d2a1e3d26b12041a023108ea2"
+    },
+    "pmp-section-owner-registry-v1.js": {
+      "git_blob_sha": "6243bb8cc6ef32e683e3acbbecee845436e53ac3",
+      "bytes": 4639,
+      "sha256": "9944464a1ac464b508b88bc16e0c929f7567e972a990c5e3cbb7c1b989e3d01a"
+    },
+    "pmp-helper-registry-v1.js": {
+      "git_blob_sha": "c074638645c5378a63a3f0ca5a75c8e4c8ab373e",
+      "bytes": 5189,
+      "sha256": "299e607133df55ed74f7bade798cb96e76566cefd3fd73b87da63f2b64650dbf"
+    },
+    "pmp-phase8-atlas-marker-v1.js": {
+      "git_blob_sha": "f1dfbe4a8acb6e40db4dff7813ca1f427d6d0d75",
+      "bytes": 2500,
+      "sha256": "78fddb8c97b92e8f52829920fd4537c1920bbf2a0a2f526cf4e3c12cccec242e"
+    },
+    "pmp-pass1r-version-aligner-v1.js": {
+      "git_blob_sha": "ac060130c2b9714b217a50d18e9a2edd009d8afa",
+      "bytes": 1351,
+      "sha256": "387015be8a1a0639497fc847117c07e673ff6d67f409568e0d095d37f3e989d4"
+    },
+    "pmp-active-path-discovery-machine-v1.js": {
+      "git_blob_sha": "12c5fdac9979f792539e95d53ab11cc4c2abcc5b",
+      "bytes": 14376,
+      "sha256": "65b64ace9d32be7283507e37180b1d3e3f2a740e7adeac68052de0b7cead2ff8"
+    },
+    "pmp-current-map-v12.json": {
+      "git_blob_sha": "709c4d953697ada70a6bc5f29eca44c68f4f6f7d",
+      "bytes": 12177,
+      "sha256": "a28c5918aec907d8d3011c9c4407ee6eef5251c33d33cfa8b232d2295072d926"
+    }
+  },
+  "effects": {
+    "production_runtime_changed": false,
+    "runtime_integrity_changed": false,
+    "persisted_user_data_changed": false,
+    "existing_system_evidence_changed": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "pr122_touched": false
+  },
+  "next_step": {
+    "id": "P5-U2",
+    "objective": "Define the versioned Mount Registry lifecycle schema, ownership, operation IDs, transitions, retention, compatibility facade, and default-failure behavior.",
+    "requires_new_explicit_authority": false,
+    "requires_user_app_check": false
+  },
+  "claim_ceiling": "Read-only repository readiness inventory and compatibility lock only. No lifecycle registry implementation, production runtime change, storage migration, Diagnostics UI change, live observation, or Pass 5 completion is claimed."
+}
