@@ -1,0 +1,268 @@
+{
+  "type": "PMP_PASS7_SECTION_OWNER_UNIT5_ISOLATION_RESTART_DENIAL_PROOF_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-26T17:10:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "4ed25e626ff36a6ef795a26a001cd44a920c2329",
+  "branch": "agent/pass7-unit5-owner-isolation-restart-denial-proof-v1",
+  "pass": 7,
+  "unit": "P7-U5",
+  "unit_id": "P7-U5",
+  "status": "OWNER_ISOLATION_RESTART_DENIAL_PROVEN",
+  "objective": "Prove and harden exact owner isolation, duplicate and stale-owner rejection, growth awareness, atomic restart replay, and zero-effect denial behavior.",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass7-unit5-owner-isolation-restart-denial-proof-v1.yml",
+      ".github/workflows/pass7-unit4-owner-mount-diagnostics-integration-v1.yml",
+      "audit/a003-manifest-seal.json",
+      "audit/pass7/pass7-section-owner-unit5-isolation-restart-denial-proof-v1.json",
+      "audit/pass7/receipts/RECEIPT_P7_U5_OWNER_ISOLATION_RESTART_DENIAL_20260726T171000Z_001.json",
+      "pmp-app-current.html",
+      "pmp-runtime-integrity-manifest-v1.json",
+      "pmp-section-owner-mount-integration-v1.js",
+      "tools/generate_pass7_unit5_integrity_updates_v1.py",
+      "tools/test_pass7_unit5_owner_isolation_restart_denial_v1.js",
+      "tools/verify_pass7_unit5_owner_isolation_restart_denial_v1.py"
+    ],
+    "implementation_paths": [
+      "pmp-app-current.html",
+      "pmp-section-owner-mount-integration-v1.js"
+    ]
+  },
+  "inputs": {
+    "unit2_capability_contract": "audit/pass7/pass7-section-owner-unit2-capability-contract-v1.json",
+    "unit2_capability_contract_sha256": "eb755a2d43b2a4331dae62dc90c8a2d4260c83ffd1f42f8c3024d27c875dd06b",
+    "unit3_registration_events": "audit/pass7/pass7-section-owner-unit3-registration-events-v1.json",
+    "unit3_registration_events_sha256": "549bc56f87bb17ac8abbbeb877c82cb730863e96320b5a339559ab4d4a3649fe",
+    "unit4_integration": "audit/pass7/pass7-section-owner-unit4-mount-diagnostics-integration-v1.json",
+    "unit4_integration_sha256": "ec9799a5f8e2a62770ff7fc15495da0aa5fb9fbedaf9959c1673e65d28457e5a",
+    "unit4_compatibility_workflow": ".github/workflows/pass7-unit4-owner-mount-diagnostics-integration-v1.yml",
+    "unit4_compatibility_workflow_sha256": "cd6fe350b8d6ee3b0bf8c8fcd37e3f3e71c4d2412f0cb0290ab748459630da4c",
+    "generator": "tools/generate_pass7_unit5_integrity_updates_v1.py",
+    "generator_sha256": "c96ed95bd4d2581c34ceeb0f8b99e12c4cebaae2a39ee8f3e490b0e667a71f61",
+    "test": "tools/test_pass7_unit5_owner_isolation_restart_denial_v1.js",
+    "test_sha256": "e9a27246493b82d3b6e0b97135106a9f94296ff14695e6550f32644bc37d1a81"
+  },
+  "hardening": {
+    "runtime": "pmp-section-owner-mount-integration-v1.js",
+    "runtime_version": "1.0.0",
+    "runtime_sha256": "afd86a583cf380d8c66fe1420c1f775c81501617525872165e891536fba288a5",
+    "capability_before": "P7U3_PREFIX_ONLY",
+    "capability_after": "EXACT_CAPABILITY_ID_FOR_EVENT_OWNER",
+    "expected_capability_template": "cap:p7u3:{owner_id}",
+    "cross_owner_capability_result": "REJECTED_REGISTRATION_AUTHORITY",
+    "restart_api": "restore",
+    "restart_policy": "ATOMIC_REPLAY_ONLY_VALIDATED_CHAINED_JOURNAL",
+    "restart_success": "RESTART_REPLAY_ACCEPTED",
+    "restart_malformed": "RESTART_REJECTED_MALFORMED_JOURNAL",
+    "restart_invalid_event": "RESTART_REJECTED_JOURNAL_EVENT",
+    "partial_restart_state_exposed": false,
+    "replay_operation_identities_preserved": true,
+    "appearance_grants_authority": false
+  },
+  "proof_matrix": {
+    "type": "PMP_PASS7_SECTION_OWNER_UNIT5_PROOF_MATRIX_V1",
+    "version": "1.0.0",
+    "invariants": [
+      {
+        "id": "P7-INV-OWNER-EXACT-CAPABILITY-002",
+        "statement": "Every known owner event requires its exact owner capability; a valid capability belonging to another owner is rejected.",
+        "scenarios": ["eight_owner_positive", "eight_cross_section", "eight_cross_capability"],
+        "failure": "REJECT_NO_REGISTRATION_NO_AUTHORITY"
+      },
+      {
+        "id": "P7-INV-OWNER-DUPLICATE-002",
+        "statement": "Exact duplicates are ignored while conflicting event, operation, and owner duplicates fail closed without poisoning the next valid event.",
+        "scenarios": ["exact_duplicate", "event_conflict", "operation_reuse", "duplicate_owner", "valid_after_denial"],
+        "failure": "REJECT_OR_IGNORE_NO_PARTIAL_HISTORY"
+      },
+      {
+        "id": "P7-INV-OWNER-STALE-002",
+        "statement": "Stale epoch, stale sequence, gaps, chain mismatch, and time regression fail before owner state or accepted history changes.",
+        "scenarios": ["stale_epoch", "stale_sequence", "sequence_gap", "epoch_gap", "chain_mismatch", "time_regression"],
+        "failure": "REJECT_STATE_UNCHANGED"
+      },
+      {
+        "id": "P7-INV-OWNER-GROWTH-002",
+        "statement": "Repeated unknown-owner observations remain redacted pending evidence with no registration or authority.",
+        "scenarios": ["first_growth", "growth_update", "growth_duplicate", "diagnostic_redaction"],
+        "failure": "PENDING_NO_AUTHORITY"
+      },
+      {
+        "id": "P7-INV-OWNER-RESTART-002",
+        "statement": "Restart restoration is an atomic replay of a digest-validated chained journal and exposes no partial state on any failure.",
+        "scenarios": ["valid_replay", "empty_replay", "malformed_journal", "stored_digest_tamper", "chain_failure", "duplicate_journal"],
+        "failure": "EMPTY_RUNTIME_NO_PARTIAL_REPLAY"
+      },
+      {
+        "id": "P7-INV-OWNER-EFFECTS-002",
+        "statement": "Positive, duplicate, stale, growth, restart, and denial paths cannot mount, reroute, repair, mutate Bank, migrate storage, activate production, or write persisted user data.",
+        "scenarios": ["all_positive", "all_denial", "all_restart", "static_forbidden_api_scan"],
+        "failure": "ZERO_EXTERNAL_EFFECT"
+      }
+    ],
+    "known_owner_positive_cases": 8,
+    "cross_section_denials": 8,
+    "cross_owner_capability_denials": 8,
+    "stale_conflict_denials": 6,
+    "restart_failure_classes": 3,
+    "deterministic_test": "tools/test_pass7_unit5_owner_isolation_restart_denial_v1.js",
+    "assertions": 218
+  },
+  "runtime_integrity": {
+    "manifest": "pmp-runtime-integrity-manifest-v1.json",
+    "manifest_sha256": "4a6fc13bff529ef0ccf11cca03e20d1af5fcdbce492963d5abffad9177e3c00e",
+    "runtime_source_set_sha256": "d5bbfb00fc5df33386dc173f601db9edae3f82d08b828371628dbd2bd9970e1f",
+    "runtime_records": 707,
+    "seal": "audit/a003-manifest-seal.json",
+    "seal_sha256": "bbe355275d133d9ab8ecfc58c6ef1de3bec0dad2862f94a177dd4e01ea3cc13e",
+    "bootstrap_sha256": "94b5e97360e1a68b09b948bc7c8a76ffdaf7d614666ec889ac67a9a000ddb1b8"
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_integration",
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/pass7/pass7-section-owner-unit5-isolation-restart-denial-proof-v1.json",
+      "rationale": "P7-U5 adds the exact-capability, atomic-restart, duplicate, stale, growth, and zero-effect proof matrix required after the P7-U4 production integration."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass7/pass7-section-owner-unit5-isolation-restart-denial-proof-v1.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass7_unit5_owner_isolation_restart_denial_v1.js"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass7_unit5_owner_isolation_restart_denial_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass7/receipts/RECEIPT_P7_U5_OWNER_ISOLATION_RESTART_DENIAL_20260726T171000Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "P7-U2 requires exact owner and section isolation and explicitly forbids cross-owner delegation.",
+        "evidence_paths": [
+          "audit/pass7/pass7-section-owner-unit2-capability-contract-v1.json"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "P7-U3 requires restart through replay of only a validated chained journal.",
+        "evidence_paths": [
+          "audit/pass7/pass7-section-owner-unit3-registration-events-v1.json"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "P7-U4 production-loaded the passive owner adapter and preserved zero Bank, route, mount, repair, storage, and persisted-data effects.",
+        "evidence_paths": [
+          "audit/pass7/pass7-section-owner-unit4-mount-diagnostics-integration-v1.json"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "Exact capability binding and atomic restart replay close the known static isolation gap and make the owner subsystem ready for Pass 7 closure review.",
+        "basis_evidence_paths": [
+          "audit/pass7/pass7-section-owner-unit5-isolation-restart-denial-proof-v1.json",
+          "tools/test_pass7_unit5_owner_isolation_restart_denial_v1.js"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "eight cross-section owner attempts",
+        "eight cross-owner capability attempts",
+        "exact duplicate event",
+        "conflicting duplicate event",
+        "duplicate operation identity",
+        "duplicate owner registration",
+        "update after removal",
+        "stale epoch",
+        "stale sequence",
+        "sequence gap",
+        "epoch gap",
+        "event-chain mismatch",
+        "time regression",
+        "repeated unknown growth",
+        "malformed restart journal",
+        "stored journal digest tamper",
+        "restart chain failure",
+        "duplicate restart journal event",
+        "input mutation after acceptance",
+        "snapshot mutation attempt",
+        "forbidden Bank action",
+        "unknown owner registration",
+        "Mount Lifecycle call trap",
+        "browser and storage API static scan"
+      ]
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "verification": {
+    "assertions_total": 218,
+    "assertions_passed": 218,
+    "assertions_failed": 0,
+    "exact_scope": "PASS",
+    "exact_capability_binding": "PASS",
+    "owner_section_isolation": "PASS",
+    "duplicate_and_stale_behavior": "PASS",
+    "growth_no_authority": "PASS",
+    "atomic_restart_replay": "PASS",
+    "shared_operation_identity": "PASS",
+    "zero_external_effects": "PASS",
+    "runtime_integrity": "PASS",
+    "permanent_gate_binding": "PASS"
+  },
+  "effects": {
+    "production_files_changed": true,
+    "runtime_integrity_changed": true,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_writes": false,
+    "route_changes": false,
+    "mounts": false,
+    "bank_mutations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "P7-U6",
+    "objective": "Review evidence sufficiency and close Pass 7 without spending a scarce observation unless a canonical gate proves one is required and authorized.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "P7-U5 exact-capability and deterministic restart/denial hardening only. It does not close Pass 7, certify a new hands-on observation, repair Bank or Continuous Run, change persisted user data, or run formal proof."
+}

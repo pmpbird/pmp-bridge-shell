@@ -31,6 +31,7 @@
   const ID=/^[a-z0-9][a-z0-9._:-]{0,127}$/;
   const TIME=/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/;
   const DIGEST=/^[0-9a-f]{64}$/;
+  function ownerCapability(owner){return 'cap:p7u3:'+owner}
 
   function plain(value){
     return !!value&&typeof value==='object'&&!Array.isArray(value)&&
@@ -177,7 +178,7 @@
         if(authority.authorizer!==ROOT_AUTHORITY||
            authority.subject_id!==event.owner_id||
            authority.decision!=='AUTHORIZED'||authority.action!==action||
-           authority.capability_id.indexOf('cap:p7u3:')!==0){
+           authority.capability_id!==ownerCapability(event.owner_id)){
           return deny('REJECTED_REGISTRATION_AUTHORITY',event);
         }
       }
@@ -268,6 +269,51 @@
       applyOwnerEvent,snapshot,sideEffects:sideEffects()
     });
   }
+  function restore(mountRuntime,journal){
+    const empty=create(mountRuntime);
+    function rejected(code,index,outcome){
+      return Object.freeze({
+        restored:false,mutated:false,authority_granted:false,code,
+        rejected_index:Number.isInteger(index)?index:null,
+        rejected_code:outcome&&outcome.code||null,
+        operation_ids:Object.freeze([]),
+        runtime:empty,
+        side_effects:sideEffects()
+      });
+    }
+    if(!Array.isArray(journal))return rejected('RESTART_REJECTED_MALFORMED_JOURNAL',null,null);
+    const candidate=create(mountRuntime);
+    const operationIds=[];
+    for(let index=0;index<journal.length;index++){
+      const event=clone(journal[index]);
+      if(!plain(event)||!Object.prototype.hasOwnProperty.call(event,'event_digest')){
+        return rejected(
+          'RESTART_REJECTED_JOURNAL_EVENT',index,
+          {code:'REJECTED_STORED_EVENT_DIGEST'}
+        );
+      }
+      const storedDigest=event.event_digest;
+      delete event.event_digest;
+      if(!DIGEST.test(storedDigest)||storedDigest!==eventDigest(event)){
+        return rejected(
+          'RESTART_REJECTED_JOURNAL_EVENT',index,
+          {code:'REJECTED_STORED_EVENT_DIGEST'}
+        );
+      }
+      const outcome=candidate.applyOwnerEvent(event);
+      if(!outcome.accepted||!outcome.mutated){
+        return rejected('RESTART_REJECTED_JOURNAL_EVENT',index,outcome);
+      }
+      operationIds.push(outcome.operation_id);
+    }
+    return Object.freeze({
+      restored:true,mutated:journal.length>0,authority_granted:false,
+      code:'RESTART_REPLAY_ACCEPTED',rejected_index:null,rejected_code:null,
+      operation_ids:Object.freeze(operationIds.slice()),
+      runtime:candidate,
+      side_effects:sideEffects()
+    });
+  }
   function install(target){
     const host=target&&typeof target==='object'?target:null;
     if(!host)return null;
@@ -280,6 +326,6 @@
   return Object.freeze({
     type:TYPE,version:VERSION,eventVersion:EVENT_VERSION,
     capabilityContractVersion:CAPABILITY_VERSION,registryOwner:REGISTRY_OWNER,
-    owners:OWNERS,create,install,eventDigest
+    owners:OWNERS,create,restore,install,eventDigest
   });
 });

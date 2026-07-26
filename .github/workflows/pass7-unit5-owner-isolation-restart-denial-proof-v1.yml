@@ -1,29 +1,27 @@
-name: Pass 7 Unit 4 Owner Mount Diagnostics Integration
+name: Pass 7 Unit 5 Owner Isolation Restart Denial Proof
 on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
     paths:
       - '.github/workflows/pass7-unit4-owner-mount-diagnostics-integration-v1.yml'
+      - '.github/workflows/pass7-unit5-owner-isolation-restart-denial-proof-v1.yml'
       - 'audit/a003-manifest-seal.json'
-      - 'audit/pass7/pass7-section-owner-unit4-mount-diagnostics-integration-v1.json'
-      - 'audit/pass7/receipts/RECEIPT_P7_U4_OWNER_MOUNT_DIAGNOSTICS_INTEGRATION_20260726T165000Z_001.json'
+      - 'audit/pass7/pass7-section-owner-unit5-isolation-restart-denial-proof-v1.json'
+      - 'audit/pass7/receipts/RECEIPT_P7_U5_OWNER_ISOLATION_RESTART_DENIAL_20260726T171000Z_001.json'
       - 'pmp-app-current.html'
-      - 'pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html'
-      - 'pmp-diagnostics-owner-v1.js'
       - 'pmp-runtime-integrity-manifest-v1.json'
-      - 'pmp-section-owner-diagnostics-view-v1.js'
       - 'pmp-section-owner-mount-integration-v1.js'
-      - 'tools/generate_pass7_unit4_integrity_updates_v1.py'
-      - 'tools/test_pass7_unit4_owner_mount_diagnostics_integration_v1.js'
-      - 'tools/verify_pass7_unit4_owner_mount_diagnostics_integration_v1.py'
+      - 'tools/generate_pass7_unit5_integrity_updates_v1.py'
+      - 'tools/test_pass7_unit5_owner_isolation_restart_denial_v1.js'
+      - 'tools/verify_pass7_unit5_owner_isolation_restart_denial_v1.py'
 permissions:
   contents: read
 jobs:
-  owner-mount-diagnostics-integration:
+  owner-isolation-restart-denial:
     runs-on: ubuntu-latest
     env:
       PYTHONDONTWRITEBYTECODE: '1'
-      ARTIFACT_ROOT: /tmp/pass7-unit4-artifacts/artifacts/attempt-001
+      ARTIFACT_ROOT: /tmp/pass7-unit5-artifacts/artifacts/attempt-001
     steps:
       - uses: actions/checkout@v4
         with:
@@ -35,26 +33,19 @@ jobs:
         with:
           python-version: '3.12'
       - id: evaluate
-        name: Verify integration and preserve complete attempt
+        name: Verify hardening and preserve complete attempt
         shell: bash
         run: |
           set +e
           mkdir -p "$ARTIFACT_ROOT"
-          printf '%s\n' '{"command":"P7-U4 bounded owner Mount Registry and Diagnostics integration"}' > "$ARTIFACT_ROOT/command.json"
+          printf '%s\n' '{"command":"P7-U5 owner isolation, atomic restart, growth, and denial proof"}' > "$ARTIFACT_ROOT/command.json"
           printf '%s\n' 'no stderr emitted before execution' > "$ARTIFACT_ROOT/stderr.txt"
-          node tools/test_pass7_unit4_owner_mount_diagnostics_integration_v1.js \
+          node tools/test_pass7_unit5_owner_isolation_restart_denial_v1.js \
             > "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
           tests_rc=$?
-          if [ "${{ github.event.pull_request.base.sha }}" = "3b54adf01a6dd39b16f5967b65069b295068524c" ]; then
-            python3 tools/verify_pass7_unit4_owner_mount_diagnostics_integration_v1.py \
-              "${{ github.event.pull_request.base.sha }}" >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
-            verify_rc=$?
-          else
-            printf '%s\n' \
-              'P7-U4 immutable exact-scope verifier skipped; production runtime regression test executed for a later unit.' \
-              >> "$ARTIFACT_ROOT/stdout.txt"
-            verify_rc=0
-          fi
+          python3 tools/verify_pass7_unit5_owner_isolation_restart_denial_v1.py \
+            "${{ github.event.pull_request.base.sha }}" >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+          verify_rc=$?
           git diff --name-only "${{ github.event.pull_request.base.sha }}...HEAD" \
             | python3 -c 'import json,sys; print(json.dumps({"changed_paths":[x.strip() for x in sys.stdin if x.strip()]},sort_keys=True))' \
             > "$ARTIFACT_ROOT/scope.json"
@@ -62,8 +53,8 @@ jobs:
             > "$ARTIFACT_ROOT/environment.json"
           python3 - <<'PY' > "$ARTIFACT_ROOT/result.json"
           import json
-          report=json.load(open("audit/pass7/pass7-section-owner-unit4-mount-diagnostics-integration-v1.json"))
-          print(json.dumps({"status":report["status"],"verification":report["verification"],"integration":report["integration"],"effects":report["effects"]},sort_keys=True))
+          report=json.load(open("audit/pass7/pass7-section-owner-unit5-isolation-restart-denial-proof-v1.json"))
+          print(json.dumps({"status":report["status"],"verification":report["verification"],"hardening":report["hardening"],"effects":report["effects"]},sort_keys=True))
           PY
           printf '%s\n' '{"required":false,"granted":false,"consumed_before":false,"consumed_after":false}' \
             > "$ARTIFACT_ROOT/authority-state.json"
@@ -82,16 +73,16 @@ jobs:
               rows.append({"path":path.name,"bytes":len(data),"sha256":hashlib.sha256(data).hexdigest()})
           assert len(rows) == 8
           assert all(row["bytes"] > 0 for row in rows)
-          (root/"artifact-manifest.json").write_text(json.dumps({"type":"PMP_P7_U4_ARTIFACT_MANIFEST_V1","records":rows},indent=2,sort_keys=True)+"\n")
+          (root/"artifact-manifest.json").write_text(json.dumps({"type":"PMP_P7_U5_ARTIFACT_MANIFEST_V1","records":rows},indent=2,sort_keys=True)+"\n")
           PY
           echo "exit_code=$rc" >> "$GITHUB_OUTPUT"
           exit 0
-      - name: Upload complete P7-U4 evidence
+      - name: Upload complete P7-U5 evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: pass7-unit4-integration-${{ github.run_id }}-${{ github.run_attempt }}
-          path: /tmp/pass7-unit4-artifacts/
+          name: pass7-unit5-isolation-restart-denial-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pass7-unit5-artifacts/
           if-no-files-found: error
           retention-days: 90
       - name: Enforce preserved result after upload
