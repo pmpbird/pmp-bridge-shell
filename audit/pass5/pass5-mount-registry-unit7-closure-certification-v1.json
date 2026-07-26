@@ -1,0 +1,182 @@
+{
+  "schema": "PMP_PASS5_MOUNT_REGISTRY_CLOSURE_CERTIFICATION_V1",
+  "certification_id": "P5-U7-CLOSURE-20260726-001",
+  "created_at": "2026-07-26T08:48:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "f3401b9183e48ecc2855d6579dd0600c1905b5f9",
+  "status": "PASS5_COMPLETE",
+  "pass": 5,
+  "pass_name": "Mount Registry + Diagnostics Bottom Tab",
+  "goal": "Create one authoritative observable registry of mount lifecycle state and a read-only diagnostics view.",
+  "units": [
+    {
+      "id": "P5-U1",
+      "result": "READINESS_AUDIT_PASS",
+      "record": "audit/pass5/pass5-mount-registry-diagnostics-unit1-readiness-inventory-v1.json",
+      "receipt": "audit/pass5/receipts/RECEIPT_P5_U1_READINESS_20260726T065204Z_001.json",
+      "pull_request": 154,
+      "head_commit": "8ffa8fb93b4fc1a057224779529b49432706ef21",
+      "merge_commit": "8ca3ea78d51f69ebec0c1a445bf895dd6d1be812",
+      "workflow_run": 30191896045,
+      "workflow_job": 89766472230
+    },
+    {
+      "id": "P5-U2",
+      "result": "PURE_CONTRACT_PROVEN",
+      "record": "audit/pass5/pass5-mount-registry-diagnostics-unit2-lifecycle-contract-v1.json",
+      "receipt": "audit/pass5/receipts/RECEIPT_P5_U2_CONTRACT_20260726T070211Z_001.json",
+      "pull_request": 155,
+      "head_commit": "7115c3c151c698882897b7968636171864af681b",
+      "merge_commit": "820af994d4ae38ab3190318780d82d1f3715decd",
+      "workflow_run": 30192219494,
+      "workflow_job": 89767383311,
+      "required_ci_repair_pull_request": 156,
+      "required_ci_repair_merge_commit": "bb556d956b9d46095513651419d07e367caaaec6"
+    },
+    {
+      "id": "P5-U3",
+      "result": "PASSIVE_INTEGRATION_PROVEN",
+      "record": "audit/pass5/pass5-mount-registry-diagnostics-unit3-passive-integration-v1.json",
+      "receipt": "audit/pass5/receipts/RECEIPT_P5_U3_PASSIVE_INTEGRATION_20260726T074526Z_001.json",
+      "pull_request": 157,
+      "head_commit": "9736ef77343ecf53e0e97256a6a31069ed73d4df",
+      "merge_commit": "6f47790517b68e53626d0646f66ffa22b01aeab5",
+      "workflow_run": 30193705688,
+      "workflow_job": 89771367981,
+      "live_integrity_run": 30193705682,
+      "live_integrity_job": 89771368042
+    },
+    {
+      "id": "P5-U4",
+      "result": "READ_ONLY_DIAGNOSTICS_PROVEN",
+      "record": "audit/pass5/pass5-mount-registry-diagnostics-unit4-readonly-view-v1.json",
+      "receipt": "audit/pass5/receipts/RECEIPT_P5_U4_READONLY_DIAGNOSTICS_20260726T080923Z_001.json",
+      "pull_request": 158,
+      "head_commit": "a3fd801ac49d0242b773bfe17ec5de2b08210596",
+      "merge_commit": "cf26518b4e1946f79e12b81b3126726625189208",
+      "workflow_run": 30194282919,
+      "workflow_job": 89772890101,
+      "live_integrity_run": 30194281350,
+      "live_integrity_job": 89772885979
+    },
+    {
+      "id": "P5-U5",
+      "result": "PASS_ISOLATED_PROOF",
+      "record": "audit/pass5/pass5-mount-registry-unit5-isolated-transition-failure-proof-v1.json",
+      "receipt": "audit/pass5/receipts/RECEIPT_P5_U5_ISOLATED_PROOF_20260726T082400Z_001.json",
+      "pull_request": 159,
+      "head_commit": "b84e530f58f192bcd8ec3c6d3e6edab919c3035f",
+      "merge_commit": "da45468bb06ded75aa847b335cce6fdd5dd1e987",
+      "workflow_run": 30194701696,
+      "workflow_job": 89774026304,
+      "assertions_passed": 138,
+      "assertions_failed": 0
+    },
+    {
+      "id": "P5-U6",
+      "result": "NEW_CURRENT_PATH_OBSERVATION_NOT_REQUIRED",
+      "record": "audit/pass5/pass5-mount-registry-unit6-observation-sufficiency-decision-v1.json",
+      "receipt": "audit/pass5/receipts/RECEIPT_P5_U6_OBSERVATION_DECISION_20260726T083800Z_001.json",
+      "pull_request": 160,
+      "head_commit": "9a87d4b2b77b7dd52d5c53b87ec52650ce447c55",
+      "merge_commit": "f3401b9183e48ecc2855d6579dd0600c1905b5f9",
+      "workflow_run": 30195096978,
+      "workflow_job": 89775079899
+    },
+    {
+      "id": "P5-U7",
+      "result": "PASS5_COMPLETE",
+      "record": "audit/pass5/pass5-mount-registry-unit7-closure-certification-v1.json",
+      "receipt": "audit/pass5/receipts/RECEIPT_P5_U7_CLOSURE_20260726T084800Z_001.json",
+      "pull_request": null,
+      "head_commit": null,
+      "merge_commit": null,
+      "workflow_run": null,
+      "workflow_job": null
+    }
+  ],
+  "exit_criteria": [
+    {
+      "criterion": "One registry owns mount facts without taking route or section authority.",
+      "result": "PASS",
+      "evidence": ["P5-U2", "P5-U3", "P5-U5"]
+    },
+    {
+      "criterion": "Lifecycle events conform to the shared contract.",
+      "result": "PASS",
+      "evidence": ["P5-U2", "P5-U5"]
+    },
+    {
+      "criterion": "Diagnostics cannot mount, repair, reroute, or alter persisted user data.",
+      "result": "PASS",
+      "evidence": ["P5-U4", "P5-U5"]
+    },
+    {
+      "criterion": "Duplicate and stale registrations are deterministic.",
+      "result": "PASS",
+      "evidence": ["P5-U2", "P5-U5"]
+    }
+  ],
+  "production_identity": {
+    "contract": "pmp-mount-lifecycle-contract-v1.js",
+    "passive_runtime": "pmp-mount-lifecycle-runtime-v1.js",
+    "read_only_view": "pmp-mount-lifecycle-diagnostics-view-v1.js",
+    "diagnostics_owner": "pmp-diagnostics-owner-v1.js",
+    "bottom_tab_owner": "pmp-diagnostics-bottom-tab-forcer-v1.js",
+    "manifest": "pmp-runtime-integrity-manifest-v1.json",
+    "source_hashes_match_p5_u5_proof": true,
+    "exact_source_integrity_green": true
+  },
+  "safety": {
+    "registry_route_authority": false,
+    "registry_section_authority": false,
+    "diagnostics_event_application_entrypoint": false,
+    "diagnostics_mount_authority": false,
+    "diagnostics_repair_authority": false,
+    "diagnostics_reroute_authority": false,
+    "automatic_legacy_atlas_scan": false,
+    "storage_migration_performed": false,
+    "persisted_user_data_changed": false,
+    "live_observation_performed_in_pass5": false,
+    "formal_proof_performed_in_pass5": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "consumed_observation_prs": [149, 150, 152],
+    "consumed_failed_formal_proof_pr": 122,
+    "retry_authorized": false
+  },
+  "github": {
+    "all_unit_pull_requests_merged": true,
+    "all_required_workflows_green": true,
+    "verified_main_before_closure": "f3401b9183e48ecc2855d6579dd0600c1905b5f9",
+    "post_p5_u6_a003_probe_run": 30195140497,
+    "post_p5_u6_packet015_run": 30195140491,
+    "post_p5_u6_pages_run": 30195140064
+  },
+  "completion": {
+    "pass5_complete": true,
+    "claim": "Pass 5 is fully implemented, proven, merged through P5-U6, safe, synchronized before closure, and ready for final closure merge.",
+    "remaining_pass5_implementation": [],
+    "next_pass": 6
+  },
+  "effects": {
+    "production_files_changed": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "consumed_observation_retried": false,
+    "pr122_touched": false
+  },
+  "next_step": {
+    "id": "P6-U1",
+    "objective": "Define the diagnostic journal trust, redaction, retention, provenance, and fail-passive contract.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "Pass 5 closure certification only. No Pass 6 implementation, production change, live observation, formal proof, app interaction, storage migration, or persisted-user-data change."
+}

@@ -1,0 +1,75 @@
+{
+  "schema": "PMP_APP_ORCHESTRATOR_STEP_RECEIPT_V1",
+  "receipt_id": "AO-P5-U7-CLOSURE-CERTIFICATION-V1-001",
+  "created_at": "2026-07-26T08:48:00Z",
+  "project": "App Orchestrator",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "roadmap_version": "1.0.0",
+  "pass": 5,
+  "unit": "P5-U7",
+  "substep": "P5-U7",
+  "kind": "CLOSURE",
+  "status": "PASS_COMPLETE",
+  "objective": "Certify Pass 5 completion from the exact merged P5-U1 through P5-U6 evidence and transition to P6-U1.",
+  "claim_ceiling": "Pass 5 closure only; no Pass 6 implementation, production change, live observation, formal proof, app interaction, migration, or persisted-data change.",
+  "authority": {
+    "basis": [
+      "V108 exact next move P5-U7",
+      "Merged P5-U1 through P5-U6 evidence",
+      "Strengthened 13-pass roadmap Pass 5 exit criteria",
+      "Continuing ordinary in-scope authorization through Pass 13"
+    ],
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false
+  },
+  "git": {
+    "base_commit": "f3401b9183e48ecc2855d6579dd0600c1905b5f9",
+    "branch": "agent/pass5-unit7-closure-certification-v1",
+    "head_commit": null,
+    "pull_request": null,
+    "merge_commit": null,
+    "verified_main_commit": "f3401b9183e48ecc2855d6579dd0600c1905b5f9"
+  },
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass5-unit7-closure-certification-v1.yml",
+      "audit/pass5/pass5-mount-registry-unit7-closure-certification-v1.json",
+      "audit/pass5/receipts/RECEIPT_P5_U7_CLOSURE_20260726T084800Z_001.json",
+      "tools/verify_pass5_unit7_closure_certification_v1.py"
+    ],
+    "unrelated_changes_preserved": true
+  },
+  "verification": {
+    "units_certified": 7,
+    "exit_criteria_passed": 4,
+    "p5_u5_assertions_passed": 138,
+    "p5_u5_assertions_failed": 0,
+    "all_required_pull_requests_merged": true,
+    "all_required_workflows_green": true,
+    "production_source_hashes_match_proof": true,
+    "result": "PASS5_COMPLETE",
+    "evidence_complete": true
+  },
+  "effects": {
+    "production_runtime_changed": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "github_changed": false
+  },
+  "recovery": {
+    "rollback_available": true,
+    "rollback_reference": "The audit-only closure branch can be closed or reverted without runtime or data rollback.",
+    "evidence_preserved": true
+  },
+  "supersedes_receipt_ids": [],
+  "next_safe_move": {
+    "step_id": "P6-U1",
+    "instruction": "Define the diagnostic journal trust, redaction, retention, provenance, and fail-passive contract.",
+    "requires_explicit_authority": false,
+    "requires_user_app_check": false,
+    "stop_before": "Only a genuinely required hands-on app reproduction or verification in a later unit."
+  }
+}
