@@ -3,13 +3,12 @@
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
   "manifest_sha256": "4a6fc13bff529ef0ccf11cca03e20d1af5fcdbce492963d5abffad9177e3c00e",
   "manifest_version": "20260711A-A003-FINAL",
-  "pass7_context": "P7-U5 binds each registration event to the exact owner capability and adds atomic fail-closed restart journal replay. Duplicate, stale, growth, and denial paths retain zero mount, route, Bank, repair, storage, or persisted-user-data effects.",
   "repair_id": "A-003",
   "root_self_verifiable": false,
   "root_trust_anchor": "pmp-app-current.html",
   "rule": "The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.",
   "runtime_source_set_sha256": "d5bbfb00fc5df33386dc173f601db9edae3f82d08b828371628dbd2bd9970e1f",
-  "sealed_branch": "agent/pass7-unit5-owner-isolation-restart-denial-proof-v1",
+  "sealed_branch": "main",
   "status": "SEALED",
   "type": "PMP_A003_MANIFEST_SEAL_V1"
 }
