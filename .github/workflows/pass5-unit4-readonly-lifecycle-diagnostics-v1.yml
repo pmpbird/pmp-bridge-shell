@@ -3,7 +3,6 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
     paths:
-      - '.github/workflows/pass5-unit4-readonly-lifecycle-diagnostics-v1.yml'
       - 'audit/pass5/pass5-mount-registry-diagnostics-unit4-readonly-view-v1.json'
       - 'audit/pass5/receipts/RECEIPT_P5_U4_READONLY_DIAGNOSTICS_20260726T080923Z_001.json'
       - 'tools/generate_pass5_unit4_integrity_updates_v1.py'

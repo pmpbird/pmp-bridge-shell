@@ -169,6 +169,7 @@ def main():
         ROOT / ".github/workflows/pass5-unit4-readonly-lifecycle-diagnostics-v1.yml"
     ).read_text()
     for stale_trigger in (
+        ".github/workflows/pass5-unit4-readonly-lifecycle-diagnostics-v1.yml",
         "audit/a003-manifest-seal.json",
         "pmp-app-current.html",
         "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
