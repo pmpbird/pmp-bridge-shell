@@ -1,0 +1,42 @@
+{
+  "type": "PMP_PASS10_UNIT7R_BANK_LEVEL_OWNER_STABILITY_REPAIR_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P10_U7R_BANK_LEVEL_OWNER_STABILITY_REPAIR_20260727T022458Z_001",
+  "created_at": "2026-07-27T02:24:58Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "2c960a8ea0ffef5e30790fb8b8c42a7c2b6b748b",
+  "branch": "agent/pass10-unit7-bank-level-order-repair-v1",
+  "pass": 10,
+  "unit": "P10-U7",
+  "substep": "P10-U7R",
+  "status": "DETERMINISTIC_REPAIR_GREEN_HANDS_ON_RECHECK_REQUIRED",
+  "evidence": "audit/pass10/pass10-bank-unit7-level-owner-stability-repair-v1.json",
+  "assertions": {
+    "repair": 106,
+    "repair_failed": 0,
+    "prior_regressions": 555,
+    "prior_regressions_failed": 0
+  },
+  "decisions": {
+    "bank_home_continuous_run_levels": "FORBIDDEN_ZERO_REQUIRED",
+    "continuous_run_owner_slots": 1,
+    "recurring_reparent_timer": "DISABLED",
+    "canonical_level_order": "1_2_3_4_4B_5_THROUGH_30_30B",
+    "no_op_dom_reorder": "FORBIDDEN",
+    "pass10_complete": false
+  },
+  "effects": {
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "live_app_observation_performed": false,
+    "formal_proof_performed": false,
+    "formal_proof_authorization_consumed": false
+  },
+  "next_safe_move": {
+    "step_id": "P10-U7B-FOCUSED-RECHECK",
+    "requires_user_app_check": true,
+    "instruction": "Verify the merged app once: no levels on regular Bank home, then Level 1-30B remains in order and does not flicker in Continuous Run Bank.",
+    "requires_explicit_authority": false
+  },
+  "claim_ceiling": "Repair is deterministic-green only; the user-visible claims and Pass 10 closure remain pending one focused recheck."
+}
