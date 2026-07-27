@@ -3,6 +3,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
     paths:
+      - '.github/workflows/pass10-unit7-uniform-title-weight-v1.yml'
       - '.github/workflows/pass11-safety-no-deletion-v1.yml'
       - 'audit/a003-manifest-seal.json'
       - 'audit/pass11/pass11-unit1-safety-baseline-contract-v1.json'

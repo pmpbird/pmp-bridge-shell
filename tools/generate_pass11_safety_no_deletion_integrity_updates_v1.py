@@ -13,6 +13,7 @@ SEAL = ROOT / "audit/a003-manifest-seal.json"
 BOOTSTRAP = ROOT / "pmp-app-current.html"
 INNER = ROOT / "pmp-current-inner-cleanbug-rgcontrols-v23.html"
 RUNTIME_PATHS = (
+    "pmp-safety-no-deletion-policy-v1.json",
     "pmp-safety-no-deletion-guard-v1.js",
     "pmp-master-bank-inventory-router-v1.js",
     "pmp-connections-bank-packet-delete-v1.js",
@@ -67,12 +68,22 @@ def record(path: str, existing: dict | None = None) -> dict:
             "sha256_base64": base64.b64encode(digest).decode(),
             "sri": "sha256-" + base64.b64encode(digest).decode(),
             "mime_type": (
-                "text/html" if path.endswith(".html") else "text/javascript"
+                "text/html"
+                if path.endswith(".html")
+                else (
+                    "application/json"
+                    if path.endswith(".json")
+                    else "text/javascript"
+                )
             ),
             "execution_class": (
                 "EXECUTABLE_DOCUMENT"
                 if path.endswith(".html")
-                else "EXECUTABLE_SCRIPT"
+                else (
+                    "RUNTIME_DATA"
+                    if path.endswith(".json")
+                    else "EXECUTABLE_SCRIPT"
+                )
             ),
             "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
         }

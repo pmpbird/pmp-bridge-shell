@@ -11,6 +11,7 @@
   "status": "PASS11_SAFETY_NO_DELETION_COMPLETE",
   "scope": {
     "changed_paths": [
+      ".github/workflows/pass10-unit7-uniform-title-weight-v1.yml",
       ".github/workflows/pass11-safety-no-deletion-v1.yml",
       "audit/a003-manifest-seal.json",
       "audit/pass11/pass11-unit1-safety-baseline-contract-v1.json",
@@ -196,6 +197,8 @@
     "p10_u3_regression": "125/125 PASS",
     "p10_u4_regression": "121/121 PASS",
     "p10_u7u_regression": "86/86 PASS",
+    "p10_u7u_historical_verifier_dispatch_repair": "PASS",
+    "a003_complete_runtime_set_policy_binding": "PASS",
     "runtime_integrity_regeneration": "PASS",
     "runtime_integrity_determinism": "PASS",
     "exact_scope": "PASS",

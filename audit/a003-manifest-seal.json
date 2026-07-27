@@ -1,14 +1,14 @@
 {
-  "manifest_bytes": 376371,
+  "manifest_bytes": 376891,
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
-  "manifest_sha256": "852a28801dcf7114a463aa78e88aa08393571c23281e4c640a8a932113861672",
+  "manifest_sha256": "f3bb7874ffad705e6e938cdf2804716c285fe15754fb035338838094a69cf00e",
   "manifest_version": "20260711A-A003-FINAL",
   "pass11_context": "Pass 11 installs one load-inert safety and no-deletion guard, keeps active deletion denied by default, changes the Connections Bank action to recoverable archive, retains exact packet metadata and IndexedDB binary payloads, and requires exact backup, rollback, owner scope, expected version, append-only receipts, and single-use exceptional delete authority. No live user data is read or changed by the implementation or proof.",
   "repair_id": "A-003",
   "root_self_verifiable": false,
   "root_trust_anchor": "pmp-app-current.html",
   "rule": "The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.",
-  "runtime_source_set_sha256": "4099037d08fc7f9ef921da2ba79926a56f545216d398544a22792f38514ee0eb",
+  "runtime_source_set_sha256": "b0f3dc0a66c59c4bfaa2f23c0cde8c444731bb17984c824d2314ef01b73e8afe",
   "sealed_branch": "agent/pass11-safety-no-deletion-complete-v1",
   "status": "SEALED",
   "type": "PMP_A003_MANIFEST_SEAL_V1"

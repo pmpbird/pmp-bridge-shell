@@ -1,13 +1,13 @@
 {
   "algorithm": "SHA-256",
   "counts": {
-    "executable_records": 713,
+    "executable_records": 714,
     "external_errors": 0,
     "external_records": 3,
     "historical_records": 1,
     "map_declared_covered": 42,
     "map_declared_paths": 42,
-    "runtime_records": 713,
+    "runtime_records": 714,
     "style_records": 0
   },
   "external_records": [
@@ -7102,6 +7102,17 @@
       "sri": "sha256-3yjLulXUfEsFn1ilCxUtJxJ0vQTVzzPIacewQRicMjw="
     },
     {
+      "bytes": 3303,
+      "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
+      "execution_class": "RUNTIME_DATA",
+      "git_blob_sha": "023a7103eb9a53c010fcee40b438e45ebf94d3a4",
+      "mime_type": "application/json",
+      "path": "pmp-safety-no-deletion-policy-v1.json",
+      "sha256_base64": "0Oa18Gxzt7iYX3OXb70MGz96lEUn714jbnHFF/4tPKo=",
+      "sha256_hex": "d0e6b5f06c73b7b8985f73976fbd0c1b3f7a944527ef5e236e71c517fe2d3caa",
+      "sri": "sha256-0Oa18Gxzt7iYX3OXb70MGz96lEUn714jbnHFF/4tPKo="
+    },
+    {
       "bytes": 5933,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
@@ -7924,7 +7935,7 @@
       "rule": "This is the only application bootstrap source excluded from downstream manifest self-enforcement."
     }
   ],
-  "runtime_source_set_sha256": "4099037d08fc7f9ef921da2ba79926a56f545216d398544a22792f38514ee0eb",
+  "runtime_source_set_sha256": "b0f3dc0a66c59c4bfaa2f23c0cde8c444731bb17984c824d2314ef01b73e8afe",
   "source_identity_rule": "Deterministic digest of protected local, historical, external, root-anchor, and policy identities; audit/workflow-only commits do not alter this identity.",
   "type": "PMP_RUNTIME_INTEGRITY_MANIFEST_V1",
   "unlisted_executable_policy": "FAIL_CLOSED",

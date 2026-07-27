@@ -40,6 +40,7 @@ RECEIPTS = [
     ROOT / "audit/pass11/receipts/RECEIPT_P11_U6_PASS11_COMPLETE_20260727T064800Z_001.json",
 ]
 EXPECTED = {
+    ".github/workflows/pass10-unit7-uniform-title-weight-v1.yml",
     ".github/workflows/pass11-safety-no-deletion-v1.yml",
     "audit/a003-manifest-seal.json",
     "audit/pass11/pass11-unit1-safety-baseline-contract-v1.json",
@@ -92,6 +93,7 @@ REGRESSIONS = [
 ]
 GENERATED = [INNER, MANIFEST, SEAL, BOOTSTRAP]
 RUNTIME_RECORDS = [
+    POLICY,
     GUARD,
     ROUTER,
     CONNECTIONS,
@@ -300,7 +302,7 @@ def main() -> None:
     assert closure["no_retry_gates"]["consumed_failed_formal_proof_pr"] == 122
     assert closure["no_retry_gates"]["retry_authorized"] is False
     print(
-        "PASS: exact 24-path Pass 11 safety/no-deletion closure verified "
+        "PASS: exact 25-path Pass 11 safety/no-deletion closure verified "
         "(186/186, seven regressions green, integrity sealed, gate PASS, "
         "P12-U1 ready)"
     )
