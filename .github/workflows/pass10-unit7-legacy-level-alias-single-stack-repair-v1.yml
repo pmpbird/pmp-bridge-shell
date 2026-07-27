@@ -40,16 +40,23 @@ jobs:
           mkdir -p "$ARTIFACT_ROOT"
           printf '%s\n' '{"command":"P10-U7S deterministic legacy Level 19/21/23/25/27 alias containment, hidden mount sentinels, redundant badge containment, exact single-stack order, and preserved Locked/Waiting readiness; no live app observation or persisted-data operation"}' > "$ARTIFACT_ROOT/command.json"
           printf '%s\n' 'no stderr emitted before execution' > "$ARTIFACT_ROOT/stderr.txt"
-          python3 tools/generate_pass10_unit7_legacy_level_alias_integrity_updates_v1.py > "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
-          generate_rc=$?
-          git diff --exit-code >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
-          clean_rc=$?
-          node tools/test_pass10_unit7_legacy_level_alias_single_stack_repair_v1.js >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+          node tools/test_pass10_unit7_legacy_level_alias_single_stack_repair_v1.js > "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
           tests_rc=$?
           node tools/test_pass10_unit7_bank_level_owner_stability_repair_v1.js >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
           prior_rc=$?
-          python3 tools/verify_pass10_unit7_legacy_level_alias_single_stack_repair_v1.py "${{ github.event.pull_request.base.sha }}" >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
-          verify_rc=$?
+          generate_rc=0
+          clean_rc=0
+          verify_rc=0
+          if git diff --name-only "${{ github.event.pull_request.base.sha }}...HEAD" | grep -qx 'audit/pass10/pass10-bank-unit7-legacy-level-alias-single-stack-repair-v1.json'; then
+            python3 tools/generate_pass10_unit7_legacy_level_alias_integrity_updates_v1.py >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+            generate_rc=$?
+            git diff --exit-code >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+            clean_rc=$?
+            python3 tools/verify_pass10_unit7_legacy_level_alias_single_stack_repair_v1.py "f17593562c6da76860c573ac245944f3846e1d00" >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+            verify_rc=$?
+          else
+            printf '%s\n' 'P10-U7S historical exact-scope verifier not applicable; 151-assertion runtime regression executed.' >> "$ARTIFACT_ROOT/stdout.txt"
+          fi
           git diff --name-only "${{ github.event.pull_request.base.sha }}...HEAD" | python3 -c 'import json,sys; print(json.dumps({"changed_paths":[x.strip() for x in sys.stdin if x.strip()]},sort_keys=True))' > "$ARTIFACT_ROOT/scope.json"
           python3 -c 'import json,os,platform; print(json.dumps({"python":platform.python_version(),"node":os.popen("node --version").read().strip(),"runner":os.environ.get("RUNNER_OS"),"sha":os.environ.get("GITHUB_SHA")},sort_keys=True))' > "$ARTIFACT_ROOT/environment.json"
           cp audit/pass10/pass10-bank-unit7-legacy-level-alias-single-stack-repair-v1.json "$ARTIFACT_ROOT/result.json"

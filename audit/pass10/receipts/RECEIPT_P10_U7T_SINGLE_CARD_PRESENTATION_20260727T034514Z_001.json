@@ -1,0 +1,70 @@
+{
+  "type": "PMP_PASS10_UNIT7T_SINGLE_CARD_PRESENTATION_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P10_U7T_SINGLE_CARD_PRESENTATION_20260727T034514Z_001",
+  "created_at": "2026-07-27T03:45:14Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "bddb72b6f80ee5c29a4ebaf0100e3d83c5651500",
+  "branch": "agent/pass10-unit7-single-card-visual-cleanup-v1",
+  "pass": 10,
+  "unit": "P10-U7",
+  "substep": "P10-U7T",
+  "status": "DETERMINISTIC_PRESENTATION_GREEN_HANDS_ON_VISUAL_RECHECK_REQUIRED",
+  "evidence": "audit/pass10/pass10-bank-unit7-single-card-presentation-v1.json",
+  "changed_paths": [
+    ".github/workflows/pass10-unit7-legacy-level-alias-single-stack-repair-v1.yml",
+    ".github/workflows/pass10-unit7-single-card-presentation-v1.yml",
+    "audit/a003-manifest-seal.json",
+    "audit/pass10/pass10-bank-unit7-single-card-presentation-v1.json",
+    "audit/pass10/receipts/RECEIPT_P10_U7T_SINGLE_CARD_PRESENTATION_20260727T034514Z_001.json",
+    "pmp-app-current.html",
+    "pmp-continuous-run-level-ui-scope-v1.js",
+    "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+    "pmp-runtime-integrity-manifest-v1.json",
+    "tools/fixtures/pass10-unit7-single-card-presentation-v1.html",
+    "tools/generate_pass10_unit7_single_card_presentation_integrity_updates_v1.py",
+    "tools/test_pass10_unit7_bank_level_owner_stability_repair_v1.js",
+    "tools/test_pass10_unit7_legacy_level_alias_single_stack_repair_v1.js",
+    "tools/test_pass10_unit7_single_card_presentation_v1.js",
+    "tools/verify_pass10_unit7_single_card_presentation_v1.py"
+  ],
+  "assertions": {
+    "presentation": 478,
+    "presentation_failed": 0,
+    "browser_fixture": 536,
+    "browser_fixture_failed": 0,
+    "prior_regressions": 812,
+    "prior_regressions_failed": 0
+  },
+  "decisions": {
+    "canonical_member_nodes": "PRESERVED_IN_PLACE_AFTER_CANONICAL_MOUNT",
+    "functional_selectors_and_controls": "PRESERVED",
+    "legacy_mount_sentinels": "PRESERVED",
+    "canonical_order": "1_2_3_4_4B_5_THROUGH_30_30B",
+    "inner_legacy_wrapper": "VISUALLY_TRANSPARENT_NO_BORDER",
+    "repeated_direct_level_heading": "NODE_PRESERVED_VISUALLY_HIDDEN_ARIA_HIDDEN",
+    "outer_level_title": "SINGLE_VISIBLE_TITLE_28_TO_34_CSS_PX",
+    "locked_waiting_badge": "PRESERVED_INTENTIONAL_FAIL_CLOSED_READINESS",
+    "recurring_canonical_reparent_timer": "DISABLED",
+    "pass10_complete": false
+  },
+  "effects": {
+    "presentation_changed": true,
+    "functional_runtime_behavior_changed": false,
+    "functional_nodes_removed": false,
+    "functional_controls_hidden": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "live_app_observation_performed": false,
+    "disposable_fixture_browser_test_performed": true,
+    "formal_proof_performed": false,
+    "formal_proof_authorization_consumed": false
+  },
+  "next_safe_move": {
+    "step_id": "P10-U7B-FINAL-VISUAL-AND-ORDER-RECHECK",
+    "requires_user_app_check": true,
+    "instruction": "Verify the merged Continuous Run Bank once: Levels 3+ have one large title and one outer card without repeated inner titles, while order remains 1, 2, 3, 4, 4B, 5 through 30, 30B and no flicker returns.",
+    "requires_explicit_authority": false
+  },
+  "claim_ceiling": "Presentation is deterministic- and fixture-green only; the real app visual result, exact order, and Pass 10 closure remain pending one final focused recheck."
+}

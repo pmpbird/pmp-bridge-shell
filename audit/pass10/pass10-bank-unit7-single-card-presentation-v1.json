@@ -1,0 +1,274 @@
+{
+  "type": "PMP_PASS10_BANK_UNIT7_SINGLE_CARD_PRESENTATION_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-27T03:45:14Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "bddb72b6f80ee5c29a4ebaf0100e3d83c5651500",
+  "branch": "agent/pass10-unit7-single-card-visual-cleanup-v1",
+  "pass": 10,
+  "unit": "P10-U7",
+  "unit_id": "P10-U7",
+  "substep": "P10-U7T",
+  "status": "DETERMINISTIC_PRESENTATION_GREEN_HANDS_ON_VISUAL_RECHECK_REQUIRED",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass10-unit7-legacy-level-alias-single-stack-repair-v1.yml",
+      ".github/workflows/pass10-unit7-single-card-presentation-v1.yml",
+      "audit/a003-manifest-seal.json",
+      "audit/pass10/pass10-bank-unit7-single-card-presentation-v1.json",
+      "audit/pass10/receipts/RECEIPT_P10_U7T_SINGLE_CARD_PRESENTATION_20260727T034514Z_001.json",
+      "pmp-app-current.html",
+      "pmp-continuous-run-level-ui-scope-v1.js",
+      "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+      "pmp-runtime-integrity-manifest-v1.json",
+      "tools/fixtures/pass10-unit7-single-card-presentation-v1.html",
+      "tools/generate_pass10_unit7_single_card_presentation_integrity_updates_v1.py",
+      "tools/test_pass10_unit7_bank_level_owner_stability_repair_v1.js",
+      "tools/test_pass10_unit7_legacy_level_alias_single_stack_repair_v1.js",
+      "tools/test_pass10_unit7_single_card_presentation_v1.js",
+      "tools/verify_pass10_unit7_single_card_presentation_v1.py"
+    ],
+    "implementation_paths": [
+      "pmp-app-current.html",
+      "pmp-continuous-run-level-ui-scope-v1.js",
+      "pmp-current-inner-cleanbug-rgcontrols-v23.html"
+    ]
+  },
+  "trigger": {
+    "type": "USER_VISUAL_SIMPLIFICATION_REQUEST",
+    "prior_checkpoint": "V143",
+    "user_confirmed_bank_home_leak_fixed": true,
+    "user_confirmed_flicker_fixed": true,
+    "user_requested_level3plus_match_level1_and_level2_presentation": true,
+    "requested_outcome": [
+      "fewer visible card borders",
+      "larger single level title",
+      "no repeated level title",
+      "no recurrence of prior helper-fighting glitches"
+    ],
+    "screenshots_reviewed": 4,
+    "pass10_complete": false
+  },
+  "root_cause": {
+    "primary": "The safety owner renders one canonical outer shell for each Level 3+ panel, while each legacy functional member retains its own bordered wrapper and direct level heading.",
+    "visual_effect": "The outer shell and legacy member appear as two nested cards and their two headings repeat the same level identity.",
+    "prior_glitch_risk": "Removing or moving legacy members, selectors, or mount nodes can restart helper reinjection and DOM ownership fighting.",
+    "classification": "DOUBLE_VISUAL_WRAPPER_AND_REPEATED_DIRECT_LEVEL_HEADING"
+  },
+  "repair": {
+    "presentation_only": true,
+    "canonical_shells_preserved": true,
+    "canonical_member_nodes_preserved": true,
+    "canonical_member_identity_preserved": true,
+    "canonical_member_selectors_preserved": true,
+    "functional_descendants_preserved": true,
+    "button_handlers_preserved": true,
+    "input_values_preserved": true,
+    "readiness_badges_preserved": true,
+    "locked_waiting_readiness_preserved": true,
+    "legacy_mount_sentinels_preserved": true,
+    "legacy_alias_containment_preserved": true,
+    "recurring_canonical_reparent_timer_active": false,
+    "inner_member_border_visible": false,
+    "inner_member_background": "transparent",
+    "repeated_direct_level_heading_node_removed": false,
+    "repeated_direct_level_heading_visible": false,
+    "single_outer_title_minimum_css_px": 28,
+    "single_outer_title_maximum_css_px": 34,
+    "level1_and_level2_changed": false,
+    "canonical_order": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "4B",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "19",
+      "20",
+      "21",
+      "22",
+      "23",
+      "24",
+      "25",
+      "26",
+      "27",
+      "28",
+      "29",
+      "30",
+      "30B"
+    ]
+  },
+  "inputs": {
+    "level_owner_sha256": "0536ec3d6e244625e9b792c3ac8b59211fd51441b292fcbb8368d838d09c8d03",
+    "inner_runtime_sha256": "256c170c0a7503328c5fcfc0ff921001eceb2a97591e6ee487321912545c2aa0",
+    "runtime_manifest_sha256": "fa0526bc8bb0d4e3bf0761c53fd77ec6b349fb5b9cc0d9e9fb5255e867e4d7c6",
+    "a003_seal_sha256": "777d0d233ddd1f5e8f23f89e1200dc759a3d62c97a658a78c8cfec2569af3a3c",
+    "root_anchor_sha256": "510bb5a0b6edf738ad54ee4f052ffb255f393422f83121d4c135f6775e0948f1",
+    "test_sha256": "e4acc7bc853c53fb439dc23cfc5578c18ad12cb253421ee39768104b563362f3",
+    "fixture_sha256": "abdc3a72b75bfaa2992462d805fdb6c4f33e470ca2cff79c613995f31c029fb1",
+    "prior_alias_regression_test_sha256": "d6c2c6f5803dcd4ee67c6a2bb7787f1c700cebeea905a699b0473cf3f142116b",
+    "prior_owner_regression_test_sha256": "6d5c9efd9560275b6a4195e6ad53f621618bbf1f8daea3fe042885e9527b3e02"
+  },
+  "verification": {
+    "assertions_total": 478,
+    "assertions_passed": 478,
+    "assertions_failed": 0,
+    "browser_fixture_assertions_total": 536,
+    "browser_fixture_assertions_passed": 536,
+    "browser_fixture_assertions_failed": 0,
+    "prior_p10_u7s_assertions": 151,
+    "prior_p10_u7r_assertions": 106,
+    "prior_p9_u3_assertions": 234,
+    "prior_p10_u3_assertions": 125,
+    "prior_p10_u4_assertions": 121,
+    "prior_p10_u7a_assertions": 75,
+    "prior_regression_assertions_total": 812,
+    "javascript_syntax": "PASS",
+    "exact_runtime_load_count": "PASS",
+    "exact_fresh_binding": "PASS",
+    "runtime_integrity_regeneration": "PASS",
+    "runtime_integrity_determinism": "PASS",
+    "all_30_level_members_preserved": "PASS",
+    "all_30_repeated_headings_nodes_preserved_but_hidden": "PASS",
+    "all_30_functional_control_sets_visible": "PASS",
+    "all_30_readiness_badges_preserved": "PASS",
+    "level1_and_level2_identity_and_style_unchanged": "PASS",
+    "twenty_noop_scans_zero_child_mutations": "PASS",
+    "canonical_order_preserved": "PASS",
+    "five_legacy_mount_sentinels_preserved": "PASS"
+  },
+  "effects": {
+    "production_files_changed": true,
+    "runtime_integrity_changed": true,
+    "presentation_changed": true,
+    "production_behavior_activated_after_merge": true,
+    "functional_runtime_behavior_changed": false,
+    "functional_nodes_removed": false,
+    "functional_controls_hidden": false,
+    "persisted_user_data_changed": false,
+    "storage_reads": false,
+    "storage_writes": false,
+    "storage_deletes": false,
+    "storage_migration_performed": false,
+    "bank_user_data_mutations": false,
+    "continuous_run_user_data_mutations": false,
+    "route_changes": false,
+    "live_app_observation_performed": false,
+    "disposable_fixture_browser_test_performed": true,
+    "formal_proof_performed": false,
+    "formal_proof_authorization_consumed": false
+  },
+  "authority": {
+    "ordinary_implementation_authorized": true,
+    "special_authority_required": false,
+    "special_authority_consumed": false,
+    "formal_proof_authorization_consumed": false,
+    "consumed_observations_retried": false
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "static_contract",
+    "diagnostic_matrix_update": {
+      "status": "UPDATED",
+      "applicable_matrix": "audit/pass10/pass10-bank-unit7-single-card-presentation-v1.json",
+      "rationale": "Four user screenshots isolated a visual-only nested-wrapper and repeated-heading problem after the earlier ownership, containment, flicker, and ordering repairs."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass10/pass10-bank-unit7-legacy-level-alias-single-stack-repair-v1.json",
+      "audit/pass10/pass10-bank-unit7-single-card-presentation-v1.json",
+      "tools/fixtures/pass10-unit7-single-card-presentation-v1.html"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass10_unit7_single_card_presentation_v1.js",
+      "tools/test_pass10_unit7_legacy_level_alias_single_stack_repair_v1.js",
+      "tools/test_pass10_unit7_bank_level_owner_stability_repair_v1.js"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass10_unit7_single_card_presentation_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass10/receipts/RECEIPT_P10_U7T_SINGLE_CARD_PRESENTATION_20260727T034514Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The user supplied four real-app screenshots showing Levels 3, 4, and 4B with a canonical outer title plus a bordered legacy inner member and repeated direct level heading.",
+        "evidence_paths": [
+          "audit/pass10/pass10-bank-unit7-single-card-presentation-v1.json"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The disposable browser fixture passed 536 checks across all 30 Level 3-30B members for one visible heading, transparent inner wrappers, preserved controls, preserved readiness, exact order, identity stability, and zero no-op child mutations.",
+        "evidence_paths": [
+          "tools/fixtures/pass10-unit7-single-card-presentation-v1.html"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "Styling the already-mounted canonical member without removing or moving it should produce the requested Level 1-2-like visual hierarchy without restarting helper reinjection or ownership fighting, but the real visible result remains pending one user check.",
+        "basis_evidence_paths": [
+          "audit/pass10/pass10-bank-unit7-single-card-presentation-v1.json",
+          "tools/test_pass10_unit7_single_card_presentation_v1.js",
+          "tools/fixtures/pass10-unit7-single-card-presentation-v1.html"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "all 30 nested legacy member wrappers",
+        "all 30 repeated direct level headings",
+        "all 30 functional descriptions, inputs, buttons, and status outputs",
+        "all 30 Locked / waiting readiness badges",
+        "twenty repeated canonical scans",
+        "user-entered input value",
+        "bound button handler",
+        "five legacy alias mount sentinels"
+      ],
+      "rationale": "The deterministic and disposable browser suites reproduce the nested-card class and assert zero functional-node deletion, zero identity loss, zero control loss, exact order, and no recurring reparent behavior without launching the PMP app or touching persisted data."
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "claim_ceiling": "The single-card presentation is deterministic- and fixture-green. The merged PMP app's exact visible presentation and order remain unproven until one final user recheck. Pass 10 remains open.",
+  "next_step": {
+    "id": "P10-U7B-FINAL-VISUAL-AND-ORDER-RECHECK",
+    "requires_user_app_check": true,
+    "instruction": "After this presentation repair is merged, synchronized, and packaged, ask the user to confirm Levels 3+ show one large level title and one outer card without a repeated inner level heading, while exact order and stable no-flicker behavior remain.",
+    "formal_proof_allowed": false,
+    "persisted_data_change_allowed": false
+  }
+}
