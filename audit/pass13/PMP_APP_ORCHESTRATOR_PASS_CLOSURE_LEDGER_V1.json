@@ -1,0 +1,138 @@
+{
+  "type": "PMP_APP_ORCHESTRATOR_PASS_CLOSURE_LEDGER_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-27T07:40:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "certification_base_main_commit": "e3e0fecfe4db33b6f6d7b447c4180b74409d8090",
+  "entries": [
+    {
+      "pass": 1,
+      "status": "COMPLETE_RECONCILED_HISTORICAL_FORMAT",
+      "closure_evidence": "audit/pass1/pass1-post-merge-confirmation-v1.json",
+      "closure_receipt": "audit/pass1-final-closure-receipt.json",
+      "installed_main_commit": "32b873712b9eefa9fe88f550e92853aa7869583e",
+      "claim_limit": "Historical Pass 1 closure only; no claim of bootstrap root self-verifiability or fully eliminated service-worker registration TOCTOU."
+    },
+    {
+      "pass": 2,
+      "status": "COMPLETE_AT_AUTHORITY_DEFINITION_SCOPE",
+      "closure_evidence": "audit/pass2/pass2-full-roadmap-authority-definition-closure-v1.json",
+      "closure_receipt": "audit/pass2/pass2-full-roadmap-authority-definition-closure-v1.json",
+      "claim_limit": "Authority Rules, Bug Watch, and Bug Bank capture definition scope. The failed PR #122 formal-proof event remains quarantined and is not retried."
+    },
+    {
+      "pass": 3,
+      "status": "COMPLETE_RECONCILED_AFTER_GREEN_MERGE",
+      "closure_evidence": "audit/pass3/pass3-route-guardian-handoff-unit5-closure-certification-v1.json",
+      "closure_receipt": "audit/pass3/pass3-route-guardian-handoff-unit5-closure-certification-v1.json",
+      "claim_limit": "Route Guardian handoff only; the creation-time pending-merge status is resolved by later verified main history and is not rewritten."
+    },
+    {
+      "pass": 4,
+      "status": "COMPLETE_REPAIRED_AND_USER_CONFIRMED",
+      "closure_evidence": "audit/pass4/pass4-boot-status-strip-unit5-closure-certification-v1.json",
+      "closure_receipt": "audit/pass4/receipts/RECEIPT_P4_U5_PASS_CLOSURE_20260726T063514Z_001.json",
+      "claim_limit": "Bounded Boot Status Strip scope. Failed Unit 4 replacement attempts remain historical evidence and are superseded, not erased."
+    },
+    {
+      "pass": 5,
+      "status": "COMPLETE",
+      "closure_evidence": "audit/pass5/pass5-mount-registry-unit7-closure-certification-v1.json",
+      "closure_receipt": "audit/pass5/receipts/RECEIPT_P5_U7_CLOSURE_20260726T084800Z_001.json",
+      "claim_limit": "Mount Registry lifecycle and read-only diagnostics scope."
+    },
+    {
+      "pass": 6,
+      "status": "COMPLETE_PERMANENT_GATE_ACTIVE",
+      "closure_evidence": "audit/pass6/pass6-unit7-closure-certification-v1.json",
+      "closure_receipt": "audit/pass6/receipts/RECEIPT_P6_U7_PASS6_CLOSURE_20260726T160000Z_001.json",
+      "claim_limit": "Diagnostic journal, deterministic evidence, fault injection, and permanent no-blind-flying gate."
+    },
+    {
+      "pass": 7,
+      "status": "COMPLETE",
+      "closure_evidence": "audit/pass7/pass7-section-owner-unit6-closure-certification-v1.json",
+      "closure_receipt": "audit/pass7/receipts/RECEIPT_P7_U6_SECTION_OWNER_CLOSURE_20260726T172000Z_001.json",
+      "claim_limit": "Section Owner Rules and Universal Owner Growth Awareness."
+    },
+    {
+      "pass": 8,
+      "status": "COMPLETE",
+      "closure_evidence": "audit/pass8/pass8-helper-unit6-closure-certification-v1.json",
+      "closure_receipt": "audit/pass8/receipts/RECEIPT_P8_U6_HELPER_SAFETY_CLOSURE_20260726T190000Z_001.json",
+      "claim_limit": "Helper ownership, capability, isolation, restart, revocation, denial, and diagnostics scope."
+    },
+    {
+      "pass": 9,
+      "status": "COMPLETE",
+      "closure_evidence": "audit/pass9/pass9-bank-continuous-run-unit7-closure-certification-v1.json",
+      "closure_receipt": "audit/pass9/receipts/RECEIPT_P9_U7_PASS9_BANK_CONTINUOUS_RUN_COMPLETE_20260726T212500Z_001.json",
+      "claim_limit": "Bank Owner and Continuous Run Owner split, runtime repair, deterministic proof, and bounded no-observation-required decision."
+    },
+    {
+      "pass": 10,
+      "status": "COMPLETE_USER_CONFIRMED",
+      "closure_evidence": "audit/pass10/pass10-bank-unit7-closure-certification-v1.json",
+      "closure_receipt": "audit/pass10/receipts/RECEIPT_P10_U7V_PASS10_BANK_INVENTORY_COMPLETE_20260727T062000Z_001.json",
+      "claim_limit": "Bank inventory, projection, owner refresh, containment, reversible fixture rehearsal, and user-confirmed presentation repairs."
+    },
+    {
+      "pass": 11,
+      "status": "COMPLETE",
+      "closure_evidence": "audit/pass11/pass11-unit6-closure-certification-v1.json",
+      "closure_receipt": "audit/pass11/receipts/RECEIPT_P11_U6_PASS11_COMPLETE_20260727T064800Z_001.json",
+      "claim_limit": "Safety, no deletion, recoverable archive, exact exceptional authority, transaction rollback, and disposable preservation proof."
+    },
+    {
+      "pass": 12,
+      "status": "COMPLETE_BOUNDED_PRODUCTION_MIGRATION_BLOCKED_AUTHORITY",
+      "closure_evidence": "audit/pass12/pass12-unit8-safe-closure-v1.json",
+      "closure_receipt": "audit/pass12/receipts/RECEIPT_P12_U8_SAFE_CLOSURE_20260727T073700Z_001.json",
+      "claim_limit": "Static migration plan, inactive helper, disposable dry run, pure shadow comparison, rollback proof, and safe blocked packet. No production migration."
+    },
+    {
+      "pass": 13,
+      "status": "CERTIFICATION_RECORD_DECLARED_IN_THIS_CHANGE",
+      "closure_evidence": "audit/pass13/pass13-unit6-independent-final-audit-v1.json",
+      "closure_receipt": "audit/pass13/receipts/RECEIPT_P13_U6_FINAL_COMPLETION_20260727T074500Z_001.json",
+      "claim_limit": "Final locked implementation and continuation record; effective only after exact-head green merge, final-main synchronization, and independently verified full and compact packages."
+    }
+  ],
+  "historical_exceptions": [
+    {
+      "id": "FORMAL_PROOF_PR122_FAILED_CONSUMED_EVENT",
+      "status": "QUARANTINED_PERMANENT_NO_RETRY",
+      "evidence": "audit/pass2/pass2-full-roadmap-authority-definition-closure-v1.json",
+      "resolution": "Not merged, not retried, not presented as success. A later contingent formal-proof authorization remains separate and unconsumed."
+    },
+    {
+      "id": "CONSUMED_OBSERVATIONS_PR149_PR150_PR152",
+      "status": "PRESERVED_NO_RETRY",
+      "evidence": "audit/pass12/pass12-unit8-safe-closure-v1.json",
+      "resolution": "Historical outcomes are used as immutable evidence only."
+    },
+    {
+      "id": "PASS4_UNIT4_FAILED_REPLACEMENT_ATTEMPTS",
+      "status": "SUPERSEDED_PRESERVED",
+      "evidence": "audit/pass4/pass4-boot-status-strip-unit4-route-guardian-interaction-repair-readiness-v1.json",
+      "resolution": "The later bounded repair and user-confirmed closure supersede the failed attempts without deleting them."
+    },
+    {
+      "id": "PASS12_PRODUCTION_MIGRATION",
+      "status": "BLOCKED_AUTHORITY_NOT_REQUIRED_FOR_BOUNDED_CLOSURE",
+      "evidence": "audit/pass12/pass12-unit7-production-authority-gate-v1.json",
+      "resolution": "P12-U8 used the roadmap's explicit safe blocked-packet route. No production or persisted-user-data claim is made."
+    }
+  ],
+  "reconciliation": {
+    "passes_declared": 13,
+    "passes_with_traceable_closure_evidence": 13,
+    "historical_receipts_rewritten": 0,
+    "historical_failures_erased": 0,
+    "unresolved_claims_presented_as_complete": 0,
+    "production_migration_claimed": false,
+    "persisted_user_data_change_claimed": false,
+    "formal_proof_success_claimed": false,
+    "later_contingent_formal_proof_authorization_consumed": false
+  }
+}
