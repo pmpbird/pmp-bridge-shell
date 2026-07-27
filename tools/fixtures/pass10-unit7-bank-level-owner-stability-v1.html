@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>P10-U7 Bank Level Owner Stability Fixture</title>
+  <style>.hidden{display:none}.screen{display:none}.screen.on{display:block}</style>
+</head>
+<body>
+  <div class="tabs"></div>
+  <main class="wrap"></main>
+  <pre id="result">RUNNING</pre>
+  <script>
+  window.PMPMasterBankInventoryRouterV1={
+    inventory(){return{banks:{continuous_run:{name:'Continuous Run Bank',items:[],references:[]},world:{name:'World Bank',items:[],references:[]}}}},
+    routeLog(){return[]},
+    helpers(){return{helpers:[]}}
+  };
+  window.PMPBankInventoryReadonlyProjectionV1={
+    snapshot(){return{status:'READY',contract_version:'fixture',banks:window.PMPMasterBankInventoryRouterV1.inventory().banks}},
+    lastSnapshot(){return this.snapshot()}
+  };
+  window.PMPContinuousRunStateBankV1={
+    readRunState(){return{last_run_status:'not_started'}},
+    readReceipts(){return[]},
+    buildManifest(){return{}}
+  };
+  </script>
+  <script src="../../pmp-master-bank-tab-v1.js"></script>
+  <script src="../../pmp-bank-screen-owner-v1.js"></script>
+  <script src="../../pmp-continuous-run-level-ui-scope-v1.js"></script>
+  <script>
+  (async()=>{
+    const checks=[];
+    const check=(ok,name,detail='')=>checks.push({name,ok:!!ok,detail});
+    const bank=document.getElementById('bank');
+    const home=bank.querySelector('[data-bank-home]');
+    const router=bank.querySelector('[data-bank-router]');
+    const makeLevel=(id,attr)=>{
+      const card=document.createElement('section');
+      card.setAttribute(attr,'');
+      card.innerHTML='<h3>Level '+id+' — Fixture</h3><p>stable identity '+id+'</p>';
+      return card;
+    };
+    router.insertAdjacentElement('afterend',makeLevel('5','data-level5-source-gated-runner'));
+    router.insertAdjacentElement('afterend',makeLevel('3','data-source-text-reader-level3'));
+    router.insertAdjacentElement('afterend',makeLevel('4','data-source-reference-gate-level4'));
+    window.PMPMasterBankTabV1.paint(document,true);
+    const slot=bank.querySelector('[data-continuous-run-owner-slot-v1]');
+    const owned='[data-source-text-reader-level3],[data-source-reference-gate-level4],[data-level5-source-gated-runner]';
+    check(home.querySelectorAll(owned).length===0,'bank_home_contains_zero_continuous_run_levels');
+    check(slot.querySelectorAll(owned).length===3,'escaped_levels_preserved_inside_hidden_owner_slot');
+    check(slot.classList.contains('hidden'),'continuous_run_slot_hidden_on_bank_home');
+
+    window.PMPMasterBankTabV1.openBank(document,'continuous_run');
+    await new Promise(resolve=>setTimeout(resolve,30));
+    window.PMPContinuousRunLevelUIScopeV1.scan();
+    await new Promise(resolve=>setTimeout(resolve,30));
+    const stack=slot.querySelector('[data-cr-level-stack]');
+    const expected=['3','4','4B','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','30B'];
+    const order=Array.from(stack.children).map(x=>x.getAttribute('data-cr-level-id'));
+    check(JSON.stringify(order)===JSON.stringify(expected),'canonical_level_order',JSON.stringify(order));
+    check(slot.querySelectorAll('[data-cr-level-shell-v1]').length===expected.length,'exactly_one_shell_per_level');
+    const identities=Array.from(stack.children);
+    let childMutations=0;
+    const observer=new MutationObserver(rows=>{childMutations+=rows.reduce((n,row)=>n+row.addedNodes.length+row.removedNodes.length,0)});
+    observer.observe(stack,{childList:true});
+    for(let i=0;i<20;i++)window.PMPContinuousRunLevelUIScopeV1.scan();
+    await new Promise(resolve=>setTimeout(resolve,30));
+    observer.disconnect();
+    const same=identities.every((node,index)=>stack.children[index]===node);
+    check(same,'twenty_noop_scans_preserve_node_identity');
+    check(childMutations===0,'twenty_noop_scans_produce_zero_child_mutations',String(childMutations));
+    const receipt=JSON.parse(localStorage.getItem('pmp_continuous_run_level_ui_scope_v1_receipt')||'null');
+    check(receipt&&receipt.recurring_timer_active===false,'recurring_reparent_timer_disabled');
+    check(receipt&&receipt.canonical_order.join(',')===expected.join(','),'receipt_binds_exact_order');
+
+    bank.querySelector('[data-bank-back]').click();
+    await new Promise(resolve=>setTimeout(resolve,10));
+    check(home.querySelectorAll('[data-cr-level-shell-v1],'+owned).length===0,'return_to_bank_home_has_zero_level_nodes');
+    check(slot.classList.contains('hidden'),'return_to_bank_home_hides_owner_slot');
+    home.appendChild(makeLevel('6','data-level6-audit-receipt-lock'));
+    await new Promise(resolve=>setTimeout(resolve,10));
+    check(home.querySelectorAll('[data-level6-audit-receipt-lock]').length===0,'late_escaped_level_is_contained');
+    check(slot.querySelectorAll('[data-level6-audit-receipt-lock]').length>=1,'late_escaped_level_is_preserved');
+
+    const result={type:'PMP_PASS10_UNIT7_BANK_LEVEL_OWNER_STABILITY_FIXTURE_V1',status:checks.every(x=>x.ok)?'PASS':'FAIL',assertions:checks.length,checks};
+    document.getElementById('result').textContent=JSON.stringify(result,null,2);
+    document.title=result.status+' P10-U7 Bank Level Owner Stability';
+  })().catch(error=>{
+    document.getElementById('result').textContent=JSON.stringify({status:'ERROR',error:String(error&&error.stack||error)},null,2);
+    document.title='ERROR P10-U7 Bank Level Owner Stability';
+  });
+  </script>
+</body>
+</html>

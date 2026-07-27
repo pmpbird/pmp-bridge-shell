@@ -1,14 +1,15 @@
 {
   "manifest_bytes": 375848,
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
-  "manifest_sha256": "7f94473e0cc4c65c01291ba7358fcd7d64423ca323e744b0b16e6b14465ddbd8",
+  "manifest_sha256": "9ce98a3d36bbdfe002f94be3e5e3c259ff53521bc113e5b8cb325abd17e9d5ff",
   "manifest_version": "20260711A-A003-FINAL",
+  "pass10_context": "P10-U7R contains all Continuous Run owner and level nodes inside the single Bank detail slot, removes the self-triggering recurring Level 3-30B reparent loop, enforces exact stable order only when needed, and event-drives late external-node containment. The repair does not read, write, delete, migrate, or activate persisted data.",
   "repair_id": "A-003",
   "root_self_verifiable": false,
   "root_trust_anchor": "pmp-app-current.html",
   "rule": "The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.",
-  "runtime_source_set_sha256": "5b5efca9367d9c501a498b1c50d5b28daea48a7571463d75ebd0c4174997c008",
-  "sealed_branch": "main",
+  "runtime_source_set_sha256": "d66f25ff7dc22356b0f347cb612f2ef7cc84564b30ae3e9be851f386b95d2675",
+  "sealed_branch": "agent/pass10-unit7-bank-level-order-repair-v1",
   "status": "SEALED",
   "type": "PMP_A003_MANIFEST_SEAL_V1"
 }
