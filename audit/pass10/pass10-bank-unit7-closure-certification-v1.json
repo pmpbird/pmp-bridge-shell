@@ -1,0 +1,278 @@
+{
+  "type": "PMP_PASS10_BANK_UNIT7_CLOSURE_CERTIFICATION_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-27T06:20:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "09e78630cb9865a6817f460ef28a4dc455dcc036",
+  "branch": "agent/pass10-unit7-closure-certification-v1",
+  "pass": 10,
+  "unit": "P10-U7",
+  "unit_id": "P10-U7",
+  "substep": "P10-U7V",
+  "status": "PASS10_BANK_INVENTORY_REBUILD_COMPLETE",
+  "objective": "Close Pass 10 by reconciling all immutable unit evidence, the user-reported final hands-on result, exit criteria, authority and effect boundaries, receipts, the permanent no-blind-flying gate, and the exact static Pass 11 entry.",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass10-unit7-closure-certification-v1.yml",
+      "audit/pass10/pass10-bank-unit7-closure-certification-v1.json",
+      "audit/pass10/receipts/RECEIPT_P10_U7V_PASS10_BANK_INVENTORY_COMPLETE_20260727T062000Z_001.json",
+      "tools/run_pass10_unit7_closure_certification_v1.js",
+      "tools/test_pass10_unit7_closure_certification_v1.js",
+      "tools/verify_pass10_unit7_closure_certification_v1.py"
+    ],
+    "implementation_paths": []
+  },
+  "inputs": {
+    "p10_u1_sha256": "c73a8c352bdd06871170058abcab4c17aef5385217bf7e5ed1878636fd34988c",
+    "p10_u2_sha256": "64314c8ab3f1c1d92c7e315bc4b1c023e799549b08fbe56b37c412a00faa47cb",
+    "p10_u3_sha256": "a3c9b10fcd9821dd7bef884bad33eaa433d9bea8bd8b3108092aaf22f5b27a98",
+    "p10_u4_sha256": "152da65a89cd73403e20c028eb6358cc80b0ae0f9277780e66d28b9f35f0d7f8",
+    "p10_u5_sha256": "2a783ea1c060184101e663efe347ce882a9c861471fb6cd00fd3e476d4fd510a",
+    "p10_u6_sha256": "2fa79aaf633b4ccb97db4f95276c88fe87c042c3babeed4a284368c3e36fb0a8",
+    "p10_u7a_sha256": "37602bbc177b42494db8b6b6c517d9788ce69de1aa6f2a1947f4f666ac4e2aec",
+    "p10_u7r_sha256": "962c73fb9b1b401b541f24bd0f29d63c2195bf0dad0514a5b91ad5555bd59a3e",
+    "p10_u7s_sha256": "5b464e7c9b4dc4fe3c291ea87f834139bbd084df2af02fcff4ecd21b3ba8b1be",
+    "p10_u7t_sha256": "66033de9a1f21cf82a68fdb652b421ce6076f497cbead94e75f49cf8147ca561",
+    "p10_u7u_sha256": "d7c0a61400273d5715802995cec7df455c68d0d157ecc628c167a5abfae76246",
+    "runner_sha256": "0130bb20c07f3a32bac5f5a7d55d660463da453990051d97ab8c4f55b80f0671",
+    "test_sha256": "9041fd3c52d08bb87fe7ffe92c451f825f3fbeac1c861a59ca210bed8c285de0"
+  },
+  "evidence_summary": {
+    "evidence_records": 11,
+    "predecessor_assertions": 1674,
+    "predecessor_assertions_failed": 0,
+    "records": [
+      {"evidence_id": "P10-U1", "status": "BANK_INVENTORY_RECONCILIATION_PROVEN", "assertions": 110},
+      {"evidence_id": "P10-U2", "status": "BANK_INVENTORY_CONTRACT_PROVEN", "assertions": 187},
+      {"evidence_id": "P10-U3", "status": "BANK_READONLY_PROJECTION_PROVEN", "assertions": 125},
+      {"evidence_id": "P10-U4", "status": "BANK_OWNER_PROJECTION_REFRESH_PROVEN", "assertions": 121},
+      {"evidence_id": "P10-U5", "status": "BANK_FAULT_ROLLBACK_AND_CORRUPTION_CONTAINMENT_PROVEN", "assertions": 133},
+      {"evidence_id": "P10-U6", "status": "BANK_REVERSIBLE_MIGRATION_REHEARSAL_PROVEN", "assertions": 102},
+      {"evidence_id": "P10-U7A", "status": "HANDS_ON_APP_CHECK_REQUIRED", "assertions": 75},
+      {"evidence_id": "P10-U7R", "status": "DETERMINISTIC_REPAIR_GREEN_HANDS_ON_RECHECK_REQUIRED", "assertions": 106},
+      {"evidence_id": "P10-U7S", "status": "DETERMINISTIC_ALIAS_REPAIR_GREEN_FINAL_ORDER_RECHECK_REQUIRED", "assertions": 151},
+      {"evidence_id": "P10-U7T", "status": "DETERMINISTIC_PRESENTATION_GREEN_HANDS_ON_VISUAL_RECHECK_REQUIRED", "assertions": 478},
+      {"evidence_id": "P10-U7U", "status": "DETERMINISTIC_UNIFORM_TITLE_WEIGHT_GREEN_HANDS_ON_TYPOGRAPHY_RECHECK_REQUIRED", "assertions": 86}
+    ],
+    "receipt_chain_complete": true,
+    "latest_verified_main": "09e78630cb9865a6817f460ef28a4dc455dcc036",
+    "source_pull_request": 198,
+    "source_green_runs": {
+      "runtime_integrity_seal": 30236965402,
+      "pull_request_evidence_packet": 30236965417,
+      "pages_replacement": 30236973701
+    },
+    "all_required_checks_green": true
+  },
+  "hands_on_confirmation": {
+    "source": "USER_REPORT",
+    "confirmed_main": "09e78630cb9865a6817f460ef28a4dc455dcc036",
+    "exact_statement": "It worked.",
+    "result": "PASS",
+    "confirms_current_uniform_title_weight": true,
+    "confirms_prior_card_order_containment_and_no_flicker_repairs_remained_intact": true,
+    "persisted_user_data_change_requested": false,
+    "special_authority_consumed": false
+  },
+  "closure": {
+    "model": "STATIC_EXACT_EVIDENCE_AND_USER_CONFIRMATION_RECONCILIATION",
+    "pass10_complete": true,
+    "canonical_inventory_owner": "bank_screen_owner",
+    "canonical_identity_algorithm": "SHA-256",
+    "stable_identity_owner_provenance_and_state": true,
+    "unknown_or_orphan_policy": "QUARANTINE_PRESERVE_EXACT_BYTES_NEVER_SILENTLY_DELETE",
+    "delete_default": "DENY",
+    "bank_tab_independent_mutation_allowed": false,
+    "bank_tab_write_apis": 0,
+    "bank_tab_delete_apis": 0,
+    "bank_tab_migration_apis": 0,
+    "owner_refresh_exactly_once": true,
+    "canonical_level_order_count": 32,
+    "single_card_single_title_presentation": true,
+    "uniform_title_weight": 950,
+    "production_migration_performed": false,
+    "persisted_user_data_changed": false,
+    "formal_proof_performed": false,
+    "special_authority_consumed": false
+  },
+  "exit_criteria": {
+    "every_evidence_record_present_and_ordered": true,
+    "every_status_matches_immutable_receipt": true,
+    "all_1674_predecessor_assertions_green": true,
+    "stable_identity_is_sha256_owner_provenance_bound": true,
+    "unknown_or_orphan_data_quarantined_never_deleted": true,
+    "bank_tab_has_no_write_delete_or_migration_api": true,
+    "bank_tab_cannot_independently_mutate": true,
+    "owner_refresh_is_exactly_once_and_fail_closed": true,
+    "large_duplicate_orphan_stale_restart_and_corruption_proven": true,
+    "reversible_fixture_migration_proven": true,
+    "production_migration_remains_denied": true,
+    "regular_bank_containment_and_single_owner_stack_repaired": true,
+    "canonical_level_order_repaired": true,
+    "one_card_one_title_presentation_repaired": true,
+    "title_weight_uniformity_repaired": true,
+    "final_user_hands_on_confirmation_green": true,
+    "every_record_preserves_user_data": true,
+    "no_production_storage_migration": true,
+    "no_formal_proof_run_or_consumed": true,
+    "no_special_authority_consumed_by_closure": true,
+    "pass11_entry_is_safety_contract_only": true
+  },
+  "pass11_boundary": {
+    "entry_unit": "P11-U1",
+    "pass_name": "Safety Rules / No-Deletion Rules",
+    "objective": "Consolidate safety invariants, protected assets, persisted-user-data boundaries, and authority rules before any additional mutation path.",
+    "mode": "STATIC_SAFETY_CONTRACT_CONSOLIDATION",
+    "persisted_user_data_change_allowed": false,
+    "production_migration_allowed": false,
+    "hands_on_app_check_required": false,
+    "new_explicit_authority_required": false,
+    "continue_under_existing_ordinary_authority": true
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "static_contract",
+    "diagnostic_matrix_update": {
+      "status": "CONFIRMED_UNCHANGED",
+      "applicable_matrix": "audit/pass10/pass10-bank-unit5-fault-corruption-proof-v1.json",
+      "applicable_matrices": [
+        "audit/pass10/pass10-bank-unit5-fault-corruption-proof-v1.json",
+        "audit/pass10/pass10-bank-unit6-reversible-migration-rehearsal-v1.json",
+        "audit/pass10/pass10-bank-unit7-legacy-level-alias-single-stack-repair-v1.json",
+        "audit/pass10/pass10-bank-unit7-single-card-presentation-v1.json",
+        "audit/pass10/pass10-bank-unit7-uniform-title-weight-v1.json"
+      ],
+      "rationale": "P10-U7V reconciles existing immutable evidence and the user's final result; it adds no behavior requiring a new runtime or fault matrix."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass10/pass10-bank-unit1-inventory-reconciliation-v1.json",
+      "audit/pass10/pass10-bank-unit2-inventory-contract-v1.json",
+      "audit/pass10/pass10-bank-unit3-readonly-projection-v1.json",
+      "audit/pass10/pass10-bank-unit4-owner-projection-refresh-v1.json",
+      "audit/pass10/pass10-bank-unit5-fault-corruption-proof-v1.json",
+      "audit/pass10/pass10-bank-unit6-reversible-migration-rehearsal-v1.json",
+      "audit/pass10/pass10-bank-unit7-hands-on-readiness-v1.json",
+      "audit/pass10/pass10-bank-unit7-level-owner-stability-repair-v1.json",
+      "audit/pass10/pass10-bank-unit7-legacy-level-alias-single-stack-repair-v1.json",
+      "audit/pass10/pass10-bank-unit7-single-card-presentation-v1.json",
+      "audit/pass10/pass10-bank-unit7-uniform-title-weight-v1.json",
+      "audit/pass10/pass10-bank-unit7-closure-certification-v1.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass10_unit7_closure_certification_v1.js"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass10_unit7_closure_certification_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass10/receipts/RECEIPT_P10_U7V_PASS10_BANK_INVENTORY_COMPLETE_20260727T062000Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "P10-U1 through P10-U7U have immutable reports and receipts covering 1,674 passing assertions and zero failures.",
+        "evidence_paths": [
+          "audit/pass10/pass10-bank-unit1-inventory-reconciliation-v1.json",
+          "audit/pass10/pass10-bank-unit7-uniform-title-weight-v1.json"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The user confirmed the final merged app state with the exact statement: It worked.",
+        "evidence_paths": [
+          "audit/pass10/pass10-bank-unit7-closure-certification-v1.json"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "Pass 10 can close and P11-U1 can begin because all deterministic gates are green, the final hands-on claim is confirmed, every exit criterion is satisfied, and no production migration or persisted-user-data mutation occurred.",
+        "basis_evidence_paths": [
+          "audit/pass10/pass10-bank-unit5-fault-corruption-proof-v1.json",
+          "audit/pass10/pass10-bank-unit6-reversible-migration-rehearsal-v1.json",
+          "audit/pass10/pass10-bank-unit7-closure-certification-v1.json"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "NOT_APPLICABLE",
+      "cases": [],
+      "rationale": "P10-U7V is static closure only. P10-U5, U6, U7S, U7T, and U7U already preserve the applicable deterministic fault, rollback, restart, order, presentation, and no-flicker evidence."
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "verification": {
+    "assertions_total": 118,
+    "assertions_passed": 118,
+    "assertions_failed": 0,
+    "exact_scope": "PASS",
+    "input_hashes": "PASS",
+    "evidence_traceability": "PASS",
+    "receipt_chain": "PASS",
+    "bank_boundaries": "PASS",
+    "hands_on_confirmation": "PASS",
+    "exit_criteria": "PASS",
+    "pass11_boundary": "PASS",
+    "permanent_gate_binding": "PASS"
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "browser_launched": false,
+    "network_requests": false,
+    "storage_reads": false,
+    "storage_writes": false,
+    "storage_deletes": false,
+    "route_changes": false,
+    "bank_user_data_mutations": false,
+    "continuous_run_user_data_mutations": false,
+    "repairs": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "production_behavior_activated": false
+  },
+  "authority": {
+    "ordinary_scope_authorized": true,
+    "special_authority_type": "NONE",
+    "special_authority_consumed": false,
+    "formal_proof_authorization_consumed": false,
+    "retry_authorized": false
+  },
+  "no_retry_gates": {
+    "consumed_observation_prs": [149, 150, 152],
+    "consumed_failed_formal_proof_pr": 122,
+    "retry_authorized": false
+  },
+  "pass10_result": "PASS",
+  "next_step": {
+    "id": "P11-U1",
+    "objective": "Consolidate the safety invariants, protected assets, persisted-user-data boundaries, and authority rules that govern every pass.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "persisted_user_data_change_allowed": false,
+    "production_migration_allowed": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "Pass 10 Bank tab and Bank inventory rebuild is complete within its explicit read-only projection, owner-driven refresh, quarantine, reversible-fixture, deterministic repair, and user-confirmed presentation scope. This static closure launches no app, runs no observation or formal proof, changes no runtime or persisted user data, performs no production migration, and activates no production behavior."
+}
