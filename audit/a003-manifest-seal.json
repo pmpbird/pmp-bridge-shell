@@ -3,13 +3,12 @@
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
   "manifest_sha256": "fa0526bc8bb0d4e3bf0761c53fd77ec6b349fb5b9cc0d9e9fb5255e867e4d7c6",
   "manifest_version": "20260711A-A003-FINAL",
-  "pass10_context": "P10-U7T makes each Level 3 through 30B canonical shell present as one visual card like Levels 1 and 2. It keeps every legacy functional member, selector, control, readiness gate, hidden mount sentinel, and event-driven ownership node in place; only the redundant inner wrapper and repeated direct level heading are visually contained. The Pass 9 Locked / waiting fail-closed readiness state is preserved. The repair does not read, write, delete, migrate, or activate persisted data.",
   "repair_id": "A-003",
   "root_self_verifiable": false,
   "root_trust_anchor": "pmp-app-current.html",
   "rule": "The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.",
   "runtime_source_set_sha256": "682128f27bd368a365065057ba014eaee085007f8c07c198d6e22c950e1abd18",
-  "sealed_branch": "agent/pass10-unit7-single-card-visual-cleanup-v1",
+  "sealed_branch": "main",
   "status": "SEALED",
   "type": "PMP_A003_MANIFEST_SEAL_V1"
 }
