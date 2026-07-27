@@ -1,0 +1,38 @@
+{
+  "type": "PMP_PASS12_UNIT4_SHADOW_DUAL_READ_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-27T07:33:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "be12da5ed841b4f80ba78b7203c6b7cf91567334",
+  "branch": "agent/pass12-migration-plan-safe-closure-v1",
+  "pass": 12,
+  "unit": "P12-U4",
+  "unit_id": "P12-U4",
+  "status": "PURE_SHADOW_DUAL_READ_GREEN",
+  "observation": {
+    "mode": "DETERMINISTIC_PURE_DATA_COMPARISON",
+    "source": "DISPOSABLE_FIXTURE",
+    "target": "IN_MEMORY_STAGED_RECORDS",
+    "identity_match": true,
+    "payload_hash_match": true,
+    "mismatch_detection": true,
+    "production_storage_access": false,
+    "live_observation_performed": false,
+    "real_user_data_used": false,
+    "claim_ceiling": "The pure comparison correctly detects matching and mismatching disposable record sets; no production storage outcome is claimed."
+  },
+  "effects": {
+    "persisted_user_data_changed": false,
+    "production_migration_performed": false,
+    "production_storage_read": false,
+    "production_storage_write": false,
+    "formal_proof_performed": false,
+    "special_authority_consumed": false
+  },
+  "next_step": {
+    "id": "P12-U5",
+    "objective": "Implement the bounded migration helper behind a permanently inactive production gate.",
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  }
+}

@@ -1,13 +1,13 @@
 {
   "algorithm": "SHA-256",
   "counts": {
-    "executable_records": 714,
+    "executable_records": 716,
     "external_errors": 0,
     "external_records": 3,
     "historical_records": 1,
     "map_declared_covered": 42,
     "map_declared_paths": 42,
-    "runtime_records": 714,
+    "runtime_records": 716,
     "style_records": 0
   },
   "external_records": [
@@ -4660,6 +4660,28 @@
       "sri": "sha256-lghCqTcIwLqtvQCEbmq2yzhqAfBWa091zhFWHCf4T+A="
     },
     {
+      "bytes": 13221,
+      "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
+      "execution_class": "EXECUTABLE_SCRIPT",
+      "git_blob_sha": "e63d63ba03e198dfd85e03f0e73899ad9d926929",
+      "mime_type": "text/javascript",
+      "path": "pmp-migration-inactive-gate-v1.js",
+      "sha256_base64": "/zuxYpeHFak1ysiskxOaNGxCtFI98jCGVohNdQVVC0M=",
+      "sha256_hex": "ff3bb162978715a935cac8ac93139a346c42b4523df2308656884d7505550b43",
+      "sri": "sha256-/zuxYpeHFak1ysiskxOaNGxCtFI98jCGVohNdQVVC0M="
+    },
+    {
+      "bytes": 8771,
+      "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
+      "execution_class": "RUNTIME_DATA",
+      "git_blob_sha": "0ae67dcbec7df275763febe008a992d406450c0b",
+      "mime_type": "application/json",
+      "path": "pmp-migration-plan-v1.json",
+      "sha256_base64": "2RJefAnfbLgAexhWfOXQ3tevNAuFjVV/xJU9Xis2PDA=",
+      "sha256_hex": "d9125e7c09df6cb8007b18567ce5d0ded7af340b858d557fc4953d5e2b363c30",
+      "sri": "sha256-2RJefAnfbLgAexhWfOXQ3tevNAuFjVV/xJU9Xis2PDA="
+    },
+    {
       "bytes": 7422,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
@@ -7935,7 +7957,7 @@
       "rule": "This is the only application bootstrap source excluded from downstream manifest self-enforcement."
     }
   ],
-  "runtime_source_set_sha256": "b0f3dc0a66c59c4bfaa2f23c0cde8c444731bb17984c824d2314ef01b73e8afe",
+  "runtime_source_set_sha256": "09814d711eaa4033743ab6328db480a4874fc26841b58c7232cc85758dc16c8d",
   "source_identity_rule": "Deterministic digest of protected local, historical, external, root-anchor, and policy identities; audit/workflow-only commits do not alter this identity.",
   "type": "PMP_RUNTIME_INTEGRITY_MANIFEST_V1",
   "unlisted_executable_policy": "FAIL_CLOSED",

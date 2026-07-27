@@ -1,14 +1,15 @@
 {
-  "manifest_bytes": 376891,
+  "manifest_bytes": 377921,
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
-  "manifest_sha256": "f3bb7874ffad705e6e938cdf2804716c285fe15754fb035338838094a69cf00e",
+  "manifest_sha256": "0550afd2429b8cde5b4d84d70ffb84c74d83f40e65891328320d2056fe58710a",
   "manifest_version": "20260711A-A003-FINAL",
+  "pass12_context": "Pass 12 adds a static plan and an unreferenced inactive helper to the complete A-003 source manifest. The current runtime does not load the helper. It contains no production storage or network API and denies every production migration request. No production storage or persisted user data was read or changed.",
   "repair_id": "A-003",
   "root_self_verifiable": false,
   "root_trust_anchor": "pmp-app-current.html",
   "rule": "The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.",
-  "runtime_source_set_sha256": "b0f3dc0a66c59c4bfaa2f23c0cde8c444731bb17984c824d2314ef01b73e8afe",
-  "sealed_branch": "main",
+  "runtime_source_set_sha256": "09814d711eaa4033743ab6328db480a4874fc26841b58c7232cc85758dc16c8d",
+  "sealed_branch": "agent/pass12-migration-plan-safe-closure-v1",
   "status": "SEALED",
   "type": "PMP_A003_MANIFEST_SEAL_V1"
 }

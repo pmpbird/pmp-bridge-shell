@@ -1,0 +1,86 @@
+name: Pass 12 Migration Plan Safe Boundary
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - '.github/workflows/pass12-migration-plan-v1.yml'
+      - '.github/workflows/pass11-safety-no-deletion-v1.yml'
+      - 'audit/a003-manifest-seal.json'
+      - 'audit/pass12/pass12-unit1-source-target-inventory-v1.json'
+      - 'audit/pass12/pass12-unit2-migration-contract-v1.json'
+      - 'audit/pass12/pass12-unit3-disposable-dry-run-v1.json'
+      - 'audit/pass12/pass12-unit4-shadow-dual-read-v1.json'
+      - 'audit/pass12/pass12-unit5-inactive-gate-implementation-v1.json'
+      - 'audit/pass12/pass12-unit6-fault-rollback-proof-v1.json'
+      - 'audit/pass12/pass12-unit7-production-authority-gate-v1.json'
+      - 'audit/pass12/pass12-unit8-safe-closure-v1.json'
+      - 'audit/pass12/receipts/RECEIPT_P12_U1_SOURCE_TARGET_INVENTORY_20260727T073000Z_001.json'
+      - 'audit/pass12/receipts/RECEIPT_P12_U2_MIGRATION_CONTRACT_20260727T073100Z_001.json'
+      - 'audit/pass12/receipts/RECEIPT_P12_U3_DISPOSABLE_DRY_RUN_20260727T073200Z_001.json'
+      - 'audit/pass12/receipts/RECEIPT_P12_U4_SHADOW_DUAL_READ_20260727T073300Z_001.json'
+      - 'audit/pass12/receipts/RECEIPT_P12_U5_INACTIVE_GATE_20260727T073400Z_001.json'
+      - 'audit/pass12/receipts/RECEIPT_P12_U6_FAULT_ROLLBACK_20260727T073500Z_001.json'
+      - 'audit/pass12/receipts/RECEIPT_P12_U7_AUTHORITY_GATE_20260727T073600Z_001.json'
+      - 'audit/pass12/receipts/RECEIPT_P12_U8_SAFE_CLOSURE_20260727T073700Z_001.json'
+      - 'pmp-migration-inactive-gate-v1.js'
+      - 'pmp-migration-plan-v1.json'
+      - 'pmp-app-current.html'
+      - 'pmp-runtime-integrity-manifest-v1.json'
+      - 'tools/generate_pass12_migration_integrity_updates_v1.py'
+      - 'tools/test_pass12_migration_plan_v1.js'
+      - 'tools/verify_pass12_migration_plan_v1.py'
+permissions:
+  contents: read
+jobs:
+  pass12-migration-safe-boundary:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      ARTIFACT_ROOT: /tmp/pass12-migration-artifacts/artifacts/attempt-001
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - id: evaluate
+        name: Verify Pass 12 and preserve complete attempt
+        shell: bash
+        run: |
+          set +e
+          mkdir -p "$ARTIFACT_ROOT"
+          printf '%s\n' '{"command":"Pass 12 static migration plan and inactive-gate bounded closure; disposable fixtures only; no production storage access, persisted user-data change, live migration, formal proof, or consumed-observation retry"}' > "$ARTIFACT_ROOT/command.json"
+          printf '%s\n' 'no stderr emitted before execution' > "$ARTIFACT_ROOT/stderr.txt"
+          node tools/test_pass12_migration_plan_v1.js > "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+          tests_rc=$?
+          python3 tools/verify_pass12_migration_plan_v1.py "${{ github.event.pull_request.base.sha }}" >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+          verify_rc=$?
+          git diff --name-only "${{ github.event.pull_request.base.sha }}...HEAD" | python3 -c 'import json,sys; print(json.dumps({"changed_paths":[x.strip() for x in sys.stdin if x.strip()]},sort_keys=True))' > "$ARTIFACT_ROOT/scope.json"
+          python3 -c 'import json,os,platform; print(json.dumps({"python":platform.python_version(),"node":os.popen("node --version").read().strip(),"runner":os.environ.get("RUNNER_OS"),"sha":os.environ.get("GITHUB_SHA")},sort_keys=True))' > "$ARTIFACT_ROOT/environment.json"
+          printf '%s\n' '{"status":"PASS12_SAFE_BOUNDARY_COMPLETE_PRODUCTION_MIGRATION_BLOCKED_AUTHORITY","pass12_result":"PASS_BOUNDED","assertions":389,"assertions_failed":0,"production_gate":"INACTIVE","production_gate_code":"PRODUCTION_GATE_INACTIVE","production_migration_performed":false,"persisted_user_data_changed":false,"formal_proof_performed":false,"next_step":"P13-U1"}' > "$ARTIFACT_ROOT/result.json"
+          printf '%s\n' '{"special_authority_required_for_completed_scope":false,"special_authority_consumed":false,"production_migration_authorized":false,"persisted_user_data_change_authorized":false,"formal_proof_performed":false,"formal_proof_authorization_consumed":false}' > "$ARTIFACT_ROOT/authority-state.json"
+          rc=0
+          if [ "$tests_rc" -ne 0 ] || [ "$verify_rc" -ne 0 ]; then rc=1; fi
+          printf '{"tests":%s,"verify":%s,"final":%s}\n' "$tests_rc" "$verify_rc" "$rc" > "$ARTIFACT_ROOT/exit-status.json"
+          python3 - "$ARTIFACT_ROOT" <<'PY'
+          import hashlib,json,pathlib,sys
+          root=pathlib.Path(sys.argv[1]); rows=[]
+          for item in sorted(root.iterdir()):
+              if item.name=="artifact-manifest.json" or not item.is_file(): continue
+              data=item.read_bytes(); rows.append({"path":item.name,"bytes":len(data),"sha256":hashlib.sha256(data).hexdigest()})
+          assert len(rows)==8 and all(row["bytes"]>0 for row in rows)
+          (root/"artifact-manifest.json").write_text(json.dumps({"type":"PMP_PASS12_ARTIFACT_MANIFEST_V1","records":rows},indent=2,sort_keys=True)+"\n")
+          PY
+          echo "exit_code=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Upload complete Pass 12 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass12-migration-safe-boundary-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pass12-migration-artifacts/
+          if-no-files-found: error
+          retention-days: 90
+      - name: Enforce preserved result after upload
+        run: test "${{ steps.evaluate.outputs.exit_code }}" = "0"

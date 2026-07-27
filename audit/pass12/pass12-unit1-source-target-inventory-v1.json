@@ -1,0 +1,46 @@
+{
+  "type": "PMP_PASS12_UNIT1_SOURCE_TARGET_INVENTORY_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-27T07:30:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "be12da5ed841b4f80ba78b7203c6b7cf91567334",
+  "branch": "agent/pass12-migration-plan-safe-closure-v1",
+  "pass": 12,
+  "unit": "P12-U1",
+  "unit_id": "P12-U1",
+  "status": "SOURCE_TARGET_INVENTORY_COMPLETE",
+  "inventory": {
+    "source_identity": "be12da5ed841b4f80ba78b7203c6b7cf91567334",
+    "target_architecture": "OWNER_SCOPED_VERSIONED_RECORDS_V1",
+    "record_classes": 7,
+    "owners": 7,
+    "classes": [
+      "bank_inventory",
+      "connections_packets",
+      "mount_registry",
+      "diagnostics",
+      "route_last_good",
+      "continuous_run",
+      "source_reference"
+    ],
+    "dependencies_mapped": true,
+    "stable_identity_fields_mapped": true,
+    "exclusions_mapped": true,
+    "unrelated_storage_policy": "PRESERVE_EXACTLY"
+  },
+  "source_of_truth": "pmp-migration-plan-v1.json",
+  "effects": {
+    "persisted_user_data_changed": false,
+    "production_migration_performed": false,
+    "production_storage_read": false,
+    "production_storage_write": false,
+    "formal_proof_performed": false,
+    "special_authority_consumed": false
+  },
+  "next_step": {
+    "id": "P12-U2",
+    "objective": "Lock the versioned migration, checkpoint, idempotency, rollback, and stop contract.",
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  }
+}

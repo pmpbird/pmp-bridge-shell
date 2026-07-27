@@ -1,0 +1,15 @@
+{
+  "type": "PMP_PASS12_UNIT_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P12_U6_FAULT_ROLLBACK_20260727T073500Z_001",
+  "created_at": "2026-07-27T07:35:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "be12da5ed841b4f80ba78b7203c6b7cf91567334",
+  "branch": "agent/pass12-migration-plan-safe-closure-v1",
+  "pass": 12,
+  "unit": "P12-U6",
+  "status": "FAULT_ROLLBACK_PRESERVATION_PROOF_GREEN",
+  "evidence": "audit/pass12/pass12-unit6-fault-rollback-proof-v1.json",
+  "effects": {"persisted_user_data_changed": false, "production_migration_performed": false, "formal_proof_performed": false, "special_authority_consumed": false},
+  "next_safe_move": {"step_id": "P12-U7", "instruction": "Evaluate the production authority gate.", "requires_new_explicit_authority": false, "stop_after": false}
+}

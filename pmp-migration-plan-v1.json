@@ -1,0 +1,255 @@
+{
+  "type": "PMP_MIGRATION_PLAN_V1",
+  "version": "1.0.0-pass12",
+  "owner": "migration_plan_owner",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "be12da5ed841b4f80ba78b7203c6b7cf91567334",
+  "mode": "INACTIVE_NONPRODUCTION_PLAN",
+  "default_decision": "DENY",
+  "source": {
+    "application": "PMP App Orchestrator current runtime",
+    "identity_map": "pmp-current-map-v12.json",
+    "runtime_manifest": "pmp-runtime-integrity-manifest-v1.json",
+    "runtime_seal": "audit/a003-manifest-seal.json",
+    "safety_policy": "pmp-safety-no-deletion-policy-v1.json",
+    "safety_guard": "pmp-safety-no-deletion-guard-v1.js",
+    "commit": "be12da5ed841b4f80ba78b7203c6b7cf91567334"
+  },
+  "target": {
+    "architecture": "OWNER_SCOPED_VERSIONED_RECORDS_V1",
+    "namespace": "pmp:migration:v1",
+    "schema_version": 1,
+    "write_mode": "STAGED_THEN_EXACT_GATE",
+    "activation": "INACTIVE",
+    "production_commit_available": false
+  },
+  "inventory": [
+    {
+      "id": "bank_inventory",
+      "owner": "pmp_master_bank_inventory_owner_v1",
+      "source_kind": "localStorage metadata and owner projections",
+      "target_kind": "versioned owner-scoped record set",
+      "identity_fields": ["bank_id", "record_id", "content_sha256"],
+      "dependencies": ["pmp-master-bank-inventory-router-v1.js"],
+      "migration_policy": "COPY_VERIFY_PRESERVE_SOURCE"
+    },
+    {
+      "id": "connections_packets",
+      "owner": "pmp_connections_bank_owner_v1",
+      "source_kind": "IndexedDB binary payload references plus local metadata",
+      "target_kind": "versioned metadata records retaining exact binary references",
+      "identity_fields": ["packet_id", "indexeddb_key", "payload_sha256"],
+      "dependencies": ["pmp-connections-bank-packet-delete-v1.js"],
+      "migration_policy": "REFERENCE_ONLY_NO_BINARY_REWRITE"
+    },
+    {
+      "id": "mount_registry",
+      "owner": "pmp_bank_mount_registry_owner_v1",
+      "source_kind": "runtime mount ownership state",
+      "target_kind": "versioned mount ownership records",
+      "identity_fields": ["mount_id", "owner_id", "source_sha256"],
+      "dependencies": ["pmp-master-bank-inventory-router-v1.js"],
+      "migration_policy": "COPY_VERIFY_PRESERVE_SOURCE"
+    },
+    {
+      "id": "diagnostics",
+      "owner": "pmp_diagnostics_owner_v1",
+      "source_kind": "diagnostic metadata and bounded evidence references",
+      "target_kind": "append-only diagnostic evidence index",
+      "identity_fields": ["diagnostic_id", "created_at", "evidence_sha256"],
+      "dependencies": ["pmp-control-diagnostics-migration-v1.js"],
+      "migration_policy": "APPEND_ONLY_REFERENCE_PRESERVING"
+    },
+    {
+      "id": "route_last_good",
+      "owner": "pmp_route_state_owner_v1",
+      "source_kind": "current route and last-known-good state",
+      "target_kind": "versioned route checkpoint",
+      "identity_fields": ["route_id", "state_version", "state_sha256"],
+      "dependencies": ["pmp-current-map-v12.json"],
+      "migration_policy": "COPY_VERIFY_PRESERVE_SOURCE"
+    },
+    {
+      "id": "continuous_run",
+      "owner": "pmp_continuous_run_owner_v1",
+      "source_kind": "continuous-run display and execution metadata",
+      "target_kind": "versioned continuous-run record set",
+      "identity_fields": ["level_id", "record_id", "record_sha256"],
+      "dependencies": ["pmp-master-bank-inventory-router-v1.js"],
+      "migration_policy": "COPY_VERIFY_PRESERVE_SOURCE"
+    },
+    {
+      "id": "source_reference",
+      "owner": "pmp_source_reference_owner_v1",
+      "source_kind": "source ZIP and reference payload metadata",
+      "target_kind": "immutable source/reference index",
+      "identity_fields": ["source_id", "payload_sha256", "payload_bytes"],
+      "dependencies": ["pmp-current-map-v12.json"],
+      "migration_policy": "REFERENCE_ONLY_NO_PAYLOAD_REWRITE"
+    }
+  ],
+  "mapping_contract": {
+    "required_source_fields": [
+      "owner",
+      "record_id",
+      "schema_version",
+      "payload",
+      "payload_sha256"
+    ],
+    "target_fields": [
+      "migration_id",
+      "owner",
+      "record_id",
+      "source_schema_version",
+      "target_schema_version",
+      "payload",
+      "payload_sha256",
+      "source_record_sha256",
+      "migration_receipt"
+    ],
+    "identity_rule": "owner + NUL + record_id",
+    "ordering_rule": "owner then record_id, Unicode code-point order",
+    "duplicate_rule": "DENY_DUPLICATE_IDENTITY",
+    "stale_rule": "DENY_SOURCE_VERSION_MISMATCH",
+    "hash_rule": "SHA256_CANONICAL_JSON",
+    "unknown_field_rule": "PRESERVE_IN_PAYLOAD",
+    "unknown_owner_rule": "QUARANTINE_EXACT_BYTES",
+    "unrelated_storage_rule": "PRESERVE_EXACTLY"
+  },
+  "phases": [
+    {
+      "id": "PREFLIGHT",
+      "writes_allowed": 0,
+      "required_output": "validated source identity and exact plan identity"
+    },
+    {
+      "id": "EXACT_SNAPSHOT",
+      "writes_allowed": 0,
+      "required_output": "exact recoverable source snapshot hash and record count"
+    },
+    {
+      "id": "SHADOW_DUAL_READ",
+      "writes_allowed": 0,
+      "required_output": "source/target semantic reconciliation"
+    },
+    {
+      "id": "TRANSFORM",
+      "writes_allowed": 0,
+      "required_output": "deterministic staged records"
+    },
+    {
+      "id": "VERIFY_STAGE",
+      "writes_allowed": 0,
+      "required_output": "count, identity, payload, and aggregate hashes"
+    },
+    {
+      "id": "GATED_COMMIT",
+      "writes_allowed": 0,
+      "required_output": "DENY while production gate is inactive"
+    },
+    {
+      "id": "ACCEPTANCE",
+      "writes_allowed": 0,
+      "required_output": "not reachable under the inactive Pass 12 gate"
+    },
+    {
+      "id": "RECOVERY",
+      "writes_allowed": 0,
+      "required_output": "exact source restoration plan"
+    }
+  ],
+  "checkpoints": {
+    "required": [
+      "source_snapshot",
+      "source_manifest",
+      "staged_target_manifest",
+      "reconciliation_report",
+      "rollback_plan",
+      "authority_receipt"
+    ],
+    "append_only": true,
+    "hash_linked": true,
+    "overwrite_allowed": false
+  },
+  "idempotency": {
+    "key": "migration_id + source_snapshot_sha256 + plan_sha256",
+    "repeat_dry_run": "EXACT_SAME_RESULT",
+    "repeat_stage": "NO_ADDITIONAL_RECORDS",
+    "automatic_retry": false,
+    "consumed_authority_retry": false
+  },
+  "rollback": {
+    "source_is_never_deleted": true,
+    "old_application_remains_recoverable": true,
+    "target_is_staged_before_commit": true,
+    "partial_target_is_discarded": true,
+    "exact_source_snapshot_required": true,
+    "unrelated_storage_preserved": true,
+    "downgrade_requires_source_snapshot_match": true
+  },
+  "authority_gate": {
+    "state": "INACTIVE",
+    "production_migration_authorized": false,
+    "persisted_user_data_change_authorized": false,
+    "exact_authority_type": "PMP_EXACT_PRODUCTION_MIGRATION_AUTHORITY_V1",
+    "single_use": true,
+    "wildcards_allowed": false,
+    "automatic_retry": false,
+    "commit_binding_required": true,
+    "plan_hash_binding_required": true,
+    "source_snapshot_binding_required": true,
+    "target_manifest_binding_required": true,
+    "user_confirmation_required": true
+  },
+  "allowed_pass12_operations": [
+    "STATIC_INVENTORY",
+    "STATIC_MAPPING",
+    "DISPOSABLE_FIXTURE_DRY_RUN",
+    "PURE_SHADOW_COMPARISON",
+    "FAULT_INJECTION_ON_DISPOSABLE_FIXTURE",
+    "ROLLBACK_PLAN_GENERATION",
+    "SAFE_BLOCKED_PACKET"
+  ],
+  "forbidden_pass12_operations": [
+    "PRODUCTION_STORAGE_READ",
+    "PRODUCTION_STORAGE_WRITE",
+    "PRODUCTION_STORAGE_DELETE",
+    "PERSISTED_USER_DATA_CHANGE",
+    "LIVE_MIGRATION",
+    "SOURCE_DELETION",
+    "AUTOMATIC_RETRY",
+    "FORMAL_PROOF",
+    "CONSUMED_OBSERVATION_RETRY"
+  ],
+  "exclusions": [
+    {
+      "class": "runtime_cache_and_service_worker_cache",
+      "handling": "REBUILD_FROM_SEALED_RUNTIME_NOT_MIGRATE"
+    },
+    {
+      "class": "historic_receipts_evidence_and_checkpoint_packages",
+      "handling": "IMMUTABLE_PRESERVE_OUTSIDE_RECORD_MIGRATION"
+    },
+    {
+      "class": "unrelated_local_storage_or_indexeddb",
+      "handling": "PRESERVE_EXACTLY_NEVER_ENUMERATE_IN_PRODUCTION"
+    },
+    {
+      "class": "unknown_or_orphan_records",
+      "handling": "QUARANTINE_EXACT_BYTES_WITHOUT_ACTIVATION"
+    },
+    {
+      "class": "credentials_secrets_and_private_tokens",
+      "handling": "NEVER_READ_NEVER_COPY_NEVER_EMIT"
+    }
+  ],
+  "exit_criteria": {
+    "every_fixture_record_mapped_counted_and_hashed": true,
+    "repeated_fixture_dry_runs_idempotent": true,
+    "fixture_faults_roll_back_exactly": true,
+    "production_mutation_requires_exact_authority": true,
+    "production_gate_inactive": true,
+    "source_recoverability_preserved": true,
+    "safe_blocked_packet_allowed": true
+  }
+}

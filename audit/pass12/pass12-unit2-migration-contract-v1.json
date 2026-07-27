@@ -1,0 +1,50 @@
+{
+  "type": "PMP_PASS12_UNIT2_MIGRATION_CONTRACT_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-27T07:31:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "be12da5ed841b4f80ba78b7203c6b7cf91567334",
+  "branch": "agent/pass12-migration-plan-safe-closure-v1",
+  "pass": 12,
+  "unit": "P12-U2",
+  "unit_id": "P12-U2",
+  "status": "MIGRATION_CONTRACT_LOCKED",
+  "contract": {
+    "source_schema_minimum": 1,
+    "target_schema_version": 1,
+    "phases": [
+      "PREFLIGHT",
+      "EXACT_SNAPSHOT",
+      "SHADOW_DUAL_READ",
+      "TRANSFORM",
+      "VERIFY_STAGE",
+      "GATED_COMMIT",
+      "ACCEPTANCE",
+      "RECOVERY"
+    ],
+    "checkpoints_append_only": true,
+    "checkpoints_hash_linked": true,
+    "checkpoint_overwrite_allowed": false,
+    "repeat_dry_run": "EXACT_SAME_RESULT",
+    "automatic_retry": false,
+    "source_delete_allowed": false,
+    "partial_target_policy": "DISCARD",
+    "rollback": "RETAIN_EXACT_SOURCE_SNAPSHOT",
+    "production_gate": "INACTIVE"
+  },
+  "source_of_truth": "pmp-migration-plan-v1.json",
+  "effects": {
+    "persisted_user_data_changed": false,
+    "production_migration_performed": false,
+    "production_storage_read": false,
+    "production_storage_write": false,
+    "formal_proof_performed": false,
+    "special_authority_consumed": false
+  },
+  "next_step": {
+    "id": "P12-U3",
+    "objective": "Run deterministic migration and reconciliation only against disposable fixtures.",
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  }
+}
