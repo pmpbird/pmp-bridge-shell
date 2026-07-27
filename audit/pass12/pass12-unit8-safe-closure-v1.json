@@ -12,6 +12,7 @@
   "scope": {
     "changed_paths": [
       ".github/workflows/pass12-migration-plan-v1.yml",
+      ".github/workflows/pass11-safety-no-deletion-v1.yml",
       "audit/a003-manifest-seal.json",
       "audit/pass12/pass12-unit1-source-target-inventory-v1.json",
       "audit/pass12/pass12-unit2-migration-contract-v1.json",
@@ -185,6 +186,7 @@
     "permanent_gate_binding": "PASS",
     "production_runtime_behavior_unchanged": "PASS",
     "a003_complete_source_manifest_binding": "PASS",
+    "pass11_historical_regression_dispatch_repair": "PASS",
     "inactive_source_not_loaded": "PASS",
     "production_storage_api_absent": "PASS",
     "network_api_absent": "PASS",

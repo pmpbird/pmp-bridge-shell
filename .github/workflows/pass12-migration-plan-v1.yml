@@ -4,6 +4,7 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
     paths:
       - '.github/workflows/pass12-migration-plan-v1.yml'
+      - '.github/workflows/pass11-safety-no-deletion-v1.yml'
       - 'audit/a003-manifest-seal.json'
       - 'audit/pass12/pass12-unit1-source-target-inventory-v1.json'
       - 'audit/pass12/pass12-unit2-migration-contract-v1.json'

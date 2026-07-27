@@ -42,6 +42,7 @@ RECEIPTS = [
 ]
 EXPECTED = {
     ".github/workflows/pass12-migration-plan-v1.yml",
+    ".github/workflows/pass11-safety-no-deletion-v1.yml",
     "audit/a003-manifest-seal.json",
     "audit/pass12/pass12-unit1-source-target-inventory-v1.json",
     "audit/pass12/pass12-unit2-migration-contract-v1.json",
@@ -273,7 +274,7 @@ def main() -> None:
     assert gate_result["status"] == "PASS", gate_result
     assert gate_result["unit_id"] == "P12-U8"
     assert gate_result["summary"]["runtime_paths"] == 2
-    assert gate_result["summary"]["changed_paths"] == 25
+    assert gate_result["summary"]["changed_paths"] == 26
     assert gate_result["errors"] == []
 
     workflow = WORKFLOW.read_text()
@@ -295,7 +296,7 @@ def main() -> None:
         "Enforce preserved result after upload"
     )
     print(
-        "PASS: exact 25-path Pass 12 migration-plan bounded safe closure verified "
+        "PASS: exact 26-path Pass 12 migration-plan bounded safe closure verified "
         "(389/389, two regressions green, A003 exact source identities, "
         "inactive gate, permanent gate PASS, "
         "production migration BLOCKED_AUTHORITY, P13-U1 ready)"
