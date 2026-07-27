@@ -27,6 +27,7 @@ INPUTS = {
     "fixture_sha256": ROOT / "tools/fixtures/pass10-unit7-bank-level-owner-stability-v1.html",
 }
 EXPECTED = {
+    ".github/workflows/pass10-unit4-bank-owner-projection-refresh-v1.yml",
     ".github/workflows/pass10-unit7-bank-level-owner-stability-repair-v1.yml",
     "audit/a003-manifest-seal.json",
     "audit/pass10/pass10-bank-unit7-level-owner-stability-repair-v1.json",
@@ -79,7 +80,15 @@ def main():
     receipt = json.loads(RECEIPT.read_text())
     assert report["base_main_commit"] == BASE
     assert report["substep"] == "P10-U7R"
+    assert report["unit_id"] == "P10-U7"
     assert report["status"] == "DETERMINISTIC_REPAIR_GREEN_HANDS_ON_RECHECK_REQUIRED"
+    assert set(report["scope"]["changed_paths"]) == EXPECTED
+    assert report["scope"]["implementation_paths"] == [
+        "pmp-app-current.html",
+        "pmp-continuous-run-level-ui-scope-v1.js",
+        "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+        "pmp-master-bank-tab-v1.js",
+    ]
     assert report["trigger"]["prior_check_passed"] is False
     assert len(report["trigger"]["observed_failures"]) == 3
     assert report["root_cause"]["classification"] == (
@@ -129,6 +138,7 @@ def main():
         "Enforce preserved result after upload"
     )
     assert receipt["status"] == report["status"]
+    assert set(receipt["changed_paths"]) == EXPECTED
     assert receipt["decisions"]["pass10_complete"] is False
     assert receipt["next_safe_move"]["requires_user_app_check"] is True
     assert report["next_step"]["requires_user_app_check"] is True
@@ -137,9 +147,15 @@ def main():
     assert report["effects"]["live_app_observation_performed"] is False
     assert report["effects"]["formal_proof_performed"] is False
     assert report["authority"]["formal_proof_authorization_consumed"] is False
+    binding = report["no_blind_flying_gate"]
+    assert binding["type"] == "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1"
+    assert binding["ci_lane"] == "static_contract"
+    assert binding["diagnostic_matrix_update"]["status"] == "UPDATED"
+    assert binding["automatic_retry"] is False
+    assert binding["special_authority"]["consumed"] is False
     assert GENERATOR.is_file()
     print(
-        "PASS: exact 13-file P10-U7R Bank level-owner stability repair verified "
+        "PASS: exact 14-file P10-U7R Bank level-owner stability repair verified "
         "(106/106 + 555/555 prior assertions)"
     )
 

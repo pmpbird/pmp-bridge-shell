@@ -7,8 +7,33 @@
   "branch": "agent/pass10-unit7-bank-level-order-repair-v1",
   "pass": 10,
   "unit": "P10-U7",
+  "unit_id": "P10-U7",
   "substep": "P10-U7R",
   "status": "DETERMINISTIC_REPAIR_GREEN_HANDS_ON_RECHECK_REQUIRED",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass10-unit4-bank-owner-projection-refresh-v1.yml",
+      ".github/workflows/pass10-unit7-bank-level-owner-stability-repair-v1.yml",
+      "audit/a003-manifest-seal.json",
+      "audit/pass10/pass10-bank-unit7-level-owner-stability-repair-v1.json",
+      "audit/pass10/receipts/RECEIPT_P10_U7R_BANK_LEVEL_OWNER_STABILITY_REPAIR_20260727T022458Z_001.json",
+      "pmp-app-current.html",
+      "pmp-continuous-run-level-ui-scope-v1.js",
+      "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+      "pmp-master-bank-tab-v1.js",
+      "pmp-runtime-integrity-manifest-v1.json",
+      "tools/fixtures/pass10-unit7-bank-level-owner-stability-v1.html",
+      "tools/generate_pass10_unit7_bank_level_owner_integrity_updates_v1.py",
+      "tools/test_pass10_unit7_bank_level_owner_stability_repair_v1.js",
+      "tools/verify_pass10_unit7_bank_level_owner_stability_repair_v1.py"
+    ],
+    "implementation_paths": [
+      "pmp-app-current.html",
+      "pmp-continuous-run-level-ui-scope-v1.js",
+      "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+      "pmp-master-bank-tab-v1.js"
+    ]
+  },
   "trigger": {
     "type": "USER_HANDS_ON_FAILURE_REPORT",
     "prior_checkpoint": "V141",
@@ -120,6 +145,84 @@
     "special_authority_consumed": false,
     "formal_proof_authorization_consumed": false,
     "consumed_observations_retried": false
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "static_contract",
+    "diagnostic_matrix_update": {
+      "status": "UPDATED",
+      "applicable_matrix": "audit/pass10/pass10-bank-unit7-level-owner-stability-repair-v1.json",
+      "rationale": "The failed hands-on Bank check added three exact visual failure claims, their source-level root cause, a bounded repair contract, deterministic regression coverage, and one focused recheck gate."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass10/pass10-bank-unit7-hands-on-readiness-v1.json",
+      "audit/pass10/pass10-bank-unit7-level-owner-stability-repair-v1.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass10_unit7_bank_level_owner_stability_repair_v1.js"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass10_unit7_bank_level_owner_stability_repair_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass10/receipts/RECEIPT_P10_U7R_BANK_LEVEL_OWNER_STABILITY_REPAIR_20260727T022458Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The deterministic repair test passes 106 assertions, including exact Level 3-30B ordering, zero Bank-home ownership, and twenty no-op reconciliations with zero modeled moves.",
+        "evidence_paths": [
+          "tools/test_pass10_unit7_bank_level_owner_stability_repair_v1.js"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The user reported the regular Bank-home level leak, Level 3+ flicker, and level reordering during the required hands-on check.",
+        "evidence_paths": [
+          "audit/pass10/pass10-bank-unit7-level-owner-stability-repair-v1.json"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "Removing unconditional recurring reparenting and enforcing one event-driven owner should eliminate the reported flicker and ordering fight, but the visible claim remains pending the focused user recheck.",
+        "basis_evidence_paths": [
+          "audit/pass10/pass10-bank-unit7-level-owner-stability-repair-v1.json",
+          "tools/test_pass10_unit7_bank_level_owner_stability_repair_v1.js"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "reverse-ordered full level stack",
+        "partial stack with duplicate levels",
+        "late escaped level inserted on Bank home",
+        "twenty repeated no-op reconciliations",
+        "duplicate canonical shells"
+      ],
+      "rationale": "The deterministic suite covers the DOM ownership and ordering faults involved in the user-visible failure without launching the live app or touching persisted data."
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
   },
   "claim_ceiling": "The deterministic repair is green, but the failed hands-on claims remain unproven until the user performs one focused recheck on the merged app. Pass 10 remains open.",
   "next_step": {

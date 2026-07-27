@@ -3,6 +3,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
     paths:
+      - '.github/workflows/pass10-unit4-bank-owner-projection-refresh-v1.yml'
       - '.github/workflows/pass10-unit7-bank-level-owner-stability-repair-v1.yml'
       - 'audit/a003-manifest-seal.json'
       - 'audit/pass10/pass10-bank-unit7-level-owner-stability-repair-v1.json'
