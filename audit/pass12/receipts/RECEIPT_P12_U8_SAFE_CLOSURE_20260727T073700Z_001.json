@@ -1,0 +1,35 @@
+{
+  "type": "PMP_PASS12_UNIT8_SAFE_CLOSURE_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P12_U8_SAFE_CLOSURE_20260727T073700Z_001",
+  "created_at": "2026-07-27T07:37:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "be12da5ed841b4f80ba78b7203c6b7cf91567334",
+  "branch": "agent/pass12-migration-plan-safe-closure-v1",
+  "pass": 12,
+  "unit": "P12-U8",
+  "status": "PASS12_SAFE_BOUNDARY_COMPLETE_PRODUCTION_MIGRATION_BLOCKED_AUTHORITY",
+  "pass12_result": "PASS_BOUNDED",
+  "evidence": "audit/pass12/pass12-unit8-safe-closure-v1.json",
+  "closure": {
+    "completed_units": 8,
+    "assertions": 389,
+    "assertions_failed": 0,
+    "production_gate": "INACTIVE",
+    "production_migration_status": "BLOCKED_AUTHORITY",
+    "persisted_user_data_changed": false,
+    "production_migration_performed": false,
+    "formal_proof_performed": false,
+    "special_authority_consumed": false
+  },
+  "effects": {"persisted_user_data_changed": false, "production_migration_performed": false, "formal_proof_performed": false, "special_authority_consumed": false},
+  "next_safe_move": {
+    "step_id": "P13-U1",
+    "instruction": "Reconcile all project receipts, exceptions, authorizations, claims, and state transitions.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "persisted_user_data_change_allowed": false,
+    "production_migration_allowed": false,
+    "stop_after": false
+  }
+}

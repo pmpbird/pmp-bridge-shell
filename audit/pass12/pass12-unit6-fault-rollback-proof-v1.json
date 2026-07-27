@@ -1,0 +1,42 @@
+{
+  "type": "PMP_PASS12_UNIT6_FAULT_ROLLBACK_PROOF_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-27T07:35:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "be12da5ed841b4f80ba78b7203c6b7cf91567334",
+  "branch": "agent/pass12-migration-plan-safe-closure-v1",
+  "pass": 12,
+  "unit": "P12-U6",
+  "unit_id": "P12-U6",
+  "status": "FAULT_ROLLBACK_PRESERVATION_PROOF_GREEN",
+  "fault_matrix": {
+    "partial_stage_injection_points": 7,
+    "partial_stage_failures_detected": 7,
+    "partial_stage_rollback_complete": true,
+    "staged_records_after_rollback": 0,
+    "source_records_changed": 0,
+    "source_bytes_changed": 0,
+    "unrelated_storage_bytes_changed": 0,
+    "duplicate_identity_denied": true,
+    "stale_payload_hash_denied": true,
+    "malformed_schema_denied": true,
+    "unknown_owner_quarantined_exactly": true,
+    "downgrade_requires_snapshot_match": true,
+    "automatic_retry": false,
+    "consumed_authority_retry": false
+  },
+  "effects": {
+    "persisted_user_data_changed": false,
+    "production_migration_performed": false,
+    "production_storage_read": false,
+    "production_storage_write": false,
+    "formal_proof_performed": false,
+    "special_authority_consumed": false
+  },
+  "next_step": {
+    "id": "P12-U7",
+    "objective": "Evaluate the explicit production and persisted-user-data authorization gate.",
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  }
+}

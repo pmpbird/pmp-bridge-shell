@@ -1,0 +1,39 @@
+{
+  "type": "PMP_PASS12_UNIT7_PRODUCTION_AUTHORITY_GATE_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-27T07:36:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "be12da5ed841b4f80ba78b7203c6b7cf91567334",
+  "branch": "agent/pass12-migration-plan-safe-closure-v1",
+  "pass": 12,
+  "unit": "P12-U7",
+  "unit_id": "P12-U7",
+  "status": "BLOCKED_AUTHORITY",
+  "gate": {
+    "required_authority": "PMP_EXACT_PRODUCTION_MIGRATION_AUTHORITY_V1",
+    "authority_present": false,
+    "authority_granted": false,
+    "authority_consumed": false,
+    "production_gate": "INACTIVE",
+    "production_migration_allowed": false,
+    "persisted_user_data_change_allowed": false,
+    "wildcards_allowed": false,
+    "automatic_retry": false,
+    "decision": "DO_NOT_EXECUTE_PRODUCTION_MIGRATION",
+    "safe_roadmap_route": "P12-U8_SAFE_BLOCKED_PACKET"
+  },
+  "effects": {
+    "persisted_user_data_changed": false,
+    "production_migration_performed": false,
+    "production_storage_read": false,
+    "production_storage_write": false,
+    "formal_proof_performed": false,
+    "special_authority_consumed": false
+  },
+  "next_step": {
+    "id": "P12-U8",
+    "objective": "Close Pass 12 with the authorized safe blocked packet and preserve the inactive production gate.",
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  }
+}
