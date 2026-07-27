@@ -2493,15 +2493,15 @@
       "sri": "sha256-hfBRW/502dNeXiVvggajR8k/3VwigMZ9gCNkc0YKexE="
     },
     {
-      "bytes": 14802,
+      "bytes": 17997,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "011d3ff65c3b97ea8d87ccd8d44554723e478928",
+      "git_blob_sha": "6b8eea5d01db8ed75a375046965e2c124d56e13e",
       "mime_type": "text/javascript",
       "path": "pmp-continuous-run-level-ui-scope-v1.js",
-      "sha256_base64": "lRqv4wiXOdsCmTbZJFdqiOKO97iO8gcqTHSPjkvljyc=",
-      "sha256_hex": "951aafe3089739db029936d924576a88e28ef7b88ef2072a4c748f8e4be58f27",
-      "sri": "sha256-lRqv4wiXOdsCmTbZJFdqiOKO97iO8gcqTHSPjkvljyc="
+      "sha256_base64": "dKrNVTB10hbNmcW+rIWnTzblaTp84qFpn2iMxI3uJUk=",
+      "sha256_hex": "74aacd553075d216cd99c5beac85a74f36e5693a7ce2a1699f688cc48dee2549",
+      "sri": "sha256-dKrNVTB10hbNmcW+rIWnTzblaTp84qFpn2iMxI3uJUk="
     },
     {
       "bytes": 7024,
@@ -2922,15 +2922,15 @@
       "sri": "sha256-2YaDyhFd0QRkBo7hsbbbSM41/T07ZsUBsWVfulpJ4Ig="
     },
     {
-      "bytes": 8196,
+      "bytes": 8198,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_DOCUMENT",
-      "git_blob_sha": "98a620c62bece7af5a7e83d0f8814dbae0ead82e",
+      "git_blob_sha": "dd7184ab180fc7782163f7da3420387dc367456e",
       "mime_type": "text/html",
       "path": "pmp-current-inner-cleanbug-rgcontrols-v23.html",
-      "sha256_base64": "cINxwyELv3xX/7Jo/VhsK6EC4vW97ZsLjCioqLjS9TA=",
-      "sha256_hex": "708371c3210bbf7c57ffb268fd586c2ba102e2f5bded9b0b8c28a8a8b8d2f530",
-      "sri": "sha256-cINxwyELv3xX/7Jo/VhsK6EC4vW97ZsLjCioqLjS9TA="
+      "sha256_base64": "VCupfyZZwEVKXBNY0BnlRQsJxgYeqB4OspPXMl4Ia2o=",
+      "sha256_hex": "542ba97f2659c0454a5c1358d019e5450b09c6061ea81e0eb293d7325e086b6a",
+      "sri": "sha256-VCupfyZZwEVKXBNY0BnlRQsJxgYeqB4OspPXMl4Ia2o="
     },
     {
       "bytes": 2428,
@@ -4649,15 +4649,15 @@
       "sri": "sha256-fhBYPpx7DZQrs+ppBaFzOAibZCTbxyIRAg/y8n9jWzk="
     },
     {
-      "bytes": 19269,
+      "bytes": 19427,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "9a2d28ded417192aee198a2dd8951e92e55a769f",
+      "git_blob_sha": "eb4cc13a43a04c6e6209a2b016e9c9a39d718026",
       "mime_type": "text/javascript",
       "path": "pmp-master-bank-tab-v1.js",
-      "sha256_base64": "vGaa5m0yUk1jgtM8O9FfUkjgPyce7eJ3aEL59MofH2A=",
-      "sha256_hex": "bc669ae66d32524d6382d33c3bd15f5248e03f271eede2776842f9f4ca1f1f60",
-      "sri": "sha256-vGaa5m0yUk1jgtM8O9FfUkjgPyce7eJ3aEL59MofH2A="
+      "sha256_base64": "lghCqTcIwLqtvQCEbmq2yzhqAfBWa091zhFWHCf4T+A=",
+      "sha256_hex": "960842a93708c0baadbd00846e6ab6cb386a01f0566b4f75ce11561c27f84fe0",
+      "sri": "sha256-lghCqTcIwLqtvQCEbmq2yzhqAfBWa091zhFWHCf4T+A="
     },
     {
       "bytes": 7422,
@@ -7913,7 +7913,7 @@
       "rule": "This is the only application bootstrap source excluded from downstream manifest self-enforcement."
     }
   ],
-  "runtime_source_set_sha256": "d66f25ff7dc22356b0f347cb612f2ef7cc84564b30ae3e9be851f386b95d2675",
+  "runtime_source_set_sha256": "433e0207ed55b2f5cfeb967924ca37de77c0dcd72c947c06701e6dec2fe9f1f5",
   "source_identity_rule": "Deterministic digest of protected local, historical, external, root-anchor, and policy identities; audit/workflow-only commits do not alter this identity.",
   "type": "PMP_RUNTIME_INTEGRITY_MANIFEST_V1",
   "unlisted_executable_policy": "FAIL_CLOSED",

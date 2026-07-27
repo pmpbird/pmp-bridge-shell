@@ -1,0 +1,301 @@
+{
+  "type": "PMP_PASS10_BANK_UNIT7_LEGACY_LEVEL_ALIAS_SINGLE_STACK_REPAIR_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-27T03:08:23Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "f17593562c6da76860c573ac245944f3846e1d00",
+  "branch": "agent/pass10-unit7-legacy-level-alias-repair-v1",
+  "pass": 10,
+  "unit": "P10-U7",
+  "unit_id": "P10-U7",
+  "substep": "P10-U7S",
+  "status": "DETERMINISTIC_ALIAS_REPAIR_GREEN_FINAL_ORDER_RECHECK_REQUIRED",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass10-unit7-bank-level-owner-stability-repair-v1.yml",
+      ".github/workflows/pass10-unit7-legacy-level-alias-single-stack-repair-v1.yml",
+      "audit/a003-manifest-seal.json",
+      "audit/pass10/pass10-bank-unit7-legacy-level-alias-single-stack-repair-v1.json",
+      "audit/pass10/receipts/RECEIPT_P10_U7S_LEGACY_LEVEL_ALIAS_SINGLE_STACK_REPAIR_20260727T030823Z_001.json",
+      "pmp-app-current.html",
+      "pmp-continuous-run-level-ui-scope-v1.js",
+      "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+      "pmp-master-bank-tab-v1.js",
+      "pmp-runtime-integrity-manifest-v1.json",
+      "tools/fixtures/pass10-unit7-legacy-level-alias-single-stack-v1.html",
+      "tools/generate_pass10_unit7_legacy_level_alias_integrity_updates_v1.py",
+      "tools/test_pass10_unit7_bank_level_owner_stability_repair_v1.js",
+      "tools/test_pass10_unit7_legacy_level_alias_single_stack_repair_v1.js",
+      "tools/verify_pass10_unit7_legacy_level_alias_single_stack_repair_v1.py"
+    ],
+    "implementation_paths": [
+      "pmp-app-current.html",
+      "pmp-continuous-run-level-ui-scope-v1.js",
+      "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+      "pmp-master-bank-tab-v1.js"
+    ]
+  },
+  "trigger": {
+    "type": "USER_FOCUSED_RECHECK_PARTIAL_PASS",
+    "prior_checkpoint": "V142",
+    "bank_home_leak_fixed": true,
+    "flicker_fixed": true,
+    "exact_order_passed": false,
+    "unexpected_sequence": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "19",
+      "21",
+      "23",
+      "25",
+      "27",
+      "4B",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "19",
+      "20",
+      "21",
+      "22",
+      "23",
+      "24",
+      "25",
+      "26",
+      "27",
+      "28",
+      "29",
+      "30",
+      "30B"
+    ],
+    "user_readiness_question": "Why Level 3 and beyond shows Locked / waiting.",
+    "pass10_complete": false
+  },
+  "root_cause": {
+    "primary": "The canonical Level 19, 21, 23, 25, and 27 metadata used attribute names that did not match the real legacy panels mounted under Level 4.",
+    "exact_alias_mismatches": {
+      "19": "canonical data-level19-recovery-proof versus real data-level19-recert-recovery",
+      "21": "canonical data-level21-one-tap-retest versus real data-level21-full-retest",
+      "23": "canonical data-level23-integrity-check versus real data-level23-integrity",
+      "25": "canonical data-level25-receipt-bundle versus real data-level25-bundle",
+      "27": "canonical data-level27-tampered-packet versus real data-level27-tamper-packet"
+    },
+    "reinjection": "Each legacy helper scans repeatedly and recreates its panel under Level 4 whenever its real selector is absent there.",
+    "readiness_badge": "Locked / waiting is intentional Pass 9 fail-closed UI. It means a level remains visible but is not runnable or trusted until prerequisite proof exists.",
+    "classification": "LEGACY_LEVEL_ALIAS_MISMATCH_AND_RECURRING_LEVEL4_REINJECTION"
+  },
+  "repair": {
+    "legacy_aliases": {
+      "19": "data-level19-recert-recovery",
+      "21": "data-level21-full-retest",
+      "23": "data-level23-integrity",
+      "25": "data-level25-bundle",
+      "27": "data-level27-tamper-packet"
+    },
+    "single_canonical_shell_per_level": true,
+    "hidden_mount_sentinels": true,
+    "hidden_mount_sentinel_purpose": "Satisfy the legacy helper's exact mount query after the real panel moves to its canonical shell, preventing recurring reinjection.",
+    "redundant_legacy_badges_visible": false,
+    "misnested_in_scope_additions_observed": true,
+    "correct_shell_additions_ignored": true,
+    "locked_waiting_readiness_preserved": true,
+    "recurring_canonical_reparent_timer_active": false,
+    "canonical_order": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "4B",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "19",
+      "20",
+      "21",
+      "22",
+      "23",
+      "24",
+      "25",
+      "26",
+      "27",
+      "28",
+      "29",
+      "30",
+      "30B"
+    ]
+  },
+  "inputs": {
+    "bank_tab_sha256": "960842a93708c0baadbd00846e6ab6cb386a01f0566b4f75ce11561c27f84fe0",
+    "level_owner_sha256": "74aacd553075d216cd99c5beac85a74f36e5693a7ce2a1699f688cc48dee2549",
+    "inner_runtime_sha256": "542ba97f2659c0454a5c1358d019e5450b09c6061ea81e0eb293d7325e086b6a",
+    "runtime_manifest_sha256": "57ec7ac7a1c3ddadecd8b1946cbf063dcecb3e6f707524c5fc6c9885c6811ab6",
+    "a003_seal_sha256": "5c8b12f1e01e5bba566a5ecc91ff575fc109b4972d9165f2438aa9aca2eb8b70",
+    "root_anchor_sha256": "1a813062f4841eee39c4e65164e484631d374f9d0b57cfd69fdc7ce99f5d265f",
+    "test_sha256": "e1f9bc7425c35218fd7fd87008864314df0d631b51f85252673d769ae55ca1dd",
+    "prior_regression_test_sha256": "d232530a1d18ef9c2e56a86e0ad094428d405461374f316fdaa2665a004a967c",
+    "fixture_sha256": "3b11dbe516c2b07236e4cc51e241718f96837260e943c71b8cebbdb40e8c0494"
+  },
+  "verification": {
+    "assertions_total": 151,
+    "assertions_passed": 151,
+    "assertions_failed": 0,
+    "browser_fixture_assertions_total": 33,
+    "browser_fixture_assertions_passed": 33,
+    "browser_fixture_assertions_failed": 0,
+    "prior_p10_u7r_assertions": 106,
+    "prior_p9_u3_assertions": 234,
+    "prior_p10_u3_assertions": 125,
+    "prior_p10_u4_assertions": 121,
+    "prior_p10_u7a_assertions": 75,
+    "prior_regression_assertions_total": 661,
+    "javascript_syntax": "PASS",
+    "exact_runtime_load_count": "PASS",
+    "exact_fresh_bindings": "PASS",
+    "runtime_integrity_regeneration": "PASS",
+    "runtime_integrity_determinism": "PASS",
+    "five_real_legacy_aliases": "PASS",
+    "five_hidden_mount_sentinels": "PASS",
+    "twenty_helper_ticks_zero_reinjections": "PASS",
+    "sentinel_loss_fault_recovery": "PASS",
+    "twenty_noop_scans_zero_stack_mutations": "PASS",
+    "locked_waiting_contract_preserved": "PASS"
+  },
+  "effects": {
+    "production_files_changed": true,
+    "runtime_integrity_changed": true,
+    "repairs": true,
+    "production_behavior_activated_after_merge": true,
+    "persisted_user_data_changed": false,
+    "storage_reads": false,
+    "storage_writes": false,
+    "storage_deletes": false,
+    "storage_migration_performed": false,
+    "bank_user_data_mutations": false,
+    "continuous_run_user_data_mutations": false,
+    "route_changes": false,
+    "live_app_observation_performed": false,
+    "disposable_fixture_browser_test_performed": true,
+    "formal_proof_performed": false,
+    "formal_proof_authorization_consumed": false
+  },
+  "authority": {
+    "ordinary_implementation_authorized": true,
+    "special_authority_required": false,
+    "special_authority_consumed": false,
+    "formal_proof_authorization_consumed": false,
+    "consumed_observations_retried": false
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "static_contract",
+    "diagnostic_matrix_update": {
+      "status": "UPDATED",
+      "applicable_matrix": "audit/pass10/pass10-bank-unit7-legacy-level-alias-single-stack-repair-v1.json",
+      "rationale": "The second focused user recheck proved Bank-home containment and flicker fixed while isolating five exact legacy alias duplicates plus a readiness-label question."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass10/pass10-bank-unit7-level-owner-stability-repair-v1.json",
+      "audit/pass10/pass10-bank-unit7-legacy-level-alias-single-stack-repair-v1.json",
+      "tools/fixtures/pass10-unit7-legacy-level-alias-single-stack-v1.html"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_pass10_unit7_bank_level_owner_stability_repair_v1.js",
+      "tools/test_pass10_unit7_legacy_level_alias_single_stack_repair_v1.js"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass10_unit7_legacy_level_alias_single_stack_repair_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass10/receipts/RECEIPT_P10_U7S_LEGACY_LEVEL_ALIAS_SINGLE_STACK_REPAIR_20260727T030823Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The user reported that the Bank-home leak and flicker were fixed, while Levels 19, 21, 23, 25, and 27 remained visibly duplicated between Level 4 and 4B.",
+        "evidence_paths": [
+          "audit/pass10/pass10-bank-unit7-legacy-level-alias-single-stack-repair-v1.json"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The disposable browser fixture passed 33 checks for exact order, zero duplicate reinjection, fault recovery, zero no-op stack mutations, and preserved fail-closed readiness.",
+        "evidence_paths": [
+          "tools/fixtures/pass10-unit7-legacy-level-alias-single-stack-v1.html"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "Exact alias mapping plus hidden legacy mount sentinels should remove the five duplicate panels without restarting helper fighting, but the real visible result remains pending one final user recheck.",
+        "basis_evidence_paths": [
+          "audit/pass10/pass10-bank-unit7-legacy-level-alias-single-stack-repair-v1.json",
+          "tools/test_pass10_unit7_legacy_level_alias_single_stack_repair_v1.js",
+          "tools/fixtures/pass10-unit7-legacy-level-alias-single-stack-v1.html"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "exact user-reported duplicate odd-level sequence",
+        "twenty recurring legacy helper ticks",
+        "removed Level 19 mount sentinel",
+        "one reinjected Level 19 panel and badge",
+        "twenty post-recovery helper ticks",
+        "twenty no-op canonical scans"
+      ],
+      "rationale": "The deterministic and browser fixture suites reproduce the exact alias mismatch and recurring reinjection class without launching the PMP app or touching persisted data."
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "claim_ceiling": "The exact legacy alias repair is deterministic- and fixture-green, and the Locked / waiting badge is confirmed intentional. The merged PMP app's exact visible order remains unproven until one final user recheck. Pass 10 remains open.",
+  "next_step": {
+    "id": "P10-U7B-FINAL-ORDER-RECHECK",
+    "requires_user_app_check": true,
+    "instruction": "After this repair is merged, synchronized, and packaged, ask the user to confirm Continuous Run Bank shows exactly 1, 2, 3, 4, 4B, 5 through 30, 30B with no duplicate 19, 21, 23, 25, or 27 group.",
+    "formal_proof_allowed": false,
+    "persisted_data_change_allowed": false
+  }
+}
