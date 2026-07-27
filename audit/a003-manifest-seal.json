@@ -1,14 +1,15 @@
 {
   "manifest_bytes": 375848,
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
-  "manifest_sha256": "fa0526bc8bb0d4e3bf0761c53fd77ec6b349fb5b9cc0d9e9fb5255e867e4d7c6",
+  "manifest_sha256": "f7827057eafbd48f7ee06b064ab581a03042a7406b11462d640e49424a980190",
   "manifest_version": "20260711A-A003-FINAL",
+  "pass10_context": "P10-U7U applies the exact Level 3+ font weight 950 to the six Continuous Run owner titles before Level 3: Run State Summary, Lossless Slots ZIP Import, Staging Transfer Store, Bank Project Registry, Level 1, and Level 2. It changes only title typography and preserves every card, heading node, control, handler, readiness gate, Level 3+ single-card presentation, and canonical order. It does not read, write, delete, migrate, or activate persisted data.",
   "repair_id": "A-003",
   "root_self_verifiable": false,
   "root_trust_anchor": "pmp-app-current.html",
   "rule": "The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.",
-  "runtime_source_set_sha256": "682128f27bd368a365065057ba014eaee085007f8c07c198d6e22c950e1abd18",
-  "sealed_branch": "main",
+  "runtime_source_set_sha256": "467f133e59666339313c8511680463f1d3e07e230bab07a91a3b2dba7c3b9635",
+  "sealed_branch": "agent/pass10-unit7-uniform-title-weight-v1",
   "status": "SEALED",
   "type": "PMP_A003_MANIFEST_SEAL_V1"
 }
