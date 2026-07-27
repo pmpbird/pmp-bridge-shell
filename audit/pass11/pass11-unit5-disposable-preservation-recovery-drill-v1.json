@@ -1,0 +1,58 @@
+{
+  "type": "PMP_PASS11_UNIT5_DISPOSABLE_PRESERVATION_RECOVERY_DRILL_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-27T06:47:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "b65f186429d155172fc59d62440cc78d9960823f",
+  "branch": "agent/pass11-safety-no-deletion-complete-v1",
+  "pass": 11,
+  "unit": "P11-U5",
+  "unit_id": "P11-U5",
+  "status": "DISPOSABLE_PERSISTED_DATA_PRESERVATION_RECOVERY_DRILL_GREEN",
+  "drill": {
+    "environment": "NODE_VM_FAKE_STORAGE_DISPOSABLE_FIXTURE",
+    "real_user_storage_accessed": false,
+    "source_record_preserved_exactly_in_archive": true,
+    "connections_metadata_preserved_exactly": true,
+    "indexeddb_binary_reference_preserved": true,
+    "physical_payload_deleted": false,
+    "active_index_removed_only_after_owner_commit": true,
+    "partial_write_injected": true,
+    "partial_write_exact_rollback": true,
+    "unrelated_storage_before": "UNRELATED-EXACT-BYTES",
+    "unrelated_storage_after": "UNRELATED-EXACT-BYTES",
+    "duplicate_execution_data_loss": false,
+    "recovery_available": true,
+    "unresolved_failures": 0
+  },
+  "verification": {
+    "deterministic_suite": "186/186 PASS",
+    "exact_record_round_trip": "PASS",
+    "exact_connections_payload_round_trip": "PASS",
+    "binary_reference_retention": "PASS",
+    "partial_write_rollback": "PASS",
+    "unrelated_byte_preservation": "PASS"
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "disposable_fixture_writes_performed": true,
+    "disposable_fixture_rollbacks_performed": true,
+    "real_user_storage_reads": false,
+    "real_user_storage_writes": false,
+    "real_user_storage_deletes": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "special_authority_consumed": false
+  },
+  "next_step": {
+    "id": "P11-U6",
+    "objective": "Certify Pass 11 closure and bind the exact non-production Pass 12 migration-plan entry.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "persisted_user_data_change_allowed": false,
+    "stop_after": false
+  }
+}

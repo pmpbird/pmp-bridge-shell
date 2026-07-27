@@ -1,0 +1,112 @@
+{
+  "type": "PMP_SAFETY_NO_DELETION_POLICY_V1",
+  "version": "1.0.0-pass11",
+  "owner": "safety_policy_owner",
+  "default_decision": "DENY",
+  "protected_assets": [
+    "persisted_user_data",
+    "bank_records",
+    "continuous_run_state",
+    "route_and_last_good_state",
+    "source_and_reference_payloads",
+    "diagnostic_and_proof_evidence",
+    "receipts_and_authority_records",
+    "checkpoint_packages",
+    "runtime_integrity_identities",
+    "unrelated_storage"
+  ],
+  "operation_classes": {
+    "READ": {
+      "default": "ALLOW_IF_OWNER_SCOPED",
+      "persisted_effects_allowed": false
+    },
+    "TRANSACTIONAL_WRITE": {
+      "default": "DENY_UNLESS_EXACT_OWNER_SCOPE_AND_ROLLBACK",
+      "required": [
+        "operation_id",
+        "requester_owner",
+        "target_owner",
+        "resource",
+        "expected_version",
+        "payload_sha256",
+        "backup_ref",
+        "rollback_sha256",
+        "append_only_receipt"
+      ]
+    },
+    "QUARANTINE": {
+      "default": "ALLOW_IF_EXACT_BYTES_PRESERVED",
+      "physical_delete_allowed": false
+    },
+    "ARCHIVE": {
+      "default": "ALLOW_IF_EXACT_PAYLOAD_RECOVERABLE",
+      "physical_delete_allowed": false,
+      "active_index_removal_allowed": true
+    },
+    "CLEANUP": {
+      "default": "CLASSIFY_THEN_DENY_IF_PERSISTED_ASSET",
+      "may_not_alias": ["DELETE", "PURGE", "TRUNCATE", "OVERWRITE"]
+    },
+    "MIGRATION": {
+      "default": "INACTIVE_GATE",
+      "production_user_data_authority_required": true,
+      "physical_delete_allowed": false
+    },
+    "DELETE_EXCEPTION": {
+      "default": "DENY",
+      "required": [
+        "exact_record_id",
+        "exact_payload_sha256",
+        "exact_owner",
+        "single_use_operation_id",
+        "issued_at",
+        "expires_at",
+        "exact_user_confirmation_phrase",
+        "receipt_sha256",
+        "receipt_backed_authority"
+      ],
+      "wildcards_allowed": false,
+      "automatic_retry_allowed": false
+    }
+  },
+  "transaction_phases": [
+    "PREFLIGHT",
+    "EXACT_BACKUP",
+    "EXPECTED_VERSION_CHECK",
+    "BOUNDED_APPLY",
+    "VERIFY",
+    "APPEND_ONLY_RECEIPT",
+    "ROLLBACK_ON_ANY_FAILURE"
+  ],
+  "safe_writer_rules": {
+    "direct_unreceipted_write": "DENY",
+    "partial_write": "ROLLBACK_EXACT_BYTES",
+    "duplicate_operation": "IDENTICAL_REPLAY_OR_CONFLICT_DENY",
+    "stale_expected_version": "DENY_BEFORE_SIDE_EFFECT",
+    "missing_backup": "DENY_BEFORE_SIDE_EFFECT",
+    "missing_rollback": "DENY_BEFORE_SIDE_EFFECT",
+    "unrelated_bytes": "PRESERVE_EXACTLY",
+    "automatic_retry_after_authority_consumption": false
+  },
+  "recovery_rules": {
+    "old_state_recoverable_until_verified": true,
+    "archive_payload_exact": true,
+    "quarantine_payload_exact": true,
+    "failure_evidence_immutable": true,
+    "rollback_receipted": true,
+    "user_data_never_used_as_test_fixture": true
+  },
+  "active_connections_bank": {
+    "visible_action": "ARCHIVE_SELECTED_PACKET",
+    "physical_indexeddb_delete": false,
+    "binary_payload_retained": true,
+    "metadata_retained_in_archived_records": true,
+    "recovery_supported": true,
+    "legacy_delete_entry": "DENIED_WHEN_PASS11_GUARD_PRESENT"
+  },
+  "formal_proof": {
+    "performed": false,
+    "authorization_consumed": false,
+    "pr_122_quarantined_untouched": true
+  }
+}

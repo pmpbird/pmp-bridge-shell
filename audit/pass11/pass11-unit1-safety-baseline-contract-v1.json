@@ -1,0 +1,58 @@
+{
+  "type": "PMP_PASS11_UNIT1_SAFETY_BASELINE_CONTRACT_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-27T06:43:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "b65f186429d155172fc59d62440cc78d9960823f",
+  "branch": "agent/pass11-safety-no-deletion-complete-v1",
+  "pass": 11,
+  "unit": "P11-U1",
+  "unit_id": "P11-U1",
+  "status": "SAFETY_BASELINE_CONSOLIDATED",
+  "objective": "Consolidate the safety invariants, protected assets, persisted-user-data boundaries, and authority rules that govern every pass.",
+  "contract": {
+    "path": "pmp-safety-no-deletion-policy-v1.json",
+    "type": "PMP_SAFETY_NO_DELETION_POLICY_V1",
+    "protected_assets": 10,
+    "default_decision": "DENY",
+    "unknown_authority": "DENY_BEFORE_SIDE_EFFECT",
+    "persisted_user_data_as_fixture": "FORBIDDEN",
+    "evidence_deletion": "FORBIDDEN",
+    "checkpoint_overwrite": "FORBIDDEN",
+    "production_migration": "INACTIVE_GATE",
+    "formal_proof_performed": false
+  },
+  "readiness_audit": {
+    "active_bank_owner_atomic_boundary_reused": true,
+    "pass2_actor_authority_default_deny_reused": true,
+    "pass8_helper_least_authority_reused": true,
+    "pass9_owner_split_reused": true,
+    "pass10_quarantine_and_no_deletion_contract_reused": true,
+    "gap_found": "Connections Bank performed a physical IndexedDB delete after a user-confirmed Bank Owner commit.",
+    "gap_resolution_unit": "P11-U2"
+  },
+  "verification": {
+    "deterministic_suite": "186/186 PASS",
+    "policy_schema": "PASS",
+    "protected_asset_coverage": "PASS",
+    "authority_boundary": "PASS",
+    "production_and_user_data_gate": "PASS"
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_integrity_changed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "special_authority_consumed": false
+  },
+  "next_step": {
+    "id": "P11-U2",
+    "objective": "Enforce explicit deletion denial, recoverable archive and quarantine, and exact exceptional approval.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "persisted_user_data_change_allowed": false,
+    "stop_after": false
+  }
+}

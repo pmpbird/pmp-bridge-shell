@@ -1,0 +1,25 @@
+{
+  "type": "PMP_PASS11_UNIT_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P11_U1_SAFETY_BASELINE_20260727T064300Z_001",
+  "created_at": "2026-07-27T06:43:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "b65f186429d155172fc59d62440cc78d9960823f",
+  "branch": "agent/pass11-safety-no-deletion-complete-v1",
+  "pass": 11,
+  "unit": "P11-U1",
+  "status": "SAFETY_BASELINE_CONSOLIDATED",
+  "evidence": "audit/pass11/pass11-unit1-safety-baseline-contract-v1.json",
+  "effects": {
+    "persisted_user_data_changed": false,
+    "production_migration_performed": false,
+    "formal_proof_performed": false,
+    "special_authority_consumed": false
+  },
+  "next_safe_move": {
+    "step_id": "P11-U2",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  }
+}
