@@ -1,14 +1,15 @@
 {
   "manifest_bytes": 375848,
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
-  "manifest_sha256": "9ce98a3d36bbdfe002f94be3e5e3c259ff53521bc113e5b8cb325abd17e9d5ff",
+  "manifest_sha256": "57ec7ac7a1c3ddadecd8b1946cbf063dcecb3e6f707524c5fc6c9885c6811ab6",
   "manifest_version": "20260711A-A003-FINAL",
+  "pass10_context": "P10-U7S maps the real legacy Level 19, 21, 23, 25, and 27 DOM aliases into their one canonical level shell, contains redundant legacy badges, and leaves hidden mount sentinels so recurring legacy helpers cannot recreate duplicate controls under Level 4. The Pass 9 Locked / waiting fail-closed readiness state is preserved. The repair does not read, write, delete, migrate, or activate persisted data.",
   "repair_id": "A-003",
   "root_self_verifiable": false,
   "root_trust_anchor": "pmp-app-current.html",
   "rule": "The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.",
-  "runtime_source_set_sha256": "d66f25ff7dc22356b0f347cb612f2ef7cc84564b30ae3e9be851f386b95d2675",
-  "sealed_branch": "main",
+  "runtime_source_set_sha256": "433e0207ed55b2f5cfeb967924ca37de77c0dcd72c947c06701e6dec2fe9f1f5",
+  "sealed_branch": "agent/pass10-unit7-legacy-level-alias-repair-v1",
   "status": "SEALED",
   "type": "PMP_A003_MANIFEST_SEAL_V1"
 }

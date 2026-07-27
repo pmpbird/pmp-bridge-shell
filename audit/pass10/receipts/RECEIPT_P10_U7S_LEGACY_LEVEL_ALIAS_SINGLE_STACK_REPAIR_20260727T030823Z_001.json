@@ -1,0 +1,63 @@
+{
+  "type": "PMP_PASS10_UNIT7S_LEGACY_LEVEL_ALIAS_SINGLE_STACK_REPAIR_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P10_U7S_LEGACY_LEVEL_ALIAS_SINGLE_STACK_REPAIR_20260727T030823Z_001",
+  "created_at": "2026-07-27T03:08:23Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "f17593562c6da76860c573ac245944f3846e1d00",
+  "branch": "agent/pass10-unit7-legacy-level-alias-repair-v1",
+  "pass": 10,
+  "unit": "P10-U7",
+  "substep": "P10-U7S",
+  "status": "DETERMINISTIC_ALIAS_REPAIR_GREEN_FINAL_ORDER_RECHECK_REQUIRED",
+  "evidence": "audit/pass10/pass10-bank-unit7-legacy-level-alias-single-stack-repair-v1.json",
+  "changed_paths": [
+    ".github/workflows/pass10-unit7-bank-level-owner-stability-repair-v1.yml",
+    ".github/workflows/pass10-unit7-legacy-level-alias-single-stack-repair-v1.yml",
+    "audit/a003-manifest-seal.json",
+    "audit/pass10/pass10-bank-unit7-legacy-level-alias-single-stack-repair-v1.json",
+    "audit/pass10/receipts/RECEIPT_P10_U7S_LEGACY_LEVEL_ALIAS_SINGLE_STACK_REPAIR_20260727T030823Z_001.json",
+    "pmp-app-current.html",
+    "pmp-continuous-run-level-ui-scope-v1.js",
+    "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+    "pmp-master-bank-tab-v1.js",
+    "pmp-runtime-integrity-manifest-v1.json",
+    "tools/fixtures/pass10-unit7-legacy-level-alias-single-stack-v1.html",
+    "tools/generate_pass10_unit7_legacy_level_alias_integrity_updates_v1.py",
+    "tools/test_pass10_unit7_bank_level_owner_stability_repair_v1.js",
+    "tools/test_pass10_unit7_legacy_level_alias_single_stack_repair_v1.js",
+    "tools/verify_pass10_unit7_legacy_level_alias_single_stack_repair_v1.py"
+  ],
+  "assertions": {
+    "repair": 151,
+    "repair_failed": 0,
+    "browser_fixture": 33,
+    "browser_fixture_failed": 0,
+    "prior_regressions": 661,
+    "prior_regressions_failed": 0
+  },
+  "decisions": {
+    "legacy_aliases": "19_21_23_25_27_MAPPED_TO_REAL_DOM_ATTRIBUTES",
+    "legacy_mount_sentinels": "HIDDEN_AND_REQUIRED_TO_PREVENT_REINJECTION",
+    "redundant_legacy_badges": "HIDDEN",
+    "canonical_level_order": "1_2_3_4_4B_5_THROUGH_30_30B",
+    "locked_waiting_badge": "PRESERVED_INTENTIONAL_FAIL_CLOSED_READINESS",
+    "recurring_canonical_reparent_timer": "DISABLED",
+    "pass10_complete": false
+  },
+  "effects": {
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "live_app_observation_performed": false,
+    "disposable_fixture_browser_test_performed": true,
+    "formal_proof_performed": false,
+    "formal_proof_authorization_consumed": false
+  },
+  "next_safe_move": {
+    "step_id": "P10-U7B-FINAL-ORDER-RECHECK",
+    "requires_user_app_check": true,
+    "instruction": "Verify the merged Continuous Run Bank once: exact order 1, 2, 3, 4, 4B, 5 through 30, 30B, with no extra 19, 21, 23, 25, 27 group.",
+    "requires_explicit_authority": false
+  },
+  "claim_ceiling": "Repair is deterministic- and fixture-green only; the real app order and Pass 10 closure remain pending one final focused recheck."
+}

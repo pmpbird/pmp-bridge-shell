@@ -22,7 +22,7 @@ equal(new Set(sourceOrder).size, expected.length, 'one metadata row per level');
 equal(levelSource.includes('setInterval('), false, 'no recurring level reconciler');
 equal(levelSource.includes("attributeFilter:['class','style','hidden']"), false, 'no self-triggering style observer');
 check(levelSource.includes("observer.observe(b,{childList:true,subtree:true})"), 'observer watches external child additions only');
-check(levelSource.includes("if(node.closest&&node.closest('[data-continuous-run-level-ui-scope-v1]'))return false"), 'internal mutations ignored');
+check(levelSource.includes("shell.getAttribute('data-cr-level-id')!==id"), 'correct-shell internal mutations ignored while misnested helpers are repaired');
 check(levelSource.includes("if(at!==sh){s.insertBefore(sh,at);moved=true}"), 'shell moved only when position is wrong');
 equal(levelSource.includes('s.appendChild(sh)'), false, 'no unconditional shell append');
 check(levelSource.includes("list.find(c=>properShell(c.el,meta.id))||list.find(c=>!isOwnedByThis(c.el))"), 'existing canonical member wins over outside competitor');
@@ -55,8 +55,8 @@ equal(bankSource.includes('setInterval('), false, 'Bank repair adds no recurring
 
 equal((innerSource.match(/pmp-master-bank-tab-v1\.js/g) || []).length, 1, 'one active Bank owner script');
 equal((innerSource.match(/pmp-continuous-run-level-ui-scope-v1\.js/g) || []).length, 1, 'one active level owner script');
-check(innerSource.includes('pass10-unit7-bank-level-containment-20260726A'), 'Bank owner fresh token updated');
-check(innerSource.includes('pass10-unit7-single-owner-stable-order-20260726A'), 'level owner fresh token updated');
+check(innerSource.includes('pass10-unit7-legacy-alias-containment-20260727A'), 'Bank owner fresh token remains current');
+check(innerSource.includes('pass10-unit7-legacy-alias-single-stack-20260727A'), 'level owner fresh token remains current');
 check(fixtureSource.includes('twenty_noop_scans_produce_zero_child_mutations'), 'fixture covers no-op flicker');
 check(fixtureSource.includes('bank_home_contains_zero_continuous_run_levels'), 'fixture covers Bank home leak');
 check(fixtureSource.includes('canonical_level_order'), 'fixture covers exact order');
