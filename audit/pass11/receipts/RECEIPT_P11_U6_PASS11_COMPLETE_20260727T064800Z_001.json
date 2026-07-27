@@ -1,0 +1,41 @@
+{
+  "type": "PMP_PASS11_UNIT6_CLOSURE_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P11_U6_PASS11_COMPLETE_20260727T064800Z_001",
+  "created_at": "2026-07-27T06:48:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "b65f186429d155172fc59d62440cc78d9960823f",
+  "branch": "agent/pass11-safety-no-deletion-complete-v1",
+  "pass": 11,
+  "unit": "P11-U6",
+  "status": "PASS11_SAFETY_NO_DELETION_COMPLETE",
+  "pass11_result": "PASS",
+  "evidence": "audit/pass11/pass11-unit6-closure-certification-v1.json",
+  "closure": {
+    "completed_units": 6,
+    "assertions": 186,
+    "assertions_failed": 0,
+    "default_delete": "DENY",
+    "active_connections_action": "RECOVERABLE_ARCHIVE",
+    "physical_delete_paths": 0,
+    "persisted_user_data_changed": false,
+    "production_migration_performed": false,
+    "formal_proof_performed": false,
+    "special_authority_consumed": false
+  },
+  "effects": {
+    "persisted_user_data_changed": false,
+    "production_migration_performed": false,
+    "formal_proof_performed": false,
+    "special_authority_consumed": false
+  },
+  "next_safe_move": {
+    "step_id": "P12-U1",
+    "instruction": "Inventory and map the current app source and target architecture without activating migration or touching persisted user data.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "persisted_user_data_change_allowed": false,
+    "production_migration_allowed": false,
+    "stop_after": false
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "type": "PMP_PASS11_UNIT_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P11_U3_SAFE_WRITER_TRANSACTION_20260727T064500Z_001",
+  "created_at": "2026-07-27T06:45:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "b65f186429d155172fc59d62440cc78d9960823f",
+  "branch": "agent/pass11-safety-no-deletion-complete-v1",
+  "pass": 11,
+  "unit": "P11-U3",
+  "status": "SAFE_WRITER_TRANSACTION_ROLLBACK_RECOVERY_RULES_ENFORCED",
+  "evidence": "audit/pass11/pass11-unit3-safe-writer-transaction-recovery-v1.json",
+  "effects": {
+    "partial_write": "ROLLBACK_EXACT_BYTES",
+    "append_only_receipt_required": true,
+    "persisted_user_data_changed": false,
+    "production_migration_performed": false,
+    "formal_proof_performed": false,
+    "special_authority_consumed": false
+  },
+  "next_safe_move": {
+    "step_id": "P11-U4",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  }
+}

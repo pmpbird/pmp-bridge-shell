@@ -1,0 +1,75 @@
+{
+  "type": "PMP_PASS11_UNIT3_SAFE_WRITER_TRANSACTION_RECOVERY_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-27T06:45:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "b65f186429d155172fc59d62440cc78d9960823f",
+  "branch": "agent/pass11-safety-no-deletion-complete-v1",
+  "pass": 11,
+  "unit": "P11-U3",
+  "unit_id": "P11-U3",
+  "status": "SAFE_WRITER_TRANSACTION_ROLLBACK_RECOVERY_RULES_ENFORCED",
+  "transaction_contract": {
+    "phases": [
+      "PREFLIGHT",
+      "EXACT_BACKUP",
+      "EXPECTED_VERSION_CHECK",
+      "BOUNDED_APPLY",
+      "VERIFY",
+      "APPEND_ONLY_RECEIPT",
+      "ROLLBACK_ON_ANY_FAILURE"
+    ],
+    "required_bindings": [
+      "operation_id",
+      "requester_owner",
+      "target_owner",
+      "resource",
+      "expected_version",
+      "payload_sha256",
+      "backup_ref",
+      "rollback_sha256",
+      "append_only_receipt"
+    ],
+    "partial_write": "ROLLBACK_EXACT_BYTES",
+    "duplicate_operation": "IDENTICAL_REPLAY_OR_CONFLICT_DENY",
+    "stale_expected_version": "DENY_BEFORE_SIDE_EFFECT",
+    "missing_backup_or_rollback": "DENY_BEFORE_SIDE_EFFECT",
+    "unrelated_bytes": "PRESERVE_EXACTLY",
+    "automatic_retry": false
+  },
+  "recovery_contract": {
+    "old_state_recoverable_until_verified": true,
+    "archive_payload_exact": true,
+    "quarantine_payload_exact": true,
+    "rollback_receipted": true,
+    "failure_evidence_immutable": true,
+    "real_user_data_used_in_proof": false
+  },
+  "verification": {
+    "deterministic_suite": "186/186 PASS",
+    "transaction_allow_and_deny_matrix": "PASS",
+    "backup_and_rollback_binding": "PASS",
+    "append_only_receipt_binding": "PASS",
+    "no_delete_transaction_boundary": "PASS"
+  },
+  "effects": {
+    "production_files_changed": true,
+    "runtime_integrity_changed": true,
+    "persisted_user_data_changed": false,
+    "storage_reads": false,
+    "storage_writes": false,
+    "storage_deletes": false,
+    "storage_migration_performed": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "special_authority_consumed": false
+  },
+  "next_step": {
+    "id": "P11-U4",
+    "objective": "Run adversarial and fault-injection proof across owners, helpers, deletion, archive, transaction, and rollback boundaries.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "persisted_user_data_change_allowed": false,
+    "stop_after": false
+  }
+}

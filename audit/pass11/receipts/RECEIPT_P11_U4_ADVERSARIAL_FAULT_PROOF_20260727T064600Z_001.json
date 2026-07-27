@@ -1,0 +1,27 @@
+{
+  "type": "PMP_PASS11_UNIT_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P11_U4_ADVERSARIAL_FAULT_PROOF_20260727T064600Z_001",
+  "created_at": "2026-07-27T06:46:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "b65f186429d155172fc59d62440cc78d9960823f",
+  "branch": "agent/pass11-safety-no-deletion-complete-v1",
+  "pass": 11,
+  "unit": "P11-U4",
+  "status": "ADVERSARIAL_FAULT_PROOF_GREEN",
+  "evidence": "audit/pass11/pass11-unit4-adversarial-fault-proof-v1.json",
+  "effects": {
+    "assertions": 186,
+    "assertions_failed": 0,
+    "real_user_storage_accessed": false,
+    "persisted_user_data_changed": false,
+    "formal_proof_performed": false,
+    "special_authority_consumed": false
+  },
+  "next_safe_move": {
+    "step_id": "P11-U5",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "stop_after": false
+  }
+}
