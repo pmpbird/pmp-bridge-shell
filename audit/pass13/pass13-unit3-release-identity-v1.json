@@ -1,0 +1,26 @@
+{
+  "type": "PMP_PASS13_UNIT3_RELEASE_IDENTITY_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-27T07:42:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "e3e0fecfe4db33b6f6d7b447c4180b74409d8090",
+  "branch": "agent/pass13-final-certification-v1",
+  "pass": 13,
+  "unit": "P13-U3",
+  "unit_id": "P13-U3",
+  "status": "RELEASE_IDENTITY_INPUTS_VERIFIED",
+  "identity": {
+    "manifest": "audit/pass13/PMP_APP_ORCHESTRATOR_RELEASE_INPUT_MANIFEST_V1.json",
+    "github_main_at_entry": "e3e0fecfe4db33b6f6d7b447c4180b74409d8090",
+    "clean_laptop_mirror_at_entry": "e3e0fecfe4db33b6f6d7b447c4180b74409d8090",
+    "tree": "f1dca0d7aebe389986ada14481e34572896086aa",
+    "git_blob_records": 2076,
+    "runtime_manifest_records": 716,
+    "runtime_source_set_sha256": "09814d711eaa4033743ab6328db480a4874fc26841b58c7232cc85758dc16c8d",
+    "manifest_seal_bootstrap_anchor_match": true,
+    "release_inputs_exact_git_object_bytes": true,
+    "postmerge_final_main_verification_required": true
+  },
+  "effects": {"persisted_user_data_changed": false, "production_migration_performed": false, "formal_proof_performed": false, "special_authority_consumed": false},
+  "next_step": {"id": "P13-U4", "objective": "Verify the full archival and compact continuation package builder and portability contract.", "requires_new_explicit_authority": false, "stop_after": false}
+}

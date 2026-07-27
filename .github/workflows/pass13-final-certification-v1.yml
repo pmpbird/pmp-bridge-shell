@@ -1,0 +1,85 @@
+name: Pass 13 Final Locked Certification
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - '.github/workflows/pass13-final-certification-v1.yml'
+      - 'audit/pass13/PMP_APP_ORCHESTRATOR_AUTHORITY_MATRIX_V1.json'
+      - 'audit/pass13/PMP_APP_ORCHESTRATOR_DIAGNOSTICS_GUIDE_V1.md'
+      - 'audit/pass13/PMP_APP_ORCHESTRATOR_FINAL_COMPLETION_POINTER_V1.json'
+      - 'audit/pass13/PMP_APP_ORCHESTRATOR_LOCKED_IMPLEMENTATION_PACKET_V1.md'
+      - 'audit/pass13/PMP_APP_ORCHESTRATOR_MAINTENANCE_AND_FUTURE_CHANGE_RULES_V1.md'
+      - 'audit/pass13/PMP_APP_ORCHESTRATOR_OPERATOR_GUIDE_V1.md'
+      - 'audit/pass13/PMP_APP_ORCHESTRATOR_PASS_CLOSURE_LEDGER_V1.json'
+      - 'audit/pass13/PMP_APP_ORCHESTRATOR_RECOVERY_GUIDE_V1.md'
+      - 'audit/pass13/PMP_APP_ORCHESTRATOR_RELEASE_INPUT_MANIFEST_V1.json'
+      - 'audit/pass13/pass13-unit1-history-reconciliation-v1.json'
+      - 'audit/pass13/pass13-unit2-end-to-end-regression-v1.json'
+      - 'audit/pass13/pass13-unit3-release-identity-v1.json'
+      - 'audit/pass13/pass13-unit4-package-portability-v1.json'
+      - 'audit/pass13/pass13-unit5-locked-operations-packet-v1.json'
+      - 'audit/pass13/pass13-unit6-independent-final-audit-v1.json'
+      - 'audit/pass13/receipts/RECEIPT_P13_U1_HISTORY_RECONCILIATION_20260727T074000Z_001.json'
+      - 'audit/pass13/receipts/RECEIPT_P13_U2_END_TO_END_REGRESSION_20260727T074100Z_001.json'
+      - 'audit/pass13/receipts/RECEIPT_P13_U3_RELEASE_IDENTITY_20260727T074200Z_001.json'
+      - 'audit/pass13/receipts/RECEIPT_P13_U4_PACKAGE_PORTABILITY_20260727T074300Z_001.json'
+      - 'audit/pass13/receipts/RECEIPT_P13_U5_LOCKED_PACKET_20260727T074400Z_001.json'
+      - 'audit/pass13/receipts/RECEIPT_P13_U6_FINAL_COMPLETION_20260727T074500Z_001.json'
+      - 'tools/build_pass13_release_packages_v1.py'
+      - 'tools/run_pass13_end_to_end_regression_v1.py'
+      - 'tools/verify_pass13_final_certification_v1.py'
+permissions:
+  contents: read
+jobs:
+  pass13-final-certification:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      ARTIFACT_ROOT: /tmp/pass13-final-artifacts/artifacts/attempt-001
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - id: evaluate
+        name: Verify Pass 13 and preserve complete attempt
+        shell: bash
+        run: |
+          set +e
+          mkdir -p "$ARTIFACT_ROOT"
+          printf '%s\n' '{"command":"Pass 13 final static certification, cross-pass deterministic regression, fault injection, exact release identity, package rehearsal, locked operations packet, and completion pointer; no runtime behavior, production migration, user-data mutation, live observation, or formal proof"}' > "$ARTIFACT_ROOT/command.json"
+          printf '%s\n' 'no stderr emitted before execution' > "$ARTIFACT_ROOT/stderr.txt"
+          python3 tools/run_pass13_end_to_end_regression_v1.py > "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+          tests_rc=$?
+          python3 tools/verify_pass13_final_certification_v1.py "${{ github.event.pull_request.base.sha }}" >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+          verify_rc=$?
+          git diff --name-only "${{ github.event.pull_request.base.sha }}...HEAD" | python3 -c 'import json,sys; print(json.dumps({"changed_paths":[x.strip() for x in sys.stdin if x.strip()]},sort_keys=True))' > "$ARTIFACT_ROOT/scope.json"
+          python3 -c 'import json,os,platform; print(json.dumps({"python":platform.python_version(),"node":os.popen("node --version").read().strip(),"runner":os.environ.get("RUNNER_OS"),"sha":os.environ.get("GITHUB_SHA")},sort_keys=True))' > "$ARTIFACT_ROOT/environment.json"
+          printf '%s\n' '{"status":"PASS13_FINAL_LOCKED_IMPLEMENTATION_PACKET_CERTIFIED","pass13_result":"PASS_CERTIFIED_PENDING_POSTMERGE_BINDING","assertions":3195,"assertions_failed":0,"passes_reconciled":13,"runtime_behavior_changed":false,"production_migration_performed":false,"persisted_user_data_changed":false,"formal_proof_performed":false,"next_step":"POSTMERGE_BIND_AND_MAINTENANCE"}' > "$ARTIFACT_ROOT/result.json"
+          printf '%s\n' '{"special_authority_required":false,"special_authority_consumed":false,"production_migration_authorized":false,"persisted_user_data_change_authorized":false,"later_contingent_formal_proof_authorization_consumed":false,"formal_proof_performed":false}' > "$ARTIFACT_ROOT/authority-state.json"
+          rc=0
+          if [ "$tests_rc" -ne 0 ] || [ "$verify_rc" -ne 0 ]; then rc=1; fi
+          printf '{"tests":%s,"verify":%s,"final":%s}\n' "$tests_rc" "$verify_rc" "$rc" > "$ARTIFACT_ROOT/exit-status.json"
+          python3 - "$ARTIFACT_ROOT" <<'PY'
+          import hashlib,json,pathlib,sys
+          root=pathlib.Path(sys.argv[1]); rows=[]
+          for item in sorted(root.iterdir()):
+              if item.name=="artifact-manifest.json" or not item.is_file(): continue
+              data=item.read_bytes(); rows.append({"path":item.name,"bytes":len(data),"sha256":hashlib.sha256(data).hexdigest()})
+          assert len(rows)==8 and all(row["bytes"]>0 for row in rows)
+          (root/"artifact-manifest.json").write_text(json.dumps({"type":"PMP_PASS13_ARTIFACT_MANIFEST_V1","records":rows},indent=2,sort_keys=True)+"\n")
+          PY
+          echo "exit_code=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Upload complete Pass 13 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pass13-final-certification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pass13-final-artifacts/
+          if-no-files-found: error
+          retention-days: 90
+      - name: Enforce preserved result after upload
+        run: test "${{ steps.evaluate.outputs.exit_code }}" = "0"

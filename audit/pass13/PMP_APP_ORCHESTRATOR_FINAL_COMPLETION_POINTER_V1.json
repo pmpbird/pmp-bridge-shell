@@ -1,0 +1,42 @@
+{
+  "type": "PMP_APP_ORCHESTRATOR_FINAL_COMPLETION_POINTER_V1",
+  "version": "1.0.0",
+  "status": "CERTIFIED_PENDING_EXACT_GREEN_MERGE_AND_POSTMERGE_PACKAGE_BINDING",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "certification_base_main_commit": "e3e0fecfe4db33b6f6d7b447c4180b74409d8090",
+  "certification_branch": "agent/pass13-final-certification-v1",
+  "completed_roadmap": {
+    "first_pass": 1,
+    "last_pass": 13,
+    "passes_with_traceable_closure_evidence": 13,
+    "pass12_result": "PASS_BOUNDED",
+    "pass13_result": "PASS_CERTIFIED_PENDING_POSTMERGE_BINDING"
+  },
+  "read_first": "audit/pass13/PMP_APP_ORCHESTRATOR_LOCKED_IMPLEMENTATION_PACKET_V1.md",
+  "closure_ledger": "audit/pass13/PMP_APP_ORCHESTRATOR_PASS_CLOSURE_LEDGER_V1.json",
+  "final_audit": "audit/pass13/pass13-unit6-independent-final-audit-v1.json",
+  "final_receipt": "audit/pass13/receipts/RECEIPT_P13_U6_FINAL_COMPLETION_20260727T074500Z_001.json",
+  "postmerge_activation_conditions": [
+    "exact branch head is green",
+    "exact branch head merges to GitHub main",
+    "final GitHub main and clean laptop mirror match",
+    "full archival and compact continuation packages bind final main",
+    "both packages pass CRC, entry, payload hash, commit, size, and sidecar verification",
+    "earlier checkpoints remain preserved"
+  ],
+  "next_safe_move_after_activation": {
+    "id": "MAINTENANCE_ONLY",
+    "instruction": "Do not infer Pass 14. Wait for a specific observed symptom or explicit owner-scoped change request, then follow the locked maintenance process.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "automatic_work_authorized": false
+  },
+  "authority_state": {
+    "historical_pr122_formal_proof": "CONSUMED_FAILED_QUARANTINED_NO_RETRY",
+    "later_contingent_formal_proof_authorization": "UNCONSUMED",
+    "production_migration_authorized": false,
+    "production_migration_performed": false,
+    "persisted_user_data_changed": false,
+    "special_authority_consumed_by_pass13": false
+  }
+}

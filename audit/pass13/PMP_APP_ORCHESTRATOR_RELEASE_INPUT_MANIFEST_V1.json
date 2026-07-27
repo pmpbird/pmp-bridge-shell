@@ -1,0 +1,28 @@
+{
+  "type": "PMP_APP_ORCHESTRATOR_RELEASE_INPUT_MANIFEST_V1",
+  "version": "1.0.0",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "certification_base_main_commit": "e3e0fecfe4db33b6f6d7b447c4180b74409d8090",
+  "certification_base_tree": "f1dca0d7aebe389986ada14481e34572896086aa",
+  "certification_base_blob_count": 2076,
+  "runtime_manifest_records": 716,
+  "runtime_source_set_sha256": "09814d711eaa4033743ab6328db480a4874fc26841b58c7232cc85758dc16c8d",
+  "inputs": [
+    {"path": "pmp-app-current.html", "bytes": 13351, "sha256": "d41b1d092cd562edff13ade9a8fb8e3fb1260f174428c66d17c8166f48730c75"},
+    {"path": "pmp-current-map-v12.json", "bytes": 12177, "sha256": "a28c5918aec907d8d3011c9c4407ee6eef5251c33d33cfa8b232d2295072d926"},
+    {"path": "pmp-runtime-integrity-manifest-v1.json", "bytes": 377921, "sha256": "0550afd2429b8cde5b4d84d70ffb84c74d83f40e65891328320d2056fe58710a"},
+    {"path": "audit/a003-manifest-seal.json", "bytes": 676, "sha256": "6f33d556a686d9bf936434b5015afc1a728ab6ae1106203f2fbdd146c3f716f1"},
+    {"path": "pmp-safety-no-deletion-policy-v1.json", "bytes": 3303, "sha256": "d0e6b5f06c73b7b8985f73976fbd0c1b3f7a944527ef5e236e71c517fe2d3caa"},
+    {"path": "pmp-safety-no-deletion-guard-v1.js", "bytes": 10334, "sha256": "df28cbba55d47c4b059f58a50b152d271274bd04d5cf33c869c7b041189c323c"},
+    {"path": "pmp-migration-plan-v1.json", "bytes": 8771, "sha256": "d9125e7c09df6cb8007b18567ce5d0ded7af340b858d557fc4953d5e2b363c30"},
+    {"path": "pmp-migration-inactive-gate-v1.js", "bytes": 13221, "sha256": "ff3bb162978715a935cac8ac93139a346c42b4523df2308656884d7505550b43"}
+  ],
+  "casefold_collisions": [["Index.html", "index.html"]],
+  "release_rules": {
+    "git_object_bytes_authoritative": true,
+    "casefold_collision_preserved_as_two_entries": true,
+    "clean_mirror_must_equal_github_main": true,
+    "a003_manifest_and_bootstrap_anchor_must_match": true,
+    "full_and_compact_packages_require_crc_manifest_hash_commit_size_and_sidecar_verification": true
+  }
+}

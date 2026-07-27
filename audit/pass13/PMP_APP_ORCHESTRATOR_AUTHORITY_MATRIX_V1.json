@@ -1,0 +1,78 @@
+{
+  "type": "PMP_APP_ORCHESTRATOR_FINAL_AUTHORITY_MATRIX_V1",
+  "version": "1.0.0",
+  "default_decision": "DENY",
+  "rules": [
+    {
+      "action": "READ_OWNER_SCOPED_RUNTIME_STATE",
+      "ordinary_maintenance": "ALLOW_IF_CURRENT_OWNER_AND_REDACTED",
+      "special_authority_required": false
+    },
+    {
+      "action": "CHANGE_SOURCE_OR_TESTS",
+      "ordinary_maintenance": "ALLOW_ON_CLEAN_BRANCH_WITH_REVIEW_TESTS_RECEIPT_GREEN_CI",
+      "special_authority_required": false
+    },
+    {
+      "action": "ARCHIVE_BANK_RECORD",
+      "ordinary_maintenance": "ALLOW_ONLY_RECOVERABLE_EXACT_PAYLOAD_ARCHIVE_WITH_USER_CONFIRMATION",
+      "special_authority_required": false
+    },
+    {
+      "action": "DELETE_PERSISTED_RECORD",
+      "ordinary_maintenance": "DENY",
+      "special_authority_required": true,
+      "required_authority": "PMP_EXACT_DELETE_EXCEPTION_AUTHORITY_V1",
+      "single_use": true,
+      "wildcards_allowed": false,
+      "automatic_retry": false
+    },
+    {
+      "action": "PRODUCTION_MIGRATION_OR_USER_DATA_MUTATION",
+      "ordinary_maintenance": "DENY",
+      "special_authority_required": true,
+      "required_authority": "PMP_EXACT_PRODUCTION_MIGRATION_AUTHORITY_V1",
+      "single_use": true,
+      "commit_plan_snapshot_target_binding_required": true,
+      "wildcards_allowed": false,
+      "automatic_retry": false
+    },
+    {
+      "action": "FORMAL_PROOF",
+      "ordinary_maintenance": "DENY",
+      "special_authority_required": true,
+      "required_authority": "EXACTLY_ONCE_CANONICAL_FORMAL_PROOF_AUTHORIZATION",
+      "all_static_preflight_and_exact_head_seals_required": true,
+      "automatic_retry": false
+    },
+    {
+      "action": "RETRY_PR122_FORMAL_PROOF",
+      "ordinary_maintenance": "DENY_PERMANENTLY",
+      "special_authority_required": true,
+      "new_exact_authority_required": true
+    },
+    {
+      "action": "RETRY_CONSUMED_OBSERVATION_PR149_PR150_PR152",
+      "ordinary_maintenance": "DENY_PERMANENTLY",
+      "special_authority_required": true,
+      "new_exact_authority_required": true
+    },
+    {
+      "action": "PRODUCTION_ACTIVATION_PURCHASE_PRIVACY_OR_CREDENTIAL_EXPANSION",
+      "ordinary_maintenance": "DENY",
+      "special_authority_required": true,
+      "rollback_and_explicit_user_decision_required": true
+    }
+  ],
+  "formal_proof_state": {
+    "historical_pr122_receipt082": "CONSUMED_FAILED_QUARANTINED_NO_RETRY",
+    "later_contingent_authorization": "UNCONSUMED",
+    "formal_proof_run_by_pass13": false
+  },
+  "production_migration_state": {
+    "gate": "INACTIVE",
+    "authorized": false,
+    "performed": false,
+    "persisted_user_data_changed": false
+  }
+}

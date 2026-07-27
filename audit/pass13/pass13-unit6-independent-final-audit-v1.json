@@ -1,0 +1,200 @@
+{
+  "type": "PMP_PASS13_UNIT6_INDEPENDENT_FINAL_AUDIT_V1",
+  "version": "1.0.0",
+  "created_at": "2026-07-27T07:45:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "e3e0fecfe4db33b6f6d7b447c4180b74409d8090",
+  "branch": "agent/pass13-final-certification-v1",
+  "pass": 13,
+  "unit": "P13-U6",
+  "unit_id": "P13-U6",
+  "status": "PASS13_FINAL_LOCKED_IMPLEMENTATION_PACKET_CERTIFIED",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/pass13-final-certification-v1.yml",
+      "audit/pass13/PMP_APP_ORCHESTRATOR_AUTHORITY_MATRIX_V1.json",
+      "audit/pass13/PMP_APP_ORCHESTRATOR_DIAGNOSTICS_GUIDE_V1.md",
+      "audit/pass13/PMP_APP_ORCHESTRATOR_FINAL_COMPLETION_POINTER_V1.json",
+      "audit/pass13/PMP_APP_ORCHESTRATOR_LOCKED_IMPLEMENTATION_PACKET_V1.md",
+      "audit/pass13/PMP_APP_ORCHESTRATOR_MAINTENANCE_AND_FUTURE_CHANGE_RULES_V1.md",
+      "audit/pass13/PMP_APP_ORCHESTRATOR_OPERATOR_GUIDE_V1.md",
+      "audit/pass13/PMP_APP_ORCHESTRATOR_PASS_CLOSURE_LEDGER_V1.json",
+      "audit/pass13/PMP_APP_ORCHESTRATOR_RECOVERY_GUIDE_V1.md",
+      "audit/pass13/PMP_APP_ORCHESTRATOR_RELEASE_INPUT_MANIFEST_V1.json",
+      "audit/pass13/pass13-unit1-history-reconciliation-v1.json",
+      "audit/pass13/pass13-unit2-end-to-end-regression-v1.json",
+      "audit/pass13/pass13-unit3-release-identity-v1.json",
+      "audit/pass13/pass13-unit4-package-portability-v1.json",
+      "audit/pass13/pass13-unit5-locked-operations-packet-v1.json",
+      "audit/pass13/pass13-unit6-independent-final-audit-v1.json",
+      "audit/pass13/receipts/RECEIPT_P13_U1_HISTORY_RECONCILIATION_20260727T074000Z_001.json",
+      "audit/pass13/receipts/RECEIPT_P13_U2_END_TO_END_REGRESSION_20260727T074100Z_001.json",
+      "audit/pass13/receipts/RECEIPT_P13_U3_RELEASE_IDENTITY_20260727T074200Z_001.json",
+      "audit/pass13/receipts/RECEIPT_P13_U4_PACKAGE_PORTABILITY_20260727T074300Z_001.json",
+      "audit/pass13/receipts/RECEIPT_P13_U5_LOCKED_PACKET_20260727T074400Z_001.json",
+      "audit/pass13/receipts/RECEIPT_P13_U6_FINAL_COMPLETION_20260727T074500Z_001.json",
+      "tools/build_pass13_release_packages_v1.py",
+      "tools/run_pass13_end_to_end_regression_v1.py",
+      "tools/verify_pass13_final_certification_v1.py"
+    ],
+    "implementation_paths": []
+  },
+  "pass13_result": "PASS_CERTIFIED_PENDING_POSTMERGE_BINDING",
+  "closure": {
+    "completed_units": 6,
+    "passes_reconciled": 13,
+    "passes_with_traceable_closure_evidence": 13,
+    "historical_exceptions_classified": 4,
+    "deterministic_component_suites": 12,
+    "deterministic_assertions": 3195,
+    "deterministic_assertions_failed": 0,
+    "runtime_manifest_records_verified": 716,
+    "release_base_git_records_verified": 2076,
+    "package_builder_rehearsal": "GREEN",
+    "full_and_compact_package_contract": "LOCKED",
+    "locked_operations_documents": 8,
+    "runtime_behavior_changed_by_pass13": false,
+    "persisted_user_data_changed": false,
+    "production_migration_performed": false,
+    "formal_proof_performed": false,
+    "special_authority_consumed": false
+  },
+  "premerge_exit_criteria": {
+    "every_pass_has_traceable_closure_evidence": true,
+    "no_unresolved_claim_presented_as_complete": true,
+    "historical_failure_and_consumed_authority_preserved": true,
+    "full_cross_pass_regression_green": true,
+    "fault_injection_green": true,
+    "protected_runtime_identity_exact": true,
+    "package_build_and_verification_contract_green": true,
+    "locked_implementation_operator_recovery_authority_diagnostics_maintenance_packet_complete": true,
+    "another_chat_can_identify_state_and_maintenance_move_from_pointer": true,
+    "no_production_or_user_data_boundary_crossed": true,
+    "no_formal_proof_or_consumed_observation_retried": true
+  },
+  "postmerge_completion_conditions": {
+    "exact_head_green": "VERIFY_IN_GITHUB",
+    "merged_main_verified": "VERIFY_AFTER_MERGE",
+    "clean_laptop_mirror_matches_final_main": "VERIFY_AFTER_MERGE",
+    "full_archival_package_verified": "BUILD_AND_VERIFY_AFTER_MERGE",
+    "compact_continuation_package_verified": "BUILD_AND_VERIFY_AFTER_MERGE",
+    "external_checkpoint_preserved": "BUILD_AND_VERIFY_AFTER_MERGE"
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_integration",
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/pass13/pass13-unit2-end-to-end-regression-v1.json",
+      "rationale": "P13-U2 is the cross-pass deterministic and fault matrix for authority, replay, routing, owner/helper isolation, Bank/Continuous Run, deletion/rollback, migration, release identity, and case portability."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass13/pass13-unit1-history-reconciliation-v1.json",
+      "audit/pass13/pass13-unit2-end-to-end-regression-v1.json",
+      "audit/pass13/pass13-unit3-release-identity-v1.json",
+      "audit/pass13/pass13-unit4-package-portability-v1.json",
+      "audit/pass13/pass13-unit5-locked-operations-packet-v1.json",
+      "audit/pass13/pass13-unit6-independent-final-audit-v1.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/run_pass13_end_to_end_regression_v1.py"
+    ],
+    "verifier_paths": [
+      "tools/verify_pass13_final_certification_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass13/receipts/RECEIPT_P13_U6_FINAL_COMPLETION_20260727T074500Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The Pass 13 runner passes 3,195 deterministic assertions across twelve component suites, 716 exact runtime-manifest records, release identities, closure evidence, authority state, and fault boundaries.",
+        "evidence_paths": [
+          "tools/run_pass13_end_to_end_regression_v1.py",
+          "audit/pass13/pass13-unit2-end-to-end-regression-v1.json",
+          "audit/pass13/PMP_APP_ORCHESTRATOR_RELEASE_INPUT_MANIFEST_V1.json"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The package builder rehearsal produces full and compact ZIPs whose CRC, entry counts, Git blob hashes, payload hashes, commit/tree identities, casefold rules, and SHA-256 sidecars all pass.",
+        "evidence_paths": [
+          "tools/build_pass13_release_packages_v1.py",
+          "audit/pass13/pass13-unit4-package-portability-v1.json"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "The locked packet is ready for exact-head green merge and post-merge package binding without a live observation because Pass 13 changes only static evidence, tools, workflow, and documentation and makes no new runtime behavior claim.",
+        "basis_evidence_paths": [
+          "audit/pass13/pass13-unit2-end-to-end-regression-v1.json",
+          "audit/pass13/pass13-unit3-release-identity-v1.json",
+          "audit/pass13/pass13-unit5-locked-operations-packet-v1.json",
+          "audit/pass13/pass13-unit6-independent-final-audit-v1.json"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "silent authority gain",
+        "formal-proof replay",
+        "consumed-observation replay",
+        "route duplicate activation",
+        "owner and helper isolation",
+        "Bank and Continuous Run concurrency/order",
+        "delete/archive/transaction rollback",
+        "migration malformed/stale/duplicate/orphan/partial stage",
+        "runtime manifest byte mismatch",
+        "case-insensitive path collision"
+      ]
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {"required": false, "granted": false, "consumed": false}
+  },
+  "effects": {
+    "production_files_changed": false,
+    "runtime_behavior_changed": false,
+    "persisted_user_data_changed": false,
+    "storage_reads": false,
+    "storage_writes": false,
+    "storage_deletes": false,
+    "production_migration_performed": false,
+    "live_observation_performed": false,
+    "formal_proof_performed": false,
+    "formal_proof_authorization_consumed": false,
+    "special_authority_consumed": false
+  },
+  "authority": {
+    "ordinary_pass13_scope_authorized": true,
+    "production_migration_authorized": false,
+    "persisted_user_data_change_authorized": false,
+    "later_contingent_formal_proof_authorization_consumed": false,
+    "retry_authorized": false
+  },
+  "next_step": {
+    "id": "POSTMERGE_BIND_AND_MAINTENANCE",
+    "objective": "Merge the exact green head, verify final main and clean mirror, build and independently verify full and compact packages, then enter maintenance-only state.",
+    "requires_user_app_check": false,
+    "requires_new_explicit_authority": false,
+    "persisted_user_data_change_allowed": false,
+    "production_migration_allowed": false,
+    "stop_after": false
+  },
+  "claim_ceiling": "Pass 13 certifies the complete locked implementation and continuation packet at static, deterministic, exact-source, and package-contract scope. It changes no runtime behavior or user data and becomes fully effective only when the exact green head is merged and the final-main full and compact packages are independently verified."
+}
