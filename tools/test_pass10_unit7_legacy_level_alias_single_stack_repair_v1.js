@@ -56,7 +56,7 @@ equal(bankSource.includes('localStorage.setItem'), false, 'Bank owner still writ
 equal((innerSource.match(/pmp-master-bank-tab-v1\.js/g) || []).length, 1, 'one active Bank owner script');
 equal((innerSource.match(/pmp-continuous-run-level-ui-scope-v1\.js/g) || []).length, 1, 'one active canonical level owner script');
 check(innerSource.includes('pass10-unit7-legacy-alias-containment-20260727A'), 'Bank owner fresh binding updated');
-check(innerSource.includes('pass10-unit7-legacy-alias-single-stack-20260727A'), 'level owner fresh binding updated');
+check(innerSource.includes('pass10-unit7-single-card-presentation-20260727A'), 'level owner fresh binding advances through the presentation-only successor');
 
 for (const marker of [
   'canonical_level_order_after_alias_repair',
