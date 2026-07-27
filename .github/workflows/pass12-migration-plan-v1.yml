@@ -4,6 +4,7 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
     paths:
       - '.github/workflows/pass12-migration-plan-v1.yml'
+      - 'audit/a003-manifest-seal.json'
       - 'audit/pass12/pass12-unit1-source-target-inventory-v1.json'
       - 'audit/pass12/pass12-unit2-migration-contract-v1.json'
       - 'audit/pass12/pass12-unit3-disposable-dry-run-v1.json'
@@ -22,6 +23,9 @@ on:
       - 'audit/pass12/receipts/RECEIPT_P12_U8_SAFE_CLOSURE_20260727T073700Z_001.json'
       - 'pmp-migration-inactive-gate-v1.js'
       - 'pmp-migration-plan-v1.json'
+      - 'pmp-app-current.html'
+      - 'pmp-runtime-integrity-manifest-v1.json'
+      - 'tools/generate_pass12_migration_integrity_updates_v1.py'
       - 'tools/test_pass12_migration_plan_v1.js'
       - 'tools/verify_pass12_migration_plan_v1.py'
 permissions:

@@ -12,6 +12,7 @@
   "scope": {
     "changed_paths": [
       ".github/workflows/pass12-migration-plan-v1.yml",
+      "audit/a003-manifest-seal.json",
       "audit/pass12/pass12-unit1-source-target-inventory-v1.json",
       "audit/pass12/pass12-unit2-migration-contract-v1.json",
       "audit/pass12/pass12-unit3-disposable-dry-run-v1.json",
@@ -30,10 +31,14 @@
       "audit/pass12/receipts/RECEIPT_P12_U8_SAFE_CLOSURE_20260727T073700Z_001.json",
       "pmp-migration-inactive-gate-v1.js",
       "pmp-migration-plan-v1.json",
+      "pmp-app-current.html",
+      "pmp-runtime-integrity-manifest-v1.json",
+      "tools/generate_pass12_migration_integrity_updates_v1.py",
       "tools/test_pass12_migration_plan_v1.js",
       "tools/verify_pass12_migration_plan_v1.py"
     ],
     "implementation_paths": [
+      "pmp-app-current.html",
       "pmp-migration-inactive-gate-v1.js"
     ]
   },
@@ -178,7 +183,8 @@
     "assertions_failed": 0,
     "exact_scope": "PASS",
     "permanent_gate_binding": "PASS",
-    "production_source_unchanged": "PASS",
+    "production_runtime_behavior_unchanged": "PASS",
+    "a003_complete_source_manifest_binding": "PASS",
     "inactive_source_not_loaded": "PASS",
     "production_storage_api_absent": "PASS",
     "network_api_absent": "PASS",
@@ -186,7 +192,9 @@
     "authority_denial": "PASS"
   },
   "effects": {
-    "production_files_changed": false,
+    "production_files_changed": true,
+    "production_bootstrap_integrity_anchor_changed": true,
+    "production_runtime_behavior_changed": false,
     "inactive_nonruntime_helper_added": true,
     "persisted_user_data_changed": false,
     "storage_reads": false,

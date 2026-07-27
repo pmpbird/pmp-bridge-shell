@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import re
 import subprocess
 import sys
@@ -13,6 +14,10 @@ WORKFLOW = ROOT / ".github/workflows/pass12-migration-plan-v1.yml"
 PLAN = ROOT / "pmp-migration-plan-v1.json"
 GATE_SOURCE = ROOT / "pmp-migration-inactive-gate-v1.js"
 TEST = ROOT / "tools/test_pass12_migration_plan_v1.js"
+MANIFEST = ROOT / "pmp-runtime-integrity-manifest-v1.json"
+SEAL = ROOT / "audit/a003-manifest-seal.json"
+BOOTSTRAP = ROOT / "pmp-app-current.html"
+GENERATOR = ROOT / "tools/generate_pass12_migration_integrity_updates_v1.py"
 PERMANENT_GATE = ROOT / "tools/run_pass6_unit7_no_blind_flying_gate_v1.py"
 
 REPORTS = [
@@ -37,6 +42,7 @@ RECEIPTS = [
 ]
 EXPECTED = {
     ".github/workflows/pass12-migration-plan-v1.yml",
+    "audit/a003-manifest-seal.json",
     "audit/pass12/pass12-unit1-source-target-inventory-v1.json",
     "audit/pass12/pass12-unit2-migration-contract-v1.json",
     "audit/pass12/pass12-unit3-disposable-dry-run-v1.json",
@@ -55,10 +61,13 @@ EXPECTED = {
     "audit/pass12/receipts/RECEIPT_P12_U8_SAFE_CLOSURE_20260727T073700Z_001.json",
     "pmp-migration-inactive-gate-v1.js",
     "pmp-migration-plan-v1.json",
+    "pmp-app-current.html",
+    "pmp-runtime-integrity-manifest-v1.json",
+    "tools/generate_pass12_migration_integrity_updates_v1.py",
     "tools/test_pass12_migration_plan_v1.js",
     "tools/verify_pass12_migration_plan_v1.py",
 }
-IMPLEMENTATION = {"pmp-migration-inactive-gate-v1.js"}
+IMPLEMENTATION = {"pmp-app-current.html", "pmp-migration-inactive-gate-v1.js"}
 STATUSES = [
     "SOURCE_TARGET_INVENTORY_COMPLETE",
     "MIGRATION_CONTRACT_LOCKED",
@@ -100,6 +109,10 @@ def assertion_total(text: str) -> int:
     match = re.search(r"\((\d+)/(\d+)\)", text)
     assert match and match.group(1) == match.group(2), text
     return int(match.group(1))
+
+
+def sha(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def main() -> None:
@@ -205,6 +218,29 @@ def main() -> None:
     assert assertion_total(output("node", "tools/test_pass11_safety_no_deletion_v1.js")) == 186
     assert assertion_total(output("node", "tools/test_pass10_unit7_uniform_title_weight_v1.js")) == 86
 
+    generated = [MANIFEST, SEAL, BOOTSTRAP]
+    before = {path: sha(path) for path in generated}
+    assert "PASS:" in output("python3", GENERATOR.relative_to(ROOT).as_posix())
+    after = {path: sha(path) for path in generated}
+    assert before == after
+    manifest = json.loads(MANIFEST.read_text())
+    records = {row["path"]: row for row in manifest["records"]}
+    for path in (PLAN, GATE_SOURCE):
+        relative = path.relative_to(ROOT).as_posix()
+        assert records[relative]["sha256_hex"] == sha(path)
+        assert records[relative]["bytes"] == len(path.read_bytes())
+        assert records[relative]["enforcement"] == "SERVICE_WORKER_PRE_RESPONSE_SHA256"
+    seal = json.loads(SEAL.read_text())
+    assert seal["status"] == "SEALED"
+    assert seal["sealed_branch"] == "agent/pass12-migration-plan-safe-closure-v1"
+    assert seal["manifest_sha256"] == sha(MANIFEST)
+    assert seal["manifest_bytes"] == len(MANIFEST.read_bytes())
+    assert seal["runtime_source_set_sha256"] == manifest["runtime_source_set_sha256"]
+    anchor = re.search(
+        r"const MANIFEST_SHA256='([0-9a-f]{64})';", BOOTSTRAP.read_text()
+    )
+    assert anchor and anchor.group(1) == sha(MANIFEST)
+
     closure = reports[-1]
     assert set(closure["scope"]["changed_paths"]) == EXPECTED
     assert set(closure["scope"]["implementation_paths"]) == IMPLEMENTATION
@@ -236,8 +272,8 @@ def main() -> None:
     )
     assert gate_result["status"] == "PASS", gate_result
     assert gate_result["unit_id"] == "P12-U8"
-    assert gate_result["summary"]["runtime_paths"] == 1
-    assert gate_result["summary"]["changed_paths"] == 21
+    assert gate_result["summary"]["runtime_paths"] == 2
+    assert gate_result["summary"]["changed_paths"] == 25
     assert gate_result["errors"] == []
 
     workflow = WORKFLOW.read_text()
@@ -259,8 +295,9 @@ def main() -> None:
         "Enforce preserved result after upload"
     )
     print(
-        "PASS: exact 21-path Pass 12 migration-plan bounded safe closure verified "
-        "(389/389, two regressions green, inactive gate, permanent gate PASS, "
+        "PASS: exact 25-path Pass 12 migration-plan bounded safe closure verified "
+        "(389/389, two regressions green, A003 exact source identities, "
+        "inactive gate, permanent gate PASS, "
         "production migration BLOCKED_AUTHORITY, P13-U1 ready)"
     )
 
