@@ -1,0 +1,72 @@
+{
+  "type": "PMP_PASS10_UNIT7U_UNIFORM_TITLE_WEIGHT_RECEIPT_V1",
+  "version": "1.0.0",
+  "receipt_id": "RECEIPT_P10_U7U_UNIFORM_TITLE_WEIGHT_20260727T041526Z_001",
+  "created_at": "2026-07-27T04:15:26Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_main_commit": "fe41bfd99a7380af018f4a8cdb2e68962e8a6f26",
+  "branch": "agent/pass10-unit7-uniform-title-weight-v1",
+  "pass": 10,
+  "unit": "P10-U7",
+  "substep": "P10-U7U",
+  "status": "DETERMINISTIC_UNIFORM_TITLE_WEIGHT_GREEN_HANDS_ON_TYPOGRAPHY_RECHECK_REQUIRED",
+  "evidence": "audit/pass10/pass10-bank-unit7-uniform-title-weight-v1.json",
+  "changed_paths": [
+    ".github/workflows/pass10-unit7-single-card-presentation-v1.yml",
+    ".github/workflows/pass10-unit7-uniform-title-weight-v1.yml",
+    "audit/a003-manifest-seal.json",
+    "audit/pass10/pass10-bank-unit7-uniform-title-weight-v1.json",
+    "audit/pass10/receipts/RECEIPT_P10_U7U_UNIFORM_TITLE_WEIGHT_20260727T041526Z_001.json",
+    "pmp-app-current.html",
+    "pmp-bank-screen-owner-v1.js",
+    "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+    "pmp-runtime-integrity-manifest-v1.json",
+    "tools/fixtures/pass10-unit7-uniform-title-weight-v1.html",
+    "tools/generate_pass10_unit7_uniform_title_weight_integrity_updates_v1.py",
+    "tools/test_pass10_unit7_uniform_title_weight_v1.js",
+    "tools/verify_pass10_unit7_uniform_title_weight_v1.py"
+  ],
+  "assertions": {
+    "uniform_title_weight": 86,
+    "uniform_title_weight_failed": 0,
+    "browser_fixture": 28,
+    "browser_fixture_failed": 0,
+    "prior_regressions": 1290,
+    "prior_regressions_failed": 0,
+    "permanent_no_blind_flying": 166
+  },
+  "decisions": {
+    "user_prior_result": "SINGLE_CARD_ORDER_AND_NO_FLICKER_REPAIR_WORKED",
+    "pre_level3_title_count": 6,
+    "pre_level3_title_weight": "EXACT_950_MATCH_TO_LEVEL3PLUS",
+    "shared_style": "ONE_TITLESTYLE_FUNCTION",
+    "title_size": "UNCHANGED",
+    "title_text": "UNCHANGED",
+    "card_and_heading_nodes": "PRESERVED",
+    "functional_controls": "PRESERVED_VISIBLE",
+    "level3plus_single_card_presentation": "PRESERVED",
+    "canonical_order": "1_2_3_4_4B_5_THROUGH_30_30B",
+    "locked_waiting_badge": "PRESERVED_INTENTIONAL_FAIL_CLOSED_READINESS",
+    "recurring_owner_timer": "DISABLED",
+    "pass10_complete": false
+  },
+  "effects": {
+    "presentation_changed": true,
+    "functional_runtime_behavior_changed": false,
+    "functional_nodes_removed": false,
+    "functional_controls_hidden": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "live_app_observation_performed": false,
+    "disposable_fixture_browser_test_performed": true,
+    "formal_proof_performed": false,
+    "formal_proof_authorization_consumed": false
+  },
+  "next_safe_move": {
+    "step_id": "P10-U7B-FINAL-UNIFORM-TITLE-WEIGHT-RECHECK",
+    "requires_user_app_check": true,
+    "instruction": "Verify once that every title from Run State Summary through Level 2 has the same bold look as Level 3+, while the prior clean cards, order, and no-flicker result remain.",
+    "requires_explicit_authority": false
+  },
+  "claim_ceiling": "Uniform weight is deterministic- and fixture-green only; the real app typography and Pass 10 closure remain pending one final focused recheck."
+}

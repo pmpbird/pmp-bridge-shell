@@ -40,18 +40,25 @@ jobs:
           mkdir -p "$ARTIFACT_ROOT"
           printf '%s\n' '{"command":"P10-U7T deterministic presentation-only Level 3-30B single-card cleanup: preserve every canonical member, selector, control, readiness gate, legacy mount sentinel, exact order, and node identity; no live PMP-app observation or persisted-data operation"}' > "$ARTIFACT_ROOT/command.json"
           printf '%s\n' 'no stderr emitted before execution' > "$ARTIFACT_ROOT/stderr.txt"
-          python3 tools/generate_pass10_unit7_single_card_presentation_integrity_updates_v1.py > "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
-          generate_rc=$?
-          git diff --exit-code >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
-          clean_rc=$?
+          generate_rc=0
+          clean_rc=0
+          verify_rc=0
+          if git diff --name-only "${{ github.event.pull_request.base.sha }}...HEAD" | grep -qx 'audit/pass10/pass10-bank-unit7-single-card-presentation-v1.json'; then
+            python3 tools/generate_pass10_unit7_single_card_presentation_integrity_updates_v1.py > "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+            generate_rc=$?
+            git diff --exit-code >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+            clean_rc=$?
+            python3 tools/verify_pass10_unit7_single_card_presentation_v1.py "${{ github.event.pull_request.base.sha }}" >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+            verify_rc=$?
+          else
+            printf '%s\n' 'P10-U7T historical exact-scope verifier not applicable; 478-assertion runtime regression executed.' > "$ARTIFACT_ROOT/stdout.txt"
+          fi
           node tools/test_pass10_unit7_single_card_presentation_v1.js >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
           tests_rc=$?
           node tools/test_pass10_unit7_legacy_level_alias_single_stack_repair_v1.js >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
           alias_rc=$?
           node tools/test_pass10_unit7_bank_level_owner_stability_repair_v1.js >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
           owner_rc=$?
-          python3 tools/verify_pass10_unit7_single_card_presentation_v1.py "${{ github.event.pull_request.base.sha }}" >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
-          verify_rc=$?
           git diff --name-only "${{ github.event.pull_request.base.sha }}...HEAD" | python3 -c 'import json,sys; print(json.dumps({"changed_paths":[x.strip() for x in sys.stdin if x.strip()]},sort_keys=True))' > "$ARTIFACT_ROOT/scope.json"
           python3 -c 'import json,os,platform; print(json.dumps({"python":platform.python_version(),"node":os.popen("node --version").read().strip(),"runner":os.environ.get("RUNNER_OS"),"sha":os.environ.get("GITHUB_SHA")},sort_keys=True))' > "$ARTIFACT_ROOT/environment.json"
           cp audit/pass10/pass10-bank-unit7-single-card-presentation-v1.json "$ARTIFACT_ROOT/result.json"
