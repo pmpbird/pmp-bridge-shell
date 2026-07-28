@@ -14,6 +14,7 @@
     "permanent_no_blind_flying": "PASS 166/166",
     "runtime_integrity": "PASS 21/21",
     "local_browser": "PASS 390x844; visible y=0; safe handoff and Active Path above cards; Active Path Control card present; 0 console errors",
+    "no_blind_flying_ci_repair": "PASS locally; exact 15-file scope, 5 runtime paths, 0 errors",
     "github_ci": "PENDING"
   },
   "effects": {

@@ -50,6 +50,13 @@
         "Active Path detail exposes rerun and copy actions.",
         "Browser console errors: 0."
       ]
+    },
+    "github_ci_repair": {
+      "failed_run": 30333445559,
+      "failed_check": "Permanent No-Blind-Flying Gate",
+      "root_cause": "The P13-U9 binding still declared the earlier ownership release scope instead of this repair's exact 15-file scope.",
+      "repair": "Bind P13-U9 to base cf4f1d7906b998e3818d48a23da4f6b6d091b080, the five current runtime paths, and the current restoration receipt.",
+      "local_reproduction_after_repair": "PASS; 15 changed paths, 5 runtime paths, 0 errors"
     }
   },
   "effects": {

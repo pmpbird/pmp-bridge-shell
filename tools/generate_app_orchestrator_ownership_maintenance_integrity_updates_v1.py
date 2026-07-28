@@ -278,7 +278,7 @@ def update_no_blind_flying_binding() -> None:
         # P13-U8 owns its exact documentation-only release scope. Preserve the
         # already-merged P13-U7 implementation record byte-for-byte.
         return
-    base = "fbc75d5067df28d96f73fc3f8b18c8dbd45fa571"
+    base = "cf4f1d7906b998e3818d48a23da4f6b6d091b080"
     if subprocess.run(
         ["git", "cat-file", "-e", base],
         cwd=ROOT,
@@ -314,6 +314,8 @@ def update_no_blind_flying_binding() -> None:
         in {".js", ".html", ".css", ".mjs", ".cjs", ".ts", ".tsx", ".jsx"}
     ]
     report = json.loads(MAINTENANCE_REPORT.read_text("utf-8"))
+    report["base_commit"] = base
+    report["branch"] = active_branch()
     report["unit_id"] = "P13-U9"
     report["scope"] = {
         "changed_paths": changed_paths,
@@ -346,13 +348,13 @@ def update_no_blind_flying_binding() -> None:
             "tools/verify_app_orchestrator_ownership_maintenance_v1.py"
         ],
         "receipt_paths": [
-            "audit/pass13/receipts/RECEIPT_APP_ORCHESTRATOR_OWNERSHIP_MAINTENANCE_20260727T180000Z_001.json"
+            "audit/pass13/receipts/RECEIPT_APP_ORCHESTRATOR_DIAGNOSTICS_HANDOFF_ACTIVE_PATH_RESTORATION_20260727T224315_0700_001.json"
         ],
         "observed_facts": [
             {
                 "claim_type": "OBSERVED",
                 "fact": (
-                    "The ownership matrix passes 167 deterministic checks "
+                    "The ownership matrix passes 174 deterministic checks "
                     "covering exclusive writers, helper delegation, inert "
                     "legacy actors, event-driven presentation, and the "
                     "copy-or-ZIP handoff."
@@ -365,14 +367,16 @@ def update_no_blind_flying_binding() -> None:
             {
                 "claim_type": "OBSERVED",
                 "fact": (
-                    "A bounded isolated local browser run reached the normal "
-                    "app, showed the Diagnostics and App Orchestrator Status "
-                    "screens, copied the safe handoff, and displayed one "
-                    "canonical Continuous Run Level 1 through 30B sequence."
+                    "A bounded 390x844 local browser run reached the normal "
+                    "app, showed the safe handoff and Active Path actions "
+                    "without below-viewport scrolling, preserved the "
+                    "canonical Active Path card after final frame load, and "
+                    "reported zero browser console errors."
                 ),
                 "evidence_paths": [
+                    "audit/pass13/app-orchestrator-diagnostics-handoff-active-path-restoration-v1.json",
                     "audit/pass13/app-orchestrator-ownership-maintenance-v1.json",
-                    "audit/pass13/receipts/RECEIPT_APP_ORCHESTRATOR_OWNERSHIP_MAINTENANCE_20260727T180000Z_001.json",
+                    "audit/pass13/receipts/RECEIPT_APP_ORCHESTRATOR_DIAGNOSTICS_HANDOFF_ACTIVE_PATH_RESTORATION_20260727T224315_0700_001.json",
                 ],
             },
         ],
