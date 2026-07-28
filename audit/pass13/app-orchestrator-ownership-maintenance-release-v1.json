@@ -1,0 +1,105 @@
+{
+  "type": "PMP_APP_ORCHESTRATOR_OWNERSHIP_MAINTENANCE_RELEASE_V1",
+  "version": "1.0.0",
+  "unit_id": "P13-U8",
+  "status": "MERGED_GREEN_LAPTOP_SYNCHRONIZED",
+  "created_at": "2026-07-27T19:55:00Z",
+  "github_release": {
+    "pull_request": 203,
+    "green_head": "d1d23ca4a517edf39b7af55b0e976c47b4f7bb75",
+    "merge_commit": "c62437dfc87530499771e21d4cbcee33aa282765",
+    "sealed_main_commit": "859ba2624b1a85a85129736aababf0f84abe5708",
+    "ownership_workflow_run": 30324116359,
+    "pages_deployment_run": 30324285358,
+    "required_checks": "GREEN_OR_AUTHORITY_GATED_SKIP"
+  },
+  "scope": {
+    "changed_paths": [
+      "audit/a003-manifest-seal.json",
+      "audit/pass13/PMP_APP_ORCHESTRATOR_LATEST_MAINTENANCE_POINTER_V1.json",
+      "audit/pass13/PMP_APP_ORCHESTRATOR_MAINTENANCE_CURRENT_STATE_V1.md",
+      "audit/pass13/PMP_APP_ORCHESTRATOR_MAINTENANCE_EXACT_NEXT_MOVE_V1.md",
+      "audit/pass13/app-orchestrator-ownership-maintenance-release-v1.json",
+      "audit/pass13/receipts/RECEIPT_APP_ORCHESTRATOR_OWNERSHIP_MAINTENANCE_RELEASE_20260727T195500Z_001.json",
+      "tools/generate_app_orchestrator_ownership_maintenance_integrity_updates_v1.py",
+      "tools/test_app_orchestrator_ownership_maintenance_v1.py",
+      "tools/verify_app_orchestrator_ownership_maintenance_v1.py"
+    ],
+    "implementation_paths": []
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_integration",
+    "diagnostic_matrix_update": {
+      "status": "UPDATED",
+      "applicable_matrix": "audit/pass13/app-orchestrator-ownership-maintenance-release-v1.json",
+      "rationale": "This exact documentation-only closure binds the green merge, deterministic main seal, laptop synchronization, current handoff state, and release receipt without changing runtime behavior."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass13/app-orchestrator-ownership-maintenance-release-v1.json",
+      "audit/pass13/PMP_APP_ORCHESTRATOR_LATEST_MAINTENANCE_POINTER_V1.json",
+      "audit/pass13/PMP_APP_ORCHESTRATOR_MAINTENANCE_CURRENT_STATE_V1.md",
+      "audit/pass13/PMP_APP_ORCHESTRATOR_MAINTENANCE_EXACT_NEXT_MOVE_V1.md"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_app_orchestrator_ownership_maintenance_v1.py"
+    ],
+    "verifier_paths": [
+      "tools/verify_app_orchestrator_ownership_maintenance_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass13/receipts/RECEIPT_APP_ORCHESTRATOR_OWNERSHIP_MAINTENANCE_RELEASE_20260727T195500Z_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "GitHub PR 203 merged exact green head d1d23ca4, and deterministic A-003 sealing advanced main to 859ba262.",
+        "evidence_paths": [
+          "audit/pass13/app-orchestrator-ownership-maintenance-release-v1.json",
+          "audit/pass13/receipts/RECEIPT_APP_ORCHESTRATOR_OWNERSHIP_MAINTENANCE_RELEASE_20260727T195500Z_001.json"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The clean full laptop mirror was synchronized to sealed GitHub main and the in-app handoff state no longer says release pending.",
+        "evidence_paths": [
+          "audit/pass13/PMP_APP_ORCHESTRATOR_MAINTENANCE_CURRENT_STATE_V1.md",
+          "tools/test_app_orchestrator_ownership_maintenance_v1.py"
+        ]
+      }
+    ],
+    "inferred_conclusions": [],
+    "fault_injection": {
+      "status": "NOT_APPLICABLE",
+      "cases": [],
+      "rationale": "This unit changes release evidence and verifier branch compatibility only; it adds no runtime, storage, route, owner, helper, or presentation behavior."
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "effects": {
+    "runtime_behavior_changed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "formal_proof_performed": false,
+    "production_activation_performed": false
+  },
+  "claim_ceiling": "Documentation-only ownership-maintenance release closure and evidence binding."
+}

@@ -1,18 +1,17 @@
 # Exact next move
 
-Commit the reviewed ownership-maintenance tree on
-`agent/app-orchestrator-owner-conflict-repair-v1`, push it, open the pull
-request, run and repair ordinary CI failures, and merge only the exact green
-head.
+No ownership-repair implementation move is pending.
 
-After merge:
+For a future ChatGPT or Codex task:
 
-1. verify GitHub `main` equals the merge result;
-2. synchronize the clean laptop mirror to that exact commit;
-3. create new full and compact canonical checkpoints without overwriting any
-   earlier package;
-4. verify ZIP CRC, entry manifest, payload hashes, embedded commit identity,
-   size, and SHA-256 sidecars.
+1. open **Diagnostics → App Orchestrator Status**;
+2. press **Copy New Chat Safe Handoff**;
+3. paste the copied report into the new chat, or attach the ZIP if the button
+   downloads one;
+4. tell the new chat to inspect current GitHub `main` before editing;
+5. require the ownership-maintenance and affected owner checks before merge.
 
-Do not run a formal proof, activate production behavior, migrate or change
-persisted user data, delete prior packages, or infer a Pass 14.
+The handoff is architecture and safety context, not permission for destructive
+or persisted-user-data work. Do not run a formal proof, activate production
+behavior, migrate or change persisted user data, delete prior packages, or
+infer a Pass 14 without separate exact authority.

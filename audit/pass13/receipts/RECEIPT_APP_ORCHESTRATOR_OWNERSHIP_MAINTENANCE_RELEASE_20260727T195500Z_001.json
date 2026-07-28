@@ -1,0 +1,22 @@
+{
+  "type": "PMP_APP_ORCHESTRATOR_OWNERSHIP_MAINTENANCE_RELEASE_RECEIPT_V1",
+  "receipt_id": "RECEIPT_APP_ORCHESTRATOR_OWNERSHIP_MAINTENANCE_RELEASE_20260727T195500Z_001",
+  "version": "1.0.0",
+  "created_at": "2026-07-27T19:55:00Z",
+  "status": "MERGED_GREEN_LAPTOP_SYNCHRONIZED",
+  "pull_request": 203,
+  "green_head": "d1d23ca4a517edf39b7af55b0e976c47b4f7bb75",
+  "merge_commit": "c62437dfc87530499771e21d4cbcee33aa282765",
+  "sealed_main_commit": "859ba2624b1a85a85129736aababf0f84abe5708",
+  "ownership_workflow_run": 30324116359,
+  "pages_deployment_run": 30324285358,
+  "result": "The audited owner and helper conflicts are repaired, prevention is enforced, the one-button safe new-chat handoff is available, required GitHub checks are green or authority-gated skips, and the clean laptop mirror matches sealed GitHub main.",
+  "effects": {
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "formal_proof_performed": false,
+    "production_activation_performed": false
+  },
+  "next_safe_move": "For future work, use Diagnostics -> App Orchestrator Status -> Copy New Chat Safe Handoff and inspect current GitHub main before editing.",
+  "claim_ceiling": "Ownership maintenance release evidence only; no destructive, persisted-user-data, production, migration, or formal-proof authority is granted."
+}

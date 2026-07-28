@@ -248,6 +248,29 @@ def main() -> None:
     del bad["resources"][0]["writer"]
     check("missing_owner_or_writer" in validate_registry(bad), "missing writer fault rejected")
 
+    release_receipt = json.loads(text(
+        "audit/pass13/receipts/"
+        "RECEIPT_APP_ORCHESTRATOR_OWNERSHIP_MAINTENANCE_RELEASE_20260727T195500Z_001.json"
+    ))
+    pointer = json.loads(text(
+        "audit/pass13/PMP_APP_ORCHESTRATOR_LATEST_MAINTENANCE_POINTER_V1.json"
+    ))
+    current_state = text(
+        "audit/pass13/PMP_APP_ORCHESTRATOR_MAINTENANCE_CURRENT_STATE_V1.md"
+    )
+    exact_next = text(
+        "audit/pass13/PMP_APP_ORCHESTRATOR_MAINTENANCE_EXACT_NEXT_MOVE_V1.md"
+    )
+    check(release_receipt["status"] == "MERGED_GREEN_LAPTOP_SYNCHRONIZED", "release status")
+    check(release_receipt["green_head"] == "d1d23ca4a517edf39b7af55b0e976c47b4f7bb75", "green head")
+    check(release_receipt["merge_commit"] == "c62437dfc87530499771e21d4cbcee33aa282765", "merge commit")
+    check(release_receipt["sealed_main_commit"] == "859ba2624b1a85a85129736aababf0f84abe5708", "sealed main")
+    check(pointer["status"] == "MERGED_GREEN_LAPTOP_SYNCHRONIZED", "pointer status")
+    check(pointer["receipt"].endswith("RELEASE_20260727T195500Z_001.json"), "pointer receipt")
+    check(pointer["evidence"].endswith("ownership-maintenance-release-v1.json"), "pointer evidence")
+    check("c62437dfc87530499771e21d4cbcee33aa282765" in current_state, "state merge identity")
+    check("No ownership-repair implementation move is pending." in exact_next, "exact next closed")
+
     print(f"PASS: App Orchestrator ownership maintenance ({checks}/{checks})")
 
 
