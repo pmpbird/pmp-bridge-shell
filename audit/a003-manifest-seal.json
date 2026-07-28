@@ -1,5 +1,4 @@
 {
-  "maintenance_context": "Repairs audited multiple-owner and helper-owner conflicts, installs exclusive ownership prevention, real read-only diagnostics, and one-button safe new-chat handoff. No route, persisted user data, storage migration, formal proof, or production activation is performed.",
   "manifest_bytes": 379490,
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
   "manifest_sha256": "6d1f4e9a36866758ce02deca07d3284ecd919640e85ed4e77ec64d26b12d2dd3",
@@ -9,7 +8,7 @@
   "root_trust_anchor": "pmp-app-current.html",
   "rule": "The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.",
   "runtime_source_set_sha256": "cf6f8ed04f74182a0b90e7c9666aee2cc4ea181fca3aa7120bd7b30bb104e778",
-  "sealed_branch": "agent/app-orchestrator-owner-maintenance-release-v1",
+  "sealed_branch": "main",
   "status": "SEALED",
   "type": "PMP_A003_MANIFEST_SEAL_V1"
 }
