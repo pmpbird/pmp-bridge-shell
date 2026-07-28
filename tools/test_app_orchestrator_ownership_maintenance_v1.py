@@ -223,7 +223,6 @@ def main() -> None:
         "PMP_DIAGNOSTICS_FLICKER_REPAINT_REPORT_V1",
         "PMP_DIAGNOSTICS_ERROR_BUG_WATCH_REPORT_V1",
         "Copy New Chat Safe Handoff",
-        "pmpDiagSafeHandoffHome",
         "ensureStyle",
         "pmpDiagQuick",
         "App Health Summary",
@@ -233,9 +232,16 @@ def main() -> None:
     ):
         check(token in diagnostics, "diagnostics implements " + token)
     check(
-        diagnostics.index("pmpDiagSafeHandoffHome")
-        < diagnostics.index("CARDS.map(cardHTML)"),
-        "safe handoff is visible before diagnostic cards",
+        "pmpDiagSafeHandoffHome" not in diagnostics,
+        "Diagnostics home omits the duplicate safe handoff shortcut",
+    )
+    check(
+        diagnostics.count("Copy New Chat Safe Handoff") == 1,
+        "one safe handoff action remains inside App Orchestrator Status",
+    )
+    check(
+        "if(id==='app_orchestrator')controls=action('pmpDiagSafeHandoff'" in diagnostics,
+        "App Orchestrator Status owns the safe handoff action",
     )
     for removed in (
         "['active_path','Active Path Discovery'",

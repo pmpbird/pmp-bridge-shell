@@ -1,0 +1,27 @@
+{
+  "type": "PMP_DIAGNOSTICS_SINGLE_HANDOFF_OWNER_RECEIPT_V1",
+  "version": "1.0.0",
+  "status": "PASS",
+  "branch": "chatgpt/diagnostics-single-handoff-owner-v1",
+  "scope": {
+    "feature": [
+      "remove Copy New Chat Safe Handoff from Diagnostics home",
+      "retain the single authoritative handoff action inside App Orchestrator Status",
+      "preserve all other Diagnostics cards and controls"
+    ]
+  },
+  "effects": {
+    "bank_records_changed": false,
+    "persisted_user_data_changed": false,
+    "routes_changed": false,
+    "active_path_ownership_changed": false,
+    "runtime_integrity_weakened": false
+  },
+  "verification": {
+    "focused_test": "PASS",
+    "ownership_verifier": "PASS",
+    "runtime_manifest_regenerated": true,
+    "manifest_seal_regenerated": true,
+    "bootstrap_manifest_binding_regenerated": true
+  }
+}
