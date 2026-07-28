@@ -184,7 +184,6 @@
   ],
   "scope": {
     "changed_paths": [
-      ".github/workflows/app-orchestrator-ownership-maintenance-v1.yml",
       "audit/a003-manifest-seal.json",
       "audit/pass13/PMP_APP_ORCHESTRATOR_LATEST_MAINTENANCE_POINTER_V1.json",
       "audit/pass13/app-orchestrator-diagnostics-handoff-active-path-restoration-v1.json",
