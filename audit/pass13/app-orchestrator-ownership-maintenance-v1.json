@@ -71,7 +71,9 @@
         "fact": "The focused ownership matrix and verifier pass for the Diagnostics duplicate-removal, handoff clipboard-success handling, and regenerated runtime integrity identities."
       }
     ],
-    "receipt_paths": [],
+    "receipt_paths": [
+      "audit/pass13/receipts/RECEIPT_DIAGNOSTICS_ACTIVE_PATH_CLEANUP_HANDOFF_FIX_20260728_001.json"
+    ],
     "required_artifact_roles": [
       "command",
       "stdout",
@@ -176,6 +178,7 @@
     "changed_paths": [
       "audit/a003-manifest-seal.json",
       "audit/pass13/app-orchestrator-ownership-maintenance-v1.json",
+      "audit/pass13/receipts/RECEIPT_DIAGNOSTICS_ACTIVE_PATH_CLEANUP_HANDOFF_FIX_20260728_001.json",
       "pmp-app-current.html",
       "pmp-diagnostics-owner-v1.js",
       "pmp-runtime-integrity-manifest-v1.json",
