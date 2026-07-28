@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const V='2.2.0-visible-viewport-restoration-20260727C';
+const V='2.3.0-active-path-ui-cleanup-handoff-label-fix-20260728A';
 const OWNER='diagnostics_owner';
 const SCREEN_ID='pmpDiagnosticsScreenV1';
 const STYLE_ID='pmpDiagnosticsOwnerV1Style';
@@ -9,7 +9,6 @@ const ERRORS=[];
 const CARDS=[
   ['app_health','App Health Summary','runtime, owner, and safe-state summary'],
   ['app_orchestrator','App Orchestrator Status','one-button safe new-chat handoff'],
-  ['active_path','Active Path Discovery','canonical discovery, bounded support, and conflict evidence'],
   ['route_stack','Route Stack','Current Map and canonical reload evidence'],
   ['mount_registry','Mount Registry Status','single-owner lifecycle evidence'],
   ['section_owners','Section Owners Status','declared owner state and conflicts'],
@@ -70,7 +69,6 @@ function ownerView(){return read('pmp_section_owner_registry_snapshot_v1')||{sta
 function helperView(){return read('pmp_helper_registry_snapshot_v1')||{status:'not_ready'}}
 function lifecycleView(){return read('pmp_mount_lifecycle_readonly_view_v1_receipt')||read('pmp_mount_lifecycle_runtime_v1_receipt')||{status:'not_ready',capability_ids_exposed:false}}
 function sectionOwnerView(){const value=ownerView();return Object.assign({capability_ids_exposed:false},value)}
-function activePathApi(){try{return T().PMPActivePathDiscoveryMachineV1||window.PMPActivePathDiscoveryMachineV1}catch(e){return null}}
 function activePathValue(){
   return{
     canonical_report:read('pmp_active_path_discovery_report_v1')||{status:'canonical_scan_not_ready'},
@@ -122,7 +120,7 @@ function ensureStyle(d){
     '#'+SCREEN_ID+' .pmpDiagAction{display:block!important;width:100%!important;min-height:52px!important;border:3px solid var(--line,#07101c)!important;border-radius:16px!important;padding:10px 12px!important;background:var(--button,var(--a,#acd1fb))!important;color:var(--buttonText,var(--text,#101827))!important;font:950 17px/1.12 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;text-align:center!important;}'+
     '#'+SCREEN_ID+' .pmpDiagBack{display:block!important;width:100%!important;min-height:48px!important;border:2px solid var(--line,#07101c)!important;border-radius:15px!important;background:var(--card,#fff)!important;color:var(--text,#101827)!important;padding:10px!important;font-weight:950!important;margin-bottom:10px!important;text-align:center!important;}'+
     '#'+SCREEN_ID+' pre{white-space:pre-wrap!important;overflow:auto!important;max-height:420px!important;background:var(--card,#fff)!important;color:var(--text,#101827)!important;border:2px solid var(--line,#07101c)!important;border-radius:14px!important;padding:10px!important;font:700 11px/1.28 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace!important;}'+
-    '@media(min-width:700px){#'+SCREEN_ID+' .pmpDiagQuick{grid-template-columns:1fr 1fr!important;}#'+SCREEN_ID+' .pmpDiagGrid{grid-template-columns:1fr 1fr!important;}}';
+    '@media(min-width:700px){#'+SCREEN_ID+' .pmpDiagQuick{grid-template-columns:1fr!important;}#'+SCREEN_ID+' .pmpDiagGrid{grid-template-columns:1fr 1fr!important;}}';
 }
 function screen(d){ensureStyle(d);let el=d.getElementById(SCREEN_ID);if(!el){el=d.createElement('section');el.id=SCREEN_ID;el.className='screen';el.setAttribute('data-pmp-section-owner',OWNER);(d.getElementById('app')||d.body).appendChild(el)}return el}
 function activate(d,el){try{Array.from(d.querySelectorAll('.screen')).forEach(node=>node.classList.remove('on'));el.classList.add('on');el.scrollTop=0}catch(e){}return el}
@@ -133,13 +131,12 @@ async function runHandoff(button){
   button.textContent='Building safe handoff...';
   const api=T().PMPNewChatSafeHandoffV1||window.PMPNewChatSafeHandoffV1;
   const result=api&&typeof api.run==='function'?await api.run():{status:'HANDOFF_API_NOT_READY'};
-  button.textContent=result.mode==='zip'?'Safe handoff ZIP downloaded':(result.mode==='copy'?'Safe handoff copied':'Safe handoff unavailable');
+  button.textContent=result.mode==='zip'?'Safe handoff ZIP downloaded':((result.mode==='clipboard'||result.mode==='copy')&&result.status==='PASS'?'Safe handoff copied':'Safe handoff unavailable');
 }
 function bindHandoff(d,id){const button=d.getElementById(id);if(button)button.onclick=()=>runHandoff(button)}
 function detailValue(id){
   const r=currentReport('detail_'+id);
   if(id==='app_health')return{summary:r.summary,ownership:r.reports.ownership_runtime};
-  if(id==='active_path')return activePathValue();
   if(id==='route_stack')return{current_map:'pmp-current-map-v12.json',reload:r.reports.reload_owner};
   if(id==='mount_registry')return{registry:r.reports.mount_registry,lifecycle:r.reports.mount_lifecycle};
   if(id==='section_owners')return r.reports.section_owners;
@@ -155,28 +152,24 @@ function renderDetail(w,d,id){
   const el=activate(d,screen(d)),row=CARDS.find(x=>x[0]===id)||[id,'Diagnostics',''],value=detailValue(id);
   let controls='';
   if(id==='app_orchestrator')controls=action('pmpDiagSafeHandoff','Copy New Chat Safe Handoff')+action('pmpDiagCopyOrch','Copy App Orchestrator Report');
-  if(id==='active_path')controls=action('pmpDiagRunActivePath','Run Active Path Discovery Again')+action('pmpDiagCopyActivePath','Copy Active Path Discovery Report');
   if(id==='full_report')controls=action('pmpDiagCopyFull','Copy Full Diagnostic Report');
   el.innerHTML='<button type="button" class="pmpDiagBack" id="pmpDiagBack">← Back to Diagnostics</button><h1 class="pmpDiagTitle">'+esc(row[1])+'</h1><p class="pmpDiagSub">Diagnostics Owner · permanent read-only evidence</p><div class="pmpDiagQuick">'+controls+'</div><pre>'+esc(JSON.stringify(id==='app_orchestrator'?read('pmp_app_orchestrator_v1_receipt')||value:value,null,2))+'</pre>';
   d.getElementById('pmpDiagBack').onclick=()=>renderHome(w,d);
   bindHandoff(d,'pmpDiagSafeHandoff');
   const orch=d.getElementById('pmpDiagCopyOrch');if(orch)orch.onclick=()=>{orch.textContent=copyText(JSON.stringify(read('pmp_app_orchestrator_v1_receipt')||{},null,2))==='copied'?'Copied':'Report ready'};
-  const runActive=d.getElementById('pmpDiagRunActivePath');if(runActive)runActive.onclick=async()=>{runActive.textContent='Running Active Path Discovery...';const api=activePathApi(),report=api&&typeof api.run==='function'?await api.run('diagnostics_manual_request'):null;runActive.textContent=report?'Active Path Discovery complete':'Active Path Discovery unavailable';const pre=el.querySelector('pre');if(pre)pre.textContent=JSON.stringify(activePathValue(),null,2)};
-  const copyActive=d.getElementById('pmpDiagCopyActivePath');if(copyActive)copyActive.onclick=()=>{copyActive.textContent=copyText(JSON.stringify(activePathValue(),null,2))==='copied'?'Active Path report copied':'Active Path report ready'};
   const full=d.getElementById('pmpDiagCopyFull');if(full)full.onclick=()=>{full.textContent=copyText(JSON.stringify(currentReport('copy_full'),null,2))==='copied'?'Copied':'Report ready'};
 }
 function renderHome(w,d){
   const el=activate(d,screen(d));
-  el.innerHTML='<h1 class="pmpDiagTitle">Diagnostics</h1><p class="pmpDiagSub">Permanent read-only diagnostics. Original tools remain visible; ownership conflicts are reported without repairing or changing the app.</p><div class="pmpDiagQuick">'+action('pmpDiagSafeHandoffHome','Copy New Chat Safe Handoff')+action('pmpDiagOpenActivePathHome','Active Path Discovery')+'</div><div class="pmpDiagGrid">'+CARDS.map(cardHTML).join('')+'</div>';
+  el.innerHTML='<h1 class="pmpDiagTitle">Diagnostics</h1><p class="pmpDiagSub">Permanent read-only diagnostics. Original tools remain visible; ownership conflicts are reported without repairing or changing the app.</p><div class="pmpDiagQuick">'+action('pmpDiagSafeHandoffHome','Copy New Chat Safe Handoff')+'</div><div class="pmpDiagGrid">'+CARDS.map(cardHTML).join('')+'</div>';
   bindHandoff(d,'pmpDiagSafeHandoffHome');
-  const activePath=d.getElementById('pmpDiagOpenActivePathHome');if(activePath)activePath.onclick=()=>renderDetail(w,d,'active_path');
   el.querySelectorAll('.pmpDiagCard').forEach(card=>{const open=()=>renderDetail(w,d,card.dataset.diag);card.onclick=open;card.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}}});
 }
 function run(reason){const report=currentReport(reason||'run');docs().forEach(ctx=>{try{if(ctx.document.getElementById(SCREEN_ID))renderHome(ctx.window,ctx.document)}catch(e){}});return report}
 function renderDiagnosticJournal(w,d){renderDetail(w,d,'error_log')}
 function renderSectionOwners(w,d){renderDetail(w,d,'section_owners')}
 function close(){docs().forEach(ctx=>{const el=ctx.document.getElementById(SCREEN_ID);if(el)el.classList.remove('on')})}
-const api={version:V,owner:OWNER,run,currentReport,renderHome,renderDetail,renderDiagnosticJournal,renderSectionOwners,close,screenId:SCREEN_ID,readMountLifecycle:lifecycleView,readHelpers:helperView,readPanelOrder:panelOrderReport,readDuplicates:duplicateReport,readFlicker:flickerReport,readErrors:errorReport,readActivePath:activePathValue,rule:'Read-only permanent diagnostics with restored layout, directly visible safe handoff, Active Path Discovery, panel order, duplicate, repaint, error, and ownership evidence. No repair or data mutation.'};
+const api={version:V,owner:OWNER,run,currentReport,renderHome,renderDetail,renderDiagnosticJournal,renderSectionOwners,close,screenId:SCREEN_ID,readMountLifecycle:lifecycleView,readHelpers:helperView,readPanelOrder:panelOrderReport,readDuplicates:duplicateReport,readFlicker:flickerReport,readErrors:errorReport,readActivePath:activePathValue,rule:'Read-only permanent diagnostics with one visible safe-handoff action, App Orchestrator status, panel order, duplicate, repaint, error, and ownership evidence. Active Path Discovery remains on its Control surface. No repair or data mutation.'};
 api.readMountLifecycle=lifecycleView;
 api.readSectionOwners=sectionOwnerView;
 window.PMPDiagnosticsOwnerV1=api;try{T().PMPDiagnosticsOwnerV1=api}catch(e){}
