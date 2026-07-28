@@ -1,14 +1,15 @@
 {
+  "maintenance_context": "Repairs audited multiple-owner and helper-owner conflicts, installs exclusive ownership prevention, real read-only diagnostics, directly visible one-button safe new-chat handoff, and restored Active Path Discovery access. No route, persisted user data, storage migration, formal proof, or production activation is performed.",
   "manifest_bytes": 379490,
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
-  "manifest_sha256": "148a5362a0ad73318eb303ba635d3be0e8359540264ed8e3eba2fb9470829bf7",
+  "manifest_sha256": "24b6233a1453036991a564c3103803f49fef1fd2d66d21d00f6897bfb2c7ab62",
   "manifest_version": "20260711A-A003-FINAL",
   "repair_id": "A-003",
   "root_self_verifiable": false,
   "root_trust_anchor": "pmp-app-current.html",
   "rule": "The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.",
-  "runtime_source_set_sha256": "69283f337f44bd54ccf4a7cd9f3dbf828179fa54f143dfacc4397f5f1cdd7630",
-  "sealed_branch": "main",
+  "runtime_source_set_sha256": "9a98efa8d958d3bdfba7d9d5e9b5bc2d7e9c92d5f938d3d1c25f844d357b87cc",
+  "sealed_branch": "chatgpt/diagnostics-single-handoff-owner-v1",
   "status": "SEALED",
   "type": "PMP_A003_MANIFEST_SEAL_V1"
 }
