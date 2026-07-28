@@ -43,16 +43,19 @@ jobs:
           mkdir -p "$ARTIFACT_ROOT"
           printf '%s\n' '{"command":"P8-U4 bounded Helper Owner and Diagnostics integration"}' > "$ARTIFACT_ROOT/command.json"
           printf '%s\n' 'no stderr emitted before execution' > "$ARTIFACT_ROOT/stderr.txt"
-          node tools/test_pass8_unit4_helper_owner_diagnostics_integration_v1.js \
-            > "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
-          tests_rc=$?
           if [ "${{ github.event.pull_request.base.sha }}" = "2f74b835016cd6e0e24802f7b6127374017571d3" ]; then
+            node tools/test_pass8_unit4_helper_owner_diagnostics_integration_v1.js \
+              > "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+            tests_rc=$?
             python3 tools/verify_pass8_unit4_helper_owner_diagnostics_integration_v1.py \
               "${{ github.event.pull_request.base.sha }}" >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
             verify_rc=$?
           else
+            python3 tools/test_app_orchestrator_ownership_maintenance_v1.py \
+              > "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+            tests_rc=$?
             printf '%s\n' \
-              'P8-U4 immutable exact-scope verifier skipped; production runtime regression test executed for a later unit.' \
+              'P8-U4 immutable exact-scope verifier skipped; current ownership-maintenance regression executed for a later unit.' \
               >> "$ARTIFACT_ROOT/stdout.txt"
             verify_rc=0
           fi
