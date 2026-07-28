@@ -129,6 +129,7 @@ def main() -> None:
     assert seal["sealed_branch"] in {
         "agent/app-orchestrator-owner-conflict-repair-v1",
         "agent/app-orchestrator-owner-maintenance-release-v1",
+        "agent/diagnostics-handoff-active-path-restoration-v1",
         "main",
     }
 

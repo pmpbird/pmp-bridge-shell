@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION='1.2.0-canonical-exclusive-owner-20260727A';
+const VERSION='1.3.0-canonical-event-driven-mount-20260727B';
 const OWNER='active_path_discovery_owner';
 const REPORT_KEY='pmp_active_path_discovery_report_v1';
 const RECEIPT_KEY='pmp_active_path_discovery_receipt_v1';
@@ -10,6 +10,9 @@ const HISTORIC=['pmp-current-map-v11.json','pmp-current-map-v10.json','pmp-curre
 const IGNORE=['discovery-report.json','freeze-proof.txt','blocker-detail.txt','PDF.js'];
 const MAX=260;
 let LAST=null;
+let MOUNT_TIMER=null;
+const WIRED_DOCS=new WeakSet();
+const WIRED_FRAMES=new WeakSet();
 function T(){try{return window.top||window}catch(e){return window}}
 function now(){return new Date().toISOString()}
 function uniq(a){return Array.from(new Set((a||[]).filter(Boolean))).sort()}
@@ -98,8 +101,41 @@ function mount(){
     const out=card.querySelector('#pmpActivePathDiscoveryOutV1');if(out)out.textContent=summary(LAST);
   }catch(e){}})
 }
+function containsMountTarget(node){
+  if(!node||node.nodeType!==1)return false;
+  if(node.matches&&node.matches('iframe,frame,#control,[data-screen="control"]'))return true;
+  return!!(node.querySelector&&node.querySelector('iframe,frame,#control,[data-screen="control"]'));
+}
+function scheduleMount(){
+  if(MOUNT_TIMER!==null)return;
+  MOUNT_TIMER=setTimeout(()=>{MOUNT_TIMER=null;mount();bindLifecycle()},0);
+}
+function wireDocument(d){
+  if(!d||WIRED_DOCS.has(d))return;
+  WIRED_DOCS.add(d);
+  try{
+    const root=d.documentElement;
+    if(root){
+      const observer=new MutationObserver(records=>{
+        if(records.some(record=>Array.from(record.addedNodes||[]).some(containsMountTarget)))scheduleMount();
+      });
+      observer.observe(root,{childList:true,subtree:true});
+    }
+  }catch(e){}
+  try{
+    d.querySelectorAll('iframe,frame').forEach(frame=>{
+      if(WIRED_FRAMES.has(frame))return;
+      WIRED_FRAMES.add(frame);
+      frame.addEventListener('load',scheduleMount);
+    });
+  }catch(e){}
+}
+function bindLifecycle(){eachDoc(d=>wireDocument(d))}
 const api={version:VERSION,owner:OWNER,writer:'pmp-active-path-discovery-machine-v1.js',run,mount,copyNow,reportKey:REPORT_KEY,currentBootRoot:CURRENT,historicCurrentReferences:HISTORIC};
 window.PMPActivePathDiscoveryMachineV1=api;
 setTimeout(()=>run('canonical_boot_scan'),3500);
-window.addEventListener('load',()=>[1000,2500,4500].forEach(t=>setTimeout(mount,t)),{once:true});
+bindLifecycle();
+scheduleMount();
+window.addEventListener('load',scheduleMount,{once:true});
+window.addEventListener('pageshow',scheduleMount);
 })();

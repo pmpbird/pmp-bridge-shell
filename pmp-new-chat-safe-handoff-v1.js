@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const V='1.0.0-one-button-copy-or-zip-20260727A';
+const V='1.1.0-diagnostics-restoration-context-20260727B';
 const OWNER='app_orchestrator_owner';
 const RECEIPT_KEY='pmp_new_chat_safe_handoff_v1_receipt';
 const MAX_COPY_BYTES=480000;
@@ -16,7 +16,7 @@ function safeSummary(value,limit){
   return{type:value&&value.type||'TRUNCATED_RECORD',status:value&&value.status||'present',truncated:true,original_characters:text.length,summary:text.slice(0,limit)};
 }
 async function packet(){
-  const [ownership,currentMap,authorityMatrix,maintenanceRules,maintenancePointer,maintenanceState,exactNextMove,maintenanceEvidence]=await Promise.all([
+  const [ownership,currentMap,authorityMatrix,maintenanceRules,maintenancePointer,maintenanceState,exactNextMove,maintenanceEvidence,diagnosticsRestoration]=await Promise.all([
     fetchJSON('pmp-app-orchestrator-ownership-registry-v1.json'),
     fetchJSON('pmp-current-map-v12.json'),
     fetchJSON('audit/pass13/PMP_APP_ORCHESTRATOR_AUTHORITY_MATRIX_V1.json'),
@@ -24,7 +24,8 @@ async function packet(){
     fetchJSON('audit/pass13/PMP_APP_ORCHESTRATOR_LATEST_MAINTENANCE_POINTER_V1.json'),
     fetchText('audit/pass13/PMP_APP_ORCHESTRATOR_MAINTENANCE_CURRENT_STATE_V1.md'),
     fetchText('audit/pass13/PMP_APP_ORCHESTRATOR_MAINTENANCE_EXACT_NEXT_MOVE_V1.md'),
-    fetchJSON('audit/pass13/app-orchestrator-ownership-maintenance-v1.json')
+    fetchJSON('audit/pass13/app-orchestrator-ownership-maintenance-v1.json'),
+    fetchJSON('audit/pass13/app-orchestrator-diagnostics-handoff-active-path-restoration-v1.json')
   ]);
   const report={
     type:'PMP_NEW_CHAT_SAFE_HANDOFF_V1',
@@ -46,7 +47,8 @@ async function packet(){
       pointer:maintenancePointer,
       current_state:maintenanceState,
       exact_next_move:exactNextMove,
-      evidence:maintenanceEvidence
+      evidence:maintenanceEvidence,
+      diagnostics_handoff_active_path_restoration:diagnosticsRestoration
     },
     current_map:currentMap,
     current_runtime:{

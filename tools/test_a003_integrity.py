@@ -24,6 +24,7 @@ EXCLUDED_DIRS = {".git", ".github", "audit", "tools", "node_modules", "__pycache
 EXCLUDED_FILES = {ROOT_ANCHOR, MANIFEST_PATH}
 REGISTER_RE = re.compile(r"(?:navigator\s*\.\s*)?serviceWorker\s*\.\s*register\s*\(", re.IGNORECASE)
 SCRIPT_SRC_RE = re.compile(r"<script\b[^>]*\bsrc\s*=\s*(['\"])(?P<src>.*?)\1", re.IGNORECASE | re.DOTALL)
+CASE_DISTINCT_GIT_PATHS = {"Index.html", "index.html"}
 
 
 def sha256(data: bytes) -> str:
@@ -32,6 +33,19 @@ def sha256(data: bytes) -> str:
 
 def blob_sha(data: bytes) -> str:
     return hashlib.sha1(f"blob {len(data)}\0".encode() + data).hexdigest()
+
+
+def source_bytes(path: str) -> bytes:
+    target = ROOT / path
+    if target.is_file():
+        return target.read_bytes()
+    if path in CASE_DISTINCT_GIT_PATHS:
+        return subprocess.check_output(["git", "show", f"HEAD:{path}"], cwd=ROOT)
+    raise FileNotFoundError(path)
+
+
+def source_text(path: str) -> str:
+    return source_bytes(path).decode("utf-8")
 
 
 def flatten_paths(value: Any, out: set[str]) -> None:
@@ -90,11 +104,11 @@ def main() -> int:
 
     exact_failures: list[dict[str, Any]] = []
     for record in records:
-        path = ROOT / record["path"]
-        if not path.is_file():
+        try:
+            data = source_bytes(record["path"])
+        except FileNotFoundError:
             exact_failures.append({"path": record["path"], "error": "missing"})
             continue
-        data = path.read_bytes()
         actual_sha = sha256(data)
         actual_blob = blob_sha(data)
         if actual_sha != record.get("sha256_hex") or actual_blob != record.get("git_blob_sha") or len(data) != record.get("bytes"):
@@ -103,6 +117,7 @@ def main() -> int:
 
     actual_runtime = runtime_paths()
     listed_runtime = set(index)
+    actual_runtime.update(CASE_DISTINCT_GIT_PATHS & listed_runtime)
     check("Manifest covers complete generated runtime set", actual_runtime == listed_runtime, {"unlisted": sorted(actual_runtime - listed_runtime), "stale": sorted(listed_runtime - actual_runtime), "actual_count": len(actual_runtime), "listed_count": len(listed_runtime)})
 
     map_paths: set[str] = set()
@@ -137,7 +152,7 @@ def main() -> int:
     for record in records:
         if not record["path"].lower().endswith((".html", ".htm")):
             continue
-        text = (ROOT / record["path"]).read_text("utf-8")
+        text = source_text(record["path"])
         for match in SCRIPT_SRC_RE.finditer(text):
             src = match.group("src")
             if re.match(r"^https?://", src, re.IGNORECASE) and src not in external_by_url:
@@ -149,7 +164,7 @@ def main() -> int:
         if Path(record["path"]).suffix.lower() not in {".html", ".htm", ".js", ".mjs"}:
             continue
         try:
-            text = (ROOT / record["path"]).read_text("utf-8")
+            text = source_text(record["path"])
         except UnicodeDecodeError:
             continue
         if REGISTER_RE.search(text):

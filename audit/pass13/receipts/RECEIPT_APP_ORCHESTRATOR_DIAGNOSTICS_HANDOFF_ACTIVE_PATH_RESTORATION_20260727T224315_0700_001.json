@@ -1,0 +1,27 @@
+{
+  "type": "PMP_APP_ORCHESTRATOR_DIAGNOSTICS_HANDOFF_ACTIVE_PATH_RESTORATION_RECEIPT_V1",
+  "receipt_id": "RECEIPT_APP_ORCHESTRATOR_DIAGNOSTICS_HANDOFF_ACTIVE_PATH_RESTORATION_20260727T224315_0700_001",
+  "version": "1.0.0",
+  "created_at": "2026-07-27T22:43:15-07:00",
+  "status": "LOCAL_BROWSER_GREEN_GITHUB_PENDING",
+  "base_commit": "cf4f1d7906b998e3818d48a23da4f6b6d091b080",
+  "branch": "agent/diagnostics-handoff-active-path-restoration-v1",
+  "result": "The established Diagnostics presentation is restored without below-screen scrolling, the safe handoff is directly visible, and Active Path Discovery is both a first-class read-only Diagnostics item and a stable Control card after final frame load.",
+  "verification": {
+    "javascript_syntax": "PASS",
+    "ownership_maintenance_static": "174/174",
+    "ownership_independent_verifier": "PASS",
+    "permanent_no_blind_flying": "PASS 166/166",
+    "runtime_integrity": "PASS 21/21",
+    "local_browser": "PASS 390x844; visible y=0; safe handoff and Active Path above cards; Active Path Control card present; 0 console errors",
+    "no_blind_flying_ci_repair": "PASS locally; exact 15-file scope, 5 runtime paths, 0 errors",
+    "github_ci": "PENDING"
+  },
+  "effects": {
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "formal_proof_performed": false,
+    "production_activation_performed": false
+  },
+  "claim_ceiling": "Local implementation and static verification only."
+}

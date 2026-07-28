@@ -1,0 +1,71 @@
+{
+  "type": "PMP_APP_ORCHESTRATOR_DIAGNOSTICS_HANDOFF_ACTIVE_PATH_RESTORATION_V1",
+  "version": "1.0.0",
+  "unit_id": "P13-U9",
+  "created_at": "2026-07-27T22:43:15-07:00",
+  "base_commit": "cf4f1d7906b998e3818d48a23da4f6b6d091b080",
+  "branch": "agent/diagnostics-handoff-active-path-restoration-v1",
+  "status": "LOCAL_BROWSER_GREEN_GITHUB_PENDING",
+  "reported_regression": [
+    "The safe new-chat handoff button was not directly visible.",
+    "The Diagnostics cards lost their established visual treatment and became a long unstructured list.",
+    "Active Path Discovery was not available as a first-class Diagnostics item.",
+    "The Diagnostics screen was appended below the existing full-height app wrapper, requiring a large scroll before its content appeared.",
+    "The canonical Active Path card could miss the final Control screen because its fixed mount timers expired before the nested app frame finished loading."
+  ],
+  "observed_deployed_state": {
+    "source": "https://pmpbird.github.io/pmp-bridge-shell/",
+    "verified_main_commit": "cf4f1d7906b998e3818d48a23da4f6b6d091b080",
+    "diagnostics_card_count": 12,
+    "handoff_location": "nested inside App Orchestrator Status",
+    "active_path_control_surface_present": true,
+    "active_path_diagnostics_item_present": false,
+    "diagnostics_screen_started_below_viewport": true,
+    "browser_console_errors": 0
+  },
+  "repair": {
+    "diagnostics_layout": "Restores the established bold card, icon, subtitle, and chevron treatment with bounded responsive spacing.",
+    "diagnostics_viewport": "Anchors the Diagnostics owner surface to the visible app viewport below Launcher and Resident and above the bottom navigation, and opens each view at its first action.",
+    "safe_handoff": "Places Copy New Chat Safe Handoff directly above the Diagnostics card list and preserves the App Orchestrator Status copy.",
+    "active_path": "Adds Active Path Discovery directly above the fold and as a first-class Diagnostics card with canonical and bounded reports kept separate.",
+    "active_path_mount": "Replaces the canonical owner's fixed mount-timer race with target-bounded frame-load and DOM mount-target events; no recurring polling or helper takeover is introduced.",
+    "owner_delegation": "Manual rerun requests the canonical PMPActivePathDiscoveryMachineV1 owner API; Diagnostics never writes either Active Path report.",
+    "handoff_context": "Adds this restoration evidence to the one-button new-chat packet."
+  },
+  "verification": {
+    "javascript_syntax": "PASS",
+    "ownership_maintenance_static": "174/174",
+    "ownership_independent_verifier": "PASS",
+    "permanent_no_blind_flying": "PASS 166/166",
+    "runtime_integrity": "PASS 21/21",
+    "local_browser": {
+      "status": "PASS",
+      "viewport": "390x844",
+      "checks": [
+        "Diagnostics occupies the visible viewport at y=0 with scrollTop=0.",
+        "Copy New Chat Safe Handoff is the first visible action.",
+        "Active Path Discovery is the second visible action and a first-class card.",
+        "The restored bold icon, subtitle, chevron card layout is visible.",
+        "The canonical Active Path Discovery Control card survives the final nested-frame load.",
+        "Active Path detail exposes rerun and copy actions.",
+        "Browser console errors: 0."
+      ]
+    },
+    "github_ci_repair": {
+      "failed_run": 30333445559,
+      "failed_check": "Permanent No-Blind-Flying Gate",
+      "root_cause": "The P13-U9 binding still declared the earlier ownership release scope instead of this repair's exact 15-file scope.",
+      "repair": "Bind P13-U9 to base cf4f1d7906b998e3818d48a23da4f6b6d091b080, the five current runtime paths, and the current restoration receipt.",
+      "local_reproduction_after_repair": "PASS; 15 changed paths, 5 runtime paths, 0 errors"
+    }
+  },
+  "effects": {
+    "routes_changed": false,
+    "bank_records_changed": false,
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "formal_proof_performed": false,
+    "production_activation_performed": false
+  },
+  "claim_ceiling": "Diagnostics presentation and read-only evidence restoration only."
+}
