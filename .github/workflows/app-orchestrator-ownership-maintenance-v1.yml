@@ -32,12 +32,16 @@ jobs:
         shell: bash
         run: |
           set +e
-          mkdir -p "$ARTIFACT_ROOT"
+          mkdir -p "$ARTIFACT_ROOT/generated"
           printf '%s\n' '{"command":"App Orchestrator ownership maintenance"}' > "$ARTIFACT_ROOT/command.json"
           printf '%s\n' 'no stderr emitted before execution' > "$ARTIFACT_ROOT/stderr.txt"
           python3 tools/generate_app_orchestrator_ownership_maintenance_integrity_updates_v1.py \
             > "$ARTIFACT_ROOT/generator-stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
           generator_rc=$?
+          cp pmp-runtime-integrity-manifest-v1.json "$ARTIFACT_ROOT/generated/"
+          cp pmp-app-current.html "$ARTIFACT_ROOT/generated/"
+          cp audit/a003-manifest-seal.json "$ARTIFACT_ROOT/generated/"
+          cp audit/pass13/app-orchestrator-ownership-maintenance-v1.json "$ARTIFACT_ROOT/generated/"
           git diff --exit-code \
             > "$ARTIFACT_ROOT/generator-diff.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
           diff_rc=$?
