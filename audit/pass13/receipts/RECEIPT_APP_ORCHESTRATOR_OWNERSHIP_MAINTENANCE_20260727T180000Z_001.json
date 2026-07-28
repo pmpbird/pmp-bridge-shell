@@ -1,0 +1,21 @@
+{
+  "type": "PMP_APP_ORCHESTRATOR_OWNERSHIP_MAINTENANCE_RECEIPT_V1",
+  "receipt_id": "RECEIPT_APP_ORCHESTRATOR_OWNERSHIP_MAINTENANCE_20260727T180000Z_001",
+  "version": "1.0.0",
+  "created_at": "2026-07-27T18:00:00Z",
+  "base_commit": "fbc75d5067df28d96f73fc3f8b18c8dbd45fa571",
+  "branch": "agent/app-orchestrator-owner-conflict-repair-v1",
+  "status": "PASS",
+  "result": "All confirmed in-scope multiple-writer, helper-owner, presentation-owner, stale legacy actor, and cross-schema Active Path Discovery conflicts from the two audits are repaired locally. Prevention and the one-button safe handoff are implemented and verified.",
+  "evidence": "audit/pass13/app-orchestrator-ownership-maintenance-v1.json",
+  "authoritative_registry": "pmp-app-orchestrator-ownership-registry-v1.json",
+  "one_button_entry": "Diagnostics -> App Orchestrator Status -> Copy New Chat Safe Handoff",
+  "effects": {
+    "persisted_user_data_changed": false,
+    "storage_migration_performed": false,
+    "formal_proof_performed": false,
+    "production_activation_performed": false
+  },
+  "next_gate": "Commit the exact reviewed tree, obtain verified green GitHub CI, merge the exact PR head, verify GitHub main, synchronize the laptop mirror, and create independently verified checkpoints.",
+  "claim_ceiling": "Local implementation and bounded verification complete; GitHub merge and release checkpoint evidence remain separate."
+}

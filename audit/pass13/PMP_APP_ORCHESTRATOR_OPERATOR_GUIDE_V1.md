@@ -11,6 +11,19 @@
 5. Use **Archive Selected Packet** for Connections records. Archive is
    recoverable and does not delete the binary payload.
 
+## Move safely to a new ChatGPT chat
+
+1. Open **Diagnostics**.
+2. Open **App Orchestrator Status**.
+3. Tap **Copy New Chat Safe Handoff** once.
+4. Paste the copied packet into the new chat. If the packet grows beyond the
+   copy limit, the same button downloads one small self-verifying ZIP instead.
+
+The packet includes the current ownership registry, authority and maintenance
+state, Current Map, Active Path Discovery reports, diagnostics, required
+checks, and exact safety boundaries. It intentionally excludes persisted user
+data.
+
 ## Before trusting a changed release
 
 - Confirm GitHub main, the Current Map, A-003 manifest, A-003 seal, bootstrap

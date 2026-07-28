@@ -39,8 +39,8 @@
   function addButton(d,w){try{if(d.getElementById('pmpSourceBodyLoaderButtonV1'))return;let anchor=d.getElementById('pmpMoldToAppWiringPrivateButtonV1')||[...d.querySelectorAll('button')].find(b=>textOf(b)==='Mold-to-App Wiring')||[...d.querySelectorAll('button')].find(b=>textOf(b)==='Private Backup');if(!anchor)return;let btn=d.createElement('button');btn.id='pmpSourceBodyLoaderButtonV1';btn.className='mini';btn.type='button';btn.textContent='Source Body Loader';btn.onclick=e=>{e&&e.preventDefault();e&&e.stopPropagation&&e.stopPropagation();return openLoader(d,w)};anchor.insertAdjacentElement('afterend',btn)}catch(e){}}
   function patchDoc(d,w){if(!d||!w)return;addButton(d,w);if(!d.documentElement.dataset.pmpSourceLoaderDelegateV1){d.documentElement.dataset.pmpSourceLoaderDelegateV1='1';d.addEventListener('click',e=>{let b=e.target&&e.target.closest&&e.target.closest('button');if(b&&textOf(b)==='Source Body Loader'){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation&&e.stopImmediatePropagation();return openLoader(d,w)}},true)}}
   function findInner(){let f=document.getElementById('app');try{return{w:f&&f.contentWindow,d:f&&(f.contentDocument||f.contentWindow.document)}}catch(e){return{}}}
-  function run(){ensureExtractorLoaded();let o=findInner();if(o.d&&o.w)patchDoc(o.d,o.w)}
-  window.PMPSourceBodyTextLoaderV1={run,parsePacket,updateRecords,sourceLoaderState,openLoader};
-  window.addEventListener('load',()=>{setTimeout(run,200);setTimeout(run,900);setTimeout(run,1900)});
-  setInterval(run,900);
+  function run(){let o=findInner();if(o.d&&o.w)patchDoc(o.d,o.w);return{status:o.d&&o.w?'owner_surface_bound':'owner_surface_unavailable'}}
+  function bind(){run();let frame=document.getElementById('app');if(frame&&!frame.dataset.pmpSourceLoaderOwnerBound){frame.dataset.pmpSourceLoaderOwnerBound='1';frame.addEventListener('load',run)}}
+  window.PMPSourceBodyTextLoaderV1={owner:'source_gate_owner',role:'explicit_private_source_intake',run,parsePacket,updateRecords,sourceLoaderState,openLoader,rule:'Event-driven source-owner tool. Field extractor loads only after an explicit source intake action.'};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
 })();

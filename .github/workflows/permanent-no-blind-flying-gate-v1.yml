@@ -28,6 +28,12 @@ jobs:
           python3 tools/test_pass6_unit7_no_blind_flying_gate_v1.py \
             > "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
           tests_rc=$?
+          python3 tools/test_app_orchestrator_ownership_maintenance_v1.py \
+            >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+          ownership_test_rc=$?
+          python3 tools/verify_app_orchestrator_ownership_maintenance_v1.py \
+            >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+          ownership_verify_rc=$?
           python3 tools/run_pass6_unit7_no_blind_flying_gate_v1.py \
             --base "${{ github.event.pull_request.base.sha }}" \
             --output "$ARTIFACT_ROOT/result.json" >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
@@ -47,9 +53,9 @@ jobs:
           printf '%s\n' '{"required":false,"granted":false,"consumed_before":false,"consumed_after":false}' \
             > "$ARTIFACT_ROOT/authority-state.json"
           rc=0
-          if [ "$tests_rc" -ne 0 ] || [ "$result_rc" -ne 0 ] || [ "$verify_rc" -ne 0 ]; then rc=1; fi
-          printf '{"tests":%s,"result":%s,"verify":%s,"final":%s}\n' \
-            "$tests_rc" "$result_rc" "$verify_rc" "$rc" \
+          if [ "$tests_rc" -ne 0 ] || [ "$ownership_test_rc" -ne 0 ] || [ "$ownership_verify_rc" -ne 0 ] || [ "$result_rc" -ne 0 ] || [ "$verify_rc" -ne 0 ]; then rc=1; fi
+          printf '{"tests":%s,"ownership_test":%s,"ownership_verify":%s,"result":%s,"verify":%s,"final":%s}\n' \
+            "$tests_rc" "$ownership_test_rc" "$ownership_verify_rc" "$result_rc" "$verify_rc" "$rc" \
             > "$ARTIFACT_ROOT/exit-status.json"
           python3 - "$ARTIFACT_ROOT" <<'PY'
           import hashlib,json,pathlib,sys

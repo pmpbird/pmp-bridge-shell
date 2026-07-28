@@ -1,0 +1,13 @@
+{
+  "type": "PMP_APP_ORCHESTRATOR_LATEST_MAINTENANCE_POINTER_V1",
+  "version": "1.0.0",
+  "updated_at": "2026-07-27T18:00:00Z",
+  "base_commit": "fbc75d5067df28d96f73fc3f8b18c8dbd45fa571",
+  "branch": "agent/app-orchestrator-owner-conflict-repair-v1",
+  "current_state": "audit/pass13/PMP_APP_ORCHESTRATOR_MAINTENANCE_CURRENT_STATE_V1.md",
+  "exact_next_move": "audit/pass13/PMP_APP_ORCHESTRATOR_MAINTENANCE_EXACT_NEXT_MOVE_V1.md",
+  "evidence": "audit/pass13/app-orchestrator-ownership-maintenance-v1.json",
+  "receipt": "audit/pass13/receipts/RECEIPT_APP_ORCHESTRATOR_OWNERSHIP_MAINTENANCE_20260727T180000Z_001.json",
+  "ownership_registry": "pmp-app-orchestrator-ownership-registry-v1.json",
+  "status": "LOCAL_GREEN_GITHUB_RELEASE_PENDING"
+}

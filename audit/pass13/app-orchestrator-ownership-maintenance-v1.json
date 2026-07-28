@@ -1,0 +1,323 @@
+{
+  "base_commit": "fbc75d5067df28d96f73fc3f8b18c8dbd45fa571",
+  "branch": "agent/app-orchestrator-owner-conflict-repair-v1",
+  "claim_ceiling": "Static, isolated local browser, and CI-verifiable ownership maintenance only. No formal proof, production activation, persisted-user-data mutation, or migration is claimed.",
+  "counts": {
+    "confirmed_conflict_families_repaired": 12,
+    "declared_bounded_helper_roles": 10,
+    "helper_owner_conflict_families_repaired": 7,
+    "protected_shared_resources_registered": 19,
+    "remaining_confirmed_competing_writers_in_scope": 0,
+    "stale_legacy_actor_families_neutralized": 7
+  },
+  "created_at": "2026-07-27T18:00:00Z",
+  "effects": {
+    "bank_records_changed": false,
+    "formal_proof_performed": false,
+    "persisted_user_data_changed": false,
+    "production_activation_performed": false,
+    "routes_changed": false,
+    "storage_migration_performed": false
+  },
+  "no_blind_flying_gate": {
+    "automatic_retry": false,
+    "ci_lane": "deterministic_browser_harness",
+    "deterministic_test_paths": [
+      "tools/test_app_orchestrator_ownership_maintenance_v1.py"
+    ],
+    "diagnostic_evidence_routes": [
+      "audit/pass13/app-orchestrator-ownership-maintenance-v1.json",
+      "audit/pass13/PMP_APP_ORCHESTRATOR_MAINTENANCE_CURRENT_STATE_V1.md",
+      "audit/pass13/PMP_APP_ORCHESTRATOR_MAINTENANCE_EXACT_NEXT_MOVE_V1.md",
+      "pmp-app-orchestrator-ownership-registry-v1.json"
+    ],
+    "diagnostic_matrix_update": {
+      "applicable_matrix": "audit/pass13/app-orchestrator-ownership-maintenance-v1.json",
+      "rationale": "This maintenance matrix binds the two ownership audits to exclusive writers, bounded helpers, deterministic fault checks, an isolated local browser check, and the safe new-chat handoff.",
+      "status": "ADDED"
+    },
+    "fault_injection": {
+      "cases": [
+        "duplicate resource id",
+        "one identifier assigned to multiple resources",
+        "protected resource with no writer",
+        "helper direct canonical write",
+        "legacy recurring repaint or reinjection",
+        "cross-schema Active Path Discovery alias",
+        "Storage monkeypatch",
+        "duplicate Continuous Run presentation"
+      ],
+      "status": "COVERED"
+    },
+    "inferred_conclusions": [
+      {
+        "basis_evidence_paths": [
+          "audit/pass13/app-orchestrator-ownership-maintenance-v1.json",
+          "pmp-app-orchestrator-ownership-registry-v1.json",
+          "tools/verify_app_orchestrator_ownership_maintenance_v1.py"
+        ],
+        "claim_type": "INFERRED",
+        "conclusion": "The exact maintenance head is ready for GitHub CI and merge because its owner boundaries, regressions, runtime integrity bindings, and user-data exclusions are deterministically verified."
+      }
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "evidence_paths": [
+          "tools/test_app_orchestrator_ownership_maintenance_v1.py",
+          "audit/pass13/app-orchestrator-ownership-maintenance-v1.json"
+        ],
+        "fact": "The ownership matrix passes 141 deterministic checks covering exclusive writers, helper delegation, inert legacy actors, event-driven presentation, and the copy-or-ZIP handoff."
+      },
+      {
+        "claim_type": "OBSERVED",
+        "evidence_paths": [
+          "audit/pass13/app-orchestrator-ownership-maintenance-v1.json",
+          "audit/pass13/receipts/RECEIPT_APP_ORCHESTRATOR_OWNERSHIP_MAINTENANCE_20260727T180000Z_001.json"
+        ],
+        "fact": "A bounded isolated local browser run reached the normal app, showed the Diagnostics and App Orchestrator Status screens, copied the safe handoff, and displayed one canonical Continuous Run Level 1 through 30B sequence."
+      }
+    ],
+    "receipt_paths": [
+      "audit/pass13/receipts/RECEIPT_APP_ORCHESTRATOR_OWNERSHIP_MAINTENANCE_20260727T180000Z_001.json"
+    ],
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "special_authority": {
+      "consumed": false,
+      "granted": false,
+      "required": false
+    },
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "upload_before_enforcement": true,
+    "verifier_paths": [
+      "tools/verify_app_orchestrator_ownership_maintenance_v1.py"
+    ],
+    "version": "1.0.0"
+  },
+  "prevention": {
+    "fail_closed_rules": [
+      "one canonical writer per protected resource",
+      "helpers may request but may not commit owner state",
+      "unknown helpers have no declared capability",
+      "presentation helpers are event-driven and idempotent",
+      "legacy aliases are read-only or use explicit owner delegation",
+      "persisted user data is not migrated or rewritten"
+    ],
+    "github_workflow": ".github/workflows/app-orchestrator-ownership-maintenance-v1.yml",
+    "integrity_verifier": "tools/verify_app_orchestrator_ownership_maintenance_v1.py",
+    "machine_readable_registry": "pmp-app-orchestrator-ownership-registry-v1.json",
+    "runtime_guard": "pmp-app-orchestrator-ownership-runtime-v1.js",
+    "static_test": "tools/test_app_orchestrator_ownership_maintenance_v1.py"
+  },
+  "repairs": [
+    {
+      "decision": "V1 is the canonical detailed report; V2 is a separate bounded support report with different keys, global, and schema.",
+      "result": "No cross-schema overwrite or alias remains.",
+      "shared_thing": "Active Path Discovery reports"
+    },
+    {
+      "decision": "Mount Registry is the sole writer; Pass 1R version aligner is read-only.",
+      "result": "The helper cannot rewrite registry records, receipt, or global.",
+      "shared_thing": "Mount Registry"
+    },
+    {
+      "decision": "Bank Screen Owner transfer-store V2 is the sole writer; source helpers submit requests through owner broker APIs.",
+      "result": "Legacy store and convenience helpers are read-only compatibility adapters.",
+      "shared_thing": "Continuous Run staging manifest and database"
+    },
+    {
+      "decision": "Resident 30B reader is canonical; the router delegates read-only.",
+      "result": "No second residentRun wrapper, status writer, or polling router remains.",
+      "shared_thing": "Resident Continuous Run status"
+    },
+    {
+      "decision": "One Bank owner slot and one Continuous Run level owner; old repaint, clone, flash, and layout helpers are inert or presentation-local.",
+      "result": "One card per level, canonical order, uniform titles, no ordinary-Bank leakage, and no recurring helper repaint.",
+      "shared_thing": "Continuous Run Bank presentation"
+    },
+    {
+      "decision": "Current Screen Pointer is the sole writer.",
+      "result": "Page-scope and route-map adapters no longer extend or rewrite it.",
+      "shared_thing": "Canonical reload receipt"
+    },
+    {
+      "decision": "Bank Screen Owner chooses when to render; live inspector is a read-only provider invoked through renderInto.",
+      "result": "No automatic cross-frame hide, replace, or five-second repaint.",
+      "shared_thing": "Helper Bank presentation"
+    },
+    {
+      "decision": "Diagnostics owner remains the storage owner; problem-type helpers are pure/read-only functions.",
+      "result": "No Storage monkeypatch, duplicate-panel removal, seed write, click interception, or timer.",
+      "shared_thing": "Helper problem memory"
+    },
+    {
+      "decision": "Safe Writer owner alone may mount, route, hide, or remove its surface.",
+      "result": "Legacy cleaner is an inert read-only inspector.",
+      "shared_thing": "Safe Writer surface"
+    },
+    {
+      "decision": "Reload Current owner uses a stable idempotent loader chain.",
+      "result": "No random cache-busting, script replacement, removal, or five-second reinjection.",
+      "shared_thing": "Top lossless transfer controls"
+    },
+    {
+      "decision": "Source Gate owner controls explicit intake and event-driven mounts.",
+      "result": "No recurring polling mount; source extraction loads only for explicit intake.",
+      "shared_thing": "Private source intake and Level 3 source reader"
+    },
+    {
+      "decision": "Diagnostics owner exposes App Orchestrator Status; App Orchestrator owns one bounded copy-or-ZIP handoff.",
+      "result": "One button transfers authority, ownership, active-path, current-map, diagnostics, maintenance, and safety context without persisted user data.",
+      "shared_thing": "Diagnostics and new-chat context"
+    }
+  ],
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/app-orchestrator-ownership-maintenance-v1.yml",
+      ".github/workflows/permanent-no-blind-flying-gate-v1.yml",
+      "audit/a003-manifest-seal.json",
+      "audit/pass13/PMP_APP_ORCHESTRATOR_DIAGNOSTICS_GUIDE_V1.md",
+      "audit/pass13/PMP_APP_ORCHESTRATOR_LATEST_MAINTENANCE_POINTER_V1.json",
+      "audit/pass13/PMP_APP_ORCHESTRATOR_MAINTENANCE_CURRENT_STATE_V1.md",
+      "audit/pass13/PMP_APP_ORCHESTRATOR_MAINTENANCE_EXACT_NEXT_MOVE_V1.md",
+      "audit/pass13/PMP_APP_ORCHESTRATOR_OPERATOR_GUIDE_V1.md",
+      "audit/pass13/app-orchestrator-ownership-maintenance-v1.json",
+      "audit/pass13/receipts/RECEIPT_APP_ORCHESTRATOR_OWNERSHIP_MAINTENANCE_20260727T180000Z_001.json",
+      "pmp-active-path-discovery-machine-v1.js",
+      "pmp-active-path-discovery-machine-v2.js",
+      "pmp-active-path-discovery-zip-export-v2.js",
+      "pmp-app-current.html",
+      "pmp-app-orchestrator-ownership-registry-v1.json",
+      "pmp-app-orchestrator-ownership-runtime-v1.js",
+      "pmp-app-orchestrator-v1.js",
+      "pmp-bank-zero-loading-flash-guard-v1.js",
+      "pmp-continuous-run-bank-long-packet-option-v1.js",
+      "pmp-continuous-run-bank-must-source-zip-v1.js",
+      "pmp-continuous-run-bank-order-frame-loader-v1.js",
+      "pmp-continuous-run-bank-source-zip-gate-fix-v1.js",
+      "pmp-continuous-run-bank-stable-status-owner-v1.js",
+      "pmp-continuous-run-bank-transfer-store-v1.js",
+      "pmp-continuous-run-bank-transfer-store-v2.js",
+      "pmp-continuous-run-bank-verify-receipt-fix-v1.js",
+      "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+      "pmp-current-page-code-scope-v1.js",
+      "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html",
+      "pmp-diagnostics-owner-v1.js",
+      "pmp-helper-bank-live-inspector-v2.js",
+      "pmp-helper-owner-integration-v1.js",
+      "pmp-helper-problem-type-only-v1.js",
+      "pmp-helper-problem-type-seeds-v1.js",
+      "pmp-hidden-safe-writer-surface-cleaner-v1.js",
+      "pmp-layout-guard-v1.js",
+      "pmp-master-bank-tab-v1.js",
+      "pmp-new-chat-safe-handoff-v1.js",
+      "pmp-owner-diagnostics-foundation-v1.js",
+      "pmp-pass1r-version-aligner-v1.js",
+      "pmp-pass8-helper-rules-v1.js",
+      "pmp-private-source-loader-v1.js",
+      "pmp-resident-continuous-run-status-reader-v1.js",
+      "pmp-resident-cr-status-router-v1.js",
+      "pmp-route-code-map-adapter-v1.js",
+      "pmp-runtime-integrity-manifest-v1.json",
+      "pmp-safe-area-surface-fill-v1.js",
+      "pmp-source-pdf-text-level2c-v1.js",
+      "pmp-source-reference-gate-level4-v1.js",
+      "pmp-source-text-reader-level3-v1.js",
+      "pmp-source-zip-extractor-level2b-v1.js",
+      "pmp-source-zip-reader-level2-v1.js",
+      "pmp-top-lossless-injector.js",
+      "pmp-top-lossless-loader.js",
+      "tools/generate_app_orchestrator_ownership_maintenance_integrity_updates_v1.py",
+      "tools/test_app_orchestrator_ownership_maintenance_v1.py",
+      "tools/verify_app_orchestrator_ownership_maintenance_v1.py"
+    ],
+    "implementation_paths": [
+      "pmp-active-path-discovery-machine-v1.js",
+      "pmp-active-path-discovery-machine-v2.js",
+      "pmp-active-path-discovery-zip-export-v2.js",
+      "pmp-app-current.html",
+      "pmp-app-orchestrator-ownership-runtime-v1.js",
+      "pmp-app-orchestrator-v1.js",
+      "pmp-bank-zero-loading-flash-guard-v1.js",
+      "pmp-continuous-run-bank-long-packet-option-v1.js",
+      "pmp-continuous-run-bank-must-source-zip-v1.js",
+      "pmp-continuous-run-bank-order-frame-loader-v1.js",
+      "pmp-continuous-run-bank-source-zip-gate-fix-v1.js",
+      "pmp-continuous-run-bank-stable-status-owner-v1.js",
+      "pmp-continuous-run-bank-transfer-store-v1.js",
+      "pmp-continuous-run-bank-transfer-store-v2.js",
+      "pmp-continuous-run-bank-verify-receipt-fix-v1.js",
+      "pmp-current-inner-cleanbug-rgcontrols-v23.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v3.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v4.html",
+      "pmp-current-page-code-scope-v1.js",
+      "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html",
+      "pmp-diagnostics-owner-v1.js",
+      "pmp-helper-bank-live-inspector-v2.js",
+      "pmp-helper-owner-integration-v1.js",
+      "pmp-helper-problem-type-only-v1.js",
+      "pmp-helper-problem-type-seeds-v1.js",
+      "pmp-hidden-safe-writer-surface-cleaner-v1.js",
+      "pmp-layout-guard-v1.js",
+      "pmp-master-bank-tab-v1.js",
+      "pmp-new-chat-safe-handoff-v1.js",
+      "pmp-owner-diagnostics-foundation-v1.js",
+      "pmp-pass1r-version-aligner-v1.js",
+      "pmp-pass8-helper-rules-v1.js",
+      "pmp-private-source-loader-v1.js",
+      "pmp-resident-continuous-run-status-reader-v1.js",
+      "pmp-resident-cr-status-router-v1.js",
+      "pmp-route-code-map-adapter-v1.js",
+      "pmp-safe-area-surface-fill-v1.js",
+      "pmp-source-pdf-text-level2c-v1.js",
+      "pmp-source-reference-gate-level4-v1.js",
+      "pmp-source-text-reader-level3-v1.js",
+      "pmp-source-zip-extractor-level2b-v1.js",
+      "pmp-source-zip-reader-level2-v1.js",
+      "pmp-top-lossless-injector.js",
+      "pmp-top-lossless-loader.js"
+    ]
+  },
+  "status": "OWNERSHIP_MAINTENANCE_GREEN",
+  "type": "PMP_APP_ORCHESTRATOR_OWNERSHIP_MAINTENANCE_V1",
+  "unit_id": "P13-U7",
+  "verification": {
+    "bounded_local_browser": {
+      "checks": [
+        "normal app reached",
+        "Diagnostics bottom tab present",
+        "App Orchestrator Status page present",
+        "Copy New Chat Safe Handoff button present",
+        "button result was Safe handoff copied",
+        "Continuous Run levels displayed once in canonical Level 1 through 30B order",
+        "no injected 19, 21, 23, 25, 27 pre-sequence"
+      ],
+      "formal_proof": false,
+      "persisted_user_data_changed": false,
+      "route": "pmp-app-current.html through Route Guardian and Runtime Platform",
+      "status": "PASS"
+    },
+    "ownership_integrity_verifier": "PASS",
+    "ownership_static_matrix": "PASS 141/141",
+    "pass10_owner_stability": "PASS 106/106",
+    "pass10_single_card_presentation": "PASS 478/478",
+    "pass10_uniform_title_weight": "PASS 86/86",
+    "pass9_owner_integration": "PASS 234/234",
+    "permanent_gate_static_test": "PASS 166/166"
+  },
+  "version": "1.0.0"
+}

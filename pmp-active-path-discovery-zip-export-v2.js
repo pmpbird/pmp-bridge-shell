@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const V='2.4.1-discovery-current-pass-alignment';
+const V='2.5.0-canonical-v1-reader-event-driven-20260727A';
 const REPORT_KEY='pmp_active_path_discovery_report_v1';
 const RECEIPT_KEY='pmp_discovery_dropdown_menu_receipt_v1';
 const LOCK_KEY='pmp_discovery_ui_owner_lock_v1';
@@ -31,6 +31,6 @@ function remember(out){try{let txt=String(out&&out.textContent||'');if(looksStab
 function restore(out){try{let txt=String(out&&out.textContent||''),saved=out.getAttribute('data-pmp-discovery-stable-text')||'';if(saved&&(!txt||/Waiting for discovery scan/i.test(txt)||txt.length<12))out.textContent=saved}catch(e){}}
 function lockCard(card){try{card.setAttribute('data-pmp-section-owner','active_path_discovery_owner');card.setAttribute('data-pmp-owner-lock',V)}catch(e){}}
 function install(){eachDoc(d=>{try{let card=d.getElementById('pmpActivePathDiscoveryCardV1');if(!card)return;lockCard(card);let out=card.querySelector('#pmpActivePathDiscoveryOutV1')||card;remember(out);if(!card.querySelector('#pmpDiscoveryDropdownMenuV1')){Array.from(card.querySelectorAll('button')).forEach(b=>{if(!b.getAttribute('data-pmp-discovery-menu-go'))b.style.display='none'});let title=card.querySelector('b')||card.firstChild;let menu=makeMenu(d,out);if(title&&title.parentNode===card)card.insertBefore(menu,title.nextSibling);else card.insertBefore(menu,card.firstChild)}Array.from(card.querySelectorAll('button')).forEach(b=>{if(!b.getAttribute('data-pmp-discovery-menu-go'))b.style.display='none'});restore(out)}catch(e){}})}
-window.PMPActivePathDiscoveryZipExportV2={version:V,install,findReport,runDiscovery};
-[100,300,700,1200,2500,4500,7000,10000,15000,22000,30000,45000,60000].forEach(t=>setTimeout(install,t));setInterval(install,1000);
+window.PMPActivePathDiscoveryZipExportV2={version:V,owner:'active_path_discovery_owner',readerOf:'pmp-active-path-discovery-machine-v1.js',install,findReport,runDiscovery};
+window.addEventListener('load',()=>[100,300,700,1200,2500,4500].forEach(t=>setTimeout(install,t)),{once:true});
 })();

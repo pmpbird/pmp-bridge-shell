@@ -8,7 +8,7 @@ const PDFJS='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs';
 const WORKER='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.mjs';
 function W(){try{return window.top||window}catch(e){return window}}
 function j(k,d){try{return JSON.parse(W().localStorage.getItem(k)||'')||d}catch(e){return d}}
-function save(k,v){try{W().localStorage.setItem(k,JSON.stringify(v,null,2))}catch(e){}return v}
+function save(k,v){if(k!==MK)return v;let api=window.PMPContinuousRunBankTransferStoreV1;if(!api||typeof api.commitSourceStage!=='function')throw Error('Bank transfer-store owner is not ready.');api.commitSourceStage({actor:'pmp-source-pdf-text-level2c-v1.js',field:'source_pdf_text_level2c',value:v.source_pdf_text_level2c});return v}
 function docs(r,a,n){a=a||[];n=n||0;if(!r||n>8)return a;try{a.push(r);r.querySelectorAll('iframe').forEach(f=>{try{let d=f.contentDocument||(f.contentWindow&&f.contentWindow.document);if(d)docs(d,a,n+1)}catch(e){}})}catch(e){}return a}
 function openDB(name,store){return new Promise((res,rej)=>{try{let q=indexedDB.open(name,1);q.onupgradeneeded=()=>{try{q.result.createObjectStore(store)}catch(e){}};q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error||Error('DB open failed'))}catch(e){rej(e)}})}
 async function getDB(name,store,key){let db=await openDB(name,store);return await new Promise((res,rej)=>{let q=db.transaction(store,'readonly').objectStore(store).get(key);q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error||Error('DB read failed'))})}

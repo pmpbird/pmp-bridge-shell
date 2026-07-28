@@ -1,42 +1,57 @@
 (()=>{
 'use strict';
-const V='2.0.0-pass9-unit3-event-driven-no-bank-duplicates';
-const TRACE_KEY='pmp_pass7_startup_execution_audit_trace_v1';
-const LOADER_KEY='pmp_continuous_run_bank_order_frame_loader_v1_receipt';
+const V='3.0.0-single-owner-frame-event-driven-20260727A';
+const OWNER='app_orchestrator_owner';
+const RECEIPT='pmp_continuous_run_bank_order_frame_loader_v1_receipt';
+const TRACE='pmp_pass7_startup_execution_audit_trace_v1';
 const SCRIPTS=[
-  {id:'pmpSafeAreaSurfaceFillV1DirectFrame',src:'pmp-safe-area-surface-fill-v1.js',fresh:'safe-area-surface-fill-20260707A',replace_if_stale:true},
-  {id:'pmpBankZeroLoadingFlashGuardV1DirectFrame',src:'pmp-bank-zero-loading-flash-guard-v1.js',fresh:'zero-loading-flash-guard-v100-20260629A'},
-  {id:'pmpPassRevalidationGate001V1DirectFrame',src:'pmp-pass-revalidation-gate-001-v1.js',fresh:'pass-revalidation-gate-001-20260710A',critical:'pass_revalidation_gate_001',replace_if_stale:true},
-  {id:'pmpSectionOwnerRegistryV1DirectFrame',src:'pmp-section-owner-registry-v1.js',fresh:'pass7-section-owner-runtime-audit-20260706J',critical:'section_owner_registry',replace_if_stale:true},
-  {id:'pmpOwnerDiagnosticsHostV1DirectFrame',src:'pmp-owner-diagnostics-host-v1.js',fresh:'pass7-active-control-only-host-20260706M',replace_if_stale:true},
-  {id:'pmpOwnerDiagnosticsFoundationV1DirectFrame',src:'pmp-owner-diagnostics-foundation-v1.js',fresh:'pass7-storage-governor-hard-complete-20260707A',replace_if_stale:true},
-  {id:'pmpPass75RuntimePlatformV1DirectFrame',src:'pmp-pass75-runtime-platform-v1.js',fresh:'pass75-headless-runtime-platform-20260707B',critical:'pass75_runtime_platform',replace_if_stale:true},
-  {id:'pmpHelperRegistryV1DirectFrame',src:'pmp-helper-registry-v1.js',fresh:'pass7-helper-runtime-audit-20260706J',critical:'helper_registry',replace_if_stale:true},
-  {id:'pmpPass7RegistryRuntimeProbeV1DirectFrame',src:'pmp-pass7-registry-runtime-probe-v1.js',fresh:'pass7-registry-runtime-probe-20260706K',critical:'registry_runtime_probe',replace_if_stale:true},
-  {id:'pmpUniversalGrowthAwarenessV1DirectFrame',src:'pmp-universal-growth-awareness-v1.js',fresh:'pass7-patch4-universal-growth-awareness-20260706A',replace_if_stale:true},
-  {id:'pmpPass7CoverageLockV1DirectFrame',src:'pmp-pass7-coverage-lock-v1.js',fresh:'pass7-patch5-coverage-lock-20260706A',replace_if_stale:true},
-  {id:'pmpPass7CertificationGateV1DirectFrame',src:'pmp-pass7-certification-gate-v1.js',fresh:'pass7-patch6-certification-gate-20260706A',replace_if_stale:true}
+  {id:'pmpSafeAreaSurfaceFillV1DirectFrame',src:'pmp-safe-area-surface-fill-v1.js',fresh:'ownership-safe-area-20260727A',role:'presentation_local'},
+  {id:'pmpBankZeroLoadingFlashGuardV1DirectFrame',src:'pmp-bank-zero-loading-flash-guard-v1.js',fresh:'ownership-css-only-20260727A',role:'presentation_local'},
+  {id:'pmpPassRevalidationGate001V1DirectFrame',src:'pmp-pass-revalidation-gate-001-v1.js',fresh:'ownership-single-frame-20260727A',role:'stateful_owner_frame'},
+  {id:'pmpSectionOwnerRegistryV1DirectFrame',src:'pmp-section-owner-registry-v1.js',fresh:'ownership-single-frame-20260727A',role:'stateful_owner_frame'},
+  {id:'pmpOwnerDiagnosticsHostV1DirectFrame',src:'pmp-owner-diagnostics-host-v1.js',fresh:'ownership-single-frame-20260727A',role:'diagnostic_host'},
+  {id:'pmpOwnerDiagnosticsFoundationV1DirectFrame',src:'pmp-owner-diagnostics-foundation-v1.js',fresh:'ownership-readonly-20260727A',role:'read_only_diagnostic'},
+  {id:'pmpPass75RuntimePlatformV1DirectFrame',src:'pmp-pass75-runtime-platform-v1.js',fresh:'ownership-single-frame-20260727A',role:'stateful_owner_frame'},
+  {id:'pmpHelperRegistryV1DirectFrame',src:'pmp-helper-registry-v1.js',fresh:'ownership-single-frame-20260727A',role:'stateful_owner_frame'},
+  {id:'pmpPass7RegistryRuntimeProbeV1DirectFrame',src:'pmp-pass7-registry-runtime-probe-v1.js',fresh:'ownership-single-frame-20260727A',role:'read_only_probe'},
+  {id:'pmpUniversalGrowthAwarenessV1DirectFrame',src:'pmp-universal-growth-awareness-v1.js',fresh:'ownership-single-frame-20260727A',role:'read_only_growth'},
+  {id:'pmpPass7CoverageLockV1DirectFrame',src:'pmp-pass7-coverage-lock-v1.js',fresh:'ownership-single-frame-20260727A',role:'stateful_owner_frame'},
+  {id:'pmpPass7CertificationGateV1DirectFrame',src:'pmp-pass7-certification-gate-v1.js',fresh:'ownership-single-frame-20260727A',role:'stateful_owner_frame'}
 ];
-const seenDocs=new WeakSet(),boundFrames=new WeakSet(),observers=[];
 function now(){return new Date().toISOString()}
-function store(k,v){try{localStorage.setItem(k,JSON.stringify(v,null,2))}catch(e){}try{if(window.top&&window.top.localStorage)window.top.localStorage.setItem(k,JSON.stringify(v,null,2))}catch(e){}}
-function readJson(k){try{let v=localStorage.getItem(k);if(v)return JSON.parse(v)}catch(e){}try{if(window.top&&window.top.localStorage){let v=window.top.localStorage.getItem(k);if(v)return JSON.parse(v)}}catch(e){}return null}
-function loadTrace(){try{return readJson(TRACE_KEY)||{type:'PMP_PASS7_STARTUP_EXECUTION_AUDIT_TRACE_V1',version:V,owner:'pmp-continuous-run-bank-order-frame-loader-v1',created_at:now(),events:[]}}catch(e){return{type:'PMP_PASS7_STARTUP_EXECUTION_AUDIT_TRACE_V1',version:V,owner:'pmp-continuous-run-bank-order-frame-loader-v1',created_at:now(),events:[{at:now(),event:'trace_parse_error',error:String(e&&e.message||e)}]}}}
-function addEvent(ev){let t=loadTrace();t.version=V;t.updated_at=now();t.events=t.events||[];t.events.push(Object.assign({at:now()},ev));t.events=t.events.slice(-240);store(TRACE_KEY,t);return t}
-function docs(d,a,n){a=a||[];n=n||0;if(!d||n>10)return a;try{a.push(d);Array.from(d.querySelectorAll('iframe,frame')).forEach(f=>{try{let z=f.contentDocument||(f.contentWindow&&f.contentWindow.document);if(z)docs(z,a,n+1)}catch(e){addEvent({event:'frame_blocked_or_unreadable',error:String(e&&e.message||e)})}})}catch(e){addEvent({event:'docs_scan_error',error:String(e&&e.message||e)})}return a}
-function scriptStatus(){return{section_owner_global:!!window.PMPSectionOwnerRegistryV1,helper_registry_global:!!window.PMPHelperRegistryV1,registry_runtime_probe_global:!!window.PMPPass7RegistryRuntimeProbeV1,pass75_runtime_platform_global:!!window.PMPPass75RuntimePlatformV1,pass_revalidation_gate_001_global:!!window.PMPPassRevalidationGate001V1,section_owner_snapshot_present:!!readJson('pmp_section_owner_registry_snapshot_v1'),section_owner_receipt_present:!!readJson('pmp_section_owner_registry_v1_receipt'),helper_snapshot_present:!!readJson('pmp_helper_registry_snapshot_v1'),helper_receipt_present:!!readJson('pmp_helper_registry_v1_receipt'),pass75_receipt_present:!!readJson('pmp_pass75_runtime_platform_receipt_v1'),service_worker_receipt_present:!!readJson('pmp_service_worker_receipt_v1'),cache_governor_receipt_present:!!readJson('pmp_cache_governor_receipt_v1'),storage_governor_receipt_present:!!readJson('pmp_storage_governor_receipt_v1'),runtime_health_receipt_present:!!readJson('pmp_runtime_health_monitor_receipt_v1'),diagnostics_receipt_present:!!readJson('pmp_owner_diagnostics_foundation_v1_receipt'),coverage_receipt_present:!!readJson('pmp_pass7_coverage_lock_receipt_v1'),certification_receipt_present:!!readJson('pmp_pass7_certification_gate_receipt_v1')||!!readJson('pmp_pass7_certification_gate_v1_receipt'),pass_revalidation_gate_001_receipt_present:!!readJson('pmp_pass_revalidation_gate_001_v1_receipt')}}
-function stale(old,s){let oldSrc=String((old&&old.getAttribute&&old.getAttribute('src'))||'');return oldSrc.indexOf(s.fresh)<0}
-function injectOne(d,s){let old=d.getElementById(s.id);let full=s.src+'?fresh='+s.fresh+'-'+Date.now();if(old){let isStale=stale(old,s);if(s.replace_if_stale&&isStale){addEvent({event:'script_replacing_stale_existing_id',id:s.id,src:s.src,critical:s.critical||null,existing_src:old.getAttribute('src')||'',required_fresh:s.fresh});try{old.remove()}catch(e){addEvent({event:'script_remove_stale_exception',id:s.id,error:String(e&&e.message||e)});return 0}}else{addEvent({event:'script_skipped_existing_id',id:s.id,src:s.src,critical:s.critical||null,existing_src:old.getAttribute('src')||'',stale:isStale});return 0}}
-let x=d.createElement('script');x.id=s.id;x.src=full;x.onload=()=>addEvent({event:'script_load',id:s.id,src:s.src,critical:s.critical||null,full_src:full,status:scriptStatus()});x.onerror=e=>addEvent({event:'script_error',id:s.id,src:s.src,critical:s.critical||null,full_src:full,error:String(e&&e.message||'load_error'),status:scriptStatus()});d.body.appendChild(x);addEvent({event:'script_injected',id:s.id,src:s.src,critical:s.critical||null,full_src:full});return 1}
-function bindFrame(f){if(!f||boundFrames.has(f))return;boundFrames.add(f);try{f.addEventListener('load',()=>scan('frame_load'),{passive:true})}catch(e){}}
-function watchDocument(d){try{Array.from(d.querySelectorAll('iframe,frame')).forEach(bindFrame);if(typeof MutationObserver==='function'){let observer=new MutationObserver(rows=>rows.forEach(row=>Array.from(row.addedNodes||[]).forEach(node=>{try{if(node.matches&&node.matches('iframe,frame'))bindFrame(node);if(node.querySelectorAll)Array.from(node.querySelectorAll('iframe,frame')).forEach(bindFrame)}catch(e){}})));observer.observe(d.documentElement||d,{childList:true,subtree:true});observers.push(observer)}}catch(e){}}
-function inject(d){if(!d||!d.body||seenDocs.has(d))return 0;seenDocs.add(d);watchDocument(d);let made=0;SCRIPTS.forEach(s=>{try{made+=injectOne(d,s)}catch(e){addEvent({event:'script_inject_exception',id:s.id,src:s.src,error:String(e&&e.message||e)})}});return made}
-function call(name,method,reason){let obj=null,out={name,method,present:false,callable:false,called:false,error:null,result_type:null,result_keys:[]};try{obj=window[name]||(window.top&&window.top[name]);out.present=!!obj;out.callable=!!(obj&&typeof obj[method]==='function');if(out.callable){out.called=true;let r=obj[method](reason);out.result_type=typeof r;out.result_keys=r&&typeof r==='object'?Object.keys(r):[]}}catch(e){out.error=String(e&&e.stack||e&&e.message||e)}return out}
-function forceProbe(reason){let before=scriptStatus();let owner=call('PMPSectionOwnerRegistryV1','scan','loader_force_'+reason+'_owner');let helper=call('PMPHelperRegistryV1','scan','loader_force_'+reason+'_helper');let probe=call('PMPPass7RegistryRuntimeProbeV1','scan','loader_force_'+reason+'_probe');let pass75=call('PMPPass75RuntimePlatformV1','scan','loader_force_'+reason+'_pass75');let revalidation=call('PMPPassRevalidationGate001V1','run','loader_force_'+reason+'_pass_revalidation_gate_001');let after=scriptStatus();let forced={type:'PMP_PASS7_LOADER_FORCED_REGISTRY_PROBE_V1',version:V,at:now(),reason,before,owner,helper,probe,pass75,revalidation,after};store('pmp_pass7_loader_forced_registry_probe_v1',forced);addEvent({event:'forced_registry_probe_complete',reason,forced});return forced}
-function scan(reason){let made=0,docCount=0;docs(document).forEach(d=>{docCount++;made+=inject(d)});let forced=forceProbe(reason||'scan');let receipt={type:'PMP_CONTINUOUS_RUN_BANK_ORDER_FRAME_LOADER_V2',version:V,at:now(),reason:reason||'scan',mode:'EVENT_DRIVEN_NEW_DOCUMENT_ONCE',documents_seen:docCount,documents_initialized:seenDocs.size||null,scripts:SCRIPTS.map(x=>x.src),excluded_bank_owner_scripts:['pmp-master-bank-tab-v1.js','pmp-bank-mode1-hide-unchecked-v1.js','pmp-bank-screen-owner-v1.js','pmp-continuous-run-level-ui-scope-v1.js'],new_injections:made,pass75_runtime_platform:'headless_runtime_receipts_only_visible_boot_overlay_only',pass_revalidation_gate_001:'receipt_only_loaded_no_visual_patch',startup_trace_key:TRACE_KEY,status:scriptStatus(),forced_registry_probe:forced,side_effects:{route_change_attempted:false,indexeddb_write_attempted:false,bank_rebuild_attempted:false,storage_migration_attempted:false,section_takeover_attempted:false,diagnostic_repair_attempted:false,helper_takeover_attempted:false,growth_auto_create_attempted:false,coverage_lock_repair_attempted:false,certification_repair_attempted:false,generic_diagnostics_panel_injection_attempted:false,visible_runtime_console_injected:false,visual_patch_attempted:false,bank_owner_duplicate_injection_attempted:false,recurring_scan_attempted:false}};store(LOADER_KEY,receipt);addEvent({event:'loader_scan_complete',reason:reason||'scan',new_injections:made,documents_seen:docCount,status:receipt.status});return receipt}
-window.PMPContinuousRunBankOrderFrameLoaderV1={version:V,scan,startup_trace_key:TRACE_KEY,scriptStatus,forceProbe};
-window.addEventListener('error',e=>addEvent({event:'window_error',message:String(e.message||''),filename:String(e.filename||''),lineno:e.lineno||0,colno:e.colno||0}));
-window.addEventListener('unhandledrejection',e=>addEvent({event:'unhandled_rejection',reason:String(e.reason&&e.reason.message||e.reason||'')}));
-window.addEventListener('load',()=>scan('window_load'),{once:true});
-scan('initial');
+function read(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}}
+function put(k,v){try{localStorage.setItem(k,JSON.stringify(v,null,2))}catch(e){}return v}
+function trace(event,data){
+  const value=read(TRACE)||{type:'PMP_PASS7_STARTUP_EXECUTION_AUDIT_TRACE_V1',version:V,owner:OWNER,created_at:now(),events:[]};
+  value.version=V;value.updated_at=now();value.events=(value.events||[]).concat([Object.assign({at:now(),event},data||{})]).slice(-160);
+  return put(TRACE,value);
+}
+function injectOne(def){
+  if(document.getElementById(def.id)){trace('script_existing',{id:def.id,src:def.src,role:def.role});return'present'}
+  const script=document.createElement('script');script.id=def.id;script.src=def.src+'?fresh='+def.fresh;
+  script.onload=()=>trace('script_loaded',{id:def.id,src:def.src,role:def.role});
+  script.onerror=()=>trace('script_load_error',{id:def.id,src:def.src,role:def.role});
+  (document.body||document.documentElement).appendChild(script);
+  trace('script_injected',{id:def.id,src:def.src,role:def.role});
+  return'injected';
+}
+function status(){
+  return{
+    section_owner_global:!!window.PMPSectionOwnerRegistryV1,
+    helper_registry_global:!!window.PMPHelperRegistryV1,
+    registry_runtime_probe_global:!!window.PMPPass7RegistryRuntimeProbeV1,
+    pass75_runtime_platform_global:!!window.PMPPass75RuntimePlatformV1,
+    section_owner_snapshot_present:!!read('pmp_section_owner_registry_snapshot_v1'),
+    helper_snapshot_present:!!read('pmp_helper_registry_snapshot_v1'),
+    coverage_receipt_present:!!read('pmp_pass7_coverage_lock_receipt_v1'),
+    certification_receipt_present:!!read('pmp_pass7_certification_gate_v1_receipt')
+  };
+}
+function scan(reason){
+  const outcomes=SCRIPTS.map(def=>({id:def.id,src:def.src,role:def.role,result:injectOne(def)}));
+  const receipt={type:'PMP_CONTINUOUS_RUN_BANK_ORDER_FRAME_LOADER_V3',version:V,owner:OWNER,at:now(),reason:reason||'scan',mode:'EVENT_DRIVEN_NEW_DOCUMENT_ONCE_SINGLE_OWNER_FRAME',frame_path:String(location.pathname||''),documents_seen:1,child_frames_injected:0,scripts:SCRIPTS.map(x=>x.src),outcomes,status:status(),side_effects:{route_change_attempted:false,indexeddb_write_attempted:false,bank_rebuild_attempted:false,storage_migration_attempted:false,section_takeover_attempted:false,helper_takeover_attempted:false,child_frame_stateful_injection_attempted:false,stale_script_removal_attempted:false,recurring_scan_attempted:false,bank_owner_duplicate_injection_attempted:false}};
+  put(RECEIPT,receipt);trace('loader_scan_complete',{reason:reason||'scan',documents_seen:1,child_frames_injected:0});return receipt;
+}
+window.PMPContinuousRunBankOrderFrameLoaderV1={version:V,owner:OWNER,scan,scriptStatus:status,rule:'Initializes the named App Orchestrator owner frame once. Never injects stateful owners into child frames, replaces scripts, or scans on a timer.'};
+window.addEventListener('load',()=>scan('window_load'),{once:true});scan('initial');
 })();

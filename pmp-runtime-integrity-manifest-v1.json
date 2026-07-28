@@ -1,13 +1,13 @@
 {
   "algorithm": "SHA-256",
   "counts": {
-    "executable_records": 716,
+    "executable_records": 719,
     "external_errors": 0,
     "external_records": 3,
     "historical_records": 1,
     "map_declared_covered": 42,
     "map_declared_paths": 42,
-    "runtime_records": 716,
+    "runtime_records": 719,
     "style_records": 0
   },
   "external_records": [
@@ -821,26 +821,26 @@
       "sri": "sha256-GYec4VuMtCkVfPgnEjZEzm+PgKTuAimw7sxuC09lo+c="
     },
     {
-      "bytes": 14376,
+      "bytes": 11815,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "12c5fdac9979f792539e95d53ab11cc4c2abcc5b",
+      "git_blob_sha": "b7b50138697f236c69c0173863297c578a4751c7",
       "mime_type": "text/javascript",
       "path": "pmp-active-path-discovery-machine-v1.js",
-      "sha256_base64": "ZbZKzp0yvnKDUH43GAsdPj8qdA563qxoBS3gt86tL/g=",
-      "sha256_hex": "65b64ace9d32be7283507e37180b1d3e3f2a740e7adeac68052de0b7cead2ff8",
-      "sri": "sha256-ZbZKzp0yvnKDUH43GAsdPj8qdA563qxoBS3gt86tL/g="
+      "sha256_base64": "VXXygmuhdcdsza55rIjSsZfZGygAflj0a7NuvzL+WQk=",
+      "sha256_hex": "5575f2826ba175c76ccdae79ac88d2b197d91b28007e58f46bb36ebf32fe5909",
+      "sri": "sha256-VXXygmuhdcdsza55rIjSsZfZGygAflj0a7NuvzL+WQk="
     },
     {
-      "bytes": 8159,
+      "bytes": 4404,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "88eb651856a0b3fcd7ca0e87b75b9e8c23a383c3",
+      "git_blob_sha": "51b4cdb04b40e9cab97b692539e43f2ff4239c7c",
       "mime_type": "text/javascript",
       "path": "pmp-active-path-discovery-machine-v2.js",
-      "sha256_base64": "iPug6vUMTDjOsVqDD8wkY0A1ctKpEjkVmkr73sqcXVg=",
-      "sha256_hex": "88fba0eaf50c4c38ceb15a830fcc2463403572d2a91239159a4afbdeca9c5d58",
-      "sri": "sha256-iPug6vUMTDjOsVqDD8wkY0A1ctKpEjkVmkr73sqcXVg="
+      "sha256_base64": "Hm9H6FMzoJJj28n1kYo3juVFqYZugw74KxEE3jIhUfc=",
+      "sha256_hex": "1e6f47e85333a09263dbc9f5918a378ee545a9866e830ef82b1104de322151f7",
+      "sri": "sha256-Hm9H6FMzoJJj28n1kYo3juVFqYZugw74KxEE3jIhUfc="
     },
     {
       "bytes": 1616,
@@ -854,15 +854,15 @@
       "sri": "sha256-gkI3jee24GM4EnPUogXmb8KPrMu1Oc64iKAA5PV6gcw="
     },
     {
-      "bytes": 10372,
+      "bytes": 10451,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "163a902340c06d821568177e0a839d111b6cdbcc",
+      "git_blob_sha": "8591792d1b3923932d3c8f6844e95dbebf5abc64",
       "mime_type": "text/javascript",
       "path": "pmp-active-path-discovery-zip-export-v2.js",
-      "sha256_base64": "k+cVhoft/Gc8g1eZMyn/lDkZXES6WnB20NbWzLf5aP4=",
-      "sha256_hex": "93e7158687edfc673c8357993329ff9439195c44ba5a7076d0d6d6ccb7f968fe",
-      "sri": "sha256-k+cVhoft/Gc8g1eZMyn/lDkZXES6WnB20NbWzLf5aP4="
+      "sha256_base64": "EDBCDd+uUt9HobEoJOI6GvftbUmUa7TgVODRsExOEvk=",
+      "sha256_hex": "1030420ddfae52df47a1b12824e23a1af7ed6d49946bb4e054e0d1b04c4e12f9",
+      "sri": "sha256-EDBCDd+uUt9HobEoJOI6GvftbUmUa7TgVODRsExOEvk="
     },
     {
       "bytes": 2498,
@@ -1052,15 +1052,37 @@
       "sri": "sha256-E5Ix50JDguiWafEKx7C2cFhFZOqfOf23/8nAWTKa6fw="
     },
     {
-      "bytes": 18969,
+      "bytes": 15267,
+      "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
+      "execution_class": "RUNTIME_DATA",
+      "git_blob_sha": "e7fc625c0916e928191d6dde37263b96eaf7efcf",
+      "mime_type": "application/json",
+      "path": "pmp-app-orchestrator-ownership-registry-v1.json",
+      "sha256_base64": "CKQx2hin8jOt57yi6Tb4Rp9oOoCsYKs1vmqemggsZ9U=",
+      "sha256_hex": "08a431da18a7f233ade7bca2e936f8469f683a80ac60ab35be6a9e9a082c67d5",
+      "sri": "sha256-CKQx2hin8jOt57yi6Tb4Rp9oOoCsYKs1vmqemggsZ9U="
+    },
+    {
+      "bytes": 3092,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "6e0f9145dca873b73f6000444b8c498ff3741629",
+      "git_blob_sha": "dae4baa423b7df9c2fcc5cbddee4292694a4a159",
+      "mime_type": "text/javascript",
+      "path": "pmp-app-orchestrator-ownership-runtime-v1.js",
+      "sha256_base64": "RWtpiNX4WqxnpeUFWQ1W5VBKSNEcGut03habUVXH1JU=",
+      "sha256_hex": "456b6988d5f85aac67a5e505590d56e5504a48d11c1aeb74de169b5155c7d495",
+      "sri": "sha256-RWtpiNX4WqxnpeUFWQ1W5VBKSNEcGut03habUVXH1JU="
+    },
+    {
+      "bytes": 7294,
+      "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
+      "execution_class": "EXECUTABLE_SCRIPT",
+      "git_blob_sha": "cf3a8b9528ef73948a6fc2daddad7d85e2478cf9",
       "mime_type": "text/javascript",
       "path": "pmp-app-orchestrator-v1.js",
-      "sha256_base64": "NNpiLLOSRiT+36oRCtOK4W+zqktA1ZWuJEb4+ShV/pE=",
-      "sha256_hex": "34da622cb3924624fedfaa110ad38ae16fb3aa4b40d595ae2446f8f92855fe91",
-      "sri": "sha256-NNpiLLOSRiT+36oRCtOK4W+zqktA1ZWuJEb4+ShV/pE="
+      "sha256_base64": "WFRqystBdFYA/Z/Xkz38SQyAkr6qKEN8GkXTpps3WvY=",
+      "sha256_hex": "58546acacb41745600fd9fd7933dfc490c8092beaa28437c1a45d3a69b375af6",
+      "sri": "sha256-WFRqystBdFYA/Z/Xkz38SQyAkr6qKEN8GkXTpps3WvY="
     },
     {
       "bytes": 3035,
@@ -1635,15 +1657,15 @@
       "sri": "sha256-GYrqJO4lYKKSg9Z3Vwte5oF2z6alCKo6vnGU35b/xGk="
     },
     {
-      "bytes": 3132,
+      "bytes": 1123,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "6837986afce3661d2d0d61a2bd326ecd6f87b624",
+      "git_blob_sha": "6f18972ffcb768f4d4db93ec9595823999044b3c",
       "mime_type": "text/javascript",
       "path": "pmp-bank-zero-loading-flash-guard-v1.js",
-      "sha256_base64": "t0wXbSUmzsHpyWq/j8ZykAF32Ks73p3hUAouPb8Z4N4=",
-      "sha256_hex": "b74c176d2526cec1e9c96abf8fc672900177d8ab3bde9de1500a2e3dbf19e0de",
-      "sri": "sha256-t0wXbSUmzsHpyWq/j8ZykAF32Ks73p3hUAouPb8Z4N4="
+      "sha256_base64": "PdPKaPsTub74Sn/OEJRU4FBYZeRcKk8uHnGw342BpKg=",
+      "sha256_hex": "3dd3ca68fb13b9bef84a7fce109454e0505865e45c2a4f2e1e71b0df8d81a4a8",
+      "sri": "sha256-PdPKaPsTub74Sn/OEJRU4FBYZeRcKk8uHnGw342BpKg="
     },
     {
       "bytes": 8528,
@@ -2174,37 +2196,37 @@
       "sri": "sha256-MFtNU4VQZqGbYDl0ZDMbl0wVUDjK6YgA4IgQtFuLuZM="
     },
     {
-      "bytes": 4733,
+      "bytes": 748,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "cc9f33ff45b7362e9247dbd44a4afe6ff23a41e5",
+      "git_blob_sha": "13a1dc3b3b2d36f3804803d4d6694125f62cf1d8",
       "mime_type": "text/javascript",
       "path": "pmp-continuous-run-bank-long-packet-option-v1.js",
-      "sha256_base64": "l0waC6zH5ehxwUfdAxHHG7y8NFKThnLTyLH/sidWu4U=",
-      "sha256_hex": "974c1a0bacc7e5e871c147dd0311c71bbcbc3452938672d3c8b1ffb22756bb85",
-      "sri": "sha256-l0waC6zH5ehxwUfdAxHHG7y8NFKThnLTyLH/sidWu4U="
+      "sha256_base64": "tDGtgAeczQCW88k2Inw8g6MLB+J0pMQHPaiqDSc1P00=",
+      "sha256_hex": "b431ad80079ccd0096f3c936227c3c83a30b07e274a4c4073da8aa0d27353f4d",
+      "sri": "sha256-tDGtgAeczQCW88k2Inw8g6MLB+J0pMQHPaiqDSc1P00="
     },
     {
-      "bytes": 6056,
+      "bytes": 4187,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "d3c6fe9bccda722efb1e20626ec52d811d66cc7d",
+      "git_blob_sha": "1708b774c8aae9f442c04840eec514a1e7aff830",
       "mime_type": "text/javascript",
       "path": "pmp-continuous-run-bank-must-source-zip-v1.js",
-      "sha256_base64": "i7nLqktZyE+5Hw4mnbM516JQpiyd5eYR2w3h191Inhw=",
-      "sha256_hex": "8bb9cbaa4b59c84fb91f0e269db339d7a250a62c9de5e611db0de1d7dd489e1c",
-      "sri": "sha256-i7nLqktZyE+5Hw4mnbM516JQpiyd5eYR2w3h191Inhw="
+      "sha256_base64": "QRwlIoZvuP7upWVEeN/7t4av2MPYa7jpRrhAIok7y5U=",
+      "sha256_hex": "411c2522866fb8feeea5654478dffbb786afd8c3d86bb8e946b84022893bcb95",
+      "sri": "sha256-QRwlIoZvuP7upWVEeN/7t4av2MPYa7jpRrhAIok7y5U="
     },
     {
-      "bytes": 10779,
+      "bytes": 5156,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "cbed73a055f06fa6076fcce4c3ad3388c7f910fe",
+      "git_blob_sha": "3c49554e8ba42f4f1fe8ee2a72823e09a9c48c85",
       "mime_type": "text/javascript",
       "path": "pmp-continuous-run-bank-order-frame-loader-v1.js",
-      "sha256_base64": "45l+ae/BbfE2HbEs/vkUUWWHTB+/BjOlVz/p3MetE84=",
-      "sha256_hex": "e3997e69efc16df1361db12cfef9145165874c1fbf0633a5573fe9dcc7ad13ce",
-      "sri": "sha256-45l+ae/BbfE2HbEs/vkUUWWHTB+/BjOlVz/p3MetE84="
+      "sha256_base64": "Sb4oJI3tFjczNnUAlB3Yf4WziWfQ2YRZLg9+WZXPaKM=",
+      "sha256_hex": "49be28248ded163733367500941dd87f85b38967d0d984592e0f7e5995cf68a3",
+      "sri": "sha256-Sb4oJI3tFjczNnUAlB3Yf4WziWfQ2YRZLg9+WZXPaKM="
     },
     {
       "bytes": 83,
@@ -2218,59 +2240,59 @@
       "sri": "sha256-9sBd4Qa1DwNAoLFg+MfkhA9VUiujCNs5ZHaO/t45Kfs="
     },
     {
-      "bytes": 3872,
+      "bytes": 639,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "5c60509921c0f953b7bc36ed0d88edce21d8150f",
+      "git_blob_sha": "e3f1371e23ac3d8d29fb8a70b5707960b5aa5435",
       "mime_type": "text/javascript",
       "path": "pmp-continuous-run-bank-source-zip-gate-fix-v1.js",
-      "sha256_base64": "f+zeY4A1rpTsM8/871KKQJZVGbib0ucOzMLZ56EH6Nw=",
-      "sha256_hex": "7fecde638035ae94ec33cffcef528a40965519b89bd2e70eccc2d9e7a107e8dc",
-      "sri": "sha256-f+zeY4A1rpTsM8/871KKQJZVGbib0ucOzMLZ56EH6Nw="
+      "sha256_base64": "uEWkA3JvwSIP1cEdGrFB09tO2cMiXP/SEOgc+bqPv+Q=",
+      "sha256_hex": "b845a403726fc1220fd5c11d1ab141d3db4ed9c3225cffd210e81cf9ba8fbfe4",
+      "sri": "sha256-uEWkA3JvwSIP1cEdGrFB09tO2cMiXP/SEOgc+bqPv+Q="
     },
     {
-      "bytes": 2980,
+      "bytes": 676,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "21103f7d7f170a51b92e650960aa59611a9ba343",
+      "git_blob_sha": "34dea35ee902e626ef12f64b58da88add49e65d0",
       "mime_type": "text/javascript",
       "path": "pmp-continuous-run-bank-stable-status-owner-v1.js",
-      "sha256_base64": "QGqJu6Pm7aw4L7SYbTIAYzz8AmKj8obrSUk5Qf6tyBk=",
-      "sha256_hex": "406a89bba3e6edac382fb4986d3200633cfc0262a3f286eb49493941feadc819",
-      "sri": "sha256-QGqJu6Pm7aw4L7SYbTIAYzz8AmKj8obrSUk5Qf6tyBk="
+      "sha256_base64": "wwRbCoa0sUA7UIkRi5vb7AFZA7T7+25vaQwwcq7G87U=",
+      "sha256_hex": "c3045b0a86b4b1403b5089118b9bdbec015903b4fbfb6e6f690c3072aec6f3b5",
+      "sri": "sha256-wwRbCoa0sUA7UIkRi5vb7AFZA7T7+25vaQwwcq7G87U="
     },
     {
-      "bytes": 14769,
+      "bytes": 1158,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "552fec4620fb372f2d64a21b736329aec5ade3b9",
+      "git_blob_sha": "edb8f8de8b062d52d1143557223fe55fc75d29bc",
       "mime_type": "text/javascript",
       "path": "pmp-continuous-run-bank-transfer-store-v1.js",
-      "sha256_base64": "peqb46qwd66Slq9LJ7bLqpc31HLClUQ9UH3zFnV5zyk=",
-      "sha256_hex": "a5ea9be3aab077ae9296af4b27b6cbaa9737d472c295443d507df3167579cf29",
-      "sri": "sha256-peqb46qwd66Slq9LJ7bLqpc31HLClUQ9UH3zFnV5zyk="
+      "sha256_base64": "qh/KXPUvytCvgbTC+h/14/0hYN0MnDyZsdWa0ushsAE=",
+      "sha256_hex": "aa1fca5cf52fcad0af81b4c2fa1ff5e3fd2160dd0c9c3c99b1d59ad2eb21b001",
+      "sri": "sha256-qh/KXPUvytCvgbTC+h/14/0hYN0MnDyZsdWa0ushsAE="
     },
     {
-      "bytes": 12042,
+      "bytes": 13924,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "e8c804aadc717c1872fa20f74d0ec7e82cc16230",
+      "git_blob_sha": "df1a15469eb5fd07ef23982a24aa60eb3c1465f1",
       "mime_type": "text/javascript",
       "path": "pmp-continuous-run-bank-transfer-store-v2.js",
-      "sha256_base64": "0t70v2IMsIWMrkPE5asp2xgUBT1yBKFvFgqMAA0km/Q=",
-      "sha256_hex": "d2def4bf620cb0858cae43c4e5ab29db1814053d7204a16f160a8c000d249bf4",
-      "sri": "sha256-0t70v2IMsIWMrkPE5asp2xgUBT1yBKFvFgqMAA0km/Q="
+      "sha256_base64": "ff9dyrCEWo16jXM7Q5hSixa29RE/cBT+gCbpxYNsM0k=",
+      "sha256_hex": "7dff5dcab0845a8d7a8d733b4398528b16b6f5113f7014fe8026e9c5836c3349",
+      "sri": "sha256-ff9dyrCEWo16jXM7Q5hSixa29RE/cBT+gCbpxYNsM0k="
     },
     {
-      "bytes": 4977,
+      "bytes": 1760,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "d80d7d9bc91b9c932cedd13819ff041a1b3fcefc",
+      "git_blob_sha": "8ece4af001fca1c9d0ee885e4304f14e5c45b68c",
       "mime_type": "text/javascript",
       "path": "pmp-continuous-run-bank-verify-receipt-fix-v1.js",
-      "sha256_base64": "JajzFyABFVhmfTAMCgAjWXbTWT8BS2ojpSv3eTT28Fo=",
-      "sha256_hex": "25a8f31720011558667d300c0a00235976d3593f014b6a23a52bf77934f6f05a",
-      "sri": "sha256-JajzFyABFVhmfTAMCgAjWXbTWT8BS2ojpSv3eTT28Fo="
+      "sha256_base64": "0/F/foJHl1sxSs1M1dlh4FLnpGITaXo1N3cWAULkCe4=",
+      "sha256_hex": "d3f17f7e8247975b314acd4cd5d961e052e7a46213697a353777160142e409ee",
+      "sri": "sha256-0/F/foJHl1sxSs1M1dlh4FLnpGITaXo1N3cWAULkCe4="
     },
     {
       "bytes": 3046,
@@ -2922,15 +2944,15 @@
       "sri": "sha256-2YaDyhFd0QRkBo7hsbbbSM41/T07ZsUBsWVfulpJ4Ig="
     },
     {
-      "bytes": 8283,
+      "bytes": 8216,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_DOCUMENT",
-      "git_blob_sha": "a8ef41018c3096ff8177444bbcdedc494421d08d",
+      "git_blob_sha": "be250c6667dd132bccf12a2652b806d78d90f96a",
       "mime_type": "text/html",
       "path": "pmp-current-inner-cleanbug-rgcontrols-v23.html",
-      "sha256_base64": "SedsB78AFwn1fj3fNMNu8IyfFOw63ERjsTfWLtJ5rbg=",
-      "sha256_hex": "49e76c07bf001709f57e3ddf34c36ef08c9f14ec3adc4463b137d62ed279adb8",
-      "sri": "sha256-SedsB78AFwn1fj3fNMNu8IyfFOw63ERjsTfWLtJ5rbg="
+      "sha256_base64": "6LEK+sRZ1dOSwfH8d9danra1s4cbOvjHR1nFa9QATbs=",
+      "sha256_hex": "e8b10afac459d5d392c1f1fc77d75a9eb6b5b3871b3af8c74759c56bd4004dbb",
+      "sri": "sha256-6LEK+sRZ1dOSwfH8d9danra1s4cbOvjHR1nFa9QATbs="
     },
     {
       "bytes": 2428,
@@ -2988,26 +3010,26 @@
       "sri": "sha256-1HrswmKK8XDjoFW1+TO7rSZyRrvkjo2/HmvX+FwOpuE="
     },
     {
-      "bytes": 25417,
+      "bytes": 25435,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_DOCUMENT",
-      "git_blob_sha": "06e172bc25928c1a558f6074c35939079ed3ff31",
+      "git_blob_sha": "4e379271e13a81a603ff4ed01408e61c9108a722",
       "mime_type": "text/html",
       "path": "pmp-current-inner-cleanbug-rgcontrols-v3.html",
-      "sha256_base64": "EWrEaZ2mhcvtS9o2eSEyrSII9kUZ0Eu3+X5IiZns7aU=",
-      "sha256_hex": "116ac4699da685cbed4bda36792132ad2208f64519d04bb7f97e488999eceda5",
-      "sri": "sha256-EWrEaZ2mhcvtS9o2eSEyrSII9kUZ0Eu3+X5IiZns7aU="
+      "sha256_base64": "3i38EUFe4/lZto7ZpIspx/Cg6BcD2cmfhqLwfMwQOuE=",
+      "sha256_hex": "de2dfc11415ee3f959b68ed9a48b29c7f0a0e81703d9c99f86a2f07ccc103ae1",
+      "sri": "sha256-3i38EUFe4/lZto7ZpIspx/Cg6BcD2cmfhqLwfMwQOuE="
     },
     {
-      "bytes": 22908,
+      "bytes": 23043,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_DOCUMENT",
-      "git_blob_sha": "546594e25c6f62cc8e1fd72676857f0930e1885f",
+      "git_blob_sha": "0041f3f5534b2d222aca0956be8c4844388348c2",
       "mime_type": "text/html",
       "path": "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
-      "sha256_base64": "hyLKexWdKnfC64umhNuVuZaDqb0Ap0Jvw1aj7vxEYeY=",
-      "sha256_hex": "8722ca7b159d2a77c2eb8ba684db95b99683a9bd00a7426fc356a3eefc4461e6",
-      "sri": "sha256-hyLKexWdKnfC64umhNuVuZaDqb0Ap0Jvw1aj7vxEYeY="
+      "sha256_base64": "bG8Xt8m8itMx44xeMRTVaT2ffiF5gUdU7MWzoX/pz3s=",
+      "sha256_hex": "6c6f17b7c9bc8ad331e38c5e3114d5693d9f7e2179814754ecc5b3a17fe9cf7b",
+      "sri": "sha256-bG8Xt8m8itMx44xeMRTVaT2ffiF5gUdU7MWzoX/pz3s="
     },
     {
       "bytes": 8346,
@@ -3021,15 +3043,15 @@
       "sri": "sha256-922+jq9gMDhArnoU/OxGpXOLJx8h0HrUjkHG6k2jOE4="
     },
     {
-      "bytes": 6728,
+      "bytes": 6717,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_DOCUMENT",
-      "git_blob_sha": "b472097aaa98a12c8efa3a4b39980ef75a23c949",
+      "git_blob_sha": "dfa0c1bc6b447f16fa321234ead784888912aa9c",
       "mime_type": "text/html",
       "path": "pmp-current-inner-cleanbug-rgcontrols-v4.html",
-      "sha256_base64": "ghAF0g3kZ51I6U9UBG/uO7oF3Byv334r8rArFfhAXVk=",
-      "sha256_hex": "821005d20de4679d48e94f54046fee3bba05dc1cafdf7e2bf2b02b15f8405d59",
-      "sri": "sha256-ghAF0g3kZ51I6U9UBG/uO7oF3Byv334r8rArFfhAXVk="
+      "sha256_base64": "aZ3wQYWO4AQWQ2TiynSJLhIAyIMCPD99iauSWUIsa/k=",
+      "sha256_hex": "699df041858ee004164364e2ca74892e1200c883023c3f7d89ab9259422c6bf9",
+      "sri": "sha256-aZ3wQYWO4AQWQ2TiynSJLhIAyIMCPD99iauSWUIsa/k="
     },
     {
       "bytes": 1824,
@@ -3208,15 +3230,15 @@
       "sri": "sha256-BjTyJyw0VxE4v8lmJeujjfUizgMwc3F1ywbmIUAizkg="
     },
     {
-      "bytes": 4959,
+      "bytes": 4888,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "eaab13291972a0516c47bcbc34310722a9e1215b",
+      "git_blob_sha": "885947c1b4a90d66a90b9169e7d1f826f80c00ff",
       "mime_type": "text/javascript",
       "path": "pmp-current-page-code-scope-v1.js",
-      "sha256_base64": "7+Sgzhz/yYMKxSHuL9L5kOS3ZghYOBxfJ8FjPxuJ7Ck=",
-      "sha256_hex": "efe4a0ce1cffc9830ac521ee2fd2f990e4b7660858381c5f27c1633f1b89ec29",
-      "sri": "sha256-7+Sgzhz/yYMKxSHuL9L5kOS3ZghYOBxfJ8FjPxuJ7Ck="
+      "sha256_base64": "hl79r5N1zj4C2BlNiVdlV3gfJbFJBnjWQZTTL/RhS7M=",
+      "sha256_hex": "865efdaf9375ce3e02d8194d89576557781f25b1490678d64194d32ff4614bb3",
+      "sri": "sha256-hl79r5N1zj4C2BlNiVdlV3gfJbFJBnjWQZTTL/RhS7M="
     },
     {
       "bytes": 527,
@@ -3340,15 +3362,15 @@
       "sri": "sha256-IABcW95MLzZjWE8ofw8sAt73ApfBeVMytTAFzLW6P9k="
     },
     {
-      "bytes": 9912,
+      "bytes": 9937,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_DOCUMENT",
-      "git_blob_sha": "ffb45fd17cd407bf22ab2c3fb911bb3e9def0754",
+      "git_blob_sha": "70113edb30485834b16ab3f6c5cc60fc8e338615",
       "mime_type": "text/html",
       "path": "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html",
-      "sha256_base64": "05f/ipetFa/BAKcr2mFZkyc/tJ6kk5oa+4ccQio1IsU=",
-      "sha256_hex": "d397ff8a97ad15afc100a72bda615993273fb49ea4939a1afb871c422a3522c5",
-      "sri": "sha256-05f/ipetFa/BAKcr2mFZkyc/tJ6kk5oa+4ccQio1IsU="
+      "sha256_base64": "whoAtqQLs9jR7UymrGJskPW+rUshDOCK4wvMEJKxS0c=",
+      "sha256_hex": "c21a00b6a40bb3d8d1ed4ca6ac626c90f5bead4b210ce08ae30bcc1092b14b47",
+      "sri": "sha256-whoAtqQLs9jR7UymrGJskPW+rUshDOCK4wvMEJKxS0c="
     },
     {
       "bytes": 16868,
@@ -3527,15 +3549,15 @@
       "sri": "sha256-bOhUI/8e2KM+SWAg7C3c2IA4W20qHj0msSBBoCMQjqI="
     },
     {
-      "bytes": 33172,
+      "bytes": 13875,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "d5bcbfeb764dd005f25063077be87a586bd3add3",
+      "git_blob_sha": "8435ba116dc88e802c5e20d8d7fa8181ce386c90",
       "mime_type": "text/javascript",
       "path": "pmp-diagnostics-owner-v1.js",
-      "sha256_base64": "SZgRF/Lt74DALEaCXGg9gc8LCySKMGQazTHvugOycz8=",
-      "sha256_hex": "49981117f2edef80c02c46825c683d81cf0b0b248a30641acd31efba03b2733f",
-      "sri": "sha256-SZgRF/Lt74DALEaCXGg9gc8LCySKMGQazTHvugOycz8="
+      "sha256_base64": "nUdeSIXVIr+2Mb9LB5Cz5HQQyfpn1HiSRWnvGP0BjpI=",
+      "sha256_hex": "9d475e4885d522bfb631bf4b0790b3e47410c9fa67d478924569ef18fd018e92",
+      "sri": "sha256-nUdeSIXVIr+2Mb9LB5Cz5HQQyfpn1HiSRWnvGP0BjpI="
     },
     {
       "bytes": 4693,
@@ -3582,15 +3604,15 @@
       "sri": "sha256-Z+7PZmZy8f598Lgsu9uGc5JWXKbL5wstNim19vcsQQg="
     },
     {
-      "bytes": 9076,
+      "bytes": 9208,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "46049ac1d7f20115914ee453f376bbd83a10a029",
+      "git_blob_sha": "4a78c9f8458cebe0c480f6c0d1de8e8ea7a457dc",
       "mime_type": "text/javascript",
       "path": "pmp-helper-bank-live-inspector-v2.js",
-      "sha256_base64": "nCDblI8Zbu27cs6ojCm5jbqLQfAOnSWWgYfDHRObM/g=",
-      "sha256_hex": "9c20db948f196eedbb72cea88c29b98dba8b41f00e9d25968187c31d139b33f8",
-      "sri": "sha256-nCDblI8Zbu27cs6ojCm5jbqLQfAOnSWWgYfDHRObM/g="
+      "sha256_base64": "j6/e2VUTvvPTs0VZnMZezccaZ7KO8cMqr9YXTMm281w=",
+      "sha256_hex": "8fafded95513bef3d3b345599cc65ecdc71a67b28ef1c32aafd6174cc9b6f35c",
+      "sri": "sha256-j6/e2VUTvvPTs0VZnMZezccaZ7KO8cMqr9YXTMm281w="
     },
     {
       "bytes": 7273,
@@ -3607,12 +3629,12 @@
       "bytes": 24478,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "debc8b781eb189cbeb4828b80c03d21f6fccc106",
+      "git_blob_sha": "793c9e29836dd3bf78a5fe1f0db0d33ae81c6ced",
       "mime_type": "text/javascript",
       "path": "pmp-helper-owner-integration-v1.js",
-      "sha256_base64": "fUzrNYTlBw04uXoDwCDS9EZk1jGWK0/FaxscNzI55lo=",
-      "sha256_hex": "7d4ceb3584e5070d38b97a03c020d2f44664d631962b4fc56b1b1c373239e65a",
-      "sri": "sha256-fUzrNYTlBw04uXoDwCDS9EZk1jGWK0/FaxscNzI55lo="
+      "sha256_base64": "QJPufdOtu9PMH8WuKMXKP2LJCNv+mBJgOHLv6DuqoKM=",
+      "sha256_hex": "4093ee7dd3adbbd3cc1fc5ae28c5ca3f62c908dbfe9812603872efe83baaa0a3",
+      "sri": "sha256-QJPufdOtu9PMH8WuKMXKP2LJCNv+mBJgOHLv6DuqoKM="
     },
     {
       "bytes": 881,
@@ -3637,26 +3659,26 @@
       "sri": "sha256-h2F0+/X8zOyjLQu1b77m6Q8dEyA61p9T5C7djAZFzH0="
     },
     {
-      "bytes": 1911,
+      "bytes": 1190,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "4388d7bfab25d330a9e4e19ab36107581e438050",
+      "git_blob_sha": "24944715aad5d3dc35677474904f1583c705140e",
       "mime_type": "text/javascript",
       "path": "pmp-helper-problem-type-only-v1.js",
-      "sha256_base64": "RiUQhrhTCSakJPG5Db+GTfBu5FRX+uxpRRiFSYzYAOE=",
-      "sha256_hex": "46251086b8530926a424f1b90dbf864df06ee45457faec69451885498cd800e1",
-      "sri": "sha256-RiUQhrhTCSakJPG5Db+GTfBu5FRX+uxpRRiFSYzYAOE="
+      "sha256_base64": "4vRTSnK/xTmgdvv8OqCDBJ/c/U4W37stLzG5whLeajQ=",
+      "sha256_hex": "e2f4534a72bfc539a076fbfc3aa083049fdcfd4e16dfbb2d2f31b9c212de6a34",
+      "sri": "sha256-4vRTSnK/xTmgdvv8OqCDBJ/c/U4W37stLzG5whLeajQ="
     },
     {
-      "bytes": 13770,
+      "bytes": 2814,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "a7a82778e3834cfed7c833e8c0405a607b3a2e02",
+      "git_blob_sha": "160423fcc16849f80ab6b14b5837f5db79e72a9c",
       "mime_type": "text/javascript",
       "path": "pmp-helper-problem-type-seeds-v1.js",
-      "sha256_base64": "9uDEHBXXVDV/LR+pdZQ8JRmCfCfyp30KKwpYCLqstEk=",
-      "sha256_hex": "f6e0c41c15d754357f2d1fa975943c2519827c27f2a77d0a2b0a5808baacb449",
-      "sri": "sha256-9uDEHBXXVDV/LR+pdZQ8JRmCfCfyp30KKwpYCLqstEk="
+      "sha256_base64": "LD6/UtN0Rz7ih6qDlgK7YQAn/HSoGzzLWAr6clk7yhU=",
+      "sha256_hex": "2c3ebf52d374473ee287aa839602bb610027fc74a81b3ccb580afa72593bca15",
+      "sri": "sha256-LD6/UtN0Rz7ih6qDlgK7YQAn/HSoGzzLWAr6clk7yhU="
     },
     {
       "bytes": 5189,
@@ -3681,15 +3703,15 @@
       "sri": "sha256-aAS9vSRG65GnyoMvvh/V9oIxX8gU2W9sl5Vn5lRL4tc="
     },
     {
-      "bytes": 2484,
+      "bytes": 1022,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "6963d2393107ffe581a957ea5ad299e0d77bef63",
+      "git_blob_sha": "c97881a0e02f4606d5c68fae1d84dfa7ab0f692e",
       "mime_type": "text/javascript",
       "path": "pmp-hidden-safe-writer-surface-cleaner-v1.js",
-      "sha256_base64": "SneZOlFRNTCbjVUWLGKyLl+JeowCoU3z2gJbCO3KOLg=",
-      "sha256_hex": "4a77993a515135309b8d55162c62b22e5f897a8c02a14df3da025b08edca38b8",
-      "sri": "sha256-SneZOlFRNTCbjVUWLGKyLl+JeowCoU3z2gJbCO3KOLg="
+      "sha256_base64": "8rLZEfncqLpD0v2ps9PGP/V4dFViHGzG7WHs0W7n7MM=",
+      "sha256_hex": "f2b2d911f9dca8ba43d2fda9b3d3c63ff5787455621c6cc6ed61ecd16ee7ecc3",
+      "sri": "sha256-8rLZEfncqLpD0v2ps9PGP/V4dFViHGzG7WHs0W7n7MM="
     },
     {
       "bytes": 36103,
@@ -4198,15 +4220,15 @@
       "sri": "sha256-UTzJOqOJBIoPYofz/1drBqFC+wDQ8aZ4NhhCFAcovO0="
     },
     {
-      "bytes": 3463,
+      "bytes": 674,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "c4ba77b7ec09464f9a8072574dcedc4f1d910783",
+      "git_blob_sha": "72a456a78e0326a4e33a8857403f4d2bd7790f55",
       "mime_type": "text/javascript",
       "path": "pmp-layout-guard-v1.js",
-      "sha256_base64": "shuMXRmjmaCV3PqLi6ERZr53GgSQOK/ZLWq/r5T6DIM=",
-      "sha256_hex": "b21b8c5d19a399a095dcfa8b8ba11166be771a049038afd92d6abfaf94fa0c83",
-      "sri": "sha256-shuMXRmjmaCV3PqLi6ERZr53GgSQOK/ZLWq/r5T6DIM="
+      "sha256_base64": "OYBzW8tzKpVHWxibqJ5lJT618nyISwanR26rsGU3r3c=",
+      "sha256_hex": "3980735bcb732a95475b189ba89e65253eb5f27c884b06a7476eabb06537af77",
+      "sri": "sha256-OYBzW8tzKpVHWxibqJ5lJT618nyISwanR26rsGU3r3c="
     },
     {
       "bytes": 2311,
@@ -4649,15 +4671,15 @@
       "sri": "sha256-YQHTeXYphJuGc9VJvJG24YZktGcbZCyKEBC/lKvWAa4="
     },
     {
-      "bytes": 19427,
+      "bytes": 19592,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "eb4cc13a43a04c6e6209a2b016e9c9a39d718026",
+      "git_blob_sha": "002ce5eb261906fe3e2f811490531a6caca1a150",
       "mime_type": "text/javascript",
       "path": "pmp-master-bank-tab-v1.js",
-      "sha256_base64": "lghCqTcIwLqtvQCEbmq2yzhqAfBWa091zhFWHCf4T+A=",
-      "sha256_hex": "960842a93708c0baadbd00846e6ab6cb386a01f0566b4f75ce11561c27f84fe0",
-      "sri": "sha256-lghCqTcIwLqtvQCEbmq2yzhqAfBWa091zhFWHCf4T+A="
+      "sha256_base64": "PXAFkPfOC2y+EpyCi268ii7xUypKE/OZ4WICExoIVTk=",
+      "sha256_hex": "3d700590f7ce0b6cbe129c828b6ebc8a2ef1532a4a13f399e16202131a085539",
+      "sri": "sha256-PXAFkPfOC2y+EpyCi268ii7xUypKE/OZ4WICExoIVTk="
     },
     {
       "bytes": 13221,
@@ -4803,6 +4825,17 @@
       "sri": "sha256-thmOn349/4gReLUMszBP0fvRZ2vQMYA2bTq6pQy2HiY="
     },
     {
+      "bytes": 9284,
+      "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
+      "execution_class": "EXECUTABLE_SCRIPT",
+      "git_blob_sha": "9f18c2ad253e2e5a89ce14170b0616e732846cb7",
+      "mime_type": "text/javascript",
+      "path": "pmp-new-chat-safe-handoff-v1.js",
+      "sha256_base64": "0ddyYrcT9T5Z/1D3Il9FNT/GuaaDo3da8L0JjKJ1Suw=",
+      "sha256_hex": "d1d77262b713f53e59ff50f7225f45353fc6b9a683a3775af0bd098ca2754aec",
+      "sri": "sha256-0ddyYrcT9T5Z/1D3Il9FNT/GuaaDo3da8L0JjKJ1Suw="
+    },
+    {
       "bytes": 7285,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_DOCUMENT",
@@ -4825,15 +4858,15 @@
       "sri": "sha256-QAiKTsYPi9ZPgSfc0x0F6j5kaoTZ+RE2A0/VRTbogwY="
     },
     {
-      "bytes": 11268,
+      "bytes": 2862,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "28587a9170e629a7a9f3378ca94d3cf628882559",
+      "git_blob_sha": "2825085a7577bb5f133743eca0f64c08078d7a49",
       "mime_type": "text/javascript",
       "path": "pmp-owner-diagnostics-foundation-v1.js",
-      "sha256_base64": "f30m3Lgk4bp1nEcPKS1OkgoOZVCLiBgHZmzZOfawcMg=",
-      "sha256_hex": "7f7d26dcb824e1ba759c470f292d4e920a0e65508b881807666cd939f6b070c8",
-      "sri": "sha256-f30m3Lgk4bp1nEcPKS1OkgoOZVCLiBgHZmzZOfawcMg="
+      "sha256_base64": "w5EHPCi+XI7M2KLY8GKdFss09CH5lZOD7shiN6UbUNk=",
+      "sha256_hex": "c391073c28be5c8eccd8a2d8f0629d16cb34f421f9959383eec86237a51b50d9",
+      "sri": "sha256-w5EHPCi+XI7M2KLY8GKdFss09CH5lZOD7shiN6UbUNk="
     },
     {
       "bytes": 1914,
@@ -5034,15 +5067,15 @@
       "sri": "sha256-lPbdvjagZCfVX0J1+6bYIGQsg7f9E1rJlUo1QXtRFF0="
     },
     {
-      "bytes": 1351,
+      "bytes": 1580,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "ac060130c2b9714b217a50d18e9a2edd009d8afa",
+      "git_blob_sha": "733c61b5fa54d02608402e4f48b92fe297975add",
       "mime_type": "text/javascript",
       "path": "pmp-pass1r-version-aligner-v1.js",
-      "sha256_base64": "OHAVvooaBjlJf8hHEXwH5nP/bWf0CVaODQldN/PpidQ=",
-      "sha256_hex": "387015be8a1a0639497fc847117c07e673ff6d67f409568e0d095d37f3e989d4",
-      "sri": "sha256-OHAVvooaBjlJf8hHEXwH5nP/bWf0CVaODQldN/PpidQ="
+      "sha256_base64": "zvb5CSk6TLUBoEIexOFIViPw1uS5i+4Uz55qnt8kfNY=",
+      "sha256_hex": "cef6f909293a4cb501a0421ec4e1485623f0d6e4b98bee14cf9e6a9edf247cd6",
+      "sri": "sha256-zvb5CSk6TLUBoEIexOFIViPw1uS5i+4Uz55qnt8kfNY="
     },
     {
       "bytes": 1219,
@@ -5199,15 +5232,15 @@
       "sri": "sha256-48Ap6+r4IYR3myxFFTId6j7beULEk2OCzHwVVXxHh8k="
     },
     {
-      "bytes": 12338,
+      "bytes": 5599,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "339df95b9349b9fbb8ad72b8de455826cbe01dfe",
+      "git_blob_sha": "6588c2f4e582ebd2ed37fcf9f0a40449ffb8f8bd",
       "mime_type": "text/javascript",
       "path": "pmp-pass8-helper-rules-v1.js",
-      "sha256_base64": "pYgRclFFzLGXxgP1c8vwSJi8ceUHA123Z+rXeoISXS4=",
-      "sha256_hex": "a58811725145ccb197c603f573cbf04898bc71e507035db767ead77a82125d2e",
-      "sri": "sha256-pYgRclFFzLGXxgP1c8vwSJi8ceUHA123Z+rXeoISXS4="
+      "sha256_base64": "wd40u9+TzZhdVYV4+e/lDeVimwA6xoD58mrgBQYEZgU=",
+      "sha256_hex": "c1de34bbdf93cd985d558578f9efe50de5629b003ac680f9f26ae00506046605",
+      "sri": "sha256-wd40u9+TzZhdVYV4+e/lDeVimwA6xoD58mrgBQYEZgU="
     },
     {
       "bytes": 3111,
@@ -5815,15 +5848,15 @@
       "sri": "sha256-CySGhc8Oze/PC1yXSU8ln3WUrTpbx197WaoeFerWv2Y="
     },
     {
-      "bytes": 14383,
+      "bytes": 14788,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "7a6f89b61b15e3468bb75f7981675fa1de95f22a",
+      "git_blob_sha": "9e8fa505bcf7db4d6dbddfcb1397991d4891d03a",
       "mime_type": "text/javascript",
       "path": "pmp-private-source-loader-v1.js",
-      "sha256_base64": "YMr41EHKA9uFUK8DmEc08EfH5Gsllrb+WuPe3vFG+cQ=",
-      "sha256_hex": "60caf8d441ca03db8550af03984734f047c7e46b2596b6fe5ae3dedef146f9c4",
-      "sri": "sha256-YMr41EHKA9uFUK8DmEc08EfH5Gsllrb+WuPe3vFG+cQ="
+      "sha256_base64": "xnV2Huch6f2VMNZmtJ1jSZ2oAZVJx6xU9TRZc5ZVFlA=",
+      "sha256_hex": "c675761ee721e9fd9530d666b49d63499da8019549c7ac54f534597396551650",
+      "sri": "sha256-xnV2Huch6f2VMNZmtJ1jSZ2oAZVJx6xU9TRZc5ZVFlA="
     },
     {
       "bytes": 3565,
@@ -5947,26 +5980,26 @@
       "sri": "sha256-hWPvUwPUCkQB4PuH2g8g3AJlGCbobAvSUYAqgukbE04="
     },
     {
-      "bytes": 8730,
+      "bytes": 8925,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "dfccb338ed2c973d0e89562cc2c5c5eb43f5e465",
+      "git_blob_sha": "dc7987e7723dd117dcdc7b9d94ff52b6dc39952a",
       "mime_type": "text/javascript",
       "path": "pmp-resident-continuous-run-status-reader-v1.js",
-      "sha256_base64": "iPRKejPjHaM4KAQ6XX7qa+s4ZmDfg82eKR/8h9D38GY=",
-      "sha256_hex": "88f44a7a33e31da33828043a5d7eea6beb386660df83cd9e291ffc87d0f7f066",
-      "sri": "sha256-iPRKejPjHaM4KAQ6XX7qa+s4ZmDfg82eKR/8h9D38GY="
+      "sha256_base64": "kLiz4lKdCjBT8oWOUS3NMP8+EcY+t2hWCf8aVV7xbuA=",
+      "sha256_hex": "90b8b3e2529d0a3053f2858e512dcd30ff3e11c63eb7685609ff1a555ef16ee0",
+      "sri": "sha256-kLiz4lKdCjBT8oWOUS3NMP8+EcY+t2hWCf8aVV7xbuA="
     },
     {
-      "bytes": 5134,
+      "bytes": 853,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "93eff4449619b62caa9347638ea35435b70ff97d",
+      "git_blob_sha": "4746fe288b5df5bb57f9ad55a01b805940fb2026",
       "mime_type": "text/javascript",
       "path": "pmp-resident-cr-status-router-v1.js",
-      "sha256_base64": "ca6bzR03agXZBKYEA16UdlOQpVV1A8UzWiDmvkPyy/I=",
-      "sha256_hex": "71ae9bcd1d376a05d904a604035e94765390a5557503c5335a20e6be43f2cbf2",
-      "sri": "sha256-ca6bzR03agXZBKYEA16UdlOQpVV1A8UzWiDmvkPyy/I="
+      "sha256_base64": "PA2n8wBo6sHV9o0TGNCALYdxgfovAIEGX22B13loCyQ=",
+      "sha256_hex": "3c0da7f30068eac1d5f68d1318d0802d877181fa2f0081065f6d81d779680b24",
+      "sri": "sha256-PA2n8wBo6sHV9o0TGNCALYdxgfovAIEGX22B13loCyQ="
     },
     {
       "bytes": 14111,
@@ -6156,15 +6189,15 @@
       "sri": "sha256-+fPMGVtx7Jb4QsY6BpLMxSnOy4+/zVX0CxHnuAdtMNQ="
     },
     {
-      "bytes": 15387,
+      "bytes": 15319,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "03ac30f5dbafbe4e87f06b1f9b403a88d4d62ecb",
+      "git_blob_sha": "35ecc7717ea25a5e52b8b37af63c82c3aabc16b3",
       "mime_type": "text/javascript",
       "path": "pmp-route-code-map-adapter-v1.js",
-      "sha256_base64": "w0mSN9x9ntDAkB65QE5oseytKwpOmh5v4qDDTRNlkv4=",
-      "sha256_hex": "c3499237dc7d9ed0c0901eb9404e68b1ecad2b0a4e9a1e6fe2a0c34d136592fe",
-      "sri": "sha256-w0mSN9x9ntDAkB65QE5oseytKwpOmh5v4qDDTRNlkv4="
+      "sha256_base64": "UOTMgvs4Rh9bweDAzFHdbSm2Pv3NV/hJEIDpx0ZAX5U=",
+      "sha256_hex": "50e4cc82fb38461f5bc1e0c0cc51dd6d29b63efdcd57f8491080e9c746405f95",
+      "sri": "sha256-UOTMgvs4Rh9bweDAzFHdbSm2Pv3NV/hJEIDpx0ZAX5U="
     },
     {
       "bytes": 3938,
@@ -7069,15 +7102,15 @@
       "sri": "sha256-/rxHQZBGDWaPwk88zeKXnamjkP4o7ACHL0jK3Vqo84c="
     },
     {
-      "bytes": 7753,
+      "bytes": 2280,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "bf7415cfc210ea0a23c83a301e9426cbdc68331f",
+      "git_blob_sha": "7f5bdf901f35f74e11b9a749dcf47b221107751e",
       "mime_type": "text/javascript",
       "path": "pmp-safe-area-surface-fill-v1.js",
-      "sha256_base64": "2+suY3yuc3niL0VgdXorXSGx8iyt+VAdXV8L2c6SKg4=",
-      "sha256_hex": "dbeb2e637cae7379e22f4560757a2b5d21b1f22cadf9501d5d5f0bd9ce922a0e",
-      "sri": "sha256-2+suY3yuc3niL0VgdXorXSGx8iyt+VAdXV8L2c6SKg4="
+      "sha256_base64": "tLwTm4sdP5dLME44LFeE7EsbhVqiKr1tvyJGTlLIMYQ=",
+      "sha256_hex": "b4bc139b8b1d3f974b304e382c5784ec4b1b855aa22abd6dbf22464e52c83184",
+      "sri": "sha256-tLwTm4sdP5dLME44LFeE7EsbhVqiKr1tvyJGTlLIMYQ="
     },
     {
       "bytes": 16422,
@@ -7311,15 +7344,15 @@
       "sri": "sha256-Lv+Ddafy/XUCdnsBS/9vURBYxzDSOPYrNwrbVguDM5k="
     },
     {
-      "bytes": 5409,
+      "bytes": 5650,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "747a8a258d17b682b00f89babfa924b110db0ad9",
+      "git_blob_sha": "7f87e6ad0456413862b9f19d034002fce11e978e",
       "mime_type": "text/javascript",
       "path": "pmp-source-pdf-text-level2c-v1.js",
-      "sha256_base64": "guF4wMIAKCgFPZOSGA8JI3Y6wgYqyxoCGD1rxxiy1sk=",
-      "sha256_hex": "82e178c0c2002828053d9392180f0923763ac2062acb1a02183d6bc718b2d6c9",
-      "sri": "sha256-guF4wMIAKCgFPZOSGA8JI3Y6wgYqyxoCGD1rxxiy1sk="
+      "sha256_base64": "8bw3CsJLxxJqxjv4r1QFXy6zUslWq6BdTgyG70BdhJ4=",
+      "sha256_hex": "f1bc370ac24bc7126ac63bf8af54055f2eb352c956aba05d4e0c86ef405d849e",
+      "sri": "sha256-8bw3CsJLxxJqxjv4r1QFXy6zUslWq6BdTgyG70BdhJ4="
     },
     {
       "bytes": 4045,
@@ -7333,48 +7366,48 @@
       "sri": "sha256-Eea428qyjzyka6IRLBihyz6bZtiqY6dTPDIqRGJqb94="
     },
     {
-      "bytes": 23220,
+      "bytes": 23544,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "87bda471d7042a3553f49464e4fcfa03f769f343",
+      "git_blob_sha": "eab20baa47771f040eee952845fb6f95a911a4ec",
       "mime_type": "text/javascript",
       "path": "pmp-source-reference-gate-level4-v1.js",
-      "sha256_base64": "9CGc83TBgCU6XOZpwDqDCeZWVJht2tMLXQdI90jX4ns=",
-      "sha256_hex": "f4219cf374c180253a5ce669c03a8309e65654986ddad30b5d0748f748d7e27b",
-      "sri": "sha256-9CGc83TBgCU6XOZpwDqDCeZWVJht2tMLXQdI90jX4ns="
+      "sha256_base64": "MJHLSfdu6Ps0Zx7ZqqKB/avk8vwxpTNFkQAmkEKytpU=",
+      "sha256_hex": "3091cb49f76ee8fb34671ed9aaa281fdabe4f2fc31a533459100269042b2b695",
+      "sri": "sha256-MJHLSfdu6Ps0Zx7ZqqKB/avk8vwxpTNFkQAmkEKytpU="
     },
     {
-      "bytes": 4666,
+      "bytes": 4925,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "8ce0b8c05457e287e67803c5cfae5912a9ae3183",
+      "git_blob_sha": "79501882d845ce6bda99a4f29e2d4d6d0994f06a",
       "mime_type": "text/javascript",
       "path": "pmp-source-text-reader-level3-v1.js",
-      "sha256_base64": "uJJ3M/mtGo9iQpRRTiAysnldO/eLJZzLS1PDEfppht4=",
-      "sha256_hex": "b8927733f9ad1a8f624294514e2032b2795d3bf78b259ccb4b53c311fa6986de",
-      "sri": "sha256-uJJ3M/mtGo9iQpRRTiAysnldO/eLJZzLS1PDEfppht4="
+      "sha256_base64": "SNRrQVwjhOzRrAud/3nItL9B84KZfPNHf9P9IJbT19c=",
+      "sha256_hex": "48d46b415c2384ecd1ac0b9dff79c8b4bf41f382997cf3477fd3fd2096d3d7d7",
+      "sri": "sha256-SNRrQVwjhOzRrAud/3nItL9B84KZfPNHf9P9IJbT19c="
     },
     {
-      "bytes": 8760,
+      "bytes": 9016,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "68c87c91de9b4117065c9638b053a51727d4d1a0",
+      "git_blob_sha": "afd090e797f669722f65295b341aa120aa1bb75c",
       "mime_type": "text/javascript",
       "path": "pmp-source-zip-extractor-level2b-v1.js",
-      "sha256_base64": "FHL1+hrc26dKcPfW4MT+adOIgri3aWTUiilRUNPhkx0=",
-      "sha256_hex": "1472f5fa1adcdba74a70f7d6e0c4fe69d38882b8b76964d48a295150d3e1931d",
-      "sri": "sha256-FHL1+hrc26dKcPfW4MT+adOIgri3aWTUiilRUNPhkx0="
+      "sha256_base64": "AMY9/PAen6n407jTiFBox3fP1X8kkwRegy9FTq/3tc0=",
+      "sha256_hex": "00c63dfcf01e9fa9f8d3b8d3885068c777cfd57f2493045e832f454eaff7b5cd",
+      "sri": "sha256-AMY9/PAen6n407jTiFBox3fP1X8kkwRegy9FTq/3tc0="
     },
     {
-      "bytes": 6454,
+      "bytes": 6698,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "08ba6f9ca1aa1676298702f300ef7530ad5ed155",
+      "git_blob_sha": "ca2ae8471279fceb3705a73568f383f7481439ad",
       "mime_type": "text/javascript",
       "path": "pmp-source-zip-reader-level2-v1.js",
-      "sha256_base64": "qGOXFDNQQ02MGA1zMe2sAEuGxDpB6VMT7vS4x1bIPt8=",
-      "sha256_hex": "a86397143350434d8c180d7331edac004b86c43a41e95313eef4b8c756c83edf",
-      "sri": "sha256-qGOXFDNQQ02MGA1zMe2sAEuGxDpB6VMT7vS4x1bIPt8="
+      "sha256_base64": "iUn7slfNvyvmqd1yn0rd1QStx2IHa3x2JznDL2E5qU8=",
+      "sha256_hex": "8949fbb257cdbf2be6a9dd729f4addd504adc762076b7c762739c32f6139a94f",
+      "sri": "sha256-iUn7slfNvyvmqd1yn0rd1QStx2IHa3x2JznDL2E5qU8="
     },
     {
       "bytes": 232,
@@ -7432,26 +7465,26 @@
       "sri": "sha256-xLm6/IRcM5mSvdf5znlefLjA0SdahBO/PhnJbX34h18="
     },
     {
-      "bytes": 584,
+      "bytes": 967,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "a71aea63019a7e9a0e1f5ad36b1a4a18a30f2255",
+      "git_blob_sha": "6e3e7c17d96dec840235dde0c3f9511868f58325",
       "mime_type": "text/javascript",
       "path": "pmp-top-lossless-injector.js",
-      "sha256_base64": "qdH2iMMpVmeS5YY+GgLaJ2nfHQf9j7wiUYaN+PM7EM0=",
-      "sha256_hex": "a9d1f688c329566792e5863e1a02da2769df1d07fd8fbc2251868df8f33b10cd",
-      "sri": "sha256-qdH2iMMpVmeS5YY+GgLaJ2nfHQf9j7wiUYaN+PM7EM0="
+      "sha256_base64": "SAX0X8GG+Bvz1xEBVQcOeTFnATTOMzus0VcuqeXP8Ug=",
+      "sha256_hex": "4805f45fc186f81bf3d7110155070e7931670134ce333bacd1572ea9e5cff148",
+      "sri": "sha256-SAX0X8GG+Bvz1xEBVQcOeTFnATTOMzus0VcuqeXP8Ug="
     },
     {
-      "bytes": 1194,
+      "bytes": 1482,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "08a7affe2c710951154f3335cf53fbec43f57580",
+      "git_blob_sha": "159bfa83b46b210b303a360957e438ceb6ded204",
       "mime_type": "text/javascript",
       "path": "pmp-top-lossless-loader.js",
-      "sha256_base64": "MTZfks5Ndx6vPb1XBv06R2Fp6fhUr41psteViKBldug=",
-      "sha256_hex": "31365f92ce4d771eaf3dbd5706fd3a476169e9f854af8d69b2d79588a06576e8",
-      "sri": "sha256-MTZfks5Ndx6vPb1XBv06R2Fp6fhUr41psteViKBldug="
+      "sha256_base64": "WNxGNe71jTl5LsLbP5Dtd+ASgWPKMnOOrKr+9xqQrm4=",
+      "sha256_hex": "58dc4635eef58d39792ec2db3f90ed77e0128163ca32738eacaafef71a90ae6e",
+      "sri": "sha256-WNxGNe71jTl5LsLbP5Dtd+ASgWPKMnOOrKr+9xqQrm4="
     },
     {
       "bytes": 1999,
@@ -7957,7 +7990,7 @@
       "rule": "This is the only application bootstrap source excluded from downstream manifest self-enforcement."
     }
   ],
-  "runtime_source_set_sha256": "09814d711eaa4033743ab6328db480a4874fc26841b58c7232cc85758dc16c8d",
+  "runtime_source_set_sha256": "bd5c5ee24b3c70c4ed44b8f5e3b82e266ba01a2f1a2d79e32eb6be02cebdf347",
   "source_identity_rule": "Deterministic digest of protected local, historical, external, root-anchor, and policy identities; audit/workflow-only commits do not alter this identity.",
   "type": "PMP_RUNTIME_INTEGRITY_MANIFEST_V1",
   "unlisted_executable_policy": "FAIL_CLOSED",

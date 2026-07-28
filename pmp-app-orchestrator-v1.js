@@ -1,42 +1,125 @@
 (()=>{
 'use strict';
-const V='1.3.4-loads-permanent-diagnostics-owner-20260709A';
-const OWNER='pmp-app-orchestrator-v1';
-const DIAGNOSTICS_SRC='pmp-diagnostics-owner-v1.js?fresh=permanent-diagnostics-owner-shell-20260709A';
-const KEYS={receipt:'pmp_app_orchestrator_v1_receipt',status:'pmp_app_orchestrator_boot_status_v1',helperRules:'pmp_pass8_helper_rules_receipt_v1',helperRulesUnknown:'pmp_pass8_unknown_helpers_v1',pass8Certification:'pmp_pass8_helper_rules_certification_v1',pass8CertificationReceipt:'pmp_pass8_helper_rules_certification_receipt_v1',backgroundDiagnostic:'pmp_pass8_background_diagnostic_v1',diagnosticsOwner:'pmp_diagnostics_owner_v1_receipt',copyAttempt:'pmp_app_orchestrator_copy_attempt_v1'};
+const V='2.0.0-exclusive-ownership-handoff-20260727A';
+const OWNER='app_orchestrator_owner';
+const DIAGNOSTICS_SRC='pmp-diagnostics-owner-v1.js?fresh=ownership-maintenance-20260727A';
+const DIAGNOSTICS_TAB_SRC='pmp-diagnostics-bottom-tab-forcer-v1.js?fresh=one-button-handoff-entry-20260727A';
+const BOUNDED_DISCOVERY_SRC='pmp-active-path-discovery-machine-v2.js?fresh=bounded-support-no-v1-alias-20260727A';
+const KEYS={
+  receipt:'pmp_app_orchestrator_v1_receipt',
+  status:'pmp_app_orchestrator_boot_status_v1',
+  diagnosticsOwner:'pmp_diagnostics_owner_v1_receipt',
+  ownershipRuntime:'pmp_app_orchestrator_ownership_runtime_v1_receipt',
+  handoff:'pmp_new_chat_safe_handoff_v1_receipt'
+};
 const EXPECTED={map:'pmp-current-map-v12.json',guardian:'pmp-route-guardian-current-loader-v22.html',current:'pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html',inner:'pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html'};
-const PASS8_SCRIPTS=[
-  {id:'helper_rules',path:'pmp-pass8-helper-rules-v1.js',src:'pmp-pass8-helper-rules-v1.js?fresh=background-pass8-helper-rules-20260709D',api:'PMPPass8HelperRulesV1',run:'run'},
-  {id:'mount_registry',path:'pmp-mount-registry-v1.js',src:'pmp-mount-registry-v1.js?fresh=background-mount-registry-v30-support-20260709D',api:'PMPMountRegistryV1',run:'scan'},
-  {id:'active_path_discovery_v2',path:'pmp-active-path-discovery-machine-v2.js',src:'pmp-active-path-discovery-machine-v2.js?fresh=background-discovery-v2-1-current-only-20260709D',api:'PMPActivePathDiscoveryMachineV1',run:'run'}
-];
-let last=null,diagState={status:'not_started',started_by:'none'},backgroundPromise=null;
+let LAST=null;
 function T(){try{return window.top||window}catch(e){return window}}
 function now(){return new Date().toISOString()}
-function put(k,v){try{T().localStorage.setItem(k,JSON.stringify(v,null,2))}catch(e){}return v}
 function read(k){try{return JSON.parse(T().localStorage.getItem(k)||'null')}catch(e){return null}}
-function scripts(){try{return Array.from(document.querySelectorAll('script[src]')).map(s=>String(s.getAttribute('src')||''))}catch(e){return[]}}
-function hasScript(path){return scripts().some(s=>s.indexOf(path)>-1)}
-function isCurrentDiscovery(x){return !!(x&&String(x.version||'').indexOf('2.')===0)}
-function state(ok,yes,no){return ok?yes:no}
-function num(x){return typeof x==='number'?x:null}
-function loadScript(def){return new Promise(resolve=>{try{if(hasScript(def.path)){resolve('already_present');return}let s=document.createElement('script');s.src=def.src;s.async=true;s.onload=()=>resolve('loaded');s.onerror=()=>resolve('load_error');(document.head||document.documentElement).appendChild(s)}catch(e){resolve('exception_'+String(e&&e.message||e))}})}
-function loadDiagnosticsOwner(reason){return new Promise(resolve=>{try{if(hasScript('pmp-diagnostics-owner-v1.js')){try{let api=T().PMPDiagnosticsOwnerV1||window.PMPDiagnosticsOwnerV1;if(api&&typeof api.run==='function')api.run(reason||'orchestrator_seen_existing')}catch(e){}resolve('already_present');return}let s=document.createElement('script');s.src=DIAGNOSTICS_SRC;s.async=true;s.onload=()=>{try{let api=T().PMPDiagnosticsOwnerV1||window.PMPDiagnosticsOwnerV1;if(api&&typeof api.run==='function')api.run(reason||'orchestrator_loaded')}catch(e){}resolve('loaded')};s.onerror=()=>resolve('load_error');(document.head||document.documentElement).appendChild(s)}catch(e){resolve('exception_'+String(e&&e.message||e))}})}
-async function runApi(def,reason){try{let api=T()[def.api]||window[def.api];if(api&&def.run&&typeof api[def.run]==='function'){let r=api[def.run](reason||'background_pass8_diagnostic');if(r&&typeof r.then==='function')return await r;return r}return {status:'api_unavailable'}}catch(e){return {status:'api_error',error:String(e&&e.message||e)}}}
-function helperRulesSummary(){let h=read(KEYS.helperRules),u=read(KEYS.helperRulesUnknown),held=u&&Array.isArray(u.held)?u.held:[];return h?{status:h.status||'present',version:h.version||'unknown',counts:h.counts||null,held_unknown_helpers:held}:{status:'not_ready',held_unknown_helpers:held}}
-function atlasDiscoverySummary(){let disc=read('pmp_active_path_discovery_receipt_v1'),full=read('pmp_active_path_discovery_report_v1');return{discovery:isCurrentDiscovery(disc)?{version:disc.version,hard_missing_count:disc.hard_missing_count,support_reachable_missing_count:disc.support_reachable_missing_count,dead_reference_count:disc.dead_reference_count,freeze_gate_pass:disc.freeze_gate_pass,mode:disc.mode||'current'}:{status:disc?'not_current_v2':'not_ready',version:disc&&disc.version||'missing'},latest_report:isCurrentDiscovery(full)?{version:full.version,hard_missing_count:full.hard_missing_count,live_runtime_missing_count:full.live_runtime_missing_count,direct_current_missing_count:full.direct_current_missing_count,support_reachable_missing_count:full.support_reachable_missing_count,dead_reference_count:full.dead_reference_count,freeze_gate_pass:full.freeze_gate&&full.freeze_gate.pass,mode:full.mode||'current'}:{status:full?'not_current_v2':'not_ready',version:full&&full.version||'missing'}}}
-function pass8CertificationSummary(){let c=read(KEYS.pass8Certification);return c?{status:c.status||'present',version:c.version||'unknown',move_on_from_pass8:c.move_on_from_pass8||'unknown',checks:c.checks||{}}:{status:'not_ready'}}
-function diagnosticsOwnerSummary(){let d=read(KEYS.diagnosticsOwner);return d?{status:d.status||'present',version:d.version||'unknown',normal_home:d.normal_home||'Diagnostics tab',sections:d.sections||0}:{status:'loading',normal_home:'Diagnostics tab'}}
-function storedDiag(){let d=read(KEYS.backgroundDiagnostic);return d&&d.status?d:diagState}
-function inlinePass8Certification(reason){let helper=read(KEYS.helperRules);let unknown=read(KEYS.helperRulesUnknown);let discovery=read('pmp_active_path_discovery_receipt_v1');let discoveryReport=read('pmp_active_path_discovery_report_v1');let atlas=read('pmp_mount_registry_v1_receipt');let orch=read(KEYS.receipt);let held=unknown&&Array.isArray(unknown.held)?unknown.held:[];let helperCounts=helper&&helper.counts?helper.counts:{};let helperActive=!!(helper&&helper.status==='PASS8_HELPER_RULES_ACTIVE');let helperNoUnknown=held.length===0&&helperCounts.held_unknown_helpers===0;let helperClassified=!!(helperCounts.declared_helpers&&helperCounts.classified_helpers&&helperCounts.declared_helpers===helperCounts.classified_helpers);let atlasClean=!!(isCurrentDiscovery(discovery)&&discovery.freeze_gate_pass===true&&discovery.hard_missing_count===0&&discovery.dead_reference_count===0);let liveClean=!!(isCurrentDiscovery(discoveryReport)&&discoveryReport.live_runtime_missing_count===0&&discoveryReport.direct_current_missing_count===0);let oldRootClean=!!(!discovery||discovery.historic_reference_current_boot_root_count===0);let atlasPresent=!!(atlas&&atlas.version);let copyStable=!!(!orch||!orch.copy_contract||(orch.copy_contract.pass_specific==='no'&&orch.copy_contract.works_after_future_passes==='yes'));let pass=helperActive&&helperNoUnknown&&helperClassified&&atlasClean&&liveClean&&oldRootClean&&atlasPresent&&copyStable;let report={type:'PMP_PASS8_HELPER_RULES_CERTIFICATION_V1',version:'1.1.0-inline-background-certification-20260709A',owner:OWNER,at:now(),reason:reason||'inline_background_certification',status:state(pass,'PASS8_HELPER_RULES_CERTIFIED_MOVE_ON','PASS8_HELPER_RULES_NEEDS_REVIEW'),move_on_from_pass8:state(pass,'yes','needs_review'),scope:'Background-only Pass 8 helper rules certification. No external certification script required.',checks:{helper_rules_status:state(helperActive,'active','needs_review'),helper_unknowns:state(helperNoUnknown,'zero_held_unknown_helpers','needs_review'),helper_classification:state(helperClassified,'declared_helpers_equal_classified_helpers','needs_review'),atlas_discovery_freeze_gate:state(atlasClean,'passed','needs_review'),live_runtime_missing:state(liveClean,'zero','needs_review'),old_current_root_refs:state(oldRootClean,'zero','needs_review'),atlas_registry:state(atlasPresent,'present','needs_review'),copy_contract:state(copyStable,'stable_pass_independent_or_not_required_for_pass8','needs_review')},evidence_summary:{helper_rules:{version:helper&&helper.version||'missing',status:helper&&helper.status||'missing',declared_helpers:num(helperCounts.declared_helpers),classified_helpers:num(helperCounts.classified_helpers),accepted_helpers:num(helperCounts.accepted_helpers),diagnostic_only_helpers:num(helperCounts.diagnostic_only_helpers),legacy_helpers:num(helperCounts.legacy_helpers),held_unknown_helpers:held.length},atlas_discovery:{receipt_version:discovery&&discovery.version||'missing',report_version:discoveryReport&&discoveryReport.version||'missing',freeze_gate_pass:discovery&&discovery.freeze_gate_pass===true?'true':'needs_review',hard_missing_count:discovery&&typeof discovery.hard_missing_count==='number'?discovery.hard_missing_count:'missing',live_runtime_missing_count:discoveryReport&&typeof discoveryReport.live_runtime_missing_count==='number'?discoveryReport.live_runtime_missing_count:'missing',direct_current_missing_count:discoveryReport&&typeof discoveryReport.direct_current_missing_count==='number'?discoveryReport.direct_current_missing_count:'missing',support_reachable_missing_count:discoveryReport&&typeof discoveryReport.support_reachable_missing_count==='number'?discoveryReport.support_reachable_missing_count:'not_blocking_current_boot',dead_reference_count:discovery&&typeof discovery.dead_reference_count==='number'?discovery.dead_reference_count:'missing'},atlas_registry:{version:atlas&&atlas.version||'missing',active_file_count:atlas&&atlas.active_file_count||'missing',support_file_count:atlas&&atlas.support_file_count||'missing',missing_expected_count:atlas&&typeof atlas.missing_expected_count==='number'?atlas.missing_expected_count:'missing'},app_orchestrator_copy_contract:{version:orch&&orch.version||'missing',binding:orch&&orch.copy_contract&&orch.copy_contract.binding||'missing',pass_specific:orch&&orch.copy_contract&&orch.copy_contract.pass_specific||'missing',works_after_future_passes:orch&&orch.copy_contract&&orch.copy_contract.works_after_future_passes||'missing'}},side_effects:{route_change:'not_attempted',boot_surface_replacement:'not_attempted',runtime_surface_replacement:'not_attempted',bank_rebuild:'not_attempted',indexeddb_write:'not_attempted',storage_migration:'not_attempted',ownership_takeover:'not_attempted',panel_mount:'not_attempted'},safe_claim:state(pass,'Pass 8 Helper Rules are certified for the current runtime by a background-only diagnostic.','Pass 8 Helper Rules certification report was generated, but one or more checks need review.'),do_not_claim:['not full source acceptance','not Bank rebuild','not Pass 9 certification','not future version certification','not full app feature certification']};put(KEYS.pass8Certification,report);put(KEYS.pass8CertificationReceipt,{type:'PMP_PASS8_HELPER_RULES_CERTIFICATION_RECEIPT_V1',version:report.version,owner:OWNER,at:now(),status:report.status,move_on_from_pass8:report.move_on_from_pass8,checks:report.checks,side_effects:report.side_effects});return report}
-function currentReport(reason){let reportDiag=storedDiag();let receipt={type:'PMP_APP_ORCHESTRATOR_V1_RECEIPT',version:V,owner:OWNER,at:now(),reason:reason||'current_report',mode:'current_orchestrator_report_background_only',status:'CURRENT_ORCHESTRATOR_REPORT_READY',expected:{route_guardian:EXPECTED.guardian,current_reload:EXPECTED.current,current_inner:EXPECTED.inner,map:EXPECTED.map},current_chain_handoff:{type:'PMP_CURRENT_CHAIN_APP_ORCHESTRATOR_PROOF_V1',version:V,owner:OWNER,at:now(),mode:'current_chain_orchestrator_proof',expected:{route_guardian:EXPECTED.guardian,current_reload:EXPECTED.current,current_inner:EXPECTED.inner,map:EXPECTED.map},checks:{map:'current',route_guardian:'current',current_reload:'current',current_inner:'current',old_pass_receipt:'not_used'},pass:'pass'},active_reports:{helper_rules:helperRulesSummary(),atlas_discovery:atlasDiscoverySummary(),pass8_helper_rules_certification:pass8CertificationSummary(),pass8_background_diagnostic:reportDiag,diagnostics_owner:diagnosticsOwnerSummary()},copy_contract:{button:'Diagnostics tab → App Orchestrator Status',binding:'stable_current_orchestrator_report',pass_specific:'no',works_after_future_passes:'yes',copy_waits_for_current_evidence:'no',background_diagnostic_only:'yes',startup_copy_buttons:'rescue_only_before_diagnostics_tab_exists'},safe_claim:'App Orchestrator reports current runtime state, loads the permanent Diagnostics Owner, and keeps startup copy reports as rescue-only. It does not replace boot surfaces, runtime surfaces, routes, panels, or storage.',do_not_claim:['not full source acceptance','not Bank rebuild','not Pass 9','not future version certification'],side_effects:{route_change:'not_attempted',boot_surface_replacement:'not_attempted',runtime_surface_replacement:'not_attempted',bank_rebuild:'not_attempted',indexeddb_write:'not_attempted',storage_migration:'not_attempted',ownership_takeover:'not_attempted',panel_mount:'diagnostics_tab_only'}};last=receipt;put(KEYS.receipt,receipt);put(KEYS.status,{type:'PMP_APP_ORCHESTRATOR_CURRENT_STATUS_V1',version:V,owner:OWNER,at:now(),status:receipt.status,active_reports:receipt.active_reports,copy_contract:receipt.copy_contract});return receipt}
-function persistDiag(state){diagState=Object.assign({},diagState,state,{at:now()});put(KEYS.backgroundDiagnostic,Object.assign({type:'PMP_PASS8_BACKGROUND_DIAGNOSTIC_V1',version:V,owner:OWNER,rule:'background_only_no_visual_surface'},diagState));return diagState}
-async function runPass8BackgroundDiagnostic(reason){if(backgroundPromise)return backgroundPromise;persistDiag({status:'running',started_by:reason||'background',visual_surface:'not_created',boot_surface_replacement:'not_attempted',runtime_surface_replacement:'not_attempted',route_change:'not_attempted'});backgroundPromise=(async()=>{let steps=[];for(const def of PASS8_SCRIPTS){let load=await loadScript(def);let api=await runApi(def,'background_'+def.id);steps.push({id:def.id,load,api_status:api&&api.status||api&&api.type||'called'});persistDiag({status:'running',steps});}let cert=inlinePass8Certification('background_inline_certification');steps.push({id:'inline_pass8_certification',load:'not_required',api_status:cert.status});let diagLoad=await loadDiagnosticsOwner('background_diagnostic_sequence');steps.push({id:'diagnostics_owner',load:diagLoad,api_status:(read(KEYS.diagnosticsOwner)||{}).status||'requested'});let disc=atlasDiscoverySummary();let final={status:'complete',finished_at:now(),steps,certification_status:cert.status,move_on_from_pass8:cert.move_on_from_pass8||'not_ready',discovery_status:disc.discovery&&disc.discovery.freeze_gate_pass===true?'passed':'needs_review',diagnostics_owner_status:(read(KEYS.diagnosticsOwner)||{}).status||'loading',visual_surface:'not_created',boot_surface_replacement:'not_attempted',runtime_surface_replacement:'not_attempted',route_change:'not_attempted',bank_rebuild:'not_attempted',indexeddb_write:'not_attempted',storage_migration:'not_attempted',ownership_takeover:'not_attempted',panel_mount:'diagnostics_tab_only'};persistDiag(final);currentReport('background_diagnostic_complete');return final})().catch(e=>{persistDiag({status:'error',error:String(e&&e.message||e),boot_surface_replacement:'not_attempted',runtime_surface_replacement:'not_attempted'});return diagState});return backgroundPromise}
-function kickBackground(reason){if(!backgroundPromise&&diagState.status!=='running'&&diagState.status!=='complete'){persistDiag({status:'queued',started_by:reason||'queued'});setTimeout(()=>runPass8BackgroundDiagnostic(reason||'queued'),50)}return diagState}
-function copyText(text){let ok='not_confirmed';try{let ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','readonly');ta.style.position='fixed';ta.style.left='12px';ta.style.top='12px';ta.style.width='2px';ta.style.height='2px';ta.style.opacity='0.01';ta.style.zIndex='2147483647';ta.style.fontSize='16px';document.body.appendChild(ta);ta.focus();ta.select();ta.setSelectionRange(0,ta.value.length);ok=document.execCommand&&document.execCommand('copy')?'copied':'not_confirmed';ta.remove()}catch(e){ok='not_confirmed'}try{if(ok!=='copied'&&navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text)}catch(e){}return ok}
-function bindOrchestratorCopyButton(){try{let btn=document.getElementById('copyOrchBtn');if(!btn||btn.__pmpOrchestratorCopyBound)return;btn.__pmpOrchestratorCopyBound=true;btn.onclick=function(){kickBackground('copy_trigger_background');loadDiagnosticsOwner('copy_trigger');let r=currentReport('copy_orchestrator_report_no_wait');let result=copyText(JSON.stringify(r,null,2));let old=btn.textContent;btn.textContent=result==='copied'?'Copied':'Report ready';setTimeout(()=>{btn.textContent=old},1200);put(KEYS.copyAttempt,{type:'PMP_APP_ORCHESTRATOR_COPY_ATTEMPT_V1',version:V,owner:OWNER,at:now(),result,report_status:r.status,copy_contract:r.copy_contract,active_reports:r.active_reports});return false}}catch(e){}}
-let existing=window.PMPAppOrchestratorV1||null,api=existing&&typeof existing==='object'?existing:{};
-api.version=V;api.owner=OWNER;api.mode='current_orchestrator_report_background_only';api.keys=Object.assign({},api.keys||{},KEYS);api.run=async(reason)=>currentReport(reason||'api_run_no_wait');api.currentReport=currentReport;api.inlinePass8Certification=inlinePass8Certification;api.runPass8BackgroundDiagnostic=runPass8BackgroundDiagnostic;api.kickPass8BackgroundDiagnostic=kickBackground;api.loadDiagnosticsOwner=loadDiagnosticsOwner;api.bindOrchestratorCopyButton=bindOrchestratorCopyButton;api.getLastReceipt=()=>last||currentReport('get_last_receipt');api.rule='App Orchestrator loads permanent Diagnostics Owner and runs background certifications only. No boot surface replacement, runtime replacement, route mutation, Bank rebuild, storage migration, or ownership takeover.';
-window.PMPAppOrchestratorV1=api;try{T().PMPAppOrchestratorV1=api}catch(e){}
-try{currentReport('boot_start_load_diagnostics_owner');bindOrchestratorCopyButton();loadDiagnosticsOwner('boot_start');kickBackground('boot_autostart_background');setTimeout(()=>bindOrchestratorCopyButton(),1200);setTimeout(()=>loadDiagnosticsOwner('settled_load_2500ms'),2500);setTimeout(()=>kickBackground('settled_autostart_background'),2500);setTimeout(()=>currentReport('settled_background_only_8000ms'),8000)}catch(e){put(KEYS.receipt,{type:'PMP_APP_ORCHESTRATOR_V1_RECEIPT',version:V,owner:OWNER,at:now(),status:'ERROR',error:String(e&&e.message||e),side_effects:{route_change:'not_attempted',boot_surface_replacement:'not_attempted',runtime_surface_replacement:'not_attempted',bank_rebuild:'not_attempted',indexeddb_write:'not_attempted',storage_migration:'not_attempted',ownership_takeover:'not_attempted'}})}
+function put(k,v){try{T().localStorage.setItem(k,JSON.stringify(v,null,2))}catch(e){}return v}
+function hasScript(path){try{return Array.from(document.querySelectorAll('script[src]')).some(s=>String(s.getAttribute('src')||'').includes(path))}catch(e){return false}}
+function load(path,src,apiName,reason){
+  return new Promise(resolve=>{
+    try{
+      const api=window[apiName]||T()[apiName];
+      if(api){resolve('already_present');return}
+      if(hasScript(path)){resolve('script_present_waiting_for_api');return}
+      const script=document.createElement('script');script.src=src;script.async=true;
+      script.onload=()=>{try{const loaded=window[apiName]||T()[apiName];if(loaded&&typeof loaded.run==='function')loaded.run(reason||'orchestrator_loaded')}catch(e){}resolve('loaded')};
+      script.onerror=()=>resolve('load_error');
+      (document.head||document.documentElement).appendChild(script);
+    }catch(error){resolve('exception_'+String(error&&error.message||error))}
+  });
+}
+function compact(report){
+  if(!report)return{status:'not_ready'};
+  return{
+    type:report.type||null,
+    version:report.version||null,
+    owner:report.owner||null,
+    status:report.status||null,
+    hard_missing_count:Number.isFinite(report.hard_missing_count)?report.hard_missing_count:null,
+    support_reachable_missing_count:Number.isFinite(report.support_reachable_missing_count)?report.support_reachable_missing_count:null,
+    dead_reference_count:Number.isFinite(report.dead_reference_count)?report.dead_reference_count:null,
+    freeze_gate_pass:!!(report.freeze_gate&&report.freeze_gate.pass)
+  };
+}
+function currentReport(reason){
+  const canonical=read('pmp_active_path_discovery_report_v1');
+  const bounded=read('pmp_active_path_discovery_bounded_report_v2');
+  const ownership=read(KEYS.ownershipRuntime);
+  const sectionOwners=read('pmp_section_owner_registry_snapshot_v1');
+  const helpers=read('pmp_helper_registry_snapshot_v1');
+  LAST={
+    type:'PMP_APP_ORCHESTRATOR_V1_RECEIPT',
+    version:V,
+    owner:OWNER,
+    writer:'pmp-app-orchestrator-v1.js',
+    at:now(),
+    reason:reason||'current_report',
+    status:'CURRENT_ORCHESTRATOR_REPORT_READY',
+    expected:{route_guardian:EXPECTED.guardian,current_reload:EXPECTED.current,current_inner:EXPECTED.inner,map:EXPECTED.map},
+    ownership:{
+      registry:'pmp-app-orchestrator-ownership-registry-v1.json',
+      runtime:ownership||{status:'not_ready'},
+      canonical_writer_rule:'one canonical writer per protected resource',
+      helper_rule:'helpers may read or request but may not independently commit owner state',
+      section_owner_legacy_snapshot:{authority:'historical_diagnostic_only',summary:sectionOwners&&sectionOwners.summary||{status:'not_ready'}},
+      helper_legacy_snapshot:{authority:'historical_diagnostic_only',summary:helpers&&helpers.summary||{status:'not_ready'}},
+      current_authority:'pmp-app-orchestrator-ownership-registry-v1.json'
+    },
+    active_path:{
+      canonical_detailed:compact(canonical),
+      bounded_support:compact(bounded),
+      display_copy_export_source:'canonical_detailed_only',
+      schemas_separate:true
+    },
+    new_chat_handoff:{
+      button:'Diagnostics → App Orchestrator Status → Copy New Chat Safe Handoff',
+      owner:OWNER,
+      api:'PMPNewChatSafeHandoffV1.run',
+      behavior:'copies one complete packet when bounded; otherwise downloads one small verified ZIP',
+      receipt:read(KEYS.handoff)||{status:'not_used_yet'}
+    },
+    protected_boundaries:{
+      route_authority:'pmp-current-map-v12.json only',
+      bank_owner:'bank_screen_owner',
+      continuous_run_owner:'continuous_run_level_owner',
+      diagnostics_owner:'diagnostics_owner',
+      persisted_user_data:'no mutation or migration by App Orchestrator',
+      production_activation:'not_attempted'
+    },
+    required_maintenance_gates:[
+      'App Orchestrator Ownership Maintenance',
+      'Runtime Integrity Seal',
+      'Permanent No-Blind-Flying Gate'
+    ],
+    safe_claim:'App Orchestrator reports current architecture and ownership state and creates a safe new-chat handoff. It does not own Bank data, Continuous Run lifecycle, routes, user data, or production activation.',
+    side_effects:{route_change:'not_attempted',bank_rebuild:'not_attempted',indexeddb_write:'not_attempted',storage_migration:'not_attempted',persisted_user_data_write:'not_attempted',ownership_takeover:'not_attempted'}
+  };
+  put(KEYS.receipt,LAST);
+  put(KEYS.status,{type:'PMP_APP_ORCHESTRATOR_CURRENT_STATUS_V1',version:V,owner:OWNER,at:now(),status:LAST.status,ownership:LAST.ownership,active_path:LAST.active_path,new_chat_handoff:LAST.new_chat_handoff});
+  return LAST;
+}
+async function run(reason){
+  await load('pmp-active-path-discovery-machine-v2.js',BOUNDED_DISCOVERY_SRC,'PMPActivePathDiscoveryMachineV2','orchestrator_bounded_support');
+  const bounded=window.PMPActivePathDiscoveryMachineV2||T().PMPActivePathDiscoveryMachineV2;
+  if(bounded&&typeof bounded.run==='function')bounded.run('orchestrator_bounded_support');
+  await load('pmp-diagnostics-owner-v1.js',DIAGNOSTICS_SRC,'PMPDiagnosticsOwnerV1','orchestrator_diagnostics');
+  await load('pmp-diagnostics-bottom-tab-forcer-v1.js',DIAGNOSTICS_TAB_SRC,'PMPDiagnosticsBottomTabForcerV1','orchestrator_diagnostics_tab');
+  return currentReport(reason||'api_run');
+}
+async function copySafeHandoff(){
+  const api=window.PMPNewChatSafeHandoffV1||T().PMPNewChatSafeHandoffV1;
+  if(!api||typeof api.run!=='function')return{status:'HANDOFF_API_NOT_READY'};
+  const receipt=await api.run();
+  currentReport('safe_handoff_created');
+  return receipt;
+}
+const api={version:V,owner:OWNER,keys:KEYS,run,currentReport,copySafeHandoff,getLastReceipt:()=>LAST||currentReport('get_last_receipt'),rule:'Observe and hand off only. One canonical writer per protected resource. No route, Bank, Continuous Run, persisted-data, or production ownership.'};
+window.PMPAppOrchestratorV1=api;
+try{T().PMPAppOrchestratorV1=api}catch(e){}
+currentReport('boot');
+window.addEventListener('load',()=>run('window_load'),{once:true});
 })();

@@ -33,3 +33,12 @@
 
 Every repair must add or update the diagnostic matrix, deterministic evidence,
 receipt, workflow preservation path, and exact next-move record.
+# New-chat safety handoff
+
+Open **Diagnostics → App Orchestrator Status**, then use
+**Copy New Chat Safe Handoff**. The button copies one bounded complete packet
+or downloads one verified ZIP when the packet is too large.
+
+Treat `pmp-app-orchestrator-ownership-registry-v1.json` as the current
+ownership authority. Preserved Pass 7/8 helper and owner snapshots are
+historical evidence and must not override this registry.

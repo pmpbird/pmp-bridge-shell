@@ -90,7 +90,16 @@ function scan(){
   try{const f=document.getElementById('app');const w=f&&f.contentWindow,d=f&&(f.contentDocument||w.document);if(w&&d)installInto(w,d)}catch(e){}
 }
 window.PMPResidentContinuousRunStatusReaderV1={version:V,scan,read:()=>buildStatus(window,document)};
-window.addEventListener('load',()=>[50,200,600,1200,2400].forEach(t=>setTimeout(scan,t)));
-setInterval(scan,1000);
-scan();
+function bind(){
+  scan();
+  try{
+    const frame=document.getElementById('app');
+    if(frame&&!frame.dataset.pmpResidentStatusOwnerBound){
+      frame.dataset.pmpResidentStatusOwnerBound='1';
+      frame.addEventListener('load',scan);
+    }
+  }catch(e){}
+}
+window.addEventListener('load',bind,{once:true});
+bind();
 })();

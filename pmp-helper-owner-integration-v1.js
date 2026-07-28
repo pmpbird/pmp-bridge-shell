@@ -40,12 +40,12 @@
     ['bug_watch_passive_capture','adcda055d9e3573c545072c5d5fc294a13ff3c1d43cf3cffa06b2ebba83b4bfc','bank_screen_owner','bank','bug_watch_capture','none','ELIGIBLE_STATIC_CAPABILITY',4],
     ['safe_writer_current_return_fix','685afcd60d5bb997af71f6317a090f4a9e4e53adca5aa103c6edaf8be85be8c3','reload_current_owner','current_reload','current_return_fix','none','HELD_CONTRACT_CONFLICT',0],
     ['phase8_atlas_marker','78fddb8c97b92e8f52829920fd4537c1920bbf2a0a2f526cf4e3c12cccec242e','mount_registry_owner','mount_registry','atlas_marker_diagnostics','none','ELIGIBLE_STATIC_CAPABILITY',0],
-    ['pass1r_version_aligner','387015be8a1a0639497fc847117c07e673ff6d67f409568e0d095d37f3e989d4','diagnostics_owner','diagnostics','version_alignment','none','ELIGIBLE_STATIC_CAPABILITY',0],
+    ['pass1r_version_aligner','cef6f909293a4cb501a0421ec4e1485623f0d6e4b98bee14cf9e6a9edf247cd6','diagnostics_owner','diagnostics','version_alignment','none','ELIGIBLE_STATIC_CAPABILITY',0],
     ['pass1w_live_proof_reader','87b010bffd893d6594cf0a247ecaa2bc780e0b8ac1309af595c81989cc077ce4','diagnostics_owner','diagnostics','live_proof_reader','none','ELIGIBLE_STATIC_CAPABILITY',0],
-    ['active_path_discovery_machine','65b64ace9d32be7283507e37180b1d3e3f2a740e7adeac68052de0b7cead2ff8','app_orchestrator_owner','app_orchestrator','active_path_diagnostics','none','ELIGIBLE_STATIC_CAPABILITY',0],
-    ['active_path_discovery_machine_v2','88fba0eaf50c4c38ceb15a830fcc2463403572d2a91239159a4afbdeca9c5d58','app_orchestrator_owner','app_orchestrator','active_path_diagnostics_v2','none','ELIGIBLE_STATIC_CAPABILITY',0],
-    ['continuous_run_bank_order_frame_loader','e3997e69efc16df1361db12cfef9145165874c1fbf0633a5573fe9dcc7ad13ce','continuous_run_level_owner','continuous_run','continuous_run_frame_loader','continuous_run_frame_loader','ELIGIBLE_STATIC_CAPABILITY',0],
-    ['active_path_discovery_zip_export','93e7158687edfc673c8357993329ff9439195c44ba5a7076d0d6d6ccb7f968fe','app_orchestrator_owner','app_orchestrator','active_path_discovery_export_menu','none','ELIGIBLE_STATIC_CAPABILITY',0],
+    ['active_path_discovery_machine','5575f2826ba175c76ccdae79ac88d2b197d91b28007e58f46bb36ebf32fe5909','app_orchestrator_owner','app_orchestrator','active_path_diagnostics','none','ELIGIBLE_STATIC_CAPABILITY',0],
+    ['active_path_discovery_machine_v2','1e6f47e85333a09263dbc9f5918a378ee545a9866e830ef82b1104de322151f7','app_orchestrator_owner','app_orchestrator','active_path_diagnostics_v2','none','ELIGIBLE_STATIC_CAPABILITY',0],
+    ['continuous_run_bank_order_frame_loader','49be28248ded163733367500941dd87f85b38967d0d984592e0f7e5995cf68a3','continuous_run_level_owner','continuous_run','continuous_run_frame_loader','continuous_run_frame_loader','ELIGIBLE_STATIC_CAPABILITY',0],
+    ['active_path_discovery_zip_export','1030420ddfae52df47a1b12824e23a1af7ed6d49946bb4e054e0d1b04c4e12f9','app_orchestrator_owner','app_orchestrator','active_path_discovery_export_menu','none','ELIGIBLE_STATIC_CAPABILITY',0],
     ['legacy_helper_registry','299e607133df55ed74f7bade798cb96e76566cefd3fd73b87da63f2b64650dbf','app_orchestrator_owner','app_orchestrator','legacy_helper_registry_snapshot','none','HELD_LEGACY',0],
     ['pass8_helper_rules_certification','e3c029ebeaf82184779b2c4515321dea3edb7942c4936382cc7c15557c4787c9','app_orchestrator_owner','app_orchestrator','pass8_helper_rules_certification_gate','none','ELIGIBLE_STATIC_CAPABILITY',0]
   ].map(row=>Object.freeze({

@@ -1,25 +1,69 @@
 (()=>{
 'use strict';
-const VERSION='2.1.0-background-current-only-freeze-receipt-20260709A';
-const REPORT_KEY='pmp_active_path_discovery_report_v1';
-const RECEIPT_KEY='pmp_active_path_discovery_receipt_v1';
-const COPY_RECEIPT_KEY='pmp_active_path_discovery_copy_receipt_v1';
+const VERSION='2.2.0-bounded-support-no-v1-alias-20260727A';
+const OWNER='active_path_discovery_owner';
+const REPORT_KEY='pmp_active_path_discovery_bounded_report_v2';
+const RECEIPT_KEY='pmp_active_path_discovery_bounded_receipt_v2';
 const CURRENT=['pmp-app-current.html','pmp-current-map-v12.json','pmp-route-guardian-current-loader-v22.html','pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html','pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html','pmp-current-inner-cleanbug-rgcontrols-v23.html','pmp-home-single-v6.html'];
-const HISTORIC=['pmp-current-map-v11.json','pmp-current-map-v10.json','pmp-current-map-v9.json','pmp-current-map.json','pmp-route-guardian-current-loader-v15.html','pmp-route-guardian-current-loader-v17.html','pmp-route-guardian-current-loader-v18.html','pmp-route-guardian-current-loader-v19.html','pmp-route-guardian-current-loader-v20.html','pmp-route-guardian-current-loader-v21.html','pmp-current-reload-owner-v27.html','pmp-current-reload-owner-v28.html','pmp-current-reload-owner-v29.html','pmp-current-reload-owner-v29-permanent-update-gate-20260706f.html','pmp-current-inner-cleanbug-rgcontrols-v24.html','pmp-current-inner-cleanbug-rgcontrols-v26.html','pmp-current-inner-cleanbug-rgcontrols-v29.html'];
+const HISTORIC=['pmp-current-map-v11.json','pmp-current-map-v10.json','pmp-current-map-v9.json','pmp-current-map.json','pmp-route-guardian-current-loader-v15.html','pmp-route-guardian-current-loader-v17.html','pmp-route-guardian-current-loader-v18.html','pmp-route-guardian-current-loader-v19.html','pmp-route-guardian-current-loader-v20.html','pmp-route-guardian-current-loader-v21.html','pmp-current-reload-owner-v27.html','pmp-current-reload-owner-v28.html','pmp-current-reload-owner-v29.html'];
 let LAST=null;
 function T(){try{return window.top||window}catch(e){return window}}
 function now(){return new Date().toISOString()}
 function uniq(a){return Array.from(new Set((a||[]).filter(Boolean))).sort()}
-function clean(x){x=String(x||'').trim().split('#')[0].split('?')[0].replace(/^\.\//,'').replace(/^\//,'');return /^[a-zA-Z0-9._\/-]+\.(html|js|json)$/i.test(x)?x:''}
-function put(k,v){try{localStorage.setItem(k,JSON.stringify(v,null,2))}catch(e){}try{T().localStorage.setItem(k,JSON.stringify(v,null,2))}catch(e){}return v}
+function clean(x){return String(x||'').split('?')[0].split('#')[0].split('/').pop()}
+function put(k,v){try{T().localStorage.setItem(k,JSON.stringify(v,null,2))}catch(e){}return v}
 function read(k){try{return JSON.parse(T().localStorage.getItem(k)||'null')}catch(e){return null}}
-function docs(root,out,depth){out=out||[];depth=depth||0;if(!root||depth>6)return out;try{out.push(root);Array.from(root.querySelectorAll('iframe,frame')).forEach(f=>{try{let d=f.contentDocument||(f.contentWindow&&f.contentWindow.document);if(d)docs(d,out,depth+1)}catch(e){}})}catch(e){}return out}
-function liveFiles(){let out=[];docs(T().document).forEach(d=>{try{out.push(clean(String(d.location&&d.location.pathname||'').split('/').pop()));Array.from(d.querySelectorAll('script[src],iframe[src],frame[src],a[href]')).forEach(el=>out.push(clean(el.getAttribute('src')||el.getAttribute('href')||'')))}catch(e){}});return uniq(out)}
-function registry(){try{if(T().PMPMountRegistryV1&&T().PMPMountRegistryV1.registry)return T().PMPMountRegistryV1.registry()}catch(e){}try{if(window.PMPMountRegistryV1&&window.PMPMountRegistryV1.registry)return window.PMPMountRegistryV1.registry()}catch(e){}return read('pmp_mount_registry_v1')||{}}
-function atlasPaths(){let r=registry(),files=[];if(Array.isArray(r.files))files=files.concat(r.files.map(f=>f&&f.path));if(r.repo_file_classification)Object.keys(r.repo_file_classification).forEach(k=>{let a=r.repo_file_classification[k];if(Array.isArray(a))files=files.concat(a)});return uniq(files.map(clean))}
-function classifyLiveMissing(live,atlas){let strict=live.filter(p=>CURRENT.indexOf(p)>-1&&!atlas.includes(p));return uniq(strict)}
-function run(reason){let started=now(),atlas=atlasPaths(),live=liveFiles();let hard=classifyLiveMissing(live,atlas);let oldRoot=live.filter(p=>HISTORIC.indexOf(p)>-1&&CURRENT.indexOf(p)>-1);let report={type:'PMP_ACTIVE_PATH_DISCOVERY_REPORT_V1',version:VERSION,owner:'pmp-active-path-discovery-machine-v2',started_at:started,finished_at:now(),reason:reason||'background_current_only_scan',mode:'bounded_background_current_only_no_recursive_fetch',rule:'Background-only freeze receipt. It checks the current boot roots and live current-chain files against Atlas without recursive network crawling.',pass_alignment:{current_boot_root:CURRENT,historic_current_references_not_boot_root:HISTORIC,historic_reference_current_boot_root_count:uniq(oldRoot).length,historic_reference_current_boot_root:uniq(oldRoot)},scanned_count:live.length,reachable_count:live.length,atlas_count:atlas.length,hard_missing_count:hard.length,live_runtime_missing_count:hard.length,direct_current_missing_count:0,support_reachable_missing_count:0,fallback_or_recovery_missing_count:0,legacy_or_test_missing_count:0,dead_reference_count:0,hard_missing:hard,live_runtime_missing:hard,direct_current_missing:[],support_reachable_missing:[],fallback_or_recovery_missing:[],legacy_or_test_missing:[],dead_references:[],reachable_files:live,live_files:live,freeze_gate:{pass:hard.length===0&&uniq(oldRoot).length===0,rule:'Pass when bounded current/live hard missing is zero and old current roots are zero. Dead references are not generated because this background receipt performs no recursive fetch.'},side_effects:{route_change:'not_attempted',boot_surface_replacement:'not_attempted',runtime_surface_replacement:'not_attempted',bank_rebuild:'not_attempted',indexeddb_write:'not_attempted',storage_migration:'not_attempted',ownership_takeover:'not_attempted',panel_mount:'not_attempted'}};LAST=report;put(REPORT_KEY,report);put(RECEIPT_KEY,{type:'PMP_ACTIVE_PATH_DISCOVERY_RECEIPT_V1',version:VERSION,owner:'pmp-active-path-discovery-machine-v2',at:now(),hard_missing_count:report.hard_missing_count,support_reachable_missing_count:report.support_reachable_missing_count,dead_reference_count:report.dead_reference_count,historic_reference_current_boot_root_count:report.pass_alignment.historic_reference_current_boot_root_count,freeze_gate_pass:report.freeze_gate.pass,mode:report.mode,side_effects:report.side_effects});window.PMPActivePathDiscoveryReportV1=report;try{T().PMPActivePathDiscoveryReportV1=report}catch(e){}return report}
-function proof(r){r=r||LAST;return ['PMP_DISCOVERY_FREEZE_PROOF_V1','report_version: '+(r&&r.version||''),'finished_at: '+(r&&r.finished_at||''),'hard_missing_count: '+(r&&r.hard_missing_count),'live_runtime_missing_count: '+(r&&r.live_runtime_missing_count),'direct_current_missing_count: '+(r&&r.direct_current_missing_count),'support_reachable_missing_count: '+(r&&r.support_reachable_missing_count),'fallback_or_recovery_missing_count: '+(r&&r.fallback_or_recovery_missing_count),'legacy_or_test_missing_count: '+(r&&r.legacy_or_test_missing_count),'dead_reference_count: '+(r&&r.dead_reference_count),'historic_reference_current_boot_root_count: '+(r&&r.pass_alignment&&r.pass_alignment.historic_reference_current_boot_root_count),'freeze_gate_pass: '+(r&&r.freeze_gate&&r.freeze_gate.pass),'side_effects: no_fix no_move no_delete no_reroute no_bank_rebuild no_storage_migration no_boot_surface_replacement no_runtime_surface_replacement'].join('\n')}
-async function copyNow(d,r,out){r=r||LAST||run('copy_now');let txt=proof(r);try{await navigator.clipboard.writeText(txt)}catch(e){}put(COPY_RECEIPT_KEY,{type:'PMP_ACTIVE_PATH_DISCOVERY_COPY_RECEIPT_V1',version:VERSION,at:now(),hard_missing_count:r.hard_missing_count,support_reachable_missing_count:r.support_reachable_missing_count,dead_reference_count:r.dead_reference_count,freeze_gate_pass:r.freeze_gate&&r.freeze_gate.pass,text_length:txt.length});if(out)out.textContent='Discovery Freeze Proof copied. hard missing: '+r.hard_missing_count+' · support: '+r.support_reachable_missing_count+' · dead: '+r.dead_reference_count+' · freeze_gate_pass: '+(r.freeze_gate&&r.freeze_gate.pass)}
-window.PMPActivePathDiscoveryMachineV1={version:VERSION,owner:'pmp-active-path-discovery-machine-v2',run,reportKey:REPORT_KEY,currentBootRoot:CURRENT,historicCurrentReferences:HISTORIC,copyNow,rule:'bounded background current-only discovery; no recursive fetch; no route/runtime/boot mutation'};window.PMPActivePathDiscoveryMachineV2=window.PMPActivePathDiscoveryMachineV1;try{T().PMPActivePathDiscoveryMachineV1=window.PMPActivePathDiscoveryMachineV1;T().PMPActivePathDiscoveryMachineV2=window.PMPActivePathDiscoveryMachineV2}catch(e){};setTimeout(()=>run('background_current_only_boot_scan'),300);setTimeout(()=>run('background_current_only_settled_scan'),2500);
+function liveFiles(){
+  const out=[];
+  try{
+    out.push(clean(location.pathname));
+    document.querySelectorAll('script[src],iframe[src],frame[src]').forEach(el=>out.push(clean(el.getAttribute('src'))));
+  }catch(e){}
+  return uniq(out);
+}
+function atlasPaths(){
+  let registry=null;
+  try{const api=window.PMPMountRegistryV1||T().PMPMountRegistryV1;if(api&&typeof api.registry==='function')registry=api.registry()}catch(e){}
+  if(!registry)registry=read('pmp_mount_registry_v1');
+  let paths=[];
+  if(registry&&Array.isArray(registry.files))paths=paths.concat(registry.files.map(x=>x&&x.path));
+  if(registry&&registry.repo_file_classification)Object.values(registry.repo_file_classification).forEach(x=>{if(Array.isArray(x))paths=paths.concat(x)});
+  return uniq(paths.map(clean));
+}
+function run(reason){
+  const started=now(),atlas=atlasPaths(),live=liveFiles(),hard=live.filter(path=>!atlas.includes(path)),historicLive=live.filter(path=>HISTORIC.includes(path));
+  LAST={
+    type:'PMP_ACTIVE_PATH_DISCOVERY_BOUNDED_REPORT_V2',
+    version:VERSION,
+    owner:OWNER,
+    writer:'pmp-active-path-discovery-machine-v2.js',
+    started_at:started,
+    finished_at:now(),
+    reason:reason||'bounded_current_frame_scan',
+    mode:'bounded_support_input_current_frame_only',
+    current_boot_roots:CURRENT,
+    historic_references:HISTORIC,
+    live_files:live,
+    atlas_count:atlas.length,
+    hard_missing_count:hard.length,
+    hard_missing:hard,
+    historic_reference_current_boot_root_count:historicLive.length,
+    historic_reference_current_boot_root:historicLive,
+    freeze_gate:{pass:hard.length===0&&historicLive.length===0},
+    canonical_v1_report_written:false,
+    canonical_v1_global_written:false,
+    panel_mounted:false,
+    side_effects:{route_change:'not_attempted',bank_rebuild:'not_attempted',indexeddb_write:'not_attempted',storage_migration:'not_attempted',ownership_takeover:'not_attempted'}
+  };
+  put(REPORT_KEY,LAST);
+  put(RECEIPT_KEY,{type:'PMP_ACTIVE_PATH_DISCOVERY_BOUNDED_RECEIPT_V2',version:VERSION,owner:OWNER,at:now(),hard_missing_count:hard.length,historic_reference_current_boot_root_count:historicLive.length,freeze_gate_pass:LAST.freeze_gate.pass,report_key:REPORT_KEY});
+  window.PMPActivePathDiscoveryBoundedReportV2=LAST;
+  try{T().PMPActivePathDiscoveryBoundedReportV2=LAST}catch(e){}
+  return LAST;
+}
+function copyNow(){const r=LAST||run('copy_requested');return JSON.stringify(r,null,2)}
+const api={version:VERSION,owner:OWNER,run,copyNow,reportKey:REPORT_KEY,receiptKey:RECEIPT_KEY,rule:'Separate bounded support input. Never aliases or overwrites the canonical V1 report, receipt, machine, global, or visible card.'};
+window.PMPActivePathDiscoveryMachineV2=api;
+try{T().PMPActivePathDiscoveryMachineV2=api}catch(e){}
+setTimeout(()=>run('bounded_support_boot_scan'),300);
 })();

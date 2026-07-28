@@ -17,11 +17,11 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3ded4;col
 <div class="handoff" id="handoffCover"><div class="handoffBox">Restoring PMP Home…<div class="handoffSub">Reload Owner map handoff</div></div></div>
 <div class="panel" id="receiptPanel"><div class="badge">Reload Owner v30 diagnostics</div><p class="sub">Reload Owner runs silently on normal launch. This panel shows only from Route Guardian diagnostics or a fail-closed route error.</p><button class="mini" id="copyReceipt">Copy Reload Owner Receipt</button><button class="mini dark" id="continueNow">Continue Now</button><pre id="receiptOut">Building receipt...</pre></div>
 <script src="pmp-current-route-resolver-v1.js"></script>
-<script src="pmp-safe-area-surface-fill-v1.js?fresh=safe-area-surface-fill-20260708B"></script>
+<script src="pmp-safe-area-surface-fill-v1.js?fresh=ownership-presentation-local-20260727A"></script>
 <script src="pmp-pass1w-live-proof-reader-v1.js?fresh=orchestrator-20260705X"></script>
 <script src="pmp-current-screen-pointer-v1.js?fresh=pointer-20260705X"></script>
 <script src="pmp-reload-world-from-map-v1.js?fresh=rg21-20260705X"></script>
-<script src="pmp-active-path-discovery-zip-export-v2.js?fresh=discovery-owner-v30-20260708A"></script>
+<script src="pmp-active-path-discovery-zip-export-v2.js?fresh=canonical-v1-reader-event-driven-20260727A"></script>
 <script src="pmp-pass75-reload-runtime-platform-gate-v1.js?fresh=pass75-heartbeat-20260708D"></script>
 <script>
 'use strict';
@@ -29,7 +29,7 @@ const frame=document.getElementById('a'),panel=document.getElementById('receiptP
 const DIAG=new URLSearchParams(location.search).get('diagnostics')==='reload-owner';
 const BASE='v30-a002-p2-map-delegated-chain-20260711A';
 const MOUNT='pmp-mount-registry-v1-cachelift-20260706b.js?fresh=mount-registry-pass7-final-gap-fixed-20260706D';
-const SURFACE='pmp-safe-area-surface-fill-v1.js?fresh=safe-area-surface-fill-20260708B';
+const SURFACE='pmp-safe-area-surface-fill-v1.js?fresh=ownership-presentation-local-20260727A';
 const PAUSE_MS=DIAG?4500:0;
 const resolver=window.PMPCurrentRouteResolver;
 let routeState=null,last=null,lastReceipt=null,started=false,failed=false;

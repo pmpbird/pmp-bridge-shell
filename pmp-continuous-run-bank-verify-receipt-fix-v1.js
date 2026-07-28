@@ -1,27 +1,21 @@
 (()=>{
 'use strict';
-const V='1.1.0-idempotent-verify-no-status-flicker';
-const MK='pmp_continuous_run_bank_transfer_store_manifest_v1';
-const RK='pmp_continuous_run_bank_transfer_store_receipts_v1';
-const BAD=['test','testing','placeholder','sample','example','asdf','none','n/a','na','todo','tbd'];
-const SLOT=['transfer_pack','packet_1_5_guide','current_work_source','receipts_or_state','receiver_test_checklist'];
-const LOSS=['transfer_pack','packet_0','packet_1','packet_1_5_guide','raw_packets','current_work_source','receipts_or_state','receiver_test_checklist','no_spend_rules'];
-function j(k,d){try{return JSON.parse(localStorage.getItem(k)||'')||d}catch(e){return d}}
-function s(k,v){localStorage.setItem(k,JSON.stringify(v,null,2));return v}
-function now(){return new Date().toISOString()}
-function fp(x){return JSON.stringify({slot:x.slot,loss:x.loss,missing:x.missing,lossMissing:x.lossMissing,weak:x.weak})}
-function docs(root,d,a){a=a||[];d=d||0;if(!root||d>8)return a;try{a.push(root);Array.from(root.querySelectorAll('iframe')).forEach(f=>{try{let z=f.contentDocument||(f.contentWindow&&f.contentWindow.document);if(z)docs(z,d+1,a)}catch(e){}})}catch(e){}return a}
-function present(m){let out=[];Object.keys(m.items||{}).forEach(t=>{if(Object.keys(m.items[t]||{}).length)out.push(t)});return out}
-function best(m,t){let b=(m.items&&m.items[t])||{},ids=Object.keys(b);if(!ids.length)return null;ids.sort((a,bid)=>String(b[bid].imported_at||'').localeCompare(String(b[a].imported_at||'')));return b[ids[0]]}
-function isWeak(meta){if(!meta)return false;let chars=Number(meta.characters||0),name=String(meta.name||'').toLowerCase(),q=meta.quality||{},txt=String((q.issues||[]).join(' ')).toLowerCase();if(chars<50)return true;if(BAD.includes(name)||txt.includes('placeholder')||txt.includes('too_short'))return true;return false}
-function check(){let m=j(MK,{items:{},verification:{}});if(!m.items)m.items={};let p=present(m),missing=SLOT.filter(x=>!p.includes(x)),lossMissing=LOSS.filter(x=>!p.includes(x)),weak=[];LOSS.forEach(t=>{let b=best(m,t);if(b&&isWeak(b))weak.push(t)});let slot=missing.length===0,loss=slot&&lossMissing.length===0&&weak.length===0,res={slot,loss,missing,lossMissing,weak};res.fingerprint=fp(res);m.slot_check_passed=slot;m.lossless_verified=loss;m.verified=loss;m.verification=Object.assign({},m.verification||{},{status:loss?'lossless_verified':(slot?'slot_check_passed_lossless_not_verified':'missing_required_slots'),fingerprint:res.fingerprint,slot_check_passed:slot,lossless_verified:loss,missing,lossless_missing:lossMissing,weak_items:weak,last_checked_at:now()});s(MK,m);res.manifest=m;return res}
-function addReceipt(res){let r=j(RK,[]);if(!Array.isArray(r))r=[];let item={type:'PMP_VERIFY_STORE_CHANGED_RECEIPT_V1',at:now(),id:'verify_changed_'+Date.now(),slot_check_passed:res.slot,lossless_verified:res.loss,missing:res.missing,lossless_missing:res.lossMissing,weak_items:res.weak,fingerprint:res.fingerprint};r.push(item);s(RK,r);try{let api=window.PMPContinuousWorkEngineStateV1||window.PMPContinuousRunStateBankV1;if(api&&api.appendReceipt)api.appendReceipt({type:'PMP_VERIFY_STORE_CHANGED_RECEIPT_V1',temporary_transfer_store_receipt:item})}catch(e){}return item}
-function refresh(){let api=window.PMPContinuousWorkEngineStateV1||window.PMPContinuousRunStateBankV1;let rs=[];try{rs=api&&api.readReceipts?api.readReceipts():[]}catch(e){}docs(document).forEach(d=>{try{let sum=d.querySelector('[data-run-bank-summary]');if(sum){let st=api&&api.readRunState?api.readRunState():{},c=check();sum.textContent='Status: '+String(st.last_run_status||'not_started').replace(/_/g,' ')+'\nReceipts: '+rs.length+'\nTransfer Store Slot Check: '+(c.slot?'PASSED':'NOT PASSED')+'\nTransfer Store Lossless: '+(c.loss?'YES':'NO')+'\nMissing: '+([].concat(c.missing,c.lossMissing,c.weak).join(', ')||'none')+'\nCurrent work area: '+(st.current_work_area||st.current_packet||'not set')+'\nCurrent work item: '+(st.current_work_item||st.current_item||'not set')}
-let det=d.querySelector('[data-run-bank-detail]');if(det&&api&&api.readRunState)det.textContent=JSON.stringify(api.readRunState(),null,2)}catch(e){}})}
-function patchDoc(d){let box=d.querySelector('[data-temp-transfer-store]');if(!box)return;let b=box.querySelector('[data-tts-verify]');if(b&&b.dataset.idem!=='1'){let n=b.cloneNode(true);n.dataset.idem='1';n.onclick=()=>{let old=(j(MK,{verification:{}}).verification||{}).fingerprint||'',res=check(),changed=old!==res.fingerprint;if(changed)addReceipt(res);refresh();let out=d.querySelector('[data-bank-out]');if(out){out.classList.remove('hidden');out.textContent=changed?'Verification changed; receipt written.':'Verification unchanged; no new receipt written.'}};b.replaceWith(n)}}
-function scan(){docs(document).forEach(patchDoc);refresh()}
-window.PMPVerifyStoreReceiptFixV1={version:V,scan,check};
-window.addEventListener('load',()=>[50,200,700,1500].forEach(t=>setTimeout(scan,t)));
-setInterval(scan,1200);
-scan();
+const V='2.0.0-owner-delegating-event-driven-20260727A';
+function owner(){return window.PMPContinuousRunBankTransferStoreV1||null}
+function check(){const api=owner();return api&&typeof api.verifyStore==='function'?api.verifyStore(false):{status:'OWNER_NOT_READY',manifest_write:false}}
+function docs(root,depth,out){out=out||[];depth=depth||0;if(!root||depth>8)return out;try{out.push(root);root.querySelectorAll('iframe').forEach(f=>{try{const d=f.contentDocument||(f.contentWindow&&f.contentWindow.document);if(d)docs(d,depth+1,out)}catch(e){}})}catch(e){}return out}
+function patch(d){
+  const box=d.querySelector('[data-temp-transfer-store]');if(!box)return;
+  const button=box.querySelector('[data-tts-verify]');if(!button||button.dataset.ownerDelegating==='1')return;
+  button.dataset.ownerDelegating='1';
+  button.addEventListener('click',()=>{
+    const api=owner(),out=d.querySelector('[data-bank-out]');
+    if(!api||typeof api.verifyStore!=='function'){if(out){out.classList.remove('hidden');out.textContent='Transfer-store owner is not ready.'}return}
+    const result=api.verifyStore(true);
+    if(out){out.classList.remove('hidden');out.textContent=result.lossless_verified?'Lossless verification passed.':'Verification complete; required items are still missing.'}
+  });
+}
+function scan(){docs(document).forEach(patch);return{status:'EVENT_DRIVEN_OWNER_DELEGATION',canonical_write:false}}
+window.PMPVerifyStoreReceiptFixV1={version:V,owner:'bank_screen_owner',role:'compatibility_event_delegate',scan,check,rule:'No timer, no direct manifest or receipt write, and no independent verification schema. The canonical transfer-store owner performs verification.'};
+window.addEventListener('load',scan,{once:true});scan();
 })();
