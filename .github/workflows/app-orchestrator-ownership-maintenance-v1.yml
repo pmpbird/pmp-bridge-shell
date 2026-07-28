@@ -12,7 +12,7 @@ on:
       - '.github/workflows/app-orchestrator-ownership-maintenance-v1.yml'
       - '.github/workflows/permanent-no-blind-flying-gate-v1.yml'
 permissions:
-  contents: write
+  contents: read
 jobs:
   ownership-maintenance:
     runs-on: ubuntu-latest
@@ -21,9 +21,6 @@ jobs:
       ARTIFACT_ROOT: /tmp/app-orchestrator-ownership/artifacts/attempt-001
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
-          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -31,54 +28,44 @@ jobs:
         with:
           node-version: '22'
       - id: verify
-        name: Reseal, verify, and commit generated identities
+        name: Verify exclusive ownership and preserve evidence
         shell: bash
         run: |
-          set -euo pipefail
-          mkdir -p "$ARTIFACT_ROOT/generated"
-          printf '%s\n' '{"command":"App Orchestrator ownership maintenance trusted reseal"}' > "$ARTIFACT_ROOT/command.json"
+          set +e
+          mkdir -p "$ARTIFACT_ROOT"
+          printf '%s\n' '{"command":"App Orchestrator ownership maintenance"}' > "$ARTIFACT_ROOT/command.json"
           printf '%s\n' 'no stderr emitted before execution' > "$ARTIFACT_ROOT/stderr.txt"
-
-          python3 - <<'PY'
-          from pathlib import Path
-          path = Path('tools/verify_app_orchestrator_ownership_maintenance_v1.py')
-          text = path.read_text('utf-8')
-          text = text.replace(
-              '    assert "PASS:" in test\n',
-              '    assert "PASS:" in test or \'"status": "PASS"\' in test\n',
-          )
-          text = text.replace(
-              '    assert seal["sealed_branch"] in {\n',
-              '    assert seal["sealed_branch"].startswith("chatgpt/diagnostics-active-path-cleanup-handoff-fix-v") or seal["sealed_branch"] in {\n',
-          )
-          path.write_text(text, 'utf-8')
-          PY
-
           python3 tools/generate_app_orchestrator_ownership_maintenance_integrity_updates_v1.py \
             > "$ARTIFACT_ROOT/generator-stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+          generator_rc=$?
+          git diff --exit-code \
+            > "$ARTIFACT_ROOT/generator-diff.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+          diff_rc=$?
           python3 tools/test_app_orchestrator_ownership_maintenance_v1.py \
             > "$ARTIFACT_ROOT/test-stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+          test_rc=$?
           python3 tools/verify_app_orchestrator_ownership_maintenance_v1.py \
             > "$ARTIFACT_ROOT/verify-stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
-
-          cp pmp-runtime-integrity-manifest-v1.json "$ARTIFACT_ROOT/generated/"
-          cp pmp-app-current.html "$ARTIFACT_ROOT/generated/"
-          cp audit/a003-manifest-seal.json "$ARTIFACT_ROOT/generated/"
-          cp audit/pass13/app-orchestrator-ownership-maintenance-v1.json "$ARTIFACT_ROOT/generated/"
-
-          git show origin/main:.github/workflows/app-orchestrator-ownership-maintenance-v1.yml > .github/workflows/app-orchestrator-ownership-maintenance-v1.yml
+          verify_rc=$?
           git status --short > "$ARTIFACT_ROOT/git-status.txt"
           printf '%s\n' '{"persisted_user_data":false,"storage_migration":false,"formal_proof":false,"production_activation":false}' > "$ARTIFACT_ROOT/authority-state.json"
-          printf '%s\n' '{"generator":0,"test":0,"verify":0,"final":0}' > "$ARTIFACT_ROOT/exit-status.json"
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add pmp-runtime-integrity-manifest-v1.json pmp-app-current.html audit/a003-manifest-seal.json audit/pass13/app-orchestrator-ownership-maintenance-v1.json tools/verify_app_orchestrator_ownership_maintenance_v1.py .github/workflows/app-orchestrator-ownership-maintenance-v1.yml
-          if ! git diff --cached --quiet; then
-            git commit -m "Reseal Diagnostics cleanup and handoff fix"
-            git push origin "HEAD:${{ github.head_ref }}"
-          fi
-          echo "exit_code=0" >> "$GITHUB_OUTPUT"
+          rc=0
+          if [ "$generator_rc" -ne 0 ] || [ "$diff_rc" -ne 0 ] || [ "$test_rc" -ne 0 ] || [ "$verify_rc" -ne 0 ]; then rc=1; fi
+          printf '{"generator":%s,"diff":%s,"test":%s,"verify":%s,"final":%s}\n' "$generator_rc" "$diff_rc" "$test_rc" "$verify_rc" "$rc" > "$ARTIFACT_ROOT/exit-status.json"
+          python3 - "$ARTIFACT_ROOT" <<'PY'
+          import hashlib,json,pathlib,sys
+          root=pathlib.Path(sys.argv[1])
+          rows=[]
+          for path in sorted(root.iterdir()):
+              if path.name=="artifact-manifest.json" or not path.is_file():
+                  continue
+              data=path.read_bytes()
+              rows.append({"path":path.name,"bytes":len(data),"sha256":hashlib.sha256(data).hexdigest()})
+          assert rows and all(row["bytes"]>0 for row in rows)
+          (root/"artifact-manifest.json").write_text(json.dumps({"type":"PMP_APP_ORCHESTRATOR_OWNERSHIP_CI_ARTIFACT_MANIFEST_V1","records":rows},indent=2,sort_keys=True)+"\n")
+          PY
+          echo "exit_code=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
       - name: Upload ownership evidence
         if: always()
         uses: actions/upload-artifact@v4
