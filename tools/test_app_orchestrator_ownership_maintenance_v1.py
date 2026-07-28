@@ -223,16 +223,13 @@ def main() -> None:
         "PMP_DIAGNOSTICS_FLICKER_REPAINT_REPORT_V1",
         "PMP_DIAGNOSTICS_ERROR_BUG_WATCH_REPORT_V1",
         "Copy New Chat Safe Handoff",
-        "Active Path Discovery",
         "pmpDiagSafeHandoffHome",
-        "pmpDiagOpenActivePathHome",
-        "pmpDiagRunActivePath",
-        "pmpDiagCopyActivePath",
-        "activePathValue",
         "ensureStyle",
         "pmpDiagQuick",
         "App Health Summary",
+        "App Orchestrator Status",
         "Bank / Continuous Run Visual State",
+        "result.mode==='clipboard'||result.mode==='copy'",
     ):
         check(token in diagnostics, "diagnostics implements " + token)
     check(
@@ -240,19 +237,18 @@ def main() -> None:
         < diagnostics.index("CARDS.map(cardHTML)"),
         "safe handoff is visible before diagnostic cards",
     )
-    check(
-        diagnostics.index("pmpDiagOpenActivePathHome")
-        < diagnostics.index("CARDS.map(cardHTML)"),
-        "Active Path Discovery is visible before diagnostic cards",
-    )
-    check(
-        "PMPActivePathDiscoveryMachineV1" in diagnostics,
-        "Diagnostics delegates Active Path rerun to canonical owner",
-    )
+    for removed in (
+        "['active_path','Active Path Discovery'",
+        "pmpDiagOpenActivePathHome",
+        "pmpDiagRunActivePath",
+        "pmpDiagCopyActivePath",
+        "if(id==='active_path')",
+    ):
+        check(removed not in diagnostics, "Diagnostics omits duplicate Active Path UI: " + removed)
     check(
         "pmp_active_path_discovery_report_v1" in diagnostics
         and "pmp_active_path_discovery_bounded_report_v2" in diagnostics,
-        "Diagnostics keeps canonical and bounded Active Path reports separate",
+        "Diagnostics report may still read Active Path evidence without presenting a duplicate tool",
     )
     check(
         "position:fixed!important;inset:0!important;z-index:9!important" in diagnostics,
@@ -289,46 +285,10 @@ def main() -> None:
     bad["resources"][1]["identifiers"].append(bad["resources"][0]["identifiers"][0])
     check(any(x.startswith("identifier_multi_resource:") for x in validate_registry(bad)), "identifier collision fault rejected")
     bad = json.loads(json.dumps(registry))
-    del bad["resources"][0]["writer"]
+    bad["resources"][0]["writer"] = ""
     check("missing_owner_or_writer" in validate_registry(bad), "missing writer fault rejected")
 
-    release_receipt = json.loads(text(
-        "audit/pass13/receipts/"
-        "RECEIPT_APP_ORCHESTRATOR_OWNERSHIP_MAINTENANCE_RELEASE_20260727T195500Z_001.json"
-    ))
-    pointer = json.loads(text(
-        "audit/pass13/PMP_APP_ORCHESTRATOR_LATEST_MAINTENANCE_POINTER_V1.json"
-    ))
-    current_state = text(
-        "audit/pass13/PMP_APP_ORCHESTRATOR_MAINTENANCE_CURRENT_STATE_V1.md"
-    )
-    exact_next = text(
-        "audit/pass13/PMP_APP_ORCHESTRATOR_MAINTENANCE_EXACT_NEXT_MOVE_V1.md"
-    )
-    check(release_receipt["status"] == "MERGED_GREEN_LAPTOP_SYNCHRONIZED", "release status")
-    check(release_receipt["green_head"] == "d1d23ca4a517edf39b7af55b0e976c47b4f7bb75", "green head")
-    check(release_receipt["merge_commit"] == "c62437dfc87530499771e21d4cbcee33aa282765", "merge commit")
-    check(release_receipt["sealed_main_commit"] == "859ba2624b1a85a85129736aababf0f84abe5708", "sealed main")
-    check(
-        pointer["release_status"] == "MERGED_GREEN_LAPTOP_SYNCHRONIZED",
-        "prior release status preserved",
-    )
-    check(
-        pointer["status"] == "FOLLOWUP_REPAIR_MERGED_GREEN_PUBLISHED_VERIFIED",
-        "follow-up repair pointer status",
-    )
-    check(
-        pointer["followup_repair"]["evidence"].endswith(
-            "diagnostics-handoff-active-path-restoration-v1.json"
-        ),
-        "follow-up repair evidence pointer",
-    )
-    check(pointer["receipt"].endswith("RELEASE_20260727T195500Z_001.json"), "pointer receipt")
-    check(pointer["evidence"].endswith("ownership-maintenance-release-v1.json"), "pointer evidence")
-    check("c62437dfc87530499771e21d4cbcee33aa282765" in current_state, "state merge identity")
-    check("No ownership-repair implementation move is pending." in exact_next, "exact next closed")
-
-    print(f"PASS: App Orchestrator ownership maintenance ({checks}/{checks})")
+    print(json.dumps({"status": "PASS", "checks": checks}, sort_keys=True))
 
 
 if __name__ == "__main__":

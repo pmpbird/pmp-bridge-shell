@@ -1,0 +1,28 @@
+{
+  "type": "PMP_DIAGNOSTICS_ACTIVE_PATH_CLEANUP_HANDOFF_FIX_RECEIPT_V1",
+  "version": "1.0.0",
+  "status": "PASS",
+  "branch": "chatgpt/diagnostics-active-path-cleanup-handoff-fix-v2",
+  "scope": {
+    "feature": [
+      "remove duplicate Active Path Discovery UI from Diagnostics",
+      "preserve Active Path Discovery on the Control surface",
+      "retain App Orchestrator Status in Diagnostics",
+      "treat clipboard and copy handoff modes as successful copies"
+    ]
+  },
+  "effects": {
+    "bank_records_changed": false,
+    "persisted_user_data_changed": false,
+    "routes_changed": false,
+    "active_path_ownership_changed": false,
+    "runtime_integrity_weakened": false
+  },
+  "verification": {
+    "focused_test": "PASS",
+    "ownership_verifier": "PASS",
+    "runtime_manifest_regenerated": true,
+    "manifest_seal_regenerated": true,
+    "bootstrap_manifest_binding_regenerated": true
+  }
+}

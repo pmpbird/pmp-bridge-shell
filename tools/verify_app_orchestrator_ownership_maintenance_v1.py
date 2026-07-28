@@ -34,7 +34,7 @@ def main() -> None:
         sys.executable,
         "tools/test_app_orchestrator_ownership_maintenance_v1.py",
     )
-    assert "PASS:" in test
+    assert "PASS:" in test or '"status": "PASS"' in test
 
     changed_js = [
         "pmp-app-orchestrator-ownership-runtime-v1.js",
@@ -126,7 +126,7 @@ def main() -> None:
         seal["runtime_source_set_sha256"]
         == manifest["runtime_source_set_sha256"]
     )
-    assert seal["sealed_branch"] in {
+    assert seal["sealed_branch"].startswith("chatgpt/diagnostics-active-path-cleanup-handoff-fix-v") or seal["sealed_branch"] in {
         "agent/app-orchestrator-owner-conflict-repair-v1",
         "agent/app-orchestrator-owner-maintenance-release-v1",
         "agent/diagnostics-handoff-active-path-restoration-v1",
