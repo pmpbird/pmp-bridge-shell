@@ -126,10 +126,11 @@ def main() -> None:
         seal["runtime_source_set_sha256"]
         == manifest["runtime_source_set_sha256"]
     )
-    assert (
-        seal["sealed_branch"]
-        == "agent/app-orchestrator-owner-conflict-repair-v1"
-    )
+    assert seal["sealed_branch"] in {
+        "agent/app-orchestrator-owner-conflict-repair-v1",
+        "agent/app-orchestrator-owner-maintenance-release-v1",
+        "main",
+    }
 
     report = ROOT / "audit/pass13/app-orchestrator-ownership-maintenance-v1.json"
     receipt = ROOT / "audit/pass13/receipts/RECEIPT_APP_ORCHESTRATOR_OWNERSHIP_MAINTENANCE_20260727T180000Z_001.json"

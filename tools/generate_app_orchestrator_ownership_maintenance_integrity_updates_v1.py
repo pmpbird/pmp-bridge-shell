@@ -5,6 +5,7 @@ import base64
 import hashlib
 import json
 import mimetypes
+import os
 import re
 import subprocess
 from pathlib import Path
@@ -16,6 +17,16 @@ BOOTSTRAP = ROOT / "pmp-app-current.html"
 MAINTENANCE_REPORT = (
     ROOT / "audit/pass13/app-orchestrator-ownership-maintenance-v1.json"
 )
+RELEASE_BRANCH = "agent/app-orchestrator-owner-maintenance-release-v1"
+
+
+def active_branch() -> str:
+    github_head = os.environ.get("GITHUB_HEAD_REF", "").strip()
+    if github_head:
+        return github_head
+    return subprocess.check_output(
+        ["git", "branch", "--show-current"], cwd=ROOT, text=True
+    ).strip()
 
 HTML_REPLACEMENTS = {
     "pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html": [
@@ -263,6 +274,10 @@ def runtime_identity(manifest: dict) -> str:
 def update_no_blind_flying_binding() -> None:
     if not MAINTENANCE_REPORT.exists():
         return
+    if active_branch() == RELEASE_BRANCH:
+        # P13-U8 owns its exact documentation-only release scope. Preserve the
+        # already-merged P13-U7 implementation record byte-for-byte.
+        return
     base = "fbc75d5067df28d96f73fc3f8b18c8dbd45fa571"
     if subprocess.run(
         ["git", "cat-file", "-e", base],
@@ -445,7 +460,8 @@ def main() -> None:
             "runtime_source_set_sha256"
         ],
         sealed_branch=(
-            "agent/app-orchestrator-owner-conflict-repair-v1"
+            active_branch()
+            or "agent/app-orchestrator-owner-conflict-repair-v1"
         ),
         maintenance_context=(
             "Repairs audited multiple-owner and helper-owner conflicts, "
