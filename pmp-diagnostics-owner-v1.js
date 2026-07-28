@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const V='2.3.0-active-path-ui-cleanup-handoff-label-fix-20260728A';
+const V='2.4.0-single-handoff-owner-20260728A';
 const OWNER='diagnostics_owner';
 const SCREEN_ID='pmpDiagnosticsScreenV1';
 const STYLE_ID='pmpDiagnosticsOwnerV1Style';
@@ -161,15 +161,14 @@ function renderDetail(w,d,id){
 }
 function renderHome(w,d){
   const el=activate(d,screen(d));
-  el.innerHTML='<h1 class="pmpDiagTitle">Diagnostics</h1><p class="pmpDiagSub">Permanent read-only diagnostics. Original tools remain visible; ownership conflicts are reported without repairing or changing the app.</p><div class="pmpDiagQuick">'+action('pmpDiagSafeHandoffHome','Copy New Chat Safe Handoff')+'</div><div class="pmpDiagGrid">'+CARDS.map(cardHTML).join('')+'</div>';
-  bindHandoff(d,'pmpDiagSafeHandoffHome');
+  el.innerHTML='<h1 class="pmpDiagTitle">Diagnostics</h1><p class="pmpDiagSub">Permanent read-only diagnostics. Original tools remain visible; ownership conflicts are reported without repairing or changing the app.</p><div class="pmpDiagGrid">'+CARDS.map(cardHTML).join('')+'</div>';
   el.querySelectorAll('.pmpDiagCard').forEach(card=>{const open=()=>renderDetail(w,d,card.dataset.diag);card.onclick=open;card.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}}});
 }
 function run(reason){const report=currentReport(reason||'run');docs().forEach(ctx=>{try{if(ctx.document.getElementById(SCREEN_ID))renderHome(ctx.window,ctx.document)}catch(e){}});return report}
 function renderDiagnosticJournal(w,d){renderDetail(w,d,'error_log')}
 function renderSectionOwners(w,d){renderDetail(w,d,'section_owners')}
 function close(){docs().forEach(ctx=>{const el=ctx.document.getElementById(SCREEN_ID);if(el)el.classList.remove('on')})}
-const api={version:V,owner:OWNER,run,currentReport,renderHome,renderDetail,renderDiagnosticJournal,renderSectionOwners,close,screenId:SCREEN_ID,readMountLifecycle:lifecycleView,readHelpers:helperView,readPanelOrder:panelOrderReport,readDuplicates:duplicateReport,readFlicker:flickerReport,readErrors:errorReport,readActivePath:activePathValue,rule:'Read-only permanent diagnostics with one visible safe-handoff action, App Orchestrator status, panel order, duplicate, repaint, error, and ownership evidence. Active Path Discovery remains on its Control surface. No repair or data mutation.'};
+const api={version:V,owner:OWNER,run,currentReport,renderHome,renderDetail,renderDiagnosticJournal,renderSectionOwners,close,screenId:SCREEN_ID,readMountLifecycle:lifecycleView,readHelpers:helperView,readPanelOrder:panelOrderReport,readDuplicates:duplicateReport,readFlicker:flickerReport,readErrors:errorReport,readActivePath:activePathValue,rule:'Read-only permanent diagnostics with the safe-handoff action owned only by App Orchestrator Status, plus panel order, duplicate, repaint, error, and ownership evidence. Active Path Discovery remains on its Control surface. No repair or data mutation.'};
 api.readMountLifecycle=lifecycleView;
 api.readSectionOwners=sectionOwnerView;
 window.PMPDiagnosticsOwnerV1=api;try{T().PMPDiagnosticsOwnerV1=api}catch(e){}
