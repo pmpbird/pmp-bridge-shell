@@ -1,7 +1,7 @@
 name: App Orchestrator Ownership Maintenance
 on:
   pull_request:
-    types: [opened, reopened]
+    types: [opened, reopened, synchronize]
 permissions:
   contents: write
 jobs:
@@ -127,10 +127,11 @@ jobs:
           report_path.write_text(json.dumps(report, indent=2, sort_keys=True) + '\n', 'utf-8')
           PY
 
+          rm -f pmp-single-handoff-reseal-trigger.json
           git show origin/main:.github/workflows/app-orchestrator-ownership-maintenance-v1.yml > .github/workflows/app-orchestrator-ownership-maintenance-v1.yml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .github/workflows/app-orchestrator-ownership-maintenance-v1.yml pmp-diagnostics-owner-v1.js tools/test_app_orchestrator_ownership_maintenance_v1.py tools/verify_app_orchestrator_ownership_maintenance_v1.py pmp-runtime-integrity-manifest-v1.json pmp-app-current.html audit/a003-manifest-seal.json audit/pass13/app-orchestrator-ownership-maintenance-v1.json audit/pass13/receipts/RECEIPT_DIAGNOSTICS_SINGLE_HANDOFF_OWNER_20260728_001.json
+          git add -A
           git commit -m "Keep safe handoff only in App Orchestrator Status"
 
           python3 tools/test_app_orchestrator_ownership_maintenance_v1.py
