@@ -66,7 +66,10 @@ function flickerReport(){
 function errorReport(){return{type:'PMP_DIAGNOSTICS_ERROR_BUG_WATCH_REPORT_V1',version:V,at:now(),captured_runtime_errors:ERRORS.slice(-40),bug_watch:read('pmp_bug_watch_passive_capture_v1_receipt')||read('pmp_active_bug_found_contract_v1_receipt')||{status:'not_ready'},diagnostic_journal:read('pmp_diagnostic_journal_readonly_view_v1_receipt')||{status:'not_ready'},pass:ERRORS.length===0}}
 function ownerView(){return read('pmp_section_owner_registry_snapshot_v1')||{status:'not_ready'}}
 function helperView(){return read('pmp_helper_registry_snapshot_v1')||{status:'not_ready'}}
+function lifecycleView(){return read('pmp_mount_lifecycle_readonly_view_v1_receipt')||read('pmp_mount_lifecycle_runtime_v1_receipt')||{status:'not_ready',capability_ids_exposed:false}}
+function sectionOwnerView(){const value=ownerView();return Object.assign({capability_ids_exposed:false},value)}
 function currentReport(reason){
+  const lifecycle=lifecycleView();
   const report={
     type:'PMP_DIAGNOSTICS_OWNER_REPORT_V2',version:V,owner:OWNER,at:now(),reason:reason||'current_report',status:'ACTIVE_READ_ONLY',
     reports:{
@@ -75,7 +78,7 @@ function currentReport(reason){
       active_path:read('pmp_active_path_discovery_report_v1'),
       active_path_bounded:read('pmp_active_path_discovery_bounded_report_v2'),
       mount_registry:read('pmp_mount_registry_v1_receipt'),
-      mount_lifecycle:read('pmp_mount_lifecycle_runtime_v1_receipt'),
+      mount_lifecycle:lifecycle,
       section_owners:ownerView(),
       helpers:helperView(),
       panel_order:panelOrderReport(),
@@ -86,7 +89,7 @@ function currentReport(reason){
       reload_owner:read('pmp_reload_current_canonical_v1_receipt')||read('pmp_reload_current_v1_receipt')
     },
     summary:{app_orchestrator:read('pmp_app_orchestrator_v1_receipt')?'present':'not_ready',ownership:read('pmp_app_orchestrator_ownership_runtime_v1_receipt')&&read('pmp_app_orchestrator_ownership_runtime_v1_receipt').status||'not_ready',panel_order:'calculated',duplicates:'calculated',errors:ERRORS.length},
-    side_effects:{route_change:false,bank_rebuild:false,dom_repair:false,indexeddb_write:false,storage_migration:false,persisted_user_data_write:false}
+    side_effects:{route_change:false,bank_rebuild:false,dom_repair:false,indexeddb_write:false,storage_migration:false,persisted_user_data_write:false,lifecycle_event_application:'not_attempted'}
   };
   put(RECEIPT,{type:'PMP_DIAGNOSTICS_OWNER_RECEIPT_V2',version:V,owner:OWNER,at:now(),status:report.status,sections:CARDS.length,normal_home:'Diagnostics tab',read_only:true});
   return report;
@@ -129,7 +132,9 @@ function run(reason){const report=currentReport(reason||'run');docs().forEach(ct
 function renderDiagnosticJournal(w,d){renderDetail(w,d,'error_log')}
 function renderSectionOwners(w,d){renderDetail(w,d,'section_owners')}
 function close(){docs().forEach(ctx=>{const el=ctx.document.getElementById(SCREEN_ID);if(el)el.classList.remove('on')})}
-const api={version:V,owner:OWNER,run,currentReport,renderHome,renderDetail,renderDiagnosticJournal,renderSectionOwners,close,screenId:SCREEN_ID,readMountLifecycle:()=>read('pmp_mount_lifecycle_runtime_v1_receipt'),readHelpers:helperView,readPanelOrder:panelOrderReport,readDuplicates:duplicateReport,readFlicker:flickerReport,readErrors:errorReport,rule:'Read-only permanent diagnostics with real panel order, duplicate, repaint, error, ownership, and new-chat handoff evidence. No repair or data mutation.'};
+const api={version:V,owner:OWNER,run,currentReport,renderHome,renderDetail,renderDiagnosticJournal,renderSectionOwners,close,screenId:SCREEN_ID,readMountLifecycle:lifecycleView,readHelpers:helperView,readPanelOrder:panelOrderReport,readDuplicates:duplicateReport,readFlicker:flickerReport,readErrors:errorReport,rule:'Read-only permanent diagnostics with real panel order, duplicate, repaint, error, ownership, and new-chat handoff evidence. No repair or data mutation.'};
+api.readMountLifecycle=lifecycleView;
+api.readSectionOwners=sectionOwnerView;
 window.PMPDiagnosticsOwnerV1=api;try{T().PMPDiagnosticsOwnerV1=api}catch(e){}
 window.addEventListener('error',e=>ERRORS.push({at:now(),type:'error',message:String(e.message||''),filename:String(e.filename||''),line:e.lineno||0}));
 window.addEventListener('unhandledrejection',e=>ERRORS.push({at:now(),type:'unhandledrejection',message:String(e.reason&&e.reason.message||e.reason||'')}));

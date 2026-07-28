@@ -264,6 +264,16 @@ def update_no_blind_flying_binding() -> None:
     if not MAINTENANCE_REPORT.exists():
         return
     base = "fbc75d5067df28d96f73fc3f8b18c8dbd45fa571"
+    if subprocess.run(
+        ["git", "cat-file", "-e", base],
+        cwd=ROOT,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    ).returncode != 0:
+        # Pull-request merge checkouts may be shallow. The exact committed
+        # binding is authoritative there; do not fabricate a different scope.
+        return
     changed = set(
         subprocess.check_output(
             ["git", "diff", "--name-only", base],

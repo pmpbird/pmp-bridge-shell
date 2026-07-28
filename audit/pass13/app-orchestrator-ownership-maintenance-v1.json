@@ -184,6 +184,8 @@
   "scope": {
     "changed_paths": [
       ".github/workflows/app-orchestrator-ownership-maintenance-v1.yml",
+      ".github/workflows/pass11-safety-no-deletion-v1.yml",
+      ".github/workflows/pass13-final-certification-v1.yml",
       ".github/workflows/permanent-no-blind-flying-gate-v1.yml",
       "audit/a003-manifest-seal.json",
       "audit/pass13/PMP_APP_ORCHESTRATOR_DIAGNOSTICS_GUIDE_V1.md",
