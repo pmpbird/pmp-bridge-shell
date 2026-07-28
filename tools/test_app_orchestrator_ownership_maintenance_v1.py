@@ -314,7 +314,7 @@ def main() -> None:
         "prior release status preserved",
     )
     check(
-        pointer["status"] == "FOLLOWUP_REPAIR_LOCAL_BROWSER_GREEN_GITHUB_PENDING",
+        pointer["status"] == "FOLLOWUP_REPAIR_MERGED_GREEN_PUBLISHED_VERIFIED",
         "follow-up repair pointer status",
     )
     check(

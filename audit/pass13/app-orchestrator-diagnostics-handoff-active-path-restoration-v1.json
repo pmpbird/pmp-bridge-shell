@@ -5,7 +5,20 @@
   "created_at": "2026-07-27T22:43:15-07:00",
   "base_commit": "cf4f1d7906b998e3818d48a23da4f6b6d091b080",
   "branch": "agent/diagnostics-handoff-active-path-restoration-v1",
-  "status": "LOCAL_BROWSER_GREEN_GITHUB_PENDING",
+  "status": "MERGED_GREEN_PUBLISHED_VERIFIED",
+  "github": {
+    "pull_request": 205,
+    "green_head": "52ec3df6ce5e2f010ab10a7bf5a68c5417651588",
+    "merge_commit": "4dc641fed28dcbd2ffb336650700d9b47098bcd2",
+    "sealed_main_commit": "b3b0f4e9e793f6313685d500569c60d249185423",
+    "green_workflow_runs": {
+      "app_orchestrator_ownership_maintenance": 30333655250,
+      "permanent_no_blind_flying": 30333655227,
+      "a003_runtime_source_byte_integrity": 30333655225,
+      "a003_integrity_probe": 30333655244,
+      "a002_native_messageport_rehearsal_090": 30333655214
+    }
+  },
   "reported_regression": [
     "The safe new-chat handoff button was not directly visible.",
     "The Diagnostics cards lost their established visual treatment and became a long unstructured list.",
@@ -57,6 +70,20 @@
       "root_cause": "The P13-U9 binding still declared the earlier ownership release scope instead of this repair's exact 15-file scope.",
       "repair": "Bind P13-U9 to base cf4f1d7906b998e3818d48a23da4f6b6d091b080, the five current runtime paths, and the current restoration receipt.",
       "local_reproduction_after_repair": "PASS; 15 changed paths, 5 runtime paths, 0 errors"
+    },
+    "published_browser": {
+      "status": "PASS",
+      "source": "https://pmpbird.github.io/pmp-bridge-shell/pmp-app-current.html",
+      "viewport": "390x844",
+      "sealed_main_commit": "b3b0f4e9e793f6313685d500569c60d249185423",
+      "checks": [
+        "GitHub Pages serves Diagnostics Owner v2.2.0 and Active Path Discovery v1.3.0.",
+        "Active Path Discovery is present on the final Control screen.",
+        "Diagnostics occupies the visible viewport at y=0 with scrollTop=0.",
+        "Copy New Chat Safe Handoff and Active Path Discovery are immediately visible.",
+        "Restored bold Diagnostics cards are visible.",
+        "Browser console errors: 0."
+      ]
     }
   },
   "effects": {
@@ -65,7 +92,8 @@
     "persisted_user_data_changed": false,
     "storage_migration_performed": false,
     "formal_proof_performed": false,
-    "production_activation_performed": false
+    "production_activation_performed": false,
+    "github_pages_existing_deployment_updated": true
   },
-  "claim_ceiling": "Diagnostics presentation and read-only evidence restoration only."
+  "claim_ceiling": "Merged and published Diagnostics presentation, handoff visibility, and Active Path mount restoration only."
 }

@@ -21,7 +21,11 @@
     "branch": "agent/diagnostics-handoff-active-path-restoration-v1",
     "evidence": "audit/pass13/app-orchestrator-diagnostics-handoff-active-path-restoration-v1.json",
     "receipt": "audit/pass13/receipts/RECEIPT_APP_ORCHESTRATOR_DIAGNOSTICS_HANDOFF_ACTIVE_PATH_RESTORATION_20260727T224315_0700_001.json",
-    "status": "LOCAL_BROWSER_GREEN_GITHUB_PENDING"
+    "green_head": "52ec3df6ce5e2f010ab10a7bf5a68c5417651588",
+    "pull_request": 205,
+    "merge_commit": "4dc641fed28dcbd2ffb336650700d9b47098bcd2",
+    "sealed_main_commit": "b3b0f4e9e793f6313685d500569c60d249185423",
+    "status": "MERGED_GREEN_PUBLISHED_VERIFIED"
   },
-  "status": "FOLLOWUP_REPAIR_LOCAL_BROWSER_GREEN_GITHUB_PENDING"
+  "status": "FOLLOWUP_REPAIR_MERGED_GREEN_PUBLISHED_VERIFIED"
 }
