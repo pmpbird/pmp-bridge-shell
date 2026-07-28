@@ -6,7 +6,7 @@ const DB='pmp_continuous_run_bank_source_zip_db_v1';
 const OS='files';
 function W(){try{return window.top||window}catch(e){return window}}
 function j(k,d){try{return JSON.parse(W().localStorage.getItem(k)||'')||d}catch(e){return d}}
-function save(k,v){try{W().localStorage.setItem(k,JSON.stringify(v,null,2))}catch(e){}return v}
+function save(k,v){if(k!==MK)return v;let api=window.PMPContinuousRunBankTransferStoreV1;if(!api||typeof api.commitSourceStage!=='function')throw Error('Bank transfer-store owner is not ready.');api.commitSourceStage({actor:'pmp-source-zip-reader-level2-v1.js',field:'source_zip_reader_level2',value:v.source_zip_reader_level2});return v}
 function docs(root,depth,arr){arr=arr||[];depth=depth||0;if(!root||depth>8)return arr;try{arr.push(root);Array.from(root.querySelectorAll('iframe')).forEach(f=>{try{let d=f.contentDocument||(f.contentWindow&&f.contentWindow.document);if(d)docs(d,depth+1,arr)}catch(e){}})}catch(e){}return arr}
 function openDB(){return new Promise((res,rej)=>{try{let q=indexedDB.open(DB,1);q.onupgradeneeded=()=>{try{q.result.createObjectStore(OS)}catch(e){}};q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error||Error('Source ZIP DB open failed'))}catch(e){rej(e)}})}
 async function get(k){let db=await openDB();return await new Promise((res,rej)=>{let tx=db.transaction(OS,'readonly'),st=tx.objectStore(OS),q=st.get(k);q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error||Error('Source ZIP read failed'))})}

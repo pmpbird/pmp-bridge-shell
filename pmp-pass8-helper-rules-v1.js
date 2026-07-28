@@ -1,35 +1,91 @@
-/* PMP Bug Authority Phase 2A final rebuild from exact main 7f31bf5a5a20f2f779f25b7ddc24dc2e6bf313ed. */
 (()=>{
 'use strict';
-const V='2.1.0-phase2a-final-helper-declaration';
-const OWNER='pmp-pass8-helper-rules-v1';
-const KEYS={receipt:'pmp_pass8_helper_rules_receipt_v1',registry:'pmp_pass8_helper_rules_registry_v1',unknown:'pmp_pass8_unknown_helpers_v1'};
-const SELF='pmp-pass8-helper-rules-v1.js';
-const BASE_FORBIDDEN=['another_section','another_owner','app_shell','route_guardian','app_orchestrator','mount_registry','bottom_tabs','unrelated_wrappers','major_surface_hide_reveal'];
+const V='3.0.0-ownership-registry-enforced';
+const OWNER='app_orchestrator_owner';
+const KEYS={
+  receipt:'pmp_pass8_helper_rules_receipt_v1',
+  registry:'pmp_pass8_helper_rules_registry_v1',
+  unknown:'pmp_pass8_unknown_helpers_v1'
+};
 const DECLARED=[
-{id:'pass2_atlas_adapter',file:'pmp-pass2-atlas-adapter-v2.js',name:'Pass 2 Atlas Adapter',owner:'mount_registry',slot:'atlas_runtime_adapter',purpose:'read and adapt atlas data for runtime compatibility',level:'A_READ_HELPER',registration:'accepted',allowed:['read_atlas','adapt_runtime_shape','write_diagnostic_receipt'],forbidden:BASE_FORBIDDEN,storage:['pmp_pass2_atlas_adapter_v2_receipt'],panels:['diagnostic_output'],growth_source:'none'},
-{id:'authority_rules',file:'pmp-authority-rules-v1.js',name:'Authority Rules Helper',owner:'app_orchestrator',slot:'authority_rules_diagnostics',purpose:'publish passive authority rule proof',level:'F_DIAGNOSTIC_HELPER',registration:'accepted',allowed:['read_authority_rules','write_diagnostic_receipt'],forbidden:BASE_FORBIDDEN,storage:['pmp_authority_rules_v1_receipt'],panels:['diagnostic_output'],growth_source:'none'},
-{id:'active_bug_contract',file:'pmp-active-bug-found-contract-v1.js',name:'Active Bug Found Contract Helper',owner:'bug_bank_owner',slot:'bug_contract_diagnostics',purpose:'describe bug-found contract without taking ownership',level:'F_DIAGNOSTIC_HELPER',registration:'accepted',allowed:['read_bug_contract','write_diagnostic_receipt'],forbidden:BASE_FORBIDDEN,storage:['pmp_active_bug_found_contract_v1_receipt'],panels:['diagnostic_output'],growth_source:'none'},
-{id:'bug_watch_passive_capture',file:'pmp-bug-watch-passive-capture-v1.js',name:'Bug Watch Passive Capture Helper',owner:'bug_bank_owner',slot:'bug_watch_capture',purpose:'request bounded passive observations through exclusive Bug Authority',level:'A_READ_HELPER',registration:'accepted',allowed:['read_assigned_bug_scope','request_passive_observation','read_bug_authority_report'],forbidden:BASE_FORBIDDEN.concat(['direct_active_bugs_write','clear_active_bugs','unbounded_timer','classify_fixed','repair']),storage:['pmp_bug_watch_receipt_lineage_v2','pmp_bug_watch_dedupe_index_v2','pmp_bug_watch_handoff_lineage_v2','pmp_bug_watch_repair_request_lineage_v2'],panels:['diagnostic_output'],growth_source:'none',authority:{exclusive_owner:'bug_bank_owner',bounded_lease_required:true,owner_token_required:true,formal_handoff_required:true}},
-{id:'safe_writer_current_return_fix',file:'pmp-safe-writer-current-return-fix-v1.js',name:'Safe Writer Current Return Fix Helper',owner:'safe_writer_owner',slot:'current_return_fix',purpose:'guard current return write behavior inside assigned scope',level:'C_STORAGE_HELPER',registration:'accepted',allowed:['write_assigned_storage_key','write_diagnostic_receipt'],forbidden:BASE_FORBIDDEN,storage:['pmp_safe_writer_current_return_fix_v1_receipt'],panels:['diagnostic_output'],growth_source:'none'},
-{id:'phase8_atlas_marker',file:'pmp-phase8-atlas-marker-v1.js',name:'Phase 8 Atlas Marker Helper',owner:'mount_registry',slot:'atlas_marker_diagnostics',purpose:'mark atlas phase state for diagnostics',level:'F_DIAGNOSTIC_HELPER',registration:'accepted',allowed:['read_marker_state','write_diagnostic_receipt'],forbidden:BASE_FORBIDDEN,storage:['pmp_phase8_atlas_marker_v1_receipt'],panels:['diagnostic_output'],growth_source:'none'},
-{id:'pass1r_version_aligner',file:'pmp-pass1r-version-aligner-v1.js',name:'Pass 1R Version Aligner Helper',owner:'runtime_version_manager',slot:'version_alignment',purpose:'passively align or report version references within assigned scope',level:'B_CALCULATE_HELPER',registration:'accepted',allowed:['read_version_refs','calculate_alignment','write_diagnostic_receipt'],forbidden:BASE_FORBIDDEN,storage:['pmp_pass1r_version_aligner_v1_receipt'],panels:['diagnostic_output'],growth_source:'none'},
-{id:'pass1w_live_proof_reader',file:'pmp-pass1w-live-proof-reader-v1.js',name:'Pass 1W Live Proof Reader Helper',owner:'runtime_health_monitor',slot:'live_proof_reader',purpose:'read live proof keys and report status',level:'A_READ_HELPER',registration:'accepted',allowed:['read_live_proof','write_diagnostic_receipt'],forbidden:BASE_FORBIDDEN,storage:['pmp_pass1w_live_proof_reader_v1_receipt'],panels:['diagnostic_output'],growth_source:'none'},
-{id:'active_path_discovery_machine',file:'pmp-active-path-discovery-machine-v1.js',name:'Active Path Discovery Helper',owner:'app_orchestrator',slot:'active_path_diagnostics',purpose:'discover active paths for diagnostics without rerouting',level:'F_DIAGNOSTIC_HELPER',registration:'accepted',allowed:['read_active_paths','write_diagnostic_receipt'],forbidden:BASE_FORBIDDEN,storage:['pmp_active_path_discovery_machine_v1_receipt'],panels:['diagnostic_output'],growth_source:'none'},
-{id:'active_path_discovery_machine_v2',file:'pmp-active-path-discovery-machine-v2.js',name:'Active Path Discovery V2 Helper',owner:'app_orchestrator',slot:'active_path_diagnostics_v2',purpose:'discover active paths with support-boundary classification without rerouting',level:'F_DIAGNOSTIC_HELPER',registration:'accepted',allowed:['read_active_paths','classify_support_boundary','write_diagnostic_receipt'],forbidden:BASE_FORBIDDEN,storage:['pmp_active_path_discovery_report_v1','pmp_active_path_discovery_receipt_v1'],panels:['diagnostic_output'],growth_source:'none'},
-{id:'continuous_run_bank_order_frame_loader',file:'pmp-continuous-run-bank-order-frame-loader-v1.js',name:'Continuous Run Bank Order Frame Loader Helper',owner:'continuous_run_owner',slot:'continuous_run_frame_loader',purpose:'load assigned continuous-run frame order support',level:'G_GROWTH_HELPER',registration:'accepted',allowed:['touch_assigned_owner_section','write_assigned_diagnostic_receipt'],forbidden:BASE_FORBIDDEN,storage:['pmp_continuous_run_bank_order_frame_loader_v1_receipt'],panels:['continuous_run','diagnostic_output'],growth_source:'continuous_run_frame_loader'},
-{id:'active_path_discovery_zip_export',file:'pmp-active-path-discovery-zip-export-v2.js',name:'Active Path Discovery ZIP Export Helper',owner:'active_path_discovery_owner',slot:'active_path_discovery_export_menu',purpose:'provide diagnostic copy and ZIP export controls inside the Active Path Discovery card only',level:'F_DIAGNOSTIC_HELPER',registration:'diagnostic_only',allowed:['read_active_path_discovery_report','copy_diagnostic_text','export_diagnostic_zip','touch_assigned_discovery_card'],forbidden:BASE_FORBIDDEN,storage:['pmp_active_path_discovery_report_v1','pmp_discovery_dropdown_menu_receipt_v1','pmp_discovery_ui_owner_lock_v1'],panels:['active_path_discovery_card','diagnostic_output'],growth_source:'none'},
-{id:'legacy_helper_registry',file:'pmp-helper-registry-v1.js',name:'Legacy Helper Registry',owner:'app_orchestrator',slot:'legacy_helper_registry_snapshot',purpose:'preserve the previous Pass 7 helper snapshot and receipt as diagnostic evidence during Pass 8 migration',level:'F_DIAGNOSTIC_HELPER',registration:'legacy',allowed:['write_legacy_helper_snapshot','write_legacy_helper_receipt','write_legacy_helper_diagnostics'],forbidden:BASE_FORBIDDEN,storage:['pmp_helper_registry_snapshot_v1','pmp_helper_registry_v1_receipt','pmp_helper_registry_runtime_audit_v1','pmp_helper_registry_v1','pmp_helper_registry_violations_v1'],panels:['diagnostic_output'],growth_source:'none'},
-{id:'pass8_helper_rules_certification',file:'pmp-pass8-helper-rules-certification-v1.js',name:'Pass 8 Helper Rules Certification Gate',owner:'app_orchestrator',slot:'pass8_helper_rules_certification_gate',purpose:'certify Pass 8 helper rules and Atlas/Discovery freeze evidence without taking ownership',level:'F_DIAGNOSTIC_HELPER',registration:'accepted',allowed:['read_helper_rules_receipt','read_atlas_discovery_receipt','write_pass8_certification_receipt'],forbidden:BASE_FORBIDDEN,storage:['pmp_pass8_helper_rules_certification_v1','pmp_pass8_helper_rules_certification_receipt_v1'],panels:['diagnostic_output'],growth_source:'none'}
-];
-function T(){try{return window.top||window}catch(e){return window}}
-function now(){return new Date().toISOString()}
-function put(k,v){try{T().localStorage.setItem(k,JSON.stringify(v,null,2))}catch(e){}return v}
-function docs(root,arr,depth){arr=arr||[];depth=depth||0;if(!root||depth>6)return arr;try{arr.push(root);Array.from(root.querySelectorAll('iframe,frame')).forEach(f=>{try{let d=f.contentDocument||(f.contentWindow&&f.contentWindow.document);if(d)docs(d,arr,depth+1)}catch(e){}})}catch(e){}return arr}
-function scripts(){let out=[];docs(T().document).forEach(d=>{try{Array.from(d.querySelectorAll('script[src]')).forEach(s=>{let src=String(s.getAttribute('src')||'').split('?')[0].split('/').pop();if(src)out.push(src)})}catch(e){}});return Array.from(new Set(out))}
-function countByRegistration(rows,name){return rows.filter(h=>h.registration===name).length}
-function classify(){let loaded=scripts();let declaredFiles=DECLARED.map(h=>h.file);let active=DECLARED.map(h=>Object.assign({},h,{registration:h.registration||'accepted',rule:'helper_assists_owner_does_not_become_owner'}));let unknown=loaded.filter(src=>/helper|adapter|reader|writer|capture|aligner|discovery|loader|marker|contract|rules/i.test(src)&&declaredFiles.indexOf(src)<0&&src!==SELF&&src!=='pmp-app-orchestrator-v1.js'&&src!=='pmp-mount-registry-v1.js');let held=unknown.map(src=>({file:src,registration:'held',reason:'helper_like_script_without_pass8_declaration',allowed_to_act_freely:'no',shown_in_diagnostics:'yes'}));return{loaded_scripts:loaded,active,held}}
-function run(reason){let c=classify();let counts={declared_helpers:DECLARED.length,classified_helpers:c.active.length,accepted_helpers:countByRegistration(c.active,'accepted'),diagnostic_only_helpers:countByRegistration(c.active,'diagnostic_only'),legacy_helpers:countByRegistration(c.active,'legacy'),held_unknown_helpers:c.held.length};let receipt={type:'PMP_PASS8_HELPER_RULES_RECEIPT_V1',version:V,owner:OWNER,at:now(),reason:reason||'scan',mode:'passive_helper_rules_registry',status:c.held.length?'PASS8_HELPER_RULES_WITH_HELD_UNKNOWN_HELPERS':'PASS8_HELPER_RULES_ACTIVE',purpose:'Helpers assist owners; they do not become owners.',counts,classification:{accepted:'can operate only inside assigned owner and slot',diagnostic_only:'can read/copy/export diagnostics in assigned panel only',legacy:'kept for migration evidence; not treated as a new owner'},rules:{helper_must_declare:['helper_id','helper_name','assigned_owner','assigned_slot','purpose','allowed_actions','forbidden_actions','storage_keys_used','panels_allowed_to_touch','growth_source_if_it_adds_anything'],unknown_helper:'held_by_app_orchestrator_shown_in_diagnostics_not_allowed_to_act_freely',helpers_do_not_mount_panels:'owner_mounts_panel_in_legal_slot'},side_effects:{route_change:'not_attempted',bank_rebuild:'not_attempted',indexeddb_write:'not_attempted',storage_migration:'not_attempted',ownership_takeover:'not_attempted',panel_mount:'not_attempted'},safe_claim:'Pass 8 helper rules registry is active in passive mode. It classifies declared helpers and holds unknown helper-like scripts for diagnostics.',do_not_claim:['not enforcing blocking yet','not final pass8 certification by itself','not owner/helper source acceptance']};put(KEYS.registry,{type:'PMP_PASS8_HELPER_RULES_REGISTRY_V1',version:V,owner:OWNER,at:now(),helpers:c.active});put(KEYS.unknown,{type:'PMP_PASS8_UNKNOWN_HELPERS_V1',version:V,owner:OWNER,at:now(),held:c.held});put(KEYS.receipt,receipt);return receipt}
+  ['pmp-pass2-atlas-adapter-v2.js','mount_registry_owner','read_only_runtime_adapter'],
+  ['pmp-authority-rules-v1.js','app_orchestrator_owner','read_only_authority_diagnostic'],
+  ['pmp-active-bug-found-contract-v1.js','bug_bank_owner','read_only_contract'],
+  ['pmp-bug-watch-passive-capture-v1.js','bug_bank_owner','bounded_owner_requester'],
+  ['pmp-safe-writer-current-return-fix-v1.js','safe_writer_owner','assigned_owner_guard'],
+  ['pmp-phase8-atlas-marker-v1.js','mount_registry_owner','read_only_marker'],
+  ['pmp-pass1r-version-aligner-v1.js','mount_registry_owner','read_only_alignment_diagnostic'],
+  ['pmp-pass1w-live-proof-reader-v1.js','diagnostics_owner','read_only_proof_reader'],
+  ['pmp-active-path-discovery-machine-v1.js','active_path_discovery_owner','canonical_report_writer'],
+  ['pmp-active-path-discovery-machine-v2.js','active_path_discovery_owner','separate_bounded_report_writer'],
+  ['pmp-active-path-discovery-zip-export-v2.js','active_path_discovery_owner','canonical_report_reader_exporter'],
+  ['pmp-continuous-run-bank-order-frame-loader-v1.js','continuous_run_level_owner','single_owner_frame_loader'],
+  ['pmp-top-lossless-injector.js','reload_current_owner','idempotent_loader_requester'],
+  ['pmp-top-lossless-loader.js','reload_current_owner','idempotent_assigned_loader'],
+  ['pmp-helper-bank-live-inspector-v2.js','bank_screen_owner','owner_requested_read_only_presenter'],
+  ['pmp-helper-problem-type-seeds-v1.js','diagnostics_owner','read_only_analyzer'],
+  ['pmp-helper-problem-type-only-v1.js','diagnostics_owner','pure_normalizer'],
+  ['pmp-hidden-safe-writer-surface-cleaner-v1.js','safe_writer_owner','inactive_read_only_compatibility'],
+  ['pmp-private-source-loader-v1.js','source_gate_owner','explicit_source_intake'],
+  ['pmp-phase2-private-window-adapter-v1.js','source_gate_owner','explicit_idempotent_module_loader'],
+  ['pmp-resident-continuous-run-status-reader-v1.js','resident_30b_owner','canonical_status_reader'],
+  ['pmp-resident-cr-status-router-v1.js','resident_30b_owner','read_only_delegate'],
+  ['pmp-source-text-reader-level3-v1.js','source_gate_owner','owner_event_driven_reader']
+].map(row=>({file:row[0],owner:row[1],role:row[2],registration:'accepted',allowed_to_act_freely:'no',authority:'only_through_declared_owner_role'}));
+function topWindow(){try{return window.top||window}catch(e){return window}}
+function put(key,value){try{topWindow().localStorage.setItem(key,JSON.stringify(value,null,2))}catch(e){}return value}
+function documents(root,out,depth){
+  out=out||[];depth=depth||0;
+  if(!root||depth>8)return out;
+  try{
+    out.push(root);
+    root.querySelectorAll('iframe,frame').forEach(frame=>{
+      try{let doc=frame.contentDocument||(frame.contentWindow&&frame.contentWindow.document);if(doc)documents(doc,out,depth+1)}catch(e){}
+    });
+  }catch(e){}
+  return out;
+}
+function loadedScripts(){
+  const files=new Set();
+  documents(topWindow().document).forEach(doc=>{
+    try{doc.querySelectorAll('script[src]').forEach(script=>{let file=String(script.getAttribute('src')||'').split('?')[0].split('/').pop();if(file)files.add(file)})}catch(e){}
+  });
+  return Array.from(files).sort();
+}
+function helperLike(file){return /helper|adapter|reader|writer|capture|aligner|discovery|loader|marker|contract|rules|cleaner|router/i.test(file)}
+function classify(){
+  const declared=new Set(DECLARED.map(row=>row.file));
+  const loaded=loadedScripts();
+  const held=loaded.filter(file=>helperLike(file)&&!declared.has(file)&&file!=='pmp-app-orchestrator-v1.js'&&file!=='pmp-mount-registry-v1.js').map(file=>({
+    file,
+    registration:'held',
+    reason:'helper_like_script_without_current_declaration',
+    allowed_to_act_freely:'no',
+    required_resolution:'declare_exact_owner_role_or_remove_from_active_chain'
+  }));
+  return{loaded,held};
+}
+function run(reason){
+  const result=classify(),at=new Date().toISOString();
+  const receipt={
+    type:'PMP_PASS8_HELPER_RULES_RECEIPT_V1',
+    version:V,
+    owner:OWNER,
+    at,
+    reason:String(reason||'manual'),
+    status:result.held.length?'HELD_UNKNOWN_HELPERS_REQUIRE_REVIEW':'HELPER_OWNERSHIP_DECLARATIONS_GREEN',
+    enforcement:'machine_readable_registry_plus_static_CI_plus_owner_broker',
+    counts:{declared_helpers:DECLARED.length,held_unknown_helpers:result.held.length},
+    rule:'Helpers assist owners; helpers do not become owners.',
+    unknown_helper:'held_by_app_orchestrator_shown_in_diagnostics_not_allowed_to_act_freely',
+    helpers_do_not_mount_panels:'owner_mounts_panel_in_legal_slot',
+    side_effects:{route_change:'not_attempted',bank_rebuild:'not_attempted',indexeddb_write:'not_attempted',storage_migration:'not_attempted',ownership_takeover:'not_attempted',panel_mount:'not_attempted'}
+  };
+  put(KEYS.registry,{type:'PMP_PASS8_HELPER_RULES_REGISTRY_V1',version:V,owner:OWNER,at,helpers:DECLARED});
+  put(KEYS.unknown,{type:'PMP_PASS8_UNKNOWN_HELPERS_V1',version:V,owner:OWNER,at,held:result.held});
+  put(KEYS.receipt,receipt);
+  return receipt;
+}
 window.PMPPass8HelperRulesV1={version:V,owner:OWNER,run,getRegistry:()=>DECLARED.slice(),keys:KEYS,rule:'Helpers assist owners; helpers do not become owners.'};
-try{run('boot_scan');setTimeout(()=>run('settled_scan_900ms'),900);setTimeout(()=>run('settled_scan_2200ms'),2200);setTimeout(()=>run('settled_scan_5200ms'),5200)}catch(e){put(KEYS.receipt,{type:'PMP_PASS8_HELPER_RULES_RECEIPT_V1',version:V,owner:OWNER,at:now(),status:'ERROR',error:String(e&&e.message||e)})}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>run('document_ready'),{once:true});else run('script_load');
 })();

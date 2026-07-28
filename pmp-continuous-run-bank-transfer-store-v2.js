@@ -1,7 +1,8 @@
 (()=>{
 'use strict';
-const V='2.2.0-data-only-bank-screen-owner';
-const OWNER='pmp-continuous-run-bank-transfer-store-v2';
+const V='2.3.0-exclusive-bank-writer-broker-20260727A';
+const OWNER='bank_screen_owner';
+const WRITER='pmp-continuous-run-bank-transfer-store-v2.js';
 const MANIFEST_KEY='pmp_continuous_run_bank_transfer_store_manifest_v1';
 const RECEIPT_KEY='pmp_continuous_run_bank_transfer_store_receipts_v1';
 const DB='pmp_continuous_run_bank_transfer_store_db_v1',OS='items';
@@ -42,6 +43,37 @@ function blank(){return cleanOldLong({type:'PMP_CONTINUOUS_RUN_BANK_STAGING_TRAN
 function readManifest(){let m=j(MANIFEST_KEY,null);if(!m||!m.type)m=blank();if(!m.items)m.items={};m=cleanOldLong(m);m.type='PMP_CONTINUOUS_RUN_BANK_STAGING_TRANSFER_STORE_MANIFEST_V2';m.version=V;m.owner=OWNER;m.bank='continuous_run';m.required=SLOT_REQUIRED;m.lossless_required=LOSSLESS_REQUIRED;m.source_required={type:SOURCE_ZIP,label:'Must-Reference Source ZIP'};if(!m.must_reference_source_zip)m.must_reference_source_zip={required:true,present:false};m.verified=!!m.lossless_verified;return save(MANIFEST_KEY,m)}
 function receipts(){let r=j(RECEIPT_KEY,[]);return Array.isArray(r)?r:[]}
 function appendReceipt(x){let r=receipts(),item=Object.assign({type:'PMP_STAGING_TRANSFER_STORE_RECEIPT_V2',owner:OWNER,bank:'continuous_run',at:now(),id:uid()},x||{});r.push(item);save(RECEIPT_KEY,r);try{let api=window.PMPContinuousWorkEngineStateV1||window.PMPContinuousRunStateBankV1;if(api&&api.appendReceipt)api.appendReceipt({type:item.action||'PMP_STAGING_TRANSFER_STORE_RECEIPT_V2',staging_transfer_store_receipt:item})}catch(e){}return item}
+function commitSourceZip(request){
+  request=request||{};
+  if(request.actor!=='pmp-continuous-run-bank-must-source-zip-v1.js')throw Error('REJECTED_SOURCE_ZIP_REQUESTER');
+  const source=request.source;
+  if(!source||source.present!==true||!source.indexeddb_key)throw Error('REJECTED_SOURCE_ZIP_METADATA');
+  let m=readManifest();
+  m.must_reference_source_zip=Object.assign({required:true},source);
+  m.slot_check_passed=false;m.lossless_verified=false;m.verified=false;m.updated_at=now();
+  save(MANIFEST_KEY,m);
+  appendReceipt({action:'commit_must_reference_source_zip_metadata_v2',requested_by:request.actor,summary:'Bank owner committed must-reference source ZIP metadata',file_name:source.file_name,size:source.size,hash:source.hash});
+  return m.must_reference_source_zip;
+}
+function commitSourceStage(request){
+  request=request||{};
+  const allowed={
+    'pmp-source-zip-reader-level2-v1.js':'source_zip_reader_level2',
+    'pmp-source-zip-extractor-level2b-v1.js':'source_zip_extractor_level2b',
+    'pmp-source-pdf-text-level2c-v1.js':'source_pdf_text_level2c',
+    'pmp-source-reference-gate-level4-v1.js':'source_reference_gate_level4'
+  };
+  const field=allowed[request.actor];
+  if(!field||request.field!==field)throw Error('REJECTED_SOURCE_STAGE_REQUESTER_OR_FIELD');
+  if(!request.value||typeof request.value!=='object')throw Error('REJECTED_SOURCE_STAGE_VALUE');
+  let m=readManifest();
+  m[field]=request.value;
+  if(field==='source_pdf_text_level2c')delete m.source_pdf_text_level2d;
+  m.slot_check_passed=false;m.lossless_verified=false;m.verified=false;m.updated_at=now();
+  save(MANIFEST_KEY,m);
+  appendReceipt({action:'commit_source_stage_metadata_v2',requested_by:request.actor,field,summary:'Bank owner committed '+field+' metadata'});
+  return m[field];
+}
 function presentTypes(m){let a=[];Object.keys(m.items||{}).forEach(t=>{if(Object.keys(m.items[t]||{}).length)a.push(t)});return a}
 function bestMeta(m,t){let b=m.items&&m.items[t]||{},ids=Object.keys(b);if(!ids.length)return null;ids.sort((a,c)=>String(b[c].imported_at||'').localeCompare(String(b[a].imported_at||'')));return b[ids[0]]}
 function q(kind,text,meta){text=String(text||'');meta=meta||{};let body=text.trim(),lower=body.toLowerCase(),rule=LOSSLESS_REQUIRED.find(x=>x.type===kind)||{min:50,terms:[]},issues=[],chars=Number(meta.characters||body.length||0),wc=Number(meta.word_count||words(body)||0);if(!chars)issues.push('empty_content');if(chars<rule.min)issues.push('too_short_min_'+rule.min+'_chars');if(wc<10&&chars<200)issues.push('too_few_words');if(BAD.includes(lower)||/^test\s*\d*$/i.test(body)||/^sample\s*\d*$/i.test(body))issues.push('placeholder_text');let terms=rule.terms||[];if(terms.length&&body&&chars>=rule.min&&!terms.some(t=>lower.includes(t)))issues.push('expected_terms_missing_'+terms.join('_or_'));return{ok:issues.length===0,issues,chars,word_count:wc,min_chars:rule.min}}
@@ -51,6 +83,6 @@ function engineGate(){let v=verifyStore(false),missing=[...(v.missing||[]),...(v
 async function exportStore(){let m=readManifest(),items=[];for(const t of Object.keys(m.items||{})){for(const id of Object.keys(m.items[t]||{})){let meta=m.items[t][id],full=null;try{full=await idbGet(meta.indexeddb_key)}catch(e){}items.push({meta,full})}}return{type:'PMP_CONTINUOUS_RUN_BANK_STAGING_TRANSFER_STORE_EXPORT_V2',version:V,exported_at:now(),bank:'continuous_run',manifest:m,receipts:receipts(),items}}
 function statusText(){let v=verifyStore(false),m=v.manifest,rows=[];rows.push('Slot Check: '+(v.slot_check_passed?'PASSED':'NOT PASSED'));rows.push('Lossless Verified: '+(v.lossless_verified?'YES':'NO'));rows.push('Missing required slots: '+(v.missing.length?v.missing.join(', '):'none'));rows.push('Missing lossless items: '+(v.lossless_missing.length?v.lossless_missing.join(', '):'none'));rows.push('Items:');Object.keys(m.items||{}).sort().forEach(t=>Object.keys(m.items[t]||{}).sort().forEach(id=>{let x=m.items[t][id];rows.push('['+t+'] '+(x.name||id)+' | chars '+x.characters+' | hash '+x.hash)}));return rows.join('\n')}
 function scan(){return false}
-window.PMPContinuousRunBankTransferStoreV1={version:V,owner:OWNER,data_only:true,required:SLOT_REQUIRED,lossless_required:LOSSLESS_REQUIRED,keys:{MANIFEST_KEY,RECEIPT_KEY,DB,OS},readManifest,receipts,importItem,verifyStore,engineGate,exportStore,statusText,scan};
+window.PMPContinuousRunBankTransferStoreV1={version:V,owner:OWNER,writer:WRITER,data_only:true,required:SLOT_REQUIRED,lossless_required:LOSSLESS_REQUIRED,keys:{MANIFEST_KEY,RECEIPT_KEY,DB,OS},readManifest,receipts,importItem,commitSourceZip,commitSourceStage,verifyStore,engineGate,exportStore,statusText,scan};
 readManifest();
 })();

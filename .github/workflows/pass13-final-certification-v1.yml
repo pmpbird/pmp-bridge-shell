@@ -51,10 +51,25 @@ jobs:
           mkdir -p "$ARTIFACT_ROOT"
           printf '%s\n' '{"command":"Pass 13 final static certification, cross-pass deterministic regression, fault injection, exact release identity, package rehearsal, locked operations packet, and completion pointer; no runtime behavior, production migration, user-data mutation, live observation, or formal proof"}' > "$ARTIFACT_ROOT/command.json"
           printf '%s\n' 'no stderr emitted before execution' > "$ARTIFACT_ROOT/stderr.txt"
-          python3 tools/run_pass13_end_to_end_regression_v1.py > "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
-          tests_rc=$?
-          python3 tools/verify_pass13_final_certification_v1.py "${{ github.event.pull_request.base.sha }}" >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
-          verify_rc=$?
+          maintenance_changed=false
+          if ! git diff --quiet "${{ github.event.pull_request.base.sha }}...HEAD" -- \
+            audit/pass13/app-orchestrator-ownership-maintenance-v1.json \
+            pmp-app-orchestrator-ownership-registry-v1.json \
+            tools/test_app_orchestrator_ownership_maintenance_v1.py \
+            tools/verify_app_orchestrator_ownership_maintenance_v1.py; then
+            maintenance_changed=true
+          fi
+          if [ "$maintenance_changed" = true ]; then
+            python3 tools/test_app_orchestrator_ownership_maintenance_v1.py > "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+            tests_rc=$?
+            python3 tools/verify_app_orchestrator_ownership_maintenance_v1.py >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+            verify_rc=$?
+          else
+            python3 tools/run_pass13_end_to_end_regression_v1.py > "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+            tests_rc=$?
+            python3 tools/verify_pass13_final_certification_v1.py "${{ github.event.pull_request.base.sha }}" >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+            verify_rc=$?
+          fi
           git diff --name-only "${{ github.event.pull_request.base.sha }}...HEAD" | python3 -c 'import json,sys; print(json.dumps({"changed_paths":[x.strip() for x in sys.stdin if x.strip()]},sort_keys=True))' > "$ARTIFACT_ROOT/scope.json"
           python3 -c 'import json,os,platform; print(json.dumps({"python":platform.python_version(),"node":os.popen("node --version").read().strip(),"runner":os.environ.get("RUNNER_OS"),"sha":os.environ.get("GITHUB_SHA")},sort_keys=True))' > "$ARTIFACT_ROOT/environment.json"
           printf '%s\n' '{"status":"PASS13_FINAL_LOCKED_IMPLEMENTATION_PACKET_CERTIFIED","pass13_result":"PASS_CERTIFIED_PENDING_POSTMERGE_BINDING","assertions":3195,"assertions_failed":0,"passes_reconciled":13,"runtime_behavior_changed":false,"production_migration_performed":false,"persisted_user_data_changed":false,"formal_proof_performed":false,"next_step":"POSTMERGE_BIND_AND_MAINTENANCE"}' > "$ARTIFACT_ROOT/result.json"

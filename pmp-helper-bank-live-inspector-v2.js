@@ -26,9 +26,32 @@ function fold(title,body){return'<details style="'+W+'"><summary style="'+BLACK+
 function detail(t,d){let R=d.stored.filter(x=>x.type===t),O=d.objects.filter(x=>x.type===t),S=d.scripts.filter(x=>x.type===t),D=d.dom.filter(x=>x.type===t);return'<div style="'+BOX+';margin-top:8px"><p class="sub" style="'+W+'">'+esc(HELP[t])+'</p>'+fold('Saved — '+R.length,rows(R,[['name','helper_id'],['bank','owning_bank'],['from','source_tab']]))+fold('Running — '+O.length,rows(O,[['name','name'],['version','version'],['tools',r=>(r.keys||[]).join(', ')]]))+fold('Loaded Files — '+S.length,rows(S,[['file','file'],['frame','frame']]))+fold('Screen Areas — '+D.length,rows(D,[['screen part','selector'],['frame','frame'],['count','count']]))+'</div>'}
 function render(d,sel){sel=sel||'';let stack=TYPES.map(t=>'<div style="'+W+';display:grid;gap:8px"><button type="button" data-helper-tab="'+t+'" style="'+(t===sel?APPSEL:APPTAB)+'"><span style="display:block">'+esc(LABEL[t])+' — '+total(t,d)+'</span></button>'+(t===sel?detail(t,d):'')+'</div>').join('');return'<div data-helper-bank-live-inspector-v2 data-helper-selected="'+esc(sel)+'" style="'+W+';display:grid;gap:10px;margin-top:10px"><section style="'+BOX+'"><h2 style="margin:0">Live Helper Bank Inspector</h2><p class="sub" style="'+W+'">Helper Bank shows helper inventory only. Bug information lives in Bug Bank.</p><pre class="note" style="max-width:100%;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word">'+esc(JSON.stringify(d.summary,null,2))+'</pre><div class="grid"><button class="mini" data-helper-bank-refresh>Refresh Live Helper Map</button><button class="mini" data-helper-bank-copy>Copy Live Helper Map</button></div></section><section style="'+W+';display:grid;gap:12px">'+stack+'</section></div>'}
 function bind(h,doc){Array.from(h.querySelectorAll('[data-helper-tab]')).forEach(b=>b.onclick=e=>{e&&e.preventDefault();let current=h.getAttribute('data-helper-selected')||'',clicked=b.getAttribute('data-helper-tab')||'',sel=current===clicked?'':clicked;h.outerHTML=render(live(),sel);let n=doc.querySelector('[data-helper-bank-live-inspector-v2]');if(n)bind(n,doc)});let ref=h.querySelector('[data-helper-bank-refresh]'),copy=h.querySelector('[data-helper-bank-copy]');if(ref)ref.onclick=e=>{e&&e.preventDefault();let sel=h.getAttribute('data-helper-selected')||'';h.outerHTML=render(live(),sel);let n=doc.querySelector('[data-helper-bank-live-inspector-v2]');if(n)bind(n,doc)};if(copy)copy.onclick=async e=>{e&&e.preventDefault();try{await navigator.clipboard.writeText(JSON.stringify(live(),null,2));copy.textContent='Copied'}catch(x){}}}
-function install(doc){try{let bank=doc.getElementById('bank');if(!bank)return;let title=(bank.querySelector('[data-bank-detail-title]')||{}).textContent||'';if(clean(title)!=='Helper Bank')return;let pre=bank.querySelector('[data-bank-helper]');if(!pre)return;pre.style.display='none';let old=bank.querySelector('[data-helper-bank-live-inspector-v1]');if(old)old.remove();let h=bank.querySelector('[data-helper-bank-live-inspector-v2]');if(!h||h.getAttribute('data-helper-bank-live-inspector-v2')!==null&&h.textContent.indexOf('Bug information lives in Bug Bank')<0){let div=doc.createElement('div');div.innerHTML=render(live(),'');if(h)h.replaceWith(div.firstElementChild);else pre.insertAdjacentElement('afterend',div.firstElementChild);h=bank.querySelector('[data-helper-bank-live-inspector-v2]')}if(h)bind(h,doc)}catch(e){}}
-function scan(){docs(T().document).forEach(install)}
-window.PMPHelperBankLiveInspectorV2={version:V,scan,live};
-window.addEventListener('load',()=>[300,800,1600,3000,5000].forEach(t=>setTimeout(scan,t)));
-setInterval(scan,5000);scan();
+function renderInto(doc){
+  try{
+    let bank=doc&&doc.getElementById&&doc.getElementById('bank');
+    if(!bank)return{status:'bank_unavailable'};
+    let title=(bank.querySelector('[data-bank-detail-title]')||{}).textContent||'';
+    if(clean(title)!=='Helper Bank')return{status:'not_helper_bank'};
+    let pre=bank.querySelector('[data-bank-helper]');
+    if(!pre)return{status:'owner_slot_unavailable'};
+    pre.style.display='none';
+    let h=bank.querySelector('[data-helper-bank-live-inspector-v2]');
+    if(!h){
+      let div=doc.createElement('div');
+      div.innerHTML=render(live(),'');
+      pre.insertAdjacentElement('afterend',div.firstElementChild);
+      h=bank.querySelector('[data-helper-bank-live-inspector-v2]');
+    }
+    if(h)bind(h,doc);
+    return{status:'rendered_by_bank_owner_request'};
+  }catch(error){return{status:'render_failed',error:String(error&&error.message||error)}}
+}
+window.PMPHelperBankLiveInspectorV2={
+  version:V,
+  owner:'bank_screen_owner',
+  role:'read_only_inventory_provider_and_owner_requested_presenter',
+  live,
+  renderInto,
+  rule:'Never scans, hides, replaces, mounts, or repaints unless the Bank owner explicitly supplies its document.'
+};
 })();

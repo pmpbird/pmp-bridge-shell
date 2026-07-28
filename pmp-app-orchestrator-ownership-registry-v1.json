@@ -1,0 +1,456 @@
+{
+  "type": "PMP_APP_ORCHESTRATOR_OWNERSHIP_REGISTRY_V1",
+  "version": "1.0.0",
+  "updated_at": "2026-07-27T18:00:00Z",
+  "root_authority": "app_orchestrator_owner",
+  "rules": {
+    "one_canonical_writer_per_resource": true,
+    "readers_may_not_rewrite_or_extend_owner_records": true,
+    "helpers_may_request_but_may_not_commit_owner_state": true,
+    "stateful_owner_frame_scope": "one_named_frame",
+    "presentation_helpers": "event_driven_idempotent_no_recurring_repaint",
+    "legacy_aliases": "read_only_or_explicit_owner_delegation",
+    "unknown_helpers": "held_no_capability",
+    "persisted_user_data": "preserve_exact_bytes_no_migration"
+  },
+  "resources": [
+    {
+      "id": "active_path_discovery_canonical_report",
+      "kind": "storage_and_global",
+      "identifiers": [
+        "pmp_active_path_discovery_report_v1",
+        "pmp_active_path_discovery_receipt_v1",
+        "PMPActivePathDiscoveryReportV1",
+        "PMPActivePathDiscoveryMachineV1"
+      ],
+      "owner": "active_path_discovery_owner",
+      "writer": "pmp-active-path-discovery-machine-v1.js",
+      "readers": [
+        "pmp-active-path-discovery-zip-export-v2.js",
+        "pmp-app-orchestrator-v1.js",
+        "pmp-new-chat-safe-handoff-v1.js",
+        "pmp-diagnostics-owner-v1.js"
+      ],
+      "schema": "PMP_ACTIVE_PATH_DISCOVERY_REPORT_V1",
+      "frame_scope": "inner_v30",
+      "handoff": "none"
+    },
+    {
+      "id": "active_path_discovery_bounded_support_report",
+      "kind": "storage_and_global",
+      "identifiers": [
+        "pmp_active_path_discovery_bounded_report_v2",
+        "pmp_active_path_discovery_bounded_receipt_v2",
+        "PMPActivePathDiscoveryBoundedReportV2",
+        "PMPActivePathDiscoveryMachineV2"
+      ],
+      "owner": "active_path_discovery_owner",
+      "writer": "pmp-active-path-discovery-machine-v2.js",
+      "readers": [
+        "pmp-app-orchestrator-v1.js",
+        "pmp-new-chat-safe-handoff-v1.js"
+      ],
+      "schema": "PMP_ACTIVE_PATH_DISCOVERY_BOUNDED_REPORT_V2",
+      "frame_scope": "inner_v30",
+      "handoff": "input_to_orchestrator_not_alias_of_v1"
+    },
+    {
+      "id": "mount_registry",
+      "kind": "storage_and_global",
+      "identifiers": [
+        "pmp_mount_registry_v1",
+        "pmp_mount_registry_v1_receipt",
+        "PMPMountRegistryV1"
+      ],
+      "owner": "mount_registry_owner",
+      "writer": "pmp-mount-registry-v1.js",
+      "readers": [
+        "pmp-pass1r-version-aligner-v1.js",
+        "pmp-active-path-discovery-machine-v1.js",
+        "pmp-active-path-discovery-machine-v2.js",
+        "pmp-app-orchestrator-v1.js"
+      ],
+      "schema": "PMP_MOUNT_REGISTRY_V1",
+      "frame_scope": "inner_v30",
+      "handoff": "none"
+    },
+    {
+      "id": "transfer_store_manifest",
+      "kind": "localStorage",
+      "identifiers": [
+        "pmp_continuous_run_bank_transfer_store_manifest_v1",
+        "pmp_continuous_run_bank_transfer_store_receipts_v1"
+      ],
+      "owner": "bank_screen_owner",
+      "writer": "pmp-continuous-run-bank-transfer-store-v2.js",
+      "requesters": [
+        "pmp-continuous-run-bank-must-source-zip-v1.js",
+        "pmp-continuous-run-bank-verify-receipt-fix-v1.js",
+        "pmp-source-zip-reader-level2-v1.js",
+        "pmp-source-zip-extractor-level2b-v1.js",
+        "pmp-source-pdf-text-level2c-v1.js"
+      ],
+      "readers": [
+        "pmp-bank-screen-owner-v1.js",
+        "pmp-resident-continuous-run-status-reader-v1.js",
+        "pmp-new-chat-safe-handoff-v1.js"
+      ],
+      "schema": "PMP_CONTINUOUS_RUN_BANK_STAGING_TRANSFER_STORE_MANIFEST_V2",
+      "frame_scope": "inner_v23",
+      "handoff": "request_via_PMPContinuousRunBankTransferStoreV1"
+    },
+    {
+      "id": "transfer_store_database",
+      "kind": "indexedDB",
+      "identifiers": [
+        "pmp_continuous_run_bank_transfer_store_db_v1/items"
+      ],
+      "owner": "bank_screen_owner",
+      "writer": "pmp-continuous-run-bank-transfer-store-v2.js",
+      "readers": [
+        "pmp-continuous-run-bank-transfer-store-v2.js"
+      ],
+      "schema": "PMP_STAGING_TRANSFER_STORE_ITEM_V2",
+      "frame_scope": "inner_v23",
+      "handoff": "owner_api_only"
+    },
+    {
+      "id": "must_reference_source_zip_database",
+      "kind": "indexedDB",
+      "identifiers": [
+        "pmp_continuous_run_bank_source_zip_db_v1/files"
+      ],
+      "owner": "source_gate_owner",
+      "writer": "pmp-continuous-run-bank-must-source-zip-v1.js",
+      "readers": [
+        "pmp-continuous-run-bank-must-source-zip-v1.js"
+      ],
+      "schema": "PMP_MUST_REFERENCE_SOURCE_ZIP_V1",
+      "frame_scope": "inner_v23",
+      "handoff": "metadata_committed_by_transfer_store_owner_api"
+    },
+    {
+      "id": "resident_continuous_run_status",
+      "kind": "storage_and_global",
+      "identifiers": [
+        "pmp_resident_continuous_run_status_reader_v1",
+        "PMPResidentContinuousRunStatusReaderV1"
+      ],
+      "owner": "resident_30b_owner",
+      "writer": "pmp-resident-continuous-run-status-reader-v1.js",
+      "readers": [
+        "pmp-resident-cr-status-router-v1.js"
+      ],
+      "schema": "PMP_RESIDENT_CONTINUOUS_RUN_STATUS_READER_V1",
+      "frame_scope": "resident_frame",
+      "handoff": "router_delegates_to_reader"
+    },
+    {
+      "id": "section_owner_registry",
+      "kind": "localStorage",
+      "identifiers": [
+        "pmp_section_owner_registry_snapshot_v1",
+        "pmp_section_owner_registry_v1_receipt"
+      ],
+      "owner": "diagnostics_owner",
+      "writer": "pmp-section-owner-registry-v1.js",
+      "readers": [
+        "pmp-owner-diagnostics-foundation-v1.js",
+        "pmp-pass7-coverage-lock-v1.js",
+        "pmp-diagnostics-owner-v1.js",
+        "pmp-new-chat-safe-handoff-v1.js"
+      ],
+      "schema": "PMP_SECTION_OWNER_REGISTRY_SNAPSHOT_V1",
+      "frame_scope": "inner_v30",
+      "handoff": "none"
+    },
+    {
+      "id": "helper_registry",
+      "kind": "localStorage",
+      "identifiers": [
+        "pmp_helper_registry_snapshot_v1",
+        "pmp_helper_registry_v1_receipt"
+      ],
+      "owner": "diagnostics_owner",
+      "writer": "pmp-helper-registry-v1.js",
+      "readers": [
+        "pmp-owner-diagnostics-foundation-v1.js",
+        "pmp-pass7-coverage-lock-v1.js",
+        "pmp-diagnostics-owner-v1.js",
+        "pmp-new-chat-safe-handoff-v1.js"
+      ],
+      "schema": "PMP_HELPER_REGISTRY_SNAPSHOT_V1",
+      "frame_scope": "inner_v30",
+      "handoff": "none"
+    },
+    {
+      "id": "pass7_coverage_lock",
+      "kind": "localStorage",
+      "identifiers": [
+        "pmp_pass7_coverage_lock_v1",
+        "pmp_pass7_coverage_lock_snapshot_v1",
+        "pmp_pass7_coverage_lock_receipt_v1"
+      ],
+      "owner": "diagnostics_owner",
+      "writer": "pmp-pass7-coverage-lock-v1.js",
+      "readers": [
+        "pmp-pass7-certification-gate-v1.js",
+        "pmp-owner-diagnostics-foundation-v1.js"
+      ],
+      "schema": "PMP_PASS7_COVERAGE_LOCK_V1",
+      "frame_scope": "inner_v30",
+      "handoff": "none"
+    },
+    {
+      "id": "pass7_certification",
+      "kind": "localStorage",
+      "identifiers": [
+        "pmp_pass7_certification_gate_v1_decision",
+        "pmp_pass7_certification_gate_v1_receipt"
+      ],
+      "owner": "diagnostics_owner",
+      "writer": "pmp-pass7-certification-gate-v1.js",
+      "readers": [
+        "pmp-owner-diagnostics-foundation-v1.js",
+        "pmp-diagnostics-owner-v1.js"
+      ],
+      "schema": "PMP_PASS7_CERTIFICATION_DECISION_V1",
+      "frame_scope": "inner_v30",
+      "handoff": "none"
+    },
+    {
+      "id": "canonical_reload_receipt",
+      "kind": "localStorage",
+      "identifiers": [
+        "pmp_reload_current_v1_receipt",
+        "pmp_reload_current_canonical_v1_receipt"
+      ],
+      "owner": "reload_current_owner",
+      "writer": "pmp-current-screen-pointer-v1.js",
+      "readers": [
+        "pmp-current-page-code-scope-v1.js",
+        "pmp-route-code-map-adapter-v1.js",
+        "pmp-diagnostics-owner-v1.js"
+      ],
+      "schema": "PMP_RELOAD_CURRENT_CANONICAL_V1_RECEIPT",
+      "frame_scope": "reload_owner",
+      "handoff": "diagnostic_annotations_use_separate_keys"
+    },
+    {
+      "id": "continuous_run_bank_surface",
+      "kind": "dom",
+      "identifiers": [
+        "data-bank-owner=continuous_run",
+        "data-continuous-run-level"
+      ],
+      "owner": "continuous_run_level_owner",
+      "writer": "pmp-bank-screen-owner-v1.js",
+      "presentation_helper": "pmp-continuous-run-level-ui-scope-v1.js",
+      "legacy_readers": [
+        "pmp-layout-guard-v1.js",
+        "pmp-continuous-run-bank-stable-status-owner-v1.js",
+        "pmp-bank-zero-loading-flash-guard-v1.js"
+      ],
+      "schema": "PMP_CONTINUOUS_RUN_LEVEL_STACK_V1",
+      "frame_scope": "bank_surface",
+      "handoff": "one_card_one_visible_title_canonical_order"
+    },
+    {
+      "id": "diagnostics_surface",
+      "kind": "dom",
+      "identifiers": [
+        "pmpDiagnosticsScreenV1",
+        "data-pmp-section-owner=diagnostics_owner"
+      ],
+      "owner": "diagnostics_owner",
+      "writer": "pmp-diagnostics-owner-v1.js",
+      "presentation_helper": "pmp-diagnostics-bottom-tab-forcer-v1.js",
+      "readers": [
+        "pmp-owner-diagnostics-foundation-v1.js"
+      ],
+      "schema": "PMP_DIAGNOSTICS_OWNER_VIEW_V1",
+      "frame_scope": "home_surface",
+      "handoff": "legacy_foundation_receipt_only"
+    },
+    {
+      "id": "helper_bank_presentation",
+      "kind": "dom",
+      "identifiers": [
+        "data-bank-detail-title=Helper Bank",
+        "data-helper-bank-live-inspector-v2"
+      ],
+      "owner": "bank_screen_owner",
+      "writer": "pmp-master-bank-tab-v1.js",
+      "presentation_helper": "pmp-helper-bank-live-inspector-v2.js",
+      "readers": [
+        "pmp-helper-problem-type-seeds-v1.js",
+        "pmp-diagnostics-owner-v1.js"
+      ],
+      "schema": "PMP_HELPER_BANK_READ_ONLY_PRESENTATION_V2",
+      "frame_scope": "bank_surface",
+      "handoff": "presenter_runs_only_when_bank_owner_calls_renderInto"
+    },
+    {
+      "id": "helper_problem_memory",
+      "kind": "localStorage",
+      "identifiers": [
+        "pmp_helper_problem_memory_types_v1",
+        "pmp_helper_symptom_evidence_v1",
+        "pmp_helper_problem_memory_active_v1"
+      ],
+      "owner": "diagnostics_owner",
+      "writer": "pmp-helper-problem-memory-v1.js",
+      "readers": [
+        "pmp-helper-problem-type-seeds-v1.js",
+        "pmp-helper-problem-type-only-v1.js",
+        "pmp-diagnostics-owner-v1.js"
+      ],
+      "schema": "PMP_HELPER_PROBLEM_MEMORY_V1",
+      "frame_scope": "diagnostics_surface",
+      "handoff": "analyzers_return_values_owner_decides_if_and_when_to_store"
+    },
+    {
+      "id": "top_lossless_transfer_controls",
+      "kind": "dom_and_global",
+      "identifiers": [
+        "pmpTopCopyLosslessButton",
+        "PMP_TOP_LOSSLESS_FULL_MODULAR_READY",
+        "pmpReloadTopLosslessFullModular"
+      ],
+      "owner": "reload_current_owner",
+      "writer": "pmp-top-copy-lossless-button.js",
+      "requesters": [
+        "pmp-top-lossless-injector.js",
+        "pmp-top-lossless-loader.js"
+      ],
+      "schema": "PMP_TOP_LOSSLESS_TRANSFER_CONTROLS_V2",
+      "frame_scope": "top_document",
+      "handoff": "stable_idempotent_loader_chain_no_replacement"
+    },
+    {
+      "id": "private_source_intake",
+      "kind": "dom_and_localStorage",
+      "identifiers": [
+        "pmpSourceBodyLoaderButtonV1",
+        "pmp_medium_source_text_raw_v1",
+        "PMPSourceBodyTextLoaderV1"
+      ],
+      "owner": "source_gate_owner",
+      "writer": "pmp-private-source-loader-v1.js",
+      "readers": [
+        "pmp-private-field-extractor-v1.js"
+      ],
+      "schema": "PMP_SOURCE_BODY_TEXT_LOADER_V1",
+      "frame_scope": "private_source_surface",
+      "handoff": "explicit_user_intake_only_event_driven_mount"
+    },
+    {
+      "id": "new_chat_safe_handoff",
+      "kind": "clipboard_or_zip",
+      "identifiers": [
+        "PMPNewChatSafeHandoffV1",
+        "pmp_new_chat_safe_handoff_v1_receipt"
+      ],
+      "owner": "app_orchestrator_owner",
+      "writer": "pmp-new-chat-safe-handoff-v1.js",
+      "readers": [],
+      "schema": "PMP_NEW_CHAT_SAFE_HANDOFF_V1",
+      "frame_scope": "inner_v30",
+      "handoff": "copy_when_small_zip_when_large"
+    }
+  ],
+  "helper_declarations": [
+    {
+      "path": "pmp-top-lossless-injector.js",
+      "owner": "reload_current_owner",
+      "role": "idempotent_loader_requester"
+    },
+    {
+      "path": "pmp-top-lossless-loader.js",
+      "owner": "reload_current_owner",
+      "role": "idempotent_assigned_loader"
+    },
+    {
+      "path": "pmp-helper-bank-live-inspector-v2.js",
+      "owner": "bank_screen_owner",
+      "role": "owner_requested_read_only_presenter"
+    },
+    {
+      "path": "pmp-helper-problem-type-seeds-v1.js",
+      "owner": "diagnostics_owner",
+      "role": "read_only_analyzer"
+    },
+    {
+      "path": "pmp-helper-problem-type-only-v1.js",
+      "owner": "diagnostics_owner",
+      "role": "pure_normalizer"
+    },
+    {
+      "path": "pmp-hidden-safe-writer-surface-cleaner-v1.js",
+      "owner": "safe_writer_owner",
+      "role": "inactive_read_only_compatibility"
+    },
+    {
+      "path": "pmp-private-source-loader-v1.js",
+      "owner": "source_gate_owner",
+      "role": "explicit_source_intake"
+    },
+    {
+      "path": "pmp-phase2-private-window-adapter-v1.js",
+      "owner": "source_gate_owner",
+      "role": "explicit_idempotent_module_loader"
+    },
+    {
+      "path": "pmp-resident-continuous-run-status-reader-v1.js",
+      "owner": "resident_30b_owner",
+      "role": "canonical_status_reader"
+    },
+    {
+      "path": "pmp-source-text-reader-level3-v1.js",
+      "owner": "source_gate_owner",
+      "role": "owner_event_driven_reader"
+    }
+  ],
+  "legacy_components": [
+    {
+      "path": "pmp-active-path-discovery-machine-v2.js",
+      "allowed_role": "separate_bounded_support_report",
+      "forbidden_role": "canonical_v1_alias_or_writer"
+    },
+    {
+      "path": "pmp-pass1r-version-aligner-v1.js",
+      "allowed_role": "read_only_alignment_diagnostic",
+      "forbidden_role": "mount_registry_writer"
+    },
+    {
+      "path": "pmp-continuous-run-bank-transfer-store-v1.js",
+      "allowed_role": "inactive_compatibility_reader",
+      "forbidden_role": "active_database_or_manifest_writer"
+    },
+    {
+      "path": "pmp-owner-diagnostics-foundation-v1.js",
+      "allowed_role": "read_only_legacy_summary",
+      "forbidden_role": "registry_coverage_certification_or_dom_writer"
+    },
+    {
+      "path": "pmp-layout-guard-v1.js",
+      "allowed_role": "read_only_compatibility_status",
+      "forbidden_role": "bank_dom_writer_or_script_loader"
+    },
+    {
+      "path": "pmp-continuous-run-bank-stable-status-owner-v1.js",
+      "allowed_role": "read_only_compatibility_status",
+      "forbidden_role": "clone_or_hide_bank_status"
+    },
+    {
+      "path": "pmp-resident-cr-status-router-v1.js",
+      "allowed_role": "delegate_to_canonical_reader",
+      "forbidden_role": "status_writer_or_residentRun_wrapper"
+    },
+    {
+      "path": "pmp-hidden-safe-writer-surface-cleaner-v1.js",
+      "allowed_role": "read_only_compatibility_inspection",
+      "forbidden_role": "dom_removal_event_rebinding_or_recurring_scan"
+    }
+  ]
+}

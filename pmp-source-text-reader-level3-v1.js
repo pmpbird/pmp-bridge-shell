@@ -19,6 +19,17 @@ function patch(d){let box=d.querySelector('[data-temp-transfer-store][data-v2="1
 if(p.parentNode!==host)host.appendChild(p);let q=p.querySelector('[data-l3-q]'),out=p.querySelector('[data-l3-out]');p.querySelector('[data-l3-verify]').onclick=async()=>out.textContent=await verify();p.querySelector('[data-l3-search]').onclick=async()=>out.textContent=await search(q.value);p.querySelector('[data-l3-open]').onclick=async()=>out.textContent=await openNote(q.value);if(!out.textContent)verify().then(t=>{out.textContent=t}).catch(e=>{out.textContent='Level 3 not ready: '+e.message})}
 function scan(){docs(W().document).forEach(d=>{try{patch(d)}catch(e){}})}
 window.PMPSourceTextReaderLevel3V1={version:V,scan,verify,search,openNote,all};
-window.addEventListener('load',()=>[300,1000,2500,5000].forEach(t=>setTimeout(scan,t)));
-setInterval(scan,2000);scan();
+function bind(){
+  scan();
+  try{
+    let frame=document.getElementById('app');
+    if(frame&&!frame.dataset.pmpSourceTextReaderOwnerBound){
+      frame.dataset.pmpSourceTextReaderOwnerBound='1';
+      frame.addEventListener('load',scan);
+    }
+  }catch(e){}
+}
+window.addEventListener('pmp:bank-owner-slot-ready',scan);
+window.addEventListener('load',bind,{once:true});
+bind();
 })();

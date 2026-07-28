@@ -1,18 +1,12 @@
 (()=>{
 'use strict';
-const V='1.0.0-hide-bank-loading-shell-until-ready';
-const STYLE_ID='pmpBankZeroLoadingFlashGuardV1Style';
-const WATCHED=new WeakSet();
-function T(){try{return top||window}catch(e){return window}}
-function docs(d,a,n){a=a||[];n=n||0;if(!d||n>10)return a;try{a.push(d);Array.from(d.querySelectorAll('iframe,frame')).forEach(f=>{try{let x=f.contentDocument||(f.contentWindow&&f.contentWindow.document);if(x)docs(x,a,n+1)}catch(e){}})}catch(e){}return a}
-function clean(s){return String(s||'').replace(/\s+/g,' ').trim()}
-function installStyle(d){try{if(d.getElementById(STYLE_ID))return;let st=d.createElement('style');st.id=STYLE_ID;st.textContent='[data-bank-home][data-bank-zero-loading-hidden="1"]{visibility:hidden!important;pointer-events:none!important;}';(d.head||d.documentElement).appendChild(st)}catch(e){}}
-function isRealReady(s){let home=s&&s.querySelector('[data-bank-home]'),buttons=s&&s.querySelector('[data-bank-buttons]'),router=s&&s.querySelector('[data-bank-router]');if(!home||!buttons)return false;let openers=Array.from(buttons.querySelectorAll('[data-open-bank]'));if(openers.length<10)return false;let btxt=clean(buttons.textContent),rtxt=clean(router&&router.textContent);if(!btxt||/^Loading\.{0,3}$/i.test(btxt)||/Master Bank Inventory loading/i.test(btxt))return false;if(/Router loading/i.test(rtxt))return false;return true}
-function guard(d){try{installStyle(d);let s=d.getElementById&&d.getElementById('bank');if(!s)return;let home=s.querySelector('[data-bank-home]');if(!home)return;if(home.classList.contains('hidden')){home.removeAttribute('data-bank-zero-loading-hidden');return}if(isRealReady(s))home.removeAttribute('data-bank-zero-loading-hidden');else home.setAttribute('data-bank-zero-loading-hidden','1')}catch(e){}}
-function watch(d){try{if(!d||!d.body||WATCHED.has(d))return;WATCHED.add(d);let pending=false;new MutationObserver(()=>{if(pending)return;pending=true;Promise.resolve().then(()=>{pending=false;guard(d)})}).observe(d.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});d.addEventListener('click',e=>{try{let t=e.target&&e.target.closest&&e.target.closest('[data-tab="bank"],[data-bank-back],[data-bank-refresh]');if(t){let s=d.getElementById('bank'),h=s&&s.querySelector('[data-bank-home]');if(h&&!h.classList.contains('hidden')&&!isRealReady(s))h.setAttribute('data-bank-zero-loading-hidden','1');setTimeout(()=>guard(d),0);setTimeout(()=>guard(d),40);setTimeout(()=>guard(d),120)}}catch(x){}},true)}catch(e){}}
-function scan(){docs(T().document).forEach(d=>{watch(d);guard(d)});try{localStorage.setItem('pmp_bank_zero_loading_flash_guard_v1_receipt',JSON.stringify({type:'PMP_BANK_ZERO_LOADING_FLASH_GUARD_V1',version:V,at:new Date().toISOString(),rule:'Bank home stays invisible until real bank buttons and router are ready. Loading shell never paints as final visible Bank home.'}))}catch(e){}}
-window.PMPBankZeroLoadingFlashGuardV1={version:V,scan,isRealReady};
-window.addEventListener('load',()=>[0,25,50,100,180,300,500,800,1200,2000,3500,5200].forEach(t=>setTimeout(scan,t)));
-setInterval(scan,250);
-scan();
+const V='2.0.0-read-only-owner-readiness-20260727A';
+function isRealReady(screen){
+  const home=screen&&screen.querySelector('[data-bank-home]'),buttons=screen&&screen.querySelector('[data-bank-buttons]'),router=screen&&screen.querySelector('[data-bank-router]');
+  if(!home||!buttons)return false;
+  const openers=buttons.querySelectorAll('[data-open-bank]').length,text=String(buttons.textContent||'').replace(/\s+/g,' ').trim(),route=String(router&&router.textContent||'');
+  return openers>=10&&!!text&&!/^Loading/i.test(text)&&!/Router loading/i.test(route);
+}
+function inspect(){const screen=document.getElementById('bank');return{type:'PMP_BANK_ZERO_LOADING_FLASH_COMPATIBILITY_VIEW_V2',version:V,status:screen?(isRealReady(screen)?'OWNER_READY':'OWNER_NOT_READY'):'BANK_NOT_IN_THIS_FRAME',canonical_surface_owner:'pmp-master-bank-tab-v1.js',visibility_write:false,observer:false,recurring_timer:false}}
+window.PMPBankZeroLoadingFlashGuardV1={version:V,inspect,scan:inspect,isRealReady,rule:'Read-only readiness diagnostic. The canonical Bank owner controls visibility and paint state.'};
 })();

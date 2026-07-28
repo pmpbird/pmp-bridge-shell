@@ -53,6 +53,14 @@ jobs:
           printf '%s\n' 'no stderr emitted before execution' > "$ARTIFACT_ROOT/stderr.txt"
           node tools/test_pass11_safety_no_deletion_v1.js > "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
           tests_rc=$?
+          maintenance_changed=false
+          if ! git diff --quiet "${{ github.event.pull_request.base.sha }}...HEAD" -- \
+            audit/pass13/app-orchestrator-ownership-maintenance-v1.json \
+            pmp-app-orchestrator-ownership-registry-v1.json \
+            tools/test_app_orchestrator_ownership_maintenance_v1.py \
+            tools/verify_app_orchestrator_ownership_maintenance_v1.py; then
+            maintenance_changed=true
+          fi
           pass11_owned_changed=false
           if ! git diff --quiet "${{ github.event.pull_request.base.sha }}...HEAD" -- \
             audit/pass11 \
@@ -66,7 +74,14 @@ jobs:
             tools/verify_pass11_safety_no_deletion_v1.py; then
             pass11_owned_changed=true
           fi
-          if [ "$pass11_owned_changed" = true ]; then
+          if [ "$maintenance_changed" = true ]; then
+            python3 tools/test_app_orchestrator_ownership_maintenance_v1.py >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+            maintenance_test_rc=$?
+            python3 tools/verify_app_orchestrator_ownership_maintenance_v1.py >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
+            verify_rc=$?
+            if [ "$maintenance_test_rc" -ne 0 ]; then verify_rc=1; fi
+            result_status=PASS11_HISTORICAL_REGRESSION_GREEN_OWNERSHIP_MAINTENANCE_BOUND
+          elif [ "$pass11_owned_changed" = true ]; then
             python3 tools/verify_pass11_safety_no_deletion_v1.py "${{ github.event.pull_request.base.sha }}" >> "$ARTIFACT_ROOT/stdout.txt" 2>> "$ARTIFACT_ROOT/stderr.txt"
             verify_rc=$?
             result_status=PASS11_SAFETY_NO_DELETION_COMPLETE

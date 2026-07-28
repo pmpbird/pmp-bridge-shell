@@ -1,39 +1,67 @@
 (()=>{
 'use strict';
-const V='1.2.1-dedupe-evidence-panel';
-const KEY='pmp_helper_problem_memory_types_v1';
-const STATE='pmp_helper_symptom_watcher_state_v1';
-const EVID='pmp_helper_symptom_evidence_v1';
-const ACTIVE='pmp_helper_problem_memory_active_v1';
-let lastReload=0,last=[];
-function T(){try{return top||window}catch(e){return window}}
-function clean(s){return String(s||'').replace(/\s+/g,' ').trim()}
-function load(k,d){try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(d))}catch(e){return d}}
-function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
-function docs(r,a,n){a=a||[];n=n||0;if(!r||n>10)return a;try{a.push(r);r.querySelectorAll('iframe,frame').forEach(f=>{try{let d=f.contentDocument||(f.contentWindow&&f.contentWindow.document);if(d)docs(d,a,n+1)}catch(e){}})}catch(e){}return a}
-function vis(el){try{let w=el.ownerDocument.defaultView,cs=w.getComputedStyle(el),r=el.getBoundingClientRect();return cs.display!=='none'&&cs.visibility!=='hidden'&&r.width>0&&r.height>0}catch(e){return false}}
-function tx(el){return clean((el&&el.textContent)||el&&el.value||'')}
-function typeRow(type,where,why,severity,fix,detail){return{id:'type_'+Date.now(),auto:true,learned_from:'Symptom Watcher',type,kind:type,problem:type,signature:'type:'+clean(type).toLowerCase(),where,why,how_it_happens:why,severity:severity||'medium',fix_rule:fix||'',detail:detail||{},created_at:new Date().toISOString(),last_seen:new Date().toISOString(),seen:1}}
-function hitKey(row){return clean(row.type).toLowerCase()+'|'+clean(row.where).toLowerCase()}
-function isStoredType(type){let key=clean(type).toLowerCase();return load(KEY,[]).some(x=>clean(x.type).toLowerCase()===key)}
-function saveEvidence(row,extra){let list=load(EVID,[]).filter(Boolean),k=hitKey(row),old=list.find(x=>x.key===k),nowIso=new Date().toISOString(),hits=extra&&extra.hits||1,stored=isStoredType(row.type);let stage=stored?'stored problem type':hits>=2?'confirmed symptom':'possible symptom';let ev=old||{id:'evidence_'+Date.now(),key:k,type:row.type,where:row.where,first_seen:nowIso,hits:0};ev.type=row.type;ev.where=row.where;ev.symptom=row.how_it_happens||row.why||'';ev.severity=row.severity||ev.severity||'medium';ev.fix_rule=row.fix_rule||ev.fix_rule||'';ev.last_seen=nowIso;ev.hits=Math.max(Number(ev.hits||0),hits);ev.stage=stage;ev.confidence=stage==='possible symptom'?35:stage==='confirmed symptom'?70:95;ev.memory_status=stored?'stored problem type':(ev.hits>=2?'ready to store':'not stored yet');ev.evidence=Object.assign({},ev.evidence||{},row.detail||{},extra||{});if(!old)list.push(ev);save(EVID,list.slice(-40));return ev}
-function learn(row){let list=load(KEY,[]).filter(Boolean),key=clean(row.type).toLowerCase(),old=list.find(x=>clean(x.type).toLowerCase()===key);if(old){old.last_seen=new Date().toISOString();old.seen=(Number(old.seen||0)||0)+1;old.where=row.where||old.where;old.how_it_happens=row.how_it_happens||old.how_it_happens;old.fix_rule=row.fix_rule||old.fix_rule;old.auto=true;old.learned_from='Symptom Watcher';old.confidence='stored problem type'}else{row.confidence='stored problem type';list.push(row)}save(KEY,list.slice(-60));saveEvidence(row,{stored:true})}
-function addActive(row){let list=load(ACTIVE,[]).filter(Boolean),key=row.signature,old=list.find(x=>x.signature===key);let a={kind:row.type,type:row.type,where:row.where,why:row.how_it_happens,severity:row.severity||'medium',signature:key,at:new Date().toISOString()};if(old)Object.assign(old,a);else list.push(a);save(ACTIVE,list.slice(0,20))}
-function clearActive(type){let key=clean(type).toLowerCase();save(ACTIVE,load(ACTIVE,[]).filter(x=>clean(x.type||x.kind).toLowerCase()!==key))}
-function seedType(row){row.confidence='stored problem type';learn(row)}
-function buttons(){let a=[];docs(T().document).forEach((d,i)=>{try{Array.from(d.querySelectorAll('button,a,input,[role="button"]')).forEach(b=>{let t=tx(b);if(t)a.push({text:t,visible:vis(b),frame:i})})}catch(e){}});return a}
-function levelish(el){if(!el||!el.attributes)return false;let s=[].slice.call(el.attributes).map(a=>a.name+'='+a.value).join(' ');return /data-(cr-level|source-zip|source-text|source-reference|level\d|resident-l30b|level30)/i.test(s)}
-function dedupeEvidencePanels(bank){let all=Array.from(bank.querySelectorAll('[data-symptom-evidence-panel-v1]'));if(all.length<=1){clearActive('Symptom Evidence Panel Duplicate Rendering');return 0}let row=typeRow('Symptom Evidence Panel Duplicate Rendering','Auto Problem Memory / Symptom Evidence Panel','The Symptom Evidence Panel was rendered by more than one helper/scan loop, creating repeated copies on the Helper Bank screen.','high','Only Auto Problem Memory may render the panel. Symptom Watcher may write evidence data, but must not insert its own panel. Remove outside copies and keep one panel inside Auto Problem Memory.',{count:all.length});learn(row);addActive(row);let inMemory=all.filter(x=>x.closest('[data-helper-problem-memory-v1]'));let keep=inMemory[0]||all[0];all.forEach(x=>{if(x!==keep)x.remove()});return all.length}
-function handleRows(out,st){let seen={},rows=[];out.forEach(x=>{let k=hitKey(x);if(seen[k])return;seen[k]=1;st.hits=st.hits||{};st.hits[k]=(st.hits[k]||0)+1;let ev=saveEvidence(x,{hits:st.hits[k],detected_at:new Date().toISOString()});if(st.hits[k]>=2)learn(x);rows.push(Object.assign({},x,{stage:ev.stage,confidence:ev.confidence}))});last=rows;return rows}
-function symptomScan(){let out=[],st=load(STATE,{seen:{},hist:{},hits:{}}),bs=buttons(),reload=bs.some(b=>b.visible&&/^Reload Current$/i.test(b.text));if(reload){st.seen.reload=1;st.reloadMiss=0}else if(st.seen.reload){st.reloadMiss=(st.reloadMiss||0)+1;if(st.reloadMiss>=2)out.push(typeRow('Launcher Control Removed By Overbroad Cleanup','Launcher Reload Current button','Reload Current existed before, then disappeared while the app was still loaded.','high','Never remove global Launcher controls by text. Scope cleanup to the helper owner container and guard repeated reload taps.',{missing:'Reload Current'}))}
-docs(T().document).forEach((d,i)=>{try{let bank=d.getElementById('bank');if(!bank)return;dedupeEvidencePanels(bank);let insp=bank.querySelector('[data-helper-bank-live-inspector-v2]');if(insp&&!bank.querySelector('[data-helper-tab="problems"]'))out.push(typeRow('Missing Expected Button','Helper Bank Problems Found button','The Helper Bank inspector is visible but the Problems Found button is missing.','high','Expected controls should be restored by their owner.',{frame:i,button:'Problems Found'}));let bso=bank.querySelector('[data-bank-screen-owner-v1]');if(bso&&!bank.querySelector('[data-bso-view-projects]'))out.push(typeRow('Missing Expected Button','Bank Project Registry View Registry button','Bank Project Registry is visible but View Registry is missing.','medium','Bank Screen Owner should own and restore registry controls.',{frame:i,button:'View Registry'}));let raw=bank.querySelector('[data-bank-helper]');if(raw&&vis(raw))out.push(typeRow('Raw Box Flash','Helper Bank raw JSON box','The raw Helper Bank JSON box became visible before the styled inspector took over.','medium','Pre-hide raw data anchors before first paint.',{frame:i}));let hosts=Array.from(bank.querySelectorAll('[data-continuous-run-level-ui-scope-v1]'));if(hosts.length>1)out.push(typeRow('Duplicate Screen Owner','Continuous Run display owner','More than one Continuous Run display owner exists in one Bank screen.','high','Keep one visible owner per screen area.',{frame:i,count:hosts.length}));if(hosts.length===1){let host=hosts[0],stack=host.querySelector('[data-cr-level-stack]'),outside=Array.from(bank.querySelectorAll('div,section,article')).filter(x=>x!==host&&!host.contains(x)&&levelish(x));if(outside.length)out.push(typeRow('Level/Card Placement Drift','Continuous Run level stack','A level/card is outside the Continuous Run display stack.','high','Keep level cards under the one stack; use visual-only cleanup where possible.',{frame:i,count:outside.length}));if(stack&&!Array.from(stack.children).filter(levelish).length)out.push(typeRow('Level/Card Placement Drift','Continuous Run level stack','The Continuous Run stack exists but has no level cards.','low','Do not move cards out of the stack.',{frame:i,count:0}))}let owners={};Array.from(bank.querySelectorAll('[data-bank-screen-owner-v1],[data-helper-bank-live-inspector-v2],[data-helper-problem-memory-v1],[data-continuous-run-level-ui-scope-v1]')).forEach(x=>{let k=[].slice.call(x.attributes||[]).filter(a=>/^data-/.test(a.name)).map(a=>a.name).join('|');owners[k]=(owners[k]||0)+1});Object.keys(owners).forEach(k=>{if(owners[k]>1)out.push(typeRow('Duplicate Screen Owner','Bank helper owner '+k,'The same helper owner marker appears more than once in the same Bank screen.','medium','Deduplicate owner markers; allow observers only.',{frame:i,count:owners[k]}))})}catch(e){}});
-try{let iw=T().innerWidth,sw=T().screen&&T().screen.width,vv=T().visualViewport;if(sw&&sw<520&&iw>620)out.push(typeRow('Screen Scale Shrink','Reload owner / app viewport','The app is being measured like a wide desktop page on a phone.','high','Every reload wrapper must carry mobile viewport and full-screen iframe styling.',{innerWidth:iw,screenWidth:sw}));if(vv&&vv.scale&&vv.scale<0.8)out.push(typeRow('Screen Scale Shrink','Visual viewport scale','The visible viewport scale is below normal.','medium','Keep reload wrappers full-width with mobile viewport meta.',{scale:vv.scale}))}catch(e){}
-bs.filter(b=>/^(Problems Found|Active Problems)\s*[—-]\s*\d+$/i.test(b.text)).forEach(b=>{let k=b.text.replace(/\d+$/,'#'),h=(st.hist[k]||[]).concat([{at:Date.now(),text:b.text}]).filter(x=>Date.now()-x.at<8000).slice(-12);st.hist[k]=h;let vals=[...new Set(h.map(x=>x.text))];if(vals.length>=3||h.length>=5&&vals.length>=2)out.push(typeRow('Display Sync Fighting','Helper Bank problem count button','A problem-count button changed between multiple values in a short time window.','medium','Use one stable count source; do not live-rewrite the visible button DOM.',{values:vals}))});let rows=handleRows(out,st);save(STATE,st);return rows}
-function snapshot(){return{at:new Date().toISOString(),buttons:buttons().filter(b=>b.visible).map(b=>b.text),symptoms:symptomScan().map(x=>({type:x.type,where:x.where,why:x.how_it_happens,stage:x.stage,confidence:x.confidence}))}}
-function learnFromSnapshots(before,after,reason){let n=0;(before&&before.symptoms||[]).concat(after&&after.symptoms||[]).forEach(s=>{let r=typeRow(s.type,s.where,s.why,'medium','Learned from '+(reason||'before/after snapshot'),{source:reason||'snapshot'});saveEvidence(r,{snapshot:true,hits:2,stage:s.stage});learn(r);n++});let bb=new Set((before&&before.buttons)||[]),ab=new Set((after&&after.buttons)||[]);bb.forEach(x=>{if(!ab.has(x)&&/Reload Current|Problems Found|View Registry|Save Project/i.test(x)){let r=typeRow('Missing Expected Button','Expected button: '+x,'A watched button existed before an action and was missing after the action.','high','Record expected controls and restore them from the owner.',{button:x,before_after:true});saveEvidence(r,{snapshot:true,hits:2});learn(r);n++}});return n}
-function seed(){let n=new Date().toISOString();seedType({id:'seed_display_sync_fighting_v1',auto:true,seeded:true,type:'Display Sync Fighting',how_it_happens:'A helper repeatedly rewrites visible text or counts while another helper is also rendering that same screen area, causing the button/count to flicker or bounce between values.',signature:'type:display sync fighting',where:'Helper Bank Problems Found button',severity:'medium',created_at:n,last_seen:n,last_seeded_at:n,seen:1,fix_rule:'Do not live-rewrite the visible button DOM over and over. Patch the single count source behind the render, then let the inspector render normally.'});seedType({id:'seed_launcher_reload_control_removed_v1',auto:true,seeded:true,type:'Launcher Control Removed By Overbroad Cleanup',how_it_happens:'A helper cleanup rule removes buttons by visible text, such as Reload Current or Test Current Page, instead of limiting cleanup to its own owned screen area. After repeated reload cycles it can catch the Launcher reload button and make it disappear.',signature:'type:launcher control removed by overbroad cleanup',where:'Launcher Reload Current button',severity:'high',created_at:n,last_seen:n,last_seeded_at:n,seen:1,fix_rule:'Never remove global Launcher controls by text from a bank/display helper. Scope cleanup to the helper owner container, and guard repeated reload taps so overlapping reload cycles cannot race.'})}
-function hook(){try{T().document.addEventListener('click',e=>{let b=e.target&&e.target.closest&&e.target.closest('button,a,input,[role="button"],[data-pm-smart-fix]'),t=tx(b);if(/reload current/i.test(t)){let n=Date.now();if(n-lastReload<1200){let r=typeRow('Reload Race / Repeated Tap Overlap','Launcher Reload Current button','Reload Current was tapped repeatedly before the previous reload could settle.','medium','Guard reload buttons with a short busy window.',{gap_ms:n-lastReload});saveEvidence(r,{hits:2,click_gap:n-lastReload});learn(r)}lastReload=n}if(b&&b.matches&&b.matches('[data-pm-smart-fix]')){let before=snapshot();[1200,2800,5200].forEach(ms=>setTimeout(()=>learnFromSnapshots(before,snapshot(),'Fix Problems Safely'),ms))}},true)}catch(e){}}
-window.PMPHelperProblemTypeSeedsV1={version:V,seed,scan:symptomScan,snapshot,learnFromSnapshots,last:()=>last,evidence:()=>load(EVID,[])};
-window.PMPHelperSymptomWatcherV1={version:V,scan:symptomScan,snapshot,learnFromSnapshots,last:()=>last,evidence:()=>load(EVID,[])};
-seed();hook();window.addEventListener('load',()=>[120,300,1000,2500,5000].forEach(t=>setTimeout(symptomScan,t)));setInterval(symptomScan,1500);symptomScan();
+const V='2.0.0-read-only-symptom-analyzer';
+function topWindow(){try{return window.top||window}catch(e){return window}}
+function clean(value){return String(value||'').replace(/\s+/g,' ').trim()}
+function documents(root,out,depth){
+  out=out||[];depth=depth||0;
+  if(!root||depth>8)return out;
+  try{
+    out.push(root);
+    root.querySelectorAll('iframe,frame').forEach(frame=>{
+      try{let doc=frame.contentDocument||(frame.contentWindow&&frame.contentWindow.document);if(doc)documents(doc,out,depth+1)}catch(e){}
+    });
+  }catch(e){}
+  return out;
+}
+function visible(element){
+  try{
+    const view=element.ownerDocument.defaultView;
+    const style=view.getComputedStyle(element);
+    const rect=element.getBoundingClientRect();
+    return style.display!=='none'&&style.visibility!=='hidden'&&rect.width>0&&rect.height>0;
+  }catch(e){return false}
+}
+function snapshot(){
+  const findings=[];
+  documents(topWindow().document).forEach((doc,frame)=>{
+    try{
+      const ids={};
+      doc.querySelectorAll('[id]').forEach(node=>{ids[node.id]=(ids[node.id]||0)+1});
+      Object.keys(ids).filter(id=>ids[id]>1).forEach(id=>findings.push({type:'duplicate_dom_id',frame,id,count:ids[id]}));
+      const ownerClaims={};
+      doc.querySelectorAll('[data-pmp-section-owner],[data-pmp-owner-lock]').forEach(node=>{
+        const key=node.getAttribute('data-pmp-section-owner')||node.getAttribute('data-pmp-owner-lock')||'';
+        if(key)ownerClaims[key]=(ownerClaims[key]||0)+1;
+      });
+      Object.keys(ownerClaims).filter(owner=>ownerClaims[owner]>1).forEach(owner=>findings.push({type:'duplicate_owner_claim',frame,owner,count:ownerClaims[owner]}));
+      const bank=doc.getElementById('bank');
+      if(bank){
+        const continuous=bank.querySelectorAll('[data-bank-screen-owner-v1],[data-continuous-run-level-ui-scope-v1]').length;
+        if(continuous>2)findings.push({type:'continuous_run_presentation_owner_collision',frame,count:continuous});
+        const raw=bank.querySelector('[data-bank-helper]');
+        const inspector=bank.querySelector('[data-helper-bank-live-inspector-v2]');
+        if(raw&&inspector&&visible(raw)&&visible(inspector))findings.push({type:'helper_bank_dual_presentation',frame});
+      }
+    }catch(e){}
+  });
+  return{
+    type:'PMP_HELPER_SYMPTOM_READ_ONLY_SNAPSHOT_V2',
+    version:V,
+    owner:'diagnostics_owner',
+    at:new Date().toISOString(),
+    read_only:true,
+    findings,
+    finding_count:findings.length
+  };
+}
+window.PMPHelperProblemTypeSeedsV1={
+  version:V,
+  owner:'diagnostics_owner',
+  role:'read_only_analyzer',
+  snapshot,
+  scan:snapshot,
+  rule:'Returns evidence only. It never writes storage, removes DOM, binds controls, or schedules scans.'
+};
+window.PMPHelperSymptomWatcherV1=window.PMPHelperProblemTypeSeedsV1;
 })();
