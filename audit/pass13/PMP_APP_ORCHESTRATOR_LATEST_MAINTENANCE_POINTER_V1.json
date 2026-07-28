@@ -15,5 +15,13 @@
   "implementation_evidence": "audit/pass13/app-orchestrator-ownership-maintenance-v1.json",
   "receipt": "audit/pass13/receipts/RECEIPT_APP_ORCHESTRATOR_OWNERSHIP_MAINTENANCE_RELEASE_20260727T195500Z_001.json",
   "ownership_registry": "pmp-app-orchestrator-ownership-registry-v1.json",
-  "status": "MERGED_GREEN_LAPTOP_SYNCHRONIZED"
+  "release_status": "MERGED_GREEN_LAPTOP_SYNCHRONIZED",
+  "followup_repair": {
+    "base_commit": "cf4f1d7906b998e3818d48a23da4f6b6d091b080",
+    "branch": "agent/diagnostics-handoff-active-path-restoration-v1",
+    "evidence": "audit/pass13/app-orchestrator-diagnostics-handoff-active-path-restoration-v1.json",
+    "receipt": "audit/pass13/receipts/RECEIPT_APP_ORCHESTRATOR_DIAGNOSTICS_HANDOFF_ACTIVE_PATH_RESTORATION_20260727T224315_0700_001.json",
+    "status": "LOCAL_BROWSER_GREEN_GITHUB_PENDING"
+  },
+  "status": "FOLLOWUP_REPAIR_LOCAL_BROWSER_GREEN_GITHUB_PENDING"
 }

@@ -52,7 +52,7 @@ HTML_REPLACEMENTS = {
         ),
         (
             "pmp-active-path-discovery-machine-v1.js?fresh=active-path-discovery-pass7-v21-v29-freeze-proof-20260706A",
-            "pmp-active-path-discovery-machine-v1.js?fresh=canonical-exclusive-owner-20260727A",
+            "pmp-active-path-discovery-machine-v1.js?fresh=canonical-event-driven-mount-20260727B",
         ),
         (
             "pmp-continuous-run-bank-order-frame-loader-v1.js?fresh=pass75-headless-runtime-platform-20260708A",
@@ -314,7 +314,7 @@ def update_no_blind_flying_binding() -> None:
         in {".js", ".html", ".css", ".mjs", ".cjs", ".ts", ".tsx", ".jsx"}
     ]
     report = json.loads(MAINTENANCE_REPORT.read_text("utf-8"))
-    report["unit_id"] = "P13-U7"
+    report["unit_id"] = "P13-U9"
     report["scope"] = {
         "changed_paths": changed_paths,
         "implementation_paths": implementation_paths,
@@ -352,7 +352,7 @@ def update_no_blind_flying_binding() -> None:
             {
                 "claim_type": "OBSERVED",
                 "fact": (
-                    "The ownership matrix passes 141 deterministic checks "
+                    "The ownership matrix passes 167 deterministic checks "
                     "covering exclusive writers, helper delegation, inert "
                     "legacy actors, event-driven presentation, and the "
                     "copy-or-ZIP handoff."
@@ -466,9 +466,10 @@ def main() -> None:
         maintenance_context=(
             "Repairs audited multiple-owner and helper-owner conflicts, "
             "installs exclusive ownership prevention, real read-only "
-            "diagnostics, and one-button safe new-chat handoff. No route, "
-            "persisted user data, storage migration, formal proof, or "
-            "production activation is performed."
+            "diagnostics, directly visible one-button safe new-chat handoff, "
+            "and restored Active Path Discovery access. No route, persisted "
+            "user data, storage migration, formal proof, or production "
+            "activation is performed."
         ),
     )
     SEAL.write_text(

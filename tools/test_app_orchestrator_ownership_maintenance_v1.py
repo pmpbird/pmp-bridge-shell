@@ -83,6 +83,11 @@ def main() -> None:
     check("PMPActivePathDiscoveryReportV1" not in v2, "V2 does not write V1 global")
     check("PMPActivePathDiscoveryMachineV1" not in v2, "V2 does not alias V1 machine")
     check("setInterval(" not in v1, "V1 no recurring mount")
+    check("canonical-event-driven-mount-20260727B" in v1, "V1 event-driven mount version")
+    check("frame.addEventListener('load',scheduleMount)" in v1, "V1 remounts after owned frame load")
+    check("observer.observe(root,{childList:true,subtree:true})" in v1, "V1 observes mount-target creation")
+    check("record.addedNodes" in v1 and "containsMountTarget" in v1, "V1 observer is target-bounded")
+    check("[1000,2500,4500]" not in v1, "V1 fixed mount timer race removed")
     check("setInterval(" not in export, "export no recurring installer")
     check("PMP_ACTIVE_PATH_DISCOVERY_REPORT_V1" in export, "export validates canonical schema")
 
@@ -218,8 +223,42 @@ def main() -> None:
         "PMP_DIAGNOSTICS_FLICKER_REPAINT_REPORT_V1",
         "PMP_DIAGNOSTICS_ERROR_BUG_WATCH_REPORT_V1",
         "Copy New Chat Safe Handoff",
+        "Active Path Discovery",
+        "pmpDiagSafeHandoffHome",
+        "pmpDiagOpenActivePathHome",
+        "pmpDiagRunActivePath",
+        "pmpDiagCopyActivePath",
+        "activePathValue",
+        "ensureStyle",
+        "pmpDiagQuick",
+        "App Health Summary",
+        "Bank / Continuous Run Visual State",
     ):
         check(token in diagnostics, "diagnostics implements " + token)
+    check(
+        diagnostics.index("pmpDiagSafeHandoffHome")
+        < diagnostics.index("CARDS.map(cardHTML)"),
+        "safe handoff is visible before diagnostic cards",
+    )
+    check(
+        diagnostics.index("pmpDiagOpenActivePathHome")
+        < diagnostics.index("CARDS.map(cardHTML)"),
+        "Active Path Discovery is visible before diagnostic cards",
+    )
+    check(
+        "PMPActivePathDiscoveryMachineV1" in diagnostics,
+        "Diagnostics delegates Active Path rerun to canonical owner",
+    )
+    check(
+        "pmp_active_path_discovery_report_v1" in diagnostics
+        and "pmp_active_path_discovery_bounded_report_v2" in diagnostics,
+        "Diagnostics keeps canonical and bounded Active Path reports separate",
+    )
+    check(
+        "position:fixed!important;inset:0!important;z-index:9!important" in diagnostics,
+        "Diagnostics is anchored to the visible viewport above app content and below navigation",
+    )
+    check("el.scrollTop=0" in diagnostics, "Diagnostics opens at its first action")
     check("placeholder" not in diagnostics.lower(), "no diagnostic placeholders")
     orchestrator = text("pmp-app-orchestrator-v1.js")
     check("pmp-diagnostics-bottom-tab-forcer-v1.js" in orchestrator, "orchestrator loads Diagnostics entry")
@@ -231,6 +270,11 @@ def main() -> None:
     check("NEW_CHAT_SAFE_HANDOFF.json.sha256" in handoff, "handoff sidecar")
     check("PMP_NEW_CHAT_SAFE_HANDOFF_PACKAGE_MANIFEST_V1" in handoff, "handoff package manifest")
     check("persisted user data" in handoff, "handoff excludes data")
+    check(
+        "app-orchestrator-diagnostics-handoff-active-path-restoration-v1.json"
+        in handoff,
+        "handoff includes Diagnostics restoration evidence",
+    )
 
     inner30 = text("pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html")
     check(inner30.count("pmp-app-orchestrator-ownership-runtime-v1.js") == 1, "ownership runtime loaded once")
@@ -265,7 +309,20 @@ def main() -> None:
     check(release_receipt["green_head"] == "d1d23ca4a517edf39b7af55b0e976c47b4f7bb75", "green head")
     check(release_receipt["merge_commit"] == "c62437dfc87530499771e21d4cbcee33aa282765", "merge commit")
     check(release_receipt["sealed_main_commit"] == "859ba2624b1a85a85129736aababf0f84abe5708", "sealed main")
-    check(pointer["status"] == "MERGED_GREEN_LAPTOP_SYNCHRONIZED", "pointer status")
+    check(
+        pointer["release_status"] == "MERGED_GREEN_LAPTOP_SYNCHRONIZED",
+        "prior release status preserved",
+    )
+    check(
+        pointer["status"] == "FOLLOWUP_REPAIR_LOCAL_BROWSER_GREEN_GITHUB_PENDING",
+        "follow-up repair pointer status",
+    )
+    check(
+        pointer["followup_repair"]["evidence"].endswith(
+            "diagnostics-handoff-active-path-restoration-v1.json"
+        ),
+        "follow-up repair evidence pointer",
+    )
     check(pointer["receipt"].endswith("RELEASE_20260727T195500Z_001.json"), "pointer receipt")
     check(pointer["evidence"].endswith("ownership-maintenance-release-v1.json"), "pointer evidence")
     check("c62437dfc87530499771e21d4cbcee33aa282765" in current_state, "state merge identity")

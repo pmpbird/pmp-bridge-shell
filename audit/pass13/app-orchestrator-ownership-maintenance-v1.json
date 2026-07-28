@@ -67,7 +67,7 @@
           "tools/test_app_orchestrator_ownership_maintenance_v1.py",
           "audit/pass13/app-orchestrator-ownership-maintenance-v1.json"
         ],
-        "fact": "The ownership matrix passes 141 deterministic checks covering exclusive writers, helper delegation, inert legacy actors, event-driven presentation, and the copy-or-ZIP handoff."
+        "fact": "The ownership matrix passes 167 deterministic checks covering exclusive writers, helper delegation, inert legacy actors, event-driven presentation, and the copy-or-ZIP handoff."
       },
       {
         "claim_type": "OBSERVED",
@@ -195,8 +195,12 @@
       "audit/pass13/PMP_APP_ORCHESTRATOR_MAINTENANCE_CURRENT_STATE_V1.md",
       "audit/pass13/PMP_APP_ORCHESTRATOR_MAINTENANCE_EXACT_NEXT_MOVE_V1.md",
       "audit/pass13/PMP_APP_ORCHESTRATOR_OPERATOR_GUIDE_V1.md",
+      "audit/pass13/app-orchestrator-diagnostics-handoff-active-path-restoration-v1.json",
+      "audit/pass13/app-orchestrator-ownership-maintenance-release-v1.json",
       "audit/pass13/app-orchestrator-ownership-maintenance-v1.json",
+      "audit/pass13/receipts/RECEIPT_APP_ORCHESTRATOR_DIAGNOSTICS_HANDOFF_ACTIVE_PATH_RESTORATION_20260727T224315_0700_001.json",
       "audit/pass13/receipts/RECEIPT_APP_ORCHESTRATOR_OWNERSHIP_MAINTENANCE_20260727T180000Z_001.json",
+      "audit/pass13/receipts/RECEIPT_APP_ORCHESTRATOR_OWNERSHIP_MAINTENANCE_RELEASE_20260727T195500Z_001.json",
       "pmp-active-path-discovery-machine-v1.js",
       "pmp-active-path-discovery-machine-v2.js",
       "pmp-active-path-discovery-zip-export-v2.js",
@@ -245,6 +249,7 @@
       "pmp-top-lossless-injector.js",
       "pmp-top-lossless-loader.js",
       "tools/generate_app_orchestrator_ownership_maintenance_integrity_updates_v1.py",
+      "tools/test_a003_integrity.py",
       "tools/test_app_orchestrator_ownership_maintenance_v1.py",
       "tools/verify_app_orchestrator_ownership_maintenance_v1.py"
     ],
@@ -298,7 +303,7 @@
   },
   "status": "OWNERSHIP_MAINTENANCE_GREEN",
   "type": "PMP_APP_ORCHESTRATOR_OWNERSHIP_MAINTENANCE_V1",
-  "unit_id": "P13-U7",
+  "unit_id": "P13-U9",
   "verification": {
     "bounded_local_browser": {
       "checks": [
@@ -316,7 +321,7 @@
       "status": "PASS"
     },
     "ownership_integrity_verifier": "PASS",
-    "ownership_static_matrix": "PASS 141/141",
+    "ownership_static_matrix": "PASS 174/174",
     "pass10_owner_stability": "PASS 106/106",
     "pass10_single_card_presentation": "PASS 478/478",
     "pass10_uniform_title_weight": "PASS 86/86",
