@@ -1,5 +1,4 @@
 {
-  "maintenance_context": "Repairs audited multiple-owner and helper-owner conflicts, installs exclusive ownership prevention, real read-only diagnostics, directly visible one-button safe new-chat handoff, and restored Active Path Discovery access. No route, persisted user data, storage migration, formal proof, or production activation is performed.",
   "manifest_bytes": 379490,
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
   "manifest_sha256": "4e9c959b4e52467a5ae78a4faa197298a08b58acf308ae826e0cd2f045c15014",
@@ -9,7 +8,7 @@
   "root_trust_anchor": "pmp-app-current.html",
   "rule": "The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.",
   "runtime_source_set_sha256": "753ff3681ccfec061c0ef8a45bb10794edb64ed9ab4857c20933e2a8271b9e02",
-  "sealed_branch": "agent/diagnostics-handoff-active-path-restoration-v1",
+  "sealed_branch": "main",
   "status": "SEALED",
   "type": "PMP_A003_MANIFEST_SEAL_V1"
 }
