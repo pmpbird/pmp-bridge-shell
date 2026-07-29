@@ -15,7 +15,7 @@ checks = {
     "old_cache_token_removed": "ownership-maintenance-20260727A" not in ORCH,
     "version_mismatch_forces_reload": "api.version!==expectedVersion" in ORCH and "reloaded_version_mismatch" in ORCH,
     "diagnostics_runtime_version_reported": "diagnostics_runtime" in ORCH and "loaded_version" in ORCH,
-    "no_new_helper_registration": "helper_registry" not in ORCH.lower(),
+    "no_new_helper_or_owner_file": "pmp-diagnostics-copy-helper" not in ORCH and "diagnostics_copy_owner" not in ORCH,
 }
 
 failed = [name for name, ok in checks.items() if not ok]
