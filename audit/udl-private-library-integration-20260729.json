@@ -1,0 +1,41 @@
+{
+  "audit_type": "UDL_PRIVATE_LIBRARY_INTEGRATION",
+  "audited_at_utc": "2026-07-29T18:10:00Z",
+  "base_commit": "66ea4021630371fe43010431556f8d56dccdd077",
+  "development_authority_receipt": {
+    "path": "receipts/development/0066_private_control_durability_and_library.json",
+    "sha256": "5f988d5fbce3ce39b2409e1612da748cf1eefab4775ca36bfa9001ad7b8f9bf5"
+  },
+  "integration": {
+    "placement": "LIBRARY",
+    "private_url": "https://phillips-macbook-air.tail64f36e.ts.net/library",
+    "public_backend_privileged": false,
+    "credential_storage": false,
+    "arbitrary_shell_access": false,
+    "model_api_exposed": false,
+    "tailscale_funnel_permitted": false,
+    "private_control_surface_owner": "LOCAL_MAC_RUNTIME"
+  },
+  "validation": {
+    "static_integration_tests": {
+      "status": "PASS",
+      "passed": 9,
+      "failed": 0
+    },
+    "repository_integrity_tests": {
+      "status": "PASS",
+      "passed": 21,
+      "failed": 0
+    },
+    "rendered_nested_frame_test": "PASS",
+    "tailscale_serve_account_enablement": "BLOCKED_USER_ACTION"
+  },
+  "preservation": {
+    "case_sensitive_filesystem_used": true,
+    "case_distinct_launchers_preserved": true,
+    "unrelated_dirty_checkout_modified": false,
+    "legacy_mutation_lanes_reused": false
+  },
+  "status": "READY_FOR_DRAFT_REVIEW",
+  "unknown_promoted_to_pass": false
+}
