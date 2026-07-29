@@ -218,10 +218,10 @@ def main() -> None:
 
     diagnostics = text("pmp-diagnostics-owner-v1.js")
     for token in (
-        "PMP_DIAGNOSTICS_PANEL_ORDER_REPORT_V1",
-        "PMP_DIAGNOSTICS_DUPLICATE_PANEL_REPORT_V1",
-        "PMP_DIAGNOSTICS_FLICKER_REPAINT_REPORT_V1",
-        "PMP_DIAGNOSTICS_ERROR_BUG_WATCH_REPORT_V1",
+        "PMP_DIAGNOSTICS_PANEL_ORDER_REPORT_V2",
+        "PMP_DIAGNOSTICS_DUPLICATE_PANEL_REPORT_V2",
+        "PMP_DIAGNOSTICS_FLICKER_REPAINT_REPORT_V2",
+        "PMP_DIAGNOSTICS_ERROR_BUG_WATCH_REPORT_V2",
         "Copy New Chat Safe Handoff",
         "ensureStyle",
         "pmpDiagQuick",

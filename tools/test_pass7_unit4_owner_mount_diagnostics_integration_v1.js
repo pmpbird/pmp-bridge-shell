@@ -255,8 +255,8 @@ for(const forbidden of [
 for(const forbidden of ['applyOwnerEvent','registry.apply','mountRuntime.applyOwnerEvent']){
   check(!viewSource.includes(forbidden),'view mutation token '+forbidden);
 }
-check(diagnosticsSource.includes('function sectionOwnerView()'),'diagnostics reads view');
-check(diagnosticsSource.includes('readSectionOwners=sectionOwnerView'),'diagnostics API read only');
+check(diagnosticsSource.includes('function ownerView()'),'diagnostics reads view');
+check(diagnosticsSource.includes('readSectionOwners=ownerView'),'diagnostics API read only');
 check(diagnosticsSource.includes('renderSectionOwners'),'diagnostics owner card');
 check(diagnosticsSource.includes('capability_ids_exposed:false'),'diagnostics fallback redacted');
 check(!diagnosticsSource.includes('PMPSectionOwnerMountRuntimeV1.applyOwnerEvent'),'diagnostics cannot apply');
