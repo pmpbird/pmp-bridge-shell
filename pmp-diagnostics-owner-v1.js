@@ -1,178 +1,127 @@
 (()=>{
 'use strict';
-const V='2.4.0-single-handoff-owner-20260728A';
+const V='2.5.0-truth-confidence-20260729A';
 const OWNER='diagnostics_owner';
 const SCREEN_ID='pmpDiagnosticsScreenV1';
 const STYLE_ID='pmpDiagnosticsOwnerV1Style';
 const RECEIPT='pmp_diagnostics_owner_v1_receipt';
 const ERRORS=[];
 const CARDS=[
-  ['app_health','App Health Summary','runtime, owner, and safe-state summary'],
-  ['app_orchestrator','App Orchestrator Status','one-button safe new-chat handoff'],
-  ['route_stack','Route Stack','Current Map and canonical reload evidence'],
-  ['mount_registry','Mount Registry Status','single-owner lifecycle evidence'],
+  ['app_health','App Health Summary','live evidence, confidence, and safe-state summary'],
+  ['app_orchestrator','App Orchestrator Status','current startup chain and safe handoff'],
+  ['route_stack','Route Stack','current route evidence with stale-receipt separation'],
+  ['mount_registry','Mount Registry Status','atlas and lifecycle evidence'],
   ['section_owners','Section Owners Status','declared owner state and conflicts'],
   ['helpers','Helpers Status','helper bindings, holds, and violations'],
-  ['panel_order','Panel Order Check','actual Continuous Run level order and readiness'],
-  ['duplicate_panels','Duplicate Panel Check','duplicate IDs, levels, and owner claims'],
-  ['flicker_recorder','Flicker Recorder','recurring repaint and unstable surface evidence'],
-  ['error_log','Error Log / Bug Watch','captured errors and passive bug receipts'],
-  ['bank_continuous_run_visual','Bank / Continuous Run Visual State','owner split and surface evidence'],
-  ['full_report','Copy Full Diagnostic Report','copy the combined read-only report']
+  ['panel_order','Panel Order Check','evaluated only while Continuous Run is visible'],
+  ['duplicate_panels','Duplicate Panel Check','DOM duplicates, levels, and owner claims'],
+  ['flicker_recorder','Flicker Recorder','loaded compatibility scripts and repaint evidence'],
+  ['error_log','Error Log / Bug Watch','current Bug Watch and journal evidence'],
+  ['bank_continuous_run_visual','Bank / Continuous Run Visual State','context-aware owner split evidence'],
+  ['full_report','Copy Full Diagnostic Report','copy the combined confidence-labelled report']
 ];
-function T(){try{return window.top||window}catch(e){return window}}
+function T(){try{return window.top||window}catch(_){return window}}
 function now(){return new Date().toISOString()}
-function read(k){try{return JSON.parse(T().localStorage.getItem(k)||'null')}catch(e){return null}}
-function put(k,v){try{T().localStorage.setItem(k,JSON.stringify(v,null,2))}catch(e){}return v}
+function read(k){try{return JSON.parse(T().localStorage.getItem(k)||'null')}catch(_){return null}}
+function put(k,v){try{T().localStorage.setItem(k,JSON.stringify(v,null,2))}catch(_){}return v}
 function esc(x){return String(x==null?'':x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function stamp(v){const raw=v&&(v.at||v.updated_at||v.created_at||v.finished_at||v.recorded_at);const n=Date.parse(raw||'');return Number.isFinite(n)?n:0}
+function first(keys){for(const key of keys){const value=read(key);if(value)return{key,value}}return null}
+function newest(keys){const rows=keys.map(key=>({key,value:read(key)})).filter(x=>x.value);rows.sort((a,b)=>stamp(b.value)-stamp(a.value));return rows[0]||null}
+function evidence(state,source,reason,value){return{state,source:source||null,reason:reason||null,observed_at:value&&(value.at||value.updated_at||value.created_at||value.finished_at)||null}}
 function docs(){
   const out=[],seen=[];
-  function walk(w,n){if(!w||n>10||seen.includes(w))return;seen.push(w);try{out.push({window:w,document:w.document,path:String(w.location&&w.location.pathname||'')});w.document.querySelectorAll('iframe,frame').forEach(f=>{try{walk(f.contentWindow,n+1)}catch(e){}})}catch(e){}}
+  function walk(w,n){if(!w||n>10||seen.includes(w))return;seen.push(w);try{out.push({window:w,document:w.document,path:String(w.location&&w.location.pathname||'')});w.document.querySelectorAll('iframe,frame').forEach(f=>{try{walk(f.contentWindow,n+1)}catch(_){}})}catch(_){}}
   walk(T(),0);return out;
 }
-function visible(el){if(!el)return false;try{const s=el.ownerDocument.defaultView.getComputedStyle(el);return s.display!=='none'&&s.visibility!=='hidden'&&el.getClientRects().length>0}catch(e){return !el.hidden}}
-function levelName(el){
-  const raw=el.getAttribute('data-continuous-run-level')||el.getAttribute('data-level')||'';
-  if(raw)return String(raw).replace(/^level[_ -]?/i,'').toUpperCase();
-  const title=el.querySelector('h1,h2,h3,h4,[data-level-title]'),m=String(title&&title.textContent||'').match(/Level\s+(\d+B?|\d+)/i);
-  return m?m[1].toUpperCase():'';
-}
+function visible(el){if(!el)return false;try{const s=el.ownerDocument.defaultView.getComputedStyle(el);return s.display!=='none'&&s.visibility!=='hidden'&&el.getClientRects().length>0}catch(_){return !el.hidden}}
+function levelName(el){const raw=el.getAttribute('data-continuous-run-level')||el.getAttribute('data-level')||'';if(raw)return String(raw).replace(/^level[_ -]?/i,'').toUpperCase();const title=el.querySelector('h1,h2,h3,h4,[data-level-title]'),m=String(title&&title.textContent||'').match(/Level\s+(\d+B?|\d+)/i);return m?m[1].toUpperCase():''}
 function canonicalOrder(){const out=['1','2','3','4','4B'];for(let n=5;n<=30;n++)out.push(String(n));out.push('30B');return out}
 function panelOrderReport(){
   const rows=[];
   docs().forEach(ctx=>ctx.document.querySelectorAll('[data-continuous-run-level],[data-level^="level"]').forEach(el=>{if(visible(el)){const level=levelName(el);if(level)rows.push({level,path:ctx.path,id:el.id||null})}}));
+  const expected=canonicalOrder();
+  if(!rows.length)return{type:'PMP_DIAGNOSTICS_PANEL_ORDER_REPORT_V2',version:V,at:now(),status:'CONTEXT_NOT_VISIBLE',evaluated:false,context_required:'Open the Continuous Run Bank detail before evaluating panel order.',expected,actual:[],unexpected:[],missing:[],duplicate_visible_levels:[],pass:null,rows:[],confidence:evidence('CONTEXT_DEPENDENT',null,'No visible Continuous Run level elements were available.',null)};
   const unique=[];rows.forEach(x=>{if(!unique.includes(x.level))unique.push(x.level)});
-  const expected=canonicalOrder(),actual=unique.filter(x=>expected.includes(x)),unexpected=unique.filter(x=>!expected.includes(x)),missing=expected.filter(x=>!actual.includes(x));
-  return{type:'PMP_DIAGNOSTICS_PANEL_ORDER_REPORT_V1',version:V,at:now(),expected,actual,unexpected,missing,duplicate_visible_levels:actual.filter((x,i)=>actual.indexOf(x)!==i),pass:unexpected.length===0&&missing.length===0&&JSON.stringify(actual)===JSON.stringify(expected),rows};
+  const actual=unique.filter(x=>expected.includes(x)),unexpected=unique.filter(x=>!expected.includes(x)),missing=expected.filter(x=>!actual.includes(x)),duplicates=rows.map(x=>x.level).filter((x,i,a)=>a.indexOf(x)!==i).filter((x,i,a)=>a.indexOf(x)===i);
+  const pass=unexpected.length===0&&missing.length===0&&duplicates.length===0&&JSON.stringify(actual)===JSON.stringify(expected);
+  return{type:'PMP_DIAGNOSTICS_PANEL_ORDER_REPORT_V2',version:V,at:now(),status:pass?'EVALUATED_PASS':'EVALUATED_NEEDS_REVIEW',evaluated:true,expected,actual,unexpected,missing,duplicate_visible_levels:duplicates,pass,rows,confidence:evidence('LIVE_RUNTIME','visible DOM','Panel order was evaluated from currently visible level elements.',{at:now()})};
 }
 function duplicateReport(){
   const duplicateIds=[],ownerClaims=[],levels={};
   docs().forEach(ctx=>{
     const ids={};ctx.document.querySelectorAll('[id]').forEach(el=>{ids[el.id]=(ids[el.id]||0)+1});
-    Object.keys(ids).filter(id=>ids[id]>1).forEach(id=>duplicateIds.push({path:ctx.path,id,count:ids[id]}));
+    Object.keys(ids).filter(id=>ids[id]>1).forEach(id=>duplicateIds.push({path:ctx.path,id,count:ids[id],classification:/style$/i.test(id)?'REPEATED_STYLE_ID':'DUPLICATE_DOM_ID'}));
     ctx.document.querySelectorAll('[data-pmp-section-owner],[data-pmp-owner-lock]').forEach(el=>{if(visible(el))ownerClaims.push({path:ctx.path,id:el.id||null,section_owner:el.getAttribute('data-pmp-section-owner'),owner_lock:el.getAttribute('data-pmp-owner-lock')})});
     ctx.document.querySelectorAll('[data-continuous-run-level],[data-level^="level"]').forEach(el=>{if(visible(el)){const n=levelName(el);if(n)levels[n]=(levels[n]||0)+1}});
   });
   const duplicateLevels=Object.keys(levels).filter(k=>levels[k]>1).map(level=>({level,count:levels[level]}));
-  const ownerByTarget={};ownerClaims.forEach(x=>{const key=x.path+'#'+(x.id||'anonymous');ownerByTarget[key]=ownerByTarget[key]||new Set();ownerByTarget[key].add(x.section_owner||x.owner_lock)});
+  const ownerByTarget={};ownerClaims.forEach(x=>{const key=x.path+'#'+(x.id||'anonymous');ownerByTarget[key]=ownerByTarget[key]||new Set();if(x.section_owner)ownerByTarget[key].add(x.section_owner);if(x.owner_lock)ownerByTarget[key].add(x.owner_lock)});
   const conflictingClaims=Object.keys(ownerByTarget).filter(k=>ownerByTarget[k].size>1).map(target=>({target,owners:Array.from(ownerByTarget[target])}));
-  return{type:'PMP_DIAGNOSTICS_DUPLICATE_PANEL_REPORT_V1',version:V,at:now(),duplicate_ids:duplicateIds,duplicate_visible_levels:duplicateLevels,conflicting_owner_claims:conflictingClaims,pass:duplicateIds.length===0&&duplicateLevels.length===0&&conflictingClaims.length===0};
+  const ownerConflictPass=conflictingClaims.length===0,domIntegrityPass=duplicateIds.length===0&&duplicateLevels.length===0;
+  return{type:'PMP_DIAGNOSTICS_DUPLICATE_PANEL_REPORT_V2',version:V,at:now(),status:ownerConflictPass&&domIntegrityPass?'PASS':'NEEDS_REVIEW',duplicate_ids:duplicateIds,duplicate_visible_levels:duplicateLevels,conflicting_owner_claims:conflictingClaims,owner_conflict_pass:ownerConflictPass,dom_integrity_pass:domIntegrityPass,pass:ownerConflictPass&&domIntegrityPass,interpretation:duplicateIds.length&&!conflictingClaims.length?'DOM duplication was observed, but no competing owner claim was proven.':'Owner conflicts and DOM duplication are reported separately.',confidence:evidence('LIVE_RUNTIME','visible DOM','Current accessible documents were scanned.',{at:now()})};
 }
-function flickerReport(){
-  const risky=['pmp-layout-guard-v1.js','pmp-continuous-run-bank-stable-status-owner-v1.js','pmp-bank-zero-loading-flash-guard-v1.js','pmp-safe-area-surface-fill-v1.js'],scripts=[];
-  docs().forEach(ctx=>ctx.document.querySelectorAll('script[src]').forEach(s=>{const src=String(s.getAttribute('src')||'');risky.forEach(path=>{if(src.includes(path))scripts.push({path:ctx.path,script:path})})}));
-  const ownership=read('pmp_app_orchestrator_ownership_runtime_v1_receipt');
-  return{type:'PMP_DIAGNOSTICS_FLICKER_REPAINT_REPORT_V1',version:V,at:now(),loaded_compatibility_scripts:scripts,compatibility_contract:'loaded scripts are inert or presentation-local and contain no recurring repaint timers',ownership_runtime:ownership||{status:'not_ready'},active_repaint_helpers:[],pass:true};
+function ownerView(){const hit=newest(['pmp_section_owner_registry_snapshot_v1','pmp_owner_diagnostics_foundation_v1_model','pmp_owner_diagnostics_foundation_v1_view']);return hit?Object.assign({diagnostic_source:hit.key},hit.value):{status:'SOURCE_NOT_PUBLISHED',reason:'No section-owner snapshot was found.'}}
+function helperView(){const hit=newest(['pmp_helper_registry_snapshot_v1','pmp_pass8_helper_rules_registry_v1','pmp_pass8_helper_rules_receipt_v1']);return hit?Object.assign({diagnostic_source:hit.key},hit.value):{status:'SOURCE_NOT_PUBLISHED',reason:'No helper registry evidence was found.'}}
+function ownershipRuntimeView(){
+  const direct=newest(['pmp_app_orchestrator_ownership_runtime_v1_receipt','pmp_pass7_certification_decision_v1']);
+  if(direct)return{status:'RUNTIME_EVIDENCE_AVAILABLE',source:direct.key,evidence:direct.value,confidence:evidence('LIVE_OR_CERTIFIED',direct.key,'A direct ownership runtime or certification record was found.',direct.value)};
+  const owners=ownerView(),helpers=helperView();
+  const available=owners.status!=='SOURCE_NOT_PUBLISHED'||helpers.status!=='SOURCE_NOT_PUBLISHED';
+  return{status:available?'SNAPSHOT_ONLY_RUNTIME_NOT_PUBLISHED':'SOURCE_NOT_PUBLISHED',source:available?'section/helper snapshots':null,owners,helpers,confidence:evidence(available?'SNAPSHOT_ONLY':'MISSING_SOURCE',null,available?'Owner/helper snapshots exist, but no current App Orchestrator ownership-runtime receipt was published.':'No ownership evidence source was found.',null)};
 }
-function errorReport(){return{type:'PMP_DIAGNOSTICS_ERROR_BUG_WATCH_REPORT_V1',version:V,at:now(),captured_runtime_errors:ERRORS.slice(-40),bug_watch:read('pmp_bug_watch_passive_capture_v1_receipt')||read('pmp_active_bug_found_contract_v1_receipt')||{status:'not_ready'},diagnostic_journal:read('pmp_diagnostic_journal_readonly_view_v1_receipt')||{status:'not_ready'},pass:ERRORS.length===0}}
-function ownerView(){return read('pmp_section_owner_registry_snapshot_v1')||{status:'not_ready'}}
-function helperView(){return read('pmp_helper_registry_snapshot_v1')||{status:'not_ready'}}
-function lifecycleView(){return read('pmp_mount_lifecycle_readonly_view_v1_receipt')||read('pmp_mount_lifecycle_runtime_v1_receipt')||{status:'not_ready',capability_ids_exposed:false}}
-function sectionOwnerView(){const value=ownerView();return Object.assign({capability_ids_exposed:false},value)}
-function activePathValue(){
-  return{
-    canonical_report:read('pmp_active_path_discovery_report_v1')||{status:'canonical_scan_not_ready'},
-    bounded_support_report:read('pmp_active_path_discovery_bounded_report_v2')||{status:'bounded_support_scan_not_ready'},
-    ownership_rule:'pmp-active-path-discovery-machine-v1.js is the canonical writer; V2 is bounded support only.'
-  };
+function lifecycleView(){
+  const hit=newest(['pmp_mount_lifecycle_readonly_view_v1_receipt','pmp_mount_lifecycle_runtime_v1_receipt','pmp_mount_lifecycle_diagnostics_v1_receipt']);
+  if(hit)return Object.assign({diagnostic_source:hit.key,confidence:evidence('PERSISTED_EVIDENCE',hit.key,'A lifecycle receipt was found.',hit.value)},hit.value);
+  try{const api=T().PMPMountLifecycleDiagnosticsViewV1||window.PMPMountLifecycleDiagnosticsViewV1;if(api){const value=typeof api.read==='function'?api.read():typeof api.report==='function'?api.report():typeof api.diagnostics==='function'?api.diagnostics():null;if(value)return{status:'LIVE_API_AVAILABLE',diagnostic_source:'PMPMountLifecycleDiagnosticsViewV1',value,confidence:evidence('LIVE_RUNTIME_API','PMPMountLifecycleDiagnosticsViewV1','No receipt existed, but the loaded read-only lifecycle API responded.',value)}}}catch(_){}
+  return{status:'SOURCE_NOT_PUBLISHED',capability_ids_exposed:false,reason:'The lifecycle scripts may be loaded, but Diagnostics found neither a published receipt nor a readable live API.',confidence:evidence('MISSING_SOURCE',null,'Absence of evidence is not treated as lifecycle failure.',null)};
 }
+function bugWatchView(){const hit=newest(['pmp_bug_watch_session_durable_v1_receipt','pmp_bug_watch_passive_capture_v1_receipt','pmp_active_bug_found_contract_v1_receipt']);return hit?Object.assign({diagnostic_source:hit.key,confidence:evidence(hit.key==='pmp_bug_watch_session_durable_v1_receipt'?'LIVE_SESSION':'PERSISTED_OR_COMPATIBILITY',hit.key,'Newest available Bug Watch evidence selected.',hit.value)},hit.value):{status:'SOURCE_NOT_PUBLISHED',reason:'No Bug Watch receipt was found.',confidence:evidence('MISSING_SOURCE',null,'No Bug Watch evidence source was available.',null)}}
+function journalView(){const hit=newest(['pmp_diagnostic_journal_readonly_view_v1_receipt','pmp_diagnostic_journal_status_v1_receipt']);if(hit)return Object.assign({diagnostic_source:hit.key,confidence:evidence('PERSISTED_EVIDENCE',hit.key,'A journal receipt was found.',hit.value)},hit.value);return{status:'SOURCE_NOT_PUBLISHED',reason:'The journal contract files may exist, but no live journal view receipt is currently published.',confidence:evidence('CONTRACT_WITHOUT_RUNTIME_SOURCE',null,'Diagnostics does not claim the journal failed; it reports that no runtime view was published.',null)}}
+function errorReport(){const bug=bugWatchView(),journal=journalView();return{type:'PMP_DIAGNOSTICS_ERROR_BUG_WATCH_REPORT_V2',version:V,at:now(),captured_runtime_errors:ERRORS.slice(-40),bug_watch:bug,diagnostic_journal:journal,pass:ERRORS.length===0,status:ERRORS.length?'RUNTIME_ERRORS_CAPTURED':'NO_RUNTIME_ERRORS_CAPTURED'}}
+function routeView(){
+  const orch=read('pmp_app_orchestrator_v1_receipt');
+  const expected=orch&&orch.expected&&orch.expected.route_guardian||null;
+  const current=newest(['pmp_route_guardian_v22_receipt','pmp_route_guardian_current_receipt','pmp_reload_current_canonical_v1_receipt','pmp_reload_current_v1_receipt']);
+  if(!current)return{status:'SOURCE_NOT_PUBLISHED',expected_route_guardian:expected,selected:null,confidence:evidence('MISSING_SOURCE',null,'No route or reload receipt was found.',null)};
+  const target=current.value&&(current.value.target||current.value.route_guardian||current.value.expected&&current.value.expected.route_guardian)||null;
+  const stale=!!(expected&&target&&String(target)!==String(expected));
+  return{status:stale?'HISTORICAL_RECEIPT_NOT_CURRENT_CHAIN':'CURRENT_OR_UNCONTRADICTED',expected_route_guardian:expected,selected_source:current.key,selected:current.value,stale_against_app_orchestrator:stale,confidence:evidence(stale?'HISTORICAL_OR_STALE':'CURRENT_EVIDENCE',current.key,stale?'The selected reload receipt does not match the App Orchestrator current route guardian. It is retained as historical evidence, not treated as current truth.':'The selected route evidence does not contradict the current App Orchestrator chain.',current.value)};
+}
+function activePathValue(){return{canonical_report:read('pmp_active_path_discovery_report_v1')||{status:'SOURCE_NOT_PUBLISHED'},bounded_support_report:read('pmp_active_path_discovery_bounded_report_v2')||{status:'SOURCE_NOT_PUBLISHED'},ownership_rule:'pmp-active-path-discovery-machine-v1.js is the canonical writer; V2 is bounded support only.'}}
+function flickerReport(){const risky=['pmp-layout-guard-v1.js','pmp-continuous-run-bank-stable-status-owner-v1.js','pmp-bank-zero-loading-flash-guard-v1.js','pmp-safe-area-surface-fill-v1.js'],scripts=[];docs().forEach(ctx=>ctx.document.querySelectorAll('script[src]').forEach(s=>{const src=String(s.getAttribute('src')||'');risky.forEach(path=>{if(src.includes(path))scripts.push({path:ctx.path,script:path})})}));return{type:'PMP_DIAGNOSTICS_FLICKER_REPAINT_REPORT_V2',version:V,at:now(),loaded_compatibility_scripts:scripts,compatibility_contract:'Loaded compatibility scripts are evidence of presence only; Diagnostics does not infer active repaint behavior without timer or mutation evidence.',ownership_runtime:ownershipRuntimeView(),active_repaint_helpers:[],pass:true,confidence:evidence('PRESENCE_ONLY','script elements','Loaded script presence is not treated as proof of flicker.',{at:now()})}}
 function currentReport(reason){
-  const lifecycle=lifecycleView();
+  const appOrch=read('pmp_app_orchestrator_v1_receipt'),ownership=ownershipRuntimeView(),panel=panelOrderReport(),dupes=duplicateReport(),route=routeView(),lifecycle=lifecycleView(),errors=errorReport();
   const report={
     type:'PMP_DIAGNOSTICS_OWNER_REPORT_V2',version:V,owner:OWNER,at:now(),reason:reason||'current_report',status:'ACTIVE_READ_ONLY',
-    reports:{
-      app_orchestrator:read('pmp_app_orchestrator_v1_receipt'),
-      ownership_runtime:read('pmp_app_orchestrator_ownership_runtime_v1_receipt'),
-      active_path:read('pmp_active_path_discovery_report_v1'),
-      active_path_bounded:read('pmp_active_path_discovery_bounded_report_v2'),
-      mount_registry:read('pmp_mount_registry_v1_receipt'),
-      mount_lifecycle:lifecycle,
-      section_owners:ownerView(),
-      helpers:helperView(),
-      panel_order:panelOrderReport(),
-      duplicate_panels:duplicateReport(),
-      flicker_recorder:flickerReport(),
-      error_log:errorReport(),
-      bank_owner_split:read('pmp_bank_continuous_run_owner_split_diagnostic_v1'),
-      reload_owner:read('pmp_reload_current_canonical_v1_receipt')||read('pmp_reload_current_v1_receipt')
-    },
-    summary:{app_orchestrator:read('pmp_app_orchestrator_v1_receipt')?'present':'not_ready',ownership:read('pmp_app_orchestrator_ownership_runtime_v1_receipt')&&read('pmp_app_orchestrator_ownership_runtime_v1_receipt').status||'not_ready',panel_order:'calculated',duplicates:'calculated',errors:ERRORS.length},
+    diagnostic_policy:'Report only what can be proven. Missing sources, stale receipts, and closed visual contexts are labelled instead of being converted into failures.',
+    reports:{app_orchestrator:appOrch||{status:'SOURCE_NOT_PUBLISHED'},ownership_runtime:ownership,active_path:read('pmp_active_path_discovery_report_v1')||{status:'SOURCE_NOT_PUBLISHED'},active_path_bounded:read('pmp_active_path_discovery_bounded_report_v2')||{status:'SOURCE_NOT_PUBLISHED'},mount_registry:read('pmp_mount_registry_v1_receipt')||{status:'SOURCE_NOT_PUBLISHED'},mount_lifecycle:lifecycle,section_owners:ownerView(),helpers:helperView(),panel_order:panel,duplicate_panels:dupes,flicker_recorder:flickerReport(),error_log:errors,bank_owner_split:read('pmp_bank_continuous_run_owner_split_diagnostic_v1')||{status:'SOURCE_NOT_PUBLISHED'},reload_owner:route},
+    diagnostic_confidence:{app_orchestrator:appOrch?evidence('PERSISTED_EVIDENCE','pmp_app_orchestrator_v1_receipt','Current stored App Orchestrator receipt.',appOrch):evidence('MISSING_SOURCE',null,'No App Orchestrator receipt.',null),ownership_runtime:ownership.confidence,mount_lifecycle:lifecycle.confidence,panel_order:panel.confidence,duplicate_panels:dupes.confidence,bug_watch:errors.bug_watch.confidence,diagnostic_journal:errors.diagnostic_journal.confidence,reload_owner:route.confidence},
+    summary:{app_orchestrator:appOrch?'present':'source_not_published',ownership:ownership.status,panel_order:panel.status,duplicates:dupes.status,errors:ERRORS.length,truth_warnings:[ownership.status==='SNAPSHOT_ONLY_RUNTIME_NOT_PUBLISHED'?'ownership_runtime_not_published':null,panel.status==='CONTEXT_NOT_VISIBLE'?'panel_order_context_not_visible':null,route.status==='HISTORICAL_RECEIPT_NOT_CURRENT_CHAIN'?'stale_reload_receipt_separated':null,lifecycle.status==='SOURCE_NOT_PUBLISHED'?'mount_lifecycle_source_not_published':null,errors.diagnostic_journal.status==='SOURCE_NOT_PUBLISHED'?'diagnostic_journal_source_not_published':null].filter(Boolean)},
     side_effects:{route_change:false,bank_rebuild:false,dom_repair:false,indexeddb_write:false,storage_migration:false,persisted_user_data_write:false,lifecycle_event_application:'not_attempted'}
   };
-  put(RECEIPT,{type:'PMP_DIAGNOSTICS_OWNER_RECEIPT_V2',version:V,owner:OWNER,at:now(),status:report.status,sections:CARDS.length,normal_home:'Diagnostics tab',read_only:true});
+  put(RECEIPT,{type:'PMP_DIAGNOSTICS_OWNER_RECEIPT_V2',version:V,owner:OWNER,at:now(),status:report.status,sections:CARDS.length,normal_home:'Diagnostics tab',read_only:true,truth_policy_active:true});
   return report;
 }
-function ensureStyle(d){
-  let style=d.getElementById(STYLE_ID);
-  if(!style){style=d.createElement('style');style.id=STYLE_ID;(d.head||d.documentElement).appendChild(style)}
-  style.textContent=
-    '#'+SCREEN_ID+'{position:fixed!important;inset:0!important;z-index:9!important;overflow:auto!important;-webkit-overflow-scrolling:touch!important;overscroll-behavior:contain!important;padding:58px 14px 76px!important;box-sizing:border-box!important;background:var(--floor,#f3ded4)!important;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;}'+
-    '#'+SCREEN_ID+' *{box-sizing:border-box!important;}'+
-    '#'+SCREEN_ID+' .pmpDiagTitle{margin:0 0 6px!important;font-size:31px!important;line-height:1.05!important;font-weight:950!important;letter-spacing:-.4px!important;}'+
-    '#'+SCREEN_ID+' .pmpDiagSub{margin:0 0 12px!important;font-size:16px!important;line-height:1.25!important;font-weight:800!important;opacity:.76!important;}'+
-    '#'+SCREEN_ID+' .pmpDiagQuick{display:grid!important;grid-template-columns:1fr!important;gap:8px!important;margin:0 0 12px!important;}'+
-    '#'+SCREEN_ID+' .pmpDiagGrid{display:grid!important;grid-template-columns:1fr!important;gap:9px!important;width:100%!important;}'+
-    '#'+SCREEN_ID+' .pmpDiagCard{display:grid!important;grid-template-columns:36px minmax(0,1fr) 20px!important;gap:9px!important;align-items:center!important;width:100%!important;min-height:64px!important;text-align:left!important;border:3px solid var(--line,#07101c)!important;border-radius:17px!important;background:var(--accent,var(--a,#acd1fb))!important;color:var(--text,#101827)!important;padding:10px 12px!important;font:inherit!important;box-shadow:0 4px 10px rgba(7,16,28,.09)!important;cursor:pointer!important;}'+
-    '#'+SCREEN_ID+' .pmpDiagCard b{display:block!important;font-size:17px!important;line-height:1.08!important;font-weight:950!important;}'+
-    '#'+SCREEN_ID+' .pmpDiagCard small{display:block!important;margin-top:3px!important;font-size:12px!important;line-height:1.18!important;font-weight:800!important;opacity:.72!important;}'+
-    '#'+SCREEN_ID+' .pmpDiagIcon{font-size:20px!important;text-align:center!important;}'+
-    '#'+SCREEN_ID+' .pmpDiagChevron{font-size:24px!important;font-weight:950!important;text-align:right!important;}'+
-    '#'+SCREEN_ID+' .pmpDiagAction{display:block!important;width:100%!important;min-height:52px!important;border:3px solid var(--line,#07101c)!important;border-radius:16px!important;padding:10px 12px!important;background:var(--button,var(--a,#acd1fb))!important;color:var(--buttonText,var(--text,#101827))!important;font:950 17px/1.12 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;text-align:center!important;}'+
-    '#'+SCREEN_ID+' .pmpDiagBack{display:block!important;width:100%!important;min-height:48px!important;border:2px solid var(--line,#07101c)!important;border-radius:15px!important;background:var(--card,#fff)!important;color:var(--text,#101827)!important;padding:10px!important;font-weight:950!important;margin-bottom:10px!important;text-align:center!important;}'+
-    '#'+SCREEN_ID+' pre{white-space:pre-wrap!important;overflow:auto!important;max-height:420px!important;background:var(--card,#fff)!important;color:var(--text,#101827)!important;border:2px solid var(--line,#07101c)!important;border-radius:14px!important;padding:10px!important;font:700 11px/1.28 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace!important;}'+
-    '@media(min-width:700px){#'+SCREEN_ID+' .pmpDiagQuick{grid-template-columns:1fr!important;}#'+SCREEN_ID+' .pmpDiagGrid{grid-template-columns:1fr 1fr!important;}}';
-}
+function ensureStyle(d){let style=d.getElementById(STYLE_ID);if(!style){style=d.createElement('style');style.id=STYLE_ID;(d.head||d.documentElement).appendChild(style)}style.textContent='#'+SCREEN_ID+'{position:fixed!important;inset:0!important;z-index:9!important;overflow:auto!important;-webkit-overflow-scrolling:touch!important;padding:58px 14px 76px!important;box-sizing:border-box!important;background:var(--floor,#f3ded4)!important;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important}#'+SCREEN_ID+' *{box-sizing:border-box!important}#'+SCREEN_ID+' .pmpDiagTitle{margin:0 0 6px!important;font-size:31px!important;line-height:1.05!important;font-weight:950!important}#'+SCREEN_ID+' .pmpDiagSub{margin:0 0 12px!important;font-size:16px!important;line-height:1.25!important;font-weight:800!important;opacity:.76!important}#'+SCREEN_ID+' .pmpDiagQuick,#'+SCREEN_ID+' .pmpDiagGrid{display:grid!important;grid-template-columns:1fr!important;gap:9px!important;margin:0 0 12px!important}#'+SCREEN_ID+' .pmpDiagCard{display:grid!important;grid-template-columns:36px minmax(0,1fr) 20px!important;gap:9px!important;align-items:center!important;width:100%!important;min-height:64px!important;text-align:left!important;border:3px solid var(--line,#07101c)!important;border-radius:17px!important;background:var(--accent,var(--a,#acd1fb))!important;color:var(--text,#101827)!important;padding:10px 12px!important;font:inherit!important}#'+SCREEN_ID+' .pmpDiagCard b{display:block!important;font-size:17px!important;font-weight:950!important}#'+SCREEN_ID+' .pmpDiagCard small{display:block!important;margin-top:3px!important;font-size:12px!important;font-weight:800!important;opacity:.72!important}#'+SCREEN_ID+' .pmpDiagIcon{font-size:20px!important;text-align:center!important}#'+SCREEN_ID+' .pmpDiagChevron{font-size:24px!important;font-weight:950!important;text-align:right!important}#'+SCREEN_ID+' .pmpDiagAction,#'+SCREEN_ID+' .pmpDiagBack{display:block!important;width:100%!important;min-height:48px!important;border:2px solid var(--line,#07101c)!important;border-radius:15px!important;padding:10px!important;background:var(--card,#fff)!important;color:var(--text,#101827)!important;font-weight:950!important;text-align:center!important}#'+SCREEN_ID+' .pmpDiagAction{background:var(--button,var(--a,#acd1fb))!important;border-width:3px!important}#'+SCREEN_ID+' pre{white-space:pre-wrap!important;overflow:auto!important;max-height:520px!important;background:var(--card,#fff)!important;color:var(--text,#101827)!important;border:2px solid var(--line,#07101c)!important;border-radius:14px!important;padding:10px!important;font:700 11px/1.28 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace!important}@media(min-width:700px){#'+SCREEN_ID+' .pmpDiagGrid{grid-template-columns:1fr 1fr!important}}'}
 function screen(d){ensureStyle(d);let el=d.getElementById(SCREEN_ID);if(!el){el=d.createElement('section');el.id=SCREEN_ID;el.className='screen';el.setAttribute('data-pmp-section-owner',OWNER);(d.getElementById('app')||d.body).appendChild(el)}return el}
-function activate(d,el){try{Array.from(d.querySelectorAll('.screen')).forEach(node=>node.classList.remove('on'));el.classList.add('on');el.scrollTop=0}catch(e){}return el}
+function activate(d,el){try{Array.from(d.querySelectorAll('.screen')).forEach(node=>node.classList.remove('on'));el.classList.add('on');el.scrollTop=0}catch(_){}return el}
 function cardHTML(row){return'<button type="button" class="pmpDiagCard" data-diag="'+esc(row[0])+'"><span class="pmpDiagIcon">▣</span><span><b>'+esc(row[1])+'</b><small>'+esc(row[2])+'</small></span><span class="pmpDiagChevron">›</span></button>'}
 function action(id,label){return'<button type="button" class="pmpDiagAction" id="'+id+'">'+esc(label)+'</button>'}
-function copyText(text){try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text);return'copied'}}catch(e){}try{const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();return ok?'copied':'not_confirmed'}catch(e){return'not_confirmed'}}
-async function runHandoff(button){
-  button.textContent='Building safe handoff...';
-  const api=T().PMPNewChatSafeHandoffV1||window.PMPNewChatSafeHandoffV1;
-  const result=api&&typeof api.run==='function'?await api.run():{status:'HANDOFF_API_NOT_READY'};
-  button.textContent=result.mode==='zip'?'Safe handoff ZIP downloaded':((result.mode==='clipboard'||result.mode==='copy')&&result.status==='PASS'?'Safe handoff copied':'Safe handoff unavailable');
-}
+function copyText(text){try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text);return'copied'}}catch(_){}try{const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();return ok?'copied':'not_confirmed'}catch(_){return'not_confirmed'}}
+async function runHandoff(button){button.textContent='Building safe handoff...';const api=T().PMPNewChatSafeHandoffV1||window.PMPNewChatSafeHandoffV1;const result=api&&typeof api.run==='function'?await api.run():{status:'HANDOFF_API_NOT_READY'};button.textContent=result.mode==='zip'?'Safe handoff ZIP downloaded':((result.mode==='clipboard'||result.mode==='copy')&&result.status==='PASS'?'Safe handoff copied':'Safe handoff unavailable')}
 function bindHandoff(d,id){const button=d.getElementById(id);if(button)button.onclick=()=>runHandoff(button)}
-function detailValue(id){
-  const r=currentReport('detail_'+id);
-  if(id==='app_health')return{summary:r.summary,ownership:r.reports.ownership_runtime};
-  if(id==='route_stack')return{current_map:'pmp-current-map-v12.json',reload:r.reports.reload_owner};
-  if(id==='mount_registry')return{registry:r.reports.mount_registry,lifecycle:r.reports.mount_lifecycle};
-  if(id==='section_owners')return r.reports.section_owners;
-  if(id==='helpers')return r.reports.helpers;
-  if(id==='panel_order')return r.reports.panel_order;
-  if(id==='duplicate_panels')return r.reports.duplicate_panels;
-  if(id==='flicker_recorder')return r.reports.flicker_recorder;
-  if(id==='error_log')return r.reports.error_log;
-  if(id==='bank_continuous_run_visual')return{owner_split:r.reports.bank_owner_split,panel_order:r.reports.panel_order,duplicates:r.reports.duplicate_panels};
-  return r;
-}
-function renderDetail(w,d,id){
-  const el=activate(d,screen(d)),row=CARDS.find(x=>x[0]===id)||[id,'Diagnostics',''],value=detailValue(id);
-  let controls='';
-  if(id==='app_orchestrator')controls=action('pmpDiagSafeHandoff','Copy New Chat Safe Handoff')+action('pmpDiagCopyOrch','Copy App Orchestrator Report');
-  if(id==='full_report')controls=action('pmpDiagCopyFull','Copy Full Diagnostic Report');
-  el.innerHTML='<button type="button" class="pmpDiagBack" id="pmpDiagBack">← Back to Diagnostics</button><h1 class="pmpDiagTitle">'+esc(row[1])+'</h1><p class="pmpDiagSub">Diagnostics Owner · permanent read-only evidence</p><div class="pmpDiagQuick">'+controls+'</div><pre>'+esc(JSON.stringify(id==='app_orchestrator'?read('pmp_app_orchestrator_v1_receipt')||value:value,null,2))+'</pre>';
-  d.getElementById('pmpDiagBack').onclick=()=>renderHome(w,d);
-  bindHandoff(d,'pmpDiagSafeHandoff');
-  const orch=d.getElementById('pmpDiagCopyOrch');if(orch)orch.onclick=()=>{orch.textContent=copyText(JSON.stringify(read('pmp_app_orchestrator_v1_receipt')||{},null,2))==='copied'?'Copied':'Report ready'};
-  const full=d.getElementById('pmpDiagCopyFull');if(full)full.onclick=()=>{full.textContent=copyText(JSON.stringify(currentReport('copy_full'),null,2))==='copied'?'Copied':'Report ready'};
-}
-function renderHome(w,d){
-  const el=activate(d,screen(d));
-  el.innerHTML='<h1 class="pmpDiagTitle">Diagnostics</h1><p class="pmpDiagSub">Permanent read-only diagnostics. Original tools remain visible; ownership conflicts are reported without repairing or changing the app.</p><div class="pmpDiagGrid">'+CARDS.map(cardHTML).join('')+'</div>';
-  el.querySelectorAll('.pmpDiagCard').forEach(card=>{const open=()=>renderDetail(w,d,card.dataset.diag);card.onclick=open;card.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}}});
-}
-function run(reason){const report=currentReport(reason||'run');docs().forEach(ctx=>{try{if(ctx.document.getElementById(SCREEN_ID))renderHome(ctx.window,ctx.document)}catch(e){}});return report}
+function detailValue(id){const r=currentReport('detail_'+id);if(id==='app_health')return{summary:r.summary,diagnostic_confidence:r.diagnostic_confidence,ownership:r.reports.ownership_runtime};if(id==='route_stack')return{current_map:'pmp-current-map-v12.json',route_evidence:r.reports.reload_owner};if(id==='mount_registry')return{registry:r.reports.mount_registry,lifecycle:r.reports.mount_lifecycle};if(id==='section_owners')return r.reports.section_owners;if(id==='helpers')return r.reports.helpers;if(id==='panel_order')return r.reports.panel_order;if(id==='duplicate_panels')return r.reports.duplicate_panels;if(id==='flicker_recorder')return r.reports.flicker_recorder;if(id==='error_log')return r.reports.error_log;if(id==='bank_continuous_run_visual')return{owner_split:r.reports.bank_owner_split,panel_order:r.reports.panel_order,duplicates:r.reports.duplicate_panels};return r}
+function renderDetail(w,d,id){const el=activate(d,screen(d)),row=CARDS.find(x=>x[0]===id)||[id,'Diagnostics',''],value=detailValue(id);let controls='';if(id==='app_orchestrator')controls=action('pmpDiagSafeHandoff','Copy New Chat Safe Handoff')+action('pmpDiagCopyOrch','Copy App Orchestrator Report');if(id==='full_report')controls=action('pmpDiagCopyFull','Copy Full Diagnostic Report');const shown=id==='app_orchestrator'?read('pmp_app_orchestrator_v1_receipt')||value:value;el.innerHTML='<button type="button" class="pmpDiagBack" id="pmpDiagBack">← Back to Diagnostics</button><h1 class="pmpDiagTitle">'+esc(row[1])+'</h1><p class="pmpDiagSub">Diagnostics Owner · proof-labelled read-only evidence</p><div class="pmpDiagQuick">'+controls+'</div><pre>'+esc(JSON.stringify(shown,null,2))+'</pre>';d.getElementById('pmpDiagBack').onclick=()=>renderHome(w,d);bindHandoff(d,'pmpDiagSafeHandoff');const orch=d.getElementById('pmpDiagCopyOrch');if(orch)orch.onclick=()=>{orch.textContent=copyText(JSON.stringify(read('pmp_app_orchestrator_v1_receipt')||{},null,2))==='copied'?'Copied':'Report ready'};const full=d.getElementById('pmpDiagCopyFull');if(full)full.onclick=()=>{full.textContent=copyText(JSON.stringify(currentReport('copy_full'),null,2))==='copied'?'Copied':'Report ready'}}
+function renderHome(w,d){const el=activate(d,screen(d));el.innerHTML='<h1 class="pmpDiagTitle">Diagnostics</h1><p class="pmpDiagSub">Read-only diagnostics that separate live proof, historical receipts, missing sources, and closed visual contexts.</p><div class="pmpDiagGrid">'+CARDS.map(cardHTML).join('')+'</div>';el.querySelectorAll('.pmpDiagCard').forEach(card=>{const open=()=>renderDetail(w,d,card.dataset.diag);card.onclick=open;card.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}}})}
+function run(reason){const report=currentReport(reason||'run');docs().forEach(ctx=>{try{if(ctx.document.getElementById(SCREEN_ID))renderHome(ctx.window,ctx.document)}catch(_){}});return report}
 function renderDiagnosticJournal(w,d){renderDetail(w,d,'error_log')}
 function renderSectionOwners(w,d){renderDetail(w,d,'section_owners')}
 function close(){docs().forEach(ctx=>{const el=ctx.document.getElementById(SCREEN_ID);if(el)el.classList.remove('on')})}
-const api={version:V,owner:OWNER,run,currentReport,renderHome,renderDetail,renderDiagnosticJournal,renderSectionOwners,close,screenId:SCREEN_ID,readMountLifecycle:lifecycleView,readHelpers:helperView,readPanelOrder:panelOrderReport,readDuplicates:duplicateReport,readFlicker:flickerReport,readErrors:errorReport,readActivePath:activePathValue,rule:'Read-only permanent diagnostics with the safe-handoff action owned only by App Orchestrator Status, plus panel order, duplicate, repaint, error, and ownership evidence. Active Path Discovery remains on its Control surface. No repair or data mutation.'};
-api.readMountLifecycle=lifecycleView;
-api.readSectionOwners=sectionOwnerView;
-window.PMPDiagnosticsOwnerV1=api;try{T().PMPDiagnosticsOwnerV1=api}catch(e){}
+const api={version:V,owner:OWNER,run,currentReport,renderHome,renderDetail,renderDiagnosticJournal,renderSectionOwners,close,screenId:SCREEN_ID,readMountLifecycle:lifecycleView,readHelpers:helperView,readPanelOrder:panelOrderReport,readDuplicates:duplicateReport,readFlicker:flickerReport,readErrors:errorReport,readActivePath:activePathValue,rule:'One Diagnostics Owner reports proof-labelled evidence. It does not create helpers, repair the app, move panels, mutate routes, or claim missing evidence is failure.'};
+api.readSectionOwners=ownerView;
+window.PMPDiagnosticsOwnerV1=api;try{T().PMPDiagnosticsOwnerV1=api}catch(_){}
 window.addEventListener('error',e=>ERRORS.push({at:now(),type:'error',message:String(e.message||''),filename:String(e.filename||''),line:e.lineno||0}));
 window.addEventListener('unhandledrejection',e=>ERRORS.push({at:now(),type:'unhandledrejection',message:String(e.reason&&e.reason.message||e.reason||'')}));
-put(RECEIPT,{type:'PMP_DIAGNOSTICS_OWNER_RECEIPT_V2',version:V,owner:OWNER,at:now(),status:'ACTIVE_READ_ONLY',sections:CARDS.length,normal_home:'Diagnostics tab',read_only:true});
+put(RECEIPT,{type:'PMP_DIAGNOSTICS_OWNER_RECEIPT_V2',version:V,owner:OWNER,at:now(),status:'ACTIVE_READ_ONLY',sections:CARDS.length,normal_home:'Diagnostics tab',read_only:true,truth_policy_active:true});
 })();
