@@ -130,6 +130,7 @@ def main() -> None:
         "agent/app-orchestrator-owner-conflict-repair-v1",
         "agent/app-orchestrator-owner-maintenance-release-v1",
         "agent/diagnostics-handoff-active-path-restoration-v1",
+        "agent/private-library-research-line",
         "main",
     }
 

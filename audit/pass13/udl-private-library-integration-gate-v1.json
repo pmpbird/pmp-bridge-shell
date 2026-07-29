@@ -1,0 +1,124 @@
+{
+  "base_commit": "66ea4021630371fe43010431556f8d56dccdd077",
+  "claim_ceiling": "Deterministic public-entry/private-control boundary and runtime-integrity verification only. No live Tailscale activation or production certification is claimed.",
+  "created_at_utc": "2026-07-29T19:30:00Z",
+  "effects": {
+    "formal_proof_performed": false,
+    "model_api_exposed": false,
+    "persisted_user_data_changed": false,
+    "public_backend_privileged": false,
+    "tailscale_funnel_enabled": false
+  },
+  "no_blind_flying_gate": {
+    "automatic_retry": false,
+    "ci_lane": "deterministic_integration",
+    "deterministic_test_paths": [
+      "tools/test_udl_private_library_no_blind_gate_v1.py"
+    ],
+    "diagnostic_evidence_routes": [
+      "audit/pass13/udl-private-library-integration-gate-v1.json",
+      "audit/udl-private-library-integration-20260729.json",
+      "pmp-runtime-integrity-manifest-v1.json"
+    ],
+    "diagnostic_matrix_update": {
+      "applicable_matrix": "audit/pass13/udl-private-library-integration-gate-v1.json",
+      "rationale": "The matrix binds the Library placement, public/private authority boundary, Serve-only transport, protected runtime hashes, negative credential checks, and exact changed scope.",
+      "status": "ADDED"
+    },
+    "fault_injection": {
+      "cases": [
+        "public fetch mutation lane",
+        "public durable credential storage",
+        "bearer credential inclusion",
+        "direct model API path",
+        "duplicate Library runtime entry",
+        "protected runtime hash mismatch",
+        "manifest seal mismatch"
+      ],
+      "status": "COVERED"
+    },
+    "inferred_conclusions": [
+      {
+        "basis_evidence_paths": [
+          "audit/pass13/udl-private-library-integration-gate-v1.json",
+          "tools/verify_udl_private_library_no_blind_gate_v1.py"
+        ],
+        "claim_type": "INFERRED",
+        "conclusion": "The PMP public Library entry can safely route a user to the separately authenticated Tailscale-private Mac surface without acquiring local execution authority."
+      }
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "evidence_paths": [
+          "pmp-universal-discovery-library-v1.js",
+          "tools/test_udl_private_library_no_blind_gate_v1.py"
+        ],
+        "fact": "The Library entry opens one fixed Tailscale-private URL and contains no public API mutation, durable credential, bearer credential, or model API path."
+      },
+      {
+        "claim_type": "OBSERVED",
+        "evidence_paths": [
+          "pmp-runtime-integrity-manifest-v1.json",
+          "audit/a003-manifest-seal.json",
+          "pmp-app-current.html"
+        ],
+        "fact": "The added executable and its host document are protected by the current runtime manifest, manifest seal, and bootstrap trust anchor."
+      }
+    ],
+    "receipt_paths": [
+      "audit/pass13/receipts/RECEIPT_UDL_PRIVATE_LIBRARY_INTEGRATION_20260729_001.json"
+    ],
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "special_authority": {
+      "consumed": false,
+      "granted": false,
+      "required": false
+    },
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "upload_before_enforcement": true,
+    "verifier_paths": [
+      "tools/verify_udl_private_library_no_blind_gate_v1.py"
+    ],
+    "version": "1.0.0"
+  },
+  "scope": {
+    "changed_paths": [
+      "audit/a003-manifest-seal.json",
+      "audit/pass13/receipts/RECEIPT_UDL_PRIVATE_LIBRARY_INTEGRATION_20260729_001.json",
+      "audit/pass13/udl-private-library-integration-gate-v1.json",
+      "audit/udl-private-library-integration-20260729.json",
+      "pmp-app-current.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+      "pmp-runtime-integrity-manifest-v1.json",
+      "pmp-universal-discovery-library-v1.js",
+      "tools/test_app_orchestrator_ownership_maintenance_v1.py",
+      "tools/test_automated_plan_real_app_v1.mjs",
+      "tools/test_pass7_unit4_owner_mount_diagnostics_integration_v1.js",
+      "tools/test_udl_library_integration_v1.py",
+      "tools/test_udl_private_library_no_blind_gate_v1.py",
+      "tools/verify_app_orchestrator_ownership_maintenance_v1.py",
+      "tools/verify_pass7_unit4_owner_mount_diagnostics_integration_v1.py",
+      "tools/verify_udl_private_library_no_blind_gate_v1.py"
+    ],
+    "implementation_paths": [
+      "pmp-app-current.html",
+      "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+      "pmp-universal-discovery-library-v1.js"
+    ]
+  },
+  "status": "PASS",
+  "type": "PMP_UDL_PRIVATE_LIBRARY_INTEGRATION_GATE_V1",
+  "unit_id": "P13-U10",
+  "version": "1.0.0"
+}

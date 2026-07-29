@@ -127,7 +127,7 @@ def main() -> None:
     view_source = VIEW.read_text()
     assert "applyOwnerEvent" not in view_source
     diagnostics_source = DIAGNOSTICS.read_text()
-    assert "readSectionOwners=sectionOwnerView" in diagnostics_source
+    assert "readSectionOwners=ownerView" in diagnostics_source
     assert "renderSectionOwners" in diagnostics_source
     assert "PMPSectionOwnerMountRuntimeV1.applyOwnerEvent" not in diagnostics_source
     inner = INNER.read_text()

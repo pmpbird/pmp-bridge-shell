@@ -41,7 +41,7 @@ try {
   await page.waitForFunction(() => {
     try {
       const receipt = JSON.parse(localStorage.getItem('pmp_pass75_reload_runtime_platform_gate_v1_receipt') || 'null');
-      return receipt?.version === '1.3.0-manual-release-startup-order' && receipt?.certified === true;
+      return receipt?.version === '1.3.1-idempotent-style' && receipt?.certified === true;
     } catch { return false; }
   }, null, { timeout: 45000 });
   const preRelease = await page.evaluate(() => JSON.parse(localStorage.getItem('pmp_pass75_reload_runtime_platform_gate_v1_receipt')));

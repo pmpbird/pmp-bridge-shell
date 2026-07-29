@@ -1,0 +1,21 @@
+{
+  "authority_consumed": false,
+  "base_commit": "66ea4021630371fe43010431556f8d56dccdd077",
+  "claim_ceiling": "Deterministic private-Library integration and protected-runtime integrity only. No Tailscale account activation, public privileged execution, model API exposure, persisted-user-data mutation, or production certification is claimed.",
+  "created_at_utc": "2026-07-29T19:30:00Z",
+  "effects": {
+    "model_api_exposed": false,
+    "persisted_user_data_changed": false,
+    "public_backend_privileged": false,
+    "tailscale_funnel_enabled": false
+  },
+  "receipt_id": "RECEIPT_UDL_PRIVATE_LIBRARY_INTEGRATION_20260729_001",
+  "status": "PASS",
+  "tests": {
+    "private_library_boundary": "PASS",
+    "protected_runtime_integrity": "PASS",
+    "unknown_promoted_to_pass": false
+  },
+  "type": "PMP_UDL_PRIVATE_LIBRARY_INTEGRATION_RECEIPT_V1",
+  "version": "1.0.0"
+}
