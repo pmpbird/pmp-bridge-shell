@@ -1,0 +1,81 @@
+{
+  "type": "PMP_ACTIVE_BUG_WATCH_RUNTIME_AUDIT_V1",
+  "version": "1.0.0",
+  "status": "AUDIT_COMPLETE_NO_REPAIR",
+  "audited_at": "2026-07-28T23:59:00Z",
+  "scope": {
+    "question": "Does the app recognize which bugs are active in the live app?",
+    "mutation_allowed": false,
+    "runtime_behavior_changed": false,
+    "stored_bug_data_changed": false
+  },
+  "findings": {
+    "implementation_exists": true,
+    "loaded_in_current_runtime": true,
+    "runtime_files": [
+      "pmp-active-bug-found-contract-v1.js",
+      "pmp-bug-watch-passive-capture-v1.js"
+    ],
+    "active_bug_store": "pmp_bug_bank_active_bugs_v1",
+    "actual_v2_evidence": {
+      "receipt_lineage_index": "pmp_bug_watch_receipt_lineage_v2",
+      "dedupe_index": "pmp_bug_watch_dedupe_index_v2",
+      "handoff_lineage_index": "pmp_bug_watch_handoff_lineage_v2",
+      "repair_request_lineage_index": "pmp_bug_watch_repair_request_lineage_v2",
+      "receipt_prefix": "pmp_bug_watch_receipt_v2:",
+      "handoff_prefix": "pmp_bug_watch_handoff_v2:"
+    },
+    "diagnostics_reads_obsolete_or_unwritten_keys": [
+      "pmp_bug_watch_passive_capture_v1_receipt",
+      "pmp_active_bug_found_contract_v1_receipt"
+    ],
+    "automatic_detection_supported": [
+      "JavaScript runtime errors",
+      "unhandled promise rejections",
+      "script load failures",
+      "stylesheet load failures",
+      "iframe or frame load failures"
+    ],
+    "automatic_detection_not_proven": [
+      "wrong-screen navigation",
+      "empty view despite existing records",
+      "duplicate panels without a thrown error",
+      "ownership conflicts without a thrown error",
+      "visual flicker without a thrown error",
+      "silent feature failure",
+      "general recognition that a known catalog bug is currently happening"
+    ],
+    "capture_window": {
+      "production_lease_ms": 60000,
+      "bounded_scan_offsets_ms": [0, 300, 900, 1800, 3500, 7000],
+      "effect": "The public observer remains installed, but capture requires a valid active lease. Events occurring after lease expiry are rejected and swallowed by the event wrapper, so persistent active monitoring beyond the first minute is not proven."
+    },
+    "active_contract_behavior": {
+      "read_only": true,
+      "reads_active_store": true,
+      "automatic_normalization": false,
+      "automatic_repair": false,
+      "classifies_fixed": false
+    },
+    "diagnostic_journal": {
+      "contract_exists": true,
+      "readonly_export_exists": true,
+      "runtime_instantiation_found": false,
+      "runtime_append_callers_found": false,
+      "diagnostics_receipt_writer_found": false,
+      "conclusion": "The journal is a validated contract and read-only export utility, but this audit did not find a live journal instance feeding Diagnostics."
+    }
+  },
+  "proven_cause": "The active-bug watcher exists, but Diagnostics is disconnected from its actual Version 2 evidence keys. Monitoring is also time-bounded to a one-minute authority lease and primarily recognizes thrown technical failures, not arbitrary behavioral bugs or catalog-to-runtime matches.",
+  "safe_next_repair": [
+    "Make Diagnostics read the actual Version 2 report, active store, and receipt lineage without rewriting existing rows.",
+    "Provide a durable passive observation lease or safe renewal path if continuous monitoring is intended.",
+    "Add explicit behavioral detectors and known-bug signature matching only through bounded, read-only observers.",
+    "Connect the Bug Bank renderer to the active store and catalog without clearing, normalizing, migrating, or reordering existing records."
+  ],
+  "limitations": [
+    "Repository audit cannot inspect the user's current phone localStorage contents.",
+    "No claim is made that active bug rows currently exist on the user's device.",
+    "No repair was performed."
+  ]
+}
