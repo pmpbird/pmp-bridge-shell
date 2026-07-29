@@ -1,8 +1,9 @@
 (()=>{
 'use strict';
-const V='2.0.0-exclusive-ownership-handoff-20260727A';
+const V='2.0.1-diagnostics-truth-cache-bust-20260729A';
 const OWNER='app_orchestrator_owner';
-const DIAGNOSTICS_SRC='pmp-diagnostics-owner-v1.js?fresh=ownership-maintenance-20260727A';
+const DIAGNOSTICS_VERSION='2.5.0-truth-confidence-20260729A';
+const DIAGNOSTICS_SRC='pmp-diagnostics-owner-v1.js?fresh=truth-confidence-20260729A';
 const DIAGNOSTICS_TAB_SRC='pmp-diagnostics-bottom-tab-forcer-v1.js?fresh=one-button-handoff-entry-20260727A';
 const BOUNDED_DISCOVERY_SRC='pmp-active-path-discovery-machine-v2.js?fresh=bounded-support-no-v1-alias-20260727A';
 const KEYS={
@@ -19,11 +20,19 @@ function now(){return new Date().toISOString()}
 function read(k){try{return JSON.parse(T().localStorage.getItem(k)||'null')}catch(e){return null}}
 function put(k,v){try{T().localStorage.setItem(k,JSON.stringify(v,null,2))}catch(e){}return v}
 function hasScript(path){try{return Array.from(document.querySelectorAll('script[src]')).some(s=>String(s.getAttribute('src')||'').includes(path))}catch(e){return false}}
-function load(path,src,apiName,reason){
+function load(path,src,apiName,reason,expectedVersion){
   return new Promise(resolve=>{
     try{
       const api=window[apiName]||T()[apiName];
-      if(api){resolve('already_present');return}
+      const versionMatches=!expectedVersion||(api&&api.version===expectedVersion);
+      if(api&&versionMatches){resolve('already_present_current');return}
+      if(api&&expectedVersion&&api.version!==expectedVersion){
+        const script=document.createElement('script');script.src=src;script.async=true;
+        script.onload=()=>{try{const loaded=window[apiName]||T()[apiName];if(loaded&&typeof loaded.run==='function')loaded.run(reason||'orchestrator_loaded')}catch(e){}resolve(loadedVersion(apiName)===expectedVersion?'reloaded_current':'reloaded_version_mismatch')};
+        script.onerror=()=>resolve('reload_error');
+        (document.head||document.documentElement).appendChild(script);
+        return;
+      }
       if(hasScript(path)){resolve('script_present_waiting_for_api');return}
       const script=document.createElement('script');script.src=src;script.async=true;
       script.onload=()=>{try{const loaded=window[apiName]||T()[apiName];if(loaded&&typeof loaded.run==='function')loaded.run(reason||'orchestrator_loaded')}catch(e){}resolve('loaded')};
@@ -32,6 +41,7 @@ function load(path,src,apiName,reason){
     }catch(error){resolve('exception_'+String(error&&error.message||error))}
   });
 }
+function loadedVersion(apiName){try{const api=window[apiName]||T()[apiName];return api&&api.version||null}catch(e){return null}}
 function compact(report){
   if(!report)return{status:'not_ready'};
   return{
@@ -51,6 +61,7 @@ function currentReport(reason){
   const ownership=read(KEYS.ownershipRuntime);
   const sectionOwners=read('pmp_section_owner_registry_snapshot_v1');
   const helpers=read('pmp_helper_registry_snapshot_v1');
+  const diagnosticsVersion=loadedVersion('PMPDiagnosticsOwnerV1');
   LAST={
     type:'PMP_APP_ORCHESTRATOR_V1_RECEIPT',
     version:V,
@@ -59,7 +70,8 @@ function currentReport(reason){
     at:now(),
     reason:reason||'current_report',
     status:'CURRENT_ORCHESTRATOR_REPORT_READY',
-    expected:{route_guardian:EXPECTED.guardian,current_reload:EXPECTED.current,current_inner:EXPECTED.inner,map:EXPECTED.map},
+    expected:{route_guardian:EXPECTED.guardian,current_reload:EXPECTED.current,current_inner:EXPECTED.inner,map:EXPECTED.map,diagnostics_version:DIAGNOSTICS_VERSION},
+    diagnostics_runtime:{expected_version:DIAGNOSTICS_VERSION,loaded_version:diagnosticsVersion,status:diagnosticsVersion===DIAGNOSTICS_VERSION?'CURRENT':'NEEDS_RELOAD'},
     ownership:{
       registry:'pmp-app-orchestrator-ownership-registry-v1.json',
       runtime:ownership||{status:'not_ready'},
@@ -99,14 +111,14 @@ function currentReport(reason){
     side_effects:{route_change:'not_attempted',bank_rebuild:'not_attempted',indexeddb_write:'not_attempted',storage_migration:'not_attempted',persisted_user_data_write:'not_attempted',ownership_takeover:'not_attempted'}
   };
   put(KEYS.receipt,LAST);
-  put(KEYS.status,{type:'PMP_APP_ORCHESTRATOR_CURRENT_STATUS_V1',version:V,owner:OWNER,at:now(),status:LAST.status,ownership:LAST.ownership,active_path:LAST.active_path,new_chat_handoff:LAST.new_chat_handoff});
+  put(KEYS.status,{type:'PMP_APP_ORCHESTRATOR_CURRENT_STATUS_V1',version:V,owner:OWNER,at:now(),status:LAST.status,diagnostics_runtime:LAST.diagnostics_runtime,ownership:LAST.ownership,active_path:LAST.active_path,new_chat_handoff:LAST.new_chat_handoff});
   return LAST;
 }
 async function run(reason){
   await load('pmp-active-path-discovery-machine-v2.js',BOUNDED_DISCOVERY_SRC,'PMPActivePathDiscoveryMachineV2','orchestrator_bounded_support');
   const bounded=window.PMPActivePathDiscoveryMachineV2||T().PMPActivePathDiscoveryMachineV2;
   if(bounded&&typeof bounded.run==='function')bounded.run('orchestrator_bounded_support');
-  await load('pmp-diagnostics-owner-v1.js',DIAGNOSTICS_SRC,'PMPDiagnosticsOwnerV1','orchestrator_diagnostics');
+  await load('pmp-diagnostics-owner-v1.js',DIAGNOSTICS_SRC,'PMPDiagnosticsOwnerV1','orchestrator_diagnostics',DIAGNOSTICS_VERSION);
   await load('pmp-diagnostics-bottom-tab-forcer-v1.js',DIAGNOSTICS_TAB_SRC,'PMPDiagnosticsBottomTabForcerV1','orchestrator_diagnostics_tab');
   return currentReport(reason||'api_run');
 }
