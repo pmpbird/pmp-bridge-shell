@@ -1,12 +1,12 @@
 (()=>{
 'use strict';
-const V='2.2.1-diagnostics-consolidated-view-bounded-loader-20260729A';
+const V='2.2.2-diagnostics-tab-open-repair-loader-20260729A';
 const OWNER='app_orchestrator_owner';
 const DIAGNOSTICS_VERSION='2.5.0-truth-confidence-20260729A';
 const DIAGNOSTICS_SRC='pmp-diagnostics-owner-v1.js?fresh=truth-confidence-20260729A';
 const DIAGNOSTICS_TAB_SRC='pmp-diagnostics-bottom-tab-forcer-v1.js?fresh=one-button-handoff-entry-20260727A';
-const DIAGNOSTICS_CONSOLIDATED_VERSION='1.0.0-whole-app-orchestrator-system-20260729A';
-const DIAGNOSTICS_CONSOLIDATED_SRC='pmp-diagnostics-consolidated-view-v1.js?fresh=whole-app-orchestrator-system-20260729A';
+const DIAGNOSTICS_CONSOLIDATED_VERSION='1.0.1-tab-open-repair-20260729A';
+const DIAGNOSTICS_CONSOLIDATED_SRC='pmp-diagnostics-consolidated-view-v1.js?fresh=tab-open-repair-20260729A';
 const BOUNDED_DISCOVERY_SRC='pmp-active-path-discovery-machine-v2.js?fresh=bounded-support-no-v1-alias-20260727A';
 const OWNERSHIP_RUNTIME_VERSION='1.0.0-exclusive-owner-runtime-20260727A';
 const OWNERSHIP_RUNTIME_SRC='pmp-app-orchestrator-ownership-runtime-v1.js?fresh=ownership-runtime-loader-20260729A';
@@ -78,7 +78,7 @@ function currentReport(reason){
     status:'CURRENT_ORCHESTRATOR_REPORT_READY',
     expected:{route_guardian:EXPECTED.guardian,current_reload:EXPECTED.current,current_inner:EXPECTED.inner,map:EXPECTED.map,diagnostics_version:DIAGNOSTICS_VERSION,diagnostics_consolidated_version:DIAGNOSTICS_CONSOLIDATED_VERSION,ownership_runtime_version:OWNERSHIP_RUNTIME_VERSION},
     diagnostics_runtime:{expected_version:DIAGNOSTICS_VERSION,loaded_version:diagnosticsVersion,status:diagnosticsVersion===DIAGNOSTICS_VERSION?'CURRENT':'NEEDS_RELOAD'},
-    diagnostics_consolidated_view:{expected_version:DIAGNOSTICS_CONSOLIDATED_VERSION,loaded_version:consolidatedVersion,status:consolidatedVersion===DIAGNOSTICS_CONSOLIDATED_VERSION?'CURRENT':'NEEDS_LOAD',scope:'presentation_and_reporting_only',owner_changes:false,helper_changes:false,registry_changes:false},
+    diagnostics_consolidated_view:{expected_version:DIAGNOSTICS_CONSOLIDATED_VERSION,loaded_version:consolidatedVersion,status:consolidatedVersion===DIAGNOSTICS_CONSOLIDATED_VERSION?'CURRENT':'NEEDS_LOAD',scope:'presentation_and_reporting_only',owner_changes:false,helper_changes:false,registry_changes:false,tab_open_repair:true},
     ownership_runtime_loader:{expected_version:OWNERSHIP_RUNTIME_VERSION,loaded_version:ownershipRuntimeVersion,receipt_status:ownership&&ownership.status||'not_ready',resources_checked:Number.isFinite(ownership&&ownership.resources_checked)?ownership.resources_checked:null,status:ownershipRuntimeVersion===OWNERSHIP_RUNTIME_VERSION&&ownership?'CURRENT':'NEEDS_LOAD'},
     ownership:{
       registry:'pmp-app-orchestrator-ownership-registry-v1.json',
