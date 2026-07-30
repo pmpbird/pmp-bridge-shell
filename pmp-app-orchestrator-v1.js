@@ -1,11 +1,13 @@
 (()=>{
 'use strict';
-const V='2.0.1-diagnostics-truth-cache-bust-20260729A';
+const V='2.1.0-ownership-runtime-loader-20260729A';
 const OWNER='app_orchestrator_owner';
 const DIAGNOSTICS_VERSION='2.5.0-truth-confidence-20260729A';
 const DIAGNOSTICS_SRC='pmp-diagnostics-owner-v1.js?fresh=truth-confidence-20260729A';
 const DIAGNOSTICS_TAB_SRC='pmp-diagnostics-bottom-tab-forcer-v1.js?fresh=one-button-handoff-entry-20260727A';
 const BOUNDED_DISCOVERY_SRC='pmp-active-path-discovery-machine-v2.js?fresh=bounded-support-no-v1-alias-20260727A';
+const OWNERSHIP_RUNTIME_VERSION='1.0.0-exclusive-owner-runtime-20260727A';
+const OWNERSHIP_RUNTIME_SRC='pmp-app-orchestrator-ownership-runtime-v1.js?fresh=ownership-runtime-loader-20260729A';
 const KEYS={
   receipt:'pmp_app_orchestrator_v1_receipt',
   status:'pmp_app_orchestrator_boot_status_v1',
@@ -62,6 +64,7 @@ function currentReport(reason){
   const sectionOwners=read('pmp_section_owner_registry_snapshot_v1');
   const helpers=read('pmp_helper_registry_snapshot_v1');
   const diagnosticsVersion=loadedVersion('PMPDiagnosticsOwnerV1');
+  const ownershipRuntimeVersion=loadedVersion('PMPAppOrchestratorOwnershipRuntimeV1');
   LAST={
     type:'PMP_APP_ORCHESTRATOR_V1_RECEIPT',
     version:V,
@@ -70,8 +73,9 @@ function currentReport(reason){
     at:now(),
     reason:reason||'current_report',
     status:'CURRENT_ORCHESTRATOR_REPORT_READY',
-    expected:{route_guardian:EXPECTED.guardian,current_reload:EXPECTED.current,current_inner:EXPECTED.inner,map:EXPECTED.map,diagnostics_version:DIAGNOSTICS_VERSION},
+    expected:{route_guardian:EXPECTED.guardian,current_reload:EXPECTED.current,current_inner:EXPECTED.inner,map:EXPECTED.map,diagnostics_version:DIAGNOSTICS_VERSION,ownership_runtime_version:OWNERSHIP_RUNTIME_VERSION},
     diagnostics_runtime:{expected_version:DIAGNOSTICS_VERSION,loaded_version:diagnosticsVersion,status:diagnosticsVersion===DIAGNOSTICS_VERSION?'CURRENT':'NEEDS_RELOAD'},
+    ownership_runtime_loader:{expected_version:OWNERSHIP_RUNTIME_VERSION,loaded_version:ownershipRuntimeVersion,receipt_status:ownership&&ownership.status||'not_ready',resources_checked:Number.isFinite(ownership&&ownership.resources_checked)?ownership.resources_checked:null,status:ownershipRuntimeVersion===OWNERSHIP_RUNTIME_VERSION&&ownership?'CURRENT':'NEEDS_LOAD'},
     ownership:{
       registry:'pmp-app-orchestrator-ownership-registry-v1.json',
       runtime:ownership||{status:'not_ready'},
@@ -111,10 +115,13 @@ function currentReport(reason){
     side_effects:{route_change:'not_attempted',bank_rebuild:'not_attempted',indexeddb_write:'not_attempted',storage_migration:'not_attempted',persisted_user_data_write:'not_attempted',ownership_takeover:'not_attempted'}
   };
   put(KEYS.receipt,LAST);
-  put(KEYS.status,{type:'PMP_APP_ORCHESTRATOR_CURRENT_STATUS_V1',version:V,owner:OWNER,at:now(),status:LAST.status,diagnostics_runtime:LAST.diagnostics_runtime,ownership:LAST.ownership,active_path:LAST.active_path,new_chat_handoff:LAST.new_chat_handoff});
+  put(KEYS.status,{type:'PMP_APP_ORCHESTRATOR_CURRENT_STATUS_V1',version:V,owner:OWNER,at:now(),status:LAST.status,diagnostics_runtime:LAST.diagnostics_runtime,ownership_runtime_loader:LAST.ownership_runtime_loader,ownership:LAST.ownership,active_path:LAST.active_path,new_chat_handoff:LAST.new_chat_handoff});
   return LAST;
 }
 async function run(reason){
+  await load('pmp-app-orchestrator-ownership-runtime-v1.js',OWNERSHIP_RUNTIME_SRC,'PMPAppOrchestratorOwnershipRuntimeV1','orchestrator_ownership_runtime',OWNERSHIP_RUNTIME_VERSION);
+  const ownershipApi=window.PMPAppOrchestratorOwnershipRuntimeV1||T().PMPAppOrchestratorOwnershipRuntimeV1;
+  if(ownershipApi&&typeof ownershipApi.load==='function')await ownershipApi.load();
   await load('pmp-active-path-discovery-machine-v2.js',BOUNDED_DISCOVERY_SRC,'PMPActivePathDiscoveryMachineV2','orchestrator_bounded_support');
   const bounded=window.PMPActivePathDiscoveryMachineV2||T().PMPActivePathDiscoveryMachineV2;
   if(bounded&&typeof bounded.run==='function')bounded.run('orchestrator_bounded_support');
