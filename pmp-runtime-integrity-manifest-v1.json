@@ -1,13 +1,13 @@
 {
   "algorithm": "SHA-256",
   "counts": {
-    "executable_records": 726,
+    "executable_records": 729,
     "external_errors": 0,
     "external_records": 3,
     "historical_records": 1,
     "map_declared_covered": 42,
     "map_declared_paths": 42,
-    "runtime_records": 726,
+    "runtime_records": 729,
     "style_records": 0
   },
   "external_records": [
@@ -1074,15 +1074,15 @@
       "sri": "sha256-RWtpiNX4WqxnpeUFWQ1W5VBKSNEcGut03habUVXH1JU="
     },
     {
-      "bytes": 6520,
+      "bytes": 8245,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "61fac7f372c56235613a7abc3afe8b1b4deffb4d",
+      "git_blob_sha": "1689c45d60ab3ebcc0bab9fa22d75ec5e48a7782",
       "mime_type": "text/javascript",
       "path": "pmp-app-orchestrator-v1.js",
-      "sha256_base64": "TPGJN2OseDe6tq2WlCZeu9QP+Ovb72Dv7FSorWD2KNA=",
-      "sha256_hex": "4cf1893763ac7837bab6ad9694265ebbd40ff8ebdbef60efec54a8ad60f628d0",
-      "sri": "sha256-TPGJN2OseDe6tq2WlCZeu9QP+Ovb72Dv7FSorWD2KNA="
+      "sha256_base64": "17TGp6fIh48lC18h9n/OtQ670B2/fBW1JwNpkIfQlzA=",
+      "sha256_hex": "d7b4c6a7a7c8878f250b5f21f67fceb50ebbd01dbf7c15b52703699087d09730",
+      "sri": "sha256-17TGp6fIh48lC18h9n/OtQ670B2/fBW1JwNpkIfQlzA="
     },
     {
       "bytes": 3035,
@@ -3516,15 +3516,15 @@
       "sri": "sha256-tA2g1AfbY3RiggiLbxzWgSvdFwtUGZ7DTuhUyYxn3LA="
     },
     {
-      "bytes": 3049,
+      "bytes": 3262,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "91e9770e692bd99ef35355f8952e11fd96cc985a",
+      "git_blob_sha": "6e6f2dd5de0fbec2c697b34141ea6fb979bcd7c6",
       "mime_type": "text/javascript",
       "path": "pmp-diagnostic-coverage-final-certification-v1.js",
-      "sha256_base64": "XkaFedy7mIQCUhDCT/8te5Jp3v4bxjNFJyz4rkr5x4M=",
-      "sha256_hex": "5e468579dcbb9884025210c24fff2d7b9269defe1bc63345272cf8ae4af9c783",
-      "sri": "sha256-XkaFedy7mIQCUhDCT/8te5Jp3v4bxjNFJyz4rkr5x4M="
+      "sha256_base64": "4G3Pq8Ap4b6h+qkgauKSIE7QFug1umrLQ9ZcoBF+fpg=",
+      "sha256_hex": "e06dcfabc029e1bea1faa9206ae292204ed016e835ba6acb43d65ca0117e7e98",
+      "sri": "sha256-4G3Pq8Ap4b6h+qkgauKSIE7QFug1umrLQ9ZcoBF+fpg="
     },
     {
       "bytes": 6046,
@@ -3547,6 +3547,28 @@
       "sha256_base64": "wza5j0w04dnrKCjTZYA4iERxORlZyZGnQvcBYpyi0kU=",
       "sha256_hex": "c336b98f4c34e1d9eb2828d3658038884471391959c991a742f701629ca2d245",
       "sri": "sha256-wza5j0w04dnrKCjTZYA4iERxORlZyZGnQvcBYpyi0kU="
+    },
+    {
+      "bytes": 3415,
+      "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
+      "execution_class": "EXECUTABLE_SCRIPT",
+      "git_blob_sha": "96877337a6a3c9285d2d702867b4f7db524fc30a",
+      "mime_type": "text/javascript",
+      "path": "pmp-diagnostic-coverage-pass-e-integration-v1.js",
+      "sha256_base64": "mPWBXO1is7cqtGm7RwwzAu77Bu3SYwYPb0OP4krjF+A=",
+      "sha256_hex": "98f5815ced62b3b72ab469bb470c3302eefb06edd263060f6f438fe24ae317e0",
+      "sri": "sha256-mPWBXO1is7cqtGm7RwwzAu77Bu3SYwYPb0OP4krjF+A="
+    },
+    {
+      "bytes": 3918,
+      "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
+      "execution_class": "EXECUTABLE_SCRIPT",
+      "git_blob_sha": "30a47f8a2a63713fdc68977219d832f9b583cf6c",
+      "mime_type": "text/javascript",
+      "path": "pmp-diagnostic-coverage-pass-f-handoff-certification-v1.js",
+      "sha256_base64": "NEOjcAFH9w7uyuCznWFJFuWEn7kt8BoIy772CzbwCLM=",
+      "sha256_hex": "3443a3700147f70eeecae0b39d614916e5849fb92df01a08cbbef60b36f008b3",
+      "sri": "sha256-NEOjcAFH9w7uyuCznWFJFuWEn7kt8BoIy772CzbwCLM="
     },
     {
       "bytes": 3224,
@@ -4889,6 +4911,17 @@
       "sha256_base64": "thmOn349/4gReLUMszBP0fvRZ2vQMYA2bTq6pQy2HiY=",
       "sha256_hex": "b6198e9f7e3dff881178b50cb3304fd1fbd1676bd03180366d3abaa50cb61e26",
       "sri": "sha256-thmOn349/4gReLUMszBP0fvRZ2vQMYA2bTq6pQy2HiY="
+    },
+    {
+      "bytes": 2718,
+      "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
+      "execution_class": "EXECUTABLE_SCRIPT",
+      "git_blob_sha": "e3ba0b0af22f278f5e58a0fb98575ff7544bfb1d",
+      "mime_type": "text/javascript",
+      "path": "pmp-new-chat-safe-handoff-pass-ef-integration-v1.js",
+      "sha256_base64": "6h4Y2M5zcs4HXy9f5GMltY67mD7DtnuK67swfvshTfI=",
+      "sha256_hex": "ea1e18d8ce7372ce075f2f5fe46325b58ebb983ec3b67b8aebbb307efb214df2",
+      "sri": "sha256-6h4Y2M5zcs4HXy9f5GMltY67mD7DtnuK67swfvshTfI="
     },
     {
       "bytes": 16325,
@@ -8067,7 +8100,7 @@
       "rule": "This is the only application bootstrap source excluded from downstream manifest self-enforcement."
     }
   ],
-  "runtime_source_set_sha256": "a4e6c4c2621bb88cd759153e5fec7a9de6246aeff6b34ed176c44ab64f000c36",
+  "runtime_source_set_sha256": "8dce0b760007df3444b30363b4c99201e613ad2aaeb5e868bf16edb9ff99c660",
   "source_identity_rule": "Deterministic digest of protected local, historical, external, root-anchor, and policy identities; audit/workflow-only commits do not alter this identity.",
   "type": "PMP_RUNTIME_INTEGRITY_MANIFEST_V1",
   "unlisted_executable_policy": "FAIL_CLOSED",
