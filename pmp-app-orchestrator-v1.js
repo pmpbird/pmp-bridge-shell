@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const V='2.2.0-diagnostics-consolidated-view-loader-20260729A';
+const V='2.2.1-diagnostics-consolidated-view-bounded-loader-20260729A';
 const OWNER='app_orchestrator_owner';
 const DIAGNOSTICS_VERSION='2.5.0-truth-confidence-20260729A';
 const DIAGNOSTICS_SRC='pmp-diagnostics-owner-v1.js?fresh=truth-confidence-20260729A';
@@ -32,14 +32,14 @@ function load(path,src,apiName,reason,expectedVersion){
       if(api&&versionMatches){resolve('already_present_current');return}
       if(api&&expectedVersion&&api.version!==expectedVersion){
         const script=document.createElement('script');script.src=src;script.async=true;
-        script.onload=()=>{try{const loaded=window[apiName]||T()[apiName];if(loaded&&typeof loaded.run==='function')loaded.run(reason||'orchestrator_loaded');if(loaded&&typeof loaded.install==='function')loaded.install()}catch(e){}resolve(loadedVersion(apiName)===expectedVersion?'reloaded_current':'reloaded_version_mismatch')};
+        script.onload=()=>{try{const loaded=window[apiName]||T()[apiName];if(loaded&&typeof loaded.run==='function')loaded.run(reason||'orchestrator_loaded')}catch(e){}resolve(loadedVersion(apiName)===expectedVersion?'reloaded_current':'reloaded_version_mismatch')};
         script.onerror=()=>resolve('reload_error');
         (document.head||document.documentElement).appendChild(script);
         return;
       }
       if(hasScript(path)){resolve('script_present_waiting_for_api');return}
       const script=document.createElement('script');script.src=src;script.async=true;
-      script.onload=()=>{try{const loaded=window[apiName]||T()[apiName];if(loaded&&typeof loaded.run==='function')loaded.run(reason||'orchestrator_loaded');if(loaded&&typeof loaded.install==='function')loaded.install()}catch(e){}resolve('loaded')};
+      script.onload=()=>{try{const loaded=window[apiName]||T()[apiName];if(loaded&&typeof loaded.run==='function')loaded.run(reason||'orchestrator_loaded')}catch(e){}resolve('loaded')};
       script.onerror=()=>resolve('load_error');
       (document.head||document.documentElement).appendChild(script);
     }catch(error){resolve('exception_'+String(error&&error.message||error))}
