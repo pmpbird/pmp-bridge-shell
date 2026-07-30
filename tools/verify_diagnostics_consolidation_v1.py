@@ -23,8 +23,11 @@ checks = {
     "whole_and_section_copy": all(token in VIEW for token in [
         "Copy Whole App Health Report", "Copy Full Diagnostics Report", "Copy This Section",
     ]),
+    "section_specific_health_rules": "function sectionHealth" in VIEW and "key==='app_orchestrator_system'" in VIEW and "key==='errors_bug_watch_visual_stability'" in VIEW,
+    "no_generic_error_word_classifier": "NO_RUNTIME_ERRORS_CAPTURED" not in VIEW and "function statusOf" not in VIEW,
+    "compact_whole_app_health": "evidence_reference" in VIEW and "Complete evidence remains in Full Diagnostics" in VIEW and "healthBlocks" in VIEW,
+    "full_evidence_preserved": "sections:sections(raw)" in VIEW and "raw_diagnostics_owner_report:raw" in VIEW,
     "missing_evidence_truthful": "NOT_PROVEN" in VIEW and "never silently treated as PASS" in VIEW,
-    "full_report_api": "fullDiagnosticReport" in VIEW and "raw_diagnostics_owner_report" in VIEW,
     "safe_handoff_embeds_full_diagnostics": "full_diagnostics_package" in HANDOFF and "diagnosticsPackage" in HANDOFF,
     "safe_handoff_continuation_material": all(token in HANDOFF for token in [
         "repository_audit_instructions", "required_tests_and_gates", "exact_next_move",
@@ -43,4 +46,4 @@ for name, ok in checks.items():
     print(f"{'PASS' if ok else 'FAIL'} {name}")
 if failed:
     raise SystemExit("Diagnostics and safe handoff verification failed: " + ", ".join(failed))
-print("PASS expanded diagnostics and safe handoff preserve owner/helper boundaries")
+print("PASS compact section-specific diagnostics preserve full evidence and owner/helper boundaries")
