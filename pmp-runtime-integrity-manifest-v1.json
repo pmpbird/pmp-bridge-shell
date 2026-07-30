@@ -1,13 +1,13 @@
 {
   "algorithm": "SHA-256",
   "counts": {
-    "executable_records": 720,
+    "executable_records": 721,
     "external_errors": 0,
     "external_records": 3,
     "historical_records": 1,
     "map_declared_covered": 42,
     "map_declared_paths": 42,
-    "runtime_records": 720,
+    "runtime_records": 721,
     "style_records": 0
   },
   "external_records": [
@@ -1074,15 +1074,15 @@
       "sri": "sha256-RWtpiNX4WqxnpeUFWQ1W5VBKSNEcGut03habUVXH1JU="
     },
     {
-      "bytes": 9637,
+      "bytes": 10769,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "e865596efa5efaaf0d485c78e56a0b7764583ed1",
+      "git_blob_sha": "505ef853a650eac4328c004cbb7a2a02d102e092",
       "mime_type": "text/javascript",
       "path": "pmp-app-orchestrator-v1.js",
-      "sha256_base64": "lbG11w1zTGESN4yd9lrDU1flw60B1U4Cv5m+iTPqwqc=",
-      "sha256_hex": "95b1b5d70d734c6112378c9df65ac35357e5c3ad01d54e02bf99be8933eac2a7",
-      "sri": "sha256-lbG11w1zTGESN4yd9lrDU1flw60B1U4Cv5m+iTPqwqc="
+      "sha256_base64": "mYcWJCzH4OydlchFMytH0PLBENGtEbgFN/NbEauCN00=",
+      "sha256_hex": "998716242cc7e0ec9d95c845332b47d0f2c110d1ad11b80537f35b11ab82374d",
+      "sri": "sha256-mYcWJCzH4OydlchFMytH0PLBENGtEbgFN/NbEauCN00="
     },
     {
       "bytes": 3035,
@@ -3547,6 +3547,17 @@
       "sha256_base64": "bOhUI/8e2KM+SWAg7C3c2IA4W20qHj0msSBBoCMQjqI=",
       "sha256_hex": "6ce85423ff1ed8a33e496020ec2ddcd880385b6d2a1e3d26b12041a023108ea2",
       "sri": "sha256-bOhUI/8e2KM+SWAg7C3c2IA4W20qHj0msSBBoCMQjqI="
+    },
+    {
+      "bytes": 10480,
+      "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
+      "execution_class": "EXECUTABLE_SCRIPT",
+      "git_blob_sha": "29bc3c2a43ef1d9ae44edbdc48a1a04939b89be8",
+      "mime_type": "text/javascript",
+      "path": "pmp-diagnostics-consolidated-view-v1.js",
+      "sha256_base64": "LC5eHj6kO6rXprS0TVSheMkuEE9xrI00Mh9mco1GGqA=",
+      "sha256_hex": "2c2e5e1e3ea43baad7a6b4b44d54a178c92e104f71ac8d34321f66728d461aa0",
+      "sri": "sha256-LC5eHj6kO6rXprS0TVSheMkuEE9xrI00Mh9mco1GGqA="
     },
     {
       "bytes": 25518,
@@ -8001,7 +8012,7 @@
       "rule": "This is the only application bootstrap source excluded from downstream manifest self-enforcement."
     }
   ],
-  "runtime_source_set_sha256": "362ea0383bac2b9653561e372f9aae5fb984f42bfad76714ea7c5ab21316305a",
+  "runtime_source_set_sha256": "3b5f9bafd56be25a14f6f471b20955c2d623524b43e075b6168b7cd0ed82b879",
   "source_identity_rule": "Deterministic digest of protected local, historical, external, root-anchor, and policy identities; audit/workflow-only commits do not alter this identity.",
   "type": "PMP_RUNTIME_INTEGRITY_MANIFEST_V1",
   "unlisted_executable_policy": "FAIL_CLOSED",
