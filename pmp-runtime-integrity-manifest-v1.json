@@ -1,13 +1,13 @@
 {
   "algorithm": "SHA-256",
   "counts": {
-    "executable_records": 722,
+    "executable_records": 723,
     "external_errors": 0,
     "external_records": 3,
     "historical_records": 1,
     "map_declared_covered": 42,
     "map_declared_paths": 42,
-    "runtime_records": 722,
+    "runtime_records": 723,
     "style_records": 0
   },
   "external_records": [
@@ -3514,6 +3514,17 @@
       "sha256_base64": "tA2g1AfbY3RiggiLbxzWgSvdFwtUGZ7DTuhUyYxn3LA=",
       "sha256_hex": "b40da0d407db63746282088b6f1cd6812bdd170b54199ec34ee854c98c67dcb0",
       "sri": "sha256-tA2g1AfbY3RiggiLbxzWgSvdFwtUGZ7DTuhUyYxn3LA="
+    },
+    {
+      "bytes": 6046,
+      "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
+      "execution_class": "EXECUTABLE_SCRIPT",
+      "git_blob_sha": "756ad795c916d60ede33a1bd949fbac7c132d568",
+      "mime_type": "text/javascript",
+      "path": "pmp-diagnostic-coverage-pass-a-integration-v1.js",
+      "sha256_base64": "gdGxkbTSBdvgg2LvEADAX/K3ld+ak5jMd5ucaD0FGHc=",
+      "sha256_hex": "81d1b191b4d205dbe08362ef1000c05ff2b795df9a9398cc779b9c683d051877",
+      "sri": "sha256-gdGxkbTSBdvgg2LvEADAX/K3ld+ak5jMd5ucaD0FGHc="
     },
     {
       "bytes": 8355,
@@ -8023,7 +8034,7 @@
       "rule": "This is the only application bootstrap source excluded from downstream manifest self-enforcement."
     }
   ],
-  "runtime_source_set_sha256": "ca8dc338024563995ca96e03170937542893ef5a5b4e933a16f379d2b32492cf",
+  "runtime_source_set_sha256": "af66fe27bae1c4fb94a3d638d25d68aa53fa60579eff46148b98a74953b1568d",
   "source_identity_rule": "Deterministic digest of protected local, historical, external, root-anchor, and policy identities; audit/workflow-only commits do not alter this identity.",
   "type": "PMP_RUNTIME_INTEGRITY_MANIFEST_V1",
   "unlisted_executable_policy": "FAIL_CLOSED",
