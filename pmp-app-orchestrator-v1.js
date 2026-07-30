@@ -1,10 +1,12 @@
 (()=>{
 'use strict';
-const V='2.1.0-ownership-runtime-loader-20260729A';
+const V='2.2.1-diagnostics-consolidated-view-bounded-loader-20260729A';
 const OWNER='app_orchestrator_owner';
 const DIAGNOSTICS_VERSION='2.5.0-truth-confidence-20260729A';
 const DIAGNOSTICS_SRC='pmp-diagnostics-owner-v1.js?fresh=truth-confidence-20260729A';
 const DIAGNOSTICS_TAB_SRC='pmp-diagnostics-bottom-tab-forcer-v1.js?fresh=one-button-handoff-entry-20260727A';
+const DIAGNOSTICS_CONSOLIDATED_VERSION='1.0.0-whole-app-orchestrator-system-20260729A';
+const DIAGNOSTICS_CONSOLIDATED_SRC='pmp-diagnostics-consolidated-view-v1.js?fresh=whole-app-orchestrator-system-20260729A';
 const BOUNDED_DISCOVERY_SRC='pmp-active-path-discovery-machine-v2.js?fresh=bounded-support-no-v1-alias-20260727A';
 const OWNERSHIP_RUNTIME_VERSION='1.0.0-exclusive-owner-runtime-20260727A';
 const OWNERSHIP_RUNTIME_SRC='pmp-app-orchestrator-ownership-runtime-v1.js?fresh=ownership-runtime-loader-20260729A';
@@ -64,6 +66,7 @@ function currentReport(reason){
   const sectionOwners=read('pmp_section_owner_registry_snapshot_v1');
   const helpers=read('pmp_helper_registry_snapshot_v1');
   const diagnosticsVersion=loadedVersion('PMPDiagnosticsOwnerV1');
+  const consolidatedVersion=loadedVersion('PMPDiagnosticsConsolidatedViewV1');
   const ownershipRuntimeVersion=loadedVersion('PMPAppOrchestratorOwnershipRuntimeV1');
   LAST={
     type:'PMP_APP_ORCHESTRATOR_V1_RECEIPT',
@@ -73,8 +76,9 @@ function currentReport(reason){
     at:now(),
     reason:reason||'current_report',
     status:'CURRENT_ORCHESTRATOR_REPORT_READY',
-    expected:{route_guardian:EXPECTED.guardian,current_reload:EXPECTED.current,current_inner:EXPECTED.inner,map:EXPECTED.map,diagnostics_version:DIAGNOSTICS_VERSION,ownership_runtime_version:OWNERSHIP_RUNTIME_VERSION},
+    expected:{route_guardian:EXPECTED.guardian,current_reload:EXPECTED.current,current_inner:EXPECTED.inner,map:EXPECTED.map,diagnostics_version:DIAGNOSTICS_VERSION,diagnostics_consolidated_version:DIAGNOSTICS_CONSOLIDATED_VERSION,ownership_runtime_version:OWNERSHIP_RUNTIME_VERSION},
     diagnostics_runtime:{expected_version:DIAGNOSTICS_VERSION,loaded_version:diagnosticsVersion,status:diagnosticsVersion===DIAGNOSTICS_VERSION?'CURRENT':'NEEDS_RELOAD'},
+    diagnostics_consolidated_view:{expected_version:DIAGNOSTICS_CONSOLIDATED_VERSION,loaded_version:consolidatedVersion,status:consolidatedVersion===DIAGNOSTICS_CONSOLIDATED_VERSION?'CURRENT':'NEEDS_LOAD',scope:'presentation_and_reporting_only',owner_changes:false,helper_changes:false,registry_changes:false},
     ownership_runtime_loader:{expected_version:OWNERSHIP_RUNTIME_VERSION,loaded_version:ownershipRuntimeVersion,receipt_status:ownership&&ownership.status||'not_ready',resources_checked:Number.isFinite(ownership&&ownership.resources_checked)?ownership.resources_checked:null,status:ownershipRuntimeVersion===OWNERSHIP_RUNTIME_VERSION&&ownership?'CURRENT':'NEEDS_LOAD'},
     ownership:{
       registry:'pmp-app-orchestrator-ownership-registry-v1.json',
@@ -92,7 +96,7 @@ function currentReport(reason){
       schemas_separate:true
     },
     new_chat_handoff:{
-      button:'Diagnostics → App Orchestrator Status → Copy New Chat Safe Handoff',
+      button:'Diagnostics → App Orchestrator System → Copy New Chat Safe Handoff',
       owner:OWNER,
       api:'PMPNewChatSafeHandoffV1.run',
       behavior:'copies one complete packet when bounded; otherwise downloads one small verified ZIP',
@@ -115,7 +119,7 @@ function currentReport(reason){
     side_effects:{route_change:'not_attempted',bank_rebuild:'not_attempted',indexeddb_write:'not_attempted',storage_migration:'not_attempted',persisted_user_data_write:'not_attempted',ownership_takeover:'not_attempted'}
   };
   put(KEYS.receipt,LAST);
-  put(KEYS.status,{type:'PMP_APP_ORCHESTRATOR_CURRENT_STATUS_V1',version:V,owner:OWNER,at:now(),status:LAST.status,diagnostics_runtime:LAST.diagnostics_runtime,ownership_runtime_loader:LAST.ownership_runtime_loader,ownership:LAST.ownership,active_path:LAST.active_path,new_chat_handoff:LAST.new_chat_handoff});
+  put(KEYS.status,{type:'PMP_APP_ORCHESTRATOR_CURRENT_STATUS_V1',version:V,owner:OWNER,at:now(),status:LAST.status,diagnostics_runtime:LAST.diagnostics_runtime,diagnostics_consolidated_view:LAST.diagnostics_consolidated_view,ownership_runtime_loader:LAST.ownership_runtime_loader,ownership:LAST.ownership,active_path:LAST.active_path,new_chat_handoff:LAST.new_chat_handoff});
   return LAST;
 }
 async function run(reason){
@@ -126,6 +130,9 @@ async function run(reason){
   const bounded=window.PMPActivePathDiscoveryMachineV2||T().PMPActivePathDiscoveryMachineV2;
   if(bounded&&typeof bounded.run==='function')bounded.run('orchestrator_bounded_support');
   await load('pmp-diagnostics-owner-v1.js',DIAGNOSTICS_SRC,'PMPDiagnosticsOwnerV1','orchestrator_diagnostics',DIAGNOSTICS_VERSION);
+  await load('pmp-diagnostics-consolidated-view-v1.js',DIAGNOSTICS_CONSOLIDATED_SRC,'PMPDiagnosticsConsolidatedViewV1','orchestrator_diagnostics_consolidated',DIAGNOSTICS_CONSOLIDATED_VERSION);
+  const consolidated=window.PMPDiagnosticsConsolidatedViewV1||T().PMPDiagnosticsConsolidatedViewV1;
+  if(consolidated&&typeof consolidated.install==='function')consolidated.install();
   await load('pmp-diagnostics-bottom-tab-forcer-v1.js',DIAGNOSTICS_TAB_SRC,'PMPDiagnosticsBottomTabForcerV1','orchestrator_diagnostics_tab');
   return currentReport(reason||'api_run');
 }
