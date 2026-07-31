@@ -3021,15 +3021,15 @@
       "sri": "sha256-3i38EUFe4/lZto7ZpIspx/Cg6BcD2cmfhqLwfMwQOuE="
     },
     {
-      "bytes": 23164,
+      "bytes": 23281,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_DOCUMENT",
-      "git_blob_sha": "b3c4217fb23eab98e5e565e6de0234dd8bbf8b80",
+      "git_blob_sha": "cff634d8e82d2cdcf851fd1ad38351666f899b9e",
       "mime_type": "text/html",
       "path": "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
-      "sha256_base64": "/W4qWu4Qkh0TBIAfAbwxPuEKAaNiofBe2EmSGSVa5Wo=",
-      "sha256_hex": "fd6e2a5aee10921d1304801f01bc313ee10a01a362a1f05ed8499219255ae56a",
-      "sri": "sha256-/W4qWu4Qkh0TBIAfAbwxPuEKAaNiofBe2EmSGSVa5Wo="
+      "sha256_base64": "1QmKk8ZrG2u4A3KdnUj7AcpG2teGGlHzwJ0x2QWIuw4=",
+      "sha256_hex": "d5098a93c66b1b6bb803729d9d48fb01ca46dad7861a51f3c09d31d90588bb0e",
+      "sri": "sha256-1QmKk8ZrG2u4A3KdnUj7AcpG2teGGlHzwJ0x2QWIuw4="
     },
     {
       "bytes": 8346,
@@ -3527,15 +3527,15 @@
       "sri": "sha256-4G3Pq8Ap4b6h+qkgauKSIE7QFug1umrLQ9ZcoBF+fpg="
     },
     {
-      "bytes": 6643,
+      "bytes": 7733,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "87b62357df365e10d183d76ee405167e6b24da01",
+      "git_blob_sha": "4d3d9a48075bd6603faf9b67c026777293272023",
       "mime_type": "text/javascript",
       "path": "pmp-diagnostic-coverage-pass-a-integration-v1.js",
-      "sha256_base64": "EPC/mVMIZ9PTTo7GDv8eUwqAlh6/fFKieGf64qc7+zU=",
-      "sha256_hex": "10f0bf99530867d3d34e8ec60eff1e530a80961ebf7c52a27867fae2a73bfb35",
-      "sri": "sha256-EPC/mVMIZ9PTTo7GDv8eUwqAlh6/fFKieGf64qc7+zU="
+      "sha256_base64": "Dvarg3WIFi+HmGwoq3wVt6bpv/YAj8bPxUv/hP+53Ds=",
+      "sha256_hex": "0ef6ab837588162f87986c28ab7c15b7a6e9bff6008fc6cfc54bff84ffb9dc3b",
+      "sri": "sha256-Dvarg3WIFi+HmGwoq3wVt6bpv/YAj8bPxUv/hP+53Ds="
     },
     {
       "bytes": 8355,

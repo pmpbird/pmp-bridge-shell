@@ -1,0 +1,19 @@
+{
+  "boot_reference": "pmp-diagnostic-coverage-pass-a-integration-v1.js?fresh=cross-frame-live-diagnostics-20260730D",
+  "boundaries": {
+    "bank_rebuild": false,
+    "continuous_run_mutation": false,
+    "helper_changes": false,
+    "ownership_changes": false,
+    "persisted_user_data_write": false,
+    "route_destination_changes": false
+  },
+  "integration_version": "1.2.0-cross-frame-live-diagnostics-integration-20260730D",
+  "manifest_sha256": "370050fc25f584f28c2761e79b68530f3f1118d178cf805aba8da0571a30fd5d",
+  "protected_record_count": 729,
+  "report_source": "pmp-diagnostics-consolidated-view-v1.js local frame API patched by cross-frame integration",
+  "runtime_source_set_sha256": "6869649bd15cfaf6e28158ed3a7fb80e787b9264acddb660f70e13823dea1665",
+  "status": "PASS",
+  "type": "PMP_DIRECT_LIVE_DIAGNOSTICS_SOURCE_REPAIR_V1",
+  "version": "1.0.0-20260730D"
+}
