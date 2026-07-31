@@ -1,0 +1,22 @@
+{
+  "boot_reference": "pmp-app-orchestrator-v1.js?fresh=live-diagnostics-a-through-f-integrity-reseal-20260730C",
+  "boundaries": {
+    "bank_rebuild": false,
+    "continuous_run_mutation": false,
+    "helper_changes": false,
+    "ownership_changes": false,
+    "persisted_user_data_write": false,
+    "route_destination_changes": false
+  },
+  "manifest_sha256": "b1aef0cc1e3527b1891c18aa438ed9e3df6a6dc861558459557b55852e636da9",
+  "records_refreshed": 729,
+  "status": "PASS",
+  "type": "PMP_LIVE_DIAGNOSTICS_INTEGRITY_RESEAL_RECEIPT_V1",
+  "verified_paths": [
+    "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
+    "pmp-app-orchestrator-v1.js",
+    "pmp-diagnostic-coverage-pass-a-integration-v1.js",
+    "pmp-diagnostic-coverage-passes-bcd-integration-v1.js"
+  ],
+  "version": "1.0.0-20260730C"
+}
