@@ -1,0 +1,98 @@
+{
+  "type": "PMP_DETERMINISTIC_DIAGNOSTICS_STARTUP_GATE_V1",
+  "version": "1.0.0",
+  "unit_id": "P13-U12",
+  "status": "PASS",
+  "scope": {
+    "changed_paths": [
+      "audit/pass13/pass13-unit12-deterministic-diagnostics-startup-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_DETERMINISTIC_DIAGNOSTICS_STARTUP_20260730F_001.json",
+      "pmp-app-orchestrator-v1.js",
+      "tools/test_deterministic_diagnostics_startup_v1.py",
+      "tools/verify_deterministic_diagnostics_startup_v1.py"
+    ],
+    "implementation_paths": [
+      "pmp-app-orchestrator-v1.js"
+    ]
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_integration",
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/pass13/pass13-unit12-deterministic-diagnostics-startup-gate-v1.json",
+      "rationale": "This unit binds fail-isolated startup sequencing, direct Pass A and Passes B-D receipt production, repeated app-open activation, exact scope, deterministic source checks, and read-only boundaries."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass13/pass13-unit12-deterministic-diagnostics-startup-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_DETERMINISTIC_DIAGNOSTICS_STARTUP_20260730F_001.json",
+      "pmp-app-orchestrator-v1.js"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_deterministic_diagnostics_startup_v1.py"
+    ],
+    "verifier_paths": [
+      "tools/verify_deterministic_diagnostics_startup_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass13/receipts/RECEIPT_DETERMINISTIC_DIAGNOSTICS_STARTUP_20260730F_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "Pass A and Passes B-D are loaded and run through independent fail-isolated startup stages, so an earlier optional-stage failure cannot prevent receipt publication.",
+        "evidence_paths": [
+          "pmp-app-orchestrator-v1.js",
+          "tools/test_deterministic_diagnostics_startup_v1.py"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "Startup coverage reruns on immediate activation, DOM readiness, window load, pageshow, visible resume, bounded timers, and added frames.",
+        "evidence_paths": [
+          "pmp-app-orchestrator-v1.js"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "Fresh app opens should publish current-session Pass A and Passes B-D receipts whenever the protected producer scripts are loadable; genuine diagnostic failures remain visible as FAIL.",
+        "basis_evidence_paths": [
+          "pmp-app-orchestrator-v1.js",
+          "tools/verify_deterministic_diagnostics_startup_v1.py"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "ownership runtime throws before coverage",
+        "optional stage script load fails",
+        "receipt remains missing after producer stage",
+        "app resumes from background",
+        "nested frame is added after initial startup"
+      ]
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "claim_ceiling": "Deterministic startup sequencing and receipt publication only. This does not predeclare diagnostic systems healthy or convert genuine failures into PASS."
+}
