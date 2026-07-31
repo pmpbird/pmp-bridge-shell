@@ -1,0 +1,46 @@
+{
+  "type": "PMP_WHOLE_HEALTH_SINGLE_RENDER_GATE_V1",
+  "version": "1.0.0",
+  "unit_id": "P13-U16",
+  "status": "PASS",
+  "scope": {
+    "changed_paths": [
+      "audit/pass13/whole-health-single-render-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_WHOLE_HEALTH_SINGLE_RENDER_20260730I_001.json",
+      "pmp-diagnostics-consolidated-view-v1.js",
+      "tools/test_whole_health_single_render_v1.py",
+      "tools/verify_whole_health_single_render_v1.py"
+    ],
+    "implementation_paths": ["pmp-diagnostics-consolidated-view-v1.js"]
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_integration",
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/pass13/whole-health-single-render-gate-v1.json",
+      "rationale": "Binds the exact presentation sequence that prevents stale health cards from rendering before current evidence completes."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass13/whole-health-single-render-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_WHOLE_HEALTH_SINGLE_RENDER_20260730I_001.json"
+    ],
+    "deterministic_test_paths": ["tools/test_whole_health_single_render_v1.py"],
+    "verifier_paths": ["tools/verify_whole_health_single_render_v1.py"],
+    "receipt_paths": ["audit/pass13/receipts/RECEIPT_WHOLE_HEALTH_SINGLE_RENDER_20260730I_001.json"],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "restore conditional rendering based only on missing receipt keys",
+        "remove loading panel",
+        "render health cards before evidence completion",
+        "remove final active-view guard"
+      ]
+    },
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {"required": false, "granted": false, "consumed": false}
+  },
+  "claim_ceiling": "Presentation sequencing only. No system health result is forced or inferred."
+}
