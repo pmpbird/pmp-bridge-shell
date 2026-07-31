@@ -1,0 +1,24 @@
+{
+  "type": "PMP_DETERMINISTIC_DIAGNOSTICS_STARTUP_RECEIPT_V1",
+  "version": "1.0.0-20260730F",
+  "status": "PASS",
+  "unit_id": "P13-U12",
+  "implementation": "pmp-app-orchestrator-v1.js",
+  "behavior": {
+    "pass_a_loaded_and_run": true,
+    "passes_bcd_loaded_and_run": true,
+    "earlier_stage_failure_blocks_coverage": false,
+    "retries_on_open_and_resume": true,
+    "missing_receipts_recorded_as_error": true
+  },
+  "boundaries": {
+    "read_only": true,
+    "ownership_changes": false,
+    "helper_changes": false,
+    "route_changes": false,
+    "bank_rebuild": false,
+    "continuous_run_mutation": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false
+  }
+}
