@@ -1,7 +1,7 @@
 {
   "algorithm": "SHA-256",
   "counts": {
-    "executable_records": 603,
+    "executable_records": 729,
     "external_errors": 0,
     "external_records": 3,
     "historical_records": 1,
@@ -51,7 +51,6 @@
       "url": "https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"
     }
   ],
-  "generated_at": "2026-07-31T01:40:00Z",
   "historical_records": [
     {
       "bytes": 39915,
@@ -8094,7 +8093,6 @@
     }
   ],
   "repository": "pmpbird/pmp-bridge-shell",
-  "reseal_reason": "live_diagnostics_a_through_f_activation_and_single_renderer",
   "root_trust_anchors": [
     {
       "classification": "BOOTSTRAP_ROOT_NOT_SELF_VERIFIABLE",
@@ -8102,7 +8100,7 @@
       "rule": "This is the only application bootstrap source excluded from downstream manifest self-enforcement."
     }
   ],
-  "runtime_source_set_sha256": "55e017fb0df778394f3c23ec089810383ef4b23758c3fb51bfaa79d6b59a2a3f",
+  "runtime_source_set_sha256": "b7c5676f476ca5b61169ada90e7462a6c004f3baf017f8ec0a56e8b4bb7cf43f",
   "source_identity_rule": "Deterministic digest of protected local, historical, external, root-anchor, and policy identities; audit/workflow-only commits do not alter this identity.",
   "type": "PMP_RUNTIME_INTEGRITY_MANIFEST_V1",
   "unlisted_executable_policy": "FAIL_CLOSED",

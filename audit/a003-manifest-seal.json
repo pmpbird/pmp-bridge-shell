@@ -1,13 +1,13 @@
 {
   "manifest_bytes": 384820,
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
-  "manifest_sha256": "53519209b3fc6502ad0c7857d4f41968a36a8ffd9033272c10e76d70fe9988c2",
+  "manifest_sha256": "e7309e59651c516e4a06623f5f5fb79860ca3b498556002202e32faf5ee7754a",
   "manifest_version": "20260711A-A003-FINAL",
   "repair_id": "A-003",
   "root_self_verifiable": false,
   "root_trust_anchor": "pmp-app-current.html",
   "rule": "The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.",
-  "runtime_source_set_sha256": "55e017fb0df778394f3c23ec089810383ef4b23758c3fb51bfaa79d6b59a2a3f",
+  "runtime_source_set_sha256": "b7c5676f476ca5b61169ada90e7462a6c004f3baf017f8ec0a56e8b4bb7cf43f",
   "sealed_branch": "main",
   "status": "SEALED",
   "type": "PMP_A003_MANIFEST_SEAL_V1"
