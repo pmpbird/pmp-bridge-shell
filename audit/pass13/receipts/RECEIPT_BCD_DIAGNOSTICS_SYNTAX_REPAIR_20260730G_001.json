@@ -1,0 +1,20 @@
+{
+  "type": "PMP_BCD_DIAGNOSTICS_SYNTAX_REPAIR_RECEIPT_V1",
+  "version": "1.0.0",
+  "unit_id": "P13-U13",
+  "at": "2026-07-31T03:45:00Z",
+  "status": "PASS",
+  "observed": {
+    "runtime_error": "SyntaxError: Cannot declare a const variable twice: 'api'.",
+    "source": "pmp-diagnostic-coverage-passes-bcd-v1.js",
+    "repair": "Renamed the internal API finder and exported public API object so the producer parses and can publish its existing receipt key."
+  },
+  "boundaries": {
+    "owner_changes": false,
+    "helper_changes": false,
+    "route_changes": false,
+    "dom_repair": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false
+  }
+}
