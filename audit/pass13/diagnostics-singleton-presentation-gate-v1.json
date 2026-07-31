@@ -1,0 +1,46 @@
+{
+  "type": "PMP_DIAGNOSTICS_SINGLETON_PRESENTATION_GATE_V1",
+  "version": "1.0.0",
+  "unit_id": "P13-U17",
+  "status": "PASS",
+  "scope": {
+    "changed_paths": [
+      "audit/pass13/diagnostics-singleton-presentation-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_DIAGNOSTICS_SINGLETON_PRESENTATION_20260730J_001.json",
+      "pmp-app-orchestrator-v1.js",
+      "tools/test_diagnostics_singleton_presentation_v1.py",
+      "tools/verify_diagnostics_singleton_presentation_v1.py"
+    ],
+    "implementation_paths": ["pmp-app-orchestrator-v1.js"]
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_integration",
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/pass13/diagnostics-singleton-presentation-gate-v1.json",
+      "rationale": "Binds the exact cross-frame singleton loader and prevents repeated consolidated Diagnostics presentation installation."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass13/diagnostics-singleton-presentation-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_DIAGNOSTICS_SINGLETON_PRESENTATION_20260730J_001.json"
+    ],
+    "deterministic_test_paths": ["tools/test_diagnostics_singleton_presentation_v1.py"],
+    "verifier_paths": ["tools/verify_diagnostics_singleton_presentation_v1.py"],
+    "receipt_paths": ["audit/pass13/receipts/RECEIPT_DIAGNOSTICS_SINGLETON_PRESENTATION_20260730J_001.json"],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "restore stale consolidated version",
+        "remove cross-frame API lookup",
+        "allow reinjection when any API exists",
+        "remove one-time install marker"
+      ]
+    },
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {"required": false, "granted": false, "consumed": false}
+  },
+  "claim_ceiling": "Presentation-writer singleton only. No health result is altered or forced."
+}
