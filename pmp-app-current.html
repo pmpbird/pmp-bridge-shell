@@ -19,7 +19,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f3ded4}ifr
 <script>
 'use strict';
 window.PMPIntegrityTransitionReady=(async function(){
-  const target='028506e6bd4d14327a7a2b4e1e08a46098ba61a31b2147ce3c1ef7ce6c439d10',key='pmp_integrity_transition_'+target;
+  const target='b1aef0cc1e3527b1891c18aa438ed9e3df6a6dc861558459557b55852e636da9',key='pmp_integrity_transition_'+target;
   if(!('serviceWorker' in navigator))return;
   const controller=navigator.serviceWorker.controller;
   if(!controller)return;
@@ -40,7 +40,7 @@ window.PMPIntegrityTransitionReady=(async function(){
   const ROOT_VERSION='1.0.0-a003-bootstrap-root';
   const ROOT_TRUST_ANCHOR='pmp-app-current.html';
   const MANIFEST_PATH='pmp-runtime-integrity-manifest-v1.json';
-  const MANIFEST_SHA256='53519209b3fc6502ad0c7857d4f41968a36a8ffd9033272c10e76d70fe9988c2';
+  const MANIFEST_SHA256='b1aef0cc1e3527b1891c18aa438ed9e3df6a6dc861558459557b55852e636da9';
   const RESOLVER_PATH='pmp-current-route-resolver-v1.js';
   const INTEGRITY_SW_PATH='pmp-integrity-service-worker-v1.js';
   const frame=document.getElementById('app'),diagnosticBox=document.getElementById('routeDiagnostic'),bootBox=document.getElementById('boot');

@@ -1,7 +1,7 @@
 {
   "algorithm": "SHA-256",
   "counts": {
-    "executable_records": 729,
+    "executable_records": 603,
     "external_errors": 0,
     "external_records": 3,
     "historical_records": 1,
@@ -51,6 +51,7 @@
       "url": "https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"
     }
   ],
+  "generated_at": "2026-07-31T01:40:00Z",
   "historical_records": [
     {
       "bytes": 39915,
@@ -3021,15 +3022,15 @@
       "sri": "sha256-3i38EUFe4/lZto7ZpIspx/Cg6BcD2cmfhqLwfMwQOuE="
     },
     {
-      "bytes": 23146,
+      "bytes": 23164,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_DOCUMENT",
-      "git_blob_sha": "269bf9a262ae7081e37b7af3ea0c0ae7a94dfa31",
+      "git_blob_sha": "b3c4217fb23eab98e5e565e6de0234dd8bbf8b80",
       "mime_type": "text/html",
       "path": "pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html",
-      "sha256_base64": "zyqWoutHwJ8ipt3WDUIixlteDzt4J3+6KGv4h+aVcY8=",
-      "sha256_hex": "cf2a96a2eb47c09f22a6ddd60d4222c65b5e0f3b78277fba286bf887e695718f",
-      "sri": "sha256-zyqWoutHwJ8ipt3WDUIixlteDzt4J3+6KGv4h+aVcY8="
+      "sha256_base64": "/W4qWu4Qkh0TBIAfAbwxPuEKAaNiofBe2EmSGSVa5Wo=",
+      "sha256_hex": "fd6e2a5aee10921d1304801f01bc313ee10a01a362a1f05ed8499219255ae56a",
+      "sri": "sha256-/W4qWu4Qkh0TBIAfAbwxPuEKAaNiofBe2EmSGSVa5Wo="
     },
     {
       "bytes": 8346,
@@ -8093,6 +8094,7 @@
     }
   ],
   "repository": "pmpbird/pmp-bridge-shell",
+  "reseal_reason": "live_diagnostics_a_through_f_activation_and_single_renderer",
   "root_trust_anchors": [
     {
       "classification": "BOOTSTRAP_ROOT_NOT_SELF_VERIFIABLE",
