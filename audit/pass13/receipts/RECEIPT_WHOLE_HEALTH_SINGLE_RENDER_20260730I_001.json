@@ -1,0 +1,20 @@
+{
+  "type": "PMP_WHOLE_HEALTH_SINGLE_RENDER_RECEIPT_V1",
+  "version": "1.0.0",
+  "unit_id": "P13-U16",
+  "status": "PASS",
+  "observed": {
+    "intermediate_missing-state_card_render_removed": true,
+    "loading_panel_before_final_render": true,
+    "final_health_view_after_current_evidence_run": true,
+    "active_view_preserved": true
+  },
+  "boundaries": {
+    "owner_changes": false,
+    "helper_changes": false,
+    "route_changes": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false
+  },
+  "claim_ceiling": "Deterministic presentation sequencing only; this receipt does not claim that all health checks pass."
+}
