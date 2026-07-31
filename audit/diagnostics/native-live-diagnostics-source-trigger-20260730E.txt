@@ -1,1 +1,0 @@
-Trigger the native diagnostics source repair workflow after the workflow file exists on the branch.
