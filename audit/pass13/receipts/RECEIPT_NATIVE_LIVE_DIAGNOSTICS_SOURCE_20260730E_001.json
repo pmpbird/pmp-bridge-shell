@@ -1,0 +1,32 @@
+{
+  "type": "PMP_NATIVE_LIVE_DIAGNOSTICS_SOURCE_RECEIPT_V1",
+  "version": "1.0.0",
+  "status": "PASS",
+  "unit_id": "P13-U11",
+  "source_file": "pmp-diagnostics-consolidated-view-v1.js",
+  "source_mode": "NATIVE_CONSOLIDATED_DIAGNOSTICS_SOURCE",
+  "whole_app_health_version": "2.3.0-native-live-receipts-20260730E",
+  "required_classifications": [
+    "PASS",
+    "FAIL"
+  ],
+  "forbidden_final_classifications": [
+    "WARNING",
+    "NOT_PROVEN"
+  ],
+  "required_live_receipts": [
+    "pmp_diagnostic_coverage_pass_a_v1_receipt",
+    "pmp_diagnostic_coverage_passes_bcd_v1_receipt"
+  ],
+  "claim_ceiling": "Deterministic source-contract verification only. Live runtime activation remains to be verified after protected deployment.",
+  "boundaries": {
+    "read_only": true,
+    "ownership_changes": false,
+    "helper_changes": false,
+    "route_changes": false,
+    "bank_rebuild": false,
+    "continuous_run_mutation": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false
+  }
+}
