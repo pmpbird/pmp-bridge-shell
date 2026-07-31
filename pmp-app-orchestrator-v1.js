@@ -1,13 +1,13 @@
 (()=>{
 'use strict';
-const V='2.5.1-immediate-pass-a-through-f-activation-20260730A',OWNER='app_orchestrator_owner';
+const V='2.5.2-force-unified-live-diagnostics-20260730B',OWNER='app_orchestrator_owner';
 const DIAGNOSTICS_VERSION='2.5.0-truth-confidence-20260729A',DIAGNOSTICS_SRC='pmp-diagnostics-owner-v1.js?fresh=truth-confidence-20260729A';
 const DIAGNOSTICS_TAB_SRC='pmp-diagnostics-bottom-tab-forcer-v1.js?fresh=all-diagnostic-coverage-20260730A';
 const DIAGNOSTICS_CONSOLIDATED_VERSION='2.2.0-white-scroll-report-window-20260730A',DIAGNOSTICS_CONSOLIDATED_SRC='pmp-diagnostics-consolidated-view-v1.js?fresh=all-diagnostic-coverage-20260730A';
 const OWNERSHIP_RUNTIME_VERSION='1.0.0-exclusive-owner-runtime-20260727A',OWNERSHIP_RUNTIME_SRC='pmp-app-orchestrator-ownership-runtime-v1.js?fresh=ownership-runtime-loader-20260729A';
 const BOUNDED_DISCOVERY_SRC='pmp-active-path-discovery-machine-v2.js?fresh=bounded-support-no-v1-alias-20260727A';
 const PASS_A_VERSION='1.0.0-pass-a-live-coverage-20260730A',PASS_A_SRC='pmp-diagnostic-coverage-pass-a-v1.js?fresh=pass-a-live-coverage-20260730A';
-const PASS_A_INTEGRATION_VERSION='1.0.0-pass-a-diagnostics-integration-20260730A',PASS_A_INTEGRATION_SRC='pmp-diagnostic-coverage-pass-a-integration-v1.js?fresh=pass-a-integration-20260730A';
+const PASS_A_INTEGRATION_VERSION='1.1.0-unified-live-diagnostics-integration-20260730B',PASS_A_INTEGRATION_SRC='pmp-diagnostic-coverage-pass-a-integration-v1.js?fresh=unified-live-diagnostics-20260730B';
 const BCD_VERSION='1.0.0-passes-bcd-live-coverage-20260730A',BCD_SRC='pmp-diagnostic-coverage-passes-bcd-v1.js?fresh=passes-bcd-live-coverage-20260730A';
 const BCD_INTEGRATION_VERSION='1.0.0-passes-bcd-integration-20260730A',BCD_INTEGRATION_SRC='pmp-diagnostic-coverage-passes-bcd-integration-v1.js?fresh=passes-bcd-integration-20260730A';
 const E_VERSION='1.0.0-cross-system-integration-20260730A',E_SRC='pmp-diagnostic-coverage-pass-e-integration-v1.js?fresh=pass-e-cross-system-20260730A';
