@@ -1,0 +1,22 @@
+{
+  "type": "PMP_DIAGNOSTICS_OWNER_REFRESH_NO_NAVIGATION_RECEIPT_V1",
+  "version": "1.0.0",
+  "unit_id": "P13-U18",
+  "status": "PASS",
+  "observed_defect": "Frame-by-frame recording showed repeated alternation between Diagnostics home and Whole App Health during live diagnostic refreshes.",
+  "repair": {
+    "diagnostics_owner_run_wrapped": true,
+    "current_report_preserved": true,
+    "receipt_publication_preserved": true,
+    "home_navigation_removed_from_refresh": true
+  },
+  "boundaries": {
+    "delayed_diagnostics_tab_change": false,
+    "owner_registry_change": false,
+    "helper_registry_change": false,
+    "route_change": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false
+  },
+  "claim_ceiling": "Source-level prevention of refresh-driven Diagnostics home navigation; live device confirmation remains required."
+}

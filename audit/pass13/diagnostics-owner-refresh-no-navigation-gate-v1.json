@@ -1,0 +1,36 @@
+{
+  "type": "PMP_DIAGNOSTICS_OWNER_REFRESH_NO_NAVIGATION_GATE_V1",
+  "version": "1.0.0",
+  "unit_id": "P13-U18",
+  "status": "PASS",
+  "scope": {
+    "changed_paths": [
+      "pmp-app-orchestrator-v1.js",
+      "tools/test_diagnostics_owner_refresh_no_navigation_v1.py",
+      "tools/verify_diagnostics_owner_refresh_no_navigation_v1.py",
+      "audit/pass13/receipts/RECEIPT_DIAGNOSTICS_OWNER_REFRESH_NO_NAVIGATION_20260730K_001.json",
+      "audit/pass13/diagnostics-owner-refresh-no-navigation-gate-v1.json"
+    ],
+    "implementation_paths": ["pmp-app-orchestrator-v1.js"]
+  },
+  "fault_injection": {
+    "status": "COVERED",
+    "cases": [
+      "remove Diagnostics owner run wrapper",
+      "allow refresh to call owner lexical renderHome",
+      "stop publishing the Diagnostics owner receipt",
+      "remove navigation-guard status reporting"
+    ]
+  },
+  "boundaries": {
+    "delayed_diagnostics_tab_change": false,
+    "owner_registry_change": false,
+    "helper_registry_change": false,
+    "route_change": false,
+    "bank_rebuild": false,
+    "continuous_run_mutation": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false
+  },
+  "claim_ceiling": "Exact refresh-navigation contract only; live iPhone confirmation is required."
+}
