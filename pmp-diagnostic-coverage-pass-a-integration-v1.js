@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const V='1.1.0-single-renderer-all-live-coverage-20260730A';
+const V='1.0.0-pass-a-diagnostics-integration-20260730A';
 const AKEY='pmp_diagnostic_coverage_pass_a_v1_receipt';
 const BKEY='pmp_diagnostic_coverage_passes_bcd_v1_receipt';
 function T(){try{return window.top||window}catch(_){return window}}
