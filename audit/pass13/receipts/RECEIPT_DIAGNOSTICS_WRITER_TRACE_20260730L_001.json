@@ -1,0 +1,28 @@
+{
+  "type": "PMP_DIAGNOSTICS_WRITER_TRACE_RECEIPT_V1",
+  "version": "1.0.0-20260730L",
+  "unit_id": "P13-U19",
+  "status": "PASS",
+  "scope": "Read-only instrumentation of writes to the Diagnostics screen",
+  "claims": {
+    "loads_before_app_orchestrator": true,
+    "captures_inner_html_writes": true,
+    "captures_replace_children": true,
+    "captures_insert_adjacent_html": true,
+    "captures_frame_path_timestamp_and_stack": true,
+    "copy_trace_control_present": true,
+    "behavior_repair_attempted": false
+  },
+  "boundaries": {
+    "read_only": true,
+    "navigation_change": false,
+    "owner_changes": false,
+    "helper_changes": false,
+    "route_changes": false,
+    "bank_rebuild": false,
+    "continuous_run_mutation": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false
+  },
+  "claim_ceiling": "Instrumentation only. The white-card defect is not claimed fixed by this receipt."
+}
