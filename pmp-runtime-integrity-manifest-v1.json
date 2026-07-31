@@ -2966,15 +2966,15 @@
       "sri": "sha256-hXPovEvuG/j21NxuSFWHwk82lox0eaCTvoVMypTnxlY="
     },
     {
-      "bytes": 2304,
+      "bytes": 2318,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_DOCUMENT",
-      "git_blob_sha": "1f50e1721c5f07c8647c5feae478353af71705d6",
+      "git_blob_sha": "4d6d7ff3faa88a9dd9aa30d78ed931979fd3cce5",
       "mime_type": "text/html",
       "path": "pmp-current-inner-cleanbug-rgcontrols-v25.html",
-      "sha256_base64": "Y1y4AYOjyjISqvNZvN0nXUeCDEypVjtZCkPREMxXRps=",
-      "sha256_hex": "635cb80183a3ca3212aaf359bcdd275d47820c4ca9563b590a43d110cc57469b",
-      "sri": "sha256-Y1y4AYOjyjISqvNZvN0nXUeCDEypVjtZCkPREMxXRps="
+      "sha256_base64": "k6Cdmzf97LWk3mxCydc6f5HP6eKINWGz/7Xaj9AHFz4=",
+      "sha256_hex": "93a09d9b37fdecb5a4de6c42c9d73a7f91cfe9e2883561b3ffb5da8fd007173e",
+      "sri": "sha256-k6Cdmzf97LWk3mxCydc6f5HP6eKINWGz/7Xaj9AHFz4="
     },
     {
       "bytes": 2428,
@@ -3648,15 +3648,15 @@
       "sri": "sha256-mSXQZfZjaGdphv1wP98cyAwmR0a9Y4E3ck/2J26uVTI="
     },
     {
-      "bytes": 6472,
+      "bytes": 5139,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "969a3d27ce9ab7be510d530b28494b0c1945400e",
+      "git_blob_sha": "73c8ec1691c4034febee6d05681ff11e61d82f7b",
       "mime_type": "text/javascript",
       "path": "pmp-diagnostics-writer-trace-v1.js",
-      "sha256_base64": "zN8ZC64ZkEym4QIqWRXiVJDto2Gi2d8nOzKFfXgq2hQ=",
-      "sha256_hex": "ccdf190bae19904ca6e1022a5915e25490eda361a2d9df273b32857d782ada14",
-      "sri": "sha256-zN8ZC64ZkEym4QIqWRXiVJDto2Gi2d8nOzKFfXgq2hQ="
+      "sha256_base64": "yaJuIleO6bk+f1IXBdgO6Nig2hEu5VosgXeNeIr1kOo=",
+      "sha256_hex": "c9a26e22578ee9b93e7f521705d80ee8d8a0da112ee55a2c81778d788af590ea",
+      "sri": "sha256-yaJuIleO6bk+f1IXBdgO6Nig2hEu5VosgXeNeIr1kOo="
     },
     {
       "bytes": 4693,
@@ -8111,7 +8111,7 @@
       "rule": "This is the only application bootstrap source excluded from downstream manifest self-enforcement."
     }
   ],
-  "runtime_source_set_sha256": "6d9b57fa978dc365963b263390861428f2ef1abb84ebbf8bd9d9dc2606152c1d",
+  "runtime_source_set_sha256": "c83202afffee063ba7f7e11ca8a2f50541078fe8ac65c82aba94795b68122a44",
   "source_identity_rule": "Deterministic digest of protected local, historical, external, root-anchor, and policy identities; audit/workflow-only commits do not alter this identity.",
   "type": "PMP_RUNTIME_INTEGRITY_MANIFEST_V1",
   "unlisted_executable_policy": "FAIL_CLOSED",
