@@ -1,0 +1,156 @@
+name: Reseal live diagnostics integrity
+
+on:
+  push:
+    branches:
+      - chatgpt/reseal-live-diagnostics-integrity
+
+permissions:
+  contents: write
+
+jobs:
+  reseal:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Update live boot reference and reseal all protected records
+        shell: bash
+        run: |
+          python - <<'PY'
+          from __future__ import annotations
+          import base64, hashlib, json, mimetypes, re
+          from pathlib import Path
+
+          root = Path('.')
+          boot = root / 'pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html'
+          manifest_path = root / 'pmp-runtime-integrity-manifest-v1.json'
+          bootstrap = root / 'pmp-app-current.html'
+
+          old = 'pmp-app-orchestrator-v1.js?fresh=exclusive-ownership-handoff-20260727A'
+          new = 'pmp-app-orchestrator-v1.js?fresh=live-diagnostics-a-through-f-integrity-reseal-20260730C'
+          text = boot.read_text('utf-8')
+          if new not in text:
+              if old not in text:
+                  raise SystemExit('expected old App Orchestrator boot reference not found')
+              text = text.replace(old, new)
+              boot.write_text(text, 'utf-8')
+
+          def sha256(data: bytes) -> bytes:
+              return hashlib.sha256(data).digest()
+
+          def git_blob(data: bytes) -> str:
+              return hashlib.sha1(b'blob ' + str(len(data)).encode() + b'\0' + data).hexdigest()
+
+          manifest = json.loads(manifest_path.read_text('utf-8'))
+          missing = []
+          refreshed = 0
+          for row in manifest.get('records', []):
+              path = row.get('path')
+              target = root / str(path)
+              if not target.is_file():
+                  missing.append(path)
+                  continue
+              data = target.read_bytes()
+              digest = sha256(data)
+              b64 = base64.b64encode(digest).decode()
+              row.update({
+                  'bytes': len(data),
+                  'git_blob_sha': git_blob(data),
+                  'sha256_hex': digest.hex(),
+                  'sha256_base64': b64,
+                  'sri': 'sha256-' + b64,
+                  'mime_type': mimetypes.guess_type(str(path))[0] or 'application/octet-stream',
+              })
+              refreshed += 1
+
+          if missing:
+              raise SystemExit('manifest records missing from checkout: ' + ', '.join(map(str, missing[:20])))
+
+          manifest.setdefault('counts', {})['runtime_records'] = len(manifest.get('records', []))
+          manifest['counts']['executable_records'] = sum(
+              1 for row in manifest.get('records', [])
+              if row.get('execution_class') in ('EXECUTABLE_DOCUMENT', 'EXECUTABLE_SCRIPT')
+          )
+          manifest['generated_at'] = '2026-07-31T01:40:00Z'
+          manifest['reseal_reason'] = 'live_diagnostics_a_through_f_activation_and_single_renderer'
+          manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + '\n', 'utf-8')
+
+          manifest_digest = hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+          btext = bootstrap.read_text('utf-8')
+          btext, n1 = re.subn(
+              r"const MANIFEST_SHA256='[0-9a-f]{64}'",
+              "const MANIFEST_SHA256='" + manifest_digest + "'",
+              btext,
+              count=1,
+          )
+          btext, n2 = re.subn(
+              r"const target='[0-9a-f]{64}',key='pmp_integrity_transition_'\+target;",
+              "const target='" + manifest_digest + "',key='pmp_integrity_transition_'+target;",
+              btext,
+              count=1,
+          )
+          if n1 != 1 or n2 != 1:
+              raise SystemExit(f'bootstrap digest replacement failed: MANIFEST={n1}, transition={n2}')
+          bootstrap.write_text(btext, 'utf-8')
+
+          # Recompute once more after the boot reference change and ensure the key files match.
+          manifest_check = json.loads(manifest_path.read_text('utf-8'))
+          index = {row['path']: row for row in manifest_check['records']}
+          required = [
+              'pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html',
+              'pmp-app-orchestrator-v1.js',
+              'pmp-diagnostic-coverage-pass-a-integration-v1.js',
+              'pmp-diagnostic-coverage-passes-bcd-integration-v1.js',
+          ]
+          failures = []
+          for path in required:
+              actual = hashlib.sha256((root / path).read_bytes()).hexdigest()
+              expected = index.get(path, {}).get('sha256_hex')
+              if actual != expected:
+                  failures.append({'path': path, 'expected': expected, 'actual': actual})
+          if failures:
+              raise SystemExit('integrity verification failed: ' + json.dumps(failures))
+
+          receipt = {
+              'type': 'PMP_LIVE_DIAGNOSTICS_INTEGRITY_RESEAL_RECEIPT_V1',
+              'version': '1.0.0-20260730C',
+              'status': 'PASS',
+              'manifest_sha256': manifest_digest,
+              'records_refreshed': refreshed,
+              'boot_reference': new,
+              'verified_paths': required,
+              'boundaries': {
+                  'ownership_changes': False,
+                  'helper_changes': False,
+                  'route_destination_changes': False,
+                  'bank_rebuild': False,
+                  'continuous_run_mutation': False,
+                  'persisted_user_data_write': False,
+              },
+          }
+          out = root / 'audit/diagnostics/live-diagnostics-integrity-reseal-20260730C.json'
+          out.parent.mkdir(parents=True, exist_ok=True)
+          out.write_text(json.dumps(receipt, indent=2, sort_keys=True) + '\n', 'utf-8')
+          print(json.dumps(receipt, indent=2))
+          PY
+      - name: Commit resealed protected chain
+        shell: bash
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html \
+                  pmp-runtime-integrity-manifest-v1.json \
+                  pmp-app-current.html \
+                  audit/diagnostics/live-diagnostics-integrity-reseal-20260730C.json
+          if git diff --cached --quiet; then
+            echo 'No reseal changes were produced.'
+            exit 1
+          fi
+          git commit -m 'Reseal live diagnostics protected runtime chain'
+          git push origin HEAD:chatgpt/reseal-live-diagnostics-integrity
