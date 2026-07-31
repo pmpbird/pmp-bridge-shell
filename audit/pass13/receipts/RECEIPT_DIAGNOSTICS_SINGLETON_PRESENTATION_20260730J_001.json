@@ -1,0 +1,24 @@
+{
+  "type": "PMP_DIAGNOSTICS_SINGLETON_PRESENTATION_RECEIPT_V1",
+  "version": "1.0.0",
+  "unit_id": "P13-U17",
+  "status": "PASS",
+  "observed_defect": "The App Orchestrator expected consolidated Diagnostics version 2.3.0 while the live renderer was 2.6.0, allowing presentation startup to be repeated across accessible frames.",
+  "repair": {
+    "expected_version_aligned": true,
+    "cross_frame_api_lookup": true,
+    "existing_api_prevents_reinjection": true,
+    "install_runs_once_per_api": true,
+    "delayed_diagnostics_tab_unchanged": true
+  },
+  "boundaries": {
+    "owner_changes": false,
+    "helper_changes": false,
+    "route_changes": false,
+    "bank_rebuild": false,
+    "continuous_run_mutation": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false
+  },
+  "claim_ceiling": "Singleton presentation source contract only; live iPhone confirmation remains required."
+}
