@@ -1,0 +1,25 @@
+{
+  "type": "PMP_NATIVE_DIAGNOSTICS_BOOTSTRAP_STYLE_RECEIPT_V1",
+  "version": "20260730G",
+  "status": "PASS",
+  "scope": "Native receipt bootstrap and isolated Whole App Health row styling",
+  "implementation": "pmp-diagnostics-consolidated-view-v1.js",
+  "test": "tools/test_native_diagnostics_bootstrap_and_style_v1.py",
+  "verifier": "tools/verify_native_diagnostics_bootstrap_and_style_v1.py",
+  "claims": {
+    "pass_a_started_by_live_diagnostics_source": true,
+    "passes_bcd_started_by_live_diagnostics_source": true,
+    "shared_health_card_class_removed": true,
+    "temporary_running_state_present": true
+  },
+  "boundaries": {
+    "owner_changes": false,
+    "helper_changes": false,
+    "route_changes": false,
+    "dom_repair": false,
+    "bank_rebuild": false,
+    "continuous_run_mutation": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false
+  }
+}
