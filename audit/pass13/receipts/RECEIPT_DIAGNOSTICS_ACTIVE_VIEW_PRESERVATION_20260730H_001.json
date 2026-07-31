@@ -1,0 +1,23 @@
+{
+  "type": "PMP_DIAGNOSTICS_ACTIVE_VIEW_PRESERVATION_RECEIPT_V1",
+  "version": "1.0.0",
+  "unit_id": "P13-U15",
+  "status": "PASS",
+  "observed_defect": "Repeated consolidated Diagnostics installation called renderHome whenever the Diagnostics screen was visible, forcing an open detail view back to the Diagnostics menu.",
+  "repair": {
+    "active_view_tracking": true,
+    "install_never_navigates": true,
+    "async_refresh_requires_same_active_view": true,
+    "back_control_remains_explicit_navigation": true
+  },
+  "boundaries": {
+    "owner_changes": false,
+    "helper_changes": false,
+    "route_changes": false,
+    "bank_rebuild": false,
+    "continuous_run_mutation": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false
+  },
+  "claim_ceiling": "Source-level active-view preservation only; live device confirmation remains required."
+}
