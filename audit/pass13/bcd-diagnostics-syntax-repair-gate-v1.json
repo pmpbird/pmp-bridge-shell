@@ -1,0 +1,89 @@
+{
+  "type": "PMP_BCD_DIAGNOSTICS_SYNTAX_REPAIR_GATE_V1",
+  "version": "1.0.0",
+  "unit_id": "P13-U13",
+  "status": "PASS",
+  "scope": {
+    "changed_paths": [
+      "audit/pass13/bcd-diagnostics-syntax-repair-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_BCD_DIAGNOSTICS_SYNTAX_REPAIR_20260730G_001.json",
+      "pmp-diagnostic-coverage-passes-bcd-v1.js",
+      "tools/test_bcd_diagnostics_syntax_repair_v1.py",
+      "tools/verify_bcd_diagnostics_syntax_repair_v1.py"
+    ],
+    "implementation_paths": [
+      "pmp-diagnostic-coverage-passes-bcd-v1.js"
+    ]
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_integration",
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/pass13/bcd-diagnostics-syntax-repair-gate-v1.json",
+      "rationale": "Binds the exact runtime syntax repair, preserved receipt key, deterministic parser test, verifier, and immutable receipt."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass13/bcd-diagnostics-syntax-repair-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_BCD_DIAGNOSTICS_SYNTAX_REPAIR_20260730G_001.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_bcd_diagnostics_syntax_repair_v1.py"
+    ],
+    "verifier_paths": [
+      "tools/verify_bcd_diagnostics_syntax_repair_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass13/receipts/RECEIPT_BCD_DIAGNOSTICS_SYNTAX_REPAIR_20260730G_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The prior B-D diagnostics producer declared api twice in one lexical scope and generated a live SyntaxError before receipt publication.",
+        "evidence_paths": [
+          "pmp-diagnostic-coverage-passes-bcd-v1.js",
+          "audit/pass13/receipts/RECEIPT_BCD_DIAGNOSTICS_SYNTAX_REPAIR_20260730G_001.json"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "After the duplicate declaration is removed, the producer can parse and attempt its existing read-only B-D evaluation and receipt publication path.",
+        "basis_evidence_paths": [
+          "tools/test_bcd_diagnostics_syntax_repair_v1.py",
+          "tools/verify_bcd_diagnostics_syntax_repair_v1.py"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "reintroduce function api(names)",
+        "reintroduce const api public export",
+        "remove receipt key",
+        "break JavaScript syntax"
+      ]
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "claim_ceiling": "Deterministic syntax and receipt-path repair only. This does not claim that Bridge, Library, Bank, Continuous Run, or visual stability will pass after live evaluation."
+}
