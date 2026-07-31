@@ -1,0 +1,44 @@
+{
+  "type": "PMP_DIAGNOSTICS_WRITER_TRACE_GATE_V1",
+  "version": "1.0.0",
+  "unit_id": "P13-U19",
+  "status": "PASS",
+  "scope": {
+    "changed_paths": [
+      "pmp-diagnostics-writer-trace-v1.js",
+      "pmp-current-inner-cleanbug-rgcontrols-v25.html",
+      "tools/test_diagnostics_writer_trace_v1.py",
+      "tools/verify_diagnostics_writer_trace_v1.py",
+      "audit/pass13/receipts/RECEIPT_DIAGNOSTICS_WRITER_TRACE_20260730L_001.json",
+      "audit/pass13/diagnostics-writer-trace-gate-v1.json"
+    ],
+    "implementation_paths": [
+      "pmp-diagnostics-writer-trace-v1.js",
+      "pmp-current-inner-cleanbug-rgcontrols-v25.html"
+    ]
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_integration",
+    "diagnostic_evidence_routes": [
+      "audit/pass13/diagnostics-writer-trace-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_DIAGNOSTICS_WRITER_TRACE_20260730L_001.json"
+    ],
+    "deterministic_test_paths": ["tools/test_diagnostics_writer_trace_v1.py"],
+    "verifier_paths": ["tools/verify_diagnostics_writer_trace_v1.py"],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "load trace after App Orchestrator",
+        "remove innerHTML interception",
+        "remove frame path or call stack capture",
+        "introduce navigation or storage mutation"
+      ]
+    },
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {"required": false, "granted": false, "consumed": false}
+  },
+  "claim_ceiling": "Trace capability only. No claim that the observed presentation defect is repaired."
+}
