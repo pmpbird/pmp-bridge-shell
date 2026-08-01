@@ -1,0 +1,32 @@
+{
+  "type": "P13_WHOLE_APP_HEALTH_LAYOUT_TRACE_ZIP_EXACT_SCOPE_V1",
+  "version": "1.0.0",
+  "authorized_files": [
+    "pmp-diagnostics-writer-trace-v1.js",
+    "exact_scope/P13_WHOLE_APP_HEALTH_LAYOUT_TRACE_ZIP_EXACT_SCOPE.json",
+    "tests/test_whole_app_health_layout_trace_zip.py",
+    "verification/verify_whole_app_health_layout_trace_zip.py",
+    "receipts/whole_app_health_layout_trace_zip_20260731P.json",
+    "gates/P13_WHOLE_APP_HEALTH_LAYOUT_TRACE_ZIP_GATE.json"
+  ],
+  "purpose": "Export the complete Whole App Health layout trace as a browser-generated ZIP because the JSON report is too large to paste or copy reliably.",
+  "required_behavior": {
+    "start_button_text": "Whole App Health Layout Trace",
+    "completed_button_text": "Download Whole App Health Layout Trace ZIP",
+    "zip_filename_prefix": "PMP_WHOLE_APP_HEALTH_LAYOUT_TRACE_",
+    "zip_entries": [
+      "PMP_WHOLE_APP_HEALTH_LAYOUT_TRACE.json",
+      "TRACE_METADATA.json"
+    ],
+    "external_zip_dependency": false,
+    "read_only_trace": true
+  },
+  "forbidden_changes": [
+    "owner authority",
+    "helper authority",
+    "routes",
+    "diagnostics results",
+    "app storage schema",
+    "persisted user data"
+  ]
+}
