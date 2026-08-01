@@ -1,0 +1,25 @@
+{
+  "type": "PMP_WHOLE_APP_HEALTH_LAYOUT_TRACE_ZIP_RECEIPT_V1",
+  "version": "1.0.0",
+  "at": "2026-08-01T04:46:00Z",
+  "status": "READY_FOR_RUNTIME_VERIFICATION",
+  "source": "pmp-diagnostics-writer-trace-v1.js",
+  "change": "Replace oversized clipboard export with a browser-generated ZIP containing the complete trace and metadata.",
+  "expected_ui": {
+    "before_capture": "Whole App Health Layout Trace",
+    "after_capture": "Download Whole App Health Layout Trace ZIP"
+  },
+  "expected_zip_entries": [
+    "PMP_WHOLE_APP_HEALTH_LAYOUT_TRACE.json",
+    "TRACE_METADATA.json"
+  ],
+  "boundaries": {
+    "read_only": true,
+    "owner_changes": false,
+    "helper_changes": false,
+    "route_changes": false,
+    "diagnostic_result_changes": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false
+  }
+}
