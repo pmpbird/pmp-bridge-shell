@@ -1,0 +1,19 @@
+{
+  "type": "PMP_EXACT_SCOPE_V1",
+  "version": "1.0.0",
+  "scope_id": "whole_app_health_layout_trace_v2",
+  "allowed_files": [
+    "pmp-diagnostics-writer-trace-v1.js",
+    "exact_scope/whole_app_health_layout_trace_v2_exact_scope.json",
+    "tests/test_whole_app_health_layout_trace_v2.py",
+    "receipts/whole_app_health_layout_trace_v2.json",
+    "gates/whole_app_health_layout_trace_v2_gate.json"
+  ],
+  "forbidden_changes": [
+    "owner authority",
+    "helper authority",
+    "routes",
+    "diagnostic classifications",
+    "persisted user data"
+  ]
+}
