@@ -1,1 +1,0 @@
-Whole App Health layout trace only. No application repair, owner/helper change, navigation change, DOM repair, style repair, storage migration, or persisted user-data write.
