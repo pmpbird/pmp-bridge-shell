@@ -1,0 +1,18 @@
+{
+  "type": "PMP_REMOVE_WHOLE_APP_INTERMEDIATE_RENDER_RECEIPT_V1",
+  "version": "2.7.0-deferred-whole-app-open-20260731O",
+  "status": "SOURCE_READY",
+  "change": "Keep Diagnostics home visible while current evidence runs, then open the final Whole App Health view once.",
+  "trace_evidence": {
+    "temporary_card_visible_ms": 3030,
+    "blank_gap_ms": 89,
+    "final_rows_after_ms": 3121
+  },
+  "boundaries": {
+    "owner_changes": false,
+    "helper_changes": false,
+    "route_changes": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false
+  }
+}
