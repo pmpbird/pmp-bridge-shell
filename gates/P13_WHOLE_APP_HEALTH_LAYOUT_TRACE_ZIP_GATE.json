@@ -1,0 +1,17 @@
+{
+  "type": "P13_WHOLE_APP_HEALTH_LAYOUT_TRACE_ZIP_GATE_V1",
+  "version": "1.0.0",
+  "status": "READY",
+  "exact_scope": "exact_scope/P13_WHOLE_APP_HEALTH_LAYOUT_TRACE_ZIP_EXACT_SCOPE.json",
+  "test": "tests/test_whole_app_health_layout_trace_zip.py",
+  "verifier": "verification/verify_whole_app_health_layout_trace_zip.py",
+  "receipt": "receipts/whole_app_health_layout_trace_zip_20260731P.json",
+  "required_checks": [
+    "ZIP local-file, central-directory and end records are emitted",
+    "full untrimmed trace JSON is included",
+    "metadata JSON is included",
+    "completed button explicitly says ZIP",
+    "no clipboard-size dependency remains",
+    "trace remains read-only"
+  ]
+}
