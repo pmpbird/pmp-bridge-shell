@@ -1,0 +1,16 @@
+{
+  "type": "PMP_DIAGNOSTICS_BOTTOM_TAB_NO_HEALTH_LAYOUT_RECEIPT_V1",
+  "version": "1.0.0",
+  "status": "PASS_PENDING_REPOSITORY_CI",
+  "writer_repaired": "pmp-diagnostics-bottom-tab-forcer-v1.js",
+  "removed_behaviors": [
+    "late Diagnostics screen padding-top write",
+    "Whole App Health report-window creation",
+    "Whole App Health report-node movement",
+    "Whole App Health row restyling"
+  ],
+  "retained_behavior": "Diagnostics bottom-tab compatibility only",
+  "authority_changes": false,
+  "route_changes": false,
+  "persisted_user_data_changes": false
+}
