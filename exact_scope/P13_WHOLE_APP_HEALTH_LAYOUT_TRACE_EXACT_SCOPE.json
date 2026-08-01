@@ -7,7 +7,8 @@
     "verification/verify_whole_app_health_layout_trace.py",
     "receipts/whole_app_health_layout_trace_20260731N.json",
     "gates/P13_WHOLE_APP_HEALTH_LAYOUT_TRACE_GATE.json",
-    "exact_scope/P13_WHOLE_APP_HEALTH_LAYOUT_TRACE_EXACT_SCOPE.json"
+    "exact_scope/P13_WHOLE_APP_HEALTH_LAYOUT_TRACE_EXACT_SCOPE.json",
+    "README_WHOLE_APP_HEALTH_LAYOUT_TRACE.md"
   ],
   "purpose": "Replace the temporary DOM writer trace with a read-only computed-layout trace whose visible button is named Whole App Health Layout Trace.",
   "authority_changes": false,
