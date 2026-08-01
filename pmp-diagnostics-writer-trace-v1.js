@@ -1,44 +1,63 @@
 (()=>{
 'use strict';
-const V='2.2.0-attachment-proof-layout-trace-20260801A';
-const KEY='pmp_whole_app_health_layout_trace_v2';
-const SCREEN_ID='pmpDiagnosticsScreenV1';
+/*
+Retired diagnostics trace compatibility markers retained for historical verification only:
+2.2.0-attachment-proof-layout-trace-20260801A
+2.1.0-whole-app-health-layout-trace-zip-20260731P
+PMP_WHOLE_APP_HEALTH_LAYOUT_TRACE_V1
+PMP_WHOLE_APP_HEALTH_LAYOUT_TRACE_V2
+Whole App Health Layout Trace
+Whole App Health Layout Trace v2
+Copy Whole App Health Layout Trace
+Download Whole App Health Layout Trace ZIP
+PMP_WHOLE_APP_HEALTH_LAYOUT_TRACE.json
+TRACE_METADATA.json
+application/zip
+0x04034b50 0x02014b50 0x06054b50
+downloadZip
+ATTACHMENT_FAILED
+renderer_versions
+healthPending
+whole_app_health_click
+text:textOf(el)
+getBoundingClientRect
+getComputedStyle
+visualViewport
+fonts_loadingdone
+DURATION_MS=5000
+read_only:true
+dom_writes:false
+style_writes:false
+navigation_changes:false
+*/
+const V='3.0.0-retired-layout-trace-button-20260801A';
 const BUTTON_ID='pmpWholeAppHealthLayoutTraceV1';
-const DURATION_MS=6000;
-const MAX_SAMPLES=520;
-const state={recording:false,startedAt:null,samples:[],events:[],attachments:[],frames:new WeakSet(),rafIds:new Map(),timer:null};
-function T(){try{return window.top||window}catch(_){return window}}
-function now(){return new Date().toISOString()}
-function perf(w){try{return Number(w.performance.now().toFixed(3))}catch(_){return null}}
-function pathOf(w){try{return String(w.location&&w.location.pathname||'')}catch(_){return'inaccessible'}}
-function titleOf(w){try{return String(w.document&&w.document.title||'')}catch(_){return'inaccessible'}}
-function safeRect(el){if(!el)return null;try{const r=el.getBoundingClientRect();return{x:+r.x.toFixed(2),y:+r.y.toFixed(2),width:+r.width.toFixed(2),height:+r.height.toFixed(2),top:+r.top.toFixed(2),right:+r.right.toFixed(2),bottom:+r.bottom.toFixed(2),left:+r.left.toFixed(2)}}catch(_){return null}}
-function safeStyle(w,el){if(!el)return null;try{const s=w.getComputedStyle(el);return{display:s.display,position:s.position,visibility:s.visibility,opacity:s.opacity,width:s.width,height:s.height,minHeight:s.minHeight,maxHeight:s.maxHeight,overflow:s.overflow,overflowX:s.overflowX,overflowY:s.overflowY,gridTemplateColumns:s.gridTemplateColumns,gridTemplateRows:s.gridTemplateRows,transform:s.transform,transition:s.transition,animation:s.animation,padding:s.padding,margin:s.margin,fontSize:s.fontSize,lineHeight:s.lineHeight}}catch(_){return null}}
-function selector(el){if(!el)return null;let s=String(el.tagName||'').toLowerCase();if(el.id)s+='#'+el.id;const c=String(el.className||'').trim().split(/\s+/).filter(Boolean).slice(0,5);if(c.length)s+='.'+c.join('.');return s}
-function attrs(el){if(!el||!el.getAttribute)return null;return{diagConsolidated:el.getAttribute('data-diag-consolidated'),healthPending:el.getAttribute('data-pmp-health-pending'),wholeAppHealth:el.getAttribute('data-pmp-whole-app-health'),disabled:!!el.disabled,ariaBusy:el.getAttribute('aria-busy')}}
-function textOf(el){try{return String(el.innerText||el.textContent||'').replace(/\s+/g,' ').trim().slice(0,500)}catch(_){return''}}
-function rendererVersions(w){const out={};try{out.PMPDiagnosticsConsolidatedViewV1=w.PMPDiagnosticsConsolidatedViewV1&&w.PMPDiagnosticsConsolidatedViewV1.version||null}catch(_){}try{out.PMPDiagnosticsOwnerV1=w.PMPDiagnosticsOwnerV1&&w.PMPDiagnosticsOwnerV1.version||null}catch(_){}try{out.PMPWholeAppHealthLayoutTraceV1=w.PMPWholeAppHealthLayoutTraceV1&&w.PMPWholeAppHealthLayoutTraceV1.version||null}catch(_){}return out}
-function findTargets(w){let d;try{d=w.document}catch(_){return[]};if(!d)return[];const screen=d.getElementById(SCREEN_ID);if(!screen)return[];const list=[screen];['[data-diag-consolidated="whole_app"]','.pmpDiagCard','.pmpDiagHealthRowV1','pre','.pmpDiagReportWindowV1','[data-pmp-whole-app-health]'].forEach(q=>{try{d.querySelectorAll('#'+SCREEN_ID+' '+q).forEach(x=>list.push(x))}catch(_){}});return Array.from(new Set(list)).slice(0,32)}
-function attachmentFor(w){let d,screen;try{d=w.document;screen=d&&d.getElementById(SCREEN_ID)}catch(_){return{frame_path:pathOf(w),status:'INACCESSIBLE'}};return{frame_path:pathOf(w),document_title:titleOf(w),status:screen?'ATTACHED':'NO_DIAGNOSTICS_SCREEN',screen_found:!!screen,screen_active:!!(screen&&screen.classList.contains('on')),target_count:findTargets(w).length,mutation_observer_supported:!!w.MutationObserver,resize_observer_supported:!!w.ResizeObserver,raf_supported:typeof w.requestAnimationFrame==='function',renderer_versions:rendererVersions(w)}}
-function snapshot(w,reason){if(!state.recording||state.samples.length>=MAX_SAMPLES)return;const targets=findTargets(w);if(!targets.length)return;let vv=null;try{vv=w.visualViewport?{width:+w.visualViewport.width.toFixed(2),height:+w.visualViewport.height.toFixed(2),offsetLeft:+w.visualViewport.offsetLeft.toFixed(2),offsetTop:+w.visualViewport.offsetTop.toFixed(2),scale:+w.visualViewport.scale.toFixed(4)}:null}catch(_){}state.samples.push({at:now(),performance_ms:perf(w),elapsed_ms:state.startedAt?Date.now()-state.startedAt:null,frame_path:pathOf(w),document_title:titleOf(w),reason,renderer_versions:rendererVersions(w),viewport:{innerWidth:w.innerWidth,innerHeight:w.innerHeight,devicePixelRatio:w.devicePixelRatio,visualViewport:vv},document:{readyState:w.document&&w.document.readyState,fontsStatus:w.document&&w.document.fonts&&w.document.fonts.status||null,styleSheetCount:w.document&&w.document.styleSheets&&w.document.styleSheets.length||0},targets:targets.map(el=>({selector:selector(el),className:String(el.className||''),text:textOf(el),attributes:attrs(el),inlineStyle:el.getAttribute&&el.getAttribute('style')||null,rect:safeRect(el),computed:safeStyle(w,el),scroll:{top:el.scrollTop||0,left:el.scrollLeft||0,height:el.scrollHeight||0,width:el.scrollWidth||0,clientHeight:el.clientHeight||0,clientWidth:el.clientWidth||0}}))})}
-function event(w,type,detail){if(!state.recording)return;state.events.push({at:now(),performance_ms:perf(w),elapsed_ms:state.startedAt?Date.now()-state.startedAt:null,frame_path:pathOf(w),document_title:titleOf(w),type,detail:detail||null});snapshot(w,'event:'+type)}
-function loop(w){if(!state.recording)return;snapshot(w,'animation_frame');try{const id=w.requestAnimationFrame(()=>loop(w));state.rafIds.set(w,id)}catch(_){}}
-function attach(w,depth,seen){if(!w||depth>10||seen.includes(w))return;seen.push(w);let d;try{d=w.document}catch(_){return};if(!d)return;if(!state.frames.has(w)){state.frames.add(w);state.attachments.push(attachmentFor(w));try{w.addEventListener('resize',()=>event(w,'window_resize'))}catch(_){}try{w.addEventListener('orientationchange',()=>event(w,'orientation_change'))}catch(_){}try{if(w.visualViewport){w.visualViewport.addEventListener('resize',()=>event(w,'visual_viewport_resize'));w.visualViewport.addEventListener('scroll',()=>event(w,'visual_viewport_scroll'))}}catch(_){}try{const mo=new w.MutationObserver(rows=>{for(const r of rows){const t=r.target&&r.target.nodeType===1?r.target:r.target&&r.target.parentElement;if(t&&(t.id===SCREEN_ID||t.closest&&t.closest('#'+SCREEN_ID))){event(w,'diagnostics_mutation',{mutationType:r.type,attributeName:r.attributeName||null,target:selector(t),text:textOf(t)});break}}});mo.observe(d.documentElement||d,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['class','style','disabled','media','data-pmp-health-pending','aria-busy']})}catch(error){state.attachments.push({frame_path:pathOf(w),status:'MUTATION_OBSERVER_FAILED',error:String(error&&error.message||error)})}try{d.addEventListener('click',e=>{const t=e.target&&e.target.closest&&e.target.closest('button,[role="button"]');if(!t)return;const text=textOf(t);event(w,text.includes('Whole App Health')&&!text.includes('Layout Trace')?'whole_app_health_click':'button_click',{text,target:selector(t),attributes:attrs(t)})},true)}catch(_){} }
-try{d.querySelectorAll('iframe,frame').forEach(f=>{try{attach(f.contentWindow,depth+1,seen)}catch(_){}})}catch(_){}
+function removeRetiredControl(doc){
+  try{
+    const d=doc||document;
+    d.querySelectorAll('#'+BUTTON_ID+', [data-pmp-whole-app-health-layout-trace]').forEach(node=>node.remove());
+  }catch(_){ }
 }
-function walk(){state.attachments=[];attach(T(),0,[])}
-function clearLoops(){for(const [w,id] of state.rafIds){try{w.cancelAnimationFrame(id)}catch(_){}}state.rafIds.clear()}
-function attachmentSummary(){const attached=state.attachments.filter(x=>x.status==='ATTACHED');return{status:attached.length?'ATTACHED':'ATTACHMENT_FAILED',frames_checked:state.attachments.length,diagnostics_frames:attached.length,details:state.attachments}}
-function finish(reason){if(!state.recording)return;state.recording=false;clearLoops();if(state.timer){clearTimeout(state.timer);state.timer=null}state.events.push({at:now(),elapsed_ms:state.startedAt?Date.now()-state.startedAt:null,type:'trace_finished',detail:{reason}});persist();refreshButtons()}
-function start(){state.recording=false;clearLoops();if(state.timer)clearTimeout(state.timer);state.samples=[];state.events=[];state.startedAt=Date.now();state.recording=true;walk();const a=attachmentSummary();state.events.push({at:now(),elapsed_ms:0,type:a.status==='ATTACHED'?'trace_started':'attachment_failed',detail:{duration_ms:DURATION_MS,attachment:a}});if(a.status!=='ATTACHED'){state.recording=false;persist();refreshButtons();return}const seen=[];function begin(w,depth){if(!w||depth>10||seen.includes(w))return;seen.push(w);try{loop(w);w.document.querySelectorAll('iframe,frame').forEach(f=>begin(f.contentWindow,depth+1))}catch(_){}}begin(T(),0);state.timer=setTimeout(()=>finish('duration_complete'),DURATION_MS);refreshButtons()}
-function report(){return{type:'PMP_WHOLE_APP_HEALTH_LAYOUT_TRACE_V2',version:V,generated_at:now(),attachment:attachmentSummary(),capture:{started_at:state.startedAt?new Date(state.startedAt).toISOString():null,ended_at:state.recording?null:now(),duration_ms:state.startedAt?Date.now()-state.startedAt:null,recording:state.recording,sample_count:state.samples.length,event_count:state.events.length},events:state.events,samples:state.samples,boundaries:{read_only:true,dom_writes:false,style_writes:false,navigation_changes:false}}}
-function persist(){try{T().localStorage.setItem(KEY,JSON.stringify(report()))}catch(_){} }
-function utf8(v){return new TextEncoder().encode(String(v))}function u16(v){return new Uint8Array([v&255,(v>>>8)&255])}function u32(v){return new Uint8Array([v&255,(v>>>8)&255,(v>>>16)&255,(v>>>24)&255])}function join(parts){const size=parts.reduce((n,p)=>n+p.length,0),out=new Uint8Array(size);let o=0;for(const p of parts){out.set(p,o);o+=p.length}return out}function crc32(bytes){let crc=0xffffffff;for(const byte of bytes){crc^=byte;for(let i=0;i<8;i++)crc=(crc>>>1)^((crc&1)?0xedb88320:0)}return(crc^0xffffffff)>>>0}function dosDateTime(date){const y=Math.max(1980,date.getFullYear());return{time:(date.getHours()<<11)|(date.getMinutes()<<5)|(date.getSeconds()>>>1),date:((y-1980)<<9)|((date.getMonth()+1)<<5)|date.getDate()}}function zipStored(entries){const ls=[],cs=[];let off=0;const stamp=dosDateTime(new Date());for(const e of entries){const name=utf8(e.name),data=utf8(e.text),crc=crc32(data),local=join([u32(0x04034b50),u16(20),u16(0x0800),u16(0),u16(stamp.time),u16(stamp.date),u32(crc),u32(data.length),u32(data.length),u16(name.length),u16(0),name,data]);ls.push(local);cs.push(join([u32(0x02014b50),u16(20),u16(20),u16(0x0800),u16(0),u16(stamp.time),u16(stamp.date),u32(crc),u32(data.length),u32(data.length),u16(name.length),u16(0),u16(0),u16(0),u16(0),u32(0),u32(off),name]));off+=local.length}const cd=join(cs);return join([...ls,cd,join([u32(0x06054b50),u16(0),u16(0),u16(entries.length),u16(entries.length),u32(cd.length),u32(off),u16(0)])])}
-function safeStamp(){return now().replace(/[:.]/g,'-')}
-function downloadZip(w){if(state.recording)finish('downloaded_early');const full=report();persist();const meta={type:'PMP_WHOLE_APP_HEALTH_LAYOUT_TRACE_ZIP_METADATA_V2',trace_version:V,created_at:now(),attachment:full.attachment,sample_count:full.capture.sample_count,event_count:full.capture.event_count,boundaries:full.boundaries};const bytes=zipStored([{name:'PMP_WHOLE_APP_HEALTH_LAYOUT_TRACE.json',text:JSON.stringify(full,null,2)},{name:'TRACE_METADATA.json',text:JSON.stringify(meta,null,2)}]);const url=URL.createObjectURL(new Blob([bytes],{type:'application/zip'}));try{const a=w.document.createElement('a');a.href=url;a.download='PMP_WHOLE_APP_HEALTH_LAYOUT_TRACE_'+safeStamp()+'.zip';a.style.display='none';w.document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);return true}catch(_){URL.revokeObjectURL(url);return false}}
-function buttonText(){if(state.recording)return'Layout Trace v2 Recording…';if(state.samples.length)return'Download Whole App Health Layout Trace ZIP';return'Whole App Health Layout Trace v2'}
-function refreshButtons(){const seen=[];function one(w,depth){if(!w||depth>10||seen.includes(w))return;seen.push(w);let d;try{d=w.document}catch(_){return};if(!d||!d.body)return;let b=d.getElementById(BUTTON_ID);if(!b){b=d.createElement('button');b.id=BUTTON_ID;b.type='button';b.style.cssText='position:fixed;right:10px;top:calc(env(safe-area-inset-top,0px) + 10px);z-index:2147483647;padding:8px 10px;border:2px solid #07101c;border-radius:12px;background:#fff3de;color:#07101c;font:700 12px/1.1 system-ui;display:none;max-width:240px';b.onclick=()=>{if(!state.recording&&!state.samples.length){start();return}if(state.recording){finish('manual_stop');return}downloadZip(w);setTimeout(refreshButtons,1200)};d.body.appendChild(b)}const s=d.getElementById(SCREEN_ID);b.style.display=s&&s.classList.contains('on')?'block':'none';b.textContent=buttonText();try{d.querySelectorAll('iframe,frame').forEach(f=>one(f.contentWindow,depth+1))}catch(_){} }one(T(),0)}
-const api={version:V,start,finish,report,downloadZip:()=>downloadZip(T()),clear:()=>{state.samples=[];state.events=[];state.attachments=[];state.startedAt=null;persist();refreshButtons()},install:refreshButtons,rule:'Read-only attachment-proof Whole App Health trace. It records renderer versions, visible text, pending attributes, exact click timing, and fails closed when it cannot attach.'};
-window.PMPDiagnosticsWriterTraceV1=api;window.PMPWholeAppHealthLayoutTraceV1=api;try{T().PMPDiagnosticsWriterTraceV1=api;T().PMPWholeAppHealthLayoutTraceV1=api}catch(_){}
-refreshButtons();setInterval(refreshButtons,180);window.addEventListener('pageshow',refreshButtons);document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')refreshButtons()});
+function walk(win,depth,seen){
+  if(!win||depth>10||seen.has(win))return;
+  seen.add(win);
+  try{
+    removeRetiredControl(win.document);
+    win.document.querySelectorAll('iframe,frame').forEach(frame=>{
+      try{walk(frame.contentWindow,depth+1,seen)}catch(_){ }
+    });
+  }catch(_){ }
+}
+function retire(){
+  walk((()=>{try{return window.top||window}catch(_){return window}})(),0,new Set());
+}
+window.PMPWholeAppHealthLayoutTraceV1={
+  version:V,
+  status:'RETIRED',
+  run:()=>({status:'RETIRED',reason:'Whole App Health layout repair is complete; permanent trace UI removed.'}),
+  rule:'Compatibility stub only. Creates no controls, observers, downloads, navigation, or diagnostic writes.'
+};
+try{window.top.PMPWholeAppHealthLayoutTraceV1=window.PMPWholeAppHealthLayoutTraceV1}catch(_){ }
+retire();
+window.addEventListener('pageshow',retire);
 })();
