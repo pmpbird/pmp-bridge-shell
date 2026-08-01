@@ -1,0 +1,16 @@
+{
+  "type": "PMP_EXACT_SCOPE_RECORD_V1",
+  "unit": "P13_WHOLE_APP_HEALTH_LAYOUT_TRACE",
+  "allowed_paths": [
+    "pmp-diagnostics-writer-trace-v1.js",
+    "tests/test_whole_app_health_layout_trace.py",
+    "verification/verify_whole_app_health_layout_trace.py",
+    "receipts/whole_app_health_layout_trace_20260731N.json",
+    "gates/P13_WHOLE_APP_HEALTH_LAYOUT_TRACE_GATE.json",
+    "exact_scope/P13_WHOLE_APP_HEALTH_LAYOUT_TRACE_EXACT_SCOPE.json"
+  ],
+  "purpose": "Replace the temporary DOM writer trace with a read-only computed-layout trace whose visible button is named Whole App Health Layout Trace.",
+  "authority_changes": false,
+  "presentation_changes": "trace button label only",
+  "application_repairs": false
+}
