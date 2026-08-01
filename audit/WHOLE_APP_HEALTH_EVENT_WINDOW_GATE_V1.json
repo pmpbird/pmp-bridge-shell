@@ -1,0 +1,12 @@
+{
+  "type": "PMP_WHOLE_APP_HEALTH_EVENT_WINDOW_GATE_V1",
+  "version": "1.0.0",
+  "required_test": "python3 tools/test_whole_app_health_event_window_v1.py",
+  "pass_conditions": [
+    "single event-driven report window",
+    "no late screen padding write",
+    "no recurring health repaint",
+    "stable scrollbar gutter",
+    "no authority or data mutation"
+  ]
+}
