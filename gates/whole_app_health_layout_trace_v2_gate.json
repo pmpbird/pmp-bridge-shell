@@ -1,0 +1,15 @@
+{
+  "type": "PMP_WHOLE_APP_HEALTH_LAYOUT_TRACE_V2_GATE",
+  "version": "1.0.0",
+  "status": "PASS_PENDING_REPOSITORY_CI",
+  "required_test": "tests/test_whole_app_health_layout_trace_v2.py",
+  "required_runtime_version": "2.2.0-attachment-proof-layout-trace-20260801A",
+  "requirements": [
+    "trace visibly identifies v2",
+    "attachment failure is explicit",
+    "active renderer versions are captured",
+    "visible text and pending attributes are captured",
+    "Whole App Health click timing is captured",
+    "trace remains read-only"
+  ]
+}
