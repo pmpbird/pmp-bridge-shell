@@ -1,0 +1,20 @@
+{
+  "type": "PMP_WHOLE_APP_HEALTH_LAYOUT_TRACE_SOURCE_RECEIPT_V1",
+  "version": "2.0.0-whole-app-health-layout-trace-20260731N",
+  "status": "READY_FOR_RUNTIME_VERIFICATION",
+  "scope": [
+    "pmp-diagnostics-writer-trace-v1.js",
+    "tests/test_whole_app_health_layout_trace.py"
+  ],
+  "button_label": "Whole App Health Layout Trace",
+  "copy_label": "Copy Whole App Health Layout Trace",
+  "capture_duration_ms": 5000,
+  "boundaries": {
+    "read_only": true,
+    "dom_writes": false,
+    "style_writes": false,
+    "navigation_changes": false,
+    "owner_changes": false,
+    "helper_changes": false
+  }
+}
