@@ -1,0 +1,14 @@
+{
+  "type": "PMP_EXACT_SCOPE_RECORD_V1",
+  "unit": "P13_REMOVE_WHOLE_APP_INTERMEDIATE_RENDER",
+  "allowed_paths": [
+    "pmp-diagnostics-consolidated-view-v1.js",
+    "tests/test_remove_whole_app_intermediate_render.py",
+    "verification/verify_remove_whole_app_intermediate_render.py",
+    "receipts/remove_whole_app_intermediate_render_20260731O.json",
+    "gates/P13_REMOVE_WHOLE_APP_INTERMEDIATE_RENDER_GATE.json",
+    "exact_scope/P13_REMOVE_WHOLE_APP_INTERMEDIATE_RENDER_EXACT_SCOPE.json"
+  ],
+  "purpose": "Remove the traced intermediate Whole App Health loading-card render and open the final scrollable view only after current evidence is ready.",
+  "authority_changes": false
+}
