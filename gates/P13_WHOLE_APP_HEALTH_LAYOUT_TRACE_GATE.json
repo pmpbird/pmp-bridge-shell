@@ -1,0 +1,18 @@
+{
+  "type": "PMP_LATER_UNIT_GATE_V1",
+  "unit": "P13_WHOLE_APP_HEALTH_LAYOUT_TRACE",
+  "status": "READY_FOR_RUNTIME_GATE",
+  "implementation": "pmp-diagnostics-writer-trace-v1.js",
+  "test": "tests/test_whole_app_health_layout_trace.py",
+  "receipt": "receipts/whole_app_health_layout_trace_20260731N.json",
+  "scope_rule": "Only replace the temporary writer trace with a read-only Whole App Health layout trace.",
+  "forbidden": [
+    "owner changes",
+    "helper changes",
+    "navigation changes",
+    "DOM repair",
+    "style repair",
+    "storage migration",
+    "persisted user data writes"
+  ]
+}
