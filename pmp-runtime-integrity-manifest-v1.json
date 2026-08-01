@@ -1,13 +1,13 @@
 {
   "algorithm": "SHA-256",
   "counts": {
-    "executable_records": 730,
+    "executable_records": 733,
     "external_errors": 0,
     "external_records": 3,
     "historical_records": 1,
     "map_declared_covered": 42,
     "map_declared_paths": 42,
-    "runtime_records": 730,
+    "runtime_records": 733,
     "style_records": 0
   },
   "external_records": [
@@ -643,6 +643,28 @@
       "sha256_base64": "jE06eujYBaisioWE35YAa1n37pULXWbHHIetoTGy2Sk=",
       "sha256_hex": "8c4d3a7ae8d805a8ac8a8584df96006b59f7ee950b5d66c71c87ada131b2d929",
       "sri": "sha256-jE06eujYBaisioWE35YAa1n37pULXWbHHIetoTGy2Sk="
+    },
+    {
+      "bytes": 772,
+      "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
+      "execution_class": "RUNTIME_DATA",
+      "git_blob_sha": "3256e4db24c1365e709ed844817133499a47d00a",
+      "mime_type": "application/json",
+      "path": "exact_scope/P13_WHOLE_APP_HEALTH_LAYOUT_TRACE_EXACT_SCOPE.json",
+      "sha256_base64": "vOzBUdja/0jP3nCUdixQFvedk+Q0pU9afTUaRLIqieI=",
+      "sha256_hex": "bcecc151d8daff48cfde7094762c5016f79d93e434a54f5a7d351a44b22a89e2",
+      "sri": "sha256-vOzBUdja/0jP3nCUdixQFvedk+Q0pU9afTUaRLIqieI="
+    },
+    {
+      "bytes": 603,
+      "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
+      "execution_class": "RUNTIME_DATA",
+      "git_blob_sha": "830f3cd67bffd864c3eab83943f3597ee506ef4b",
+      "mime_type": "application/json",
+      "path": "gates/P13_WHOLE_APP_HEALTH_LAYOUT_TRACE_GATE.json",
+      "sha256_base64": "MvNK0ZPqov7Ta4NK45FCO65TQBd43GoGZqwzp7/o9xc=",
+      "sha256_hex": "32f34ad193eaa2fed36b834ae391423bae53401778dc6a0666ac33a7bfe8f717",
+      "sri": "sha256-MvNK0ZPqov7Ta4NK45FCO65TQBd43GoGZqwzp7/o9xc="
     },
     {
       "bytes": 4841,
@@ -3648,15 +3670,15 @@
       "sri": "sha256-mSXQZfZjaGdphv1wP98cyAwmR0a9Y4E3ck/2J26uVTI="
     },
     {
-      "bytes": 5139,
+      "bytes": 9854,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "73c8ec1691c4034febee6d05681ff11e61d82f7b",
+      "git_blob_sha": "4079abb4fa8eb91688a6c6d9ba94706186db41dc",
       "mime_type": "text/javascript",
       "path": "pmp-diagnostics-writer-trace-v1.js",
-      "sha256_base64": "yaJuIleO6bk+f1IXBdgO6Nig2hEu5VosgXeNeIr1kOo=",
-      "sha256_hex": "c9a26e22578ee9b93e7f521705d80ee8d8a0da112ee55a2c81778d788af590ea",
-      "sri": "sha256-yaJuIleO6bk+f1IXBdgO6Nig2hEu5VosgXeNeIr1kOo="
+      "sha256_base64": "EGVuEbGjblMIogypmcUB92MkpzAkakImTFzh6FtHtXU=",
+      "sha256_hex": "10656e11b1a36e5308a20ca999c501f76324a730246a42264c5ce1e85b47b575",
+      "sri": "sha256-EGVuEbGjblMIogypmcUB92MkpzAkakImTFzh6FtHtXU="
     },
     {
       "bytes": 4693,
@@ -7905,6 +7927,17 @@
       "sri": "sha256-BEfgdTVcgsNfvM1YqsUgz5Z8N0qQMDVO1YMiUOacJXI="
     },
     {
+      "bytes": 609,
+      "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
+      "execution_class": "RUNTIME_DATA",
+      "git_blob_sha": "2422006f2778625c0304a5c3c5dfe14f443bc517",
+      "mime_type": "application/json",
+      "path": "receipts/whole_app_health_layout_trace_20260731N.json",
+      "sha256_base64": "VnylLgxII1SsuOt8l7YzynzHjTbcRjikcw7yHIVoMew=",
+      "sha256_hex": "567ca52e0c482354acb8eb7c97b633ca7cc78d36dc4638a4730ef21c856831ec",
+      "sri": "sha256-VnylLgxII1SsuOt8l7YzynzHjTbcRjikcw7yHIVoMew="
+    },
+    {
       "bytes": 1743,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_DOCUMENT",
@@ -8111,7 +8144,7 @@
       "rule": "This is the only application bootstrap source excluded from downstream manifest self-enforcement."
     }
   ],
-  "runtime_source_set_sha256": "836b0576cce5cf39950cf2841d87c0b1d23307cfbb140c86b4c46dad4aafc5a6",
+  "runtime_source_set_sha256": "a5014b1f8fce53849d07774f86ee8145eca0645977bfceeb155366d9e568b6ba",
   "source_identity_rule": "Deterministic digest of protected local, historical, external, root-anchor, and policy identities; audit/workflow-only commits do not alter this identity.",
   "type": "PMP_RUNTIME_INTEGRITY_MANIFEST_V1",
   "unlisted_executable_policy": "FAIL_CLOSED",
