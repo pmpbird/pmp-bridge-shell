@@ -1,0 +1,19 @@
+{
+  "type": "PMP_EXACT_SCOPE_V1",
+  "version": "1.0.0",
+  "scope_id": "whole_app_health_stable_skeleton_v1",
+  "allowed_files": [
+    "pmp-diagnostics-consolidated-view-v1.js",
+    "exact_scope/whole_app_health_stable_skeleton_v1.json",
+    "tools/test_whole_app_health_stable_skeleton_v1.py",
+    "receipts/whole_app_health_stable_skeleton_v1.json",
+    "gates/whole_app_health_stable_skeleton_gate_v1.json"
+  ],
+  "forbidden_changes": [
+    "owner authority",
+    "helper authority",
+    "routes",
+    "diagnostic result classification",
+    "persisted user data"
+  ]
+}

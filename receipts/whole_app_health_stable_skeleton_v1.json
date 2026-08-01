@@ -1,0 +1,16 @@
+{
+  "type": "PMP_WHOLE_APP_HEALTH_STABLE_SKELETON_RECEIPT_V1",
+  "version": "1.0.0",
+  "status": "IMPLEMENTED_PENDING_CI",
+  "source": "pmp-diagnostics-consolidated-view-v1.js",
+  "runtime_version": "2.8.0-stable-health-skeleton-20260731Q",
+  "claims": {
+    "home_card_mutated_during_wait": false,
+    "final_geometry_visible_immediately": true,
+    "checking_rows": 8,
+    "scrollbar_gutter_reserved_before_evidence": true,
+    "owner_or_helper_authority_changed": false,
+    "route_changed": false,
+    "diagnostic_result_changed": false
+  }
+}

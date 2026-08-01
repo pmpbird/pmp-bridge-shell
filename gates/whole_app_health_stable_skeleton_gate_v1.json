@@ -1,0 +1,13 @@
+{
+  "type": "PMP_WHOLE_APP_HEALTH_STABLE_SKELETON_GATE_V1",
+  "version": "1.0.0",
+  "status": "PASS_PENDING_REPOSITORY_CI",
+  "required_test": "tools/test_whole_app_health_stable_skeleton_v1.py",
+  "required_runtime_version": "2.8.0-stable-health-skeleton-20260731Q",
+  "requirements": [
+    "Whole App Health immediately replaces the home card with final-size CHECKING rows",
+    "No Preparing Whole App Health mutation remains on pmpDiagCard",
+    "Scrollbar gutter is reserved before final evidence is rendered",
+    "Only Diagnostics presentation timing and geometry change"
+  ]
+}
