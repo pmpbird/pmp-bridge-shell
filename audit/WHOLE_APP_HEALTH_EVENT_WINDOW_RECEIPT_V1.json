@@ -1,0 +1,14 @@
+{
+  "type": "PMP_WHOLE_APP_HEALTH_EVENT_WINDOW_RECEIPT_V1",
+  "version": "1.0.0",
+  "status": "READY_FOR_PR",
+  "writer_removed": "late recurring Whole App Health layout writer",
+  "replacement": "event-driven idempotent presentation wrap",
+  "screen_padding_write": false,
+  "recurring_health_repaint": false,
+  "ownership_change": false,
+  "route_change": false,
+  "diagnostic_content_change": false,
+  "storage_migration": false,
+  "persisted_user_data_write": false
+}
