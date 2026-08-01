@@ -1,0 +1,20 @@
+{
+  "type": "PMP_EXACT_SCOPE_V1",
+  "version": "1.0.0",
+  "scope_id": "diagnostics_bottom_tab_no_health_layout",
+  "allowed_files": [
+    "pmp-diagnostics-bottom-tab-forcer-v1.js",
+    "tests/test_diagnostics_bottom_tab_no_health_layout.py",
+    "exact_scope/diagnostics_bottom_tab_no_health_layout_exact_scope.json",
+    "receipts/diagnostics_bottom_tab_no_health_layout.json",
+    "gates/diagnostics_bottom_tab_no_health_layout_gate.json"
+  ],
+  "forbidden_changes": [
+    "diagnostics owner authority",
+    "helper authority",
+    "routes",
+    "diagnostic classifications",
+    "persisted user data",
+    "Whole App Health report content"
+  ]
+}

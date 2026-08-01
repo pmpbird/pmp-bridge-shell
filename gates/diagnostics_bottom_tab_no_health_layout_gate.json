@@ -1,0 +1,13 @@
+{
+  "type": "PMP_DIAGNOSTICS_BOTTOM_TAB_NO_HEALTH_LAYOUT_GATE_V1",
+  "version": "1.0.0",
+  "status": "PASS_PENDING_REPOSITORY_CI",
+  "required_test": "tests/test_diagnostics_bottom_tab_no_health_layout.py",
+  "requirements": [
+    "bottom-tab helper does not write Diagnostics screen layout",
+    "bottom-tab helper does not move Whole App Health report nodes",
+    "bottom-tab helper does not restyle Whole App Health rows",
+    "bottom-tab compatibility remains available",
+    "no owner, helper, route, classification, or user-data change"
+  ]
+}
