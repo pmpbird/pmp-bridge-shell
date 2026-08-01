@@ -1,0 +1,19 @@
+{
+  "type": "PMP_WHOLE_APP_HEALTH_EVENT_WINDOW_SCOPE_V1",
+  "version": "1.0.0",
+  "changed_runtime_files": ["pmp-diagnostics-bottom-tab-forcer-v1.js"],
+  "allowed": [
+    "event-driven idempotent Whole App Health presentation wrap",
+    "single white scrolling report window",
+    "stable scrollbar gutter"
+  ],
+  "forbidden": [
+    "owner or helper authority change",
+    "route change",
+    "diagnostic result change",
+    "recurring health repaint",
+    "Diagnostics screen padding mutation",
+    "storage migration",
+    "persisted user data write"
+  ]
+}
