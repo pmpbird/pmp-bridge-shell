@@ -1,0 +1,33 @@
+{
+  "type": "PMP_BCD_BOUNDED_RECEIPT_PUBLICATION_RECEIPT_V1",
+  "version": "1.0.0",
+  "status": "PASS",
+  "at": "2026-08-03T09:40:00Z",
+  "owner": "diagnostics_owner",
+  "implementation": "pmp-diagnostics-writer-trace-v1.js",
+  "test": "tools/test_bcd_bounded_receipt_publication_v1.py",
+  "verifier": "tools/verify_bcd_bounded_receipt_publication_v1.py",
+  "observed_failure": {
+    "bootstrap_status": "NEW_RECEIPT_INCOMPLETE",
+    "produced_version": "1.1.0-final-two-live-proof-20260801A",
+    "observed_receipt_version": null,
+    "complete_sections": []
+  },
+  "repair": {
+    "bootstrap_version": "3.3.0-bounded-verified-bcd-publication-20260803C",
+    "evaluation_completeness_required": true,
+    "bounded_verified_fallback": true,
+    "real_section_statuses_preserved": true,
+    "publication_failure_explicit": true
+  },
+  "boundaries": {
+    "owner_changes": false,
+    "helper_changes": false,
+    "route_changes": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false,
+    "health_result_invention": false,
+    "trace_ui": "retired"
+  },
+  "claim_ceiling": "Certifies the bounded receipt-publication implementation and deterministic source checks only. The user's live device remains uncertified until retested after merge and reseal."
+}
