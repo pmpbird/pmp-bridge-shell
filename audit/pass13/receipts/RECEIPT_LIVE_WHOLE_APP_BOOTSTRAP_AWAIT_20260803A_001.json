@@ -1,0 +1,25 @@
+{
+  "type": "PMP_LIVE_WHOLE_APP_BOOTSTRAP_AWAIT_RECEIPT_V1",
+  "version": "1.0.0",
+  "unit_id": "P13-U23",
+  "status": "PASS",
+  "at": "2026-08-03T08:27:30Z",
+  "implementation": "pmp-diagnostics-consolidated-view-v1.js",
+  "runtime_version": "2.9.0-live-bootstrap-await-20260803A",
+  "observed_facts": [
+    "The consolidated diagnostics source invokes PMPCurrentBCDDiagnosticsBootstrapV1.",
+    "The bootstrap promise is awaited before Passes B-D evidence is read or copied.",
+    "The current bootstrap and B-D receipt versions are explicitly enforced.",
+    "All five B-D section objects are required before coverage is marked complete.",
+    "The copy control remains disabled while current live diagnostics run."
+  ],
+  "boundaries": {
+    "read_only_diagnostics": true,
+    "owner_changes": false,
+    "helper_changes": false,
+    "route_changes": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false
+  },
+  "claim_ceiling": "Deterministic source and integration contract only; live device behavior requires the governed browser runtime check."
+}
