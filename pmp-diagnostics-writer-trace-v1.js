@@ -31,6 +31,7 @@ style_writes:false
 navigation_changes:false
 */
 const V='3.2.0-transactional-versioned-bcd-bootstrap-20260801B';
+const VIEW_BOOT_VERSION='1.0.0-exact-diagnostics-view-bootstrap-20260803B';
 const BUTTON_ID='pmpWholeAppHealthLayoutTraceV1';
 const BCD_API='PMPDiagnosticCoveragePassesBCDV1';
 const REQUIRED_BCD_VERSION='1.1.0-final-two-live-proof-20260801A';
@@ -38,7 +39,11 @@ const VERSIONED_BCD_SRC='pmp-diagnostic-coverage-passes-bcd-v1-1-1-0.js';
 const BCD_RECEIPT_KEY='pmp_diagnostic_coverage_passes_bcd_v1_receipt';
 const BOOT_RECEIPT_KEY='pmp_current_bcd_diagnostics_bootstrap_v1_receipt';
 const REQUIRED_SECTIONS=['bridge_system','library_system','bank_system','continuous_run_system','errors_bug_watch_visual_stability'];
-let inflight=null;
+const VIEW_API='PMPDiagnosticsConsolidatedViewV1';
+const REQUIRED_VIEW_VERSION='2.9.0-live-bootstrap-await-20260803A';
+const CURRENT_VIEW_SRC='pmp-diagnostics-consolidated-view-v1.js';
+const VIEW_RECEIPT_KEY='pmp_current_diagnostics_view_bootstrap_v1_receipt';
+let inflight=null,viewInflight=null;
 function T(){try{return window.top||window}catch(_){return window}}
 function now(){return new Date().toISOString()}
 function store(key,value){try{T().localStorage.setItem(key,JSON.stringify(value,null,2))}catch(_){}return value}
@@ -46,15 +51,21 @@ function read(key){try{return JSON.parse(T().localStorage.getItem(key)||'null')}
 function restore(value){try{if(value)store(BCD_RECEIPT_KEY,value);else T().localStorage.removeItem(BCD_RECEIPT_KEY)}catch(_){}}
 function completeReceipt(value){return !!(value&&value.version===REQUIRED_BCD_VERSION&&REQUIRED_SECTIONS.every(key=>value[key]&&typeof value[key]==='object'))}
 function removeRetiredControl(doc){try{const d=doc||document;d.querySelectorAll('#'+BUTTON_ID+', [data-pmp-whole-app-health-layout-trace]').forEach(node=>node.remove())}catch(_){}}
-function walk(win,depth,seen){if(!win||depth>10||seen.has(win))return;seen.add(win);try{removeRetiredControl(win.document);win.document.querySelectorAll('iframe,frame').forEach(frame=>{try{walk(frame.contentWindow,depth+1,seen)}catch(_){}})}catch(_){}}
+function walk(win,depth,seen,visit){if(!win||depth>10||seen.has(win))return;seen.add(win);try{if(visit)visit(win);removeRetiredControl(win.document);win.document.querySelectorAll('iframe,frame').forEach(frame=>{try{walk(frame.contentWindow,depth+1,seen,visit)}catch(_){}})}catch(_){}}
 function retire(){walk(T(),0,new Set())}
-function currentApi(){try{if(T()[BCD_API])return T()[BCD_API]}catch(_){}try{if(window[BCD_API])return window[BCD_API]}catch(_){}return null}
+function findApi(name){let found=null;walk(T(),0,new Set(),win=>{try{if(!found&&win[name])found=win[name]}catch(_){}});return found}
+function currentApi(){return findApi(BCD_API)}
+function currentView(){return findApi(VIEW_API)}
 function receipt(reason,status,extra){const live=read(BCD_RECEIPT_KEY);return store(BOOT_RECEIPT_KEY,Object.assign({type:'PMP_CURRENT_BCD_DIAGNOSTICS_BOOTSTRAP_V1',version:V,owner:'diagnostics_owner',at:now(),reason:reason||'boot',status,required_version:REQUIRED_BCD_VERSION,versioned_source:VERSIONED_BCD_SRC,observed_api_version:currentApi()&&currentApi().version||null,observed_receipt_version:live&&live.version||null,complete_sections:REQUIRED_SECTIONS.filter(key=>live&&live[key]),transactional:true,boundaries:{trace_ui:'retired',owner_changes:false,helper_changes:false,route_changes:false,storage_migration:false,persisted_user_data_write:false}},extra||{}))}
-function loadVersionedScript(){return new Promise(resolve=>{try{const d=document,existing=Array.from(d.querySelectorAll('script[src]')).find(s=>String(s.getAttribute('src')||'').split('?')[0].endsWith(VERSIONED_BCD_SRC));if(existing&&currentApi()&&currentApi().version===REQUIRED_BCD_VERSION){resolve({status:'ALREADY_LOADED'});return}const s=d.createElement('script');s.async=false;s.src=VERSIONED_BCD_SRC+'?fresh=transactional-bcd-20260801B-'+Date.now();s.onload=()=>resolve({status:'LOADED'});s.onerror=()=>resolve({status:'LOAD_ERROR'});(d.head||d.documentElement).appendChild(s)}catch(error){resolve({status:'EXCEPTION',error:String(error&&error.message||error)})}})}
+function viewReceipt(reason,status,extra){const api=currentView();return store(VIEW_RECEIPT_KEY,Object.assign({type:'PMP_CURRENT_DIAGNOSTICS_VIEW_BOOTSTRAP_V1',version:VIEW_BOOT_VERSION,owner:'diagnostics_owner',at:now(),reason:reason||'boot',status,required_version:REQUIRED_VIEW_VERSION,current_source:CURRENT_VIEW_SRC,observed_version:api&&api.version||null,exact_version:!!(api&&api.version===REQUIRED_VIEW_VERSION),boundaries:{trace_ui:'retired',owner_changes:false,helper_changes:false,route_changes:false,storage_migration:false,persisted_user_data_write:false}},extra||{}))}
+function loadScript(src){return new Promise(resolve=>{try{const s=document.createElement('script');s.async=false;s.src=src;s.onload=()=>resolve({status:'LOADED'});s.onerror=()=>resolve({status:'LOAD_ERROR'});(document.head||document.documentElement).appendChild(s)}catch(error){resolve({status:'EXCEPTION',error:String(error&&error.message||error)})}})}
+function loadVersionedScript(){const api=currentApi();if(api&&api.version===REQUIRED_BCD_VERSION)return Promise.resolve({status:'ALREADY_LOADED'});return loadScript(VERSIONED_BCD_SRC+'?fresh=transactional-bcd-20260801B-'+Date.now())}
 async function runAndValidate(api,reason,previous){try{if(!api||api.version!==REQUIRED_BCD_VERSION||typeof api.run!=='function'){restore(previous);return receipt(reason,'API_VERSION_MISMATCH',{rollback_applied:true})}const produced=await api.run(reason||'transactional_bcd_bootstrap');const live=read(BCD_RECEIPT_KEY);if(!completeReceipt(produced)||!completeReceipt(live)){restore(previous);return receipt(reason,'NEW_RECEIPT_INCOMPLETE',{rollback_applied:true,produced_version:produced&&produced.version||null})}return receipt(reason,'PASS',{rollback_applied:false,replaced_previous_version:previous&&previous.version||null})}catch(error){restore(previous);return receipt(reason,'RUN_ERROR',{error:String(error&&error.message||error),rollback_applied:true})}}
 async function ensureCurrent(reason){retire();if(inflight)return inflight;inflight=(async()=>{const previous=read(BCD_RECEIPT_KEY);let api=currentApi();if(api&&api.version===REQUIRED_BCD_VERSION)return runAndValidate(api,reason||'existing_current_api',previous);const loaded=await loadVersionedScript();if(loaded.status!=='LOADED'&&loaded.status!=='ALREADY_LOADED'){restore(previous);return receipt(reason,'LOAD_FAILED',Object.assign({rollback_applied:true},loaded))}api=currentApi();return runAndValidate(api,reason||'loaded_versioned_api',previous)})().finally(()=>{inflight=null});return inflight}
+async function ensureCurrentView(reason){retire();if(viewInflight)return viewInflight;viewInflight=(async()=>{let api=currentView();if(api&&api.version===REQUIRED_VIEW_VERSION){try{if(typeof api.install==='function')api.install()}catch(_){}return viewReceipt(reason,'PASS',{load_status:'ALREADY_CURRENT'})}const previous=api&&api.version||null;const loaded=await loadScript(CURRENT_VIEW_SRC+'?fresh=exact-diagnostics-view-20260803B-'+Date.now());if(loaded.status!=='LOADED')return viewReceipt(reason,'LOAD_FAILED',{load_status:loaded.status,error:loaded.error||null,previous_version:previous});api=currentView();if(!api||api.version!==REQUIRED_VIEW_VERSION)return viewReceipt(reason,'VERSION_MISMATCH',{load_status:loaded.status,previous_version:previous});try{if(typeof api.install==='function')api.install()}catch(error){return viewReceipt(reason,'INSTALL_ERROR',{error:String(error&&error.message||error),previous_version:previous})}return viewReceipt(reason,'PASS',{load_status:loaded.status,replaced_previous_version:previous})})().finally(()=>{viewInflight=null});return viewInflight}
 window.PMPWholeAppHealthLayoutTraceV1={version:V,status:'RETIRED',run:()=>({status:'RETIRED',reason:'Whole App Health layout repair is complete; permanent trace UI removed.'}),rule:'Invisible compatibility bootstrap only. Creates no trace controls or observers.'};
 window.PMPCurrentBCDDiagnosticsBootstrapV1={version:V,requiredVersion:REQUIRED_BCD_VERSION,versionedSource:VERSIONED_BCD_SRC,run:ensureCurrent,last:()=>read(BOOT_RECEIPT_KEY)};
-try{T().PMPWholeAppHealthLayoutTraceV1=window.PMPWholeAppHealthLayoutTraceV1;T().PMPCurrentBCDDiagnosticsBootstrapV1=window.PMPCurrentBCDDiagnosticsBootstrapV1}catch(_){}
-retire();[0,500,1500,3500,7000].forEach(ms=>setTimeout(()=>ensureCurrent('boot_'+ms),ms));window.addEventListener('pageshow',()=>ensureCurrent('pageshow'));document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')ensureCurrent('visible_resume')});
+window.PMPCurrentDiagnosticsViewBootstrapV1={version:VIEW_BOOT_VERSION,requiredVersion:REQUIRED_VIEW_VERSION,currentSource:CURRENT_VIEW_SRC,run:ensureCurrentView,last:()=>read(VIEW_RECEIPT_KEY)};
+try{T().PMPWholeAppHealthLayoutTraceV1=window.PMPWholeAppHealthLayoutTraceV1;T().PMPCurrentBCDDiagnosticsBootstrapV1=window.PMPCurrentBCDDiagnosticsBootstrapV1;T().PMPCurrentDiagnosticsViewBootstrapV1=window.PMPCurrentDiagnosticsViewBootstrapV1}catch(_){}
+retire();[0,500,1500,3500,7000].forEach(ms=>setTimeout(()=>{ensureCurrent('boot_'+ms);ensureCurrentView('boot_'+ms)},ms));window.addEventListener('pageshow',()=>{ensureCurrent('pageshow');ensureCurrentView('pageshow')});document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){ensureCurrent('visible_resume');ensureCurrentView('visible_resume')}});
 })();

@@ -1,0 +1,97 @@
+{
+  "type": "PMP_EXACT_DIAGNOSTICS_VIEW_BOOTSTRAP_GATE_V1",
+  "version": "1.0.0",
+  "unit_id": "P13-U99",
+  "status": "PASS",
+  "scope": {
+    "changed_paths": [
+      "audit/pass13/exact-diagnostics-view-bootstrap-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_EXACT_DIAGNOSTICS_VIEW_BOOTSTRAP_20260803B_001.json",
+      "pmp-diagnostics-writer-trace-v1.js",
+      "tools/test_exact_diagnostics_view_bootstrap_v1.py",
+      "tools/verify_exact_diagnostics_view_bootstrap_v1.py"
+    ],
+    "implementation_paths": [
+      "pmp-diagnostics-writer-trace-v1.js"
+    ]
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_integration",
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/pass13/exact-diagnostics-view-bootstrap-gate-v1.json",
+      "rationale": "The user's live report proved that the stale 2.8 Diagnostics singleton remained active after the 2.9 source merged. This matrix binds exact-version replacement and installation before Whole App Health is used."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass13/exact-diagnostics-view-bootstrap-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_EXACT_DIAGNOSTICS_VIEW_BOOTSTRAP_20260803B_001.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_exact_diagnostics_view_bootstrap_v1.py"
+    ],
+    "verifier_paths": [
+      "tools/verify_exact_diagnostics_view_bootstrap_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass13/receipts/RECEIPT_EXACT_DIAGNOSTICS_VIEW_BOOTSTRAP_20260803B_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The live Whole App Health report continued to identify version 2.8.0 after source version 2.9.0 merged.",
+        "evidence_paths": [
+          "audit/pass13/receipts/RECEIPT_EXACT_DIAGNOSTICS_VIEW_BOOTSTRAP_20260803B_001.json"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The early v30 compatibility runtime is already loaded and can reject and replace the stale Diagnostics presentation API without adding visible UI.",
+        "evidence_paths": [
+          "pmp-diagnostics-writer-trace-v1.js",
+          "tools/test_exact_diagnostics_view_bootstrap_v1.py"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "Exact-version enforcement at the early compatibility bootstrap should prevent App Orchestrator from reusing the stale 2.8 singleton.",
+        "basis_evidence_paths": [
+          "pmp-diagnostics-writer-trace-v1.js",
+          "tools/verify_exact_diagnostics_view_bootstrap_v1.py"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "remove required Diagnostics view version",
+        "remove forced current-source request",
+        "remove exact-version comparison",
+        "remove install call after validation",
+        "reintroduce retired trace button"
+      ]
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "claim_ceiling": "Exact-version Diagnostics presentation bootstrap only. It does not force health results or certify the user's live device before retest."
+}
