@@ -1,0 +1,68 @@
+{
+  "type": "PMP_WHOLE_APP_QUOTA_RESILIENT_PUBLICATION_GATE_V1",
+  "version": "1.0.0",
+  "unit_id": "P13-U102",
+  "status": "PASS",
+  "publication_revision": "1.0.0-quota-resilient-live-memory-publication-20260803F",
+  "scope": {
+    "changed_paths": [
+      "pmp-diagnostics-writer-trace-v1.js",
+      "tools/test_whole_app_quota_resilient_publication_v1.py",
+      "tools/verify_whole_app_quota_resilient_publication_v1.py",
+      "audit/pass13/receipts/RECEIPT_WHOLE_APP_QUOTA_RESILIENT_PUBLICATION_20260803F_001.json",
+      "audit/pass13/whole-app-quota-resilient-publication-gate-v1.json"
+    ],
+    "implementation_paths": ["pmp-diagnostics-writer-trace-v1.js"],
+    "deterministic_test_paths": ["tools/test_whole_app_quota_resilient_publication_v1.py"],
+    "verifier_paths": ["tools/verify_whole_app_quota_resilient_publication_v1.py"],
+    "receipt_paths": ["audit/pass13/receipts/RECEIPT_WHOLE_APP_QUOTA_RESILIENT_PUBLICATION_20260803F_001.json"]
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_integration",
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/pass13/whole-app-quota-resilient-publication-gate-v1.json",
+      "rationale": "The user's live report proved that a complete B-D evaluation was being discarded solely because localStorage quota was exhausted."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass13/whole-app-quota-resilient-publication-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_WHOLE_APP_QUOTA_RESILIENT_PUBLICATION_20260803F_001.json"
+    ],
+    "deterministic_test_paths": ["tools/test_whole_app_quota_resilient_publication_v1.py"],
+    "verifier_paths": ["tools/verify_whole_app_quota_resilient_publication_v1.py"],
+    "receipt_paths": ["audit/pass13/receipts/RECEIPT_WHOLE_APP_QUOTA_RESILIENT_PUBLICATION_20260803F_001.json"],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The B-D producer returned the required 1.1.0 report, but the bounded localStorage publication failed with quota exceeded and the consolidated view therefore reported all five sections as missing.",
+        "evidence_paths": ["audit/pass13/receipts/RECEIPT_WHOLE_APP_QUOTA_RESILIENT_PUBLICATION_20260803F_001.json"]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "Current live health evidence must remain readable for the active runtime even when optional persistence is unavailable; persistence failure should be disclosed without erasing the completed evaluation.",
+        "basis_evidence_paths": [
+          "pmp-diagnostics-writer-trace-v1.js",
+          "tools/verify_whole_app_quota_resilient_publication_v1.py"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "localStorage setItem throws QuotaExceededError for the B-D receipt",
+        "virtual read is attempted for an unrelated key",
+        "live receipt is incomplete",
+        "storage-clearing code is introduced"
+      ]
+    },
+    "required_artifact_roles": ["command","stdout","stderr","exit_status","result","scope","environment","authority_state","manifest"],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {"required": false,"granted": false,"consumed": false}
+  },
+  "claim_ceiling": "Keeps already-produced live B-D evidence readable during quota exhaustion. It does not invent section results, clear storage, or claim that persistence succeeded."
+}
