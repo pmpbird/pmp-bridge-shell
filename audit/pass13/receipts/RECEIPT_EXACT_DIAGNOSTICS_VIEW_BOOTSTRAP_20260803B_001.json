@@ -1,0 +1,22 @@
+{
+  "type": "PMP_EXACT_DIAGNOSTICS_VIEW_BOOTSTRAP_RECEIPT_V1",
+  "version": "1.0.0",
+  "unit_id": "P13-U99",
+  "status": "PASS",
+  "at": "2026-08-03T08:55:00Z",
+  "observed": {
+    "stale_live_version": "2.8.0-stable-health-skeleton-20260731Q",
+    "required_version": "2.9.0-live-bootstrap-await-20260803A",
+    "bootstrap_api": "PMPCurrentDiagnosticsViewBootstrapV1",
+    "receipt_key": "pmp_current_diagnostics_view_bootstrap_v1_receipt"
+  },
+  "checks": {
+    "stale_singleton_rejected": true,
+    "current_source_forced": true,
+    "exact_version_required": true,
+    "install_after_validation": true,
+    "retired_trace_ui_absent": true,
+    "owner_helper_route_storage_boundaries_preserved": true
+  },
+  "claim_ceiling": "Certifies the exact-version Diagnostics presentation bootstrap contract only. Live device confirmation remains required."
+}
