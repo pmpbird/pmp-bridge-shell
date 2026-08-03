@@ -44,7 +44,7 @@ HTML_REPLACEMENTS = {
             '<script src="pmp-app-orchestrator-v1.js?fresh=app-orchestrator-final-clean-startup-certification-20260709A"></script>',
             '<script src="pmp-app-orchestrator-ownership-runtime-v1.js?fresh=exclusive-owner-runtime-20260727A"></script>'
             '<script src="pmp-new-chat-safe-handoff-v1.js?fresh=one-button-copy-or-zip-20260727A"></script>'
-            '<script src="pmp-app-orchestrator-v1.js?fresh=exclusive-ownership-handoff-20260727A"></script>',
+            '<script src="pmp-app-orchestrator-v1.js?fresh=live-diagnostics-a-through-f-integrity-reseal-20260730C"></script>',
         ),
         (
             "pmp-pass1r-version-aligner-v1.js?fresh=active-path-aligner-pass5-stable-20260704I",
