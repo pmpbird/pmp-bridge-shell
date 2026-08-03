@@ -1,13 +1,13 @@
 (()=>{
 'use strict';
-const V='2.9.0-live-bootstrap-await-20260803A';
+const V='2.9.1-bootstrap-contract-alignment-20260803D';
 const OWNER='diagnostics_owner';
 const SCREEN_ID='pmpDiagnosticsScreenV1';
 const AKEY='pmp_diagnostic_coverage_pass_a_v1_receipt';
 const BKEY='pmp_diagnostic_coverage_passes_bcd_v1_receipt';
 const PASS_A_SRC='pmp-diagnostic-coverage-pass-a-v1.js?fresh=live-whole-app-bootstrap-await-20260803A';
 const BOOTSTRAP_SRC='pmp-diagnostics-writer-trace-v1.js?fresh=live-whole-app-bootstrap-await-20260803A';
-const REQUIRED_BOOT_VERSION='3.2.0-transactional-versioned-bcd-bootstrap-20260801B';
+const REQUIRED_BOOT_VERSION='3.3.0-bounded-verified-bcd-publication-20260803C';
 const REQUIRED_BCD_VERSION='1.1.0-final-two-live-proof-20260801A';
 const REQUIRED_BCD_SECTIONS=['bridge_system','library_system','bank_system','continuous_run_system','errors_bug_watch_visual_stability'];
 const CARDS=[['whole_app','Whole App Health','one readable health summary for every major app system'],['full_report','Full Diagnostics','complete expandable evidence for the whole app'],['safe_handoff','New Chat Safe Handoff','architecture, rules, diagnostics, repository audit instructions and exact continuation state']];
