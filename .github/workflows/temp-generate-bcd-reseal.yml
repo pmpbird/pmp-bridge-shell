@@ -1,0 +1,26 @@
+name: Temporary Generate BCD Reseal
+on:
+  push:
+    branches:
+      - chatgpt/reseal-bcd-runtime-context-v1
+permissions:
+  contents: read
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Generate integrity updates
+        run: python3 tools/generate_app_orchestrator_ownership_maintenance_integrity_updates_v1.py
+      - name: Upload generated files
+        uses: actions/upload-artifact@v4
+        with:
+          name: bcd-runtime-context-reseal
+          path: |
+            pmp-runtime-integrity-manifest-v1.json
+            audit/a003-manifest-seal.json
+            pmp-app-current.html
+          if-no-files-found: error
