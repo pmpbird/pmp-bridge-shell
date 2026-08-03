@@ -1,0 +1,62 @@
+{
+  "type": "PMP_BCD_BOUNDED_RECEIPT_PUBLICATION_GATE_V1",
+  "version": "1.0.0",
+  "unit_id": "P13-U100",
+  "status": "PASS",
+  "scope": {
+    "changed_paths": [
+      "audit/pass13/bcd-bounded-receipt-publication-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_BCD_BOUNDED_RECEIPT_PUBLICATION_20260803C_001.json",
+      "pmp-diagnostics-writer-trace-v1.js",
+      "tools/test_bcd_bounded_receipt_publication_v1.py",
+      "tools/verify_bcd_bounded_receipt_publication_v1.py"
+    ],
+    "implementation_paths": ["pmp-diagnostics-writer-trace-v1.js"]
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_integration",
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/pass13/bcd-bounded-receipt-publication-gate-v1.json",
+      "rationale": "The live device returned a complete current B-D evaluation but failed to persist the oversized receipt. This gate binds a bounded verified publication fallback without inventing section outcomes."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass13/bcd-bounded-receipt-publication-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_BCD_BOUNDED_RECEIPT_PUBLICATION_20260803C_001.json"
+    ],
+    "deterministic_test_paths": ["tools/test_bcd_bounded_receipt_publication_v1.py"],
+    "verifier_paths": ["tools/verify_bcd_bounded_receipt_publication_v1.py"],
+    "receipt_paths": ["audit/pass13/receipts/RECEIPT_BCD_BOUNDED_RECEIPT_PUBLICATION_20260803C_001.json"],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The live bootstrap observed the correct 1.1.0 API and returned evaluation version while the persisted receipt remained absent.",
+        "evidence_paths": ["audit/pass13/receipts/RECEIPT_BCD_BOUNDED_RECEIPT_PUBLICATION_20260803C_001.json"]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "A bounded verified receipt should preserve complete live evaluation results on devices where the full evidence payload cannot be persisted.",
+        "basis_evidence_paths": ["pmp-diagnostics-writer-trace-v1.js","tools/verify_bcd_bounded_receipt_publication_v1.py"]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "returned evaluation lacks one required section",
+        "full receipt publication fails",
+        "bounded receipt publication fails",
+        "bounded receipt loses section status or issues",
+        "obsolete NEW_RECEIPT_INCOMPLETE rollback is reintroduced"
+      ]
+    },
+    "required_artifact_roles": ["command","stdout","stderr","exit_status","result","scope","environment","authority_state","manifest"],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {"required": false,"granted": false,"consumed": false}
+  },
+  "claim_ceiling": "Bounded B-D receipt publication only. It does not force PASS, change section evaluation, or certify the user's live device before retest."
+}
