@@ -270,7 +270,7 @@ def main() -> None:
     check("MAX_COPY_BYTES" in handoff, "handoff bounded copy")
     check("storedZip" in handoff and "crc32" in handoff, "handoff ZIP implementation")
     check("NEW_CHAT_SAFE_HANDOFF.json.sha256" in handoff, "handoff sidecar")
-    check("PMP_NEW_CHAT_SAFE_HANDOFF_PACKAGE_MANIFEST_V1" in handoff, "handoff package manifest")
+    check("PMP_NEW_CHAT_SAFE_HANDOFF_PACKAGE_MANIFEST_V2" in handoff, "handoff package manifest V2")
     check("persisted user data" in handoff, "handoff excludes data")
     check(
         "app-orchestrator-diagnostics-handoff-active-path-restoration-v1.json"
