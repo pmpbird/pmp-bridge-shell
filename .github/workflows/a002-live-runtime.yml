@@ -66,7 +66,7 @@ jobs:
           A002_DIAGNOSTICS_RESULT_PATH: a002-whole-app-diagnostics-results.json
         run: |
           set +e
-          node audit/a002-whole-app-diagnostics-v2.cjs 2>&1 | tee a002-whole-app-diagnostics-console.log
+          node audit/a002-whole-app-diagnostics-v3.cjs 2>&1 | tee a002-whole-app-diagnostics-console.log
           code=${PIPESTATUS[0]}
           exit $code
 
