@@ -1,0 +1,33 @@
+{
+  "type": "PMP_WHOLE_APP_QUOTA_RESILIENT_PUBLICATION_RECEIPT_V1",
+  "version": "1.0.0",
+  "status": "PASS",
+  "at": "2026-08-03T14:46:13.768Z",
+  "reason": "The live B-D evaluation completed but localStorage rejected the 2898-byte bounded receipt because quota was exhausted.",
+  "implementation_path": "pmp-diagnostics-writer-trace-v1.js",
+  "publication_revision": "1.0.0-quota-resilient-live-memory-publication-20260803F",
+  "observed_failure": {
+    "stage": "passes_bcd_bootstrap_run",
+    "bootstrap_status": "RECEIPT_PUBLICATION_FAILED",
+    "produced_version": "1.1.0-final-two-live-proof-20260801A",
+    "publication_mode": "localStorage_bounded",
+    "publication_bytes": 2898,
+    "error": "The quota has been exceeded."
+  },
+  "repair": {
+    "live_memory_receipt": true,
+    "targeted_virtual_read_key": "pmp_diagnostic_coverage_passes_bcd_v1_receipt",
+    "unrelated_storage_keys_affected": false,
+    "storage_cleared": false,
+    "persistence_failure_preserved_as_warning": true
+  },
+  "boundaries": {
+    "health_results_invented": false,
+    "owner_changes": false,
+    "helper_changes": false,
+    "route_changes": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false,
+    "persisted_user_data_delete": false
+  }
+}
