@@ -1,0 +1,24 @@
+{
+  "type": "PMP_WHOLE_APP_BOOTSTRAP_CONTRACT_ALIGNMENT_RECEIPT_V1",
+  "version": "1.0.0",
+  "status": "PASS",
+  "at": "2026-08-03T09:54:03.219Z",
+  "reason": "live report rejected current bootstrap 3.3 because Whole App Health still required 3.2",
+  "implementation_path": "pmp-diagnostics-consolidated-view-v1.js",
+  "previous_required_bootstrap_version": "3.2.0-transactional-versioned-bcd-bootstrap-20260801B",
+  "required_bootstrap_version": "3.3.0-bounded-verified-bcd-publication-20260803C",
+  "whole_app_health_version": "2.9.1-bootstrap-contract-alignment-20260803D",
+  "observed_failure": {
+    "stage": "passes_bcd_bootstrap_version",
+    "required": "3.2.0-transactional-versioned-bcd-bootstrap-20260801B",
+    "observed": "3.3.0-bounded-verified-bcd-publication-20260803C"
+  },
+  "boundaries": {
+    "health_results_invented": false,
+    "owner_changes": false,
+    "helper_changes": false,
+    "route_changes": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false
+  }
+}
