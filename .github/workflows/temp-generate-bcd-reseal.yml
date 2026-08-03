@@ -3,27 +3,28 @@ on:
   pull_request:
     branches:
       - main
-  push:
-    branches:
-      - chatgpt/reseal-bcd-runtime-context-v1
 permissions:
-  contents: read
+  contents: write
 jobs:
-  generate:
+  generate-and-commit:
+    if: github.head_ref == 'chatgpt/reseal-bcd-runtime-context-v1'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: chatgpt/reseal-bcd-runtime-context-v1
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Generate integrity updates
+      - name: Generate exact integrity updates
         run: python3 tools/generate_app_orchestrator_ownership_maintenance_integrity_updates_v1.py
-      - name: Upload generated files
-        uses: actions/upload-artifact@v4
-        with:
-          name: bcd-runtime-context-reseal
-          path: |
-            pmp-runtime-integrity-manifest-v1.json
-            audit/a003-manifest-seal.json
-            pmp-app-current.html
-          if-no-files-found: error
+      - name: Remove temporary generation files and commit
+        run: |
+          rm -f .github/workflows/temp-generate-bcd-reseal.yml
+          rm -f audit/pass13/TEMP_BCD_RESEAL_TRIGGER.txt
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add pmp-runtime-integrity-manifest-v1.json audit/a003-manifest-seal.json pmp-app-current.html .github/workflows/temp-generate-bcd-reseal.yml audit/pass13/TEMP_BCD_RESEAL_TRIGGER.txt
+          git commit -m "Reseal B-D runtime-context diagnostics repair"
+          git push origin HEAD:chatgpt/reseal-bcd-runtime-context-v1
