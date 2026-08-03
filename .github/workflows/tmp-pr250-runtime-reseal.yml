@@ -1,0 +1,27 @@
+name: Temporary PR250 Runtime Reseal
+on:
+  pull_request:
+    paths:
+      - 'tools/tmp_generate_pr250_runtime_reseal.py'
+      - '.github/workflows/tmp-pr250-runtime-reseal.yml'
+      - 'pmp-diagnostics-writer-trace-v1.js'
+      - 'pmp-diagnostic-coverage-passes-bcd-v1-1-1-0.js'
+      - 'pmp-runtime-integrity-manifest-v1.json'
+      - 'audit/a003-manifest-seal.json'
+      - 'pmp-app-current.html'
+jobs:
+  generate:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python3 tools/tmp_generate_pr250_runtime_reseal.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pr250-runtime-reseal-generated
+          path: generated-pr250-reseal/
+          if-no-files-found: error
