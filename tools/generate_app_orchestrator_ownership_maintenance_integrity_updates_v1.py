@@ -457,25 +457,33 @@ def main() -> None:
 
     manifest_sha = sha(manifest_bytes)
     seal = json.loads(SEAL.read_text("utf-8"))
+    runtime_identity_changed = (
+        seal.get("manifest_sha256") != manifest_sha
+        or seal.get("runtime_source_set_sha256")
+        != manifest["runtime_source_set_sha256"]
+    )
     seal.update(
         manifest_bytes=len(manifest_bytes),
         manifest_sha256=manifest_sha,
         runtime_source_set_sha256=manifest[
             "runtime_source_set_sha256"
         ],
-        sealed_branch=(
-            active_branch()
-            or "agent/app-orchestrator-owner-conflict-repair-v1"
-        ),
-        maintenance_context=(
-            "Repairs audited multiple-owner and helper-owner conflicts, "
-            "installs exclusive ownership prevention, real read-only "
-            "diagnostics, directly visible one-button safe new-chat handoff, "
-            "and restored Active Path Discovery access. No route, persisted "
-            "user data, storage migration, formal proof, or production "
-            "activation is performed."
-        ),
     )
+    if runtime_identity_changed:
+        seal.update(
+            sealed_branch=(
+                active_branch()
+                or "agent/app-orchestrator-owner-conflict-repair-v1"
+            ),
+            maintenance_context=(
+                "Repairs audited multiple-owner and helper-owner conflicts, "
+                "installs exclusive ownership prevention, real read-only "
+                "diagnostics, directly visible one-button safe new-chat handoff, "
+                "and restored Active Path Discovery access. No route, persisted "
+                "user data, storage migration, formal proof, or production "
+                "activation is performed."
+            ),
+        )
     SEAL.write_text(
         json.dumps(seal, indent=2, sort_keys=True) + "\n", "utf-8"
     )
