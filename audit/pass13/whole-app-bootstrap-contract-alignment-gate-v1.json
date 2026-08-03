@@ -6,6 +6,13 @@
   "required_bootstrap_version": "3.3.0-bounded-verified-bcd-publication-20260803C",
   "whole_app_health_version": "2.9.1-bootstrap-contract-alignment-20260803D",
   "scope": {
+    "changed_paths": [
+      "audit/pass13/receipts/RECEIPT_WHOLE_APP_BOOTSTRAP_CONTRACT_ALIGNMENT_20260803D_001.json",
+      "audit/pass13/whole-app-bootstrap-contract-alignment-gate-v1.json",
+      "pmp-diagnostics-consolidated-view-v1.js",
+      "tools/test_whole_app_bootstrap_contract_alignment_v1.py",
+      "tools/verify_whole_app_bootstrap_contract_alignment_v1.py"
+    ],
     "implementation_paths": [
       "pmp-diagnostics-consolidated-view-v1.js"
     ],
@@ -37,6 +44,36 @@
     ],
     "verifier_paths": [
       "tools/verify_whole_app_bootstrap_contract_alignment_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass13/receipts/RECEIPT_WHOLE_APP_BOOTSTRAP_CONTRACT_ALIGNMENT_20260803D_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The live Whole App Health report required bootstrap 3.2 while observing the installed bootstrap 3.3, and therefore refused to run Passes B-D.",
+        "evidence_paths": [
+          "audit/pass13/receipts/RECEIPT_WHOLE_APP_BOOTSTRAP_CONTRACT_ALIGNMENT_20260803D_001.json"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The consolidated diagnostics source contained the obsolete REQUIRED_BOOT_VERSION constant even after bootstrap 3.3 was merged and resealed.",
+        "evidence_paths": [
+          "pmp-diagnostics-consolidated-view-v1.js",
+          "tools/test_whole_app_bootstrap_contract_alignment_v1.py"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "Aligning the exact required bootstrap version to 3.3 allows Whole App Health to execute the already-installed bounded publication bootstrap instead of rejecting it before evaluation.",
+        "basis_evidence_paths": [
+          "pmp-diagnostics-consolidated-view-v1.js",
+          "tools/verify_whole_app_bootstrap_contract_alignment_v1.py"
+        ]
+      }
     ],
     "fault_injection": {
       "status": "COVERED",
