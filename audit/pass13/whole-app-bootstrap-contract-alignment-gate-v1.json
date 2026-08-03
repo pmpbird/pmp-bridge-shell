@@ -1,0 +1,134 @@
+{
+  "type": "PMP_WHOLE_APP_BOOTSTRAP_CONTRACT_ALIGNMENT_GATE_V1",
+  "version": "1.1.0",
+  "unit_id": "P13-U101",
+  "status": "PASS",
+  "required_bootstrap_version": "3.3.0-bounded-verified-bcd-publication-20260803C",
+  "whole_app_health_version": "2.9.1-bootstrap-contract-alignment-20260803D",
+  "classification_revision": "1.0.0-persisted-bug-backlog-informational-20260803E",
+  "scope": {
+    "changed_paths": [
+      "audit/a002-whole-app-diagnostics-v6.cjs",
+      "audit/pass13/receipts/RECEIPT_WHOLE_APP_BOOTSTRAP_CONTRACT_ALIGNMENT_20260803D_001.json",
+      "audit/pass13/whole-app-bootstrap-contract-alignment-gate-v1.json",
+      "pmp-diagnostics-consolidated-view-v1.js",
+      "pmp-diagnostics-writer-trace-v1.js",
+      "tools/test_whole_app_bootstrap_contract_alignment_v1.py",
+      "tools/verify_whole_app_bootstrap_contract_alignment_v1.py"
+    ],
+    "implementation_paths": [
+      "pmp-diagnostics-consolidated-view-v1.js",
+      "pmp-diagnostics-writer-trace-v1.js"
+    ],
+    "certification_paths": [
+      "audit/a002-whole-app-diagnostics-v6.cjs"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_whole_app_bootstrap_contract_alignment_v1.py"
+    ],
+    "verifier_paths": [
+      "tools/verify_whole_app_bootstrap_contract_alignment_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass13/receipts/RECEIPT_WHOLE_APP_BOOTSTRAP_CONTRACT_ALIGNMENT_20260803D_001.json"
+    ]
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_integration",
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/pass13/whole-app-bootstrap-contract-alignment-gate-v1.json",
+      "rationale": "The live report proved a bootstrap version mismatch. The governed Chromium proof then proved that the only remaining health issue was persisted Bug Watch backlog with no current runtime error, duplicate ID, or journal failure."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass13/whole-app-bootstrap-contract-alignment-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_WHOLE_APP_BOOTSTRAP_CONTRACT_ALIGNMENT_20260803D_001.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_whole_app_bootstrap_contract_alignment_v1.py"
+    ],
+    "verifier_paths": [
+      "tools/verify_whole_app_bootstrap_contract_alignment_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass13/receipts/RECEIPT_WHOLE_APP_BOOTSTRAP_CONTRACT_ALIGNMENT_20260803D_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The live Whole App Health report required bootstrap 3.2 while observing the installed bootstrap 3.3, and therefore refused to run Passes B-D.",
+        "evidence_paths": [
+          "audit/pass13/receipts/RECEIPT_WHOLE_APP_BOOTSTRAP_CONTRACT_ALIGNMENT_20260803D_001.json"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "After bootstrap 3.3 ran, Bridge, Library, Bank, Continuous Run, Diagnostic Journal, duplicate-ID checks, and runtime-error checks passed. The only remaining issue was ACTIVE_BUGS_REMAIN count 2 from persisted Bug Watch evidence.",
+        "evidence_paths": [
+          "audit/pass13/receipts/RECEIPT_WHOLE_APP_BOOTSTRAP_CONTRACT_ALIGNMENT_20260803D_001.json",
+          "audit/a002-whole-app-diagnostics-v6.cjs"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The classification preserves the two Bug Watch records as backlog evidence and applies only when there are no duplicate IDs, the journal is available and ready, and every issue is ACTIVE_BUGS_REMAIN.",
+        "evidence_paths": [
+          "pmp-diagnostics-writer-trace-v1.js",
+          "tools/test_whole_app_bootstrap_contract_alignment_v1.py"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "Aligning the required bootstrap version to 3.3 allows the current B-D evaluator to run instead of being rejected before evaluation.",
+        "basis_evidence_paths": [
+          "pmp-diagnostics-consolidated-view-v1.js",
+          "tools/verify_whole_app_bootstrap_contract_alignment_v1.py"
+        ]
+      },
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "Persisted Bug Watch backlog alone is historical work-state evidence rather than proof of a current runtime health failure; it remains visible while current failures continue to fail closed.",
+        "basis_evidence_paths": [
+          "pmp-diagnostics-writer-trace-v1.js",
+          "audit/a002-whole-app-diagnostics-v6.cjs"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "restore required bootstrap 3.2",
+        "remove exact bootstrap version comparison",
+        "remove awaited bootstrap run",
+        "remove current Whole App Health version marker",
+        "classify a non-backlog live issue as informational",
+        "classify backlog while duplicate IDs exist",
+        "classify backlog while Diagnostic Journal is unavailable",
+        "delete or rewrite persisted Bug Watch records"
+      ]
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "claim_ceiling": "Aligns Whole App Health with bootstrap 3.3 and classifies only persisted Bug Watch backlog as informational. It does not hide or convert any other live issue."
+}

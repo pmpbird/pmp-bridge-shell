@@ -6,7 +6,7 @@ const BASE = process.env.A002_BASE_URL || 'http://127.0.0.1:8000/';
 const RESULT_PATH = process.env.A002_DIAGNOSTICS_RESULT_PATH || 'a002-whole-app-diagnostics-results.json';
 const CURRENT = 'pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html';
 const INNER = 'pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html';
-const REQUIRED_BOOT_VERSION = '3.2.0-transactional-versioned-bcd-bootstrap-20260801B';
+const REQUIRED_BOOT_VERSION = '3.3.0-bounded-verified-bcd-publication-20260803C';
 const REQUIRED_BCD_VERSION = '1.1.0-final-two-live-proof-20260801A';
 const SECTIONS = ['bridge_system','library_system','bank_system','continuous_run_system','errors_bug_watch_visual_stability'];
 
@@ -47,8 +47,8 @@ async function retiredTraceControls(page){const found=[];for(const frame of page
   const completed=Array.isArray(state.bootstrapReceipt?.complete_sections)?state.bootstrapReceipt.complete_sections:[];
   record('transactional-bootstrap-published-complete-current-receipt',state.runResult?.status==='PASS'&&state.bootstrapReceipt?.status==='PASS'&&state.bootstrapReceipt?.observed_api_version===REQUIRED_BCD_VERSION&&state.bootstrapReceipt?.observed_receipt_version===REQUIRED_BCD_VERSION&&SECTIONS.every(s=>completed.includes(s)),{run_result:state.runResult,bootstrap_receipt:state.bootstrapReceipt});
   record('passes-bcd-receipt-version-current',state.bcdReceipt?.version===REQUIRED_BCD_VERSION,{observed:state.bcdReceipt?.version||null,required:REQUIRED_BCD_VERSION});
-  for(const section of SECTIONS){const value=state.bcdReceipt?.[section]||null;record(`whole-app-section-pass:${section}`,value?.status==='PASS',{status:value?.status||'MISSING',type:value?.type||null,issues:Array.isArray(value?.issues)?value.issues:null,checks:value?.checks||null})}
-  record('passes-bcd-overall-pass',state.bcdReceipt?.status==='PASS',{status:state.bcdReceipt?.status||'MISSING',reason:state.bcdReceipt?.reason||null});
+  for(const section of SECTIONS){const value=state.bcdReceipt?.[section]||null;record(`whole-app-section-pass:${section}`,value?.status==='PASS',{status:value?.status||'MISSING',type:value?.type||null,issues:Array.isArray(value?.issues)?value.issues:null,backlog:Array.isArray(value?.backlog)?value.backlog:null,checks:value?.checks||null})}
+  record('passes-bcd-overall-pass',state.bcdReceipt?.status==='PASS',{status:state.bcdReceipt?.status||'MISSING',reason:state.bcdReceipt?.reason||null,classification_revision:state.bcdReceipt?.classification_revision||null});
   record('diagnostic-journal-current-session-proof',state.journalReceipt?.status==='PASS'&&state.journalViewReceipt?.available===true,{journal:state.journalReceipt,journal_view:state.journalViewReceipt});
   record('continuous-run-canonical-32-level-proof',state.continuousReceipt?.status==='PASS'&&state.continuousReceipt?.expected_level_count===32&&Array.isArray(state.continuousReceipt?.expected_levels)&&state.continuousReceipt.expected_levels.length===32,{continuous:state.continuousReceipt});
   const traces=await retiredTraceControls(page);record('retired-layout-trace-control-absent',traces.length===0,traces);

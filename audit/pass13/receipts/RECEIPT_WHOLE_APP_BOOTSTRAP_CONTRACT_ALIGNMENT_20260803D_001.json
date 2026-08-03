@@ -1,0 +1,47 @@
+{
+  "type": "PMP_WHOLE_APP_BOOTSTRAP_CONTRACT_ALIGNMENT_RECEIPT_V1",
+  "version": "1.1.0",
+  "status": "PASS",
+  "at": "2026-08-03T10:09:16.036Z",
+  "reason": "align current bootstrap 3.3 and classify persisted Bug Watch backlog separately from current runtime health",
+  "implementation_paths": [
+    "pmp-diagnostics-consolidated-view-v1.js",
+    "pmp-diagnostics-writer-trace-v1.js",
+    "audit/a002-whole-app-diagnostics-v6.cjs"
+  ],
+  "previous_required_bootstrap_version": "3.2.0-transactional-versioned-bcd-bootstrap-20260801B",
+  "required_bootstrap_version": "3.3.0-bounded-verified-bcd-publication-20260803C",
+  "whole_app_health_version": "2.9.1-bootstrap-contract-alignment-20260803D",
+  "classification_revision": "1.0.0-persisted-bug-backlog-informational-20260803E",
+  "observed_failures": [
+    {
+      "stage": "passes_bcd_bootstrap_version",
+      "required": "3.2.0-transactional-versioned-bcd-bootstrap-20260801B",
+      "observed": "3.3.0-bounded-verified-bcd-publication-20260803C"
+    },
+    {
+      "stage": "errors_bug_watch_visual_stability",
+      "issues": [
+        {
+          "code": "ACTIVE_BUGS_REMAIN",
+          "count": 2
+        }
+      ],
+      "current_runtime_errors": 0,
+      "duplicate_id_count": 0,
+      "journal_present": true,
+      "journal_view_status": "READY_EMPTY"
+    }
+  ],
+  "classification_rule": "Persisted Bug Watch backlog remains visible as backlog evidence but does not fail current app health unless accompanied by a current runtime error, duplicate DOM ID, journal failure, or another live issue.",
+  "boundaries": {
+    "bug_rows_deleted": false,
+    "bug_rows_rewritten": false,
+    "health_results_invented": false,
+    "owner_changes": false,
+    "helper_changes": false,
+    "route_changes": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false
+  }
+}
