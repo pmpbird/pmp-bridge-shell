@@ -1,0 +1,89 @@
+{
+  "type": "PMP_LIVE_WHOLE_APP_BOOTSTRAP_AWAIT_GATE_V1",
+  "version": "1.0.0",
+  "unit_id": "P13-U23",
+  "status": "PASS",
+  "scope": {
+    "changed_paths": [
+      "audit/pass13/live-whole-app-bootstrap-await-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_LIVE_WHOLE_APP_BOOTSTRAP_AWAIT_20260803A_001.json",
+      "pmp-diagnostics-consolidated-view-v1.js",
+      "tools/test_live_whole_app_bootstrap_await_v1.py",
+      "tools/verify_live_whole_app_bootstrap_await_v1.py"
+    ],
+    "implementation_paths": [
+      "pmp-diagnostics-consolidated-view-v1.js"
+    ]
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_integration",
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/pass13/live-whole-app-bootstrap-await-gate-v1.json",
+      "rationale": "Binds the exact Whole App Health open and copy sequence to the current transactional Passes B-D bootstrap and complete receipt validation."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass13/live-whole-app-bootstrap-await-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_LIVE_WHOLE_APP_BOOTSTRAP_AWAIT_20260803A_001.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_live_whole_app_bootstrap_await_v1.py"
+    ],
+    "verifier_paths": [
+      "tools/verify_live_whole_app_bootstrap_await_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass13/receipts/RECEIPT_LIVE_WHOLE_APP_BOOTSTRAP_AWAIT_20260803A_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The implementation awaits PMPCurrentBCDDiagnosticsBootstrapV1.run before reading the Passes B-D receipt.",
+        "evidence_paths": [
+          "pmp-diagnostics-consolidated-view-v1.js",
+          "tools/test_live_whole_app_bootstrap_await_v1.py"
+        ]
+      },
+      {
+        "claim_type": "OBSERVED",
+        "fact": "Coverage completes only when the current B-D version and all five required sections are present.",
+        "evidence_paths": [
+          "pmp-diagnostics-consolidated-view-v1.js",
+          "audit/pass13/receipts/RECEIPT_LIVE_WHOLE_APP_BOOTSTRAP_AWAIT_20260803A_001.json"
+        ]
+      }
+    ],
+    "inferred_conclusions": [],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "remove the awaited transactional bootstrap call",
+        "restore the stale unversioned direct B-D loader",
+        "accept an obsolete B-D receipt version",
+        "accept a receipt missing one of the five required sections",
+        "copy the report before produceEvidence resolves"
+      ]
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "claim_ceiling": "Deterministic integration evidence only. No production merge, live-device success, ownership change, route change, or persisted-user-data mutation is implied."
+}
