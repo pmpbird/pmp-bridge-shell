@@ -1,0 +1,96 @@
+{
+  "type": "PMP_BCD_ACCESSIBLE_RUNTIME_CONTEXT_GATE_V1",
+  "version": "1.0.0",
+  "unit_id": "P13-U103",
+  "status": "PASS",
+  "implementation_revision": "1.2.0-accessible-runtime-context-20260803G",
+  "scope": {
+    "changed_paths": [
+      "pmp-diagnostic-coverage-passes-bcd-v1-1-1-0.js",
+      "tools/test_bcd_accessible_runtime_context_v1.py",
+      "audit/pass13/receipts/RECEIPT_BCD_ACCESSIBLE_RUNTIME_CONTEXT_20260803G_001.json",
+      "audit/pass13/bcd-accessible-runtime-context-gate-v1.json"
+    ],
+    "implementation_paths": [
+      "pmp-diagnostic-coverage-passes-bcd-v1-1-1-0.js"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_bcd_accessible_runtime_context_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass13/receipts/RECEIPT_BCD_ACCESSIBLE_RUNTIME_CONTEXT_20260803G_001.json"
+    ]
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_integration",
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/pass13/bcd-accessible-runtime-context-gate-v1.json",
+      "rationale": "The live device proved that the B-D evaluator published complete sections but reported visible Bridge, Library, and Bank surfaces missing because its original scan root could be inaccessible from the nested frame where it ran."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass13/bcd-accessible-runtime-context-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_BCD_ACCESSIBLE_RUNTIME_CONTEXT_20260803G_001.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_bcd_accessible_runtime_context_v1.py"
+    ],
+    "verifier_paths": [
+      "tools/test_bcd_accessible_runtime_context_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass13/receipts/RECEIPT_BCD_ACCESSIBLE_RUNTIME_CONTEXT_20260803G_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "The bootstrap was complete and all B-D sections were published, while visible Bridge, Library, and Bank controls were reported absent and Continuous Run canonical evidence was not found.",
+        "evidence_paths": [
+          "audit/pass13/receipts/RECEIPT_BCD_ACCESSIBLE_RUNTIME_CONTEXT_20260803G_001.json"
+        ]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "The evaluator must begin from the highest accessible same-origin ancestor, retain the current window as a fallback root, and scan accessible descendant frames rather than treating an inaccessible top document as an empty app.",
+        "basis_evidence_paths": [
+          "pmp-diagnostic-coverage-passes-bcd-v1-1-1-0.js",
+          "tools/test_bcd_accessible_runtime_context_v1.py"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "restore window.top || window as the sole scan root",
+        "remove current-window fallback",
+        "remove descendant frame traversal",
+        "require closed Continuous Run levels to be mounted",
+        "remove canonical API and receipt evidence alternatives",
+        "introduce owner, helper, route, DOM repair, storage migration, or persisted user-data mutation"
+      ]
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "claim_ceiling": "Static and deterministic evidence for the runtime-context scan repair only. Live-device PASS requires post-merge retest."
+}
