@@ -1,0 +1,70 @@
+{
+  "type": "PMP_WHOLE_APP_BOOTSTRAP_CONTRACT_ALIGNMENT_GATE_V1",
+  "version": "1.0.0",
+  "unit_id": "P13-U101",
+  "status": "PASS",
+  "required_bootstrap_version": "3.3.0-bounded-verified-bcd-publication-20260803C",
+  "whole_app_health_version": "2.9.1-bootstrap-contract-alignment-20260803D",
+  "scope": {
+    "implementation_paths": [
+      "pmp-diagnostics-consolidated-view-v1.js"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_whole_app_bootstrap_contract_alignment_v1.py"
+    ],
+    "verifier_paths": [
+      "tools/verify_whole_app_bootstrap_contract_alignment_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass13/receipts/RECEIPT_WHOLE_APP_BOOTSTRAP_CONTRACT_ALIGNMENT_20260803D_001.json"
+    ]
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_integration",
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/pass13/whole-app-bootstrap-contract-alignment-gate-v1.json",
+      "rationale": "The user's live Whole App Health report directly proved a version-contract mismatch: the renderer required bootstrap 3.2 while the installed repaired bootstrap was 3.3."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass13/whole-app-bootstrap-contract-alignment-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_WHOLE_APP_BOOTSTRAP_CONTRACT_ALIGNMENT_20260803D_001.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_whole_app_bootstrap_contract_alignment_v1.py"
+    ],
+    "verifier_paths": [
+      "tools/verify_whole_app_bootstrap_contract_alignment_v1.py"
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "restore required bootstrap 3.2",
+        "remove exact bootstrap version comparison",
+        "remove awaited bootstrap run",
+        "remove current Whole App Health version marker"
+      ]
+    },
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "claim_ceiling": "Aligns Whole App Health with the already-installed bootstrap 3.3. It does not force any section to PASS."
+}
