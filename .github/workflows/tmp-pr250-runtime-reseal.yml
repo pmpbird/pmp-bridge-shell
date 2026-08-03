@@ -10,12 +10,14 @@ on:
       - 'audit/a003-manifest-seal.json'
       - 'pmp-app-current.html'
 jobs:
-  generate:
+  generate-and-commit:
     runs-on: ubuntu-24.04
     permissions:
-      contents: read
+      contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -25,3 +27,12 @@ jobs:
           name: pr250-runtime-reseal-generated
           path: generated-pr250-reseal/
           if-no-files-found: error
+      - name: Commit generated reseal and retire temporary generator
+        run: |
+          rm -rf generated-pr250-reseal
+          git rm tools/tmp_generate_pr250_runtime_reseal.py .github/workflows/tmp-pr250-runtime-reseal.yml
+          git add pmp-runtime-integrity-manifest-v1.json audit/a003-manifest-seal.json pmp-app-current.html
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git commit -m "Reseal PR250 diagnostics runtime chain"
+          git push origin HEAD:${{ github.head_ref }}
