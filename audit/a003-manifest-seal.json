@@ -1,5 +1,4 @@
 {
-  "diagnostics_context": "PR250 transactional cache-proof Passes B-D bootstrap and immutable 1.1.0 runtime source reseal; no owner/helper/route/storage authority change.",
   "manifest_bytes": 395562,
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
   "manifest_sha256": "00bfea590208be2adafe71fe788eb1e9070d67782c39678eb5cab87e10b51378",
@@ -9,7 +8,7 @@
   "root_trust_anchor": "pmp-app-current.html",
   "rule": "The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.",
   "runtime_source_set_sha256": "becf0dd2307f70c587d4d1d400b7fe15794423378bfa4012d6ea5191ed600892",
-  "sealed_branch": "chatgpt/reseal-pr250-runtime",
+  "sealed_branch": "main",
   "status": "SEALED",
   "type": "PMP_A003_MANIFEST_SEAL_V1"
 }
