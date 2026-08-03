@@ -1,0 +1,45 @@
+{
+  "type": "PMP_BCD_ACCESSIBLE_RUNTIME_CONTEXT_RECEIPT_V1",
+  "version": "1.0.0",
+  "status": "PASS",
+  "at": "2026-08-03T15:56:00Z",
+  "owner": "diagnostics_owner",
+  "implementation": "pmp-diagnostic-coverage-passes-bcd-v1-1-1-0.js",
+  "implementation_revision": "1.2.0-accessible-runtime-context-20260803G",
+  "observed_failure": {
+    "bootstrap_complete": true,
+    "passes_bcd_published": true,
+    "false_negative_sections": [
+      "bridge_system",
+      "library_system",
+      "bank_system",
+      "continuous_run_system"
+    ],
+    "visible_but_reported_missing": [
+      "Bridge tab",
+      "Library tab",
+      "Bank tab"
+    ]
+  },
+  "repair": {
+    "highest_accessible_same_origin_ancestor": true,
+    "current_window_fallback": true,
+    "descendant_frame_scan": true,
+    "closed_continuous_run_mount_deferred": true,
+    "canonical_continuous_run_evidence_sources": [
+      "loaded canonical script",
+      "canonical runtime API",
+      "canonical scope receipt"
+    ]
+  },
+  "boundaries": {
+    "health_results_invented": false,
+    "owner_changes": false,
+    "helper_changes": false,
+    "route_changes": false,
+    "dom_repair": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false
+  },
+  "claim_ceiling": "Repairs the read-only evidence scan root and canonical closed-context lookup. Live-device PASS remains subject to post-merge retest."
+}
