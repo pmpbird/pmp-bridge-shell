@@ -1,5 +1,8 @@
 name: Temporary Generate BCD Reseal
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - chatgpt/reseal-bcd-runtime-context-v1
