@@ -1,0 +1,32 @@
+name: Temporary Install BCD Reseal
+on:
+  push:
+    branches:
+      - chatgpt/install-bcd-reseal-and-atlas-classification-v1
+permissions:
+  contents: write
+jobs:
+  install:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: chatgpt/install-bcd-reseal-and-atlas-classification-v1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Generate exact integrity updates
+        run: python3 tools/generate_app_orchestrator_ownership_maintenance_integrity_updates_v1.py
+      - name: Remove temporary generator files
+        run: |
+          rm -f .github/workflows/temp-install-bcd-reseal.yml
+          rm -f audit/temporary-install-bcd-reseal-trigger-v1.json
+      - name: Commit generated reseal
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add pmp-runtime-integrity-manifest-v1.json audit/a003-manifest-seal.json pmp-app-current.html .github/workflows/temp-install-bcd-reseal.yml audit/temporary-install-bcd-reseal-trigger-v1.json
+          git commit -m "Reseal B-D runtime-context diagnostics repair"
+          git push origin HEAD:chatgpt/install-bcd-reseal-and-atlas-classification-v1
