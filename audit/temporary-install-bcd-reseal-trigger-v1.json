@@ -1,0 +1,5 @@
+{
+  "type": "PMP_TEMPORARY_BCD_RESEAL_TRIGGER_V1",
+  "reason": "Install exact A-003 reseal for merged B-D runtime-context repair",
+  "temporary": true
+}
