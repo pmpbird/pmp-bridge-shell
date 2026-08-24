@@ -1,0 +1,70 @@
+{
+  "type": "PMP_WHOLE_APP_FIRST_OPEN_LAZY_SURFACE_HEALTH_GATE_V1",
+  "version": "1.0.0",
+  "unit_id": "P13-U103",
+  "status": "PASS",
+  "revision": "1.3.0-first-open-lazy-surface-health-20260824A",
+  "scope": {
+    "changed_paths": [
+      "pmp-diagnostic-coverage-passes-bcd-v1-1-1-0.js",
+      "tools/test_whole_app_first_open_lazy_surface_health_v1.py",
+      "tools/verify_whole_app_first_open_lazy_surface_health_v1.py",
+      "audit/pass13/receipts/RECEIPT_WHOLE_APP_FIRST_OPEN_LAZY_SURFACE_HEALTH_20260824A_001.json",
+      "audit/pass13/whole-app-first-open-lazy-surface-health-gate-v1.json"
+    ],
+    "implementation_paths": ["pmp-diagnostic-coverage-passes-bcd-v1-1-1-0.js"],
+    "deterministic_test_paths": ["tools/test_whole_app_first_open_lazy_surface_health_v1.py"],
+    "verifier_paths": ["tools/verify_whole_app_first_open_lazy_surface_health_v1.py"],
+    "receipt_paths": ["audit/pass13/receipts/RECEIPT_WHOLE_APP_FIRST_OPEN_LAZY_SURFACE_HEALTH_20260824A_001.json"]
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_integration",
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/pass13/whole-app-first-open-lazy-surface-health-gate-v1.json",
+      "rationale": "The live iPhone screenshot proved that Bridge, Library, and Bank navigation entries were present while Diagnostics was active, but health incorrectly required inactive lazy-mounted surfaces to be present immediately."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/pass13/whole-app-first-open-lazy-surface-health-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_WHOLE_APP_FIRST_OPEN_LAZY_SURFACE_HEALTH_20260824A_001.json"
+    ],
+    "deterministic_test_paths": ["tools/test_whole_app_first_open_lazy_surface_health_v1.py"],
+    "verifier_paths": ["tools/verify_whole_app_first_open_lazy_surface_health_v1.py"],
+    "receipt_paths": ["audit/pass13/receipts/RECEIPT_WHOLE_APP_FIRST_OPEN_LAZY_SURFACE_HEALTH_20260824A_001.json"],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "fact": "Whole App Health was opened while Diagnostics was active. The live screenshot visibly showed Bridge, Library, and Bank navigation labels while those systems were reported missing because their inactive surfaces were not mounted.",
+        "evidence_paths": ["audit/pass13/receipts/RECEIPT_WHOLE_APP_FIRST_OPEN_LAZY_SURFACE_HEALTH_20260824A_001.json"]
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "conclusion": "For lazy-mounted sections, first-open health must validate immediate navigation/owner evidence and defer inactive surface-mount validation until the corresponding section is active; otherwise healthy inactive screens are misclassified as failed.",
+        "basis_evidence_paths": [
+          "pmp-diagnostic-coverage-passes-bcd-v1-1-1-0.js",
+          "tools/verify_whole_app_first_open_lazy_surface_health_v1.py"
+        ]
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "Bridge navigation entry missing",
+        "Library navigation entry missing",
+        "Bank navigation entry missing",
+        "active section surface missing",
+        "Library owner mismatch",
+        "forced PASS classification introduced"
+      ]
+    },
+    "required_artifact_roles": ["command","stdout","stderr","exit_status","result","scope","environment","authority_state","manifest"],
+    "upload_before_enforcement": true,
+    "automatic_retry": false,
+    "special_authority": {"required": false,"granted": false,"consumed": false}
+  },
+  "claim_ceiling": "Repairs first-open lazy-surface health classification while preserving fail-closed navigation, ownership, active-surface, journal, duplicate, and Continuous Run checks. It does not claim unfinished Library machine integration is complete."
+}
