@@ -1,0 +1,29 @@
+{
+  "type": "PMP_WHOLE_APP_FIRST_OPEN_LAZY_SURFACE_HEALTH_RECEIPT_V1",
+  "version": "1.0.0",
+  "revision": "1.3.0-first-open-lazy-surface-health-20260824A",
+  "status": "PASS",
+  "observed_problem": {
+    "bridge": ["BRIDGE_TAB_NOT_FOUND", "BRIDGE_SURFACE_NOT_FOUND", "BRIDGE_RUNTIME_SCRIPTS_NOT_FOUND"],
+    "library": ["LIBRARY_SURFACE_NOT_FOUND"],
+    "bank": ["BANK_TAB_NOT_FOUND", "BANK_SURFACE_NOT_FOUND"]
+  },
+  "observed_context": "Whole App Health was opened while Diagnostics was the active screen; the screenshot visibly contained Bridge, Library, and Bank bottom-navigation entries while their inactive surfaces were not mounted.",
+  "repair": {
+    "navigation_labels": "exact visible label evidence is accepted in addition to button/a/.tab selectors",
+    "inactive_surface_mounts": "deferred while Diagnostics is active",
+    "active_surface_mounts": "remain required",
+    "library_machine_integration": "reported separately from Library shell health",
+    "boot": "one settled first-open evaluation replaces three early receipt writes"
+  },
+  "boundaries": {
+    "read_only": true,
+    "owner_changes": false,
+    "helper_changes": false,
+    "route_changes": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false,
+    "dom_repair": false,
+    "forced_pass": false
+  }
+}
