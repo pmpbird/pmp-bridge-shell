@@ -1,0 +1,111 @@
+name: Reseal First Open Health Runtime
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/reseal-first-open-health-v1.yml'
+      - 'pmp-diagnostic-coverage-passes-bcd-v1-1-1-0.js'
+      - 'pmp-runtime-integrity-manifest-v1.json'
+      - 'pmp-app-current.html'
+      - 'audit/a003-manifest-seal.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: reseal-first-open-health-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish-reseal:
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref == 'chatgpt/reseal-first-open-health-v1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact reseal branch
+        uses: actions/checkout@v4
+        with:
+          ref: chatgpt/reseal-first-open-health-v1
+          fetch-depth: 0
+
+      - name: Regenerate exact A-003 manifest root and seal
+        run: |
+          set -euo pipefail
+          python3 tools/build_a003_integrity_manifest.py --output /tmp/a003-manifest.json --report /tmp/a003-probe.json
+          python3 - <<'PY'
+          import hashlib,json,pathlib,re
+          generated=pathlib.Path('/tmp/a003-manifest.json')
+          manifest=json.loads(generated.read_text())
+          manifest.pop('source_commit',None)
+          manifest.pop('self_digest_for_generated_bytes',None)
+          identity={
+            'records':[(r['path'],r['sha256_hex']) for r in manifest.get('records',[])],
+            'historical_records':[(r['path'],r.get('repository_ref'),r['sha256_hex']) for r in manifest.get('historical_records',[])],
+            'external_records':[(r['url'],r['sha256_hex']) for r in manifest.get('external_records',[])],
+            'root_trust_anchors':manifest.get('root_trust_anchors',[]),
+            'policy':{
+              'algorithm':manifest.get('algorithm'),
+              'unlisted_executable_policy':manifest.get('unlisted_executable_policy'),
+              'network_policy':manifest.get('network_policy')
+            }
+          }
+          manifest['version']='20260711A-A003-FINAL'
+          manifest['runtime_source_set_sha256']=hashlib.sha256(json.dumps(identity,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+          manifest['source_identity_rule']='Deterministic digest of protected local, historical, external, root-anchor, and policy identities; audit/workflow-only commits do not alter this identity.'
+          manifest_bytes=(json.dumps(manifest,indent=2,sort_keys=True)+'\n').encode()
+          pathlib.Path('pmp-runtime-integrity-manifest-v1.json').write_bytes(manifest_bytes)
+          manifest_sha=hashlib.sha256(manifest_bytes).hexdigest()
+          root_path=pathlib.Path('pmp-app-current.html')
+          root=root_path.read_text()
+          updated,count=re.subn(r"const MANIFEST_SHA256='(?:__A003_MANIFEST_SHA256__|[0-9a-f]{64})';",f"const MANIFEST_SHA256='{manifest_sha}';",root,count=1)
+          assert count==1
+          root_path.write_text(updated)
+          seal={
+            'type':'PMP_A003_MANIFEST_SEAL_V1',
+            'repair_id':'A-003',
+            'status':'SEALED',
+            'manifest_path':'pmp-runtime-integrity-manifest-v1.json',
+            'manifest_sha256':manifest_sha,
+            'manifest_bytes':len(manifest_bytes),
+            'manifest_version':'20260711A-A003-FINAL',
+            'runtime_source_set_sha256':manifest['runtime_source_set_sha256'],
+            'root_trust_anchor':'pmp-app-current.html',
+            'root_self_verifiable':False,
+            'sealed_branch':'chatgpt/reseal-first-open-health-v1',
+            'rule':'The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.',
+            'context':'First-open Whole App Health lazy-surface evaluator reseal after PR #263.'
+          }
+          pathlib.Path('audit/a003-manifest-seal.json').write_text(json.dumps(seal,indent=2,sort_keys=True)+'\n')
+          target=next((r for r in manifest['records'] if r['path']=='pmp-diagnostic-coverage-passes-bcd-v1-1-1-0.js'),None)
+          assert target is not None
+          source=pathlib.Path('pmp-diagnostic-coverage-passes-bcd-v1-1-1-0.js').read_text()
+          assert '1.3.0-first-open-lazy-surface-health-20260824A' in source
+          print(json.dumps({'manifest_sha256':manifest_sha,'runtime_source_set_sha256':manifest['runtime_source_set_sha256'],'bcd_sha256':target['sha256_hex']},indent=2))
+          PY
+
+      - name: Commit only the exact reseal outputs
+        run: |
+          set -euo pipefail
+          git rm .github/workflows/reseal-first-open-health-v1.yml
+          python3 - <<'PY'
+          import subprocess
+          allowed={
+            '.github/workflows/reseal-first-open-health-v1.yml',
+            'pmp-runtime-integrity-manifest-v1.json',
+            'pmp-app-current.html',
+            'audit/a003-manifest-seal.json'
+          }
+          changed=set(subprocess.check_output(['git','diff','--name-only'],text=True).splitlines())
+          assert changed<=allowed,sorted(changed-allowed)
+          assert {'pmp-runtime-integrity-manifest-v1.json','pmp-app-current.html','audit/a003-manifest-seal.json'}<=changed,sorted(changed)
+          PY
+          git config user.name 'pmp-a003-reseal-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add pmp-runtime-integrity-manifest-v1.json pmp-app-current.html audit/a003-manifest-seal.json
+          git commit -m 'A-003 reseal first-open health runtime'
+          git push origin HEAD:chatgpt/reseal-first-open-health-v1
