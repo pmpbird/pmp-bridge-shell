@@ -1,0 +1,119 @@
+{
+  "type": "PMP_ACTIVE_PATH_FRESH_SCAN_CLASSIFICATION_TRUTH_GATE_V1",
+  "version": "1.0.0",
+  "unit_id": "P13-U105",
+  "revision": "1.4.0-fresh-scan-classification-truth-20260825A",
+  "status": "PENDING_PR_CI",
+  "claim_ceiling": "Repairs Active Path report freshness and classification truth only. It does not add, restore, delete, move, reroute, or normalize files; it does not change owner authority, helper authority, Bank, Continuous Run, storage, or persisted user data; and it requires fresh iPhone proof after deployment.",
+  "observed_facts": [
+    {
+      "claim_type": "OBSERVED",
+      "fact": "The user exported pmp-discovery-report-2026-08-25T06-43-54-409Z.zip after a fresh August 25 app session, but its internal canonical discovery report was the prior report started 2026-08-01T23:01:47.818Z and finished 2026-08-01T23:01:55.098Z with reason diagnostic_coverage_pass_a."
+    },
+    {
+      "claim_type": "OBSERVED",
+      "fact": "The old exporter returned a previously stored valid report before calling the canonical machine, so Run Discovery Again and ZIP export did not guarantee a new scan."
+    },
+    {
+      "claim_type": "OBSERVED",
+      "fact": "All 23 entries previously labelled hard_missing were HTTP 200 reachable rows absent from the old Atlas registry; reachability was being conflated with registry membership."
+    },
+    {
+      "claim_type": "OBSERVED",
+      "fact": "All 10 entries previously labelled dead_reference returned HTTP 412; the old scanner placed every non-OK response into dead_references without separating precondition/integrity-policy rejection from 404/410 missing."
+    }
+  ],
+  "inferred_conclusions": [
+    {
+      "claim_type": "INFERRED",
+      "conclusion": "A user-requested discovery operation must be bound to a unique scan ID and must call the canonical machine even when a complete stored report exists."
+    },
+    {
+      "claim_type": "INFERRED",
+      "conclusion": "A reachable file absent from the Atlas registry is an ATLAS_REGISTRY_GAP, not HARD_MISSING; 404/410 may support MISSING, while 412 must remain PRECONDITION_REJECTED and fail closed only when it blocks a required current lane."
+    },
+    {
+      "claim_type": "INFERRED",
+      "conclusion": "Current Map roles are stronger lane evidence than filename heuristics and should classify current boot/runtime, tool/support, recovery, and historic routes before fallback heuristics are applied."
+    }
+  ],
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "automatic_retry": false,
+    "upload_before_enforcement": true,
+    "ci_lane": "deterministic_browser_harness",
+    "status": "BOUND_PENDING_PR_CI",
+    "deterministic_test_paths": [
+      "tools/test_active_path_fresh_scan_classification_truth_v1.py"
+    ],
+    "verifier_paths": [
+      "tools/verify_active_path_fresh_scan_classification_truth_v1.py"
+    ],
+    "diagnostic_evidence_routes": [
+      "audit/a002-active-path-fresh-scan-classification-v1.cjs",
+      "audit/pass13/active-path-fresh-scan-classification-truth-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_ACTIVE_PATH_FRESH_SCAN_CLASSIFICATION_TRUTH_20260825A_001.json"
+    ],
+    "fault_injection": {
+      "status": "COVERED_BY_PR_TEST",
+      "cases": [
+        "valid stale August-1-style stored report exists before a requested scan",
+        "two consecutive explicit scan requests must return different scan IDs",
+        "reachable unregistered source becomes ATLAS_REGISTRY_GAP and not HARD_MISSING",
+        "HTTP 404 required-current source remains MISSING/HARD_MISSING",
+        "HTTP 412 source remains PRECONDITION_REJECTED and is excluded from dead/missing",
+        "known-absent/historic source is not promoted to current hard missing",
+        "genuine current failure keeps freeze gate false",
+        "returned scan identity must match requested scan identity"
+      ]
+    },
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "scope": {
+    "implementation_paths": [
+      "pmp-active-path-discovery-machine-v1.js",
+      "pmp-active-path-discovery-zip-export-v2.js"
+    ],
+    "test_paths": [
+      "tools/test_active_path_fresh_scan_classification_truth_v1.py",
+      "tools/verify_active_path_fresh_scan_classification_truth_v1.py",
+      "audit/a002-active-path-fresh-scan-classification-v1.cjs"
+    ],
+    "workflow_paths": [
+      ".github/workflows/a002-live-runtime.yml"
+    ],
+    "a003_outputs": [
+      "pmp-runtime-integrity-manifest-v1.json",
+      "pmp-app-current.html",
+      "audit/a003-manifest-seal.json"
+    ],
+    "receipt_paths": [
+      "audit/pass13/receipts/RECEIPT_ACTIVE_PATH_FRESH_SCAN_CLASSIFICATION_TRUTH_20260825A_001.json"
+    ]
+  },
+  "branch_seal": {
+    "commit": "5b239f401830e712ff96d7723e2f99572a1ff2a7",
+    "manifest_sha256": "efa5a8df778e9596903bcdad9b888af66f7dd7924f56321f15839e822c4cefd4",
+    "runtime_source_set_sha256": "99c40063576d6a0926158cd516b6747780d61f6f77bb7a44715bdbb9045e17e0",
+    "status": "PASS"
+  },
+  "boundaries": {
+    "read_only_discovery": true,
+    "owner_changes": false,
+    "helper_changes": false,
+    "route_changes": false,
+    "bank_rebuild": false,
+    "continuous_run_mutation": false,
+    "dom_repair": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false,
+    "persisted_user_data_delete": false,
+    "placeholder_file_creation": false,
+    "forced_pass": false
+  }
+}
