@@ -1,0 +1,976 @@
+name: One-shot B-D Fresh Evaluation Source Identity Repair
+
+on:
+  push:
+    branches:
+      - chatgpt/bcd-freshness-source-identity-20260825A
+
+permissions:
+  contents: write
+
+concurrency:
+  group: one-shot-bcd-freshness-source-identity-20260825A
+  cancel-in-progress: false
+
+jobs:
+  repair-and-seal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: chatgpt/bcd-freshness-source-identity-20260825A
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Apply bounded freshness and source-identity repair
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from __future__ import annotations
+
+          import json
+          import re
+          from pathlib import Path
+          from textwrap import dedent as td
+
+          ROOT = Path('.')
+          EVALUATOR_OLD = ROOT / 'pmp-diagnostic-coverage-passes-bcd-v1-1-1-0.js'
+          EVALUATOR_NEW = ROOT / 'pmp-diagnostic-coverage-passes-bcd-v1-1-1-0-fresh-evaluation-20260825A.js'
+          BOOT = ROOT / 'pmp-diagnostics-writer-trace-v1.js'
+          VIEW = ROOT / 'pmp-diagnostics-consolidated-view-v1.js'
+          A002_WORKFLOW = ROOT / '.github/workflows/a002-live-runtime.yml'
+          A002_TEST = ROOT / 'audit/a002-bcd-fresh-evaluation-source-identity-v1.cjs'
+          TEST = ROOT / 'tools/test_bcd_fresh_evaluation_source_identity_v1.py'
+          VERIFY = ROOT / 'tools/verify_bcd_fresh_evaluation_source_identity_v1.py'
+          RECEIPT = ROOT / 'audit/pass13/receipts/RECEIPT_BCD_FRESH_EVALUATION_SOURCE_IDENTITY_20260825A_001.json'
+          GATE = ROOT / 'audit/pass13/bcd-fresh-evaluation-source-identity-gate-v1.json'
+
+          BCD_VERSION = '1.1.0-final-two-live-proof-20260801A'
+          BCD_REVISION = '1.4.0-fresh-evaluation-source-identity-20260825A'
+          BCD_SOURCE = EVALUATOR_NEW.name
+          BOOT_VERSION = '3.4.0-fresh-evaluation-source-identity-20260825A'
+          VIEW_VERSION = '2.9.2-fresh-bcd-evaluation-binding-20260825A'
+          VIEW_BOOT_VERSION = '1.1.0-fresh-bcd-evaluation-binding-20260825A'
+
+          def replace_once(text: str, old: str, new: str, label: str) -> str:
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{label}: expected one occurrence, found {count}')
+              return text.replace(old, new, 1)
+
+          def regex_once(text: str, pattern: str, replacement: str, label: str) -> str:
+              updated, count = re.subn(pattern, replacement, text, count=1, flags=re.S)
+              if count != 1:
+                  raise SystemExit(f'{label}: expected one regex match, found {count}')
+              return updated
+
+          # Create a new immutable evaluator source. Preserve the public B-D contract
+          # version while binding every evaluation to an exact revision, source, and ID.
+          evaluator = EVALUATOR_OLD.read_text('utf-8')
+          evaluator = replace_once(
+              evaluator,
+              "const REV='1.3.0-first-open-lazy-surface-health-20260824A';",
+              "const REV='1.4.0-fresh-evaluation-source-identity-20260825A';\n"
+              "const SOURCE_ID='pmp-diagnostic-coverage-passes-bcd-v1-1-1-0-fresh-evaluation-20260825A.js';",
+              'evaluator revision'
+          )
+          evaluator = replace_once(evaluator, 'let LAST=null;', 'let LAST=null,RUN_SEQUENCE=0;', 'evaluator sequence')
+          evaluator = replace_once(
+              evaluator,
+              'function now(){return new Date().toISOString()}',
+              "function now(){return new Date().toISOString()}\n"
+              "function nextEvaluationId(){RUN_SEQUENCE+=1;return 'pmp-bcd-'+Date.now().toString(36)+'-'+RUN_SEQUENCE.toString(36)}\n"
+              "function requestMeta(input){if(input&&typeof input==='object')return{reason:String(input.reason||'manual'),evaluation_id:String(input.evaluation_id||nextEvaluationId())};return{reason:String(input||'manual'),evaluation_id:nextEvaluationId()}}",
+              'evaluator request metadata'
+          )
+          evaluator_run = (
+              "async function run(request){const meta=requestMeta(request),report={type:'PMP_DIAGNOSTIC_COVERAGE_PASSES_BCD_V1',"
+              "version:V,revision:REV,source_identity:SOURCE_ID,evaluation_id:meta.evaluation_id,owner:'diagnostics_owner',"
+              "at:now(),reason:meta.reason,runtime_context:{root_path:(()=>{try{return root().location.pathname}catch(_){return null}})(),"
+              "accessible_documents:docs().map(x=>({path:x.path,title:x.title,depth:x.depth})),diagnostics_active:diagnosticsActive()},"
+              "bridge_system:bridge(),library_system:library(),bank_system:bank(),continuous_run_system:continuous(),"
+              "errors_bug_watch_visual_stability:await errors(),boundaries:{read_only:true,owner_changes:false,helper_changes:false,"
+              "route_changes:false,storage_migration:false,persisted_user_data_write:false,dom_repair:false}};"
+              "report.status=[report.bridge_system,report.library_system,report.bank_system,report.continuous_run_system,"
+              "report.errors_bug_watch_visual_stability].every(x=>x.status==='PASS')?'PASS':'FAIL';LAST=store(KEY,report);"
+              "try{window.dispatchEvent(new CustomEvent('pmp:diagnostics:bcd-updated',{detail:{status:report.status,revision:REV,"
+              "source_identity:SOURCE_ID,evaluation_id:report.evaluation_id,at:report.at}}))}catch(_){}return report}"
+          )
+          evaluator = regex_once(
+              evaluator,
+              r"async function run\(reason\)\{.*?\nconst api=",
+              evaluator_run + "\nconst api=",
+              'evaluator run'
+          )
+          evaluator = replace_once(
+              evaluator,
+              "const api={version:V,revision:REV,run,last:()=>LAST||read(KEY),receiptKey:KEY,rule:'Read-only lazy-surface health evaluation. Navigation and owner evidence are required at first open; inactive Bridge, Library, and Bank surface mount checks are deferred while Diagnostics is active. Continuous Run closed-bank mount checks remain deferred.'};",
+              "const api={version:V,revision:REV,sourceIdentity:SOURCE_ID,run,last:()=>LAST||read(KEY),receiptKey:KEY,rule:'Read-only lazy-surface health evaluation. Navigation and owner evidence are required at first open; inactive Bridge, Library, and Bank surface mount checks are deferred while Diagnostics is active. Continuous Run closed-bank mount checks remain deferred.'};",
+              'evaluator API identity'
+          )
+          evaluator = replace_once(
+              evaluator,
+              "setTimeout(()=>run('boot_first_open_stable'),750);",
+              "setTimeout(()=>run({reason:'boot_first_open_stable'}),750);",
+              'evaluator boot request'
+          )
+          EVALUATOR_NEW.write_text(evaluator, 'utf-8')
+
+          # Repair the transactional bootstrap. A current run is always published;
+          # a previously complete receipt can never satisfy a newer request.
+          boot = BOOT.read_text('utf-8')
+          boot = replace_once(boot, "const V='3.3.0-bounded-verified-bcd-publication-20260803C';", f"const V='{BOOT_VERSION}';", 'bootstrap version')
+          boot = replace_once(boot, "const VIEW_BOOT_VERSION='1.0.0-exact-diagnostics-view-bootstrap-20260803B';", f"const VIEW_BOOT_VERSION='{VIEW_BOOT_VERSION}';", 'view bootstrap version')
+          boot = replace_once(
+              boot,
+              "const REQUIRED_BCD_VERSION='1.1.0-final-two-live-proof-20260801A';",
+              "const REQUIRED_BCD_VERSION='1.1.0-final-two-live-proof-20260801A';\n"
+              "const REQUIRED_BCD_REVISION='1.4.0-fresh-evaluation-source-identity-20260825A';\n"
+              "const REQUIRED_BCD_SOURCE_IDENTITY='pmp-diagnostic-coverage-passes-bcd-v1-1-1-0-fresh-evaluation-20260825A.js';",
+              'bootstrap B-D identity constants'
+          )
+          boot = replace_once(
+              boot,
+              "const VERSIONED_BCD_SRC='pmp-diagnostic-coverage-passes-bcd-v1-1-1-0.js';",
+              "const VERSIONED_BCD_SRC='pmp-diagnostic-coverage-passes-bcd-v1-1-1-0-fresh-evaluation-20260825A.js';",
+              'bootstrap immutable source'
+          )
+          boot = replace_once(
+              boot,
+              "const REQUIRED_VIEW_VERSION='2.9.1-bootstrap-contract-alignment-20260803D';",
+              "const REQUIRED_VIEW_VERSION='2.9.2-fresh-bcd-evaluation-binding-20260825A';",
+              'bootstrap required view'
+          )
+          boot = replace_once(
+              boot,
+              'let inflight=null,viewInflight=null,LIVE_BCD_RECEIPT=null,LAST_BOOT_RECEIPT=null,virtualReadInstalled=false;',
+              'let inflight=null,viewInflight=null,LIVE_BCD_RECEIPT=null,LAST_BOOT_RECEIPT=null,virtualReadInstalled=false,EVALUATION_SEQUENCE=0;',
+              'bootstrap evaluation sequence'
+          )
+          boot = replace_once(
+              boot,
+              'function now(){return new Date().toISOString()}',
+              "function now(){return new Date().toISOString()}\n"
+              "function nextEvaluationId(){EVALUATION_SEQUENCE+=1;return 'pmp-bcd-request-'+Date.now().toString(36)+'-'+EVALUATION_SEQUENCE.toString(36)}",
+              'bootstrap evaluation ID'
+          )
+          boot = regex_once(
+              boot,
+              r"function completeReceipt\(value\)\{[^\n]*\}",
+              "function completeReceipt(value,evaluationId){return !!(value&&value.version===REQUIRED_BCD_VERSION&&value.revision===REQUIRED_BCD_REVISION&&value.source_identity===REQUIRED_BCD_SOURCE_IDENTITY&&typeof value.evaluation_id==='string'&&value.evaluation_id&&(!evaluationId||value.evaluation_id===evaluationId)&&REQUIRED_SECTIONS.every(key=>value[key]&&typeof value[key]==='object'))}",
+              'bootstrap complete receipt'
+          )
+          boot = regex_once(
+              boot,
+              r"function liveReceipt\(\)\{[^\n]*\}",
+              "function liveReceipt(evaluationId){if(completeReceipt(LIVE_BCD_RECEIPT,evaluationId))return LIVE_BCD_RECEIPT;const stored=read(BCD_RECEIPT_KEY);return completeReceipt(stored,evaluationId)?stored:null}",
+              'bootstrap live receipt'
+          )
+          boot = regex_once(
+              boot,
+              r"function boundedSection\(row\)\{[^\n]*\}",
+              "function boundedSection(row){if(!row||typeof row!=='object')return row;return{type:row.type||null,revision:row.revision||null,at:row.at||null,status:row.status||null,checks:row.checks||{},issues:Array.isArray(row.issues)?row.issues:[],backlog:Array.isArray(row.backlog)?row.backlog:[],classification_rule:row.classification_rule||null,read_only:row.read_only!==false,evidence_summary:{evidence_available:!!row.evidence,evidence_keys:row.evidence&&typeof row.evidence==='object'?Object.keys(row.evidence):[]}}}",
+              'bootstrap bounded section'
+          )
+          boot = regex_once(
+              boot,
+              r"function boundedReceipt\(produced\)\{[^\n]*\}",
+              "function boundedReceipt(produced){const out={type:produced.type,version:produced.version,revision:produced.revision||null,source_identity:produced.source_identity||null,evaluation_id:produced.evaluation_id||null,owner:produced.owner,at:produced.at,reason:produced.reason,status:produced.status,runtime_context:produced.runtime_context||null,publication_mode:'BOUNDED_VERIFIED_RECEIPT',source_evaluation_complete:true,classification_revision:produced.classification_revision||null,publication_revision:PUBLICATION_REVISION,boundaries:produced.boundaries||{read_only:true}};REQUIRED_SECTIONS.forEach(key=>{out[key]=boundedSection(produced[key])});return out}",
+              'bootstrap bounded receipt'
+          )
+          boot = regex_once(
+              boot,
+              r"function publishBounded\(produced\)\{[^\n]*\}",
+              "function publishBounded(produced,evaluationId){const published=boundedReceipt(produced),bytes=JSON.stringify(published).length;LIVE_BCD_RECEIPT=published;try{T().localStorage.setItem(BCD_RECEIPT_KEY,JSON.stringify(published));const observed=read(BCD_RECEIPT_KEY);return{ok:completeReceipt(observed,evaluationId),receipt:observed,bytes,mode:'localStorage_bounded',persistence_status:'PERSISTED'}}catch(error){const virtualized=installVirtualReceiptRead(),observed=liveReceipt(evaluationId);return{ok:completeReceipt(observed,evaluationId),receipt:observed,bytes,mode:virtualized?'live_memory_virtualized_read':'live_memory_direct',persistence_status:'QUOTA_UNAVAILABLE',persistence_error:String(error&&error.message||error),virtual_read_installed:virtualized}}}",
+              'bootstrap bounded publisher'
+          )
+          boot = regex_once(
+              boot,
+              r"function findApi\(name\)\{[^\n]*\}",
+              "function findApi(name,accept){let found=null;walk(T(),0,new Set(),win=>{try{const value=win[name];if(!found&&value&&(!accept||accept(value)))found=value}catch(_){}});return found}",
+              'bootstrap API finder'
+          )
+          boot = replace_once(
+              boot,
+              "function currentApi(){return findApi(BCD_API)}\nfunction currentView(){return findApi(VIEW_API)}",
+              "function apiMatches(api){return !!(api&&api.version===REQUIRED_BCD_VERSION&&api.revision===REQUIRED_BCD_REVISION&&api.sourceIdentity===REQUIRED_BCD_SOURCE_IDENTITY)}\n"
+              "function anyApi(){return findApi(BCD_API)}\n"
+              "function currentApi(){return findApi(BCD_API,apiMatches)}\n"
+              "function currentView(){return findApi(VIEW_API,api=>api&&api.version===REQUIRED_VIEW_VERSION)}",
+              'bootstrap exact API selection'
+          )
+          receipt_fn = (
+              "function receipt(reason,status,extra){const expected=extra&&extra.evaluation_id||null,live=liveReceipt(expected),exact=currentApi(),any=anyApi();"
+              "LAST_BOOT_RECEIPT=Object.assign({type:'PMP_CURRENT_BCD_DIAGNOSTICS_BOOTSTRAP_V1',version:V,"
+              "classification_revision:CLASSIFICATION_REVISION,publication_revision:PUBLICATION_REVISION,owner:'diagnostics_owner',"
+              "at:now(),reason:reason||'boot',status,required_version:REQUIRED_BCD_VERSION,required_revision:REQUIRED_BCD_REVISION,"
+              "required_source_identity:REQUIRED_BCD_SOURCE_IDENTITY,versioned_source:VERSIONED_BCD_SRC,"
+              "observed_any_api_version:any&&any.version||null,observed_api_version:exact&&exact.version||null,"
+              "observed_api_revision:exact&&exact.revision||any&&any.revision||null,"
+              "observed_api_source_identity:exact&&exact.sourceIdentity||any&&any.sourceIdentity||null,"
+              "observed_receipt_version:live&&live.version||null,observed_receipt_revision:live&&live.revision||null,"
+              "observed_receipt_source_identity:live&&live.source_identity||null,observed_receipt_evaluation_id:live&&live.evaluation_id||null,"
+              "complete_sections:REQUIRED_SECTIONS.filter(key=>live&&live[key]),transactional:true,bounded_publication:true,"
+              "quota_resilient_live_publication:true,fresh_evaluation_required:true,boundaries:{trace_ui:'retired',owner_changes:false,"
+              "helper_changes:false,route_changes:false,storage_migration:false,persisted_user_data_write:false}},extra||{});"
+              "store(BOOT_RECEIPT_KEY,LAST_BOOT_RECEIPT);return LAST_BOOT_RECEIPT}"
+          )
+          boot = regex_once(
+              boot,
+              r"function receipt\(reason,status,extra\)\{.*?\nfunction viewReceipt",
+              receipt_fn + "\nfunction viewReceipt",
+              'bootstrap receipt'
+          )
+          boot = regex_once(
+              boot,
+              r"function loadVersionedScript\(\)\{[^\n]*\}",
+              "function loadVersionedScript(){const api=currentApi();if(apiMatches(api))return Promise.resolve({status:'ALREADY_LOADED'});return loadScript(VERSIONED_BCD_SRC+'?fresh=fresh-evaluation-source-identity-20260825A-'+Date.now())}",
+              'bootstrap versioned loader'
+          )
+          run_validate = (
+              "async function runAndValidate(api,reason,previous){const evaluationId=nextEvaluationId();try{"
+              "if(!apiMatches(api)||typeof api.run!=='function'){restore(previous);return receipt(reason,'API_SOURCE_IDENTITY_MISMATCH',"
+              "{evaluation_id:evaluationId,rollback_applied:true})}"
+              "const rawProduced=await api.run({reason:reason||'transactional_bcd_bootstrap',evaluation_id:evaluationId});"
+              "if(!completeReceipt(rawProduced,evaluationId)){restore(previous);return receipt(reason,'NEW_EVALUATION_INCOMPLETE',"
+              "{evaluation_id:evaluationId,rollback_applied:true,produced_version:rawProduced&&rawProduced.version||null,"
+              "produced_revision:rawProduced&&rawProduced.revision||null,produced_source_identity:rawProduced&&rawProduced.source_identity||null,"
+              "produced_evaluation_id:rawProduced&&rawProduced.evaluation_id||null})}"
+              "const classified=classifyPersistedBugBacklog(rawProduced),produced=classified.report;"
+              "let publication=publishBounded(produced,evaluationId);if(!publication.ok)publication=publishBounded(produced,evaluationId);"
+              "const live=publication.receipt;if(!publication.ok||!completeReceipt(live,evaluationId)){restore(previous);"
+              "return receipt(reason,'RECEIPT_PUBLICATION_FAILED',{evaluation_id:evaluationId,rollback_applied:true,"
+              "produced_version:produced.version,publication})}"
+              "return receipt(reason,'PASS',{evaluation_id:evaluationId,rollback_applied:false,replaced_previous_version:previous&&previous.version||null,"
+              "replaced_previous_evaluation_id:previous&&previous.evaluation_id||null,publication_mode:publication.mode,"
+              "publication_persistence_status:publication.persistence_status,persistence_warning:publication.persistence_status==='QUOTA_UNAVAILABLE'?"
+              "publication.persistence_error||'Storage quota unavailable':null,published_bytes:publication.bytes,"
+              "source_evaluation_status:rawProduced.status,source_evaluation_at:rawProduced.at,final_evaluation_status:produced.status,"
+              "persisted_bug_backlog_classification_applied:classified.applied,live_receipt_available:true,"
+              "runtime_context_document_count:rawProduced.runtime_context&&Array.isArray(rawProduced.runtime_context.accessible_documents)?"
+              "rawProduced.runtime_context.accessible_documents.length:null})}catch(error){restore(previous);"
+              "return receipt(reason,'RUN_ERROR',{evaluation_id:evaluationId,error:String(error&&error.message||error),rollback_applied:true})}}"
+          )
+          boot = regex_once(
+              boot,
+              r"async function runAndValidate\(api,reason,previous\)\{.*?\nasync function ensureCurrent",
+              run_validate + "\nasync function ensureCurrent",
+              'bootstrap run and validate'
+          )
+          boot = replace_once(
+              boot,
+              "window.PMPCurrentBCDDiagnosticsBootstrapV1={version:V,classificationRevision:CLASSIFICATION_REVISION,publicationRevision:PUBLICATION_REVISION,requiredVersion:REQUIRED_BCD_VERSION,versionedSource:VERSIONED_BCD_SRC,run:ensureCurrent,last:()=>LAST_BOOT_RECEIPT||read(BOOT_RECEIPT_KEY),currentReceipt:()=>liveReceipt()};",
+              "window.PMPCurrentBCDDiagnosticsBootstrapV1={version:V,classificationRevision:CLASSIFICATION_REVISION,publicationRevision:PUBLICATION_REVISION,requiredVersion:REQUIRED_BCD_VERSION,requiredRevision:REQUIRED_BCD_REVISION,requiredSourceIdentity:REQUIRED_BCD_SOURCE_IDENTITY,versionedSource:VERSIONED_BCD_SRC,run:ensureCurrent,last:()=>LAST_BOOT_RECEIPT||read(BOOT_RECEIPT_KEY),currentReceipt:()=>liveReceipt()};",
+              'bootstrap public API'
+          )
+          stale_branch = "classified.applied?publishBounded(produced):{ok:completeReceipt(live),receipt:live,mode:'producer_full_receipt'"
+          if stale_branch in boot:
+              raise SystemExit('stale existing-receipt publication branch remained')
+          BOOT.write_text(boot, 'utf-8')
+
+          # Bind the consolidated view to the bootstrap's exact evaluation ID.
+          view = VIEW.read_text('utf-8')
+          view = replace_once(view, "const V='2.9.1-bootstrap-contract-alignment-20260803D';", f"const V='{VIEW_VERSION}';", 'view version')
+          view = replace_once(
+              view,
+              "const BOOTSTRAP_SRC='pmp-diagnostics-writer-trace-v1.js?fresh=live-whole-app-bootstrap-await-20260803A';",
+              "const BOOTSTRAP_SRC='pmp-diagnostics-writer-trace-v1.js?fresh=fresh-evaluation-source-identity-20260825A';",
+              'view bootstrap source'
+          )
+          view = replace_once(view, "const REQUIRED_BOOT_VERSION='3.3.0-bounded-verified-bcd-publication-20260803C';", f"const REQUIRED_BOOT_VERSION='{BOOT_VERSION}';", 'view required bootstrap')
+          view = replace_once(
+              view,
+              "const REQUIRED_BCD_VERSION='1.1.0-final-two-live-proof-20260801A';",
+              "const REQUIRED_BCD_VERSION='1.1.0-final-two-live-proof-20260801A';\n"
+              "const REQUIRED_BCD_REVISION='1.4.0-fresh-evaluation-source-identity-20260825A';\n"
+              "const REQUIRED_BCD_SOURCE_IDENTITY='pmp-diagnostic-coverage-passes-bcd-v1-1-1-0-fresh-evaluation-20260825A.js';",
+              'view B-D identity constants'
+          )
+          view = regex_once(
+              view,
+              r"function findApi\(name\)\{[^\n]*\}",
+              "function findApi(name,accept){for(const c of docs()){try{const value=c.window[name];if(value&&(!accept||accept(value)))return value}catch(_){}}try{const topValue=T()[name],localValue=window[name];if(topValue&&(!accept||accept(topValue)))return topValue;if(localValue&&(!accept||accept(localValue)))return localValue;return null}catch(_){return null}}",
+              'view API finder'
+          )
+          view = regex_once(
+              view,
+              r"function loadScript\(src,name\)\{[^\n]*\}",
+              "function loadScript(src,name,accept){return new Promise(resolve=>{const current=()=>findApi(name,accept),existing=current();if(existing)return resolve({status:'ALREADY_AVAILABLE',api:existing});try{const s=document.createElement('script');s.src=src;s.async=false;s.onload=()=>resolve({status:current()?'LOADED':'LOADED_WITHOUT_API',api:current()});s.onerror=()=>resolve({status:'LOAD_ERROR',api:null});(document.head||document.documentElement).appendChild(s)}catch(error){resolve({status:'EXCEPTION',api:null,error:String(error&&error.message||error)})}})}",
+              'view script loader'
+          )
+          view = regex_once(
+              view,
+              r"function completeBcd\(receipt\)\{[^\n]*\}",
+              "function completeBcd(receipt,evaluationId){return !!(receipt&&receipt.version===REQUIRED_BCD_VERSION&&receipt.revision===REQUIRED_BCD_REVISION&&receipt.source_identity===REQUIRED_BCD_SOURCE_IDENTITY&&typeof receipt.evaluation_id==='string'&&receipt.evaluation_id&&(!evaluationId||receipt.evaluation_id===evaluationId)&&REQUIRED_BCD_SECTIONS.every(key=>receipt[key]&&typeof receipt[key]==='object'))}",
+              'view complete B-D'
+          )
+          produce = (
+              "async function produceEvidence(reason){if(EVIDENCE_RUN)return EVIDENCE_RUN;EVIDENCE_RUN=(async()=>{"
+              "EVIDENCE_STATE={status:'RUNNING',started_at:now(),finished_at:null,attempts:EVIDENCE_STATE.attempts+1,"
+              "reason:reason||'native_bootstrap',errors:[]};"
+              "const aLoad=await loadScript(PASS_A_SRC,'PMPDiagnosticCoveragePassAV1'),a=aLoad.api||findApi('PMPDiagnosticCoveragePassAV1');"
+              "if(a&&typeof a.run==='function'){try{await a.run(reason||'native_consolidated_diagnostics')}catch(error){"
+              "EVIDENCE_STATE.errors.push({stage:'pass_a_run',error:String(error&&error.message||error)})}}"
+              "else EVIDENCE_STATE.errors.push({stage:'pass_a_load',status:aLoad.status});"
+              "const bootAccept=api=>api&&api.version===REQUIRED_BOOT_VERSION;"
+              "const bootLoad=await loadScript(BOOTSTRAP_SRC,'PMPCurrentBCDDiagnosticsBootstrapV1',bootAccept),"
+              "boot=bootLoad.api||findApi('PMPCurrentBCDDiagnosticsBootstrapV1',bootAccept);let bootResult=null;"
+              "if(!boot||typeof boot.run!=='function')EVIDENCE_STATE.errors.push({stage:'passes_bcd_bootstrap_load',status:bootLoad.status});"
+              "else{try{bootResult=await boot.run(reason||'native_consolidated_diagnostics');"
+              "if(!bootResult||bootResult.status!=='PASS')EVIDENCE_STATE.errors.push({stage:'passes_bcd_bootstrap_run',result:bootResult||null})}"
+              "catch(error){EVIDENCE_STATE.errors.push({stage:'passes_bcd_bootstrap_run',error:String(error&&error.message||error)})}}"
+              "const ar=read(AKEY),br=read(BKEY),expectedEvaluationId=bootResult&&bootResult.evaluation_id||null,"
+              "bcdComplete=completeBcd(br,expectedEvaluationId),freshBound=!!(expectedEvaluationId&&br&&br.evaluation_id===expectedEvaluationId);"
+              "if(!expectedEvaluationId)EVIDENCE_STATE.errors.push({stage:'passes_bcd_evaluation_id_missing'});"
+              "if(expectedEvaluationId&&br&&br.evaluation_id!==expectedEvaluationId)EVIDENCE_STATE.errors.push({stage:'passes_bcd_evaluation_id_mismatch',"
+              "expected:expectedEvaluationId,observed:br.evaluation_id||null});"
+              "EVIDENCE_STATE.status=ar&&bcdComplete&&freshBound&&EVIDENCE_STATE.errors.length===0?'COMPLETE':'INCOMPLETE';"
+              "EVIDENCE_STATE.finished_at=now();EVIDENCE_STATE.pass_a=!!ar;EVIDENCE_STATE.passes_bcd=bcdComplete;"
+              "EVIDENCE_STATE.required_bootstrap_version=REQUIRED_BOOT_VERSION;EVIDENCE_STATE.required_bcd_version=REQUIRED_BCD_VERSION;"
+              "EVIDENCE_STATE.required_bcd_revision=REQUIRED_BCD_REVISION;EVIDENCE_STATE.required_bcd_source_identity=REQUIRED_BCD_SOURCE_IDENTITY;"
+              "EVIDENCE_STATE.observed_bootstrap_version=boot&&boot.version||null;EVIDENCE_STATE.observed_bcd_version=br&&br.version||null;"
+              "EVIDENCE_STATE.observed_bcd_revision=br&&br.revision||null;EVIDENCE_STATE.observed_bcd_source_identity=br&&br.source_identity||null;"
+              "EVIDENCE_STATE.requested_evaluation_id=expectedEvaluationId;EVIDENCE_STATE.observed_evaluation_id=br&&br.evaluation_id||null;"
+              "EVIDENCE_STATE.fresh_evaluation_bound=freshBound;EVIDENCE_STATE.complete_bcd_sections=REQUIRED_BCD_SECTIONS.filter(key=>br&&br[key]);"
+              "return EVIDENCE_STATE})().finally(()=>{EVIDENCE_RUN=null});return EVIDENCE_RUN}"
+          )
+          view = regex_once(
+              view,
+              r"async function produceEvidence\(reason\)\{.*?\nfunction current",
+              produce + "\nfunction current",
+              'view evidence production'
+          )
+          whole = (
+              "function wholeAppHealth(){const live=receiptSections(),health={};Object.keys(live.sections).forEach(k=>health[k]=healthRow(k,live.sections[k]));"
+              "return{type:'PMP_WHOLE_APP_HEALTH_V2',version:V,owner:OWNER,at:now(),scope:'compact health summary generated directly from current live diagnostic receipts for every major governed and implemented PMP system',"
+              "health,overall:{failures:Object.keys(health).filter(k=>health[k].status==='FAIL'),warnings:[],not_proven:[]},"
+              "live_coverage:{source_mode:'NATIVE_CONSOLIDATED_DIAGNOSTICS_SOURCE',bootstrap:EVIDENCE_STATE,active_view:ACTIVE_VIEW,"
+              "pass_a:live.receipts.pass_a?{version:live.receipts.pass_a.version||null,status:live.receipts.pass_a.status||null,at:live.receipts.pass_a.at||null}:{status:'MISSING'},"
+              "passes_bcd:live.receipts.passes_bcd?{version:live.receipts.passes_bcd.version||null,revision:live.receipts.passes_bcd.revision||null,"
+              "source_identity:live.receipts.passes_bcd.source_identity||null,evaluation_id:live.receipts.passes_bcd.evaluation_id||null,"
+              "status:live.receipts.passes_bcd.status||null,at:live.receipts.passes_bcd.at||null}:{status:'MISSING'}},"
+              "coverage_rule:'Whole App Health awaits a current B-D evaluation bound to the exact bootstrap request ID. Missing, stale, mismatched, or incomplete evidence is an explicit FAIL; evidence is never invented.',"
+              "boundaries:{read_only:true,ownership_changes:false,helper_changes:false,route_changes:false,dom_repair:false,storage_migration:false,persisted_user_data_write:false}}}"
+          )
+          view = regex_once(
+              view,
+              r"function wholeAppHealth\(\)\{.*?\nfunction sections",
+              whole + "\nfunction sections",
+              'view Whole App report'
+          )
+          view = replace_once(
+              view,
+              "rule:'Whole App Health awaits the current transactional B-D bootstrap before rendering or copying final evidence.'",
+              "rule:'Whole App Health accepts only a fresh B-D evaluation whose revision, immutable source identity, and evaluation ID match the current bootstrap request.'",
+              'view public rule'
+          )
+          VIEW.write_text(view, 'utf-8')
+
+          TEST.write_text(td(r'''
+          #!/usr/bin/env python3
+          from pathlib import Path
+          import subprocess
+
+          ROOT = Path(__file__).resolve().parents[1]
+          evaluator = (ROOT / "pmp-diagnostic-coverage-passes-bcd-v1-1-1-0-fresh-evaluation-20260825A.js").read_text("utf-8")
+          boot = (ROOT / "pmp-diagnostics-writer-trace-v1.js").read_text("utf-8")
+          view = (ROOT / "pmp-diagnostics-consolidated-view-v1.js").read_text("utf-8")
+
+          required = {
+              "evaluator_revision": "1.4.0-fresh-evaluation-source-identity-20260825A" in evaluator,
+              "evaluator_source_identity": "sourceIdentity:SOURCE_ID" in evaluator and "source_identity:SOURCE_ID" in evaluator,
+              "evaluator_request_id": "evaluation_id:meta.evaluation_id" in evaluator,
+              "bootstrap_version": "3.4.0-fresh-evaluation-source-identity-20260825A" in boot,
+              "bootstrap_exact_api": "function apiMatches(api)" in boot and "requiredSourceIdentity:REQUIRED_BCD_SOURCE_IDENTITY" in boot,
+              "bootstrap_always_publishes": "let publication=publishBounded(produced,evaluationId)" in boot,
+              "bootstrap_evaluation_match": "value.evaluation_id===evaluationId" in boot,
+              "bounded_receipt_preserves_context": "runtime_context:produced.runtime_context||null" in boot,
+              "view_version": "2.9.2-fresh-bcd-evaluation-binding-20260825A" in view,
+              "view_exact_binding": "fresh_evaluation_bound=freshBound" in view and "br.evaluation_id===expectedEvaluationId" in view,
+              "read_only_boundaries": "persisted_user_data_write:false" in evaluator and "storage_migration:false" in boot,
+          }
+          failed = [name for name, ok in required.items() if not ok]
+          if failed:
+              raise SystemExit("FAIL: " + ", ".join(failed))
+          forbidden = [
+              "classified.applied?publishBounded(produced):",
+              "localStorage.clear",
+              "sessionStorage.clear",
+              "indexedDB.deleteDatabase",
+          ]
+          combined = evaluator + "\n" + boot + "\n" + view
+          present = [token for token in forbidden if token in combined]
+          if present:
+              raise SystemExit("FAIL forbidden: " + ", ".join(present))
+          for path in [
+              ROOT / "pmp-diagnostic-coverage-passes-bcd-v1-1-1-0-fresh-evaluation-20260825A.js",
+              ROOT / "pmp-diagnostics-writer-trace-v1.js",
+              ROOT / "pmp-diagnostics-consolidated-view-v1.js",
+              ROOT / "audit/a002-bcd-fresh-evaluation-source-identity-v1.cjs",
+          ]:
+              subprocess.run(["node", "--check", str(path)], cwd=ROOT, check=True)
+          print(f"PASS: B-D fresh evaluation/source identity ({len(required)}/{len(required)})")
+          ''').lstrip(), 'utf-8')
+
+          VERIFY.write_text(td(r'''
+          #!/usr/bin/env python3
+          from pathlib import Path
+          import hashlib
+          import json
+          import re
+
+          ROOT = Path(__file__).resolve().parents[1]
+          expected = {
+              "revision": "1.4.0-fresh-evaluation-source-identity-20260825A",
+              "source": "pmp-diagnostic-coverage-passes-bcd-v1-1-1-0-fresh-evaluation-20260825A.js",
+              "bootstrap": "3.4.0-fresh-evaluation-source-identity-20260825A",
+              "view": "2.9.2-fresh-bcd-evaluation-binding-20260825A",
+          }
+          evaluator = (ROOT / expected["source"]).read_text("utf-8")
+          boot = (ROOT / "pmp-diagnostics-writer-trace-v1.js").read_text("utf-8")
+          view = (ROOT / "pmp-diagnostics-consolidated-view-v1.js").read_text("utf-8")
+          assert f"const REV='{expected['revision']}';" in evaluator
+          assert f"const SOURCE_ID='{expected['source']}';" in evaluator
+          assert f"const V='{expected['bootstrap']}';" in boot
+          assert f"const V='{expected['view']}';" in view
+          assert "API_SOURCE_IDENTITY_MISMATCH" in boot
+          assert "RECEIPT_PUBLICATION_FAILED" in boot
+          assert "fresh_evaluation_bound" in view
+
+          manifest_path = ROOT / "pmp-runtime-integrity-manifest-v1.json"
+          seal_path = ROOT / "audit/a003-manifest-seal.json"
+          root_path = ROOT / "pmp-app-current.html"
+          manifest_bytes = manifest_path.read_bytes()
+          manifest = json.loads(manifest_bytes)
+          seal = json.loads(seal_path.read_text("utf-8"))
+          index = {row["path"]: row for row in manifest["records"]}
+          for relative in [
+              expected["source"],
+              "pmp-diagnostics-writer-trace-v1.js",
+              "pmp-diagnostics-consolidated-view-v1.js",
+          ]:
+              data = (ROOT / relative).read_bytes()
+              row = index[relative]
+              assert row["bytes"] == len(data)
+              assert row["sha256_hex"] == hashlib.sha256(data).hexdigest()
+          digest = hashlib.sha256(manifest_bytes).hexdigest()
+          assert seal["manifest_sha256"] == digest
+          root = root_path.read_text("utf-8")
+          match = re.search(r"const MANIFEST_SHA256='([0-9a-f]{64})';", root)
+          assert match and match.group(1) == digest
+
+          receipt = json.loads((ROOT / "audit/pass13/receipts/RECEIPT_BCD_FRESH_EVALUATION_SOURCE_IDENTITY_20260825A_001.json").read_text("utf-8"))
+          assert receipt["status"] == "PASS"
+          assert receipt["repair"]["immutable_evaluator_source"] == expected["source"]
+          assert receipt["boundaries"] == {
+              "bank_rebuild": False,
+              "continuous_run_mutation": False,
+              "dom_repair": False,
+              "forced_pass": False,
+              "helper_changes": False,
+              "owner_changes": False,
+              "persisted_user_data_delete": False,
+              "persisted_user_data_write": False,
+              "read_only": True,
+              "route_changes": False,
+              "storage_migration": False,
+          }
+          print("PASS: independent B-D freshness/source identity verifier")
+          ''').lstrip(), 'utf-8')
+
+          A002_TEST.write_text(td(r'''
+          'use strict';
+          const fs = require('fs');
+          const { chromium } = require('playwright');
+
+          const BASE = process.env.A002_BASE_URL || 'http://127.0.0.1:8000/';
+          const RESULT_PATH = process.env.A002_BCD_FRESHNESS_RESULT_PATH || 'a002-bcd-fresh-evaluation-results.json';
+          const CURRENT = 'pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html';
+          const INNER = 'pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html';
+          const BOOT_VERSION = '3.4.0-fresh-evaluation-source-identity-20260825A';
+          const BCD_VERSION = '1.1.0-final-two-live-proof-20260801A';
+          const BCD_REVISION = '1.4.0-fresh-evaluation-source-identity-20260825A';
+          const BCD_SOURCE = 'pmp-diagnostic-coverage-passes-bcd-v1-1-1-0-fresh-evaluation-20260825A.js';
+          const VIEW_VERSION = '2.9.2-fresh-bcd-evaluation-binding-20260825A';
+          const results = [];
+          const runtimeErrors = [];
+          let fatalError = null;
+
+          function errorValue(error) { return {name:String(error?.name||'Error'),message:String(error?.message||error),stack:String(error?.stack||'')}; }
+          function record(name, pass, detail={}) { results.push({name,pass:!!pass,detail,at:new Date().toISOString()}); console.log(`${pass?'PASS':'FAIL'} ${name} ${JSON.stringify(detail)}`); }
+          function writeOutput() {
+            const output = {type:'PMP_A002_BCD_FRESH_EVALUATION_SOURCE_IDENTITY_V1',generated_at:new Date().toISOString(),base_url:BASE,
+              tests_total:results.length,tests_passed:results.filter(x=>x.pass).length,tests_failed:results.filter(x=>!x.pass).length,
+              runtime_errors:runtimeErrors,fatal_error:fatalError,results};
+            fs.writeFileSync(RESULT_PATH, JSON.stringify(output,null,2));
+            console.log(`A002_BCD_FRESHNESS_RESULT_WRITTEN ${RESULT_PATH} ${JSON.stringify({tests_total:output.tests_total,tests_passed:output.tests_passed,tests_failed:output.tests_failed,runtime_errors:runtimeErrors.length})}`);
+          }
+          async function waitForFrame(page, pattern, timeout=65000) {
+            const deadline=Date.now()+timeout;
+            while(Date.now()<deadline) {
+              const frame=page.frames().find(f=>pattern.test(f.url()));
+              if(frame) return frame;
+              await page.waitForTimeout(250);
+            }
+            throw new Error(`frame not found: ${pattern}`);
+          }
+          async function waitForApiFrame(page, name, timeout=65000) {
+            const deadline=Date.now()+timeout;
+            while(Date.now()<deadline) {
+              for(const frame of page.frames()) {
+                try { if(await frame.evaluate(n=>!!(window[n]&&typeof window[n].run==='function'),name)) return frame; } catch {}
+              }
+              await page.waitForTimeout(250);
+            }
+            throw new Error(`API frame not found: ${name}`);
+          }
+          async function waitForScreenFrame(page, timeout=65000) {
+            const deadline=Date.now()+timeout;
+            while(Date.now()<deadline) {
+              for(const frame of page.frames()) {
+                try { if(await frame.evaluate(()=>!!document.getElementById('pmpDiagnosticsScreenV1'))) return frame; } catch {}
+              }
+              await page.waitForTimeout(250);
+            }
+            throw new Error('Diagnostics screen frame not found');
+          }
+          async function enterCurrentApp(page) {
+            await page.goto(BASE+'pmp-app-current.html#control',{waitUntil:'domcontentloaded'});
+            await page.waitForFunction(()=>{try{return JSON.parse(localStorage.getItem('pmp_a003_bootstrap_receipt_v1')||'null')?.status==='PASS'}catch{return false}},null,{timeout:40000});
+            const guardian=await waitForFrame(page,/pmp-route-guardian-current-loader-v22\.html/,40000);
+            await guardian.click('#openBtn',{force:true});
+            await page.waitForURL(url=>url.pathname.endsWith('/'+CURRENT)&&url.hash==='#control',{timeout:40000});
+            const runButton=page.locator('#pmpPass75ReloadRuntimePlatformGateV1 [data-run="1"]');
+            await runButton.waitFor({state:'visible',timeout:30000});
+            await runButton.click({force:true});
+            await page.waitForFunction(()=>{try{return JSON.parse(localStorage.getItem('pmp_pass75_reload_runtime_platform_gate_v1_receipt')||'null')?.released===true}catch{return false}},null,{timeout:15000});
+            await waitForFrame(page,new RegExp(INNER.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')),65000);
+            await page.waitForTimeout(7000);
+          }
+          async function locateView(frame) {
+            return frame.evaluate(()=>{
+              const seen=new Set(),wins=[];
+              function add(w){try{if(w&&w.document&&!seen.has(w)){seen.add(w);wins.push(w);w.document.querySelectorAll('iframe,frame').forEach(f=>{try{add(f.contentWindow)}catch{}})}}catch{}}
+              let top=window;try{top=window.top||window}catch{}
+              add(top);add(window);
+              const api=wins.map(w=>{try{return w.PMPDiagnosticsConsolidatedViewV1}catch{return null}}).find(Boolean);
+              return api?{version:api.version||null}:null;
+            });
+          }
+
+          (async()=>{ let browser=null; try {
+            browser=await chromium.launch({headless:true});
+            const context=await browser.newContext({serviceWorkers:'allow'});
+            const page=await context.newPage();
+            page.setDefaultTimeout(50000);
+            page.on('pageerror',e=>runtimeErrors.push({type:'pageerror',...errorValue(e)}));
+            page.on('console',m=>{if(m.type()==='error')runtimeErrors.push({type:'console',message:m.text()})});
+            await enterCurrentApp(page);
+            const apiFrame=await waitForApiFrame(page,'PMPCurrentBCDDiagnosticsBootstrapV1');
+            const screenFrame=await waitForScreenFrame(page);
+            const viewInfo=await locateView(screenFrame);
+            record('current-view-loaded',viewInfo?.version===VIEW_VERSION,{observed:viewInfo?.version||null,required:VIEW_VERSION});
+
+            const setup=await apiFrame.evaluate(({bootVersion,bcdVersion,bcdRevision,bcdSource})=>{
+              const boot=window.PMPCurrentBCDDiagnosticsBootstrapV1;
+              const before=boot.currentReceipt&&boot.currentReceipt();
+              const storage=window.top.localStorage;
+              const key='pmp_diagnostic_coverage_passes_bcd_v1_receipt';
+              const stale={type:'PMP_DIAGNOSTIC_COVERAGE_PASSES_BCD_V1',version:bcdVersion,revision:'1.2.0-accessible-runtime-context-20260803G',
+                source_identity:'pmp-diagnostic-coverage-passes-bcd-v1-1-1-0.js',evaluation_id:'stale-boot-0',owner:'diagnostics_owner',
+                at:'2026-08-25T03:04:32.428Z',reason:'boot_0',status:'FAIL',
+                bridge_system:{type:'PMP_BRIDGE_LIVE_DIAGNOSTIC_V1',status:'FAIL',checks:{accessible_document_count:3,diagnostics_active:false},issues:[{code:'BRIDGE_TAB_NOT_FOUND'}]},
+                library_system:{type:'PMP_LIBRARY_LIVE_DIAGNOSTIC_V1',status:'FAIL',checks:{accessible_document_count:3,diagnostics_active:false},issues:[{code:'LIBRARY_TAB_NOT_FOUND'}]},
+                bank_system:{type:'PMP_BANK_LIVE_DIAGNOSTIC_V1',status:'FAIL',checks:{accessible_document_count:3,diagnostics_active:false},issues:[{code:'BANK_TAB_NOT_FOUND'}]},
+                continuous_run_system:{type:'PMP_CONTINUOUS_RUN_LIVE_DIAGNOSTIC_V1',status:'PASS',checks:{},issues:[]},
+                errors_bug_watch_visual_stability:{type:'PMP_ERRORS_VISUAL_LIVE_DIAGNOSTIC_V1',status:'PASS',checks:{},issues:[]},
+                boundaries:{read_only:true}};
+              try{storage.setItem(key,JSON.stringify(stale))}catch{}
+              const proto=Object.getPrototypeOf(storage),original=proto.setItem;
+              const wrapped=function(k,v){if(this===storage&&String(k)===key){const error=new Error('The quota has been exceeded.');error.name='QuotaExceededError';throw error}return original.call(this,k,v)};
+              Object.defineProperty(proto,'setItem',{value:wrapped,writable:true,configurable:true});
+              window.__restoreBcdSetItem=()=>Object.defineProperty(proto,'setItem',{value:original,writable:true,configurable:true});
+              return {bootVersion:boot.version||null,requiredRevision:boot.requiredRevision||null,requiredSourceIdentity:boot.requiredSourceIdentity||null,
+                beforeEvaluationId:before&&before.evaluation_id||null,staleEvaluationId:stale.evaluation_id,bcdRevision,bcdSource};
+            },{bootVersion:BOOT_VERSION,bcdVersion:BCD_VERSION,bcdRevision:BCD_REVISION,bcdSource:BCD_SOURCE});
+            record('bootstrap-exact-source-contract',setup.bootVersion===BOOT_VERSION&&setup.requiredRevision===BCD_REVISION&&setup.requiredSourceIdentity===BCD_SOURCE,setup);
+
+            await screenFrame.evaluate(()=>{
+              const seen=new Set(),wins=[];
+              function add(w){try{if(w&&w.document&&!seen.has(w)){seen.add(w);wins.push(w);w.document.querySelectorAll('iframe,frame').forEach(f=>{try{add(f.contentWindow)}catch{}})}}catch{}}
+              let top=window;try{top=window.top||window}catch{}
+              add(top);add(window);
+              const api=wins.map(w=>{try{return w.PMPDiagnosticsConsolidatedViewV1}catch{return null}}).find(Boolean);
+              if(!api)throw new Error('Consolidated view API missing');
+              api.renderHome(window,document);
+              const card=document.querySelector('[data-diag-consolidated="whole_app"]');
+              if(!card)throw new Error('Whole App Health card missing');
+              card.click();
+            });
+            await screenFrame.locator('#pmpDiagCopyWhole').waitFor({state:'visible',timeout:50000});
+            const openState=await screenFrame.evaluate(()=>{
+              const api=window.top.PMPDiagnosticsConsolidatedViewV1||window.PMPDiagnosticsConsolidatedViewV1;
+              return {state:api.evidenceState(),receipt:api.fullDiagnosticReport().live_receipts.passes_bcd};
+            });
+            await screenFrame.click('#pmpDiagCopyWhole',{force:true});
+            await screenFrame.waitForFunction(()=>{
+              const b=document.getElementById('pmpDiagCopyWhole');
+              return !!b&&!b.disabled&&!/Running current live diagnostics/i.test(b.textContent||'');
+            },null,{timeout:50000});
+            const finalState=await screenFrame.evaluate(()=>{
+              const api=window.top.PMPDiagnosticsConsolidatedViewV1||window.PMPDiagnosticsConsolidatedViewV1;
+              const full=api.fullDiagnosticReport(),receipt=full.live_receipts.passes_bcd;
+              return {state:api.evidenceState(),receipt,whole:api.wholeAppHealth(),full};
+            });
+            const bootReceipt=await apiFrame.evaluate(()=>{try{return JSON.parse(window.top.localStorage.getItem('pmp_current_bcd_diagnostics_bootstrap_v1_receipt')||'null')}catch{return null}});
+            await apiFrame.evaluate(()=>{try{window.__restoreBcdSetItem&&window.__restoreBcdSetItem()}catch{}});
+
+            const openId=openState.receipt?.evaluation_id||null,finalId=finalState.receipt?.evaluation_id||null;
+            record('whole-app-open-replaces-prior-evidence',!!openId&&openId!==setup.beforeEvaluationId&&openId!==setup.staleEvaluationId,
+              {before:setup.beforeEvaluationId,stale:setup.staleEvaluationId,open:openId,reason:openState.receipt?.reason});
+            record('copy-button-produces-new-bound-evaluation',finalState.state?.status==='COMPLETE'&&finalState.state?.fresh_evaluation_bound===true&&
+              !!finalId&&finalId!==openId&&finalState.state?.observed_evaluation_id===finalId&&finalState.state?.requested_evaluation_id===finalId,
+              {open:openId,final:finalId,state:finalState.state});
+            record('exact-revision-and-source-preserved',finalState.receipt?.version===BCD_VERSION&&finalState.receipt?.revision===BCD_REVISION&&
+              finalState.receipt?.source_identity===BCD_SOURCE,{version:finalState.receipt?.version,revision:finalState.receipt?.revision,source:finalState.receipt?.source_identity});
+            const ctx=finalState.receipt?.runtime_context||{},docs=Array.isArray(ctx.accessible_documents)?ctx.accessible_documents:[];
+            record('settled-runtime-context-observed',ctx.diagnostics_active===true&&docs.length>=6,{diagnostics_active:ctx.diagnostics_active,documents:docs});
+            const bridge=finalState.receipt?.bridge_system,library=finalState.receipt?.library_system,bank=finalState.receipt?.bank_system;
+            record('bridge-library-bank-first-open-pass',[bridge,library,bank].every(x=>x?.status==='PASS')&&
+              [bridge,library,bank].every(x=>x?.checks?.surface_validation==='DEFERRED_WHILE_DIAGNOSTICS_ACTIVE'),
+              {bridge,library,bank});
+            record('quota-path-keeps-current-evaluation',bootReceipt?.status==='PASS'&&bootReceipt?.evaluation_id===finalId&&
+              bootReceipt?.publication_persistence_status==='QUOTA_UNAVAILABLE'&&bootReceipt?.observed_receipt_evaluation_id===finalId,
+              {bootReceipt});
+            const relevantErrors=runtimeErrors.filter(e=>/diagnostic|passes[- _]?bcd|journal|syntaxerror|fresh evaluation/i.test(String(e.message||'')+' '+String(e.stack||'')));
+            record('no-current-diagnostics-runtime-errors',relevantErrors.length===0,relevantErrors);
+            if(results.some(x=>!x.pass))throw new Error('B-D fresh evaluation/source identity certification failed');
+          } catch(error) {
+            fatalError=errorValue(error); console.error(error?.stack||error); process.exitCode=1;
+          } finally {
+            try{if(browser)await browser.close()}catch(error){if(!fatalError)fatalError=errorValue(error);process.exitCode=1}
+            try{writeOutput()}catch(error){console.error(error?.stack||error);process.exitCode=1}
+          } })();
+          ''').lstrip(), 'utf-8')
+
+          a002 = A002_WORKFLOW.read_text('utf-8')
+          deterministic_step = (
+              "      - name: Verify B-D fresh evaluation source identity\n"
+              "        run: |\n"
+              "          node --check pmp-diagnostic-coverage-passes-bcd-v1-1-1-0-fresh-evaluation-20260825A.js\n"
+              "          node --check pmp-diagnostics-writer-trace-v1.js\n"
+              "          node --check pmp-diagnostics-consolidated-view-v1.js\n"
+              "          node --check audit/a002-bcd-fresh-evaluation-source-identity-v1.cjs\n"
+              "          python3 tools/test_bcd_fresh_evaluation_source_identity_v1.py\n"
+              "          python3 tools/verify_bcd_fresh_evaluation_source_identity_v1.py\n\n"
+          )
+          a002 = replace_once(a002, '      - name: Start repository server\n', deterministic_step + '      - name: Start repository server\n', 'A-002 deterministic step')
+          browser_step = (
+              "      - name: Run B-D fresh evaluation source-identity certification\n"
+              "        if: always()\n"
+              "        env:\n"
+              "          A002_BASE_URL: http://127.0.0.1:8000/\n"
+              "          A002_BCD_FRESHNESS_RESULT_PATH: a002-bcd-fresh-evaluation-results.json\n"
+              "        run: |\n"
+              "          set +e\n"
+              "          node audit/a002-bcd-fresh-evaluation-source-identity-v1.cjs 2>&1 | tee a002-bcd-fresh-evaluation-console.log\n"
+              "          code=${PIPESTATUS[0]}\n"
+              "          exit $code\n\n"
+          )
+          a002 = replace_once(a002, '      - name: Upload live runtime result\n', browser_step + '      - name: Upload live runtime result\n', 'A-002 browser step')
+          a002 = replace_once(
+              a002,
+              '            a002-whole-app-diagnostics-console.log\n            /tmp/a002-http.log\n',
+              '            a002-whole-app-diagnostics-console.log\n'
+              '            a002-bcd-fresh-evaluation-results.json\n'
+              '            a002-bcd-fresh-evaluation-console.log\n'
+              '            /tmp/a002-http.log\n',
+              'A-002 artifacts'
+          )
+          A002_WORKFLOW.write_text(a002, 'utf-8')
+
+          changed_paths = [
+              '.github/workflows/a002-live-runtime.yml',
+              'audit/a002-bcd-fresh-evaluation-source-identity-v1.cjs',
+              'audit/a003-manifest-seal.json',
+              'audit/pass13/bcd-fresh-evaluation-source-identity-gate-v1.json',
+              'audit/pass13/receipts/RECEIPT_BCD_FRESH_EVALUATION_SOURCE_IDENTITY_20260825A_001.json',
+              'pmp-app-current.html',
+              'pmp-diagnostic-coverage-passes-bcd-v1-1-1-0-fresh-evaluation-20260825A.js',
+              'pmp-diagnostics-consolidated-view-v1.js',
+              'pmp-diagnostics-writer-trace-v1.js',
+              'pmp-runtime-integrity-manifest-v1.json',
+              'tools/test_bcd_fresh_evaluation_source_identity_v1.py',
+              'tools/verify_bcd_fresh_evaluation_source_identity_v1.py',
+          ]
+          implementation_paths = [
+              'pmp-app-current.html',
+              'pmp-diagnostic-coverage-passes-bcd-v1-1-1-0-fresh-evaluation-20260825A.js',
+              'pmp-diagnostics-consolidated-view-v1.js',
+              'pmp-diagnostics-writer-trace-v1.js',
+              'pmp-runtime-integrity-manifest-v1.json',
+          ]
+          receipt = {
+              'type': 'PMP_BCD_FRESH_EVALUATION_SOURCE_IDENTITY_RECEIPT_V1',
+              'version': '1.0.0',
+              'revision': BCD_REVISION,
+              'status': 'PASS',
+              'observed_problem': {
+                  'full_report_generated_at': '2026-08-25T03:10:32.514Z',
+                  'reused_bcd_evaluated_at': '2026-08-25T03:04:32.428Z',
+                  'reused_reason': 'boot_0',
+                  'reused_accessible_document_count': 3,
+                  'settled_full_report_accessible_document_count': 6,
+                  'false_failures': ['bridge_system', 'library_system', 'bank_system'],
+              },
+              'proven_root_cause': 'The bootstrap ran a later evaluator but, when no persisted Bug Watch reclassification was needed, accepted an already complete stored/live receipt instead of publishing the just-returned evaluation. Version-only validation also could not distinguish evaluator revisions that shared the same public B-D version.',
+              'repair': {
+                  'immutable_evaluator_source': BCD_SOURCE,
+                  'required_evaluator_revision': BCD_REVISION,
+                  'bootstrap_version': BOOT_VERSION,
+                  'view_version': VIEW_VERSION,
+                  'freshness_binding': 'Every bootstrap invocation creates an evaluation ID; the bounded receipt and consolidated view must match that exact ID.',
+                  'quota_path': 'The just-produced evaluation becomes the live-memory receipt before persistence is attempted, so quota failure cannot revive prior evidence.',
+                  'evidence_preserved': ['revision', 'source_identity', 'evaluation_id', 'runtime_context', 'section revision/checks/issues'],
+              },
+              'verification': {
+                  'deterministic_test': 'tools/test_bcd_fresh_evaluation_source_identity_v1.py',
+                  'independent_verifier': 'tools/verify_bcd_fresh_evaluation_source_identity_v1.py',
+                  'browser_path': 'audit/a002-bcd-fresh-evaluation-source-identity-v1.cjs',
+                  'a003_source_byte_gate': 'tools/test_a003_integrity.py',
+                  'user_device_proof': 'REQUIRED_AFTER_DEPLOYMENT',
+              },
+              'boundaries': {
+                  'read_only': True,
+                  'owner_changes': False,
+                  'helper_changes': False,
+                  'route_changes': False,
+                  'bank_rebuild': False,
+                  'continuous_run_mutation': False,
+                  'storage_migration': False,
+                  'persisted_user_data_write': False,
+                  'persisted_user_data_delete': False,
+                  'dom_repair': False,
+                  'forced_pass': False,
+              },
+              'claim_ceiling': 'Certifies the bounded repository repair and exact browser-path test design. It does not claim the iPhone is fixed until a fresh post-deployment phone report proves the new evaluation identity and current section evidence.',
+          }
+          RECEIPT.parent.mkdir(parents=True, exist_ok=True)
+          RECEIPT.write_text(json.dumps(receipt, indent=2, sort_keys=True) + '\n', 'utf-8')
+
+          gate = {
+              'type': 'PMP_BCD_FRESH_EVALUATION_SOURCE_IDENTITY_GATE_V1',
+              'version': '1.0.0',
+              'unit_id': 'P13-U104',
+              'status': 'PASS',
+              'revision': BCD_REVISION,
+              'scope': {
+                  'changed_paths': changed_paths,
+                  'implementation_paths': implementation_paths,
+                  'deterministic_test_paths': ['tools/test_bcd_fresh_evaluation_source_identity_v1.py'],
+                  'verifier_paths': ['tools/verify_bcd_fresh_evaluation_source_identity_v1.py'],
+                  'receipt_paths': ['audit/pass13/receipts/RECEIPT_BCD_FRESH_EVALUATION_SOURCE_IDENTITY_20260825A_001.json'],
+              },
+              'no_blind_flying_gate': {
+                  'type': 'PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1',
+                  'version': '1.0.0',
+                  'ci_lane': 'deterministic_browser_harness',
+                  'diagnostic_matrix_update': {
+                      'status': 'ADDED',
+                      'applicable_matrix': 'audit/pass13/bcd-fresh-evaluation-source-identity-gate-v1.json',
+                      'rationale': 'The fresh iPhone Full Diagnostics report proved that Copy Full Diagnostics reused a six-minute-old boot_0 B-D receipt with only three accessible documents even though the settled report could see six documents and the visible Bridge, Library, and Bank navigation.',
+                  },
+                  'diagnostic_evidence_routes': [
+                      'audit/a002-bcd-fresh-evaluation-source-identity-v1.cjs',
+                      'audit/pass13/bcd-fresh-evaluation-source-identity-gate-v1.json',
+                      'audit/pass13/receipts/RECEIPT_BCD_FRESH_EVALUATION_SOURCE_IDENTITY_20260825A_001.json',
+                  ],
+                  'deterministic_test_paths': ['tools/test_bcd_fresh_evaluation_source_identity_v1.py'],
+                  'verifier_paths': ['tools/verify_bcd_fresh_evaluation_source_identity_v1.py'],
+                  'receipt_paths': ['audit/pass13/receipts/RECEIPT_BCD_FRESH_EVALUATION_SOURCE_IDENTITY_20260825A_001.json'],
+                  'observed_facts': [{
+                      'claim_type': 'OBSERVED',
+                      'fact': 'The report generated at 03:10:32Z retained B-D evidence from 03:04:32Z with reason boot_0 and accessible_document_count 3, while that same Full Diagnostics report listed six accessible documents and visibly showed Bridge, Library, and Bank navigation.',
+                      'evidence_paths': ['audit/pass13/receipts/RECEIPT_BCD_FRESH_EVALUATION_SOURCE_IDENTITY_20260825A_001.json'],
+                  }],
+                  'inferred_conclusions': [{
+                      'claim_type': 'INFERRED',
+                      'conclusion': 'A complete prior receipt is not proof of the current Copy request. The bootstrap and consolidated view must bind exact evaluator revision, immutable source identity, and a unique evaluation ID, including when localStorage quota is unavailable.',
+                      'basis_evidence_paths': [
+                          'pmp-diagnostics-writer-trace-v1.js',
+                          'pmp-diagnostics-consolidated-view-v1.js',
+                          'tools/verify_bcd_fresh_evaluation_source_identity_v1.py',
+                      ],
+                  }],
+                  'fault_injection': {
+                      'status': 'COVERED',
+                      'cases': [
+                          'complete stale B-D receipt exists before Whole App Health opens',
+                          'same public B-D version is supplied by the wrong evaluator revision',
+                          'same public B-D version is supplied by the wrong source identity',
+                          'localStorage quota rejects bounded receipt persistence',
+                          'early three-document boot evidence precedes a settled six-document app',
+                          'Whole App Health Copy must produce a new evaluation ID after the open evaluation',
+                          'missing or mismatched evaluation identity remains fail-closed',
+                      ],
+                  },
+                  'required_artifact_roles': ['command','stdout','stderr','exit_status','result','scope','environment','authority_state','manifest'],
+                  'upload_before_enforcement': True,
+                  'automatic_retry': False,
+                  'special_authority': {'required': False, 'granted': False, 'consumed': False},
+              },
+              'claim_ceiling': 'Repairs evidence freshness and source identity only. It does not change owners, helpers, routes, Bank, Continuous Run state, storage schema, user data, or failure semantics, and it requires fresh iPhone proof after deployment.',
+          }
+          GATE.write_text(json.dumps(gate, indent=2, sort_keys=True) + '\n', 'utf-8')
+          PY
+
+      - name: Build deterministic A-003 manifest and seal
+        shell: bash
+        run: |
+          python3 tools/build_a003_integrity_manifest.py \
+            --output a003-generated-integrity-manifest.json \
+            --report a003-integrity-probe-report.json \
+            | tee a003-integrity-probe-console.log
+          python3 - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          path = Path('a003-generated-integrity-manifest.json')
+          manifest = json.loads(path.read_text('utf-8'))
+          manifest.pop('source_commit', None)
+          manifest.pop('self_digest_for_generated_bytes', None)
+          identity = {
+              'records': [(r['path'], r['sha256_hex']) for r in manifest.get('records', [])],
+              'historical_records': [(r['path'], r.get('repository_ref'), r['sha256_hex']) for r in manifest.get('historical_records', [])],
+              'external_records': [(r['url'], r['sha256_hex']) for r in manifest.get('external_records', [])],
+              'root_trust_anchors': manifest.get('root_trust_anchors', []),
+              'policy': {
+                  'algorithm': manifest.get('algorithm'),
+                  'unlisted_executable_policy': manifest.get('unlisted_executable_policy'),
+                  'network_policy': manifest.get('network_policy'),
+              },
+          }
+          canonical = json.dumps(identity, sort_keys=True, separators=(',', ':')).encode('utf-8')
+          manifest['version'] = '20260711A-A003-FINAL'
+          manifest['runtime_source_set_sha256'] = hashlib.sha256(canonical).hexdigest()
+          manifest['source_identity_rule'] = 'Deterministic digest of protected local, historical, external, root-anchor, and policy identities; audit/workflow-only commits do not alter this identity.'
+          path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + '\n', 'utf-8')
+          PY
+          cp a003-generated-integrity-manifest.json pmp-runtime-integrity-manifest-v1.json
+          manifest_sha="$(sha256sum pmp-runtime-integrity-manifest-v1.json | awk '{print $1}')"
+          manifest_bytes="$(wc -c < pmp-runtime-integrity-manifest-v1.json | tr -d ' ')"
+          runtime_set_sha="$(python3 -c "import json; print(json.load(open('pmp-runtime-integrity-manifest-v1.json'))['runtime_source_set_sha256'])")"
+          python3 - "$manifest_sha" "$manifest_bytes" "$runtime_set_sha" <<'PY'
+          import json
+          import os
+          import re
+          import sys
+          from pathlib import Path
+
+          manifest_sha, manifest_bytes, runtime_set_sha = sys.argv[1:]
+          root = Path('pmp-app-current.html')
+          text = root.read_text('utf-8')
+          updated, count = re.subn(
+              r"const MANIFEST_SHA256='(?:__A003_MANIFEST_SHA256__|[0-9a-f]{64})';",
+              f"const MANIFEST_SHA256='{manifest_sha}';",
+              text,
+              count=1,
+          )
+          if count != 1:
+              raise SystemExit('Expected exactly one bootstrap manifest digest constant.')
+          root.write_text(updated, 'utf-8')
+          receipt = {
+              'type': 'PMP_A003_MANIFEST_SEAL_V1',
+              'repair_id': 'A-003',
+              'status': 'SEALED',
+              'manifest_path': 'pmp-runtime-integrity-manifest-v1.json',
+              'manifest_sha256': manifest_sha,
+              'manifest_bytes': int(manifest_bytes),
+              'manifest_version': '20260711A-A003-FINAL',
+              'runtime_source_set_sha256': runtime_set_sha,
+              'root_trust_anchor': 'pmp-app-current.html',
+              'root_self_verifiable': False,
+              'sealed_branch': os.environ.get('GITHUB_REF_NAME'),
+              'rule': 'The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.',
+          }
+          Path('audit/a003-manifest-seal.json').write_text(json.dumps(receipt, indent=2, sort_keys=True) + '\n', 'utf-8')
+          PY
+
+      - name: Run precommit deterministic, independent, ownership, and A-003 gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/test_bcd_fresh_evaluation_source_identity_v1.py
+          python3 tools/verify_bcd_fresh_evaluation_source_identity_v1.py
+          python3 tools/test_app_orchestrator_ownership_maintenance_v1.py
+          python3 tools/verify_app_orchestrator_ownership_maintenance_v1.py
+          python3 tools/test_a003_integrity.py --output /tmp/a003-repository-test-result.json
+          python3 -m json.tool audit/pass13/bcd-fresh-evaluation-source-identity-gate-v1.json >/dev/null
+          python3 -m json.tool audit/pass13/receipts/RECEIPT_BCD_FRESH_EVALUATION_SOURCE_IDENTITY_20260825A_001.json >/dev/null
+
+      - name: Commit exact bounded final tree locally
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f \
+            .github/workflows/one-shot-bcd-freshness-source-identity-20260825A.yml \
+            a003-generated-integrity-manifest.json \
+            a003-integrity-probe-report.json \
+            a003-integrity-probe-console.log \
+            a003-repository-test-result.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git status --short
+          git commit -m 'Fix B-D fresh evaluation and source identity'
+
+      - name: Run final exact-scope no-blind-flying and source-byte gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/test_bcd_fresh_evaluation_source_identity_v1.py
+          python3 tools/verify_bcd_fresh_evaluation_source_identity_v1.py
+          python3 tools/test_app_orchestrator_ownership_maintenance_v1.py
+          python3 tools/verify_app_orchestrator_ownership_maintenance_v1.py
+          python3 tools/test_pass6_unit7_no_blind_flying_gate_v1.py
+          python3 tools/run_pass6_unit7_no_blind_flying_gate_v1.py \
+            --base 124e8a928c7517e5eda118629941cd03240e0b20 \
+            --output /tmp/bcd-freshness-no-blind-flying-result.json
+          python3 tools/test_a003_integrity.py --output /tmp/a003-repository-test-result-final.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          result=json.loads(Path('/tmp/bcd-freshness-no-blind-flying-result.json').read_text('utf-8'))
+          assert result['status']=='PASS', result
+          expected=[
+              '.github/workflows/a002-live-runtime.yml',
+              'audit/a002-bcd-fresh-evaluation-source-identity-v1.cjs',
+              'audit/a003-manifest-seal.json',
+              'audit/pass13/bcd-fresh-evaluation-source-identity-gate-v1.json',
+              'audit/pass13/receipts/RECEIPT_BCD_FRESH_EVALUATION_SOURCE_IDENTITY_20260825A_001.json',
+              'pmp-app-current.html',
+              'pmp-diagnostic-coverage-passes-bcd-v1-1-1-0-fresh-evaluation-20260825A.js',
+              'pmp-diagnostics-consolidated-view-v1.js',
+              'pmp-diagnostics-writer-trace-v1.js',
+              'pmp-runtime-integrity-manifest-v1.json',
+              'tools/test_bcd_fresh_evaluation_source_identity_v1.py',
+              'tools/verify_bcd_fresh_evaluation_source_identity_v1.py',
+          ]
+          assert result['changed_paths']==expected, (result['changed_paths'], expected)
+          PY
+
+      - name: Push verified bounded repair
+        shell: bash
+        run: git push origin "HEAD:${GITHUB_REF_NAME}"
