@@ -11,6 +11,10 @@ const BCD_VERSION = '1.1.0-final-two-live-proof-20260801A';
 const BCD_REVISION = '1.4.0-fresh-evaluation-source-identity-20260825A';
 const BCD_SOURCE = 'pmp-diagnostic-coverage-passes-bcd-v1-1-1-0-fresh-evaluation-20260825A.js';
 const VIEW_VERSION = '2.9.2-fresh-bcd-evaluation-binding-20260825A';
+const DIAGNOSTICS_TAB = '#pmpDiagnosticsTabBtn';
+const DIAGNOSTICS_SCREEN = '#pmpDiagnosticsScreenV1';
+const WHOLE_APP_CARD = '[data-diag-consolidated="whole_app"]';
+const WHOLE_APP_COPY = '#pmpDiagCopyWhole';
 const results = [];
 const runtimeErrors = [];
 let fatalError = null;
@@ -18,7 +22,8 @@ let fatalError = null;
 function errorValue(error) { return {name:String(error?.name||'Error'),message:String(error?.message||error),stack:String(error?.stack||'')}; }
 function record(name, pass, detail={}) { results.push({name,pass:!!pass,detail,at:new Date().toISOString()}); console.log(`${pass?'PASS':'FAIL'} ${name} ${JSON.stringify(detail)}`); }
 function writeOutput() {
-  const output = {type:'PMP_A002_BCD_FRESH_EVALUATION_SOURCE_IDENTITY_V1',generated_at:new Date().toISOString(),base_url:BASE,
+  const output = {type:'PMP_A002_BCD_FRESH_EVALUATION_SOURCE_IDENTITY_V2',generated_at:new Date().toISOString(),base_url:BASE,
+    ui_path:['Diagnostics bottom tab','Whole App Health','Copy Whole App Health Report'],
     tests_total:results.length,tests_passed:results.filter(x=>x.pass).length,tests_failed:results.filter(x=>!x.pass).length,
     runtime_errors:runtimeErrors,fatal_error:fatalError,results};
   fs.writeFileSync(RESULT_PATH, JSON.stringify(output,null,2));
@@ -43,15 +48,15 @@ async function waitForApiFrame(page, name, timeout=65000) {
   }
   throw new Error(`API frame not found: ${name}`);
 }
-async function waitForScreenFrame(page, timeout=65000) {
+async function waitForSelectorFrame(page, selector, timeout=65000) {
   const deadline=Date.now()+timeout;
   while(Date.now()<deadline) {
     for(const frame of page.frames()) {
-      try { if(await frame.evaluate(()=>!!document.getElementById('pmpDiagnosticsScreenV1'))) return frame; } catch {}
+      try { if(await frame.locator(selector).count()) return frame; } catch {}
     }
     await page.waitForTimeout(250);
   }
-  throw new Error('Diagnostics screen frame not found');
+  throw new Error(`selector frame not found: ${selector}`);
 }
 async function enterCurrentApp(page) {
   await page.goto(BASE+'pmp-app-current.html#control',{waitUntil:'domcontentloaded'});
@@ -66,15 +71,15 @@ async function enterCurrentApp(page) {
   await waitForFrame(page,new RegExp(INNER.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')),65000);
   await page.waitForTimeout(7000);
 }
-async function locateView(frame) {
-  return frame.evaluate(()=>{
-    const seen=new Set(),wins=[];
-    function add(w){try{if(w&&w.document&&!seen.has(w)){seen.add(w);wins.push(w);w.document.querySelectorAll('iframe,frame').forEach(f=>{try{add(f.contentWindow)}catch{}})}}catch{}}
-    let top=window;try{top=window.top||window}catch{}
-    add(top);add(window);
-    const api=wins.map(w=>{try{return w.PMPDiagnosticsConsolidatedViewV1}catch{return null}}).find(Boolean);
-    return api?{version:api.version||null}:null;
-  });
+function stateReader() {
+  const seen=new Set(),wins=[];
+  function add(w){try{if(w&&w.document&&!seen.has(w)){seen.add(w);wins.push(w);w.document.querySelectorAll('iframe,frame').forEach(f=>{try{add(f.contentWindow)}catch{}})}}catch{}}
+  let top=window;try{top=window.top||window}catch{}
+  add(top);add(window);
+  const api=wins.map(w=>{try{return w.PMPDiagnosticsConsolidatedViewV1}catch{return null}}).find(Boolean);
+  if(!api)throw new Error('Consolidated view API missing');
+  const full=api.fullDiagnosticReport(),receipt=full.live_receipts.passes_bcd;
+  return {api_version:api.version||null,state:api.evidenceState(),receipt,whole:api.wholeAppHealth(),full};
 }
 
 (async()=>{ let browser=null; try {
@@ -86,11 +91,9 @@ async function locateView(frame) {
   page.on('console',m=>{if(m.type()==='error')runtimeErrors.push({type:'console',message:m.text()})});
   await enterCurrentApp(page);
   const apiFrame=await waitForApiFrame(page,'PMPCurrentBCDDiagnosticsBootstrapV1');
-  const screenFrame=await waitForScreenFrame(page);
-  const viewInfo=await locateView(screenFrame);
-  record('current-view-loaded',viewInfo?.version===VIEW_VERSION,{observed:viewInfo?.version||null,required:VIEW_VERSION});
+  const tabFrame=await waitForSelectorFrame(page,DIAGNOSTICS_TAB);
 
-  const setup=await apiFrame.evaluate(({bootVersion,bcdVersion,bcdRevision,bcdSource})=>{
+  const setup=await apiFrame.evaluate(({bcdVersion})=>{
     const boot=window.PMPCurrentBCDDiagnosticsBootstrapV1;
     const before=boot.currentReceipt&&boot.currentReceipt();
     const storage=window.top.localStorage;
@@ -109,44 +112,50 @@ async function locateView(frame) {
     const wrapped=function(k,v){if(this===storage&&String(k)===key){const error=new Error('The quota has been exceeded.');error.name='QuotaExceededError';throw error}return original.call(this,k,v)};
     Object.defineProperty(proto,'setItem',{value:wrapped,writable:true,configurable:true});
     window.__restoreBcdSetItem=()=>Object.defineProperty(proto,'setItem',{value:original,writable:true,configurable:true});
-    return {bootVersion:boot.version||null,requiredRevision:boot.requiredRevision||null,requiredSourceIdentity:boot.requiredSourceIdentity||null,
-      beforeEvaluationId:before&&before.evaluation_id||null,staleEvaluationId:stale.evaluation_id,bcdRevision,bcdSource};
-  },{bootVersion:BOOT_VERSION,bcdVersion:BCD_VERSION,bcdRevision:BCD_REVISION,bcdSource:BCD_SOURCE});
-  record('bootstrap-exact-source-contract',setup.bootVersion===BOOT_VERSION&&setup.requiredRevision===BCD_REVISION&&setup.requiredSourceIdentity===BCD_SOURCE,setup);
+    return {
+      bootVersion:boot.version||null,
+      requiredVersion:boot.requiredVersion||null,
+      requiredRevision:boot.requiredRevision||null,
+      requiredSourceIdentity:boot.requiredSourceIdentity||null,
+      beforeEvaluationId:before&&before.evaluation_id||null,
+      staleEvaluationId:stale.evaluation_id
+    };
+  },{bcdVersion:BCD_VERSION});
+  record('bootstrap-exact-source-contract',
+    setup.bootVersion===BOOT_VERSION&&setup.requiredVersion===BCD_VERSION&&setup.requiredRevision===BCD_REVISION&&setup.requiredSourceIdentity===BCD_SOURCE,
+    {observed:setup,required:{bootVersion:BOOT_VERSION,requiredVersion:BCD_VERSION,requiredRevision:BCD_REVISION,requiredSourceIdentity:BCD_SOURCE}});
 
-  await screenFrame.evaluate(()=>{
+  await tabFrame.locator(DIAGNOSTICS_TAB).click({force:true});
+  await tabFrame.locator(DIAGNOSTICS_SCREEN).waitFor({state:'visible',timeout:50000});
+  await tabFrame.locator(WHOLE_APP_CARD).waitFor({state:'visible',timeout:50000});
+  record('actual-diagnostics-bottom-tab-path-opened',true,{tab:DIAGNOSTICS_TAB,screen:DIAGNOSTICS_SCREEN});
+
+  const viewVersion=await tabFrame.evaluate(stateReader).then(x=>x.api_version);
+  record('current-view-loaded',viewVersion===VIEW_VERSION,{observed:viewVersion,required:VIEW_VERSION});
+
+  await tabFrame.locator(WHOLE_APP_CARD).click({force:true});
+  await tabFrame.locator(WHOLE_APP_COPY).waitFor({state:'visible',timeout:50000});
+  const openState=await tabFrame.evaluate(stateReader);
+  const openId=openState.receipt?.evaluation_id||null;
+  record('whole-app-open-replaces-prior-evidence',!!openId&&openId!==setup.beforeEvaluationId&&openId!==setup.staleEvaluationId,
+    {before:setup.beforeEvaluationId,stale:setup.staleEvaluationId,open:openId,reason:openState.receipt?.reason});
+
+  await tabFrame.locator(WHOLE_APP_COPY).click({force:true});
+  await tabFrame.waitForFunction(({openId})=>{
     const seen=new Set(),wins=[];
     function add(w){try{if(w&&w.document&&!seen.has(w)){seen.add(w);wins.push(w);w.document.querySelectorAll('iframe,frame').forEach(f=>{try{add(f.contentWindow)}catch{}})}}catch{}}
     let top=window;try{top=window.top||window}catch{}
     add(top);add(window);
     const api=wins.map(w=>{try{return w.PMPDiagnosticsConsolidatedViewV1}catch{return null}}).find(Boolean);
-    if(!api)throw new Error('Consolidated view API missing');
-    api.renderHome(window,document);
-    const card=document.querySelector('[data-diag-consolidated="whole_app"]');
-    if(!card)throw new Error('Whole App Health card missing');
-    card.click();
-  });
-  await screenFrame.locator('#pmpDiagCopyWhole').waitFor({state:'visible',timeout:50000});
-  const openState=await screenFrame.evaluate(()=>{
-    const api=window.top.PMPDiagnosticsConsolidatedViewV1||window.PMPDiagnosticsConsolidatedViewV1;
-    return {state:api.evidenceState(),receipt:api.fullDiagnosticReport().live_receipts.passes_bcd};
-  });
-  await screenFrame.click('#pmpDiagCopyWhole',{force:true});
-  await screenFrame.waitForFunction(()=>{
-    const b=document.getElementById('pmpDiagCopyWhole');
-    return !!b&&!b.disabled&&!/Running current live diagnostics/i.test(b.textContent||'');
-  },null,{timeout:50000});
-  const finalState=await screenFrame.evaluate(()=>{
-    const api=window.top.PMPDiagnosticsConsolidatedViewV1||window.PMPDiagnosticsConsolidatedViewV1;
-    const full=api.fullDiagnosticReport(),receipt=full.live_receipts.passes_bcd;
-    return {state:api.evidenceState(),receipt,whole:api.wholeAppHealth(),full};
-  });
+    if(!api)return false;
+    const state=api.evidenceState(),receipt=api.fullDiagnosticReport().live_receipts.passes_bcd;
+    return state?.status==='COMPLETE'&&state?.fresh_evaluation_bound===true&&receipt?.evaluation_id&&receipt.evaluation_id!==openId&&state.observed_evaluation_id===receipt.evaluation_id&&state.requested_evaluation_id===receipt.evaluation_id;
+  },{openId},{timeout:50000});
+  const finalState=await tabFrame.evaluate(stateReader);
+  const finalId=finalState.receipt?.evaluation_id||null;
   const bootReceipt=await apiFrame.evaluate(()=>{try{return JSON.parse(window.top.localStorage.getItem('pmp_current_bcd_diagnostics_bootstrap_v1_receipt')||'null')}catch{return null}});
   await apiFrame.evaluate(()=>{try{window.__restoreBcdSetItem&&window.__restoreBcdSetItem()}catch{}});
 
-  const openId=openState.receipt?.evaluation_id||null,finalId=finalState.receipt?.evaluation_id||null;
-  record('whole-app-open-replaces-prior-evidence',!!openId&&openId!==setup.beforeEvaluationId&&openId!==setup.staleEvaluationId,
-    {before:setup.beforeEvaluationId,stale:setup.staleEvaluationId,open:openId,reason:openState.receipt?.reason});
   record('copy-button-produces-new-bound-evaluation',finalState.state?.status==='COMPLETE'&&finalState.state?.fresh_evaluation_bound===true&&
     !!finalId&&finalId!==openId&&finalState.state?.observed_evaluation_id===finalId&&finalState.state?.requested_evaluation_id===finalId,
     {open:openId,final:finalId,state:finalState.state});
@@ -161,7 +170,7 @@ async function locateView(frame) {
   record('quota-path-keeps-current-evaluation',bootReceipt?.status==='PASS'&&bootReceipt?.evaluation_id===finalId&&
     bootReceipt?.publication_persistence_status==='QUOTA_UNAVAILABLE'&&bootReceipt?.observed_receipt_evaluation_id===finalId,
     {bootReceipt});
-  const relevantErrors=runtimeErrors.filter(e=>/diagnostic|passes[- _]?bcd|journal|syntaxerror|fresh evaluation/i.test(String(e.message||'')+' '+String(e.stack||'')));
+  const relevantErrors=runtimeErrors.filter(e=>/syntaxerror|api_source_identity_mismatch|new_evaluation_incomplete|receipt_publication_failed|diagnostic_journal_(?:instantiation|view)_failed/i.test(String(e.message||'')+' '+String(e.stack||'')));
   record('no-current-diagnostics-runtime-errors',relevantErrors.length===0,relevantErrors);
   if(results.some(x=>!x.pass))throw new Error('B-D fresh evaluation/source identity certification failed');
 } catch(error) {

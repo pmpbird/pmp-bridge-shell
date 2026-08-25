@@ -12,7 +12,7 @@
     "route_changes": false,
     "storage_migration": false
   },
-  "claim_ceiling": "Certifies the bounded repository repair and exact browser-path test design. It does not claim the iPhone is fixed until a fresh post-deployment phone report proves the new evaluation identity and current section evidence.",
+  "claim_ceiling": "Certifies the bounded repository repair and its current proof contracts. It does not claim the iPhone is fixed until a fresh post-deployment phone report proves the new evaluation identity and current section evidence.",
   "observed_problem": {
     "false_failures": [
       "bridge_system",
@@ -24,6 +24,22 @@
     "reused_bcd_evaluated_at": "2026-08-25T03:04:32.428Z",
     "reused_reason": "boot_0",
     "settled_full_report_accessible_document_count": 6
+  },
+  "pr_head_runtime_evidence": {
+    "a002_base_live_runtime": "PASS_41_OF_41",
+    "a003_repository_and_live_runtime_integrity": "PASS",
+    "fresh_bcd_accessible_document_count": 6,
+    "fresh_bcd_sections": {
+      "bank_system": "PASS",
+      "bridge_system": "PASS",
+      "continuous_run_system": "PASS",
+      "errors_bug_watch_visual_stability": "PASS",
+      "library_system": "PASS"
+    },
+    "remaining_proof_defects_before_alignment": [
+      "legacy Whole App browser certificate required bootstrap 3.3 instead of current 3.4",
+      "freshness browser harness waited for the Diagnostics screen before pressing the Diagnostics bottom tab"
+    ]
   },
   "proven_root_cause": "The bootstrap ran a later evaluator but, when no persisted Bug Watch reclassification was needed, accepted an already complete stored/live receipt instead of publishing the just-returned evaluation. Version-only validation also could not distinguish evaluator revisions that shared the same public B-D version.",
   "repair": {
@@ -45,11 +61,18 @@
   "status": "PASS",
   "type": "PMP_BCD_FRESH_EVALUATION_SOURCE_IDENTITY_RECEIPT_V1",
   "verification": {
+    "a002_pr_head_proof": "REQUIRED",
     "a003_source_byte_gate": "tools/test_a003_integrity.py",
     "browser_path": "audit/a002-bcd-fresh-evaluation-source-identity-v1.cjs",
     "deterministic_test": "tools/test_bcd_fresh_evaluation_source_identity_v1.py",
+    "exact_ui_path": [
+      "Diagnostics bottom tab",
+      "Whole App Health",
+      "Copy Whole App Health Report"
+    ],
     "independent_verifier": "tools/verify_bcd_fresh_evaluation_source_identity_v1.py",
+    "legacy_whole_app_browser_validator": "ALIGNED_TO_BOOTSTRAP_3_4_EXACT_IDENTITY",
     "user_device_proof": "REQUIRED_AFTER_DEPLOYMENT"
   },
-  "version": "1.0.0"
+  "version": "1.1.0"
 }
