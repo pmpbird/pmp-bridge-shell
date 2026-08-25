@@ -55,6 +55,13 @@ jobs:
                   continue
               name = str(step.get('name') or 'unnamed run step')
               print(f'::group::{name}', flush=True)
+              if name == 'Run precommit deterministic, independent, ownership, and A-003 gates':
+                  for temporary in (
+                      'a003-generated-integrity-manifest.json',
+                      'a003-integrity-probe-report.json',
+                      'a003-integrity-probe-console.log',
+                  ):
+                      Path(temporary).unlink(missing_ok=True)
               if name == 'Commit exact bounded final tree locally':
                   runner.unlink()
               completed = subprocess.run(
