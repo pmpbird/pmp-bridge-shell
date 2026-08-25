@@ -47,6 +47,14 @@ jobs:
           python3 tools/test_bcd_fresh_evaluation_source_identity_v1.py
           python3 tools/verify_bcd_fresh_evaluation_source_identity_v1.py
 
+      - name: Verify Active Path fresh-scan classification truth
+        run: |
+          node --check pmp-active-path-discovery-machine-v1.js
+          node --check pmp-active-path-discovery-zip-export-v2.js
+          node --check audit/a002-active-path-fresh-scan-classification-v1.cjs
+          python3 tools/test_active_path_fresh_scan_classification_truth_v1.py
+          python3 tools/verify_active_path_fresh_scan_classification_truth_v1.py
+
       - name: Start repository server
         run: |
           python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/a002-http.log 2>&1 &
@@ -90,6 +98,17 @@ jobs:
           code=${PIPESTATUS[0]}
           exit $code
 
+      - name: Run Active Path fresh-scan classification certification
+        if: always()
+        env:
+          A002_BASE_URL: http://127.0.0.1:8000/
+          A002_ATLAS_RESULT_PATH: a002-active-path-fresh-scan-results.json
+        run: |
+          set +e
+          node audit/a002-active-path-fresh-scan-classification-v1.cjs 2>&1 | tee a002-active-path-fresh-scan-console.log
+          code=${PIPESTATUS[0]}
+          exit $code
+
       - name: Upload live runtime result
         if: always()
         uses: actions/upload-artifact@v4
@@ -102,5 +121,7 @@ jobs:
             a002-whole-app-diagnostics-console.log
             a002-bcd-fresh-evaluation-results.json
             a002-bcd-fresh-evaluation-console.log
+            a002-active-path-fresh-scan-results.json
+            a002-active-path-fresh-scan-console.log
             /tmp/a002-http.log
           if-no-files-found: warn
