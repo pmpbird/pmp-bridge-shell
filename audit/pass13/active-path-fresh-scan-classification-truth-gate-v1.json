@@ -78,7 +78,7 @@
           "tools/test_app_orchestrator_ownership_maintenance_v1.py",
           "tools/verify_app_orchestrator_ownership_maintenance_v1.py"
         ],
-        "fact": "The first PR runs exposed two stale maintenance assumptions rather than runtime owner/helper failures: one exact Atlas version assertion and one sealed-branch prefix allowlist. Both maintenance alignments are constrained to one-line replacements."
+        "fact": "The first PR runs exposed two stale maintenance assumptions rather than runtime owner/helper failures: one exact Atlas version assertion and one sealed-branch prefix allowlist. Both maintenance alignments were constrained to one-line replacements and the ownership/runtime safety tests subsequently passed."
       }
     ],
     "receipt_paths": [
@@ -125,14 +125,24 @@
       "tools/verify_active_path_fresh_scan_classification_truth_v1.py",
       "tools/verify_app_orchestrator_ownership_maintenance_v1.py"
     ],
+    "deterministic_test_paths": [
+      "tools/test_active_path_fresh_scan_classification_truth_v1.py"
+    ],
     "implementation_paths": [
       "pmp-active-path-discovery-machine-v1.js",
       "pmp-active-path-discovery-zip-export-v2.js",
       "pmp-app-current.html"
+    ],
+    "receipt_paths": [
+      "audit/pass13/receipts/RECEIPT_ACTIVE_PATH_FRESH_SCAN_CLASSIFICATION_TRUTH_20260825A_001.json"
+    ],
+    "verifier_paths": [
+      "tools/verify_active_path_fresh_scan_classification_truth_v1.py",
+      "tools/verify_app_orchestrator_ownership_maintenance_v1.py"
     ]
   },
-  "status": "PENDING_PR_CI",
+  "status": "PASS",
   "type": "PMP_ACTIVE_PATH_FRESH_SCAN_CLASSIFICATION_TRUTH_GATE_V1",
   "unit_id": "P13-U105",
-  "version": "1.0.0"
+  "version": "1.1.0"
 }
