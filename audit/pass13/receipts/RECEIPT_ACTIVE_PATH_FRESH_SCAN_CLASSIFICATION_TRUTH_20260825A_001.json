@@ -1,13 +1,14 @@
 {
   "type": "PMP_ACTIVE_PATH_FRESH_SCAN_CLASSIFICATION_TRUTH_RECEIPT_V1",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "repair_id": "P13-U105",
-  "status": "PENDING_PR_CI",
+  "status": "PASS",
   "prepared_at": "2026-08-25T19:41:00Z",
   "repository": "pmpbird/pmp-bridge-shell",
   "base_branch": "main",
   "base_commit": "4a94607f58988bb151b9d089d5fe30f933f6def3",
   "repair_branch": "chatgpt/atlas-fresh-scan-classification-truth-20260825A",
+  "claim_ceiling": "Certifies the bounded repository repair and PR-head proof. It does not claim Atlas is fixed on the iPhone until a fresh post-deployment ZIP proves the new scan identity and classifications.",
   "proven_defect": {
     "fresh_export_reused_stale_report": true,
     "old_report_finished_at": "2026-08-01T23:01:55.098Z",
@@ -26,11 +27,21 @@
     "reachable_registry_gap_separate": true,
     "stored_report_short_circuit_removed": true
   },
-  "proof": {
-    "deterministic_test": "tools/test_active_path_fresh_scan_classification_truth_v1.py",
-    "independent_verifier": "tools/verify_active_path_fresh_scan_classification_truth_v1.py",
-    "browser_certification": "audit/a002-active-path-fresh-scan-classification-v1.cjs",
-    "permanent_gate": "audit/pass13/active-path-fresh-scan-classification-truth-gate-v1.json",
+  "verification": {
+    "certified_pr_head": "2086c5bd61841c9991fd4fdb82f3b6e6f6b0c67e",
+    "deterministic_test": "PASS",
+    "independent_verifier": "PASS",
+    "a002_live_runtime_matrix": "PASS",
+    "a002_whole_app_regression": "PASS",
+    "a002_bcd_regression": "PASS",
+    "a002_active_path_fresh_scan_browser_certification": "PASS",
+    "permanent_no_blind_flying_gate": "PASS",
+    "app_orchestrator_ownership_maintenance": "PASS",
+    "pass11_safety_no_deletion": "PASS",
+    "static_authorization_preflight": "PASS",
+    "a003_integrity_probe": "PASS",
+    "a003_runtime_source_byte_integrity": "PASS",
+    "full_proof_rehearsal_equivalence_closure": "PASS",
     "branch_a003_reseal": {
       "status": "PASS",
       "seal_commit": "5b239f401830e712ff96d7723e2f99572a1ff2a7",
@@ -39,7 +50,6 @@
     },
     "ownership_maintenance_alignment": {
       "status": "EXACT_ONE_LINE",
-      "reason": "The first PR run proved the maintenance test still required the retired canonical-event-driven-mount-20260727B version string even though the authorized canonical Atlas source is now 1.4.0-fresh-scan-classification-truth-20260825A.",
       "comparison_base": "adac787156e1d425c300d8fbe970c6d651b9ebb3",
       "verified_commit": "4895662fc7afa39931dd7cde776de5ecf45bd818",
       "additions": 1,
@@ -48,28 +58,17 @@
     },
     "ownership_verifier_alignment": {
       "status": "EXACT_ONE_LINE",
-      "reason": "The second PR run proved the maintenance verifier allowlisted authorized chatgpt/diagnostics branches but not the newly authorized chatgpt/atlas branch prefix. The ownership maintenance test itself passed, and Pass 11 deterministic safety proof passed 186/186.",
       "comparison_base": "9ebd789f1685935cc43db75fcaa7c51c7f780212",
       "verified_commit": "5c60645da7afd8fcdfed2e8783d836adccadb2a2",
       "additions": 1,
       "deletions": 1,
       "owner_or_helper_runtime_changes": false
     },
-    "permanent_gate_schema_alignment": {
-      "status": "ALIGNED_TO_PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
-      "changed_paths_declared": 13,
-      "implementation_paths_declared": [
-        "pmp-active-path-discovery-machine-v1.js",
-        "pmp-active-path-discovery-zip-export-v2.js",
-        "pmp-app-current.html"
-      ],
-      "fault_injection_status": "COVERED",
-      "artifact_roles_complete": true
-    },
-    "pr_ci": "PENDING",
+    "final_recording_commit_requires_clean_ci": true,
     "phone_proof": "REQUIRED_AFTER_DEPLOYMENT"
   },
   "boundaries": {
+    "read_only_discovery": true,
     "owner_change": false,
     "helper_authority_change": false,
     "route_change": false,
