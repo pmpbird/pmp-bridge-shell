@@ -1,0 +1,47 @@
+{
+  "type": "PMP_ACTIVE_PATH_ZIP_OUTPUT_HANDOFF_RECEIPT_V1",
+  "version": "1.0.0",
+  "revision": "2.7.0-zip-user-activation-handoff-20260825B",
+  "status": "PENDING_CI",
+  "observed_problem": {
+    "surface": "Active Path Discovery → Advanced: Export Fresh Full ZIP",
+    "symptom": "On the fresh iPhone path, the scan completed but no attachable ZIP was produced, leaving only an impractically long report.",
+    "proven_code_gap": "The exporter awaited the asynchronous fresh scan before creating and programmatically clicking a temporary download anchor, while the permanent browser proof exercised runDiscovery only and never asserted a real download event.",
+    "affected_file": "pmp-active-path-discovery-zip-export-v2.js"
+  },
+  "repair": {
+    "exporter_version": "2.7.0-zip-user-activation-handoff-20260825B",
+    "fresh_scan_contract_unchanged": true,
+    "classification_contract_unchanged": true,
+    "handoff": "After the fresh scan, the exporter creates a persistent real download link inside the Active Path Discovery card. An automatic click is attempted only while browser user activation is still active; otherwise the user can directly tap Download Fresh Atlas ZIP, creating a new trusted user gesture.",
+    "zip_members": [
+      "discovery-report.json",
+      "freeze-proof.txt",
+      "blocker-detail.txt"
+    ]
+  },
+  "verification": {
+    "deterministic_test": "tools/test_active_path_zip_output_handoff_v1.py",
+    "independent_verifier": "tools/verify_active_path_zip_output_handoff_v1.py",
+    "browser_path": "audit/a002-active-path-zip-output-v1.cjs",
+    "browser_requirement": "A direct click on the prepared link must produce a Playwright download event whose file is a ZIP containing all three expected members.",
+    "a002_live_runtime_matrix": "REQUIRED",
+    "a003_source_byte_gate": "REQUIRED",
+    "user_device_proof": "REQUIRED_AFTER_DEPLOYMENT"
+  },
+  "boundaries": {
+    "read_only_scan": true,
+    "owner_changes": false,
+    "helper_changes": false,
+    "route_changes": false,
+    "bank_rebuild": false,
+    "continuous_run_mutation": false,
+    "dom_repair": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false,
+    "persisted_user_data_delete": false,
+    "classification_changes": false,
+    "fresh_scan_semantics_changes": false
+  },
+  "claim_ceiling": "This receipt certifies only the bounded repository ZIP-output repair after its required gates pass. It does not claim iPhone ZIP output is fixed until a fresh post-deployment device test produces and attaches the ZIP."
+}
