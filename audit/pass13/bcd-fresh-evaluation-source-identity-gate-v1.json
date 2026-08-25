@@ -17,7 +17,7 @@
     "diagnostic_matrix_update": {
       "applicable_matrix": "audit/pass13/bcd-fresh-evaluation-source-identity-gate-v1.json",
       "rationale": "The fresh iPhone Full Diagnostics report proved that Copy Full Diagnostics reused a six-minute-old boot_0 B-D receipt with only three accessible documents even though the settled report could see six documents and the visible Bridge, Library, and Bank navigation. The first PR run then proved the runtime repair itself produced six-document PASS evidence, while the browser proof paths still expected bootstrap 3.3 or waited for a Diagnostics screen before pressing the Diagnostics tab.",
-      "status": "ADDED_AND_RUNTIME_REFINED"
+      "status": "UPDATED"
     },
     "fault_injection": {
       "cases": [
