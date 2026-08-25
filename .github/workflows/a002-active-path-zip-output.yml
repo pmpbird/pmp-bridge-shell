@@ -1,0 +1,61 @@
+name: A-002 Active Path ZIP Output Handoff
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'pmp-active-path-discovery-zip-export-v2.js'
+      - 'audit/a002-active-path-zip-output-v1.cjs'
+      - 'tools/test_active_path_zip_output_handoff_v1.py'
+      - 'tools/verify_active_path_zip_output_handoff_v1.py'
+      - 'audit/pass13/active-path-zip-output-handoff-gate-v1.json'
+      - 'audit/pass13/receipts/RECEIPT_ACTIVE_PATH_ZIP_OUTPUT_HANDOFF_20260825B_001.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  active-path-zip-output:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Verify deterministic ZIP handoff contracts
+        run: |
+          node --check pmp-active-path-discovery-zip-export-v2.js
+          node --check audit/a002-active-path-zip-output-v1.cjs
+          python3 tools/test_active_path_zip_output_handoff_v1.py
+          python3 tools/verify_active_path_zip_output_handoff_v1.py
+
+      - name: Run real browser ZIP download certification
+        env:
+          A002_ATLAS_ZIP_RESULT_PATH: a002-active-path-zip-output-results.json
+        run: |
+          set +e
+          node audit/a002-active-path-zip-output-v1.cjs 2>&1 | tee a002-active-path-zip-output-console.log
+          code=${PIPESTATUS[0]}
+          exit $code
+
+      - name: Upload ZIP handoff proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a002-active-path-zip-output-results
+          path: |
+            a002-active-path-zip-output-results.json
+            a002-active-path-zip-output-console.log
+          if-no-files-found: error
