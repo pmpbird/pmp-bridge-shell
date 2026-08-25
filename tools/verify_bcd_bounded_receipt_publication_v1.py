@@ -12,13 +12,19 @@ assert receipt['status'] == 'PASS'
 assert gate['no_blind_flying_gate']['upload_before_enforcement'] is True
 assert gate['no_blind_flying_gate']['automatic_retry'] is False
 assert gate['claim_ceiling']
+# The 2026-08-03 gate/receipt remain immutable historical evidence. Current
+# production must extend that bounded publication contract with exact freshness.
 for token in [
-    '3.3.0-bounded-verified-bcd-publication-20260803C',
+    '3.4.0-fresh-evaluation-source-identity-20260825A',
     'function boundedReceipt(produced)',
-    'function publishBounded(produced)',
+    'function publishBounded(produced,evaluationId)',
     'RECEIPT_PUBLICATION_FAILED',
     'NEW_EVALUATION_INCOMPLETE',
+    'runtime_context:produced.runtime_context||null',
+    'source_identity:produced.source_identity||null',
+    'evaluation_id:produced.evaluation_id||null',
 ]:
     assert token in src, token
+assert 'classified.applied?publishBounded(produced):' not in src
 assert 'NEW_RECEIPT_INCOMPLETE' not in src
-print('PASS: bounded B-D publication gate, receipt, implementation and claim ceiling verified')
+print('PASS: historical bounded-publication evidence preserved and current evaluation-ID publication verified')

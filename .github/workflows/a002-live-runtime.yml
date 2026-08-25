@@ -38,6 +38,15 @@ jobs:
           npm install --no-save playwright@1.55.0
           npx playwright install --with-deps chromium
 
+      - name: Verify B-D fresh evaluation source identity
+        run: |
+          node --check pmp-diagnostic-coverage-passes-bcd-v1-1-1-0-fresh-evaluation-20260825A.js
+          node --check pmp-diagnostics-writer-trace-v1.js
+          node --check pmp-diagnostics-consolidated-view-v1.js
+          node --check audit/a002-bcd-fresh-evaluation-source-identity-v1.cjs
+          python3 tools/test_bcd_fresh_evaluation_source_identity_v1.py
+          python3 tools/verify_bcd_fresh_evaluation_source_identity_v1.py
+
       - name: Start repository server
         run: |
           python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/a002-http.log 2>&1 &
@@ -70,6 +79,17 @@ jobs:
           code=${PIPESTATUS[0]}
           exit $code
 
+      - name: Run B-D fresh evaluation source-identity certification
+        if: always()
+        env:
+          A002_BASE_URL: http://127.0.0.1:8000/
+          A002_BCD_FRESHNESS_RESULT_PATH: a002-bcd-fresh-evaluation-results.json
+        run: |
+          set +e
+          node audit/a002-bcd-fresh-evaluation-source-identity-v1.cjs 2>&1 | tee a002-bcd-fresh-evaluation-console.log
+          code=${PIPESTATUS[0]}
+          exit $code
+
       - name: Upload live runtime result
         if: always()
         uses: actions/upload-artifact@v4
@@ -80,5 +100,7 @@ jobs:
             a002-live-runtime-console.log
             a002-whole-app-diagnostics-results.json
             a002-whole-app-diagnostics-console.log
+            a002-bcd-fresh-evaluation-results.json
+            a002-bcd-fresh-evaluation-console.log
             /tmp/a002-http.log
           if-no-files-found: warn
