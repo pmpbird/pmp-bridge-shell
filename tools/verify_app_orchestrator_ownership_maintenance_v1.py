@@ -126,7 +126,7 @@ def main() -> None:
         seal["runtime_source_set_sha256"]
         == manifest["runtime_source_set_sha256"]
     )
-    assert seal["sealed_branch"].startswith("chatgpt/diagnostics-") or seal["sealed_branch"] in {
+    assert seal["sealed_branch"].startswith(("chatgpt/diagnostics-", "chatgpt/atlas-")) or seal["sealed_branch"] in {
         "agent/app-orchestrator-owner-conflict-repair-v1",
         "agent/app-orchestrator-owner-maintenance-release-v1",
         "agent/diagnostics-handoff-active-path-restoration-v1",
