@@ -46,6 +46,26 @@
       "deletions": 1,
       "owner_or_helper_runtime_changes": false
     },
+    "ownership_verifier_alignment": {
+      "status": "EXACT_ONE_LINE",
+      "reason": "The second PR run proved the maintenance verifier allowlisted authorized chatgpt/diagnostics branches but not the newly authorized chatgpt/atlas branch prefix. The ownership maintenance test itself passed, and Pass 11 deterministic safety proof passed 186/186.",
+      "comparison_base": "9ebd789f1685935cc43db75fcaa7c51c7f780212",
+      "verified_commit": "5c60645da7afd8fcdfed2e8783d836adccadb2a2",
+      "additions": 1,
+      "deletions": 1,
+      "owner_or_helper_runtime_changes": false
+    },
+    "permanent_gate_schema_alignment": {
+      "status": "ALIGNED_TO_PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+      "changed_paths_declared": 13,
+      "implementation_paths_declared": [
+        "pmp-active-path-discovery-machine-v1.js",
+        "pmp-active-path-discovery-zip-export-v2.js",
+        "pmp-app-current.html"
+      ],
+      "fault_injection_status": "COVERED",
+      "artifact_roles_complete": true
+    },
     "pr_ci": "PENDING",
     "phone_proof": "REQUIRED_AFTER_DEPLOYMENT"
   },
