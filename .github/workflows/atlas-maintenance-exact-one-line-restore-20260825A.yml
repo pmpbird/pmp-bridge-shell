@@ -1,0 +1,46 @@
+name: Atlas Maintenance Exact One-Line Restore 20260825A
+
+on:
+  push:
+    branches:
+      - chatgpt/atlas-fresh-scan-classification-truth-20260825A
+    paths:
+      - '.github/workflows/atlas-maintenance-exact-one-line-restore-20260825A.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  exact-restore:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Restore exact maintenance source and change one assertion
+        run: |
+          git show adac787156e1d425c300d8fbe970c6d651b9ebb3:tools/test_app_orchestrator_ownership_maintenance_v1.py > tools/test_app_orchestrator_ownership_maintenance_v1.py
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('tools/test_app_orchestrator_ownership_maintenance_v1.py')
+          s=p.read_text('utf-8')
+          old='    check("canonical-event-driven-mount-20260727B" in v1, "V1 event-driven mount version")'
+          new='    check("1.4.0-fresh-scan-classification-truth-20260825A" in v1, "V1 current fresh-scan classification version")'
+          if s.count(old)!=1:
+              raise SystemExit(f'Expected exactly one stale maintenance assertion, found {s.count(old)}')
+          p.write_text(s.replace(old,new,1),'utf-8')
+          PY
+          numstat="$(git diff --numstat adac787156e1d425c300d8fbe970c6d651b9ebb3 -- tools/test_app_orchestrator_ownership_maintenance_v1.py)"
+          echo "$numstat"
+          test "$numstat" = $'1\t1\ttools/test_app_orchestrator_ownership_maintenance_v1.py'
+          python3 tools/test_app_orchestrator_ownership_maintenance_v1.py
+      - name: Remove temporary workflow and commit exact repair
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/atlas-maintenance-exact-one-line-restore-20260825A.yml
+          git add tools/test_app_orchestrator_ownership_maintenance_v1.py
+          git commit -m 'Atlas: align one stale ownership maintenance assertion'
+          git push origin HEAD:chatgpt/atlas-fresh-scan-classification-truth-20260825A
