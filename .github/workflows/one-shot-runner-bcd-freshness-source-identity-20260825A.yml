@@ -80,6 +80,15 @@ jobs:
                   remove_repository_bytecode()
               if name == 'Commit exact bounded final tree locally':
                   runner.unlink()
+              if name == 'Push verified bounded repair':
+                  workflow_paths = [
+                      '.github/workflows/a002-live-runtime.yml',
+                      '.github/workflows/one-shot-bcd-freshness-source-identity-20260825A.yml',
+                      '.github/workflows/one-shot-runner-bcd-freshness-source-identity-20260825A.yml',
+                  ]
+                  subprocess.run(['git', 'checkout', 'HEAD^', '--', *workflow_paths], check=True)
+                  subprocess.run(['git', 'add', *workflow_paths], check=True)
+                  subprocess.run(['git', 'commit', '--amend', '--no-edit'], check=True)
               completed = subprocess.run(
                   ['bash', '-e', '-u', '-o', 'pipefail', '-c', script],
                   cwd='.',
