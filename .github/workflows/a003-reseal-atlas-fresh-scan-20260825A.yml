@@ -47,6 +47,8 @@ jobs:
       - name: Seal manifest, root bootstrap, and receipt
         run: |
           cp a003-generated-integrity-manifest.json pmp-runtime-integrity-manifest-v1.json
+          cp a003-generated-integrity-manifest.json /tmp/a003-generated-integrity-manifest.json
+          cp a003-integrity-probe-report.json /tmp/a003-integrity-probe-report.json
           manifest_sha="$(sha256sum pmp-runtime-integrity-manifest-v1.json | awk '{print $1}')"
           manifest_bytes="$(wc -c < pmp-runtime-integrity-manifest-v1.json | tr -d ' ')"
           runtime_set_sha="$(python3 -c "import json; print(json.load(open('pmp-runtime-integrity-manifest-v1.json'))['runtime_source_set_sha256'])")"
@@ -61,6 +63,7 @@ jobs:
           receipt={'type':'PMP_A003_MANIFEST_SEAL_V1','repair_id':'A-003','status':'SEALED','manifest_path':'pmp-runtime-integrity-manifest-v1.json','manifest_sha256':manifest_sha,'manifest_bytes':int(manifest_bytes),'manifest_version':'20260711A-A003-FINAL','runtime_source_set_sha256':runtime_set_sha,'root_trust_anchor':'pmp-app-current.html','root_self_verifiable':False,'sealed_branch':'chatgpt/atlas-fresh-scan-classification-truth-20260825A','rule':'The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.'}
           Path('audit/a003-manifest-seal.json').write_text(json.dumps(receipt,indent=2,sort_keys=True)+'\n','utf-8')
           PY
+          rm -f a003-generated-integrity-manifest.json a003-integrity-probe-report.json
           set +e
           python3 tools/test_a003_integrity.py --output a003-repository-test-result.json
           code=$?
@@ -74,8 +77,8 @@ jobs:
           name: a003-atlas-reseal-diagnostics
           path: |
             a003-repository-test-result.json
-            a003-integrity-probe-report.json
-            a003-generated-integrity-manifest.json
+            /tmp/a003-integrity-probe-report.json
+            /tmp/a003-generated-integrity-manifest.json
           if-no-files-found: warn
 
       - name: Commit branch seal
