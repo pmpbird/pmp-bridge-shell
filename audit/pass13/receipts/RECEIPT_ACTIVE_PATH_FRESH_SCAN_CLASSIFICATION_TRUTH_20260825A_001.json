@@ -1,0 +1,56 @@
+{
+  "type": "PMP_ACTIVE_PATH_FRESH_SCAN_CLASSIFICATION_TRUTH_RECEIPT_V1",
+  "version": "1.0.0",
+  "repair_id": "P13-U105",
+  "status": "PENDING_PR_CI",
+  "prepared_at": "2026-08-25T19:41:00Z",
+  "repository": "pmpbird/pmp-bridge-shell",
+  "base_branch": "main",
+  "base_commit": "4a94607f58988bb151b9d089d5fe30f933f6def3",
+  "repair_branch": "chatgpt/atlas-fresh-scan-classification-truth-20260825A",
+  "proven_defect": {
+    "fresh_export_reused_stale_report": true,
+    "old_report_finished_at": "2026-08-01T23:01:55.098Z",
+    "fresh_export_filename": "pmp-discovery-report-2026-08-25T06-43-54-409Z.zip",
+    "reachable_rows_misclassified_hard_missing": 23,
+    "http_412_rows_misclassified_dead": 10
+  },
+  "repair": {
+    "machine_version": "1.4.0-fresh-scan-classification-truth-20260825A",
+    "classification_revision": "1.0.0-current-map-http-truth-20260825A",
+    "exporter_version": "2.6.0-fresh-scan-classification-truth-20260825A",
+    "fresh_scan_request_binding": true,
+    "current_map_role_classification": true,
+    "http_404_410_missing_only": true,
+    "http_412_precondition_rejected": true,
+    "reachable_registry_gap_separate": true,
+    "stored_report_short_circuit_removed": true
+  },
+  "proof": {
+    "deterministic_test": "tools/test_active_path_fresh_scan_classification_truth_v1.py",
+    "independent_verifier": "tools/verify_active_path_fresh_scan_classification_truth_v1.py",
+    "browser_certification": "audit/a002-active-path-fresh-scan-classification-v1.cjs",
+    "permanent_gate": "audit/pass13/active-path-fresh-scan-classification-truth-gate-v1.json",
+    "branch_a003_reseal": {
+      "status": "PASS",
+      "seal_commit": "5b239f401830e712ff96d7723e2f99572a1ff2a7",
+      "manifest_sha256": "efa5a8df778e9596903bcdad9b888af66f7dd7924f56321f15839e822c4cefd4",
+      "runtime_source_set_sha256": "99c40063576d6a0926158cd516b6747780d61f6f77bb7a44715bdbb9045e17e0"
+    },
+    "pr_ci": "PENDING",
+    "phone_proof": "REQUIRED_AFTER_DEPLOYMENT"
+  },
+  "boundaries": {
+    "owner_change": false,
+    "helper_authority_change": false,
+    "route_change": false,
+    "bank_rebuild": false,
+    "continuous_run_mutation": false,
+    "dom_repair": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false,
+    "persisted_user_data_delete": false,
+    "placeholder_file_creation": false,
+    "forced_pass": false
+  }
+}
