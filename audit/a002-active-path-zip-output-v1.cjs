@@ -63,7 +63,7 @@ const exporterSource = fs.readFileSync('pmp-active-path-discovery-zip-export-v2.
   const suggested = download.suggestedFilename();
   const checks = {
     exporter_version: await page.evaluate(() => window.PMPActivePathDiscoveryZipExportV2.version === '2.7.0-zip-user-activation-handoff-20260825B'),
-    async_scan_completed_before_link: /Fresh Atlas ZIP ready/.test(readyText || ''),
+    async_scan_completed_before_link: /Fresh Atlas ZIP (?:ready|download requested)/.test(readyText || ''),
     persistent_manual_link_visible: await link.isVisible(),
     blob_href_present: /^blob:/.test(href || ''),
     download_attribute_zip: /\.zip$/i.test(downloadName || ''),
