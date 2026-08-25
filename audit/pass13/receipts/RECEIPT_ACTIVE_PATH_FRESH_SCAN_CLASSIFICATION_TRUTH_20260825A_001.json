@@ -37,6 +37,15 @@
       "manifest_sha256": "efa5a8df778e9596903bcdad9b888af66f7dd7924f56321f15839e822c4cefd4",
       "runtime_source_set_sha256": "99c40063576d6a0926158cd516b6747780d61f6f77bb7a44715bdbb9045e17e0"
     },
+    "ownership_maintenance_alignment": {
+      "status": "EXACT_ONE_LINE",
+      "reason": "The first PR run proved the maintenance test still required the retired canonical-event-driven-mount-20260727B version string even though the authorized canonical Atlas source is now 1.4.0-fresh-scan-classification-truth-20260825A.",
+      "comparison_base": "adac787156e1d425c300d8fbe970c6d651b9ebb3",
+      "verified_commit": "4895662fc7afa39931dd7cde776de5ecf45bd818",
+      "additions": 1,
+      "deletions": 1,
+      "owner_or_helper_runtime_changes": false
+    },
     "pr_ci": "PENDING",
     "phone_proof": "REQUIRED_AFTER_DEPLOYMENT"
   },
