@@ -38,7 +38,9 @@ jobs:
         run: |
           python3 -m pip install --disable-pip-version-check --quiet pyyaml
           python3 - <<'PY'
+          import json
           import os
+          import shutil
           import subprocess
           from pathlib import Path
 
@@ -48,6 +50,15 @@ jobs:
           runner = Path('.github/workflows/one-shot-runner-bcd-freshness-source-identity-20260825A.yml')
           workflow = yaml.safe_load(source.read_text('utf-8'))
           steps = workflow['jobs']['repair-and-seal']['steps']
+          child_env = os.environ.copy()
+          child_env['PYTHONDONTWRITEBYTECODE'] = '1'
+
+          def remove_repository_bytecode() -> None:
+              for cache in Path('.').rglob('__pycache__'):
+                  if cache.is_dir():
+                      shutil.rmtree(cache)
+              for compiled in Path('.').rglob('*.py[co]'):
+                  compiled.unlink(missing_ok=True)
 
           for step in steps:
               script = step.get('run')
@@ -62,14 +73,29 @@ jobs:
                       'a003-integrity-probe-console.log',
                   ):
                       Path(temporary).unlink(missing_ok=True)
+              if name in {
+                  'Commit exact bounded final tree locally',
+                  'Run final exact-scope no-blind-flying and source-byte gates',
+              }:
+                  remove_repository_bytecode()
               if name == 'Commit exact bounded final tree locally':
                   runner.unlink()
               completed = subprocess.run(
                   ['bash', '-e', '-u', '-o', 'pipefail', '-c', script],
                   cwd='.',
-                  env=os.environ.copy(),
+                  env=child_env,
                   check=False,
               )
+              if completed.returncode == 0 and name == 'Apply bounded freshness and source-identity repair':
+                  gate_path = Path('audit/pass13/bcd-fresh-evaluation-source-identity-gate-v1.json')
+                  gate = json.loads(gate_path.read_text('utf-8'))
+                  gate['scope']['implementation_paths'] = [
+                      'pmp-app-current.html',
+                      'pmp-diagnostic-coverage-passes-bcd-v1-1-1-0-fresh-evaluation-20260825A.js',
+                      'pmp-diagnostics-consolidated-view-v1.js',
+                      'pmp-diagnostics-writer-trace-v1.js',
+                  ]
+                  gate_path.write_text(json.dumps(gate, indent=2, sort_keys=True) + '\n', 'utf-8')
               print('::endgroup::', flush=True)
               if completed.returncode != 0:
                   raise SystemExit(completed.returncode)
