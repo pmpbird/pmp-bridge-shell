@@ -1,31 +1,41 @@
 (()=>{
 'use strict';
-const VERSION='1.3.0-canonical-event-driven-mount-20260727B';
+const VERSION='1.4.0-fresh-scan-classification-truth-20260825A';
+const SOURCE_IDENTITY='pmp-active-path-discovery-machine-v1.js';
+const CLASSIFICATION_REVISION='1.0.0-current-map-http-truth-20260825A';
 const OWNER='active_path_discovery_owner';
+const MAP_PATH='pmp-current-map-v12.json';
 const REPORT_KEY='pmp_active_path_discovery_report_v1';
 const RECEIPT_KEY='pmp_active_path_discovery_receipt_v1';
 const COPY_RECEIPT_KEY='pmp_active_path_discovery_copy_receipt_v1';
-const CURRENT=['pmp-app-current.html','pmp-current-map-v12.json','pmp-route-guardian-current-loader-v22.html','pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html','pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html','pmp-current-inner-cleanbug-rgcontrols-v23.html','pmp-home-single-v6.html'];
-const HISTORIC=['pmp-current-map-v11.json','pmp-current-map-v10.json','pmp-current-map-v9.json','pmp-current-map.json','pmp-route-guardian-current-loader-v15.html','pmp-route-guardian-current-loader-v17.html','pmp-route-guardian-current-loader-v18.html','pmp-route-guardian-current-loader-v19.html','pmp-route-guardian-current-loader-v20.html','pmp-route-guardian-current-loader-v21.html','pmp-current-reload-owner-v27.html','pmp-current-reload-owner-v28.html','pmp-current-reload-owner-v29.html','pmp-current-reload-owner-v29-permanent-update-gate-20260706f.html','pmp-current-inner-cleanbug-rgcontrols-v24.html','pmp-current-inner-cleanbug-rgcontrols-v26.html','pmp-current-inner-cleanbug-rgcontrols-v29.html'];
 const IGNORE=['discovery-report.json','freeze-proof.txt','blocker-detail.txt','PDF.js'];
-const MAX=260;
+const MAX=320;
+const STATIC_POLICY={
+  current:['pmp-app-current.html','pmp-current-map-v12.json','pmp-route-guardian-current-loader-v22.html','pmp-current-reload-owner-v30-direct-boot-surface-20260708A.html','pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html','pmp-current-inner-cleanbug-rgcontrols-v23.html','pmp-current-inner-cleanbug-rgcontrols-v4.html','pmp-current-inner-cleanbug-rgcontrols-v3.html','pmp-home-single-v6.html','pmp-reload-current-live-update-marker-v1.json'],
+  support:['bug-memory-current-clean-v1.html','pmp-route-guardian-action-v2.html','resident.html','safe-writer-v14.html','code-safety-v13.html','pmp-current-inner-cleanbug-rgcontrols-v2.html'],
+  recovery:['pmp-route-guardian-last-good-clean-v1.js','pmp-current-inner-cleanbug-rgcontrols-v16.html','pmp-route-guardian-last-good-v3-button-v1.js','pmp-route-guardian-last-good-v1.html','pmp-route-guardian-last-good-v18.html','pmp-route-guardian-recovery-tools-v8.html','pmp-move-ledger-candidate-follow-v1.html','pmp-route-guardian-current-loader-v14.html','pmp-current-inner-cleanbug-rgcontrols-v9.html','pmp-current-inner-cleanbug-rgcontrols-v13.html'],
+  historic:['pmp-current-map-v11.json','pmp-current-map-v10.json','pmp-current-map-v9.json','pmp-current-map.json','pmp-route-guardian-current-loader-v15.html','pmp-route-guardian-current-loader-v17.html','pmp-route-guardian-current-loader-v18.html','pmp-route-guardian-current-loader-v19.html','pmp-route-guardian-current-loader-v20.html','pmp-route-guardian-current-loader-v21.html','pmp-current-reload-owner-v27.html','pmp-current-reload-owner-v28.html','pmp-current-reload-owner-v29.html','pmp-current-reload-owner-v29-cachelift-20260706b.html','pmp-current-reload-owner-v29-permanent-update-gate-20260706f.html','pmp-current-inner-cleanbug-rgcontrols-v24.html','pmp-current-inner-cleanbug-rgcontrols-v26.html','pmp-current-inner-cleanbug-rgcontrols-v29.html'],
+  known_absent:['pmp-clean-v13.html','pmp-current-reload-current-live-update-marker-v1.json']
+};
 let LAST=null;
 let MOUNT_TIMER=null;
+let SCAN_COUNTER=0;
 const WIRED_DOCS=new WeakSet();
 const WIRED_FRAMES=new WeakSet();
 function T(){try{return window.top||window}catch(e){return window}}
 function now(){return new Date().toISOString()}
 function uniq(a){return Array.from(new Set((a||[]).filter(Boolean))).sort()}
+function scanId(prefix){SCAN_COUNTER+=1;return String(prefix||'pmp-active-path-scan')+'-'+Date.now().toString(36)+'-'+SCAN_COUNTER.toString(36)}
 function clean(x){
   x=String(x||'').replace(/&amp;/g,'&').trim().split('#')[0].split('?')[0].replace(/^\.\//,'').replace(/^\//,'');
   if(!x||IGNORE.some(p=>p.toLowerCase()===x.toLowerCase())||/^https?:/i.test(x)||x.includes('://')||x.includes('..'))return'';
-  return/^[a-zA-Z0-9._/-]+\.(?:html|js|json)$/i.test(x)?x:'';
+  return/^[a-zA-Z0-9._/-]+\.(?:html|htm|js|mjs|json|css|wasm)$/i.test(x)?x:'';
 }
-function put(k,v){try{localStorage.setItem(k,JSON.stringify(v,null,2))}catch(e){}return v}
+function put(k,v){try{T().localStorage.setItem(k,JSON.stringify(v,null,2))}catch(e){}return v}
 function read(k){try{return JSON.parse(T().localStorage.getItem(k)||'null')}catch(e){return null}}
 function eachDoc(fn){
   const seen=[];
-  function walk(w,n){if(!w||n>10||seen.includes(w))return;seen.push(w);try{fn(w.document,w);w.document.querySelectorAll('iframe,frame').forEach(f=>{try{walk(f.contentWindow,n+1)}catch(e){}})}catch(e){}}
+  function walk(w,n){if(!w||n>12||seen.includes(w))return;seen.push(w);try{fn(w.document,w);w.document.querySelectorAll('iframe,frame').forEach(f=>{try{walk(f.contentWindow,n+1)}catch(e){}})}catch(e){}}
   walk(window,0);try{walk(T(),0)}catch(e){}
 }
 function liveFiles(){const out=[];eachDoc((d,w)=>{out.push(clean(String(w.location&&w.location.pathname||'').split('/').pop()));d.querySelectorAll('script[src],iframe[src],frame[src],a[href]').forEach(el=>out.push(clean(el.getAttribute('src')||el.getAttribute('href'))))});return uniq(out)}
@@ -39,103 +49,120 @@ function atlasPaths(){
   if(r.repo_file_classification)Object.values(r.repo_file_classification).forEach(x=>{if(Array.isArray(x))paths=paths.concat(x)});
   return uniq(paths.map(clean));
 }
-function supportPaths(){const r=registry(),x=r.repo_file_classification&&r.repo_file_classification.SUPPORT_REACHABLE;return uniq((Array.isArray(x)?x:[]).map(clean))}
+function mapPaths(obj){const out=[];Object.values(obj||{}).forEach(v=>{if(v&&typeof v==='object'&&typeof v.path==='string')out.push(clean(v.path))});return uniq(out)}
+function staticPolicy(extra){return Object.assign({source:'STATIC_FAIL_CLOSED_FALLBACK',map_fetch_ok:false,map_status:0,map_error:null},Object.fromEntries(Object.entries(STATIC_POLICY).map(([k,v])=>[k,uniq(v.map(clean))])),extra||{})}
+async function loadPolicy(){
+  try{
+    const response=await fetch(MAP_PATH,{cache:'no-store'});
+    if(!response.ok)return staticPolicy({map_status:response.status,map_error:'CURRENT_MAP_HTTP_'+response.status});
+    const map=await response.json();
+    const current=uniq([MAP_PATH,clean(map.entry&&map.entry.path),clean(map.route_guardian&&map.route_guardian.path),clean(map.route_guardian_loader&&map.route_guardian_loader.path),clean(map.current_app&&map.current_app.path)].concat(mapPaths(map.runtime_chain)));
+    const support=mapPaths(map.tool_routes),recovery=mapPaths(map.recovery_routes),historic=mapPaths(map.historic_routes),knownAbsent=uniq(Object.keys(map.known_broken_absent_claims||{}).map(clean));
+    return{source:'CURRENT_MAP_FETCH',map_fetch_ok:true,map_status:response.status,map_error:null,current,support,recovery,historic,known_absent:knownAbsent,map_version:map.app_version||null,route_epoch:map.route_epoch||null};
+  }catch(error){return staticPolicy({map_error:String(error&&error.message||error)})}
+}
 function extract(text){
   const out=[];
   String(text||'').replace(/(?:src|href)\s*=\s*['"]([^'"]+)['"]/gi,(m,p)=>{out.push(clean(p));return m});
-  String(text||'').replace(/['"`(=\s]([a-zA-Z0-9._/-]+\.(?:html|js|json))(?=$|[?#'"`\s)>,;])/gi,(m,p)=>{out.push(clean(p));return m});
+  String(text||'').replace(/['"`(=\s]([a-zA-Z0-9._/-]+\.(?:html|htm|js|mjs|json|css|wasm))(?=$|[?#'"`\s)>,;])/gi,(m,p)=>{out.push(clean(p));return m});
   return uniq(out);
 }
-function lane(path,from,support){
-  const p=String(path).toLowerCase(),f=String(from).toLowerCase();
-  if(support.includes(path)||support.includes(from))return'support_reachable_candidate';
-  if(HISTORIC.includes(path)||/test|candidate|archive|history|legacy|diagnostic/.test(p))return'legacy_or_test_candidate';
-  if(/last-good|recovery|restore|safe-writer|code-safety|resident/.test(p)||/last-good|recovery/.test(f))return'fallback_or_recovery_candidate';
-  if(CURRENT.includes(path))return'current_boot_root';
-  return'direct_current_candidate';
+function isPackage(path){const p=String(path||'');return /^(?:audit|exact_scope|gates|receipts|control-pack)\//i.test(p)||/^(?:NEW_CHAT_SAFE_HANDOFF|PACKAGE_MANIFEST)\.json$/i.test(p)}
+function lane(path,from,policy,live){
+  if(policy.current.includes(path))return'current_boot_root';
+  if(live.includes(path))return'live_runtime';
+  if(policy.support.includes(path)||policy.support.includes(from))return'support_reachable';
+  if(policy.recovery.includes(path)||policy.recovery.includes(from))return'fallback_or_recovery';
+  if(policy.historic.includes(path)||policy.known_absent.includes(path)||policy.historic.includes(from)||isPackage(path)||/test|archive|history|legacy|diagnostic/i.test(path))return'historic_or_legacy';
+  return'direct_current';
 }
-function canFollow(item){return item.depth<2&&!/legacy_or_test/.test(item.lane)&&!(/support_reachable|fallback_or_recovery/.test(item.lane)&&item.depth>0)}
-async function run(reason){
-  const started=now(),atlas=atlasPaths(),support=supportPaths(),live=liveFiles(),queue=[],seen={},rows=[],edges=[],dead=[];
-  function push(path,from,depth){path=clean(path);if(!path||seen[path]||queue.some(x=>x.path===path))return;queue.push({path,from:from||'',depth:depth||0,lane:from?lane(path,from,support):(CURRENT.includes(path)?'current_boot_root':lane(path,'',support))})}
-  CURRENT.concat(live).forEach(p=>push(p,'',0));
+function canFollow(item){return item.depth<2&&item.lane!=='historic_or_legacy'&&!(['support_reachable','fallback_or_recovery'].includes(item.lane)&&item.depth>0)}
+function transportClass(row){
+  if(row.ok)return'REACHABLE';
+  if(row.status===404||row.status===410)return'MISSING';
+  if(row.status===412)return'PRECONDITION_REJECTED';
+  if(row.status>0)return'HTTP_REJECTED';
+  return'NETWORK_ERROR';
+}
+function isRequiredLane(l){return l==='current_boot_root'||l==='live_runtime'||l==='direct_current'}
+function integrityEvidence(){
+  const receipt=read('pmp_route_guardian_v22_receipt')||{};
+  return{manifest_sha256:receipt.integrity_manifest_sha256||(receipt.integrity_controller&&receipt.integrity_controller.manifest_sha256)||null,route_epoch:receipt.route_epoch||null,map_version:receipt.map_version||null};
+}
+async function run(reason,options){
+  options=options||{};
+  const requestedScanId=String(options.scan_id||scanId('pmp-active-path-scan'));
+  const started=now(),policy=await loadPolicy(),atlas=atlasPaths(),live=liveFiles(),queue=[],seen={},rows=[],edges=[];
+  function push(path,from,depth){path=clean(path);if(!path||seen[path]||queue.some(x=>x.path===path))return;queue.push({path,from:from||'',depth:depth||0,lane:lane(path,from||'',policy,live)})}
+  uniq(policy.current.concat(live,policy.support,policy.recovery,policy.historic,policy.known_absent)).forEach(p=>push(p,'',0));
   while(queue.length&&rows.length<MAX){
     const item=queue.shift();if(seen[item.path])continue;seen[item.path]=true;
-    const row={...item,ok:false,status:0,found:[],in_atlas:atlas.includes(item.path),live_now:live.includes(item.path),support_reachable:support.includes(item.path)};
+    const row={...item,ok:false,status:0,found:[],in_atlas:atlas.includes(item.path),live_now:live.includes(item.path),map_declared:policy.current.includes(item.path)||policy.support.includes(item.path)||policy.recovery.includes(item.path)||policy.historic.includes(item.path)||policy.known_absent.includes(item.path)};
     try{
-      const response=await fetch(item.path+'?active_path_discovery='+Date.now(),{cache:'no-store'});row.ok=response.ok;row.status=response.status;
+      const response=await fetch(item.path+'?active_path_discovery='+encodeURIComponent(requestedScanId),{cache:'no-store'});row.ok=response.ok;row.status=response.status;
       const text=await response.text().catch(()=>'');
-      if(response.ok){row.found=extract(text);if(canFollow(item))row.found.forEach(path=>{const nextLane=lane(path,item.path,support);edges.push({from:item.path,to:path,lane:nextLane});push(path,item.path,item.depth+1)})}
-      else dead.push({path:item.path,status:response.status,lane:item.lane,from:item.from});
-    }catch(error){row.error=String(error&&error.message||error);dead.push({path:item.path,error:row.error,lane:item.lane,from:item.from})}
-    rows.push(row);
+      if(response.ok){row.found=extract(text);if(canFollow(item))row.found.forEach(path=>{const nextLane=lane(path,item.path,policy,live);edges.push({from:item.path,to:path,lane:nextLane});push(path,item.path,item.depth+1)})}
+    }catch(error){row.error=String(error&&error.message||error)}
+    row.transport_class=transportClass(row);rows.push(row);
   }
-  const reachable=uniq(rows.filter(x=>x.ok).map(x=>x.path));
-  const liveMissing=live.filter(x=>!atlas.includes(x));
-  const byLane=name=>uniq(rows.filter(x=>x.ok&&x.lane===name&&!atlas.includes(x.path)).map(x=>x.path));
-  const direct=byLane('direct_current_candidate'),supportMissing=byLane('support_reachable_candidate'),fallback=byLane('fallback_or_recovery_candidate'),legacy=byLane('legacy_or_test_candidate');
-  const hard=uniq(liveMissing.concat(direct)),oldAsRoot=uniq(rows.filter(x=>HISTORIC.includes(x.path)&&x.lane==='current_boot_root').map(x=>x.path));
+  const reachable=uniq(rows.filter(x=>x.transport_class==='REACHABLE').map(x=>x.path));
+  const missingRows=rows.filter(x=>x.transport_class==='MISSING');
+  const policyRejected=rows.filter(x=>x.transport_class==='PRECONDITION_REJECTED');
+  const httpRejected=rows.filter(x=>x.transport_class==='HTTP_REJECTED');
+  const networkErrors=rows.filter(x=>x.transport_class==='NETWORK_ERROR');
+  const gaps=rows.filter(x=>x.transport_class==='REACHABLE'&&!x.in_atlas&&x.lane!=='historic_or_legacy');
+  const hard=uniq(missingRows.filter(x=>isRequiredLane(x.lane)).map(x=>x.path));
+  const currentPolicyRejected=policyRejected.filter(x=>isRequiredLane(x.lane));
+  const currentHttpRejected=httpRejected.filter(x=>isRequiredLane(x.lane));
+  const currentNetworkErrors=networkErrors.filter(x=>isRequiredLane(x.lane));
+  const oldAsRoot=uniq(rows.filter(x=>policy.historic.includes(x.path)&&x.lane==='current_boot_root').map(x=>x.path));
+  const byLane=(items,name)=>uniq(items.filter(x=>x.lane===name).map(x=>x.path));
+  const integrity=integrityEvidence();
   LAST={
-    type:'PMP_ACTIVE_PATH_DISCOVERY_REPORT_V1',version:VERSION,owner:OWNER,writer:'pmp-active-path-discovery-machine-v1.js',
-    started_at:started,finished_at:now(),reason:reason||'canonical_detailed_scan',mode:'passive_canonical_detailed_discovery',
-    pass_alignment:{current_boot_root:CURRENT,historic_current_references_not_boot_root:HISTORIC,historic_reference_current_boot_root_count:oldAsRoot.length,historic_reference_current_boot_root:oldAsRoot},
-    scanned_count:rows.length,reachable_count:reachable.length,atlas_count:atlas.length,support_atlas_count:support.length,
-    hard_missing_count:hard.length,live_runtime_missing_count:liveMissing.length,direct_current_missing_count:direct.length,support_reachable_missing_count:supportMissing.length,fallback_or_recovery_missing_count:fallback.length,legacy_or_test_missing_count:legacy.length,dead_reference_count:dead.length,
-    hard_missing:hard,live_runtime_missing:liveMissing,direct_current_missing:direct,support_reachable_missing:supportMissing,fallback_or_recovery_missing:fallback,legacy_or_test_missing:legacy,dead_references:dead,reachable_files:reachable,live_files:live,edges,scanned:rows,
-    freeze_gate:{pass:hard.length===0&&oldAsRoot.length===0,rule:'Hard missing must be zero and historic references may not act as current boot roots.'},
-    side_effects:{fix:'not_attempted',move:'not_attempted',delete:'not_attempted',reroute:'not_attempted',bank_rebuild:'not_attempted',storage_migration:'not_attempted'}
+    type:'PMP_ACTIVE_PATH_DISCOVERY_REPORT_V1',version:VERSION,revision:CLASSIFICATION_REVISION,source_identity:SOURCE_IDENTITY,owner:OWNER,writer:SOURCE_IDENTITY,
+    scan_id:requestedScanId,requested_scan_id:requestedScanId,started_at:started,finished_at:now(),reason:reason||'canonical_detailed_scan',mode:'passive_canonical_detailed_discovery_fresh_bound',
+    runtime_integrity_manifest_sha256:integrity.manifest_sha256,
+    map_policy:{source:policy.source,fetch_ok:policy.map_fetch_ok,status:policy.map_status,error:policy.map_error||null,map_version:policy.map_version||integrity.map_version||null,route_epoch:policy.route_epoch||integrity.route_epoch||null,current_count:policy.current.length,support_count:policy.support.length,recovery_count:policy.recovery.length,historic_count:policy.historic.length,known_absent_count:policy.known_absent.length},
+    pass_alignment:{current_boot_root:policy.current,historic_current_references_not_boot_root:policy.historic,historic_reference_current_boot_root_count:oldAsRoot.length,historic_reference_current_boot_root:oldAsRoot},
+    scanned_count:rows.length,reachable_count:reachable.length,atlas_count:atlas.length,
+    hard_missing_count:hard.length,hard_missing:hard,
+    atlas_registry_gap_count:gaps.length,atlas_registry_gap:uniq(gaps.map(x=>x.path)),live_runtime_registry_gap:byLane(gaps,'live_runtime'),direct_current_registry_gap:byLane(gaps,'direct_current'),support_registry_gap:byLane(gaps,'support_reachable'),fallback_registry_gap:byLane(gaps,'fallback_or_recovery'),
+    live_runtime_missing_count:byLane(missingRows,'live_runtime').length,live_runtime_missing:byLane(missingRows,'live_runtime'),direct_current_missing_count:byLane(missingRows,'direct_current').length,direct_current_missing:byLane(missingRows,'direct_current'),support_reachable_missing_count:byLane(missingRows,'support_reachable').length,support_reachable_missing:byLane(missingRows,'support_reachable'),fallback_or_recovery_missing_count:byLane(missingRows,'fallback_or_recovery').length,fallback_or_recovery_missing:byLane(missingRows,'fallback_or_recovery'),legacy_or_test_missing_count:byLane(missingRows,'historic_or_legacy').length,legacy_or_test_missing:byLane(missingRows,'historic_or_legacy'),
+    dead_reference_count:missingRows.length,dead_references:missingRows.map(x=>({path:x.path,status:x.status,lane:x.lane,from:x.from,classification:'MISSING'})),
+    precondition_rejected_count:policyRejected.length,precondition_rejected:policyRejected.map(x=>({path:x.path,status:x.status,lane:x.lane,from:x.from,classification:'PRECONDITION_REJECTED'})),
+    current_precondition_rejected_count:currentPolicyRejected.length,
+    http_rejected_count:httpRejected.length,http_rejected:httpRejected.map(x=>({path:x.path,status:x.status,lane:x.lane,from:x.from,classification:'HTTP_REJECTED'})),
+    network_error_count:networkErrors.length,network_errors:networkErrors.map(x=>({path:x.path,error:x.error||null,lane:x.lane,from:x.from,classification:'NETWORK_ERROR'})),
+    reachable_files:reachable,live_files:live,edges,scanned:rows,
+    freeze_gate:{pass:policy.map_fetch_ok&&hard.length===0&&currentPolicyRejected.length===0&&currentHttpRejected.length===0&&currentNetworkErrors.length===0&&oldAsRoot.length===0,rule:'PASS requires current-map policy evidence, zero true missing required current files, zero current precondition/HTTP/network rejects, and zero historic files acting as current boot roots. Reachable files absent from the Atlas registry are ATLAS_REGISTRY_GAP, not HARD_MISSING.'},
+    side_effects:{fix:'not_attempted',move:'not_attempted',delete:'not_attempted',reroute:'not_attempted',bank_rebuild:'not_attempted',continuous_run_mutation:'not_attempted',storage_migration:'not_attempted',persisted_user_data_write:'not_attempted'}
   };
-  put(REPORT_KEY,LAST);put(RECEIPT_KEY,{type:'PMP_ACTIVE_PATH_DISCOVERY_RECEIPT_V1',version:VERSION,owner:OWNER,writer:'pmp-active-path-discovery-machine-v1.js',at:now(),hard_missing_count:hard.length,support_reachable_missing_count:supportMissing.length,dead_reference_count:dead.length,historic_reference_current_boot_root_count:oldAsRoot.length,freeze_gate_pass:LAST.freeze_gate.pass});
+  put(REPORT_KEY,LAST);put(RECEIPT_KEY,{type:'PMP_ACTIVE_PATH_DISCOVERY_RECEIPT_V1',version:VERSION,revision:CLASSIFICATION_REVISION,source_identity:SOURCE_IDENTITY,owner:OWNER,writer:SOURCE_IDENTITY,at:now(),scan_id:requestedScanId,hard_missing_count:LAST.hard_missing_count,atlas_registry_gap_count:LAST.atlas_registry_gap_count,precondition_rejected_count:LAST.precondition_rejected_count,dead_reference_count:LAST.dead_reference_count,historic_reference_current_boot_root_count:oldAsRoot.length,freeze_gate_pass:LAST.freeze_gate.pass});
   window.PMPActivePathDiscoveryReportV1=LAST;mount();return LAST;
 }
-function summary(r){if(!r)return'Waiting for discovery scan...';return'hard missing: '+r.hard_missing_count+' · live: '+r.live_runtime_missing_count+' · direct: '+r.direct_current_missing_count+' · support: '+r.support_reachable_missing_count+' · fallback: '+r.fallback_or_recovery_missing_count+' · legacy/test: '+r.legacy_or_test_missing_count+' · dead: '+r.dead_reference_count}
-function proof(r){const a=r&&r.pass_alignment||{};return['PMP_DISCOVERY_FREEZE_PROOF_V1','report_version: '+(r&&r.version||''),'finished_at: '+(r&&r.finished_at||''),'hard_missing_count: '+(r&&r.hard_missing_count),'support_reachable_missing_count: '+(r&&r.support_reachable_missing_count),'dead_reference_count: '+(r&&r.dead_reference_count),'historic_reference_current_boot_root_count: '+a.historic_reference_current_boot_root_count,'freeze_gate_pass: '+(r&&r.freeze_gate&&r.freeze_gate.pass),'canonical_writer: pmp-active-path-discovery-machine-v1.js'].join('\n')}
+function summary(r){if(!r)return'Waiting for discovery scan...';return'hard missing: '+r.hard_missing_count+' · atlas gaps: '+(r.atlas_registry_gap_count||0)+' · 412/precondition: '+(r.precondition_rejected_count||0)+' · dead: '+r.dead_reference_count+' · scan: '+(r.scan_id||'')}
+function proof(r){const a=r&&r.pass_alignment||{};return['PMP_DISCOVERY_FREEZE_PROOF_V1','report_version: '+(r&&r.version||''),'revision: '+(r&&r.revision||''),'source_identity: '+(r&&r.source_identity||''),'scan_id: '+(r&&r.scan_id||''),'finished_at: '+(r&&r.finished_at||''),'hard_missing_count: '+(r&&r.hard_missing_count),'atlas_registry_gap_count: '+(r&&r.atlas_registry_gap_count),'precondition_rejected_count: '+(r&&r.precondition_rejected_count),'dead_reference_count: '+(r&&r.dead_reference_count),'historic_reference_current_boot_root_count: '+a.historic_reference_current_boot_root_count,'freeze_gate_pass: '+(r&&r.freeze_gate&&r.freeze_gate.pass),'canonical_writer: '+SOURCE_IDENTITY].join('\n')}
 async function copyText(d,text){try{await navigator.clipboard.writeText(text)}catch(e){const ta=d.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.left='-9999px';d.body.appendChild(ta);ta.select();d.execCommand('copy');ta.remove()}}
-async function copyNow(d,r,out){r=r||LAST||await run('copy_requested');const text=proof(r);await copyText(d,text);put(COPY_RECEIPT_KEY,{type:'PMP_ACTIVE_PATH_DISCOVERY_COPY_RECEIPT_V1',version:VERSION,owner:OWNER,at:now(),text_length:text.length,freeze_gate_pass:r.freeze_gate&&r.freeze_gate.pass});if(out)out.textContent='Discovery Freeze Proof copied. '+summary(r)}
+async function copyNow(d,r,out){r=r||await run('copy_requested',{scan_id:scanId('pmp-active-path-copy')});const text=proof(r);await copyText(d,text);put(COPY_RECEIPT_KEY,{type:'PMP_ACTIVE_PATH_DISCOVERY_COPY_RECEIPT_V1',version:VERSION,revision:CLASSIFICATION_REVISION,owner:OWNER,at:now(),scan_id:r.scan_id,text_length:text.length,freeze_gate_pass:r.freeze_gate&&r.freeze_gate.pass});if(out)out.textContent='Discovery Freeze Proof copied. '+summary(r)}
 function button(d,text,fn){const b=d.createElement('button');b.type='button';b.textContent=text;b.style.cssText='width:100%;border:2px solid var(--line,#07101c);border-radius:16px;padding:12px;margin:8px 0;background:var(--a,#acd1fb);color:var(--buttonText,#101827);font:inherit;font-weight:950;text-align:left';b.onclick=fn;return b}
 function mount(){
   eachDoc(d=>{try{
     const target=d.querySelector('#control .card')||d.querySelector('[data-screen="control"] .card')||d.querySelector('#control');if(!target)return;
     let card=d.getElementById('pmpActivePathDiscoveryCardV1');
-    if(!card){card=d.createElement('div');card.id='pmpActivePathDiscoveryCardV1';card.setAttribute('data-pmp-section-owner',OWNER);card.setAttribute('data-pmp-owner-lock',VERSION);card.style.cssText='background:var(--card,#fff);color:var(--text,#101827);border:2px solid var(--line,#07101c);border-radius:20px;padding:12px;margin:10px 0;white-space:pre-wrap';const title=d.createElement('b'),out=d.createElement('div');title.textContent='Active Path Discovery';out.id='pmpActivePathDiscoveryOutV1';card.append(title,out,button(d,'Copy Discovery Freeze Proof',()=>copyNow(d,LAST,out)),button(d,'Run Discovery Again',async()=>{out.textContent='Running discovery...';out.textContent=summary(await run('manual_run'))}));target.appendChild(card)}
-    const out=card.querySelector('#pmpActivePathDiscoveryOutV1');if(out)out.textContent=summary(LAST);
+    if(!card){card=d.createElement('div');card.id='pmpActivePathDiscoveryCardV1';card.setAttribute('data-pmp-section-owner',OWNER);card.setAttribute('data-pmp-owner-lock',VERSION);card.style.cssText='background:var(--card,#fff);color:var(--text,#101827);border:2px solid var(--line,#07101c);border-radius:20px;padding:12px;margin:10px 0;white-space:pre-wrap';const title=d.createElement('b'),out=d.createElement('div');title.textContent='Active Path Discovery';out.id='pmpActivePathDiscoveryOutV1';card.append(title,out,button(d,'Copy Discovery Freeze Proof',()=>copyNow(d,null,out)),button(d,'Run Discovery Again',async()=>{out.textContent='Running fresh discovery...';out.textContent=summary(await run('manual_run',{scan_id:scanId('pmp-active-path-manual')}))}));target.appendChild(card)}
+    const out=card.querySelector('#pmpActivePathDiscoveryOutV1');if(out&&(!out.textContent||/Waiting for discovery scan/i.test(out.textContent)))out.textContent=summary(LAST);
   }catch(e){}})
 }
-function containsMountTarget(node){
-  if(!node||node.nodeType!==1)return false;
-  if(node.matches&&node.matches('iframe,frame,#control,[data-screen="control"]'))return true;
-  return!!(node.querySelector&&node.querySelector('iframe,frame,#control,[data-screen="control"]'));
-}
-function scheduleMount(){
-  if(MOUNT_TIMER!==null)return;
-  MOUNT_TIMER=setTimeout(()=>{MOUNT_TIMER=null;mount();bindLifecycle()},0);
-}
+function containsMountTarget(node){if(!node||node.nodeType!==1)return false;if(node.matches&&node.matches('iframe,frame,#control,[data-screen="control"]'))return true;return!!(node.querySelector&&node.querySelector('iframe,frame,#control,[data-screen="control"]'))}
+function scheduleMount(){if(MOUNT_TIMER!==null)return;MOUNT_TIMER=setTimeout(()=>{MOUNT_TIMER=null;mount();bindLifecycle()},0)}
 function wireDocument(d){
-  if(!d||WIRED_DOCS.has(d))return;
-  WIRED_DOCS.add(d);
-  try{
-    const root=d.documentElement;
-    if(root){
-      const observer=new MutationObserver(records=>{
-        if(records.some(record=>Array.from(record.addedNodes||[]).some(containsMountTarget)))scheduleMount();
-      });
-      observer.observe(root,{childList:true,subtree:true});
-    }
-  }catch(e){}
-  try{
-    d.querySelectorAll('iframe,frame').forEach(frame=>{
-      if(WIRED_FRAMES.has(frame))return;
-      WIRED_FRAMES.add(frame);
-      frame.addEventListener('load',scheduleMount);
-    });
-  }catch(e){}
+  if(!d||WIRED_DOCS.has(d))return;WIRED_DOCS.add(d);
+  try{const root=d.documentElement;if(root){const observer=new MutationObserver(records=>{if(records.some(record=>Array.from(record.addedNodes||[]).some(containsMountTarget)))scheduleMount()});observer.observe(root,{childList:true,subtree:true})}}catch(e){}
+  try{d.querySelectorAll('iframe,frame').forEach(frame=>{if(WIRED_FRAMES.has(frame))return;WIRED_FRAMES.add(frame);frame.addEventListener('load',scheduleMount)})}catch(e){}
 }
 function bindLifecycle(){eachDoc(d=>wireDocument(d))}
-const api={version:VERSION,owner:OWNER,writer:'pmp-active-path-discovery-machine-v1.js',run,mount,copyNow,reportKey:REPORT_KEY,currentBootRoot:CURRENT,historicCurrentReferences:HISTORIC};
+const api={version:VERSION,revision:CLASSIFICATION_REVISION,sourceIdentity:SOURCE_IDENTITY,owner:OWNER,writer:SOURCE_IDENTITY,run,mount,copyNow,reportKey:REPORT_KEY,newScanId:scanId};
 window.PMPActivePathDiscoveryMachineV1=api;
-setTimeout(()=>run('canonical_boot_scan'),3500);
-bindLifecycle();
-scheduleMount();
-window.addEventListener('load',scheduleMount,{once:true});
-window.addEventListener('pageshow',scheduleMount);
+setTimeout(()=>run('canonical_boot_scan',{scan_id:scanId('pmp-active-path-boot')}),3500);
+bindLifecycle();scheduleMount();window.addEventListener('load',scheduleMount,{once:true});window.addEventListener('pageshow',scheduleMount);
 })();
