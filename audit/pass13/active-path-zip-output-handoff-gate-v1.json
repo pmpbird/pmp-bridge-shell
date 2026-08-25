@@ -1,0 +1,126 @@
+{
+  "type": "PMP_ACTIVE_PATH_ZIP_OUTPUT_HANDOFF_GATE_V1",
+  "version": "1.0.0",
+  "revision": "2.7.0-zip-user-activation-handoff-20260825B",
+  "status": "PENDING_CI",
+  "unit_id": "P13-U106",
+  "claim_ceiling": "Repairs only the Active Path ZIP file handoff after a fresh scan. It does not change scan freshness, classification, owners, helpers, routes, Bank, Continuous Run, storage, persisted user data, or failure semantics, and it requires fresh iPhone proof after deployment.",
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_browser_harness",
+    "automatic_retry": false,
+    "upload_before_enforcement": true,
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/a002-active-path-zip-output-v1.cjs",
+      "rationale": "The prior Atlas browser certification proved fresh scan identity and classification truth but never exercised a browser download. The new matrix waits across the asynchronous scan boundary, requires a persistent real ZIP download link, directly clicks that link as a second user gesture, and verifies the resulting downloaded ZIP bytes and all three expected members."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/a002-active-path-zip-output-v1.cjs",
+      "audit/pass13/active-path-zip-output-handoff-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_ACTIVE_PATH_ZIP_OUTPUT_HANDOFF_20260825B_001.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_active_path_zip_output_handoff_v1.py"
+    ],
+    "verifier_paths": [
+      "tools/verify_active_path_zip_output_handoff_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass13/receipts/RECEIPT_ACTIVE_PATH_ZIP_OUTPUT_HANDOFF_20260825B_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "evidence_paths": [
+          "audit/pass13/receipts/RECEIPT_ACTIVE_PATH_ZIP_OUTPUT_HANDOFF_20260825B_001.json"
+        ],
+        "fact": "The fresh iPhone Atlas path completed but did not produce an attachable ZIP, leaving the user with a report too long to paste."
+      },
+      {
+        "claim_type": "OBSERVED",
+        "evidence_paths": [
+          "pmp-active-path-discovery-zip-export-v2.js",
+          "audit/a002-active-path-zip-output-v1.cjs"
+        ],
+        "fact": "The pre-repair exporter performed its programmatic download click only after awaiting the fresh scan, and the existing permanent browser proof did not assert any download event or ZIP bytes."
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "basis_evidence_paths": [
+          "pmp-active-path-discovery-zip-export-v2.js",
+          "audit/a002-active-path-zip-output-v1.cjs",
+          "tools/verify_active_path_zip_output_handoff_v1.py"
+        ],
+        "conclusion": "A persistent direct download control prepared after the asynchronous scan restores a browser-trusted second user gesture without weakening the fresh-scan identity contract."
+      },
+      {
+        "claim_type": "INFERRED",
+        "basis_evidence_paths": [
+          "pmp-active-path-discovery-zip-export-v2.js",
+          "tools/test_active_path_zip_output_handoff_v1.py"
+        ],
+        "conclusion": "The prepared Blob URL must remain valid until direct user interaction or replacement; immediate post-click revocation would recreate the iPhone handoff failure."
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "fresh scan completes only after the initiating Go click's asynchronous boundary",
+        "automatic download is unavailable after transient user activation expires",
+        "persistent Download Fresh Atlas ZIP link remains available for a direct second tap",
+        "direct second-tap produces a real browser download event",
+        "downloaded bytes begin with a ZIP local-file signature",
+        "ZIP contains discovery-report.json, freeze-proof.txt, and blocker-detail.txt",
+        "a new export replaces and revokes only the prior prepared Blob URL",
+        "fresh scan identity and classification contracts remain unchanged"
+      ]
+    },
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/a002-active-path-zip-output.yml",
+      "audit/a002-active-path-zip-output-v1.cjs",
+      "audit/a003-manifest-seal.json",
+      "audit/pass13/active-path-zip-output-handoff-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_ACTIVE_PATH_ZIP_OUTPUT_HANDOFF_20260825B_001.json",
+      "pmp-active-path-discovery-zip-export-v2.js",
+      "pmp-app-current.html",
+      "pmp-runtime-integrity-manifest-v1.json",
+      "tools/test_active_path_zip_output_handoff_v1.py",
+      "tools/verify_active_path_zip_output_handoff_v1.py"
+    ],
+    "implementation_paths": [
+      "pmp-active-path-discovery-zip-export-v2.js",
+      "pmp-app-current.html"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_active_path_zip_output_handoff_v1.py"
+    ],
+    "verifier_paths": [
+      "tools/verify_active_path_zip_output_handoff_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass13/receipts/RECEIPT_ACTIVE_PATH_ZIP_OUTPUT_HANDOFF_20260825B_001.json"
+    ]
+  }
+}
