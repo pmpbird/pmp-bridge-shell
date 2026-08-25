@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "revision": "2.7.0-zip-user-activation-handoff-20260825B",
   "status": "PENDING_CI",
+  "ci_trigger": "USER_AUTHORED_POST_SEAL_PR_CHECK_TRIGGER_20260825B",
   "observed_problem": {
     "surface": "Active Path Discovery → Advanced: Export Fresh Full ZIP",
     "symptom": "On the fresh iPhone path, the scan completed but no attachable ZIP was produced, leaving only an impractically long report.",
