@@ -2,7 +2,7 @@
   "type": "PMP_ACTIVE_PATH_ZIP_OUTPUT_HANDOFF_RECEIPT_V1",
   "version": "1.0.0",
   "revision": "2.7.0-zip-user-activation-handoff-20260825B",
-  "status": "PENDING_CI",
+  "status": "PASS",
   "ci_trigger": "USER_AUTHORED_POST_SEAL_PR_CHECK_TRIGGER_20260825B",
   "observed_problem": {
     "surface": "Active Path Discovery → Advanced: Export Fresh Full ZIP",
@@ -21,13 +21,59 @@
       "blocker-detail.txt"
     ]
   },
+  "ci_evidence": {
+    "certified_head": "353cfeb32a9594261a55220f66c060852ac8c764",
+    "real_zip_download": {
+      "run_id": 32911185873,
+      "status": "PASS",
+      "artifact_id": 9586591095,
+      "artifact_digest": "sha256:3d99f30487088ecfb7d67229a00fc34d8d235a0b2edeac79d9a160a6e72e91f8",
+      "checks_passed": 12,
+      "checks_failed": 0,
+      "downloaded_bytes": 2931,
+      "zip_members_verified": [
+        "discovery-report.json",
+        "freeze-proof.txt",
+        "blocker-detail.txt"
+      ]
+    },
+    "a002_live_runtime": {
+      "run_id": 32911185735,
+      "status": "PASS"
+    },
+    "a003_runtime_source_byte_integrity": {
+      "run_id": 32911186013,
+      "status": "PASS"
+    },
+    "a003_integrity_probe": {
+      "run_id": 32911185938,
+      "status": "PASS"
+    },
+    "permanent_no_blind_flying": {
+      "run_id": 32911185827,
+      "status": "PASS"
+    },
+    "ownership_maintenance": {
+      "run_id": 32911185858,
+      "status": "PASS"
+    },
+    "static_authorization_preflight": {
+      "run_id": 32911185923,
+      "status": "PASS"
+    },
+    "pass11_safety_no_deletion": {
+      "run_id": 32911185703,
+      "status": "PASS"
+    },
+    "proof_adjustment": "The first browser run already passed the actual download, ZIP signature, three-member, and fresh-scan checks; only its status-text assertion was stale because successful auto-download changed ready to download requested. The assertion-only repair was verified as exactly one line removed and one line added before the all-green rerun."
+  },
   "verification": {
     "deterministic_test": "tools/test_active_path_zip_output_handoff_v1.py",
     "independent_verifier": "tools/verify_active_path_zip_output_handoff_v1.py",
     "browser_path": "audit/a002-active-path-zip-output-v1.cjs",
     "browser_requirement": "A direct click on the prepared link must produce a Playwright download event whose file is a ZIP containing all three expected members.",
-    "a002_live_runtime_matrix": "REQUIRED",
-    "a003_source_byte_gate": "REQUIRED",
+    "a002_live_runtime_matrix": "PASS_AT_CERTIFIED_HEAD",
+    "a003_source_byte_gate": "PASS_AT_CERTIFIED_HEAD",
     "user_device_proof": "REQUIRED_AFTER_DEPLOYMENT"
   },
   "boundaries": {
@@ -44,5 +90,5 @@
     "classification_changes": false,
     "fresh_scan_semantics_changes": false
   },
-  "claim_ceiling": "This receipt certifies only the bounded repository ZIP-output repair after its required gates pass. It does not claim iPhone ZIP output is fixed until a fresh post-deployment device test produces and attaches the ZIP."
+  "claim_ceiling": "This receipt certifies the bounded repository ZIP-output repair and its proof contracts. It does not claim iPhone ZIP output is fixed until a fresh post-deployment device test produces and attaches the ZIP."
 }
