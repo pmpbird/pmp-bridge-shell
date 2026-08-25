@@ -2,9 +2,49 @@
   "type": "PMP_ACTIVE_PATH_ZIP_OUTPUT_HANDOFF_GATE_V1",
   "version": "1.0.0",
   "revision": "2.7.0-zip-user-activation-handoff-20260825B",
-  "status": "PENDING_CI",
+  "status": "PASS",
   "unit_id": "P13-U106",
   "claim_ceiling": "Repairs only the Active Path ZIP file handoff after a fresh scan. It does not change scan freshness, classification, owners, helpers, routes, Bank, Continuous Run, storage, persisted user data, or failure semantics, and it requires fresh iPhone proof after deployment.",
+  "ci_evidence": {
+    "certified_head": "353cfeb32a9594261a55220f66c060852ac8c764",
+    "real_zip_download": {
+      "run_id": 32911185873,
+      "status": "PASS",
+      "artifact_id": 9586591095,
+      "artifact_digest": "sha256:3d99f30487088ecfb7d67229a00fc34d8d235a0b2edeac79d9a160a6e72e91f8",
+      "checks_passed": 12,
+      "checks_failed": 0
+    },
+    "a002_live_runtime": {
+      "run_id": 32911185735,
+      "status": "PASS"
+    },
+    "a003_runtime_source_byte_integrity": {
+      "run_id": 32911186013,
+      "status": "PASS"
+    },
+    "a003_integrity_probe": {
+      "run_id": 32911185938,
+      "status": "PASS"
+    },
+    "permanent_no_blind_flying": {
+      "run_id": 32911185827,
+      "status": "PASS"
+    },
+    "ownership_maintenance": {
+      "run_id": 32911185858,
+      "status": "PASS"
+    },
+    "static_authorization_preflight": {
+      "run_id": 32911185923,
+      "status": "PASS"
+    },
+    "pass11_safety_no_deletion": {
+      "run_id": 32911185703,
+      "status": "PASS"
+    },
+    "first_browser_run_note": "Run 32910927794 already proved the real download event, ZIP signature, all three ZIP members, and fresh scan identity. Its sole failed assertion expected the pre-click ready status even though the successful automatic click had already changed the status to download requested. That proof-only assertion was corrected by exactly one line removed and one line added; run 32911185873 then passed all 12 checks."
+  },
   "no_blind_flying_gate": {
     "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
     "version": "1.0.0",
@@ -56,6 +96,13 @@
           "audit/a002-active-path-zip-output-v1.cjs"
         ],
         "fact": "The pre-repair exporter performed its programmatic download click only after awaiting the fresh scan, and the existing permanent browser proof did not assert any download event or ZIP bytes."
+      },
+      {
+        "claim_type": "OBSERVED",
+        "evidence_paths": [
+          "audit/a002-active-path-zip-output-v1.cjs"
+        ],
+        "fact": "The certified browser run produced a real ZIP download event after the asynchronous scan boundary, with a valid ZIP local-file signature and all three expected member names."
       }
     ],
     "inferred_conclusions": [
