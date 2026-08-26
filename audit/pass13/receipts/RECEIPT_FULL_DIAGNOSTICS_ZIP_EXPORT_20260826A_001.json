@@ -17,11 +17,19 @@
     "handoff": "Export Full Diagnostics ZIP first runs the existing current live diagnostics evidence path, then packages that exact complete report. A persistent Download Full Diagnostics ZIP link remains available so iPhone Safari can use a direct second tap if the asynchronous evidence run outlives transient user activation.",
     "zip_members": ["full-diagnostics-report.json","whole-app-health.json","diagnostics-export-metadata.json","diagnostics-summary.txt"]
   },
+  "branch_seal": {
+    "seal_commit": "ae19856d17376cb3d17991c3dfbc5713262597de",
+    "manifest_sha256": "d28d9574850307f1d0ef7ee53f860babd49daa529943912333bb10ac83526a8d",
+    "runtime_source_set_sha256": "9116904d3941f403d109d4dfbed9bc98af49b7c621f821359bf5918a3a85879d",
+    "status": "SEALED"
+  },
   "verification": {
     "deterministic_test": "tools/test_full_diagnostics_zip_export_v1.py",
     "independent_verifier": "tools/verify_full_diagnostics_zip_export_v1.py",
     "browser_path": "audit/a002-full-diagnostics-zip-export-v1.cjs",
     "ci_workflow": ".github/workflows/a002-full-diagnostics-zip-export.yml",
+    "branch_preseal_browser_proof": "PASS",
+    "branch_reseal_workflow": "PASSED_AND_SELF_REMOVED",
     "browser_requirement": "A direct click on the prepared persistent link must produce a Playwright download event whose ZIP contains the complete Full Diagnostics report, Whole App Health, export metadata, summary, all eight governed diagnostic sections, and read-only boundary declarations.",
     "user_device_proof": "REQUIRED_AFTER_DEPLOYMENT"
   },
@@ -39,5 +47,5 @@
     "diagnostics_truth_changes": false,
     "atlas_changes": false
   },
-  "claim_ceiling": "Repository ZIP handoff repair only until applicable CI, A-003 branch reseal, merge, automatic main reseal, Pages deployment, and a fresh iPhone Full Diagnostics ZIP prove the handoff works on-device."
+  "claim_ceiling": "Repository ZIP handoff repair only until applicable final-head CI, merge, automatic main reseal, Pages deployment, and a fresh iPhone Full Diagnostics ZIP prove the handoff works on-device."
 }
