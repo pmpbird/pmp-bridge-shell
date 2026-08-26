@@ -1,0 +1,94 @@
+{
+  "type": "PMP_FULL_DIAGNOSTICS_ZIP_EXPORT_GATE_V1",
+  "version": "1.0.0",
+  "revision": "1.0.0-full-diagnostics-zip-handoff-20260826A",
+  "status": "PENDING_CI",
+  "unit_id": "P13-U109",
+  "claim_ceiling": "Repairs only Full Diagnostics report handoff by adding a real ZIP export of the existing read-only complete report. It does not change diagnostics truth, owner/helper authority, Current Map or routes, Bank, Continuous Run, storage, persisted user data, Atlas, or failure semantics. Fresh iPhone proof is required after deployment.",
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_browser_harness",
+    "automatic_retry": false,
+    "upload_before_enforcement": true,
+    "required_artifact_roles": ["command","stdout","stderr","exit_status","result","scope","environment","authority_state","manifest"],
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/a002-full-diagnostics-zip-export-v1.cjs",
+      "rationale": "The live Full Diagnostics Copy action produces a complete report too large for chat, and there was no file handoff. The dedicated browser matrix requires fresh evidence generation, a persistent Safari-safe download link, a real browser download event, a valid ZIP signature, all four expected members, the complete report type, all eight governed diagnostic sections, and read-only boundaries."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/a002-full-diagnostics-zip-export-v1.cjs",
+      "audit/pass13/full-diagnostics-zip-export-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_FULL_DIAGNOSTICS_ZIP_EXPORT_20260826A_001.json"
+    ],
+    "deterministic_test_paths": ["tools/test_full_diagnostics_zip_export_v1.py"],
+    "verifier_paths": ["tools/verify_full_diagnostics_zip_export_v1.py"],
+    "receipt_paths": ["audit/pass13/receipts/RECEIPT_FULL_DIAGNOSTICS_ZIP_EXPORT_20260826A_001.json"],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "evidence_paths": ["pmp-diagnostics-consolidated-view-v1.js"],
+        "fact": "Before this repair Full Diagnostics exposed Copy Full Diagnostics Report only; the action generated the current report and sent the entire JSON to the clipboard with no file or ZIP handoff."
+      },
+      {
+        "claim_type": "OBSERVED",
+        "evidence_paths": ["pmp-active-path-discovery-zip-export-v2.js"],
+        "fact": "The already-certified Atlas iPhone handoff uses a persistent Blob-backed download link after asynchronous evidence generation so a second direct user gesture remains available when transient browser activation expires."
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "basis_evidence_paths": ["pmp-diagnostics-consolidated-view-v1.js","audit/a002-full-diagnostics-zip-export-v1.cjs"],
+        "conclusion": "Adding a persistent direct ZIP download link after the existing produceEvidence path makes the complete report attachable without changing how diagnostic truth is produced or interpreted."
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "evidence generation crosses the initiating button's asynchronous user-activation boundary",
+        "persistent Download Full Diagnostics ZIP link remains available for a direct second tap",
+        "direct second tap produces a real browser download event",
+        "downloaded bytes begin with a ZIP local-file signature",
+        "ZIP contains full-diagnostics-report.json, whole-app-health.json, diagnostics-export-metadata.json, and diagnostics-summary.txt",
+        "complete report contains all eight governed diagnostic sections",
+        "Copy Full Diagnostics Report remains present",
+        "a replacement export revokes only the prior prepared Blob URL",
+        "no owner/helper/route/Bank/Continuous Run/storage/user-data authority is added"
+      ]
+    },
+    "special_authority": {"required":false,"granted":false,"consumed":false}
+  },
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/a002-full-diagnostics-zip-export.yml",
+      "audit/a002-full-diagnostics-zip-export-v1.cjs",
+      "audit/a003-manifest-seal.json",
+      "audit/pass13/full-diagnostics-zip-export-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_FULL_DIAGNOSTICS_ZIP_EXPORT_20260826A_001.json",
+      "pmp-app-current.html",
+      "pmp-diagnostics-consolidated-view-v1.js",
+      "pmp-runtime-integrity-manifest-v1.json",
+      "tools/test_full_diagnostics_zip_export_v1.py",
+      "tools/verify_full_diagnostics_zip_export_v1.py"
+    ],
+    "implementation_paths": ["pmp-diagnostics-consolidated-view-v1.js","pmp-app-current.html"],
+    "deterministic_test_paths": ["tools/test_full_diagnostics_zip_export_v1.py"],
+    "verifier_paths": ["tools/verify_full_diagnostics_zip_export_v1.py"],
+    "receipt_paths": ["audit/pass13/receipts/RECEIPT_FULL_DIAGNOSTICS_ZIP_EXPORT_20260826A_001.json"]
+  },
+  "boundaries": {
+    "owner_changes": false,
+    "helper_changes": false,
+    "route_changes": false,
+    "bank_rebuild": false,
+    "continuous_run_mutation": false,
+    "dom_repair": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false,
+    "persisted_user_data_delete": false,
+    "diagnostics_truth_changes": false,
+    "atlas_changes": false
+  }
+}
