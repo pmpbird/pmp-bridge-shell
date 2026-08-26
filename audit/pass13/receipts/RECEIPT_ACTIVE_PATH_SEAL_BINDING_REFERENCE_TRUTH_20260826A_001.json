@@ -1,0 +1,38 @@
+{
+  "type": "PMP_ACTIVE_PATH_SEAL_BINDING_REFERENCE_TRUTH_RECEIPT_V1",
+  "version": "1.0.0",
+  "revision": "1.5.0-served-a003-reference-truth-20260826A",
+  "status": "PENDING_CI",
+  "observed_problem": {
+    "surface": "Active Path Discovery fresh iPhone ZIP",
+    "symptom": "Fresh scan succeeded but carried an old A-003 manifest SHA and five false current 412 blockers sourced from static comments/output-only filenames.",
+    "proven_code_gap": "The scanner sourced integrity identity from pmp_route_guardian_v22_receipt in localStorage and its generic lexical extractor treated comment/output strings as runtime dependencies.",
+    "affected_file": "pmp-active-path-discovery-machine-v1.js"
+  },
+  "repair": {
+    "machine_version": "1.5.0-served-a003-reference-truth-20260826A",
+    "classification_revision": "1.1.0-served-a003-reference-truth-20260826A",
+    "manifest_binding": "Fetch pmp-runtime-integrity-manifest-v1.json with no-store during the exact scan, hash exact response bytes with SHA-256, parse runtime source-set identity, and bind the evidence to requested scan_id.",
+    "reference_truth": "Strip static comments before lexical discovery; explicit src/href/fetch/import/importScripts/Worker references remain strong; generic metadata.json, packet.json, and report.json basenames are ignored only when they are weak lexical strings."
+  },
+  "verification": {
+    "deterministic_test": "tools/test_active_path_seal_binding_reference_truth_v1.py",
+    "independent_verifier": "tools/verify_active_path_seal_binding_reference_truth_v1.py",
+    "browser_path": "audit/a002-active-path-seal-binding-reference-truth-v1.cjs",
+    "browser_requirement": "Seed a stale route-receipt manifest SHA, serve different manifest bytes, and prove the fresh report uses the served SHA while comment/output-only 412 endpoints are never requested and a real explicit fetch reference remains discoverable.",
+    "user_device_proof": "REQUIRED_AFTER_DEPLOYMENT"
+  },
+  "boundaries": {
+    "read_only_scan": true,
+    "owner_changes": false,
+    "helper_changes": false,
+    "route_changes": false,
+    "bank_rebuild": false,
+    "continuous_run_mutation": false,
+    "dom_repair": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false,
+    "persisted_user_data_delete": false
+  },
+  "claim_ceiling": "Repository repair only until applicable CI, merge, automatic A-003 reseal, Pages deployment, and a fresh iPhone Atlas ZIP prove the served seal binding and blocker classification."
+}
