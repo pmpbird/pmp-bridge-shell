@@ -21,6 +21,7 @@
     "independent_verifier": "tools/verify_active_path_seal_binding_reference_truth_v1.py",
     "browser_path": "audit/a002-active-path-seal-binding-reference-truth-v1.cjs",
     "browser_requirement": "Seed a stale route-receipt manifest SHA, serve different manifest bytes, and prove the fresh report uses the served SHA while comment/output-only 412 endpoints are never requested and a real explicit fetch reference remains discoverable.",
+    "ci_trigger": "User-authored synchronization after the self-removing A-003 branch reseal workflow; protected runtime bytes and seal are unchanged by this audit-only commit.",
     "user_device_proof": "REQUIRED_AFTER_DEPLOYMENT"
   },
   "boundaries": {
