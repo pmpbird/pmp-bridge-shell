@@ -90,9 +90,12 @@
     "changed_paths": [
       ".github/workflows/a002-atlas-registry-completeness-semantics.yml",
       "audit/a002-atlas-registry-completeness-semantics-v1.cjs",
+      "audit/a003-manifest-seal.json",
       "audit/pass13/atlas-registry-completeness-semantics-gate-v1.json",
       "audit/pass13/receipts/RECEIPT_ATLAS_REGISTRY_COMPLETENESS_SEMANTICS_20260826A_001.json",
+      "pmp-app-current.html",
       "pmp-mount-registry-v1.js",
+      "pmp-runtime-integrity-manifest-v1.json",
       "tools/test_atlas_registry_completeness_semantics_v1.py",
       "tools/verify_atlas_registry_completeness_semantics_v1.py"
     ],
