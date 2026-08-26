@@ -1,14 +1,14 @@
 {
   "manifest_bytes": 396124,
   "manifest_path": "pmp-runtime-integrity-manifest-v1.json",
-  "manifest_sha256": "b9f1f21cb8116cefa81cebe85c5024341a112c60d5a829582102170054b63fd3",
+  "manifest_sha256": "f0d0113c57ea435a00806cb9a42620a6c9dfcf580f5e3d3f6566f606d072ded2",
   "manifest_version": "20260711A-A003-FINAL",
   "repair_id": "A-003",
   "root_self_verifiable": false,
   "root_trust_anchor": "pmp-app-current.html",
   "rule": "The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.",
-  "runtime_source_set_sha256": "633f3189ddfab69a95051b603983d52d991613ddb4e762c6b5d1b563f22afbb9",
-  "sealed_branch": "main",
+  "runtime_source_set_sha256": "6adc78fd940220c6f0669358ba2bceda1fa8cbeb1636d51f455f7f3d3bbb52c9",
+  "sealed_branch": "chatgpt/atlas-registry-completeness-semantics-20260826A",
   "status": "SEALED",
   "type": "PMP_A003_MANIFEST_SEAL_V1"
 }
