@@ -1,0 +1,155 @@
+name: Temporary Full Diagnostics ZIP Final Closure Certification
+on:
+  push:
+    branches:
+      - chatgpt/full-diagnostics-zip-export-20260826A
+    paths:
+      - '.github/workflows/tmp-full-diagnostics-final-closure-20260826D.yml'
+permissions:
+  contents: write
+jobs:
+  close:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      BASE_SHA: aedcac8f6acfbedcc2dfa124d984d225b7f42d17
+      RUNTIME_CERT_HEAD: 58a98b74e360904e68f4051cd13143b455381143
+      BRANCH: chatgpt/full-diagnostics-zip-export-20260826A
+      ROOT: /tmp/full-diagnostics-final-closure
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - name: Self-remove workflow and prove final exact scope plus audit-only delta
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/tmp-full-diagnostics-final-closure-20260826D.yml
+          git commit -m 'Remove temporary Full Diagnostics final closure [skip ci]'
+          git push origin HEAD:$BRANCH
+          mkdir -p "$ROOT"
+          git rev-parse HEAD | tee "$ROOT/certified-head.txt"
+          git diff --name-only "$BASE_SHA...HEAD" | sort | tee "$ROOT/changed-paths.txt"
+          test "$(wc -l < "$ROOT/changed-paths.txt" | tr -d ' ')" = "12"
+          git diff --name-only "$RUNTIME_CERT_HEAD...HEAD" | sort > "$ROOT/post-runtime-cert-delta.txt"
+          cat "$ROOT/post-runtime-cert-delta.txt"
+          expected=$'audit/pass13/app-orchestrator-ownership-maintenance-v1.json\naudit/pass13/full-diagnostics-zip-export-gate-v1.json'
+          test "$(cat "$ROOT/post-runtime-cert-delta.txt")" = "$expected"
+      - name: Verify Full Diagnostics ZIP contracts remain bound
+        id: zip
+        shell: bash
+        run: |
+          set +e
+          node --check pmp-diagnostics-consolidated-view-v1.js > "$ROOT/zip-contract.log" 2>&1; r1=$?
+          python3 tools/test_full_diagnostics_zip_export_v1.py >> "$ROOT/zip-contract.log" 2>&1; r2=$?
+          python3 tools/verify_full_diagnostics_zip_export_v1.py >> "$ROOT/zip-contract.log" 2>&1; r3=$?
+          rc=0; for x in $r1 $r2 $r3; do if [ "$x" -ne 0 ]; then rc=1; fi; done
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"; exit 0
+      - name: Verify sealed protected runtime unchanged and valid
+        id: a003
+        shell: bash
+        run: |
+          set +e
+          python3 tools/test_a003_integrity.py --output "$ROOT/a003-repository-test-result.json" > "$ROOT/a003.log" 2>&1; rc=$?
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"; exit 0
+      - name: Run permanent no-blind-flying exact-scope commands
+        id: nbf
+        shell: bash
+        run: |
+          set +e
+          python3 tools/test_pass6_unit7_no_blind_flying_gate_v1.py > "$ROOT/no-blind.log" 2>&1; r1=$?
+          python3 tools/test_app_orchestrator_ownership_maintenance_v1.py >> "$ROOT/no-blind.log" 2>&1; r2=$?
+          python3 tools/verify_app_orchestrator_ownership_maintenance_v1.py >> "$ROOT/no-blind.log" 2>&1; r3=$?
+          python3 tools/run_pass6_unit7_no_blind_flying_gate_v1.py --base "$BASE_SHA" --output "$ROOT/no-blind-result.json" >> "$ROOT/no-blind.log" 2>&1; r4=$?
+          rc=0; for x in $r1 $r2 $r3 $r4; do if [ "$x" -ne 0 ]; then rc=1; fi; done
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"; exit 0
+      - name: Run ownership maintenance and require idempotence
+        id: ownership
+        shell: bash
+        run: |
+          set +e
+          python3 tools/generate_app_orchestrator_ownership_maintenance_integrity_updates_v1.py > "$ROOT/ownership-generator.log" 2>&1; r1=$?
+          git diff --exit-code > "$ROOT/ownership-diff.log" 2>&1; r2=$?
+          python3 tools/test_app_orchestrator_ownership_maintenance_v1.py > "$ROOT/ownership-test.log" 2>&1; r3=$?
+          python3 tools/verify_app_orchestrator_ownership_maintenance_v1.py > "$ROOT/ownership-verify.log" 2>&1; r4=$?
+          rc=0; for x in $r1 $r2 $r3 $r4; do if [ "$x" -ne 0 ]; then rc=1; fi; done
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"; exit 0
+      - name: Run Pass 8 and Pass 11 regression paths
+        id: regressions
+        shell: bash
+        run: |
+          set +e
+          python3 tools/test_app_orchestrator_ownership_maintenance_v1.py > "$ROOT/pass8.log" 2>&1; r1=$?
+          node tools/test_pass11_safety_no_deletion_v1.js > "$ROOT/pass11.log" 2>&1; r2=$?
+          rc=0; for x in $r1 $r2; do if [ "$x" -ne 0 ]; then rc=1; fi; done
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"; exit 0
+      - name: Run static authorization preflight
+        id: static
+        shell: bash
+        run: |
+          set +e
+          mkdir -p "$ROOT/static-preflight"
+          head="$(git rev-parse HEAD)"
+          python3 audit/pass2/p2c-isolated-proof-rerun-008/static_preflight_receipt038.py --select-mode --base-sha "$BASE_SHA" --head-sha "$head" --github-output "$ROOT/static-mode.txt" > "$ROOT/static.log" 2>&1; r1=$?
+          mode="$(sed -n 's/^mode=//p' "$ROOT/static-mode.txt" | tail -1)"
+          python3 audit/pass2/p2c-isolated-proof-rerun-008/static_preflight_receipt038.py --mode "$mode" --base-sha "$BASE_SHA" --head-sha "$head" --evidence-dir "$ROOT/static-preflight" >> "$ROOT/static.log" 2>&1; r2=$?
+          python3 audit/pass2/p2c-post-failure-static-preflight-001/test_static_preflight_modes_001.py >> "$ROOT/static.log" 2>&1; r3=$?
+          python3 audit/pass2/p2c-post-failure-static-preflight-001/verify_static_preflight_mode_separation_001.py --base-sha "$BASE_SHA" --head-sha "$head" --evidence-dir "$ROOT/static-preflight" >> "$ROOT/static.log" 2>&1; r4=$?
+          rc=0; for x in $r1 $r2 $r3 $r4; do if [ "$x" -ne 0 ]; then rc=1; fi; done
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"; exit 0
+      - name: Run historical full-proof boundary unchanged
+        id: fullproof
+        shell: bash
+        env:
+          SOURCE_COMMIT: 98b2e293717b81289e3b372d1fff8f5832d29fd6
+          AUDIT_DIR: audit/pass2/p2c-isolated-proof-rerun-008
+          DEPS_DIR: audit/pass2/p2c-isolated-proof-rerun-006
+          REPAIR_DIR: audit/pass2/p2c-isolated-proof-rerun-006/repair-continuation-003
+          BUNDLE_DIR: /tmp/p2c-rehearsal-discovery-bundle
+          BUNDLE_TAR: /tmp/p2c-rehearsal-discovery-bundle.tar.gz
+          BASELINE_ROOT: /tmp/p2c-rehearsal-discovery-baseline
+          ACTIVE_ROOT: /tmp/p2c-rehearsal-discovery-active
+          EVIDENCE_DIR: /tmp/p2c-rehearsal-discovery-evidence
+          NORMALIZED_ROOT: /tmp/p2c-rehearsal-discovery-normalized
+          NODE_HOME: /tmp/p2c-rehearsal-discovery-node
+          P2C_REHEARSAL_SKIP_AUTHORIZATION: '1'
+          P2C_STOP_BEFORE_PREPARATION: '1'
+        run: |
+          set +e
+          bash "$AUDIT_DIR/rerun008-controller-main-receipt024.sh" > "$ROOT/full-proof.log" 2>&1; r1=$?
+          python3 "$AUDIT_DIR/rehearsal_source_identity_discovery_034.py" "$BUNDLE_DIR/prepare_disposable_proof_002.py" "$EVIDENCE_DIR/source-identity-discovery-034.json" >> "$ROOT/full-proof.log" 2>&1; r2=$?
+          rc=0; for x in $r1 $r2; do if [ "$x" -ne 0 ]; then rc=1; fi; done
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"; exit 0
+      - name: Write final closure summary
+        if: always()
+        run: |
+          head="$(git rev-parse HEAD)"
+          manifest_sha="$(python3 -c "import json; print(json.load(open('audit/a003-manifest-seal.json'))['manifest_sha256'])")"
+          runtime_set="$(python3 -c "import json; print(json.load(open('audit/a003-manifest-seal.json'))['runtime_source_set_sha256'])")"
+          cat > "$ROOT/closure-summary.json" <<EOF
+          {"type":"PMP_FULL_DIAGNOSTICS_ZIP_FINAL_CLOSURE_V1","certified_head":"$head","runtime_cert_head":"$RUNTIME_CERT_HEAD","base_sha":"$BASE_SHA","manifest_sha256":"$manifest_sha","runtime_source_set_sha256":"$runtime_set","zip_contract":${{ steps.zip.outputs.rc || '99' }},"a003_repository":${{ steps.a003.outputs.rc || '99' }},"no_blind_flying":${{ steps.nbf.outputs.rc || '99' }},"ownership":${{ steps.ownership.outputs.rc || '99' }},"regressions":${{ steps.regressions.outputs.rc || '99' }},"static_preflight":${{ steps.static.outputs.rc || '99' }},"historical_full_proof":${{ steps.fullproof.outputs.rc || '99' }},"runtime_browser_proof_carried_forward_from_run":33021560260}
+          EOF
+      - name: Upload closure evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-diagnostics-zip-final-closure-${{ github.run_id }}
+          path: /tmp/full-diagnostics-final-closure
+          if-no-files-found: error
+          retention-days: 90
+      - name: Enforce closure
+        run: |
+          test "${{ steps.zip.outputs.rc }}" = "0"
+          test "${{ steps.a003.outputs.rc }}" = "0"
+          test "${{ steps.nbf.outputs.rc }}" = "0"
+          test "${{ steps.ownership.outputs.rc }}" = "0"
+          test "${{ steps.regressions.outputs.rc }}" = "0"
+          test "${{ steps.static.outputs.rc }}" = "0"
+          test "${{ steps.fullproof.outputs.rc }}" = "0"
