@@ -1,0 +1,72 @@
+name: A-002 Full Diagnostics ZIP Export
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'pmp-diagnostics-consolidated-view-v1.js'
+      - 'audit/a002-full-diagnostics-zip-export-v1.cjs'
+      - 'tools/test_full_diagnostics_zip_export_v1.py'
+      - 'tools/verify_full_diagnostics_zip_export_v1.py'
+      - 'audit/pass13/full-diagnostics-zip-export-gate-v1.json'
+      - 'audit/pass13/receipts/RECEIPT_FULL_DIAGNOSTICS_ZIP_EXPORT_20260826A_001.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  certify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Verify deterministic ZIP contracts
+        run: |
+          node --check pmp-diagnostics-consolidated-view-v1.js
+          node --check audit/a002-full-diagnostics-zip-export-v1.cjs
+          python3 tools/test_full_diagnostics_zip_export_v1.py
+          python3 tools/verify_full_diagnostics_zip_export_v1.py
+      - name: Start repository server
+        run: |
+          python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/a002-full-diagnostics-zip-http.log 2>&1 &
+          echo $! > /tmp/a002-full-diagnostics-zip-http.pid
+          for i in $(seq 1 30); do
+            curl -fsS http://127.0.0.1:8000/pmp-pages-publish-smoke-v1.html >/dev/null && exit 0
+            sleep 1
+          done
+          cat /tmp/a002-full-diagnostics-zip-http.log
+          exit 1
+      - name: Run real browser ZIP download certification
+        env:
+          A002_BASE_URL: http://127.0.0.1:8000/
+          A002_FULL_DIAGNOSTICS_ZIP_RESULT_PATH: a002-full-diagnostics-zip-export-results.json
+        run: |
+          set +e
+          node audit/a002-full-diagnostics-zip-export-v1.cjs 2>&1 | tee a002-full-diagnostics-zip-export-console.log
+          code=${PIPESTATUS[0]}
+          exit $code
+      - name: Upload Full Diagnostics ZIP proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a002-full-diagnostics-zip-export-results
+          path: |
+            a002-full-diagnostics-zip-export-results.json
+            a002-full-diagnostics-zip-export-console.log
+            /tmp/a002-full-diagnostics-zip-http.log
+          if-no-files-found: error
