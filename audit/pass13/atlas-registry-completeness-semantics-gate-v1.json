@@ -2,8 +2,21 @@
   "type": "PMP_ATLAS_REGISTRY_COMPLETENESS_SEMANTICS_GATE_V1",
   "version": "1.0.0",
   "revision": "1.7.0-registry-completeness-semantics-20260826A",
-  "status": "PENDING_CI",
+  "status": "PASS",
   "unit_id": "P13-U108",
+  "certification": {
+    "status": "PASS",
+    "certified_head": "3c50974c66edcf2858a29fd63960d8d6ff71b44f",
+    "dedicated_registry_workflow_run": 32973860060,
+    "a002_live_runtime_run": 32973860078,
+    "a003_runtime_integrity_run": 32973860093,
+    "no_blind_flying_run": 32973860141,
+    "ownership_maintenance_run": 32973860302,
+    "pass8_helper_owner_run": 32973860058,
+    "pass11_safety_run": 32973860179,
+    "static_preflight_run": 32973860096,
+    "phone_proof": "REQUIRED_AFTER_DEPLOYMENT"
+  },
   "claim_ceiling": "Repairs only passive Atlas registry completeness and classification semantics. It does not change Current Map authority, owner/helper authority, routes, Bank, Continuous Run, storage, persisted user data, or the already-passing Active Path scanner freeze logic.",
   "no_blind_flying_gate": {
     "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
