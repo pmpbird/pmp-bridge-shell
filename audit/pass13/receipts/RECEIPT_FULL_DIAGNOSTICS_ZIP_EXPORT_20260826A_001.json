@@ -2,7 +2,7 @@
   "type": "PMP_FULL_DIAGNOSTICS_ZIP_EXPORT_RECEIPT_V1",
   "version": "1.0.0",
   "revision": "1.0.0-full-diagnostics-zip-handoff-20260826A",
-  "status": "PENDING_CI",
+  "status": "PASS",
   "ci_trigger": "USER_AUTHORED_POST_SEAL_PR_CHECK_TRIGGER_20260826A",
   "observed_problem": {
     "surface": "Diagnostics → Full Diagnostics → Copy Full Diagnostics Report",
@@ -23,6 +23,25 @@
     "manifest_sha256": "d28d9574850307f1d0ef7ee53f860babd49daa529943912333bb10ac83526a8d",
     "runtime_source_set_sha256": "9116904d3941f403d109d4dfbed9bc98af49b7c621f821359bf5918a3a85879d",
     "status": "SEALED"
+  },
+  "ci_evidence": {
+    "runtime_certified_head": "58a98b74e360904e68f4051cd13143b455381143",
+    "runtime_tree_equivalent_exact_head": "64243dceb0cc2e44e0556b19ceba09edf7946c0f",
+    "branch_preseal_real_download_run": 33020563697,
+    "runtime_browser_a002_a003_run": 33021560260,
+    "exact_head_closure_run": 33022207514,
+    "exact_head_closure_artifact_id": 9626987301,
+    "exact_head_closure_artifact_digest": "sha256:77322fe6dd98f941d197b793ca528cdf576406de99f8a73c415dbdc76b52c5b2",
+    "exact_head_closure": {
+      "zip_contract": "PASS",
+      "a003_repository": "PASS",
+      "no_blind_flying": "PASS",
+      "ownership_shallow": "PASS",
+      "pass8_pass11_regressions": "PASS",
+      "static_preflight": "PASS",
+      "historical_full_proof": "PASS"
+    },
+    "failed_attempts_preserved": [33021186126,33021560260,33021902341]
   },
   "verification": {
     "deterministic_test": "tools/test_full_diagnostics_zip_export_v1.py",
@@ -48,5 +67,5 @@
     "diagnostics_truth_changes": false,
     "atlas_changes": false
   },
-  "claim_ceiling": "Repository ZIP handoff repair only until applicable final-head CI, merge, automatic main reseal, Pages deployment, and a fresh iPhone Full Diagnostics ZIP prove the handoff works on-device."
+  "claim_ceiling": "This receipt certifies the bounded repository Full Diagnostics ZIP handoff and its proof contracts. It does not claim the iPhone handoff is fixed until a fresh post-deployment device test produces and attaches the ZIP."
 }
