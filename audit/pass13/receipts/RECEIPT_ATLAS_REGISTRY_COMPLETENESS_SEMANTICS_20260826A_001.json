@@ -1,0 +1,43 @@
+{
+  "type": "PMP_ATLAS_REGISTRY_COMPLETENESS_SEMANTICS_RECEIPT_V1",
+  "version": "1.0.0",
+  "revision": "1.7.0-registry-completeness-semantics-20260826A",
+  "status": "PENDING_CI",
+  "observed_problem": {
+    "surface": "Fresh Active Path Atlas registry completeness audit",
+    "fresh_phone_freeze_gate": "PASS",
+    "unexplained_registry_gap_count": 42,
+    "audit_conclusion": "20 reachable references belong in explicit current/support/recovery registry semantics; 22 reachable references are known but must remain non-boot and non-authoritative."
+  },
+  "repair": {
+    "mount_registry_version": "1.7.0-registry-completeness-semantics-20260826A",
+    "current_control_plane_additions": 3,
+    "support_reachable_additions": 8,
+    "recovery_gap_additions": 9,
+    "recovery_total_after_reclassification": 10,
+    "intentional_outside_count": 22,
+    "recovery_semantics": "All Current Map recovery references are classified RECOVERY_REACHABLE; the already-registered last-good controller is moved out of ACTIVE_CURRENT_APP into that recovery bucket.",
+    "intentional_outside_semantics": "Known reachable references are recorded as INTENTIONAL_OUTSIDE_ACTIVE_ATLAS so they stop appearing as unexplained gaps, but they receive no mount slot and no boot/owner/helper authority."
+  },
+  "verification": {
+    "deterministic_test": "tools/test_atlas_registry_completeness_semantics_v1.py",
+    "independent_verifier": "tools/verify_atlas_registry_completeness_semantics_v1.py",
+    "browser_path": "audit/a002-atlas-registry-completeness-semantics-v1.cjs",
+    "ci_workflow": ".github/workflows/a002-atlas-registry-completeness-semantics.yml",
+    "user_device_proof": "REQUIRED_AFTER_DEPLOYMENT"
+  },
+  "boundaries": {
+    "passive_registry_only": true,
+    "owner_changes": false,
+    "helper_changes": false,
+    "route_changes": false,
+    "bank_rebuild": false,
+    "continuous_run_mutation": false,
+    "dom_repair": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false,
+    "persisted_user_data_delete": false,
+    "placeholder_creation": false
+  },
+  "claim_ceiling": "Repository registry semantics only until applicable CI, A-003 reseal, merge, Pages deployment, and a fresh iPhone Atlas ZIP prove zero unexplained registry gaps without changing the existing freeze PASS."
+}
