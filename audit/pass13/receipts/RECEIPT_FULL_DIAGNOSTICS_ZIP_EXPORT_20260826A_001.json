@@ -1,0 +1,43 @@
+{
+  "type": "PMP_FULL_DIAGNOSTICS_ZIP_EXPORT_RECEIPT_V1",
+  "version": "1.0.0",
+  "revision": "1.0.0-full-diagnostics-zip-handoff-20260826A",
+  "status": "PENDING_CI",
+  "observed_problem": {
+    "surface": "Diagnostics → Full Diagnostics → Copy Full Diagnostics Report",
+    "symptom": "The complete diagnostics report is too large to paste into chat, and Full Diagnostics had no attachable file or ZIP export.",
+    "proven_code_gap": "The full-report control generated current live diagnostic evidence and passed JSON.stringify(fullDiagnosticReport()) directly to copyText; no Blob, downloadable file, or ZIP path existed.",
+    "affected_file": "pmp-diagnostics-consolidated-view-v1.js"
+  },
+  "repair": {
+    "diagnostics_version_unchanged": "2.9.2-fresh-bcd-evaluation-binding-20260825A",
+    "zip_export_revision": "1.0.0-full-diagnostics-zip-handoff-20260826A",
+    "copy_path_preserved": true,
+    "diagnostics_truth_contract_unchanged": true,
+    "handoff": "Export Full Diagnostics ZIP first runs the existing current live diagnostics evidence path, then packages that exact complete report. A persistent Download Full Diagnostics ZIP link remains available so iPhone Safari can use a direct second tap if the asynchronous evidence run outlives transient user activation.",
+    "zip_members": ["full-diagnostics-report.json","whole-app-health.json","diagnostics-export-metadata.json","diagnostics-summary.txt"]
+  },
+  "verification": {
+    "deterministic_test": "tools/test_full_diagnostics_zip_export_v1.py",
+    "independent_verifier": "tools/verify_full_diagnostics_zip_export_v1.py",
+    "browser_path": "audit/a002-full-diagnostics-zip-export-v1.cjs",
+    "ci_workflow": ".github/workflows/a002-full-diagnostics-zip-export.yml",
+    "browser_requirement": "A direct click on the prepared persistent link must produce a Playwright download event whose ZIP contains the complete Full Diagnostics report, Whole App Health, export metadata, summary, all eight governed diagnostic sections, and read-only boundary declarations.",
+    "user_device_proof": "REQUIRED_AFTER_DEPLOYMENT"
+  },
+  "boundaries": {
+    "read_only_diagnostics": true,
+    "owner_changes": false,
+    "helper_changes": false,
+    "route_changes": false,
+    "bank_rebuild": false,
+    "continuous_run_mutation": false,
+    "dom_repair": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false,
+    "persisted_user_data_delete": false,
+    "diagnostics_truth_changes": false,
+    "atlas_changes": false
+  },
+  "claim_ceiling": "Repository ZIP handoff repair only until applicable CI, A-003 branch reseal, merge, automatic main reseal, Pages deployment, and a fresh iPhone Full Diagnostics ZIP prove the handoff works on-device."
+}
