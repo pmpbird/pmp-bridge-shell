@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const V='1.6.3-v30-live-atlas-support-cluster3-20260709A';
+const V='1.7.0-registry-completeness-semantics-20260826A';
 const OWNER='pmp-mount-registry-v1';
 const K={registry:'pmp_mount_registry_v1',receipt:'pmp_mount_registry_v1_receipt',snapshot:'pmp_mount_registry_live_snapshot_v1',missing:'pmp_mount_registry_missing_expected_v1'};
 function list(s){return Array.from(new Set(String(s||'').trim().split(/\s+/).filter(Boolean)))}
@@ -13,6 +13,9 @@ pmp-current-inner-cleanbug-rgcontrols-v30-direct-boot-surface-20260708A.html
 pmp-current-inner-cleanbug-rgcontrols-v23.html
 pmp-current-inner-cleanbug-rgcontrols-v4.html
 pmp-home-single-v6.html
+pmp-runtime-integrity-manifest-v1.json
+pmp-integrity-service-worker-v1.js
+pmp-app-orchestrator-ownership-registry-v1.json
 pmp-service-worker-cache-governor-v1.js
 pmp-pass75-reload-runtime-platform-gate-v1.js
 pmp-pass75-runtime-platform-v1.js
@@ -80,7 +83,6 @@ pmp-connections-bank-inventory-off-v1.js
 pmp-connections-copy-output-fix-v1.js
 pmp-connections-request-prompt-schema-v1.js
 pmp-connections-request-prompt-complete-v1.js
-pmp-route-guardian-last-good-clean-v1.js
 pmp-p15-builder-fix-v2.js
 pmp-p15-units-restore-v1.js
 pmp-p15-proof-section-v1.js
@@ -91,6 +93,14 @@ pmp-continuous-run-single-line-hold-v1.js
 `);
 const SUPPORT_REACHABLE=list(`
 bug-memory-current-clean-v1.html
+code-safety-v13.html
+pmp-current-inner-cleanbug-rgcontrols-v2.html
+resident.html
+code-safety.html
+pmp-route-guardian-v1.js
+pmp.html
+safe-writer.html
+safety.html
 pmp-bank-project-registry-v1.js
 pmp-bank-reload-current-button-v1.js
 pmp-continuous-run-bank-stable-status-owner-v1.js
@@ -157,13 +167,56 @@ pmp-private-field-extractor-v1.js
 pmp-route-code-map-adapter-v1.js
 pmp-top-lossless-loader.js
 `);
+const RECOVERY_REACHABLE=list(`
+pmp-route-guardian-last-good-clean-v1.js
+pmp-current-inner-cleanbug-rgcontrols-v16.html
+pmp-route-guardian-last-good-v3-button-v1.js
+pmp-route-guardian-last-good-v1.html
+pmp-route-guardian-last-good-v18.html
+pmp-route-guardian-recovery-tools-v8.html
+pmp-move-ledger-candidate-follow-v1.html
+pmp-route-guardian-current-loader-v14.html
+pmp-current-inner-cleanbug-rgcontrols-v9.html
+pmp-current-inner-cleanbug-rgcontrols-v13.html
+`);
 const HISTORIC=list(`
 pmp-current-map-v11.json pmp-current-map-v10.json pmp-current-map-v9.json pmp-current-map.json
 pmp-route-guardian-current-loader-v21.html pmp-route-guardian-current-loader-v20.html pmp-route-guardian-current-loader-v19.html pmp-route-guardian-current-loader-v18.html pmp-route-guardian-current-loader-v17.html pmp-route-guardian-current-loader-v15.html
 pmp-current-reload-owner-v29.html pmp-current-reload-owner-v29-permanent-update-gate-20260706f.html pmp-current-reload-owner-v29-cachelift-20260706b.html pmp-current-reload-owner-v28.html pmp-current-reload-owner-v27.html
 pmp-current-inner-cleanbug-rgcontrols-v29.html pmp-current-inner-cleanbug-rgcontrols-v26.html pmp-current-inner-cleanbug-rgcontrols-v24.html
 `);
-const BUCKETS=[{id:'ACTIVE_CURRENT_APP',rule:'Current v30 live route, runtime, Pass 8 helper rules, and work surface.'},{id:'SUPPORT_REACHABLE',rule:'Reachable support files registered for discovery truth; not boot authority.'},{id:'LIVE_RUNTIME_OBSERVED',rule:'Files currently observed in the running page/frames.'},{id:'HISTORIC_SUPPORT_ONLY',rule:'Old current-chain files retained for inspection; not boot authority.'}];
+const INTENTIONAL_OUTSIDE=list(`
+GO_TO_SAFETY.html
+Index.html
+automation/controller/v1/controller-contract.json
+automation/engine/v1/engine-policy.json
+automation/engine/v1/free-in-app-engine-contract.json
+automation/engine/v1/universal-contract.json
+automation/plans/packet-01-5.v1.json
+automation/state/active-plan.json
+automation/state/controller-status.json
+automation/state/free-in-app-engine-status.json
+automation/state/usage-ledger.json
+bm.html
+bridge-cloak.html
+bug-memory-current-clean-v2.html
+bug-memory-hub-link-v1.html
+hard-fresh.html
+pmp-continuous-run-helper-conflict-blocker-v1.js
+pmp-current-inner.html
+pmp-helper-bank-live-inspector-v1.js
+pmp-helper-symptom-watcher-v1.js
+pmp-inventory-eyes-manifest-v1.0.0.json
+pmp-p15-helper-tidy-v1.js
+`);
+const BUCKETS=[
+{id:'ACTIVE_CURRENT_APP',rule:'Current v30 live route, protected control-plane runtime, Pass 8 helper rules, and work surface.'},
+{id:'SUPPORT_REACHABLE',rule:'Reachable current-tool and support dependencies registered for discovery truth; not boot authority.'},
+{id:'RECOVERY_REACHABLE',rule:'Current Map-declared recovery and fallback references; reachable evidence only and never current boot authority.'},
+{id:'LIVE_RUNTIME_OBSERVED',rule:'Files currently observed in the running page/frames.'},
+{id:'HISTORIC_SUPPORT_ONLY',rule:'Old current-chain files retained for inspection; not boot authority.'},
+{id:'INTENTIONAL_OUTSIDE_ACTIVE_ATLAS',rule:'Known reachable references intentionally excluded from active/mount authority. They receive no mount slot and may not become boot, owner, or helper authority merely by being referenced.'}
+];
 function now(){return new Date().toISOString()}
 function T(){try{return top||window}catch(e){return window}}
 function put(k,v){try{localStorage.setItem(k,JSON.stringify(v,null,2))}catch(e){}try{T().localStorage.setItem(k,JSON.stringify(v,null,2))}catch(e){}return v}
@@ -175,9 +228,13 @@ function row(path,bucket){return{path,bucket,group:bucket.toLowerCase()}}
 function sid(bucket,path){return(bucket+'_'+path).toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'')}
 function slot(bucket,path){return{id:sid(bucket,path),bucket,owner:bucket+' File Owner',parent:'active_path_atlas',selectors:[],files:[path],policy:'Atlas record only; no route mutation.'}}
 function currentFiles(){return uniq(STATIC_CURRENT.concat(liveFiles()))}
-function registry(){let active=currentFiles(),support=uniq(SUPPORT_REACHABLE),historic=uniq(HISTORIC),live=liveFiles(),files=active.map(p=>row(p,'ACTIVE_CURRENT_APP')).concat(support.map(p=>row(p,'SUPPORT_REACHABLE'))).concat(historic.map(p=>row(p,'HISTORIC_SUPPORT_ONLY')));let classification={ACTIVE_CURRENT_APP:active,SUPPORT_REACHABLE:support,LIVE_RUNTIME_OBSERVED:live,HISTORIC_SUPPORT_ONLY:historic,EXTERNAL_TOOL_SURFACE:[],UNKNOWN_DO_NOT_MOUNT:[]};return{type:'PMP_ACTIVE_PATH_ATLAS_V1',version:V,owner:OWNER,updated_at:now(),mode:'active_path_registry_only',scope:'v30 current-chain atlas with reachable support merge.',rule:'Passive atlas only. Records current and reachable support paths for discovery and App Orchestrator. No route mutation, no Bank rebuild, no storage migration.',default_for_unlisted_files:'NON_BOOT_OUTSIDE_ACTIVE_ATLAS',atlas_buckets:BUCKETS,repo_file_classification:classification,files,slots:files.map(f=>slot(f.bucket,f.path)),storage_owners:[],indexeddb_owners:[],keys:K,active_discovery_merge:{version:'1.1.1-v30-support-boundary-discovery-20260709A',current_route:'pmp-app-current.html -> route guardian v22 -> map v12 -> reload owner v30 -> current inner v30',active_count:active.length,support_count:support.length,historic_count:historic.length,live_runtime_observed_count:live.length}}}
+function registry(){
+let active=currentFiles(),support=uniq(SUPPORT_REACHABLE),recovery=uniq(RECOVERY_REACHABLE),historic=uniq(HISTORIC),outside=uniq(INTENTIONAL_OUTSIDE),live=liveFiles();
+let files=active.map(p=>row(p,'ACTIVE_CURRENT_APP')).concat(support.map(p=>row(p,'SUPPORT_REACHABLE'))).concat(recovery.map(p=>row(p,'RECOVERY_REACHABLE'))).concat(historic.map(p=>row(p,'HISTORIC_SUPPORT_ONLY'))).concat(outside.map(p=>row(p,'INTENTIONAL_OUTSIDE_ACTIVE_ATLAS')));
+let classification={ACTIVE_CURRENT_APP:active,SUPPORT_REACHABLE:support,RECOVERY_REACHABLE:recovery,LIVE_RUNTIME_OBSERVED:live,HISTORIC_SUPPORT_ONLY:historic,INTENTIONAL_OUTSIDE_ACTIVE_ATLAS:outside,EXTERNAL_TOOL_SURFACE:[],UNKNOWN_DO_NOT_MOUNT:[]};
+return{type:'PMP_ACTIVE_PATH_ATLAS_V1',version:V,owner:OWNER,updated_at:now(),mode:'active_path_registry_only',scope:'v30 current-chain atlas with reachable support, explicit recovery semantics, and known non-authoritative exclusions.',rule:'Passive atlas only. Records current, support, recovery, historic, and intentional-outside reference truth for discovery and App Orchestrator. No route mutation, no Bank rebuild, no storage migration, and no authority is granted by registry presence.',default_for_unlisted_files:'NON_BOOT_OUTSIDE_ACTIVE_ATLAS',atlas_buckets:BUCKETS,repo_file_classification:classification,files,slots:files.filter(f=>f.bucket!=='INTENTIONAL_OUTSIDE_ACTIVE_ATLAS').map(f=>slot(f.bucket,f.path)),storage_owners:[],indexeddb_owners:[],keys:K,active_discovery_merge:{version:'1.2.0-registry-completeness-semantics-20260826A',current_route:'pmp-app-current.html -> route guardian v22 -> map v12 -> reload owner v30 -> current inner v30',active_count:active.length,support_count:support.length,recovery_count:recovery.length,historic_count:historic.length,intentional_outside_count:outside.length,live_runtime_observed_count:live.length}}}
 function snapshot(){let r=registry();return{type:'PMP_ACTIVE_PATH_ATLAS_LIVE_SNAPSHOT_V1',version:V,owner:OWNER,at:now(),mode:'active_path_scan_only',atlas_buckets:BUCKETS,repo_file_classification:r.repo_file_classification,documents:[],slot_status:r.slots,storage_keys:[],expected_files:r.files.map(x=>Object.assign({},x,{observed_now:r.repo_file_classification.LIVE_RUNTIME_OBSERVED.indexOf(x.path)>=0,expected_at_boot:x.bucket==='ACTIVE_CURRENT_APP'})),missing_expected:[],indexeddb_owners:[],rule:r.rule}}
-function scan(reason){let r=registry(),s=snapshot();put(K.registry,r);put(K.snapshot,s);put(K.missing,s.missing_expected);put(K.receipt,{type:'PMP_ACTIVE_PATH_ATLAS_RECEIPT_V1',version:V,owner:OWNER,at:now(),reason:reason||'scan',mode:'passive_only',slot_count:r.slots.length,active_file_count:r.repo_file_classification.ACTIVE_CURRENT_APP.length,support_file_count:r.repo_file_classification.SUPPORT_REACHABLE.length,historic_file_count:r.repo_file_classification.HISTORIC_SUPPORT_ONLY.length,live_runtime_observed_count:r.repo_file_classification.LIVE_RUNTIME_OBSERVED.length,atlas_file_count:r.files.length,atlas_bucket_count:r.atlas_buckets.length,missing_expected_count:0,current_route:r.active_discovery_merge.current_route,rule:r.rule,side_effects:{route_change:'not_attempted',bank_rebuild:'not_attempted',storage_migration:'not_attempted',ownership_takeover:'not_attempted'}});return{registry:r,snapshot:s}}
-window.PMPMountRegistryV1={version:V,owner:OWNER,mode:'active_path_registry_only',keys:K,registry,scan,snapshot,atlasBuckets:BUCKETS,rule:'v30 current path atlas with reachable support merge'};
+function scan(reason){let r=registry(),s=snapshot();put(K.registry,r);put(K.snapshot,s);put(K.missing,s.missing_expected);put(K.receipt,{type:'PMP_ACTIVE_PATH_ATLAS_RECEIPT_V1',version:V,owner:OWNER,at:now(),reason:reason||'scan',mode:'passive_only',slot_count:r.slots.length,active_file_count:r.repo_file_classification.ACTIVE_CURRENT_APP.length,support_file_count:r.repo_file_classification.SUPPORT_REACHABLE.length,recovery_file_count:r.repo_file_classification.RECOVERY_REACHABLE.length,historic_file_count:r.repo_file_classification.HISTORIC_SUPPORT_ONLY.length,intentional_outside_file_count:r.repo_file_classification.INTENTIONAL_OUTSIDE_ACTIVE_ATLAS.length,live_runtime_observed_count:r.repo_file_classification.LIVE_RUNTIME_OBSERVED.length,atlas_file_count:r.files.length,atlas_bucket_count:r.atlas_buckets.length,missing_expected_count:0,current_route:r.active_discovery_merge.current_route,rule:r.rule,side_effects:{route_change:'not_attempted',bank_rebuild:'not_attempted',storage_migration:'not_attempted',ownership_takeover:'not_attempted'}});return{registry:r,snapshot:s}}
+window.PMPMountRegistryV1={version:V,owner:OWNER,mode:'active_path_registry_only',keys:K,registry,scan,snapshot,atlasBuckets:BUCKETS,rule:'v30 current path atlas with reachable support, recovery semantics, and explicit non-authoritative exclusions'};
 [0,90,270,630,990,1800,2700,3600,6300,9000,18000].forEach(t=>setTimeout(()=>scan('scheduled_'+t),t));setInterval(()=>scan('slow_watch_9000'),9000);scan('initial');
 })();
