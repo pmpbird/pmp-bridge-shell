@@ -2,9 +2,41 @@
   "type": "PMP_FULL_DIAGNOSTICS_ZIP_EXPORT_GATE_V1",
   "version": "1.0.0",
   "revision": "1.0.0-full-diagnostics-zip-handoff-20260826A",
-  "status": "PENDING_CI",
+  "status": "PASS",
   "unit_id": "P13-U109",
-  "claim_ceiling": "Repairs only Full Diagnostics report handoff by adding a real ZIP export of the existing read-only complete report, plus the minimum maintenance-verifier branch-prefix alignment required to certify that bounded diagnostics branch. It does not change diagnostics truth, owner/helper authority, Current Map or routes, Bank, Continuous Run, storage, persisted user data, Atlas, or failure semantics. Fresh iPhone proof is required after deployment.",
+  "certification": {
+    "status": "PASS",
+    "certified_head": "64243dceb0cc2e44e0556b19ceba09edf7946c0f",
+    "runtime_certified_head": "58a98b74e360904e68f4051cd13143b455381143",
+    "runtime_tree_equivalent": true,
+    "branch_preseal_real_download_run": 33020563697,
+    "runtime_browser_a002_a003_run": 33021560260,
+    "exact_head_closure_run": 33022207514,
+    "exact_head_closure_artifact_id": 9626987301,
+    "exact_head_closure_artifact_digest": "sha256:77322fe6dd98f941d197b793ca528cdf576406de99f8a73c415dbdc76b52c5b2",
+    "branch_seal_commit": "ae19856d17376cb3d17991c3dfbc5713262597de",
+    "manifest_sha256": "d28d9574850307f1d0ef7ee53f860babd49daa529943912333bb10ac83526a8d",
+    "runtime_source_set_sha256": "9116904d3941f403d109d4dfbed9bc98af49b7c621f821359bf5918a3a85879d",
+    "phone_proof": "REQUIRED_AFTER_DEPLOYMENT",
+    "preserved_failed_attempts": [
+      {
+        "run_id": 33021186126,
+        "classification": "CERTIFICATION_HARNESS_CONTEXT_FAILURE",
+        "note": "Full Diagnostics ZIP, A-002, A-003, Pass 8/11, static preflight, and historical proof passed. No-blind saw Playwright node_modules left by the combined fallback and ownership maintenance rejected the not-yet-allowlisted full-diagnostics branch prefix."
+      },
+      {
+        "run_id": 33021560260,
+        "classification": "FULL_HISTORY_OWNERSHIP_GENERATOR_CONTEXT_FAILURE",
+        "note": "Real ZIP, A-002, A-003, no-blind, Pass 8/11, static preflight, and historical proof passed. Ownership generation differed only because the fallback used full history rather than the real workflow's shallow checkout."
+      },
+      {
+        "run_id": 33021902341,
+        "classification": "FALSE_FULL_HISTORY_MAINTENANCE_REPORT_CASCADE",
+        "note": "The full-history generated maintenance report was diagnosed as non-representative and reverted byte-for-byte to main before final certification."
+      }
+    ]
+  },
+  "claim_ceiling": "Certifies the bounded repository Full Diagnostics ZIP handoff repair and permanent proof contracts. It does not claim the iPhone handoff is fixed until a fresh post-deployment device test produces and attaches the ZIP.",
   "no_blind_flying_gate": {
     "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
     "version": "1.0.0",
