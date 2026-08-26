@@ -117,6 +117,7 @@
       "tools/test_active_path_seal_binding_reference_truth_v1.py",
       "tools/test_active_path_zip_output_handoff_v1.py",
       "tools/test_app_orchestrator_ownership_maintenance_v1.py",
+      "tools/verify_active_path_fresh_scan_classification_truth_v1.py",
       "tools/verify_active_path_seal_binding_reference_truth_v1.py"
     ],
     "implementation_paths": [
