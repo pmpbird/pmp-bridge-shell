@@ -1,0 +1,127 @@
+name: Temporary Final Full Diagnostics Gate Delta Certification
+on:
+  push:
+    branches:
+      - chatgpt/full-diagnostics-zip-export-20260826A
+    paths:
+      - '.github/workflows/tmp-full-diagnostics-final-gate-delta-cert-20260826I.yml'
+permissions:
+  contents: write
+jobs:
+  certify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      BASE_SHA: aedcac8f6acfbedcc2dfa124d984d225b7f42d17
+      PRE_GATE_HEAD: 6b22527ebece59dd4c8633dda25022ef6159a5a2
+      BRANCH: chatgpt/full-diagnostics-zip-export-20260826A
+      ROOT: /tmp/full-diagnostics-final-gate-delta-cert
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - name: Self-remove and establish immutable final branch head
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/tmp-full-diagnostics-final-gate-delta-cert-20260826I.yml
+          git commit -m 'Remove temporary final Full Diagnostics gate cert [skip ci]'
+          git push origin HEAD:$BRANCH
+          mkdir -p "$ROOT"
+          git rev-parse HEAD | tee "$ROOT/certified-head.txt"
+          git diff --name-only "$BASE_SHA...HEAD" | sort | tee "$ROOT/changed-paths.txt"
+          test "$(wc -l < "$ROOT/changed-paths.txt" | tr -d ' ')" = "11"
+          git diff --name-only "$PRE_GATE_HEAD...HEAD" | sort | tee "$ROOT/final-delta.txt"
+          test "$(cat "$ROOT/final-delta.txt")" = 'audit/pass13/full-diagnostics-zip-export-gate-v1.json'
+      - name: Verify final PASS records and protected runtime
+        id: core
+        shell: bash
+        run: |
+          set +e
+          python3 - <<'PY' > "$ROOT/core.log" 2>&1
+          import json
+          g=json.load(open('audit/pass13/full-diagnostics-zip-export-gate-v1.json'))
+          r=json.load(open('audit/pass13/receipts/RECEIPT_FULL_DIAGNOSTICS_ZIP_EXPORT_20260826A_001.json'))
+          assert g['status']=='PASS'
+          assert r['status']=='PASS'
+          assert g['certification']['final_receipt_delta_certification_run']==33022516596
+          assert r['ci_evidence']['pass_record_certification_run']==33022375402
+          assert g['certification']['phone_proof']=='REQUIRED_AFTER_DEPLOYMENT'
+          assert r['verification']['user_device_proof']=='REQUIRED_AFTER_DEPLOYMENT'
+          PY
+          r1=$?
+          python3 tools/test_full_diagnostics_zip_export_v1.py >> "$ROOT/core.log" 2>&1; r2=$?
+          python3 tools/verify_full_diagnostics_zip_export_v1.py >> "$ROOT/core.log" 2>&1; r3=$?
+          python3 tools/test_a003_integrity.py --output "$ROOT/a003-result.json" >> "$ROOT/core.log" 2>&1; r4=$?
+          rc=0; for x in $r1 $r2 $r3 $r4; do if [ "$x" -ne 0 ]; then rc=1; fi; done
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"; exit 0
+      - name: Run no-blind-flying exact-scope gate
+        id: nbf
+        shell: bash
+        run: |
+          set +e
+          python3 tools/test_pass6_unit7_no_blind_flying_gate_v1.py > "$ROOT/no-blind.log" 2>&1; r1=$?
+          python3 tools/test_app_orchestrator_ownership_maintenance_v1.py >> "$ROOT/no-blind.log" 2>&1; r2=$?
+          python3 tools/verify_app_orchestrator_ownership_maintenance_v1.py >> "$ROOT/no-blind.log" 2>&1; r3=$?
+          python3 tools/run_pass6_unit7_no_blind_flying_gate_v1.py --base "$BASE_SHA" --output "$ROOT/no-blind-result.json" >> "$ROOT/no-blind.log" 2>&1; r4=$?
+          rc=0; for x in $r1 $r2 $r3 $r4; do if [ "$x" -ne 0 ]; then rc=1; fi; done
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"; exit 0
+      - name: Emulate shallow ownership maintenance
+        id: ownership
+        shell: bash
+        run: |
+          set +e
+          git clone --depth 1 --branch "$BRANCH" https://github.com/pmpbird/pmp-bridge-shell.git /tmp/full-diagnostics-final-gate-shallow > "$ROOT/clone.log" 2>&1; r0=$?
+          cd /tmp/full-diagnostics-final-gate-shallow
+          export GITHUB_HEAD_REF="$BRANCH"
+          python3 tools/generate_app_orchestrator_ownership_maintenance_integrity_updates_v1.py > "$ROOT/generator.log" 2>&1; r1=$?
+          git diff --exit-code > "$ROOT/ownership-diff.log" 2>&1; r2=$?
+          python3 tools/test_app_orchestrator_ownership_maintenance_v1.py > "$ROOT/ownership-test.log" 2>&1; r3=$?
+          python3 tools/verify_app_orchestrator_ownership_maintenance_v1.py > "$ROOT/ownership-verify.log" 2>&1; r4=$?
+          rc=0; for x in $r0 $r1 $r2 $r3 $r4; do if [ "$x" -ne 0 ]; then rc=1; fi; done
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"; exit 0
+      - name: Run current safety and static authorization
+        id: rest
+        shell: bash
+        run: |
+          set +e
+          cd "$GITHUB_WORKSPACE"
+          node tools/test_pass11_safety_no_deletion_v1.js > "$ROOT/pass11.log" 2>&1; r1=$?
+          mkdir -p "$ROOT/static-preflight"
+          head="$(git rev-parse HEAD)"
+          python3 audit/pass2/p2c-isolated-proof-rerun-008/static_preflight_receipt038.py --select-mode --base-sha "$BASE_SHA" --head-sha "$head" --github-output "$ROOT/static-mode.txt" > "$ROOT/static.log" 2>&1; r2=$?
+          mode="$(sed -n 's/^mode=//p' "$ROOT/static-mode.txt" | tail -1)"
+          python3 audit/pass2/p2c-isolated-proof-rerun-008/static_preflight_receipt038.py --mode "$mode" --base-sha "$BASE_SHA" --head-sha "$head" --evidence-dir "$ROOT/static-preflight" >> "$ROOT/static.log" 2>&1; r3=$?
+          python3 audit/pass2/p2c-post-failure-static-preflight-001/test_static_preflight_modes_001.py >> "$ROOT/static.log" 2>&1; r4=$?
+          python3 audit/pass2/p2c-post-failure-static-preflight-001/verify_static_preflight_mode_separation_001.py --base-sha "$BASE_SHA" --head-sha "$head" --evidence-dir "$ROOT/static-preflight" >> "$ROOT/static.log" 2>&1; r5=$?
+          rc=0; for x in $r1 $r2 $r3 $r4 $r5; do if [ "$x" -ne 0 ]; then rc=1; fi; done
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"; exit 0
+      - name: Write final gate-delta summary
+        if: always()
+        run: |
+          cd "$GITHUB_WORKSPACE"
+          head="$(git rev-parse HEAD)"
+          cat > "$ROOT/summary.json" <<EOF
+          {"type":"PMP_FULL_DIAGNOSTICS_ZIP_FINAL_GATE_DELTA_CERT_V1","certified_head":"$head","pre_gate_head":"$PRE_GATE_HEAD","base_sha":"$BASE_SHA","core":${{ steps.core.outputs.rc || '99' }},"no_blind_flying":${{ steps.nbf.outputs.rc || '99' }},"ownership_shallow":${{ steps.ownership.outputs.rc || '99' }},"safety_static":${{ steps.rest.outputs.rc || '99' }},"runtime_browser_proof_run":33021560260,"exact_head_closure_run":33022207514,"pass_record_run":33022375402,"receipt_delta_run":33022516596}
+          EOF
+      - name: Upload final gate-delta evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-diagnostics-zip-final-gate-delta-${{ github.run_id }}
+          path: /tmp/full-diagnostics-final-gate-delta-cert
+          if-no-files-found: error
+          retention-days: 90
+      - name: Enforce final gate-delta certification
+        run: |
+          test "${{ steps.core.outputs.rc }}" = "0"
+          test "${{ steps.nbf.outputs.rc }}" = "0"
+          test "${{ steps.ownership.outputs.rc }}" = "0"
+          test "${{ steps.rest.outputs.rc }}" = "0"
