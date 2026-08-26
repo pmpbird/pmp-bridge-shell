@@ -1,0 +1,65 @@
+{
+  "type": "PMP_FULL_DIAGNOSTICS_ZIP_EXPORT_RECEIPT_V1",
+  "version": "1.0.0",
+  "revision": "1.0.0-full-diagnostics-zip-handoff-20260826A",
+  "status": "PASS",
+  "ci_trigger": "USER_AUTHORED_POST_SEAL_PR_CHECK_TRIGGER_20260826A",
+  "observed_problem": {
+    "surface": "Diagnostics → Full Diagnostics → Copy Full Diagnostics Report",
+    "symptom": "The complete diagnostics report is too large to paste into chat, and Full Diagnostics had no attachable file or ZIP export.",
+    "proven_code_gap": "The full-report control generated current live diagnostic evidence and passed JSON.stringify(fullDiagnosticReport()) directly to copyText; no Blob, downloadable file, or ZIP path existed.",
+    "affected_file": "pmp-diagnostics-consolidated-view-v1.js"
+  },
+  "repair": {
+    "diagnostics_version_unchanged": "2.9.2-fresh-bcd-evaluation-binding-20260825A",
+    "zip_export_revision": "1.0.0-full-diagnostics-zip-handoff-20260826A",
+    "copy_path_preserved": true,
+    "diagnostics_truth_contract_unchanged": true,
+    "handoff": "Export Full Diagnostics ZIP first runs the existing current live diagnostics evidence path, then packages that exact complete report. A persistent Download Full Diagnostics ZIP link remains available so iPhone Safari can use a direct second tap if the asynchronous evidence run outlives transient user activation.",
+    "zip_members": ["full-diagnostics-report.json","whole-app-health.json","diagnostics-export-metadata.json","diagnostics-summary.txt"]
+  },
+  "branch_seal": {
+    "seal_commit": "ae19856d17376cb3d17991c3dfbc5713262597de",
+    "manifest_sha256": "d28d9574850307f1d0ef7ee53f860babd49daa529943912333bb10ac83526a8d",
+    "runtime_source_set_sha256": "9116904d3941f403d109d4dfbed9bc98af49b7c621f821359bf5918a3a85879d",
+    "status": "SEALED"
+  },
+  "ci_evidence": {
+    "merge_head_certified_head": "a6b95a1e8b559511335d0d71f3fdc586868d7e12",
+    "merge_head_certification_run": 33022877210,
+    "runtime_certified_head": "58a98b74e360904e68f4051cd13143b455381143",
+    "runtime_browser_a002_a003_run": 33021560260,
+    "exact_head_closure_run": 33022207514,
+    "pass_record_certification_run": 33022375402,
+    "final_receipt_delta_certification_run": 33022516596,
+    "final_gate_delta_certification_run": 33022672906,
+    "absolute_final_certification_run": 33022781437,
+    "failed_attempts_preserved": [33021186126,33021560260,33021902341]
+  },
+  "verification": {
+    "deterministic_test": "tools/test_full_diagnostics_zip_export_v1.py",
+    "independent_verifier": "tools/verify_full_diagnostics_zip_export_v1.py",
+    "browser_path": "audit/a002-full-diagnostics-zip-export-v1.cjs",
+    "ci_workflow": ".github/workflows/a002-full-diagnostics-zip-export.yml",
+    "branch_preseal_browser_proof": "PASS",
+    "branch_reseal_workflow": "PASSED_AND_SELF_REMOVED",
+    "merge_head_certification": "PASS",
+    "browser_requirement": "A direct click on the prepared persistent link must produce a Playwright download event whose ZIP contains the complete Full Diagnostics report, Whole App Health, export metadata, summary, all eight governed diagnostic sections, and read-only boundary declarations.",
+    "user_device_proof": "REQUIRED_AFTER_DEPLOYMENT"
+  },
+  "boundaries": {
+    "read_only_diagnostics": true,
+    "owner_changes": false,
+    "helper_changes": false,
+    "route_changes": false,
+    "bank_rebuild": false,
+    "continuous_run_mutation": false,
+    "dom_repair": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false,
+    "persisted_user_data_delete": false,
+    "diagnostics_truth_changes": false,
+    "atlas_changes": false
+  },
+  "claim_ceiling": "This receipt certifies the bounded repository Full Diagnostics ZIP handoff and its proof contracts. It does not claim the iPhone handoff is fixed until a fresh post-deployment device test produces and attaches the ZIP."
+}
