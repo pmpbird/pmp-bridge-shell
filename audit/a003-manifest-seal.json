@@ -8,7 +8,7 @@
   "root_trust_anchor": "pmp-app-current.html",
   "rule": "The root trust anchor cannot verify its own pre-execution bytes; it carries the exact digest for the deterministic protected runtime source set.",
   "runtime_source_set_sha256": "9116904d3941f403d109d4dfbed9bc98af49b7c621f821359bf5918a3a85879d",
-  "sealed_branch": "chatgpt/full-diagnostics-zip-export-20260826A",
+  "sealed_branch": "main",
   "status": "SEALED",
   "type": "PMP_A003_MANIFEST_SEAL_V1"
 }
