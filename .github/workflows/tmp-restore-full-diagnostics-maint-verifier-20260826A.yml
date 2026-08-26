@@ -1,0 +1,38 @@
+name: Temporary Restore Full Diagnostics Maintenance Verifier
+on:
+  push:
+    branches:
+      - chatgpt/full-diagnostics-zip-export-20260826A
+    paths:
+      - '.github/workflows/tmp-restore-full-diagnostics-maint-verifier-20260826A.yml'
+permissions:
+  contents: write
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Restore exact main verifier and apply one prefix addition
+        run: |
+          git show aedcac8f6acfbedcc2dfa124d984d225b7f42d17:tools/verify_app_orchestrator_ownership_maintenance_v1.py > /tmp/verifier.py
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('/tmp/verifier.py')
+          t=p.read_text('utf-8')
+          old='assert seal["sealed_branch"].startswith(("chatgpt/diagnostics-", "chatgpt/atlas-")) or seal["sealed_branch"] in {'
+          new='assert seal["sealed_branch"].startswith(("chatgpt/diagnostics-", "chatgpt/full-diagnostics-", "chatgpt/atlas-")) or seal["sealed_branch"] in {'
+          if t.count(old)!=1: raise SystemExit('expected exact one maintenance branch-prefix assertion')
+          p.write_text(t.replace(old,new,1),'utf-8')
+          PY
+          cp /tmp/verifier.py tools/verify_app_orchestrator_ownership_maintenance_v1.py
+          python3 -m py_compile tools/verify_app_orchestrator_ownership_maintenance_v1.py
+      - name: Commit exact repair and self-remove
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/tmp-restore-full-diagnostics-maint-verifier-20260826A.yml
+          git add tools/verify_app_orchestrator_ownership_maintenance_v1.py
+          git commit -m 'Align Full Diagnostics maintenance branch prefix [skip ci]'
+          git push origin HEAD:chatgpt/full-diagnostics-zip-export-20260826A
