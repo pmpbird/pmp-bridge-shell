@@ -14,26 +14,17 @@
     "exact_head_closure_run": 33022207514,
     "exact_head_closure_artifact_id": 9626987301,
     "exact_head_closure_artifact_digest": "sha256:77322fe6dd98f941d197b793ca528cdf576406de99f8a73c415dbdc76b52c5b2",
+    "pass_record_certification_run": 33022375402,
+    "pass_record_certified_head": "7a4f87149a268c8faa489df04d8d73ae670491c1",
+    "final_receipt_delta_certification_run": 33022516596,
     "branch_seal_commit": "ae19856d17376cb3d17991c3dfbc5713262597de",
     "manifest_sha256": "d28d9574850307f1d0ef7ee53f860babd49daa529943912333bb10ac83526a8d",
     "runtime_source_set_sha256": "9116904d3941f403d109d4dfbed9bc98af49b7c621f821359bf5918a3a85879d",
     "phone_proof": "REQUIRED_AFTER_DEPLOYMENT",
     "preserved_failed_attempts": [
-      {
-        "run_id": 33021186126,
-        "classification": "CERTIFICATION_HARNESS_CONTEXT_FAILURE",
-        "note": "Full Diagnostics ZIP, A-002, A-003, Pass 8/11, static preflight, and historical proof passed. No-blind saw Playwright node_modules left by the combined fallback and ownership maintenance rejected the not-yet-allowlisted full-diagnostics branch prefix."
-      },
-      {
-        "run_id": 33021560260,
-        "classification": "FULL_HISTORY_OWNERSHIP_GENERATOR_CONTEXT_FAILURE",
-        "note": "Real ZIP, A-002, A-003, no-blind, Pass 8/11, static preflight, and historical proof passed. Ownership generation differed only because the fallback used full history rather than the real workflow's shallow checkout."
-      },
-      {
-        "run_id": 33021902341,
-        "classification": "FALSE_FULL_HISTORY_MAINTENANCE_REPORT_CASCADE",
-        "note": "The full-history generated maintenance report was diagnosed as non-representative and reverted byte-for-byte to main before final certification."
-      }
+      {"run_id":33021186126,"classification":"CERTIFICATION_HARNESS_CONTEXT_FAILURE"},
+      {"run_id":33021560260,"classification":"FULL_HISTORY_OWNERSHIP_GENERATOR_CONTEXT_FAILURE"},
+      {"run_id":33021902341,"classification":"FALSE_FULL_HISTORY_MAINTENANCE_REPORT_CASCADE"}
     ]
   },
   "claim_ceiling": "Certifies the bounded repository Full Diagnostics ZIP handoff repair and permanent proof contracts. It does not claim the iPhone handoff is fixed until a fresh post-deployment device test produces and attaches the ZIP.",
@@ -49,91 +40,28 @@
       "applicable_matrix": "audit/a002-full-diagnostics-zip-export-v1.cjs",
       "rationale": "The live Full Diagnostics Copy action produces a complete report too large for chat, and there was no file handoff. The dedicated browser matrix requires fresh evidence generation, a persistent Safari-safe download link, a real browser download event, a valid ZIP signature, all four expected members, the complete report type, all eight governed diagnostic sections, and read-only boundaries."
     },
-    "diagnostic_evidence_routes": [
-      "audit/a002-full-diagnostics-zip-export-v1.cjs",
-      "audit/pass13/full-diagnostics-zip-export-gate-v1.json",
-      "audit/pass13/receipts/RECEIPT_FULL_DIAGNOSTICS_ZIP_EXPORT_20260826A_001.json"
-    ],
+    "diagnostic_evidence_routes": ["audit/a002-full-diagnostics-zip-export-v1.cjs","audit/pass13/full-diagnostics-zip-export-gate-v1.json","audit/pass13/receipts/RECEIPT_FULL_DIAGNOSTICS_ZIP_EXPORT_20260826A_001.json"],
     "deterministic_test_paths": ["tools/test_full_diagnostics_zip_export_v1.py"],
     "verifier_paths": ["tools/verify_full_diagnostics_zip_export_v1.py"],
     "receipt_paths": ["audit/pass13/receipts/RECEIPT_FULL_DIAGNOSTICS_ZIP_EXPORT_20260826A_001.json"],
     "observed_facts": [
-      {
-        "claim_type": "OBSERVED",
-        "evidence_paths": ["pmp-diagnostics-consolidated-view-v1.js"],
-        "fact": "Before this repair Full Diagnostics exposed Copy Full Diagnostics Report only; the action generated the current report and sent the entire JSON to the clipboard with no file or ZIP handoff."
-      },
-      {
-        "claim_type": "OBSERVED",
-        "evidence_paths": ["pmp-active-path-discovery-zip-export-v2.js"],
-        "fact": "The already-certified Atlas iPhone handoff uses a persistent Blob-backed download link after asynchronous evidence generation so a second direct user gesture remains available when transient browser activation expires."
-      },
-      {
-        "claim_type": "OBSERVED",
-        "evidence_paths": ["tools/verify_app_orchestrator_ownership_maintenance_v1.py"],
-        "fact": "The ownership maintenance verifier already recognizes bounded diagnostics and Atlas branch families but its prefix list did not include the equally bounded chatgpt/full-diagnostics-* family used by this repair."
-      }
+      {"claim_type":"OBSERVED","evidence_paths":["pmp-diagnostics-consolidated-view-v1.js"],"fact":"Before this repair Full Diagnostics exposed Copy Full Diagnostics Report only; the action generated the current report and sent the entire JSON to the clipboard with no file or ZIP handoff."},
+      {"claim_type":"OBSERVED","evidence_paths":["pmp-active-path-discovery-zip-export-v2.js"],"fact":"The already-certified Atlas iPhone handoff uses a persistent Blob-backed download link after asynchronous evidence generation so a second direct user gesture remains available when transient browser activation expires."},
+      {"claim_type":"OBSERVED","evidence_paths":["tools/verify_app_orchestrator_ownership_maintenance_v1.py"],"fact":"The ownership maintenance verifier already recognizes bounded diagnostics and Atlas branch families but its prefix list did not include the equally bounded chatgpt/full-diagnostics-* family used by this repair."}
     ],
     "inferred_conclusions": [
-      {
-        "claim_type": "INFERRED",
-        "basis_evidence_paths": ["pmp-diagnostics-consolidated-view-v1.js","audit/a002-full-diagnostics-zip-export-v1.cjs"],
-        "conclusion": "Adding a persistent direct ZIP download link after the existing produceEvidence path makes the complete report attachable without changing how diagnostic truth is produced or interpreted."
-      },
-      {
-        "claim_type": "INFERRED",
-        "basis_evidence_paths": ["tools/verify_app_orchestrator_ownership_maintenance_v1.py"],
-        "conclusion": "Adding only chatgpt/full-diagnostics-* to the maintenance verifier's already-declared diagnostics/Atlas branch-prefix acceptance is certification compatibility, not an owner, helper, route, or runtime-authority change."
-      }
+      {"claim_type":"INFERRED","basis_evidence_paths":["pmp-diagnostics-consolidated-view-v1.js","audit/a002-full-diagnostics-zip-export-v1.cjs"],"conclusion":"Adding a persistent direct ZIP download link after the existing produceEvidence path makes the complete report attachable without changing how diagnostic truth is produced or interpreted."},
+      {"claim_type":"INFERRED","basis_evidence_paths":["tools/verify_app_orchestrator_ownership_maintenance_v1.py"],"conclusion":"Adding only chatgpt/full-diagnostics-* to the maintenance verifier's already-declared diagnostics/Atlas branch-prefix acceptance is certification compatibility, not an owner, helper, route, or runtime-authority change."}
     ],
-    "fault_injection": {
-      "status": "COVERED",
-      "cases": [
-        "evidence generation crosses the initiating button's asynchronous user-activation boundary",
-        "persistent Download Full Diagnostics ZIP link remains available for a direct second tap",
-        "direct second tap produces a real browser download event",
-        "downloaded bytes begin with a ZIP local-file signature",
-        "ZIP contains full-diagnostics-report.json, whole-app-health.json, diagnostics-export-metadata.json, and diagnostics-summary.txt",
-        "complete report contains all eight governed diagnostic sections",
-        "Copy Full Diagnostics Report remains present",
-        "a replacement export revokes only the prior prepared Blob URL",
-        "maintenance verifier accepts the bounded full-diagnostics branch family without changing any authority records",
-        "no owner/helper/route/Bank/Continuous Run/storage/user-data authority is added"
-      ]
-    },
+    "fault_injection": {"status":"COVERED","cases":["evidence generation crosses the initiating button's asynchronous user-activation boundary","persistent Download Full Diagnostics ZIP link remains available for a direct second tap","direct second tap produces a real browser download event","downloaded bytes begin with a ZIP local-file signature","ZIP contains full-diagnostics-report.json, whole-app-health.json, diagnostics-export-metadata.json, and diagnostics-summary.txt","complete report contains all eight governed diagnostic sections","Copy Full Diagnostics Report remains present","a replacement export revokes only the prior prepared Blob URL","maintenance verifier accepts the bounded full-diagnostics branch family without changing any authority records","no owner/helper/route/Bank/Continuous Run/storage/user-data authority is added"]},
     "special_authority": {"required":false,"granted":false,"consumed":false}
   },
   "scope": {
-    "changed_paths": [
-      ".github/workflows/a002-full-diagnostics-zip-export.yml",
-      "audit/a002-full-diagnostics-zip-export-v1.cjs",
-      "audit/a003-manifest-seal.json",
-      "audit/pass13/full-diagnostics-zip-export-gate-v1.json",
-      "audit/pass13/receipts/RECEIPT_FULL_DIAGNOSTICS_ZIP_EXPORT_20260826A_001.json",
-      "pmp-app-current.html",
-      "pmp-diagnostics-consolidated-view-v1.js",
-      "pmp-runtime-integrity-manifest-v1.json",
-      "tools/test_full_diagnostics_zip_export_v1.py",
-      "tools/verify_app_orchestrator_ownership_maintenance_v1.py",
-      "tools/verify_full_diagnostics_zip_export_v1.py"
-    ],
+    "changed_paths": [".github/workflows/a002-full-diagnostics-zip-export.yml","audit/a002-full-diagnostics-zip-export-v1.cjs","audit/a003-manifest-seal.json","audit/pass13/full-diagnostics-zip-export-gate-v1.json","audit/pass13/receipts/RECEIPT_FULL_DIAGNOSTICS_ZIP_EXPORT_20260826A_001.json","pmp-app-current.html","pmp-diagnostics-consolidated-view-v1.js","pmp-runtime-integrity-manifest-v1.json","tools/test_full_diagnostics_zip_export_v1.py","tools/verify_app_orchestrator_ownership_maintenance_v1.py","tools/verify_full_diagnostics_zip_export_v1.py"],
     "implementation_paths": ["pmp-diagnostics-consolidated-view-v1.js","pmp-app-current.html"],
     "deterministic_test_paths": ["tools/test_full_diagnostics_zip_export_v1.py"],
     "verifier_paths": ["tools/verify_full_diagnostics_zip_export_v1.py"],
     "receipt_paths": ["audit/pass13/receipts/RECEIPT_FULL_DIAGNOSTICS_ZIP_EXPORT_20260826A_001.json"]
   },
-  "boundaries": {
-    "owner_changes": false,
-    "helper_changes": false,
-    "route_changes": false,
-    "bank_rebuild": false,
-    "continuous_run_mutation": false,
-    "dom_repair": false,
-    "storage_migration": false,
-    "persisted_user_data_write": false,
-    "persisted_user_data_delete": false,
-    "diagnostics_truth_changes": false,
-    "atlas_changes": false,
-    "maintenance_branch_prefix_alignment_only": true
-  }
+  "boundaries": {"owner_changes":false,"helper_changes":false,"route_changes":false,"bank_rebuild":false,"continuous_run_mutation":false,"dom_repair":false,"storage_migration":false,"persisted_user_data_write":false,"persisted_user_data_delete":false,"diagnostics_truth_changes":false,"atlas_changes":false,"maintenance_branch_prefix_alignment_only":true}
 }
