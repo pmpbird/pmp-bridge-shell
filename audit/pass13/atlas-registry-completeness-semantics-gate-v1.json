@@ -1,0 +1,140 @@
+{
+  "type": "PMP_ATLAS_REGISTRY_COMPLETENESS_SEMANTICS_GATE_V1",
+  "version": "1.0.0",
+  "revision": "1.7.0-registry-completeness-semantics-20260826A",
+  "status": "PASS",
+  "unit_id": "P13-U108",
+  "certification": {
+    "status": "PASS",
+    "certified_head": "3c50974c66edcf2858a29fd63960d8d6ff71b44f",
+    "dedicated_registry_workflow_run": 32973860060,
+    "a002_live_runtime_run": 32973860078,
+    "a003_runtime_integrity_run": 32973860093,
+    "no_blind_flying_run": 32973860141,
+    "ownership_maintenance_run": 32973860302,
+    "pass8_helper_owner_run": 32973860058,
+    "pass11_safety_run": 32973860179,
+    "static_preflight_run": 32973860096,
+    "phone_proof": "REQUIRED_AFTER_DEPLOYMENT"
+  },
+  "claim_ceiling": "Repairs only passive Atlas registry completeness and classification semantics. It does not change Current Map authority, owner/helper authority, routes, Bank, Continuous Run, storage, persisted user data, or the already-passing Active Path scanner freeze logic.",
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_browser_harness",
+    "automatic_retry": false,
+    "upload_before_enforcement": true,
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "diagnostic_matrix_update": {
+      "status": "ADDED",
+      "applicable_matrix": "audit/a002-atlas-registry-completeness-semantics-v1.cjs",
+      "rationale": "Fresh iPhone Atlas proof passed the freeze gate but exposed 42 reachable registry gaps. The bounded audit proved 20 need explicit current/support/recovery registry semantics while 22 must be known-but-non-authoritative. The browser proof requires exact counts, correct recovery reclassification, and zero mount slots for intentional-outside entries."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/a002-atlas-registry-completeness-semantics-v1.cjs",
+      "audit/pass13/atlas-registry-completeness-semantics-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_ATLAS_REGISTRY_COMPLETENESS_SEMANTICS_20260826A_001.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_atlas_registry_completeness_semantics_v1.py"
+    ],
+    "verifier_paths": [
+      "tools/verify_atlas_registry_completeness_semantics_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass13/receipts/RECEIPT_ATLAS_REGISTRY_COMPLETENESS_SEMANTICS_20260826A_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "evidence_paths": [
+          "pmp-mount-registry-v1.js"
+        ],
+        "fact": "The pre-repair Mount Registry had no RECOVERY_REACHABLE or INTENTIONAL_OUTSIDE_ACTIVE_ATLAS buckets and defaulted unlisted reachable references outside its curated four-bucket registry."
+      },
+      {
+        "claim_type": "OBSERVED",
+        "evidence_paths": [
+          "pmp-current-map-v12.json"
+        ],
+        "fact": "The Current Map separately declares recovery routes and current tool routes, so recovery references must not be conflated with current boot authority."
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "basis_evidence_paths": [
+          "pmp-mount-registry-v1.js",
+          "pmp-current-map-v12.json",
+          "tools/test_atlas_registry_completeness_semantics_v1.py"
+        ],
+        "conclusion": "Recording the 20 audited registry omissions under current/support/recovery semantics and the 22 known exclusions under a no-slot intentional-outside bucket removes unexplained registry gaps without granting new runtime authority."
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "recovery controller must not remain ACTIVE_CURRENT_APP",
+        "all ten Current Map recovery references must be RECOVERY_REACHABLE",
+        "all twenty-two intentional-outside references must be known to the registry",
+        "intentional-outside references must receive zero mount slots",
+        "protected manifest, integrity service worker, and ownership registry must be current-control-plane registry entries",
+        "current tool routes and immediate support dependencies must be support entries",
+        "registry presence must explicitly grant no owner/helper/route authority"
+      ]
+    },
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/a002-atlas-registry-completeness-semantics.yml",
+      "audit/a002-atlas-registry-completeness-semantics-v1.cjs",
+      "audit/a003-manifest-seal.json",
+      "audit/pass13/atlas-registry-completeness-semantics-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_ATLAS_REGISTRY_COMPLETENESS_SEMANTICS_20260826A_001.json",
+      "pmp-app-current.html",
+      "pmp-mount-registry-v1.js",
+      "pmp-runtime-integrity-manifest-v1.json",
+      "tools/test_atlas_registry_completeness_semantics_v1.py",
+      "tools/verify_atlas_registry_completeness_semantics_v1.py"
+    ],
+    "implementation_paths": [
+      "pmp-app-current.html",
+      "pmp-mount-registry-v1.js"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_atlas_registry_completeness_semantics_v1.py"
+    ],
+    "verifier_paths": [
+      "tools/verify_atlas_registry_completeness_semantics_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass13/receipts/RECEIPT_ATLAS_REGISTRY_COMPLETENESS_SEMANTICS_20260826A_001.json"
+    ]
+  },
+  "boundaries": {
+    "owner_changes": false,
+    "helper_changes": false,
+    "route_changes": false,
+    "bank_rebuild": false,
+    "continuous_run_mutation": false,
+    "dom_repair": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false,
+    "persisted_user_data_delete": false
+  }
+}

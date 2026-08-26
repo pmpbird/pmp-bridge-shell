@@ -1,0 +1,60 @@
+{
+  "type": "PMP_ATLAS_REGISTRY_COMPLETENESS_SEMANTICS_RECEIPT_V1",
+  "version": "1.0.0",
+  "revision": "1.7.0-registry-completeness-semantics-20260826A",
+  "status": "PASS",
+  "observed_problem": {
+    "surface": "Fresh Active Path Atlas registry completeness audit",
+    "fresh_phone_freeze_gate": "PASS",
+    "unexplained_registry_gap_count": 42,
+    "audit_conclusion": "20 reachable references belong in explicit current/support/recovery registry semantics; 22 reachable references are known but must remain non-boot and non-authoritative."
+  },
+  "repair": {
+    "mount_registry_version": "1.7.0-registry-completeness-semantics-20260826A",
+    "current_control_plane_additions": 3,
+    "support_reachable_additions": 8,
+    "recovery_gap_additions": 9,
+    "recovery_total_after_reclassification": 10,
+    "intentional_outside_count": 22,
+    "recovery_semantics": "All Current Map recovery references are classified RECOVERY_REACHABLE; the already-registered last-good controller is moved out of ACTIVE_CURRENT_APP into that recovery bucket.",
+    "intentional_outside_semantics": "Known reachable references are recorded as INTENTIONAL_OUTSIDE_ACTIVE_ATLAS so they stop appearing as unexplained gaps, but they receive no mount slot and no boot/owner/helper authority."
+  },
+  "branch_seal": {
+    "seal_commit": "1cc9db193dc474e35fac135c539c69359620a9d1",
+    "manifest_sha256": "f0d0113c57ea435a00806cb9a42620a6c9dfcf580f5e3d3f6566f606d072ded2",
+    "runtime_source_set_sha256": "6adc78fd940220c6f0669358ba2bceda1fa8cbeb1636d51f455f7f3d3bbb52c9",
+    "status": "SEALED"
+  },
+  "verification": {
+    "status": "PASS",
+    "certified_head": "3c50974c66edcf2858a29fd63960d8d6ff71b44f",
+    "deterministic_test": "tools/test_atlas_registry_completeness_semantics_v1.py",
+    "independent_verifier": "tools/verify_atlas_registry_completeness_semantics_v1.py",
+    "browser_path": "audit/a002-atlas-registry-completeness-semantics-v1.cjs",
+    "ci_workflow": ".github/workflows/a002-atlas-registry-completeness-semantics.yml",
+    "dedicated_registry_workflow_run": 32973860060,
+    "a002_live_runtime_run": 32973860078,
+    "a003_runtime_integrity_run": 32973860093,
+    "no_blind_flying_run": 32973860141,
+    "ownership_maintenance_run": 32973860302,
+    "pass8_helper_owner_run": 32973860058,
+    "pass11_safety_run": 32973860179,
+    "static_preflight_run": 32973860096,
+    "branch_reseal_workflow": "PASSED_AND_SELF_REMOVED",
+    "user_device_proof": "REQUIRED_AFTER_DEPLOYMENT"
+  },
+  "boundaries": {
+    "passive_registry_only": true,
+    "owner_changes": false,
+    "helper_changes": false,
+    "route_changes": false,
+    "bank_rebuild": false,
+    "continuous_run_mutation": false,
+    "dom_repair": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false,
+    "persisted_user_data_delete": false,
+    "placeholder_creation": false
+  },
+  "claim_ceiling": "Repository registry semantics only until final exact-head CI, merge, automatic main A-003 reseal, Pages deployment, and a fresh iPhone Atlas ZIP prove zero unexplained registry gaps without changing the existing freeze PASS."
+}
