@@ -1,0 +1,39 @@
+name: Temporary Full Diagnostics Ownership Maintenance Report Regeneration
+on:
+  push:
+    branches:
+      - chatgpt/full-diagnostics-zip-export-20260826A
+    paths:
+      - '.github/workflows/tmp-full-diagnostics-maint-report-20260826C.yml'
+permissions:
+  contents: write
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Regenerate ownership maintenance report and prove bounded output
+        run: |
+          python3 tools/generate_app_orchestrator_ownership_maintenance_integrity_updates_v1.py
+          git status --short
+          changed="$(git diff --name-only | sort)"
+          printf '%s\n' "$changed"
+          test "$changed" = "audit/pass13/app-orchestrator-ownership-maintenance-v1.json"
+          python3 tools/test_app_orchestrator_ownership_maintenance_v1.py
+          python3 tools/verify_app_orchestrator_ownership_maintenance_v1.py
+      - name: Commit generated report and self-remove
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/tmp-full-diagnostics-maint-report-20260826C.yml
+          git add audit/pass13/app-orchestrator-ownership-maintenance-v1.json
+          git commit -m 'Regenerate ownership maintenance report for Full Diagnostics ZIP [skip ci]'
+          git push origin HEAD:chatgpt/full-diagnostics-zip-export-20260826A
