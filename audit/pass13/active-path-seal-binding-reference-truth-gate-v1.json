@@ -4,14 +4,24 @@
   "revision": "1.5.0-served-a003-reference-truth-20260826A",
   "status": "PENDING_CI",
   "unit_id": "P13-U107",
-  "claim_ceiling": "Repairs only Active Path scan integrity identity and reference classification truth. It binds each scan to the served A-003 manifest bytes and prevents static comments or weak generic output basenames from becoming required-current blockers. No owner/helper/route/Bank/Continuous Run/storage/user-data authority changes.",
+  "claim_ceiling": "Repairs only Active Path scan integrity identity, reference classification truth, and the exporter compatibility binding required to consume that repaired scanner. It does not change ZIP handoff behavior, owners, helpers, routes, Bank, Continuous Run, storage, or persisted user data.",
   "no_blind_flying_gate": {
     "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
     "version": "1.0.0",
     "ci_lane": "deterministic_browser_harness",
     "automatic_retry": false,
     "upload_before_enforcement": true,
-    "required_artifact_roles": ["command", "stdout", "stderr", "exit_status", "result", "scope", "environment", "authority_state", "manifest"],
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
     "diagnostic_matrix_update": {
       "status": "ADDED",
       "applicable_matrix": "audit/a002-active-path-seal-binding-reference-truth-v1.cjs",
@@ -22,35 +32,53 @@
       "audit/pass13/active-path-seal-binding-reference-truth-gate-v1.json",
       "audit/pass13/receipts/RECEIPT_ACTIVE_PATH_SEAL_BINDING_REFERENCE_TRUTH_20260826A_001.json"
     ],
-    "deterministic_test_paths": ["tools/test_active_path_seal_binding_reference_truth_v1.py"],
-    "verifier_paths": ["tools/verify_active_path_seal_binding_reference_truth_v1.py"],
-    "receipt_paths": ["audit/pass13/receipts/RECEIPT_ACTIVE_PATH_SEAL_BINDING_REFERENCE_TRUTH_20260826A_001.json"],
+    "deterministic_test_paths": [
+      "tools/test_active_path_seal_binding_reference_truth_v1.py"
+    ],
+    "verifier_paths": [
+      "tools/verify_active_path_seal_binding_reference_truth_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass13/receipts/RECEIPT_ACTIVE_PATH_SEAL_BINDING_REFERENCE_TRUTH_20260826A_001.json"
+    ],
     "observed_facts": [
       {
         "claim_type": "OBSERVED",
-        "evidence_paths": ["pmp-active-path-discovery-machine-v1.js"],
+        "evidence_paths": [
+          "pmp-active-path-discovery-machine-v1.js"
+        ],
         "fact": "Pre-repair integrityEvidence read pmp_route_guardian_v22_receipt from localStorage, so a fresh scan could report an old manifest SHA."
       },
       {
         "claim_type": "OBSERVED",
-        "evidence_paths": ["audit/a002-active-path-seal-binding-reference-truth-v1.cjs"],
+        "evidence_paths": [
+          "audit/a002-active-path-seal-binding-reference-truth-v1.cjs"
+        ],
         "fact": "The permanent browser proof seeds a stale route-receipt SHA and requires the report to equal the digest of newly served A-003 manifest bytes instead."
       },
       {
         "claim_type": "OBSERVED",
-        "evidence_paths": ["audit/a002-active-path-seal-binding-reference-truth-v1.cjs"],
+        "evidence_paths": [
+          "audit/a002-active-path-seal-binding-reference-truth-v1.cjs"
+        ],
         "fact": "The browser proof injects retired-comment markers and weak metadata/packet/report output basenames as 412 endpoints and requires that none be scanned as runtime dependencies."
       }
     ],
     "inferred_conclusions": [
       {
         "claim_type": "INFERRED",
-        "basis_evidence_paths": ["pmp-active-path-discovery-machine-v1.js", "audit/a002-active-path-seal-binding-reference-truth-v1.cjs"],
+        "basis_evidence_paths": [
+          "pmp-active-path-discovery-machine-v1.js",
+          "audit/a002-active-path-seal-binding-reference-truth-v1.cjs"
+        ],
         "conclusion": "Hashing the exact served manifest response bytes during the requested scan binds Atlas identity to that scan rather than to prior persisted route evidence."
       },
       {
         "claim_type": "INFERRED",
-        "basis_evidence_paths": ["pmp-active-path-discovery-machine-v1.js", "tools/test_active_path_seal_binding_reference_truth_v1.py"],
+        "basis_evidence_paths": [
+          "pmp-active-path-discovery-machine-v1.js",
+          "tools/test_active_path_seal_binding_reference_truth_v1.py"
+        ],
         "conclusion": "Removing static comments before lexical discovery and treating generic output basenames as weak unless referenced through an explicit load operation prevents non-runtime text from becoming fail-closed current blockers without suppressing real fetch/import/worker dependencies."
       }
     ],
@@ -66,25 +94,45 @@
         "freeze gate requires served manifest binding to exact scan ID"
       ]
     },
-    "special_authority": {"required": false, "granted": false, "consumed": false}
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
   },
   "scope": {
     "changed_paths": [
       ".github/workflows/a002-active-path-seal-binding-reference-truth.yml",
+      "audit/a002-active-path-fresh-scan-classification-v1.cjs",
       "audit/a002-active-path-seal-binding-reference-truth-v1.cjs",
+      "audit/a002-active-path-zip-output-v1.cjs",
       "audit/a003-manifest-seal.json",
       "audit/pass13/active-path-seal-binding-reference-truth-gate-v1.json",
       "audit/pass13/receipts/RECEIPT_ACTIVE_PATH_SEAL_BINDING_REFERENCE_TRUTH_20260826A_001.json",
       "pmp-active-path-discovery-machine-v1.js",
+      "pmp-active-path-discovery-zip-export-v2.js",
       "pmp-app-current.html",
       "pmp-runtime-integrity-manifest-v1.json",
+      "tools/test_active_path_fresh_scan_classification_truth_v1.py",
       "tools/test_active_path_seal_binding_reference_truth_v1.py",
+      "tools/test_active_path_zip_output_handoff_v1.py",
+      "tools/test_app_orchestrator_ownership_maintenance_v1.py",
       "tools/verify_active_path_seal_binding_reference_truth_v1.py"
     ],
-    "implementation_paths": ["pmp-active-path-discovery-machine-v1.js", "pmp-app-current.html"],
-    "deterministic_test_paths": ["tools/test_active_path_seal_binding_reference_truth_v1.py"],
-    "verifier_paths": ["tools/verify_active_path_seal_binding_reference_truth_v1.py"],
-    "receipt_paths": ["audit/pass13/receipts/RECEIPT_ACTIVE_PATH_SEAL_BINDING_REFERENCE_TRUTH_20260826A_001.json"]
+    "implementation_paths": [
+      "pmp-active-path-discovery-machine-v1.js",
+      "pmp-active-path-discovery-zip-export-v2.js",
+      "pmp-app-current.html"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_active_path_seal_binding_reference_truth_v1.py"
+    ],
+    "verifier_paths": [
+      "tools/verify_active_path_seal_binding_reference_truth_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass13/receipts/RECEIPT_ACTIVE_PATH_SEAL_BINDING_REFERENCE_TRUTH_20260826A_001.json"
+    ]
   },
   "boundaries": {
     "owner_changes": false,

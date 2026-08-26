@@ -7,7 +7,7 @@ source = EXPORTER.read_text('utf-8')
 
 checks = {
     'exporter_version': "2.7.0-zip-user-activation-handoff-20260825B" in source,
-    'fresh_scan_contract_preserved': "EXPECTED_MACHINE_VERSION='1.4.0-fresh-scan-classification-truth-20260825A'" in source and "EXPECTED_MACHINE_REVISION='1.0.0-current-map-http-truth-20260825A'" in source,
+    'fresh_scan_contract_preserved': "EXPECTED_MACHINE_VERSION='1.5.0-served-a003-reference-truth-20260826A'" in source and "EXPECTED_MACHINE_REVISION='1.1.0-served-a003-reference-truth-20260826A'" in source,
     'real_download_anchor': "data-pmp-discovery-zip-download" in source and "a.download=fn" in source,
     'zip_prepared_after_fresh_scan': "let r=await runDiscovery('zip_export')" in source and 'prepareZipLink(d,out,blob,fn,r)' in source,
     'direct_second_gesture_supported': "Download Fresh Atlas ZIP" in source and "nav.userActivation&&nav.userActivation.isActive" in source,

@@ -11,7 +11,7 @@ if p.returncode:
 gate = json.loads(Path("audit/pass13/active-path-seal-binding-reference-truth-gate-v1.json").read_text("utf-8"))
 receipt = json.loads(Path("audit/pass13/receipts/RECEIPT_ACTIVE_PATH_SEAL_BINDING_REFERENCE_TRUTH_20260826A_001.json").read_text("utf-8"))
 assert gate["no_blind_flying_gate"]["automatic_retry"] is False
-assert gate["scope"]["implementation_paths"] == ["pmp-active-path-discovery-machine-v1.js", "pmp-app-current.html"]
+assert gate["scope"]["implementation_paths"] == ["pmp-active-path-discovery-machine-v1.js", "pmp-active-path-discovery-zip-export-v2.js", "pmp-app-current.html"]
 assert receipt["verification"]["user_device_proof"] == "REQUIRED_AFTER_DEPLOYMENT"
 for obj in (gate, receipt):
     b = obj.get("boundaries", {})

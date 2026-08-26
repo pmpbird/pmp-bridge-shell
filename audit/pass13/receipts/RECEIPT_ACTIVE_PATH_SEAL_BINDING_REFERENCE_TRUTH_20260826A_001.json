@@ -13,7 +13,8 @@
     "machine_version": "1.5.0-served-a003-reference-truth-20260826A",
     "classification_revision": "1.1.0-served-a003-reference-truth-20260826A",
     "manifest_binding": "Fetch pmp-runtime-integrity-manifest-v1.json with no-store during the exact scan, hash exact response bytes with SHA-256, parse runtime source-set identity, and bind the evidence to requested scan_id.",
-    "reference_truth": "Strip static comments before lexical discovery; explicit src/href/fetch/import/importScripts/Worker references remain strong; generic metadata.json, packet.json, and report.json basenames are ignored only when they are weak lexical strings."
+    "reference_truth": "Strip static comments before lexical discovery; explicit src/href/fetch/import/importScripts/Worker references remain strong; generic metadata.json, packet.json, and report.json basenames are ignored only when they are weak lexical strings.",
+    "exporter_compatibility_binding": "The existing 2.7 ZIP handoff behavior is unchanged; its exact expected scanner version/revision are aligned to 1.5.0 / 1.1.0 so fresh ZIP export consumes the repaired canonical scanner rather than rejecting it."
   },
   "verification": {
     "deterministic_test": "tools/test_active_path_seal_binding_reference_truth_v1.py",

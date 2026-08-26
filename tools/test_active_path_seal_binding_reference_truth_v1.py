@@ -2,9 +2,11 @@
 from pathlib import Path
 
 s = Path("pmp-active-path-discovery-machine-v1.js").read_text("utf-8")
+exporter = Path("pmp-active-path-discovery-zip-export-v2.js").read_text("utf-8")
 checks = {
     "version": "1.5.0-served-a003-reference-truth-20260826A" in s,
     "revision": "1.1.0-served-a003-reference-truth-20260826A" in s,
+    "exporter_identity_aligned": "EXPECTED_MACHINE_VERSION='1.5.0-served-a003-reference-truth-20260826A'" in exporter and "EXPECTED_MACHINE_REVISION='1.1.0-served-a003-reference-truth-20260826A'" in exporter,
     "served_manifest": "SERVED_A003_MANIFEST" in s and "response.arrayBuffer()" in s and "crypto.subtle.digest('SHA-256',bytes)" in s,
     "no_route_receipt_integrity": "function integrityEvidence()" not in s and "pmp_route_guardian_v22_receipt" not in s,
     "scan_bound": "integrity.scan_id===requestedScanId" in s,

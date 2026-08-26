@@ -43,8 +43,8 @@ const syntheticMap = {
   const checks = {
     fresh_not_stored: first.scan_id && first.scan_id !== 'old-scan',
     new_id_each_run: second.scan_id && second.scan_id !== first.scan_id,
-    exact_version: first.version === '1.4.0-fresh-scan-classification-truth-20260825A',
-    exact_revision: first.revision === '1.0.0-current-map-http-truth-20260825A',
+    exact_version: first.version === '1.5.0-served-a003-reference-truth-20260826A',
+    exact_revision: first.revision === '1.1.0-served-a003-reference-truth-20260826A',
     map_policy: first.map_policy && first.map_policy.source === 'CURRENT_MAP_FETCH' && first.map_policy.fetch_ok === true,
     true_404_hard_missing: first.hard_missing.includes('missing-current.js'),
     dead_is_missing_only: first.dead_references.some(x=>x.path==='missing-current.js' && x.classification==='MISSING') && !first.dead_references.some(x=>x.path==='policy.json'),

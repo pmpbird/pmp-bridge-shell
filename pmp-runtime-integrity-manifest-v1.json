@@ -986,15 +986,15 @@
       "sri": "sha256-gkI3jee24GM4EnPUogXmb8KPrMu1Oc64iKAA5PV6gcw="
     },
     {
-      "bytes": 13278,
+      "bytes": 13279,
       "enforcement": "SERVICE_WORKER_PRE_RESPONSE_SHA256",
       "execution_class": "EXECUTABLE_SCRIPT",
-      "git_blob_sha": "1aa356c8177733514d14f4de3f254f4a44f81783",
+      "git_blob_sha": "c7185621a4eeb5406a4da29464dda3a3440f9dc1",
       "mime_type": "text/javascript",
       "path": "pmp-active-path-discovery-zip-export-v2.js",
-      "sha256_base64": "/GJYGRSoQNdxszc3POL2CxtjDpZpYA1BCaxSn0a2qp8=",
-      "sha256_hex": "fc62581914a840d771b337373ce2f60b1b630e9669600d4109ac529f46b6aa9f",
-      "sri": "sha256-/GJYGRSoQNdxszc3POL2CxtjDpZpYA1BCaxSn0a2qp8="
+      "sha256_base64": "9TL0wVmTW1yaMRC+DTEvc81unZ+FW30rMQJgjt+i7KI=",
+      "sha256_hex": "f532f4c159935b5c9a3110be0d312f73cd6e9d9f855b7d2b3102608edfa2eca2",
+      "sri": "sha256-9TL0wVmTW1yaMRC+DTEvc81unZ+FW30rMQJgjt+i7KI="
     },
     {
       "bytes": 2498,
@@ -8331,7 +8331,7 @@
       "rule": "This is the only application bootstrap source excluded from downstream manifest self-enforcement."
     }
   ],
-  "runtime_source_set_sha256": "1cf7fe532c55780e201bddd0e9696084a289289749639636b763af3ed5519124",
+  "runtime_source_set_sha256": "633f3189ddfab69a95051b603983d52d991613ddb4e762c6b5d1b563f22afbb9",
   "source_identity_rule": "Deterministic digest of protected local, historical, external, root-anchor, and policy identities; audit/workflow-only commits do not alter this identity.",
   "type": "PMP_RUNTIME_INTEGRITY_MANIFEST_V1",
   "unlisted_executable_policy": "FAIL_CLOSED",
