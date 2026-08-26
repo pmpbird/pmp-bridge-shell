@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "revision": "1.0.0-full-diagnostics-zip-handoff-20260826A",
   "status": "PENDING_CI",
+  "ci_trigger": "USER_AUTHORED_POST_SEAL_PR_CHECK_TRIGGER_20260826A",
   "observed_problem": {
     "surface": "Diagnostics → Full Diagnostics → Copy Full Diagnostics Report",
     "symptom": "The complete diagnostics report is too large to paste into chat, and Full Diagnostics had no attachable file or ZIP export.",
