@@ -83,7 +83,7 @@ def main() -> None:
     check("PMPActivePathDiscoveryReportV1" not in v2, "V2 does not write V1 global")
     check("PMPActivePathDiscoveryMachineV1" not in v2, "V2 does not alias V1 machine")
     check("setInterval(" not in v1, "V1 no recurring mount")
-    check("1.4.0-fresh-scan-classification-truth-20260825A" in v1, "V1 current fresh-scan classification version")
+    check("1.5.0-served-a003-reference-truth-20260826A" in v1, "V1 current fresh-scan classification version")
     check("frame.addEventListener('load',scheduleMount)" in v1, "V1 remounts after owned frame load")
     check("observer.observe(root,{childList:true,subtree:true})" in v1, "V1 observes mount-target creation")
     check("record.addedNodes" in v1 and "containsMountTarget" in v1, "V1 observer is target-bounded")

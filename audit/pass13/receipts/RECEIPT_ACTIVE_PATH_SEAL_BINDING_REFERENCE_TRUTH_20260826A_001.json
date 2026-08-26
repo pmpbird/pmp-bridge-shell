@@ -1,0 +1,58 @@
+{
+  "type": "PMP_ACTIVE_PATH_SEAL_BINDING_REFERENCE_TRUTH_RECEIPT_V1",
+  "version": "1.0.0",
+  "revision": "1.5.0-served-a003-reference-truth-20260826A",
+  "status": "PASS",
+  "observed_problem": {
+    "surface": "Active Path Discovery fresh iPhone ZIP",
+    "symptom": "Fresh scan succeeded but carried an old A-003 manifest SHA and five false current 412 blockers sourced from static comments/output-only filenames.",
+    "proven_code_gap": "The scanner sourced integrity identity from pmp_route_guardian_v22_receipt in localStorage and its generic lexical extractor treated comment/output strings as runtime dependencies.",
+    "affected_file": "pmp-active-path-discovery-machine-v1.js"
+  },
+  "repair": {
+    "machine_version": "1.5.0-served-a003-reference-truth-20260826A",
+    "classification_revision": "1.1.0-served-a003-reference-truth-20260826A",
+    "manifest_binding": "Fetch pmp-runtime-integrity-manifest-v1.json with no-store during the exact scan, hash exact response bytes with SHA-256, parse runtime source-set identity, and bind the evidence to requested scan_id.",
+    "reference_truth": "Strip static comments before lexical discovery; explicit src/href/fetch/import/importScripts/Worker references remain strong; generic metadata.json, packet.json, and report.json basenames are ignored only when they are weak lexical strings.",
+    "exporter_compatibility_binding": "The existing 2.7 ZIP handoff behavior is unchanged; its exact expected scanner version/revision are aligned to 1.5.0 / 1.1.0 so fresh ZIP export consumes the repaired canonical scanner rather than rejecting it."
+  },
+  "verification": {
+    "certified_head": "bf02db3a1db7ea333b53e3113be00f60798c9783",
+    "deterministic_test": "tools/test_active_path_seal_binding_reference_truth_v1.py",
+    "independent_verifier": "tools/verify_active_path_seal_binding_reference_truth_v1.py",
+    "browser_path": "audit/a002-active-path-seal-binding-reference-truth-v1.cjs",
+    "browser_requirement": "Seed a stale route-receipt manifest SHA, serve different manifest bytes, and prove the fresh report uses the served SHA while comment/output-only 412 endpoints are never requested and a real explicit fetch reference remains discoverable.",
+    "ci": {
+      "a002_active_path_seal_binding": {"run_id": 32942454283, "status": "PASS"},
+      "a002_active_path_zip_output": {"run_id": 32942454299, "status": "PASS"},
+      "a002_live_runtime": {"run_id": 32942454311, "status": "PASS"},
+      "a003_runtime_source_byte_integrity": {"run_id": 32942454256, "status": "PASS"},
+      "a003_integrity_probe": {"run_id": 32942454212, "status": "PASS"},
+      "permanent_no_blind_flying": {"run_id": 32942454245, "status": "PASS"},
+      "ownership_maintenance": {"run_id": 32942454237, "status": "PASS"},
+      "pass8_helper_owner_diagnostics": {"run_id": 32942454312, "status": "PASS"},
+      "pass11_safety_no_deletion": {"run_id": 32942454279, "status": "PASS"},
+      "static_authorization_preflight": {"run_id": 32942454252, "status": "PASS"}
+    },
+    "ci_trigger": "User-authored synchronization after the self-removing A-003 branch reseal workflow; protected runtime bytes and seal are unchanged by this audit-only certification commit.",
+    "user_device_proof": "REQUIRED_AFTER_DEPLOYMENT"
+  },
+  "a003_branch_seal": {
+    "seal_commit": "15d5ea6ed25e167305aae1be6142064c136f1609",
+    "manifest_sha256": "b9f1f21cb8116cefa81cebe85c5024341a112c60d5a829582102170054b63fd3",
+    "runtime_source_set_sha256": "633f3189ddfab69a95051b603983d52d991613ddb4e762c6b5d1b563f22afbb9"
+  },
+  "boundaries": {
+    "read_only_scan": true,
+    "owner_changes": false,
+    "helper_changes": false,
+    "route_changes": false,
+    "bank_rebuild": false,
+    "continuous_run_mutation": false,
+    "dom_repair": false,
+    "storage_migration": false,
+    "persisted_user_data_write": false,
+    "persisted_user_data_delete": false
+  },
+  "claim_ceiling": "Repository and CI repair proof only until merge, automatic A-003 reseal, Pages deployment, and a fresh iPhone Atlas ZIP prove the served seal binding and blocker classification."
+}

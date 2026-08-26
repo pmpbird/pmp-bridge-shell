@@ -1,0 +1,58 @@
+name: A-002 Active Path Seal Binding Reference Truth
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'pmp-active-path-discovery-machine-v1.js'
+      - 'audit/a002-active-path-seal-binding-reference-truth-v1.cjs'
+      - 'tools/test_active_path_seal_binding_reference_truth_v1.py'
+      - 'tools/verify_active_path_seal_binding_reference_truth_v1.py'
+      - 'audit/pass13/active-path-seal-binding-reference-truth-gate-v1.json'
+      - 'audit/pass13/receipts/RECEIPT_ACTIVE_PATH_SEAL_BINDING_REFERENCE_TRUTH_20260826A_001.json'
+      - '.github/workflows/a002-active-path-seal-binding-reference-truth.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  certify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Deterministic and independent verification
+        run: |
+          node --check pmp-active-path-discovery-machine-v1.js
+          node --check audit/a002-active-path-seal-binding-reference-truth-v1.cjs
+          python3 tools/test_active_path_seal_binding_reference_truth_v1.py
+          python3 tools/verify_active_path_seal_binding_reference_truth_v1.py
+      - name: Start repository server
+        run: |
+          python3 -m http.server 8000 --bind 127.0.0.1 >/tmp/a002-atlas-seal-http.log 2>&1 &
+          sleep 2
+      - name: Run served-manifest and reference-truth browser proof
+        env:
+          A002_BASE_URL: http://127.0.0.1:8000/
+          A002_ATLAS_SEAL_RESULT_PATH: a002-active-path-seal-binding-results.json
+        run: node audit/a002-active-path-seal-binding-reference-truth-v1.cjs | tee a002-active-path-seal-binding-console.log
+      - name: Upload proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a002-active-path-seal-binding-reference-truth
+          path: |
+            a002-active-path-seal-binding-results.json
+            a002-active-path-seal-binding-console.log
+            /tmp/a002-atlas-seal-http.log
+          if-no-files-found: warn

@@ -1,8 +1,8 @@
 (()=>{
 'use strict';
 const V='2.7.0-zip-user-activation-handoff-20260825B';
-const EXPECTED_MACHINE_VERSION='1.4.0-fresh-scan-classification-truth-20260825A';
-const EXPECTED_MACHINE_REVISION='1.0.0-current-map-http-truth-20260825A';
+const EXPECTED_MACHINE_VERSION='1.5.0-served-a003-reference-truth-20260826A';
+const EXPECTED_MACHINE_REVISION='1.1.0-served-a003-reference-truth-20260826A';
 const EXPECTED_SOURCE_IDENTITY='pmp-active-path-discovery-machine-v1.js';
 const RECEIPT_KEY='pmp_discovery_dropdown_menu_receipt_v1';
 let REQUEST_COUNTER=0;

@@ -11,15 +11,15 @@ const exporterSource = fs.readFileSync('pmp-active-path-discovery-zip-export-v2.
   await page.setContent('<!doctype html><html><body><div id="pmpActivePathDiscoveryCardV1" class="card"><b>Active Path Discovery</b><div id="pmpActivePathDiscoveryOutV1">Waiting for discovery scan</div></div></body></html>');
   await page.evaluate(() => {
     window.PMPActivePathDiscoveryMachineV1 = {
-      version: '1.4.0-fresh-scan-classification-truth-20260825A',
-      revision: '1.0.0-current-map-http-truth-20260825A',
+      version: '1.5.0-served-a003-reference-truth-20260826A',
+      revision: '1.1.0-served-a003-reference-truth-20260826A',
       sourceIdentity: 'pmp-active-path-discovery-machine-v1.js',
       run: async (_reason, opts) => {
         await new Promise(resolve => setTimeout(resolve, 80));
         return {
           type: 'PMP_ACTIVE_PATH_DISCOVERY_REPORT_V1',
-          version: '1.4.0-fresh-scan-classification-truth-20260825A',
-          revision: '1.0.0-current-map-http-truth-20260825A',
+          version: '1.5.0-served-a003-reference-truth-20260826A',
+          revision: '1.1.0-served-a003-reference-truth-20260826A',
           source_identity: 'pmp-active-path-discovery-machine-v1.js',
           scan_id: opts.scan_id,
           requested_scan_id: opts.scan_id,
