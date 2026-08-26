@@ -1,0 +1,26 @@
+name: Temporary Revert False Full-History Maintenance Report
+on:
+  push:
+    branches:
+      - chatgpt/full-diagnostics-zip-export-20260826A
+    paths:
+      - '.github/workflows/tmp-revert-false-maint-report-20260826E.yml'
+permissions:
+  contents: write
+jobs:
+  revert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Restore exact main maintenance report
+        run: git show aedcac8f6acfbedcc2dfa124d984d225b7f42d17:audit/pass13/app-orchestrator-ownership-maintenance-v1.json > audit/pass13/app-orchestrator-ownership-maintenance-v1.json
+      - name: Commit restoration and self-remove
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/tmp-revert-false-maint-report-20260826E.yml
+          git add audit/pass13/app-orchestrator-ownership-maintenance-v1.json
+          git commit -m 'Restore shallow-workflow ownership maintenance report semantics [skip ci]'
+          git push origin HEAD:chatgpt/full-diagnostics-zip-export-20260826A
