@@ -19,11 +19,18 @@
     "recovery_semantics": "All Current Map recovery references are classified RECOVERY_REACHABLE; the already-registered last-good controller is moved out of ACTIVE_CURRENT_APP into that recovery bucket.",
     "intentional_outside_semantics": "Known reachable references are recorded as INTENTIONAL_OUTSIDE_ACTIVE_ATLAS so they stop appearing as unexplained gaps, but they receive no mount slot and no boot/owner/helper authority."
   },
+  "branch_seal": {
+    "seal_commit": "1cc9db193dc474e35fac135c539c69359620a9d1",
+    "manifest_sha256": "f0d0113c57ea435a00806cb9a42620a6c9dfcf580f5e3d3f6566f606d072ded2",
+    "runtime_source_set_sha256": "6adc78fd940220c6f0669358ba2bceda1fa8cbeb1636d51f455f7f3d3bbb52c9",
+    "status": "SEALED"
+  },
   "verification": {
     "deterministic_test": "tools/test_atlas_registry_completeness_semantics_v1.py",
     "independent_verifier": "tools/verify_atlas_registry_completeness_semantics_v1.py",
     "browser_path": "audit/a002-atlas-registry-completeness-semantics-v1.cjs",
     "ci_workflow": ".github/workflows/a002-atlas-registry-completeness-semantics.yml",
+    "branch_reseal_workflow": "PASSED_AND_SELF_REMOVED",
     "user_device_proof": "REQUIRED_AFTER_DEPLOYMENT"
   },
   "boundaries": {
@@ -39,5 +46,5 @@
     "persisted_user_data_delete": false,
     "placeholder_creation": false
   },
-  "claim_ceiling": "Repository registry semantics only until applicable CI, A-003 reseal, merge, Pages deployment, and a fresh iPhone Atlas ZIP prove zero unexplained registry gaps without changing the existing freeze PASS."
+  "claim_ceiling": "Repository registry semantics only until applicable CI, merge, automatic main A-003 reseal, Pages deployment, and a fresh iPhone Atlas ZIP prove zero unexplained registry gaps without changing the existing freeze PASS."
 }
