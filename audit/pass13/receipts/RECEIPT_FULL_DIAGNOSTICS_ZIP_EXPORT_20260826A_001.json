@@ -28,6 +28,7 @@
     "runtime_certified_head": "58a98b74e360904e68f4051cd13143b455381143",
     "runtime_tree_equivalent_exact_head": "64243dceb0cc2e44e0556b19ceba09edf7946c0f",
     "final_pass_record_certified_head": "7a4f87149a268c8faa489df04d8d73ae670491c1",
+    "final_immutable_branch_head_before_this_receipt_metadata_commit": "8f921cb4aaff8d61dc06ab0c03096d857cdfd503",
     "branch_preseal_real_download_run": 33020563697,
     "runtime_browser_a002_a003_run": 33021560260,
     "exact_head_closure_run": 33022207514,
@@ -36,6 +37,8 @@
     "pass_record_certification_run": 33022375402,
     "pass_record_artifact_id": 9627047161,
     "pass_record_artifact_digest": "sha256:34e7cd64d49a8bca72bf116e46960c064b6c8bf75b2c3f4333e84282cd4234aa",
+    "final_receipt_delta_certification_run": 33022516596,
+    "final_gate_delta_certification_run": 33022672906,
     "exact_head_closure": {
       "zip_contract": "PASS",
       "a003_repository": "PASS",
