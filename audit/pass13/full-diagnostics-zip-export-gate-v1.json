@@ -4,7 +4,7 @@
   "revision": "1.0.0-full-diagnostics-zip-handoff-20260826A",
   "status": "PENDING_CI",
   "unit_id": "P13-U109",
-  "claim_ceiling": "Repairs only Full Diagnostics report handoff by adding a real ZIP export of the existing read-only complete report, plus the minimum maintenance-verifier branch-prefix alignment and regenerated ownership-maintenance audit report required to certify that bounded diagnostics branch. It does not change diagnostics truth, owner/helper authority, Current Map or routes, Bank, Continuous Run, storage, persisted user data, Atlas, or failure semantics. Fresh iPhone proof is required after deployment.",
+  "claim_ceiling": "Repairs only Full Diagnostics report handoff by adding a real ZIP export of the existing read-only complete report, plus the minimum maintenance-verifier branch-prefix alignment required to certify that bounded diagnostics branch. It does not change diagnostics truth, owner/helper authority, Current Map or routes, Bank, Continuous Run, storage, persisted user data, Atlas, or failure semantics. Fresh iPhone proof is required after deployment.",
   "no_blind_flying_gate": {
     "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
     "version": "1.0.0",
@@ -40,11 +40,6 @@
         "claim_type": "OBSERVED",
         "evidence_paths": ["tools/verify_app_orchestrator_ownership_maintenance_v1.py"],
         "fact": "The ownership maintenance verifier already recognizes bounded diagnostics and Atlas branch families but its prefix list did not include the equally bounded chatgpt/full-diagnostics-* family used by this repair."
-      },
-      {
-        "claim_type": "OBSERVED",
-        "evidence_paths": ["audit/pass13/app-orchestrator-ownership-maintenance-v1.json"],
-        "fact": "Changing that maintenance verifier identity requires its deterministic ownership-maintenance audit report to be regenerated; the generator changed that audit report only and left runtime authority records untouched."
       }
     ],
     "inferred_conclusions": [
@@ -55,8 +50,8 @@
       },
       {
         "claim_type": "INFERRED",
-        "basis_evidence_paths": ["tools/verify_app_orchestrator_ownership_maintenance_v1.py","audit/pass13/app-orchestrator-ownership-maintenance-v1.json"],
-        "conclusion": "Adding only chatgpt/full-diagnostics-* to the maintenance verifier and committing its deterministic audit-report regeneration is certification compatibility, not an owner, helper, route, or runtime-authority change."
+        "basis_evidence_paths": ["tools/verify_app_orchestrator_ownership_maintenance_v1.py"],
+        "conclusion": "Adding only chatgpt/full-diagnostics-* to the maintenance verifier's already-declared diagnostics/Atlas branch-prefix acceptance is certification compatibility, not an owner, helper, route, or runtime-authority change."
       }
     ],
     "fault_injection": {
@@ -71,7 +66,6 @@
         "Copy Full Diagnostics Report remains present",
         "a replacement export revokes only the prior prepared Blob URL",
         "maintenance verifier accepts the bounded full-diagnostics branch family without changing any authority records",
-        "maintenance generator is idempotent after its audit-report regeneration",
         "no owner/helper/route/Bank/Continuous Run/storage/user-data authority is added"
       ]
     },
@@ -82,7 +76,6 @@
       ".github/workflows/a002-full-diagnostics-zip-export.yml",
       "audit/a002-full-diagnostics-zip-export-v1.cjs",
       "audit/a003-manifest-seal.json",
-      "audit/pass13/app-orchestrator-ownership-maintenance-v1.json",
       "audit/pass13/full-diagnostics-zip-export-gate-v1.json",
       "audit/pass13/receipts/RECEIPT_FULL_DIAGNOSTICS_ZIP_EXPORT_20260826A_001.json",
       "pmp-app-current.html",
@@ -109,7 +102,6 @@
     "persisted_user_data_delete": false,
     "diagnostics_truth_changes": false,
     "atlas_changes": false,
-    "maintenance_branch_prefix_alignment_only": true,
-    "maintenance_audit_report_regenerated": true
+    "maintenance_branch_prefix_alignment_only": true
   }
 }
