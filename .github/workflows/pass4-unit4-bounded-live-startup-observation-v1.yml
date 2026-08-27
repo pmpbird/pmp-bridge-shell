@@ -1,0 +1,65 @@
+name: Pass 4 Unit 4 Bounded Live Startup Observation
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - '.github/workflows/pass4-unit4-bounded-live-startup-observation-v1.yml'
+      - 'audit/pass4/pass4-boot-status-strip-unit4-bounded-live-observation-v1.json'
+      - 'tools/run_pass4_unit4_bounded_live_startup_observation_v1.js'
+      - 'tools/verify_pass4_unit4_bounded_live_startup_observation_v1.py'
+permissions:
+  contents: write
+concurrency:
+  group: pass4-unit4-single-observation-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+jobs:
+  observe-or-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Determine whether the single observation is already consumed
+        id: gate
+        run: |
+          if test -f audit/pass4/pass4-boot-status-strip-unit4-bounded-live-observation-v1.json; then
+            echo "consumed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "consumed=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Install browser for the one authorized observation
+        if: steps.gate.outputs.consumed == 'false'
+        run: |
+          npm install --no-save playwright@1.52.0
+          npx playwright install --with-deps chromium
+      - name: Start repository server
+        if: steps.gate.outputs.consumed == 'false'
+        run: |
+          python -m http.server 8000 --bind 127.0.0.1 > /tmp/pass4-unit4-server.log 2>&1 &
+          echo $! > /tmp/pass4-unit4-server.pid
+          for i in $(seq 1 50); do
+            curl -fsS http://127.0.0.1:8000/pmp-app-current.html >/dev/null && exit 0
+            sleep 0.2
+          done
+          cat /tmp/pass4-unit4-server.log
+          exit 1
+      - name: Consume exactly one bounded live browser observation
+        if: steps.gate.outputs.consumed == 'false'
+        run: node tools/run_pass4_unit4_bounded_live_startup_observation_v1.js audit/pass4/pass4-boot-status-strip-unit4-bounded-live-observation-v1.json
+      - name: Commit the consumed observation receipt
+        if: steps.gate.outputs.consumed == 'false'
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add audit/pass4/pass4-boot-status-strip-unit4-bounded-live-observation-v1.json
+          git commit -m "Pass 4 Unit 4: preserve consumed bounded live observation"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
+      - name: Verify exact evidence-only scope
+        run: python tools/verify_pass4_unit4_bounded_live_startup_observation_v1.py "${{ github.event.pull_request.base.sha }}"
