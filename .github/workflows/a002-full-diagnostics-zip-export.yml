@@ -11,6 +11,8 @@ on:
       - 'tools/verify_full_diagnostics_zip_export_v1.py'
       - 'audit/pass13/full-diagnostics-zip-export-gate-v1.json'
       - 'audit/pass13/receipts/RECEIPT_FULL_DIAGNOSTICS_ZIP_EXPORT_20260826A_001.json'
+      - 'audit/pass13/full-diagnostics-copy-retirement-gate-v1.json'
+      - 'audit/pass13/receipts/RECEIPT_FULL_DIAGNOSTICS_COPY_RETIREMENT_20260827A_001.json'
   workflow_dispatch:
 
 permissions:

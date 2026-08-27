@@ -27,7 +27,6 @@ function section(type){return{type,status:'PASS',at:new Date().toISOString(),iss
   },{AKEY,BKEY,bootVersion,bcdVersion,bcdRevision,bcdSource});
   await page.addScriptTag({content:source});
   await page.evaluate(()=>{const api=window.PMPDiagnosticsConsolidatedViewV1;if(!api.install())throw new Error('install failed');api.renderDetail(window,document,'full_report',true)});
-  const copy=page.locator('#pmpDiagCopyFull');
   const exportButton=page.locator('#pmpDiagZipFull');
   await exportButton.waitFor({state:'visible'});
   await exportButton.click();
@@ -45,7 +44,8 @@ function section(type){return{type,status:'PASS',at:new Date().toISOString(),iss
   const checks={
     diagnostics_version_preserved:apiState.version==='2.9.2-fresh-bcd-evaluation-binding-20260825A',
     zip_revision_exact:apiState.zipExportRevision==='1.0.0-full-diagnostics-zip-handoff-20260826A',
-    copy_path_preserved:await copy.count()===1,
+    full_report_copy_retired:((await page.locator('#pmpDiagCopyFull').count())===0)&&((await page.getByText('Copy Full Diagnostics Report',{exact:true}).count())===0),
+    section_copy_still_available:(await page.locator('[data-copy-section]').count())===8,
     export_control_visible:await exportButton.isVisible(),
     fresh_evidence_complete:apiState.evidence&&apiState.evidence.status==='COMPLETE'&&apiState.evidence.fresh_evaluation_bound===true,
     persistent_manual_link_visible:await link.isVisible(),

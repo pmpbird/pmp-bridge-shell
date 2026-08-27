@@ -1,0 +1,73 @@
+{
+  "boundaries": {
+    "atlas_changes": false,
+    "bank_rebuild": false,
+    "continuous_run_mutation": false,
+    "diagnostics_truth_changes": false,
+    "dom_repair": false,
+    "helper_changes": false,
+    "owner_changes": false,
+    "persisted_user_data_delete": false,
+    "persisted_user_data_write": false,
+    "route_changes": false,
+    "storage_migration": false
+  },
+  "claim_ceiling": "Repository/browser proof plus successful pre-retirement iPhone ZIP handoff. Do not claim post-retirement phone UI complete until merged, main is automatically A-003 resealed and deployed, and the user confirms the Copy Full Diagnostics Report control is gone while ZIP export remains usable.",
+  "device_proof_before_retirement": {
+    "bytes": 698058,
+    "evidence_status": "COMPLETE",
+    "filename": "pmp-full-diagnostics-2026-08-27T13-39-10-455Z.zip",
+    "generated_at": "2026-08-27T13:39:10.446Z",
+    "members": [
+      "full-diagnostics-report.json",
+      "whole-app-health.json",
+      "diagnostics-export-metadata.json",
+      "diagnostics-summary.txt"
+    ],
+    "native_bootstrap_status": "COMPLETE",
+    "report_type": "PMP_FULL_DIAGNOSTICS_REPORT_V2",
+    "report_version": "2.9.2-fresh-bcd-evaluation-binding-20260825A",
+    "sha256": "b69f29559ac3153844b87afed1b201bda1f2beee83de259b6e81704e2a9d9c65",
+    "status": "PASS",
+    "whole_app_failures": 0,
+    "whole_app_not_proven": 0,
+    "whole_app_warnings": 0,
+    "zip_export_revision": "1.0.0-full-diagnostics-zip-handoff-20260826A"
+  },
+  "observed_problem": {
+    "reason": "Complete report output is too large for the user to paste into chat.",
+    "surface": "Diagnostics \u2192 Full Diagnostics",
+    "unusable_control": "Copy Full Diagnostics Report",
+    "user_authorization": "Explicitly requested deletion of the unusable copy option after successful ZIP export."
+  },
+  "repair": {
+    "preserved": [
+      "Export Full Diagnostics ZIP",
+      "Download Full Diagnostics ZIP",
+      "Copy This Section controls",
+      "Copy Whole App Health Report",
+      "fullDiagnosticReport truth generation"
+    ],
+    "removed": [
+      "Copy Full Diagnostics Report control",
+      "pmpDiagCopyFull handler",
+      "copy_full_diagnostics evidence request path"
+    ],
+    "zip_revision_unchanged": "1.0.0-full-diagnostics-zip-handoff-20260826A"
+  },
+  "revision": "1.0.0-zip-only-full-report-handoff-20260827A",
+  "status": "PASS",
+  "type": "PMP_FULL_DIAGNOSTICS_COPY_RETIREMENT_RECEIPT_V1",
+  "verification": {
+    "a003_diagnostic_run": "33079143338",
+    "browser_path": "audit/a002-full-diagnostics-zip-export-v1.cjs",
+    "ci_workflow": ".github/workflows/a002-full-diagnostics-zip-export.yml",
+    "deterministic_test": "tools/test_full_diagnostics_zip_export_v1.py",
+    "failed_harness_run": "33078852828",
+    "independent_verifier": "tools/verify_full_diagnostics_zip_export_v1.py",
+    "post_retirement_user_device_confirmation": "REQUIRED_AFTER_DEPLOYMENT",
+    "successful_branch_certification_run": "33079689861",
+    "user_device_proof_before_retirement": "PASS"
+  },
+  "version": "1.0.0"
+}

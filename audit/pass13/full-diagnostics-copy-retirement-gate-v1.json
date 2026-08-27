@@ -1,0 +1,163 @@
+{
+  "boundaries": {
+    "atlas_changes": false,
+    "bank_rebuild": false,
+    "continuous_run_mutation": false,
+    "diagnostics_truth_changes": false,
+    "dom_repair": false,
+    "helper_changes": false,
+    "owner_changes": false,
+    "persisted_user_data_delete": false,
+    "persisted_user_data_write": false,
+    "route_changes": false,
+    "storage_migration": false
+  },
+  "claim_ceiling": "Retires only the unusable full-report clipboard action after successful iPhone ZIP handoff proof. ZIP export, per-section copy, Whole App Health copy, diagnostics truth, owner/helper authority, routes, Bank, Continuous Run, storage, and persisted user data are unchanged. Fresh iPhone post-deployment confirmation is still required.",
+  "device_zip_proof": {
+    "bytes": 698058,
+    "evidence_status": "COMPLETE",
+    "filename": "pmp-full-diagnostics-2026-08-27T13-39-10-455Z.zip",
+    "generated_at": "2026-08-27T13:39:10.446Z",
+    "members": [
+      "full-diagnostics-report.json",
+      "whole-app-health.json",
+      "diagnostics-export-metadata.json",
+      "diagnostics-summary.txt"
+    ],
+    "native_bootstrap_status": "COMPLETE",
+    "sha256": "b69f29559ac3153844b87afed1b201bda1f2beee83de259b6e81704e2a9d9c65",
+    "whole_app_health": {
+      "failures": 0,
+      "not_proven": 0,
+      "warnings": 0
+    }
+  },
+  "harness_history": {
+    "classification": "TEMPORARY_A003_OUTPUT_FILES_POLLUTED_WORKING_RUNTIME_SCAN",
+    "diagnostic_run": "33079143338",
+    "initial_result": "STOPPED_BEFORE_COMMIT",
+    "initial_run": "33078852828",
+    "runtime_repair_failure": false
+  },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_browser_harness",
+    "automatic_retry": false,
+    "upload_before_enforcement": true,
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "diagnostic_matrix_update": {
+      "status": "UPDATED",
+      "applicable_matrix": "audit/a002-full-diagnostics-zip-export-v1.cjs",
+      "rationale": "The already-proven iPhone ZIP handoff makes the complete-report clipboard action redundant and unusable. The permanent browser matrix now requires the full-report Copy control to be absent while the ZIP export, persistent direct-download path, all eight section-copy controls, complete report contents, and read-only boundaries remain intact."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/a002-full-diagnostics-zip-export-v1.cjs",
+      "audit/pass13/full-diagnostics-copy-retirement-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_FULL_DIAGNOSTICS_COPY_RETIREMENT_20260827A_001.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_full_diagnostics_zip_export_v1.py"
+    ],
+    "verifier_paths": [
+      "tools/verify_full_diagnostics_zip_export_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass13/receipts/RECEIPT_FULL_DIAGNOSTICS_COPY_RETIREMENT_20260827A_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "evidence_paths": [
+          "audit/pass13/receipts/RECEIPT_FULL_DIAGNOSTICS_COPY_RETIREMENT_20260827A_001.json"
+        ],
+        "fact": "A fresh iPhone export produced the complete four-member Full Diagnostics ZIP with COMPLETE evidence and zero Whole App Health failures, warnings, or not-proven items before the clipboard control was retired."
+      },
+      {
+        "claim_type": "OBSERVED",
+        "evidence_paths": [
+          "pmp-diagnostics-consolidated-view-v1.js",
+          "audit/a002-full-diagnostics-zip-export-v1.cjs"
+        ],
+        "fact": "The bounded implementation removes only the complete-report clipboard control and handler; ZIP export, persistent download, per-section copy, Whole App Health copy, and fullDiagnosticReport truth generation remain present and browser-certified."
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "basis_evidence_paths": [
+          "pmp-diagnostics-consolidated-view-v1.js",
+          "audit/a002-full-diagnostics-zip-export-v1.cjs",
+          "audit/pass13/receipts/RECEIPT_FULL_DIAGNOSTICS_COPY_RETIREMENT_20260827A_001.json"
+        ],
+        "conclusion": "Retiring the unusable complete-report clipboard action does not reduce diagnostic evidence availability because the proven ZIP handoff carries the complete report and the smaller section and Whole App Health copy controls remain available."
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "Copy Full Diagnostics Report control is absent",
+        "obsolete pmpDiagCopyFull handler and copy_full_diagnostics request path are absent",
+        "Export Full Diagnostics ZIP remains present",
+        "persistent Download Full Diagnostics ZIP remains available after asynchronous generation",
+        "real browser direct-download event still produces valid ZIP bytes",
+        "ZIP still contains all four expected members and all eight governed diagnostic sections",
+        "all eight Copy This Section controls remain available",
+        "Copy Whole App Health Report remains available",
+        "no owner/helper/route/Bank/Continuous Run/storage/user-data authority is added"
+      ]
+    },
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
+  "post_deployment_phone_confirmation": "REQUIRED",
+  "proven_defect": {
+    "control": "Copy Full Diagnostics Report",
+    "reason": "The complete Full Diagnostics JSON is too large for the user to paste into chat, so the full-report clipboard action has no usable handoff path.",
+    "replacement": "Export Full Diagnostics ZIP",
+    "replacement_device_proof": "PASS"
+  },
+  "required_current_behavior": {
+    "full_report_copy_control": false,
+    "persistent_zip_download_link": true,
+    "section_copy_controls": true,
+    "whole_app_health_copy_control": true,
+    "zip_export_control": true
+  },
+  "revision": "1.0.0-zip-only-full-report-handoff-20260827A",
+  "scope": {
+    "changed_paths": [
+      ".github/workflows/a002-full-diagnostics-zip-export.yml",
+      "audit/a002-full-diagnostics-zip-export-v1.cjs",
+      "audit/a003-manifest-seal.json",
+      "audit/pass13/full-diagnostics-copy-retirement-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_FULL_DIAGNOSTICS_COPY_RETIREMENT_20260827A_001.json",
+      "pmp-app-current.html",
+      "pmp-diagnostics-consolidated-view-v1.js",
+      "pmp-runtime-integrity-manifest-v1.json",
+      "tools/test_full_diagnostics_zip_export_v1.py",
+      "tools/verify_full_diagnostics_zip_export_v1.py"
+    ],
+    "implementation_paths": [
+      "pmp-diagnostics-consolidated-view-v1.js",
+      "pmp-app-current.html"
+    ]
+  },
+  "status": "PASS",
+  "type": "PMP_FULL_DIAGNOSTICS_COPY_RETIREMENT_GATE_V1",
+  "unit_id": "P13-U110",
+  "version": "1.0.0"
+}
