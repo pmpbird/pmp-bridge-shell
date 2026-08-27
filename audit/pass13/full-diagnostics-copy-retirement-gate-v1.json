@@ -39,6 +39,90 @@
     "initial_run": "33078852828",
     "runtime_repair_failure": false
   },
+  "no_blind_flying_gate": {
+    "type": "PMP_PASS6_PERMANENT_NO_BLIND_FLYING_GATE_BINDING_V1",
+    "version": "1.0.0",
+    "ci_lane": "deterministic_browser_harness",
+    "automatic_retry": false,
+    "upload_before_enforcement": true,
+    "required_artifact_roles": [
+      "command",
+      "stdout",
+      "stderr",
+      "exit_status",
+      "result",
+      "scope",
+      "environment",
+      "authority_state",
+      "manifest"
+    ],
+    "diagnostic_matrix_update": {
+      "status": "UPDATED",
+      "applicable_matrix": "audit/a002-full-diagnostics-zip-export-v1.cjs",
+      "rationale": "The already-proven iPhone ZIP handoff makes the complete-report clipboard action redundant and unusable. The permanent browser matrix now requires the full-report Copy control to be absent while the ZIP export, persistent direct-download path, all eight section-copy controls, complete report contents, and read-only boundaries remain intact."
+    },
+    "diagnostic_evidence_routes": [
+      "audit/a002-full-diagnostics-zip-export-v1.cjs",
+      "audit/pass13/full-diagnostics-copy-retirement-gate-v1.json",
+      "audit/pass13/receipts/RECEIPT_FULL_DIAGNOSTICS_COPY_RETIREMENT_20260827A_001.json"
+    ],
+    "deterministic_test_paths": [
+      "tools/test_full_diagnostics_zip_export_v1.py"
+    ],
+    "verifier_paths": [
+      "tools/verify_full_diagnostics_zip_export_v1.py"
+    ],
+    "receipt_paths": [
+      "audit/pass13/receipts/RECEIPT_FULL_DIAGNOSTICS_COPY_RETIREMENT_20260827A_001.json"
+    ],
+    "observed_facts": [
+      {
+        "claim_type": "OBSERVED",
+        "evidence_paths": [
+          "audit/pass13/receipts/RECEIPT_FULL_DIAGNOSTICS_COPY_RETIREMENT_20260827A_001.json"
+        ],
+        "fact": "A fresh iPhone export produced the complete four-member Full Diagnostics ZIP with COMPLETE evidence and zero Whole App Health failures, warnings, or not-proven items before the clipboard control was retired."
+      },
+      {
+        "claim_type": "OBSERVED",
+        "evidence_paths": [
+          "pmp-diagnostics-consolidated-view-v1.js",
+          "audit/a002-full-diagnostics-zip-export-v1.cjs"
+        ],
+        "fact": "The bounded implementation removes only the complete-report clipboard control and handler; ZIP export, persistent download, per-section copy, Whole App Health copy, and fullDiagnosticReport truth generation remain present and browser-certified."
+      }
+    ],
+    "inferred_conclusions": [
+      {
+        "claim_type": "INFERRED",
+        "basis_evidence_paths": [
+          "pmp-diagnostics-consolidated-view-v1.js",
+          "audit/a002-full-diagnostics-zip-export-v1.cjs",
+          "audit/pass13/receipts/RECEIPT_FULL_DIAGNOSTICS_COPY_RETIREMENT_20260827A_001.json"
+        ],
+        "conclusion": "Retiring the unusable complete-report clipboard action does not reduce diagnostic evidence availability because the proven ZIP handoff carries the complete report and the smaller section and Whole App Health copy controls remain available."
+      }
+    ],
+    "fault_injection": {
+      "status": "COVERED",
+      "cases": [
+        "Copy Full Diagnostics Report control is absent",
+        "obsolete pmpDiagCopyFull handler and copy_full_diagnostics request path are absent",
+        "Export Full Diagnostics ZIP remains present",
+        "persistent Download Full Diagnostics ZIP remains available after asynchronous generation",
+        "real browser direct-download event still produces valid ZIP bytes",
+        "ZIP still contains all four expected members and all eight governed diagnostic sections",
+        "all eight Copy This Section controls remain available",
+        "Copy Whole App Health Report remains available",
+        "no owner/helper/route/Bank/Continuous Run/storage/user-data authority is added"
+      ]
+    },
+    "special_authority": {
+      "required": false,
+      "granted": false,
+      "consumed": false
+    }
+  },
   "post_deployment_phone_confirmation": "REQUIRED",
   "proven_defect": {
     "control": "Copy Full Diagnostics Report",
