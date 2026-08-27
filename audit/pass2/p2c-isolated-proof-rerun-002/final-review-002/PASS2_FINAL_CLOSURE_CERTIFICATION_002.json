@@ -1,0 +1,26 @@
+{
+  "type": "PMP_APP_ORCHESTRATOR_PASS2_FINAL_CLOSURE_CERTIFICATION_002",
+  "overall_project_pass": "Pass 2",
+  "phase": "P2-C",
+  "certification_status": "NOT_CERTIFIED_FAIL_CLOSED",
+  "production_activation_decision": "HOLD_DO_NOT_ACTIVATE",
+  "pass2_complete": false,
+  "pass3_started": false,
+  "production_patch_applied": false,
+  "active_chain_integrated": false,
+  "closure_gate_results": {
+    "successful_integrated_disposable_proof_receipt_present": false,
+    "successful_byte_for_byte_rollback_receipt_present": true,
+    "successful_restored_copy_full_regression_chain_present": false,
+    "new_explicit_production_activation_authorization_present": false,
+    "production_runtime_untouched": true,
+    "current_map_untouched": true,
+    "production_storage_untouched": true,
+    "crosswalk_router_excluded": true,
+    "exact_source_identity_preserved": true
+  },
+  "remaining_major_moves_inside_pass2": 1,
+  "full_passes_remaining_after_pass2": 6,
+  "unfinished_passes_including_current": 7,
+  "remaining_move": "Obtain a new explicit isolated-proof authorization, execute Repair 006, complete every active, rollback, restored, and final-boundary lane, then repeat activation decision and Pass 2 closure certification."
+}

@@ -1,0 +1,58 @@
+name: Pass 2 P2-C Isolated Proof Rerun 004 — Repair 009 One Run
+
+on:
+  pull_request:
+    types: [opened]
+    branches: [main]
+    paths:
+      - '.github/workflows/pass2-p2c-isolated-proof-rerun-004.yml'
+      - '.github/workflows/pass2-p2c-isolated-proof-rerun-003.yml'
+      - 'audit/pass2/p2c-isolated-proof-rerun-002/**'
+
+permissions:
+  contents: read
+
+jobs:
+  isolated-proof-rerun-004:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact audit head with full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Reassemble checksum-bound one-run controller and execute once
+        env:
+          EVENT_ACTION: ${{ github.event.action }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          P=audit/pass2/p2c-isolated-proof-rerun-002/rerun004-script-parts
+          test "$(sha256sum "$P/part00.shpart" | awk '{print $1}')" = "ea938834c7f24d5196cd62255deea013d804bbf7089db207a0847e1132f096e7"
+          test "$(sha256sum "$P/part01.shpart" | awk '{print $1}')" = "5a0680cb377a8b1171233281e03534fe9819b4ff1ce8c7d3abf5beb5b919cc89"
+          test "$(sha256sum "$P/part02.shpart" | awk '{print $1}')" = "3ac8f6a6ba47d2400644b9f5d5acec099236771c2dacb0286f5c4a40275f51de"
+          test "$(sha256sum "$P/part03.shpart" | awk '{print $1}')" = "b8d038b56b2dcf49151294dc5df900d3f5c51e93429f09e6f967b3a97b9a929a"
+          test "$(sha256sum "$P/part04.shpart" | awk '{print $1}')" = "99b163ba7b222fe83776ebe666e91e3c3f51a02236f39c3fe72f22d77384e8d6"
+          cat "$P"/part0*.shpart > /tmp/p2c-rerun004-controller.sh
+          test "$(sha256sum /tmp/p2c-rerun004-controller.sh | awk '{print $1}')" = "3c21a78858caf06cbcd3e62d4bcd19ec8dd057f5036856a1faca6363abd1cc2c"
+          bash -n /tmp/p2c-rerun004-controller.sh
+          chmod 700 /tmp/p2c-rerun004-controller.sh
+          /tmp/p2c-rerun004-controller.sh
+
+      - name: Upload complete Repair 009 proof evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2c-isolated-proof-rerun-004-repair-009-evidence
+          path: |
+            /tmp/p2c-rerun-scope-004.json
+            /tmp/p2c-proof-runtime-authorization-receipt-004.json
+            /tmp/p2c-proof-evidence-004/
+            /tmp/p2c-proof-rerun-004.tar.gz
+          if-no-files-found: warn
+          retention-days: 90

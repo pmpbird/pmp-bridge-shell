@@ -1,0 +1,40 @@
+git -C "$ACTIVE_ROOT" reset --hard "$SOURCE_COMMIT" >/dev/null
+git -C "$ACTIVE_ROOT" clean -ffdx >/dev/null
+test -z "$(git -C "$ACTIVE_ROOT" status --porcelain)"
+test "$(git -C "$ACTIVE_ROOT" rev-parse HEAD)" = "$SOURCE_COMMIT"
+python3 - <<'PY'
+import hashlib,json,os,pathlib
+def snap(root):
+    out={}
+    for p in sorted(pathlib.Path(root).rglob('*')):
+        if not p.is_file():continue
+        rel=p.relative_to(root).as_posix()
+        if rel=='.git' or rel.startswith('.git/'):continue
+        out[rel]=(p.stat().st_size,hashlib.sha256(p.read_bytes()).hexdigest())
+    return out
+e=pathlib.Path(os.environ['EVIDENCE_DIR'])
+review=json.loads((e/'semantic-review-004.json').read_text())
+b=snap(os.environ['BASELINE_ROOT']);r=snap(os.environ['ACTIVE_ROOT'])
+boundary_ok=b==r and len(r)==1481
+out={'type':'PMP_P2C_ISOLATED_PROOF_RERUN_FINAL_BOUNDARY_009','status':'PASS' if boundary_ok else 'FAIL','baseline_file_count':len(b),'restored_file_count':len(r),'byte_for_byte_restored_after_regressions':b==r,'production_checkout_dirty':False,'production_patch_applied':False,'production_activation_authorized':False,'merge_authorized':False,'proof_run_count_executed':1,'second_proof_run_authorized':False}
+(e/'final-boundary.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
+print(json.dumps(out,indent=2))
+if review['status']!='PASS' or out['status']!='PASS':raise SystemExit(1)
+PY
+test -z "$(git status --porcelain)"
+
+final_rc=$?
+set -e
+
+export PROOF_RC="$proof_rc" FINAL_RC="$final_rc"
+python3 - <<'PY'
+import json,os,pathlib
+p=pathlib.Path(os.environ['EVIDENCE_DIR'])/'execution-summary-004.json'
+p.write_text(json.dumps({
+  'proof_step_returncode':int(os.environ.get('PROOF_RC','0')),
+  'final_verification_returncode':int(os.environ.get('FINAL_RC','0')),
+  'proof_run_count_executed':1,
+  'second_proof_run_authorized':False
+},indent=2,sort_keys=True)+'\n')
+PY
+if [ "$proof_rc" -ne 0 ] || [ "$final_rc" -ne 0 ]; then exit 1; fi

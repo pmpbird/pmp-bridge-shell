@@ -1,0 +1,42 @@
+  'repair_continuation':'009-controller002','second_proof_run_authorized':False
+},indent=2,sort_keys=True)+'\n')
+PY
+
+echo "=== Reconstruct checksum-bound base runner and apply Repairs 003 through 008 exactly once ==="
+set -euo pipefail
+rm -rf "$BUNDLE_DIR" "$BUNDLE_TAR" "$EVIDENCE_DIR" "$NORMALIZED_ROOT"
+mkdir -p "$BUNDLE_DIR" "$EVIDENCE_DIR" "$NORMALIZED_ROOT"
+test "$(sha256sum "$AUDIT_DIR/bundle/part06_0.bin" | awk '{print $1}')" = "13435f1fcf4aa33c2df7d719944bc986fea8ebe45b7568766a3e086a56fa94ae"
+test "$(sha256sum "$AUDIT_DIR/bundle/part06_1.bin" | awk '{print $1}')" = "917bc7936f8d9e5cbefbccbc7c4ff75f97156fada545d26c82e8f149c3feb7f8"
+tr -d '\r\n' < "$AUDIT_DIR/bundle/part06_2.b64" | base64 -d > /tmp/p2c-part06-2.bin
+test "$(sha256sum /tmp/p2c-part06-2.bin | awk '{print $1}')" = "250e8719e8e5184206464906a35e082a1e83d1dcfe717276fdfdba175c08fdfe"
+cat "$AUDIT_DIR/bundle/part00.b64" "$AUDIT_DIR/bundle/part01.b64" "$AUDIT_DIR/bundle/part02.b64" "$AUDIT_DIR/bundle/part03.b64" | tr -d '\r\n' | base64 -d > "$BUNDLE_TAR"
+cat "$AUDIT_DIR/bundle/part04_0.bin" "$AUDIT_DIR/bundle/part04_1.bin" "$AUDIT_DIR/bundle/part04_2.bin" "$AUDIT_DIR/bundle/part05_0.bin" "$AUDIT_DIR/bundle/part05_1.bin" "$AUDIT_DIR/bundle/part06_0.bin" "$AUDIT_DIR/bundle/part06_1.bin" /tmp/p2c-part06-2.bin >> "$BUNDLE_TAR"
+test "$(wc -c < "$BUNDLE_TAR")" = "61478"
+test "$(sha256sum "$BUNDLE_TAR" | awk '{print $1}')" = "a644ad9ea538117f8aa6b01ac6988ac8d938a64fb170fa2a8f071afebc77e500"
+test "$(sha256sum "$REPAIR_DIR/apply_prepare_repair_003.py" | awk '{print $1}')" = "7461136b03dec90dc559532874843585d545fef1972e44fda2902ca1cdf7ed10"
+test "$(sha256sum "$AUDIT_DIR/repair_runner_003.py" | awk '{print $1}')" = "ebb6f7c0b1b5d41eb795e48706cbfd00a66117653e03a8bce7248a5f63b5c1ca"
+test "$(sha256sum "$AUDIT_DIR/repair_runner_005.py" | awk '{print $1}')" = "c7d327f8e7133fd1d6a2e2c0958d29f33844898ebba468d2266e78464982e6a8"
+test "$(sha256sum "$AUDIT_DIR/repair_runner_006.py" | awk '{print $1}')" = "f88802507841710193dcecb3abd62934488fef5ce1e347f4689bd2d5aa9cb30f"
+test "$(sha256sum "$AUDIT_DIR/repair_runner_007.py" | awk '{print $1}')" = "e47b2530a2ab4180b255d6c1d70cbc314e72564cb4fa35ab2229c824d81384ee"
+test "$(sha256sum "$AUDIT_DIR/repair_runner_008.py" | awk '{print $1}')" = "9de909e03b5a691d4215c785f36ad64ce38e844c7540b9f5bdc65f4a1b671972"
+test "$(sha256sum "$AUDIT_DIR/repair_runner_009_controller002.py" | awk '{print $1}')" = "ad10e91f9f8319747d08f6f882031eae48aee7c9d7813b1a3f63ad5d0e4a72f7"
+test "$(sha256sum "$AUDIT_DIR/transpile_async_sources.js" | awk '{print $1}')" = "c5ffb899637aa45feb64b604dca426503f99fc9a34f05a1c83a12d0cfef3d0dd"
+test "$(sha256sum "$AUDIT_DIR/repair009-normalized-source-manifest-002.json" | awk '{print $1}')" = "9e8bb7a9e2a695085d5fd80028bc8a2a4076865c355812044cd78fb6b0d44b76"
+test "$(sha256sum "$AUDIT_DIR/pass2-p2c-isolated-proof-rerun-004.workflow-candidate.yml.txt" | awk '{print $1}')" = "0ec8c289693b2728c5a5433f019ea24f9c66392b71f0e2f692bf3ff7ecf8c6dc"
+tar -xzf "$BUNDLE_TAR" -C "$BUNDLE_DIR"
+sha256sum "$REPAIR_DIR/apply_prepare_repair_003.py" "$AUDIT_DIR/repair_runner_003.py" "$AUDIT_DIR/repair_runner_005.py" "$AUDIT_DIR/repair_runner_006.py" "$AUDIT_DIR/repair_runner_007.py" "$AUDIT_DIR/repair_runner_008.py" "$AUDIT_DIR/repair_runner_009_controller002.py" "$AUDIT_DIR/transpile_async_sources.js" "$AUDIT_DIR/repair009-normalized-source-manifest-002.json" > "$EVIDENCE_DIR/repair-script-sha256.txt"
+python3 -m py_compile "$REPAIR_DIR/apply_prepare_repair_003.py" "$AUDIT_DIR/repair_runner_003.py" "$AUDIT_DIR/repair_runner_005.py" "$AUDIT_DIR/repair_runner_006.py" "$AUDIT_DIR/repair_runner_007.py" "$AUDIT_DIR/repair_runner_008.py" "$AUDIT_DIR/repair_runner_009_controller002.py"
+python3 "$REPAIR_DIR/apply_prepare_repair_003.py" --path "$BUNDLE_DIR/prepare_disposable_proof_002.py"
+python3 "$AUDIT_DIR/repair_runner_003.py" --bundle-root "$BUNDLE_DIR"
+python3 "$AUDIT_DIR/repair_runner_005.py" --bundle-root "$BUNDLE_DIR"
+python3 "$AUDIT_DIR/repair_runner_008.py" --bundle-root "$BUNDLE_DIR"
+
+echo "=== Create exact detached baseline and active worktrees ==="
+set -euo pipefail
+rm -rf "$BASELINE_ROOT" "$ACTIVE_ROOT"
+git worktree add --detach "$BASELINE_ROOT" "$SOURCE_COMMIT"
+git worktree add --detach "$ACTIVE_ROOT" "$SOURCE_COMMIT"
+test "$(git -C "$BASELINE_ROOT" rev-parse HEAD)" = "$SOURCE_COMMIT"
+test "$(git -C "$ACTIVE_ROOT" rev-parse HEAD)" = "$SOURCE_COMMIT"
+test -z "$(git -C "$BASELINE_ROOT" status --porcelain)"
