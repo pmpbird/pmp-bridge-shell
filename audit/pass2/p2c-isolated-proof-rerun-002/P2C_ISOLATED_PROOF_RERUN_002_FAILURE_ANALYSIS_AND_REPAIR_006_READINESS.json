@@ -1,0 +1,77 @@
+{
+  "type": "PMP_P2C_ISOLATED_PROOF_RERUN_002_FAILURE_ANALYSIS_AND_REPAIR_006_READINESS",
+  "overall_project_pass": "Pass 2",
+  "phase": "P2-C",
+  "source_repository_commit": "c618596f2b5c99ca7f355153a5bd31268170df80",
+  "proof_run": {
+    "workflow_run_id": 29213836737,
+    "head_sha": "d1fa6aa2cbf245084df7a4b26199387c53e1cd74",
+    "authorization_receipt": "P2C_EXPLICIT_ISOLATED_PROOF_RERUN_AUTHORIZATION_RECEIPT_002.json",
+    "authorization_count_consumed": 1,
+    "status": "FAIL_CLOSED",
+    "artifact_id": 8265979677,
+    "artifact_digest": "sha256:1da2223b5fa02c06eac66ee6a5900d00cf38f794bbf24ad0a5c994c288dd9c46"
+  },
+  "passed": {
+    "authorization_and_scope": true,
+    "runner_reconstruction": true,
+    "chromium_installation": true,
+    "detached_worktrees": true,
+    "disposable_preparation": true,
+    "active_a003_repository": "21/21",
+    "byte_for_byte_rollback": "1481/1481",
+    "restored_a003_repository": "21/21",
+    "restored_a003_live": "47/47",
+    "evidence_upload": true
+  },
+  "failed": {
+    "production_shaped_browser": {
+      "result": "13/34",
+      "cause": "Child-realm prelude scanned managed script tags before the HTML parser had reached them, so Guardian loaded but the downstream reload-owner and inner realms did not execute."
+    },
+    "active_a002": {
+      "result": "6 checks before fatal error",
+      "cause": "External diagnostic page.evaluate code used setTimeout without an actor token; the active gate correctly denied UNKNOWN_ACTOR."
+    },
+    "active_a003_live": {
+      "result": "1 check before fatal error",
+      "cause": "External diagnostic page.evaluate code used setTimeout without an actor token; the active gate correctly denied UNKNOWN_ACTOR."
+    },
+    "restored_a002": {
+      "result": "9/10 before fatal error",
+      "cause": "The restored chain reached v30, v23, v4 and v3 but exceeded the 30-second external Home observation window."
+    }
+  },
+  "repair_006": {
+    "status": "READY_NOT_EXECUTED",
+    "script": "repair_runner_006.py",
+    "changes": [
+      "Defer child-realm managed-script scanning until DOMContentLoaded.",
+      "Remove only external proof-harness page timers that are correctly blocked as unknown actors.",
+      "Extend only the external A-002 Home observation window from 30 to 60 seconds.",
+      "Reapply harness normalization after rollback before restored-copy live regressions."
+    ],
+    "production_runtime_changed": false,
+    "current_map_changed": false,
+    "production_storage_changed": false,
+    "static_validation": [
+      "Repair patch points resolved exactly once.",
+      "Reconstructed Python scripts compile.",
+      "Browser proof JavaScript passes node --check."
+    ]
+  },
+  "authorization_boundary": {
+    "production_activation_authorized": false,
+    "production_apply_authorized": false,
+    "merge_authorized": false,
+    "another_isolated_proof_rerun_authorized": false,
+    "required_next_authorization": "A new explicit one-run isolated-proof rerun authorization for Repair 006."
+  },
+  "pass_state": {
+    "pass2_complete": false,
+    "pass3_started": false,
+    "remaining_major_moves_inside_pass2": 1,
+    "full_passes_remaining_after_pass2": 6,
+    "unfinished_passes_including_current": 7
+  }
+}
