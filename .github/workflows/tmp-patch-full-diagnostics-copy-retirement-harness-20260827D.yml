@@ -1,0 +1,40 @@
+name: Temporary Repair Full Diagnostics Copy Retirement Harness
+
+on:
+  push:
+    branches:
+      - chatgpt/full-diagnostics-copy-retirement-20260827A
+    paths:
+      - '.github/workflows/tmp-patch-full-diagnostics-copy-retirement-harness-20260827D.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-harness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Patch original valid certification harness only
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('.github/workflows/tmp-full-diagnostics-copy-retirement-20260827A.yml')
+          s=p.read_text('utf-8')
+          old="          python3 tools/test_a003_integrity.py --output /tmp/a003-copy-retirement-result.json\n"
+          new="          rm -f a003-generated-integrity-manifest.json a003-copy-retirement-probe-report.json\n          python3 tools/test_a003_integrity.py --output /tmp/a003-copy-retirement-result.json\n"
+          assert s.count(old)==1,s.count(old)
+          s=s.replace(old,new,1)
+          old_rm="          rm .github/workflows/tmp-full-diagnostics-copy-retirement-20260827A.yml\n"
+          new_rm="          rm -f .github/workflows/tmp-full-diagnostics-copy-retirement-20260827A.yml .github/workflows/tmp-full-diagnostics-copy-retirement-a003-diagnostic-20260827B.yml .github/workflows/tmp-full-diagnostics-copy-retirement-repaired-20260827C.yml .github/workflows/tmp-patch-full-diagnostics-copy-retirement-harness-20260827D.yml\n"
+          assert s.count(old_rm)==1,s.count(old_rm)
+          s=s.replace(old_rm,new_rm,1)
+          p.write_text(s,'utf-8')
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/workflows/tmp-full-diagnostics-copy-retirement-20260827A.yml
+          git commit -m 'Repair temporary A-003 certification workspace hygiene'
+          git push origin HEAD:chatgpt/full-diagnostics-copy-retirement-20260827A
