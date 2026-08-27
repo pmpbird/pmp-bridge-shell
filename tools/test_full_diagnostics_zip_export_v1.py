@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 from pathlib import Path
-
 ROOT=Path(__file__).resolve().parents[1]
 source=(ROOT/'pmp-diagnostics-consolidated-view-v1.js').read_text('utf-8')
 checks={
  'zip_revision':"1.0.0-full-diagnostics-zip-handoff-20260826A" in source,
  'diagnostics_owner_unchanged':"const OWNER='diagnostics_owner';" in source,
  'full_report_truth_path_preserved':"type:'PMP_FULL_DIAGNOSTICS_REPORT_V2'" in source and "function fullDiagnosticReport()" in source,
- 'copy_control_preserved':'Copy Full Diagnostics Report' in source and 'pmpDiagCopyFull' in source,
- 'zip_control_added':'Export Full Diagnostics ZIP' in source and 'pmpDiagZipFull' in source,
+ 'full_report_copy_retired':'Copy Full Diagnostics Report' not in source and 'pmpDiagCopyFull' not in source and 'copy_full_diagnostics' not in source,
+ 'whole_app_copy_preserved':'Copy Whole App Health Report' in source and 'pmpDiagCopyWhole' in source,
+ 'section_copy_preserved':'Copy This Section' in source and 'data-copy-section' in source and 'copy_section_' in source,
+ 'zip_control_present':'Export Full Diagnostics ZIP' in source and 'pmpDiagZipFull' in source,
  'fresh_evidence_before_zip':"await produceEvidence('zip_full_diagnostics')" in source,
  'persistent_download_link':'data-pmp-full-diagnostics-zip-download' in source and 'Download Full Diagnostics ZIP' in source,
  'download_attribute':'a.download=filename' in source,
