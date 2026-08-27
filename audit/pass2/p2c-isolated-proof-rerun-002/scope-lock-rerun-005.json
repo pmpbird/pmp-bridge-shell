@@ -1,0 +1,32 @@
+{
+  "type": "PMP_P2C_ISOLATED_PROOF_RERUN_SCOPE_LOCK_005",
+  "overall_project_pass": "Pass 2",
+  "phase": "P2-C",
+  "source_repository_commit": "c618596f2b5c99ca7f355153a5bd31268170df80",
+  "authorization_scope": "EXACTLY_ONE_CHECKSUM_BOUND_DISPOSABLE_COPY_ISOLATED_PROOF_RERUN_ONLY",
+  "proof_run_count_authorized": 1,
+  "event": "pull_request.opened",
+  "required_run_attempt": 1,
+  "workflow_dispatch_allowed": false,
+  "production_activation_authorized": false,
+  "production_application_authorized": false,
+  "merge_authorized": false,
+  "current_map_change_authorized": false,
+  "persisted_data_change_authorized": false,
+  "second_proof_run_authorized": false,
+  "disposable_copy_required": true,
+  "byte_for_byte_rollback_required": true,
+  "restored_copy_regressions_required": true,
+  "repair_chain": ["003", "005", "006", "007", "008", "009-controller002", "transport-controller003"],
+  "transport_model": "BASE64_ASCII_FIXED_3_PARTS",
+  "required_results": {
+    "production_shaped_browser": "PASS",
+    "active_a002": "41/41",
+    "active_a003_repository": "21/21",
+    "active_a003_live": "47/47",
+    "rollback": "BYTE_FOR_BYTE_PASS",
+    "restored_a002": "41/41",
+    "restored_a003_repository": "21/21",
+    "restored_a003_live": "47/47"
+  }
+}

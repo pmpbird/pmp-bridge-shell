@@ -1,0 +1,34 @@
+name: Pass 2 P2-C Isolated Proof Rerun 004 Candidate — Repair 009 Controller 002
+
+# INACTIVE TEMPLATE ONLY. This .txt file cannot run as a GitHub Actions workflow.
+# It embeds no authorization and must not be converted to .github/workflows/*.yml
+# without a new explicit exactly-one-run user authorization.
+
+steps:
+  - name: Reconstruct checksum-bound runner and apply Repair chain exactly once
+    run: |
+      set -euo pipefail
+      test "$(sha256sum repair_runner_009_controller002.py | awk '{print $1}')" = "ad10e91f9f8319747d08f6f882031eae48aee7c9d7813b1a3f63ad5d0e4a72f7"
+      test "$(sha256sum transpile_async_sources.js | awk '{print $1}')" = "c5ffb899637aa45feb64b604dca426503f99fc9a34f05a1c83a12d0cfef3d0dd"
+      test "$(sha256sum repair009-normalized-source-manifest-002.json | awk '{print $1}')" = "9e8bb7a9e2a695085d5fd80028bc8a2a4076865c355812044cd78fb6b0d44b76"
+      python3 -m py_compile apply_prepare_repair_003.py repair_runner_003.py repair_runner_005.py repair_runner_006.py repair_runner_007.py repair_runner_008.py repair_runner_009_controller002.py
+      python3 apply_prepare_repair_003.py --path "$BUNDLE_DIR/prepare_disposable_proof_002.py"
+      python3 repair_runner_003.py --bundle-root "$BUNDLE_DIR"
+      # Repair 005 invokes 006 and Repair 006 invokes 007. Never invoke 006 or 007 again.
+      python3 repair_runner_005.py --bundle-root "$BUNDLE_DIR"
+      python3 repair_runner_008.py --bundle-root "$BUNDLE_DIR"
+      python3 repair_runner_009_controller002.py --bundle-root "$BUNDLE_DIR" --normalized-root normalized_sources --normalization-manifest repair009-normalized-source-manifest-002.json
+      python3 -m py_compile "$BUNDLE_DIR/prepare_disposable_proof_002.py" "$BUNDLE_DIR/rollback_disposable_proof_002.py" "$BUNDLE_DIR/run_full_isolated_proof_002.py"
+      node --check "$BUNDLE_DIR/after/pmp-p2c-production-enforcement-adapter-candidate-001.js"
+      node --check "$BUNDLE_DIR/run_production_shaped_browser_proof_002.cjs"
+
+  - name: Required future proof boundary
+    run: |
+      test "$EXPLICIT_ONE_RUN_AUTHORIZATION" = "TRUE"
+      test "$PROOF_RUN_COUNT_AUTHORIZED" = "1"
+      test "$PRODUCTION_APPLY_AUTHORIZED" = "FALSE"
+      test "$PRODUCTION_ACTIVATION_AUTHORIZED" = "FALSE"
+      test "$CURRENT_MAP_CHANGE_AUTHORIZED" = "FALSE"
+      test "$PERSISTED_DATA_CHANGE_AUTHORIZED" = "FALSE"
+      test "$MERGE_AUTHORIZED" = "FALSE"
+      test "$SECOND_PROOF_RUN_AUTHORIZED" = "FALSE"

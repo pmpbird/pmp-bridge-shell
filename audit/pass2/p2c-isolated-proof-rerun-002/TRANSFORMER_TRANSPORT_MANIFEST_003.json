@@ -1,0 +1,26 @@
+{
+  "base64_characters": 4964,
+  "decode_rule": "concatenate in lexical order, remove CR and LF only, strict base64 decode",
+  "encoding": "BASE64_ASCII_FIXED_3_PARTS",
+  "parts": [
+    {
+      "characters_without_newline": 1655,
+      "path": "transpile_async_sources.part00.b64",
+      "sha256": "c2febd1a52ac905aab8af36d6995694eaf4719f886fe228860c44e827e268be3"
+    },
+    {
+      "characters_without_newline": 1655,
+      "path": "transpile_async_sources.part01.b64",
+      "sha256": "07b68e774f7d8534a70ba1e0fdafbb6b1df109482462e86cb343c4ad4ac786a1"
+    },
+    {
+      "characters_without_newline": 1654,
+      "path": "transpile_async_sources.part02.b64",
+      "sha256": "9f0be30991386eb2e75d03525cd18f54a16d2b682b4ae73d23c0de15ff90ffde"
+    }
+  ],
+  "source_bytes": 3723,
+  "source_git_blob_sha1": "06a33bfd0bed8cc4b914b519bab606ddcd719cd1",
+  "source_sha256": "c5ffb899637aa45feb64b604dca426503f99fc9a34f05a1c83a12d0cfef3d0dd",
+  "type": "PMP_REPAIR009_TRANSFORMER_TRANSPORT_MANIFEST_003"
+}

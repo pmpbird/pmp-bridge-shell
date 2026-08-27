@@ -1,0 +1,34 @@
+name: Pass 2 P2-C Isolated Proof Rerun 003 Candidate — Repairs 003 005 006 007 008
+
+# INACTIVE TEMPLATE ONLY. No authorization receipt is embedded and this file is not a runnable workflow.
+# A separately issued one-run authorization receipt is required before conversion to .github/workflows/*.yml.
+
+steps:
+  - name: Reconstruct checksum-bound runner and apply Repairs 003 005 006 007 008 exactly once
+    run: |
+      set -euo pipefail
+      sha256sum \
+        apply_prepare_repair_003.py \
+        repair_runner_003.py \
+        repair_runner_005.py \
+        repair_runner_006.py \
+        repair_runner_007.py \
+        repair_runner_008.py > repair-script-sha256.txt
+      python3 -m py_compile \
+        apply_prepare_repair_003.py \
+        repair_runner_003.py \
+        repair_runner_005.py \
+        repair_runner_006.py \
+        repair_runner_007.py \
+        repair_runner_008.py
+      python3 apply_prepare_repair_003.py --path "$BUNDLE_DIR/prepare_disposable_proof_002.py"
+      python3 repair_runner_003.py --bundle-root "$BUNDLE_DIR"
+      # Repair 005 invokes 006; Repair 006 invokes 007. Do not invoke 006 or 007 again.
+      python3 repair_runner_005.py --bundle-root "$BUNDLE_DIR"
+      python3 repair_runner_008.py --bundle-root "$BUNDLE_DIR"
+      python3 -m py_compile \
+        "$BUNDLE_DIR/prepare_disposable_proof_002.py" \
+        "$BUNDLE_DIR/rollback_disposable_proof_002.py" \
+        "$BUNDLE_DIR/run_full_isolated_proof_002.py"
+      node --check "$BUNDLE_DIR/after/pmp-p2c-production-enforcement-adapter-candidate-001.js"
+      node --check "$BUNDLE_DIR/run_production_shaped_browser_proof_002.cjs"

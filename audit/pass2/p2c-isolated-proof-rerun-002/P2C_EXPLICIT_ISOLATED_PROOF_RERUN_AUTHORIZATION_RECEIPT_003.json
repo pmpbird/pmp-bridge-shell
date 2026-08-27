@@ -1,0 +1,21 @@
+{
+  "type": "PMP_P2C_EXPLICIT_ISOLATED_PROOF_RERUN_AUTHORIZATION_RECEIPT_003",
+  "authorized": true,
+  "authorization_scope": "ONE_ISOLATED_PRODUCTION_SHAPED_PROOF_RERUN_ONLY",
+  "proof_run_count_authorized": 1,
+  "production_activation_authorized": false,
+  "production_apply_authorized": false,
+  "merge_authorized": false,
+  "current_map_change_authorized": false,
+  "production_storage_change_authorized": false,
+  "second_proof_run_authorized": false,
+  "source_repository_commit": "c618596f2b5c99ca7f355153a5bd31268170df80",
+  "repair008_sha256": "9de909e03b5a691d4215c785f36ad64ce38e844c7540b9f5bdc65f4a1b671972",
+  "workflow_candidate_sha256": "5878d6fb0a7cf5ef5c33abc47f41f948abffeaeb2f2c1412a9959e7ab25f9a3b",
+  "bundle_sha256": "a644ad9ea538117f8aa6b01ac6988ac8d938a64fb170fa2a8f071afebc77e500",
+  "overall_project_pass": "Pass 2",
+  "phase": "P2-C",
+  "authorized_at_utc": "2026-07-13T01:51:22Z",
+  "authorization_source": "User message in current conversation",
+  "authorization_text": "I explicitly authorize exactly one checksum-bound disposable-copy isolated proof rerun using Repair 008 and the rerun-003 workflow candidate. Production application, production activation, Current Map changes, persisted-data changes, merge, and any second proof run are not authorized."
+}

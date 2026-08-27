@@ -1,0 +1,17 @@
+{
+  "type": "PMP_P2C_ISOLATED_PROOF_RERUN_EXECUTION_DIRECTIVE_005",
+  "authorized": true,
+  "authorization_receipt": "P2C_EXPLICIT_ISOLATED_PROOF_RERUN_AUTHORIZATION_RECEIPT_005.json",
+  "authorization_receipt_sha256": "877d6a9b6334b7b02f027f2479d96fc38fc9d26a45cdf36054937f241fa2f490",
+  "proof_run_count_to_execute": 1,
+  "proof_run_count_previously_executed_under_receipt": 0,
+  "stop_after_one_run_regardless_of_outcome": true,
+  "production_application_authorized": false,
+  "production_activation_authorized": false,
+  "current_map_change_authorized": false,
+  "persisted_data_change_authorized": false,
+  "merge_authorized": false,
+  "second_proof_run_authorized": false,
+  "execution_authorization_source": "User message in current conversation",
+  "execution_authorization_text": "Execute exactly one checksum-bound disposable-copy isolated proof rerun using Repair 009 Controller 002, Transport-Fidelity Controller 003, Authorization Receipt 005, the three checksum-locked base64 transformer parts, and the rerun-005 workflow candidate. Production application, production activation, Current Map changes, persisted-data changes, merge, and any second proof run are not authorized. Stop after the one run regardless of outcome."
+}

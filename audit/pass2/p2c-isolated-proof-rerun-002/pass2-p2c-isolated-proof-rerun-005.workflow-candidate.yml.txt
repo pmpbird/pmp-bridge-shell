@@ -1,0 +1,31 @@
+name: Pass 2 P2-C Isolated Proof Rerun 005 Candidate — Repair 009 Transport-Safe
+
+# INACTIVE TEMPLATE ONLY. This .txt file cannot run as a GitHub Actions workflow.
+# It embeds no authorization. Conversion to .github/workflows/*.yml requires a new
+# explicit exactly-one-run authorization.
+
+steps:
+  - name: Reconstruct exact locked transformer before any proof preparation
+    run: |
+      set -euo pipefail
+      test "$(sha256sum transpile_async_sources.part00.b64 | awk '{print $1}')" = "c2febd1a52ac905aab8af36d6995694eaf4719f886fe228860c44e827e268be3"
+      test "$(sha256sum transpile_async_sources.part01.b64 | awk '{print $1}')" = "07b68e774f7d8534a70ba1e0fdafbb6b1df109482462e86cb343c4ad4ac786a1"
+      test "$(sha256sum transpile_async_sources.part02.b64 | awk '{print $1}')" = "9f0be30991386eb2e75d03525cd18f54a16d2b682b4ae73d23c0de15ff90ffde"
+      cat transpile_async_sources.part*.b64 | tr -d '\r\n' | base64 -d > transpile_async_sources.js
+      test "$(wc -c < transpile_async_sources.js)" = "3723"
+      test "$(sha256sum transpile_async_sources.js | awk '{print $1}')" = "c5ffb899637aa45feb64b604dca426503f99fc9a34f05a1c83a12d0cfef3d0dd"
+      test "$(git hash-object transpile_async_sources.js)" = "06a33bfd0bed8cc4b914b519bab606ddcd719cd1"
+      node --check transpile_async_sources.js
+      test "$(sha256sum repair_runner_009_controller002.py | awk '{print $1}')" = "ad10e91f9f8319747d08f6f882031eae48aee7c9d7813b1a3f63ad5d0e4a72f7"
+      test "$(sha256sum repair009-normalized-source-manifest-002.json | awk '{print $1}')" = "9e8bb7a9e2a695085d5fd80028bc8a2a4076865c355812044cd78fb6b0d44b76"
+
+  - name: Future proof boundary
+    run: |
+      test "$EXPLICIT_ONE_RUN_AUTHORIZATION" = "TRUE"
+      test "$PROOF_RUN_COUNT_AUTHORIZED" = "1"
+      test "$PRODUCTION_APPLY_AUTHORIZED" = "FALSE"
+      test "$PRODUCTION_ACTIVATION_AUTHORIZED" = "FALSE"
+      test "$CURRENT_MAP_CHANGE_AUTHORIZED" = "FALSE"
+      test "$PERSISTED_DATA_CHANGE_AUTHORIZED" = "FALSE"
+      test "$MERGE_AUTHORIZED" = "FALSE"
+      test "$SECOND_PROOF_RUN_AUTHORIZED" = "FALSE"

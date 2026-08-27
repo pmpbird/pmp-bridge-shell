@@ -1,0 +1,81 @@
+{
+  "authorization_consumed": false,
+  "authorization_scope": "EXACTLY_ONE_FUTURE_CHECKSUM_BOUND_DISPOSABLE_COPY_ISOLATED_PROOF_RERUN_ONLY",
+  "authorization_source": "User message in current conversation responding to Exact Next Move Lock 011",
+  "authorization_source_text": "Issue a new exactly-one-run Repair 009 proof authorization receipt bound to Repair 009 Controller 002, Transport-Fidelity Controller 003, the three checksum-locked base64 transformer parts, and the rerun-005 workflow candidate. This authorizes receipt issuance only. It does not authorize workflow execution, proof execution, production application, production activation, Current Map changes, persisted-data changes, merge, or any second proof run.",
+  "authorized": true,
+  "authorized_candidate": "REPAIR009_CONTROLLER002_PLUS_TRANSPORT_FIDELITY_CONTROLLER003_RERUN005",
+  "controller002_candidate_zip": {
+    "name": "PMP_REPAIR009_CALLBACK_ASYNC_A002_CONTROLLER002_PATCH_CANDIDATE.zip",
+    "sha256": "ebbb4fa1d383bb806d8133867d1ca43ef85d85cf89e031e985e0888a7f57368f"
+  },
+  "controller003_preflight_zip": {
+    "name": "PMP_REPAIR009_TRANSFORMER_TRANSPORT_FIDELITY_CONTROLLER003_PREFLIGHT.zip",
+    "sha256": "142d9b4d83ed12c02b193aba38007bf8b3a8cb861217487e474ef76db0f6cfe6"
+  },
+  "current_map_change_authorized": false,
+  "issued_at_utc": "2026-07-13T17:56:38.575970Z",
+  "merge_authorized": false,
+  "next_move": "Execute exactly one checksum-bound disposable-copy isolated proof rerun using Repair 009 Controller 002, Transport-Fidelity Controller 003, Authorization Receipt 005, the three locked base64 transformer parts, and the rerun-005 workflow candidate; stop after the one run regardless of outcome.",
+  "normalization_manifest": {
+    "git_blob_sha1": "39622af6eaf064db1baddecd7a4203212fe98716",
+    "path": "repair009-normalized-source-manifest-002.json",
+    "sha256": "9e8bb7a9e2a695085d5fd80028bc8a2a4076865c355812044cd78fb6b0d44b76"
+  },
+  "persisted_data_change_authorized": false,
+  "production_activation_authorized": false,
+  "production_application_authorized": false,
+  "production_changed_in_this_move": false,
+  "proof_execution_authorized_by_this_message": false,
+  "proof_run_count_authorized": 1,
+  "proof_run_count_executed_under_this_receipt": 0,
+  "receipt_issuance_completed": true,
+  "repair009_controller002": {
+    "git_blob_sha1": "8d835de10425239d7c7c8ec8ceae13bc13b8ad12",
+    "path": "repair_runner_009_controller002.py",
+    "sha256": "ad10e91f9f8319747d08f6f882031eae48aee7c9d7813b1a3f63ad5d0e4a72f7"
+  },
+  "repository_branch_or_ref_changed_in_this_move": false,
+  "rerun005_workflow_candidate": {
+    "git_blob_sha1": "2e8181858fec96cee5de816831b0b0a7df4f950b",
+    "path": "pass2-p2c-isolated-proof-rerun-005.workflow-candidate.yml.txt",
+    "runnable": false,
+    "sha256": "d6d444d8d8cf831a6d5c068004a81efe2b51c386e29b7d278a0c2529bbfd7d18"
+  },
+  "scope_resolution": "This move issues and seals the future one-run receipt only. A separate explicit execution command is mandatory before any workflow or proof may start.",
+  "second_proof_run_authorized": false,
+  "separate_explicit_execution_command_required": true,
+  "source_repository_commit": "c618596f2b5c99ca7f355153a5bd31268170df80",
+  "status": "AUTHORIZED_UNCONSUMED",
+  "transformer_transport": {
+    "decode_rule": "concatenate lexical order, remove CR and LF only, strict base64 decode",
+    "model": "BASE64_ASCII_FIXED_3_PARTS",
+    "parts": [
+      {
+        "git_blob_sha1": "8dac5ce96beb901fd47d858259fb893447a8e3f1",
+        "path": "transpile_async_sources.part00.b64",
+        "sha256": "c2febd1a52ac905aab8af36d6995694eaf4719f886fe228860c44e827e268be3"
+      },
+      {
+        "git_blob_sha1": "bf09a08327f4bde874d2bcab484e1757d4a2765c",
+        "path": "transpile_async_sources.part01.b64",
+        "sha256": "07b68e774f7d8534a70ba1e0fdafbb6b1df109482462e86cb343c4ad4ac786a1"
+      },
+      {
+        "git_blob_sha1": "1ff3d7d845c8e5aa239db9ea63b0df01a85f79e9",
+        "path": "transpile_async_sources.part02.b64",
+        "sha256": "9f0be30991386eb2e75d03525cd18f54a16d2b682b4ae73d23c0de15ff90ffde"
+      }
+    ],
+    "reconstructed_transformer_bytes": 3723,
+    "reconstructed_transformer_git_blob_sha1": "06a33bfd0bed8cc4b914b519bab606ddcd719cd1",
+    "reconstructed_transformer_sha256": "c5ffb899637aa45feb64b604dca426503f99fc9a34f05a1c83a12d0cfef3d0dd"
+  },
+  "transport_fidelity_controller003": {
+    "git_blob_sha1": "ee9978fddc1447f5b2f8e456e923c82caf999000",
+    "path": "repair009_transport_fidelity_controller003.py",
+    "sha256": "4adec534bfbb17e0fa11d81918b078a73f44c7e16f38fdaad747b12b3f6199e7"
+  },
+  "type": "PMP_P2C_EXPLICIT_ISOLATED_PROOF_RERUN_AUTHORIZATION_RECEIPT_005",
+  "workflow_execution_authorized_by_this_message": false
+}

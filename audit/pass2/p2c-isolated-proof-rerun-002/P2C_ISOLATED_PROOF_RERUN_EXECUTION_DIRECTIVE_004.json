@@ -1,0 +1,16 @@
+{
+  "type": "PMP_P2C_ISOLATED_PROOF_RERUN_EXECUTION_DIRECTIVE_004",
+  "authorized": true,
+  "authorization_receipt": "P2C_EXPLICIT_ISOLATED_PROOF_RERUN_AUTHORIZATION_RECEIPT_004.json",
+  "authorization_receipt_sha256": "6d5c27081c445e20dc16eb8265689b6e8a9923249cc95d5971fbfa175c27607f",
+  "proof_run_count_to_execute": 1,
+  "proof_run_count_previously_executed_under_receipt": 0,
+  "production_application_authorized": false,
+  "production_activation_authorized": false,
+  "current_map_change_authorized": false,
+  "persisted_data_change_authorized": false,
+  "merge_authorized": false,
+  "second_proof_run_authorized": false,
+  "instruction_source": "User message in current conversation",
+  "instruction_text": "Execute exactly one checksum-bound disposable-copy isolated proof rerun using Repair 009 Controller 002 and Authorization Receipt 004. Production application, production activation, Current Map changes, persisted-data changes, merge, and any second proof run are not authorized."
+}
